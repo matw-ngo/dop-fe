@@ -28,20 +28,18 @@ export default function LanguageSwitcher() {
   };
 
   return (
-    <div className="fixed bottom-5 right-5">
-      <Select
-        defaultValue={localActive}
-        onValueChange={onSelectChange}
-        disabled={isPending}
-      >
-        <SelectTrigger className="w-[120px]">
-          <SelectValue placeholder="Language" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="en">English</SelectItem>
-          <SelectItem value="vi">Tiếng Việt</SelectItem>
-        </SelectContent>
-      </Select>
-    </div>
+    <Select
+      defaultValue={localActive}
+      onValueChange={onSelectChange}
+      disabled={isPending}
+    >
+      <SelectTrigger className="w-[120px]">
+        <SelectValue placeholder="Language" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value="en">English</SelectItem>
+        <SelectItem value="vi">Tiếng Việt</SelectItem>
+      </SelectContent>
+    </Select>
   );
 }
