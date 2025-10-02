@@ -12,7 +12,7 @@
     "prepare": "husky"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": "npx @biomejs/biome check --apply"
+    "*.{js,jsx,ts,tsx}": "npx @biomejs/biome format --write ."
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
