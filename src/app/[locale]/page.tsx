@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { ExampleForm } from "@/components/example-form";
 
 export default function HomePage() {
-  const t = useTranslations("HomePagee");
+  const t = useTranslations("HomePage");
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-24">
