@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useLocale } from 'next-intl';
-import { usePathname, useRouter } from 'next/navigation';
-import { ChangeEvent, useTransition } from 'react';
+import { useLocale } from "next-intl";
+import { usePathname, useRouter } from "next/navigation";
+import { ChangeEvent, useTransition } from "react";
 
 export default function LanguageSwitcher() {
   const [isPending, startTransition] = useTransition();
@@ -16,7 +16,10 @@ export default function LanguageSwitcher() {
       // This logic assumes the path always starts with the locale.
       // For the root path, you might need special handling, but for most
       // pages this will work.
-      const newPath = pathname.replace(new RegExp(`^/${localActive}`), `/${nextLocale}`);
+      const newPath = pathname.replace(
+        new RegExp(`^/${localActive}`),
+        `/${nextLocale}`,
+      );
       router.replace(newPath);
     });
   };
