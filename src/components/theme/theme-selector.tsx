@@ -1,32 +1,10 @@
 "use client";
 
-import { useState } from "react";
-import { Monitor, Moon, Sun, Palette, Settings, Download } from "lucide-react";
+import { Download, Monitor, Moon, Palette, Settings, Sun } from "lucide-react";
 import { useTheme as useNextTheme } from "next-themes";
-import { useTheme } from "@/lib/theme/context";
-import { themes, userGroups } from "@/lib/theme/themes";
-import { exportThemeAsCSS } from "@/lib/theme/utils";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -34,6 +12,28 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useTheme } from "@/lib/theme/context";
+import { themes, userGroups } from "@/lib/theme/themes";
+import { exportThemeAsCSS } from "@/lib/theme/utils";
 import { ThemeCustomizer } from "./theme-customizer";
 
 export function ThemeSelector() {

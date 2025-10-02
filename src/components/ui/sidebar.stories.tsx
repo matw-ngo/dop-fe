@@ -1,19 +1,19 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { Home, LifeBuoy, Settings } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
+  SidebarInset,
   SidebarMenu,
+  SidebarMenuBadge,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarMenuBadge,
   SidebarProvider,
   SidebarTrigger,
-  SidebarInset,
 } from "./sidebar";
-import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
-import { Home, Settings, LifeBuoy } from "lucide-react";
 
 const meta: Meta<typeof Sidebar> = {
   title: "UI/Sidebar",

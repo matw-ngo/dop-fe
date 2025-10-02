@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import React from "react";
+import { cn } from "@/lib/utils";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -7,8 +9,6 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "./navigation-menu";
-import React from "react";
-import { cn } from "@/lib/utils";
 
 const meta: Meta<typeof NavigationMenu> = {
   title: "UI/NavigationMenu",

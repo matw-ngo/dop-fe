@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import Autoplay from "embla-carousel-autoplay";
+import { Card, CardContent } from "./card";
 import {
   Carousel,
   CarouselContent,
@@ -6,8 +8,6 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "./carousel";
-import { Card, CardContent } from "./card";
-import Autoplay from "embla-carousel-autoplay";
 
 const meta: Meta<typeof Carousel> = {
   title: "UI/Carousel",

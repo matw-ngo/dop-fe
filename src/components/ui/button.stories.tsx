@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Button } from "./button";
 import { Loader2 } from "lucide-react";
+import { Button } from "./button";
 
 // Meta information: định nghĩa component này là gì, ở đâu trong Storybook
 const meta: Meta<typeof Button> = {

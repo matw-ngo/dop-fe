@@ -1,19 +1,18 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import {
   Menubar,
-  MenubarMenu,
-  MenubarTrigger,
+  MenubarCheckboxItem,
   MenubarContent,
   MenubarItem,
+  MenubarMenu,
+  MenubarRadioGroup,
+  MenubarRadioItem,
   MenubarSeparator,
   MenubarShortcut,
   MenubarSub,
-  MenubarSubTrigger,
   MenubarSubContent,
-  MenubarCheckboxItem,
-  MenubarRadioGroup,
-  MenubarRadioItem,
-  MenubarLabel,
+  MenubarSubTrigger,
+  MenubarTrigger,
 } from "./menubar";
 
 const meta: Meta<typeof Menubar> = {

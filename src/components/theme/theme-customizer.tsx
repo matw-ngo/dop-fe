@@ -1,13 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useTheme } from "@/lib/theme/context";
-import { themes } from "@/lib/theme/themes";
-import type { ThemeColors } from "@/lib/theme/types";
+import { Eye, RotateCcw } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Card,
   CardContent,
@@ -15,9 +11,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import { RotateCcw, Palette, Eye } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useTheme } from "@/lib/theme/context";
+import { themes } from "@/lib/theme/themes";
+import type { ThemeColors } from "@/lib/theme/types";
 
 interface ThemeCustomizerProps {
   onClose?: () => void;
@@ -140,14 +139,14 @@ export function ThemeCustomizer({ onClose }: ThemeCustomizerProps) {
   };
 
   // Convert OKLCH to hex for color input (simplified)
-  const oklchToHex = (oklch: string): string => {
+  const _oklchToHex = (_oklch: string): string => {
     // This is a simplified conversion - in production you'd want a proper OKLCH to hex converter
     // For now, we'll extract RGB-like values and approximate
     return "#3b82f6"; // Fallback blue
   };
 
   // Convert hex to OKLCH (simplified)
-  const hexToOklch = (hex: string): string => {
+  const _hexToOklch = (_hex: string): string => {
     // This is a simplified conversion - in production you'd want a proper hex to OKLCH converter
     // For now, we'll return a reasonable OKLCH value
     return "oklch(0.5 0.1 220)";

@@ -1,11 +1,12 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useState } from "react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import type { ThemeProviderProps } from "next-themes/dist/types";
-import type { ThemeState, ThemeMode, ThemeColors } from "./types";
+import type React from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { themes, userGroups } from "./themes";
-import { applyTheme, generateCSSVariables } from "./utils";
+import type { ThemeColors, ThemeMode, ThemeState } from "./types";
+import { applyTheme } from "./utils";
 
 interface ThemeContextType {
   // Current state

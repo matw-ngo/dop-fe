@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import {
   Breadcrumb,
+  BreadcrumbEllipsis,
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-  BreadcrumbEllipsis,
 } from "./breadcrumb";
 import {
   DropdownMenu,

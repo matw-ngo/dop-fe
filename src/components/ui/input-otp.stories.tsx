@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import React from "react";
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSeparator,
   InputOTPSlot,
 } from "./input-otp";
-import React from "react";
 
 const meta: Meta<typeof InputOTP> = {
   title: "UI/InputOTP",

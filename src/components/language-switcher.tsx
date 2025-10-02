@@ -1,7 +1,7 @@
 "use client";
 
-import { useLocale } from "next-intl";
 import { usePathname, useRouter } from "next/navigation";
+import { useLocale } from "next-intl";
 import { useTransition } from "react";
 import {
   Select,

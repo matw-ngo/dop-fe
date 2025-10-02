@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import LanguageSwitcher from "./language-switcher";
-import { NextIntlClientProvider } from "next-intl";
 import { fn } from "@storybook/test";
+import { NextIntlClientProvider } from "next-intl";
+import LanguageSwitcher from "./language-switcher";
 
 // Mock messages for the provider
 const messages = {

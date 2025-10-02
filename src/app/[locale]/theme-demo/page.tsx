@@ -1,8 +1,20 @@
 "use client";
 
+import {
+  AlertTriangle,
+  Bell,
+  Heart,
+  Info,
+  MessageCircle,
+  Palette,
+  Settings,
+  Star,
+  TrendingUp,
+  User,
+} from "lucide-react";
 import { useState } from "react";
-import { useTheme } from "@/lib/theme/context";
-
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -13,24 +25,9 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Badge } from "@/components/ui/badge";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Progress } from "@/components/ui/progress";
-import { Separator } from "@/components/ui/separator";
-import {
-  Palette,
-  User,
-  Settings,
-  Bell,
-  Star,
-  Heart,
-  MessageCircle,
-  TrendingUp,
-  AlertTriangle,
-  CheckCircle,
-  Info,
-} from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
+import { useTheme } from "@/lib/theme/context";
 
 export default function ThemeDemoPage() {
   const { currentTheme, userGroup, themeConfig } = useTheme();

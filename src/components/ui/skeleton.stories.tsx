@@ -11,7 +11,7 @@ export default meta;
 type Story = StoryObj<typeof Skeleton>;
 
 export const Default: Story = {
-  render: (args) => (
+  render: (_args) => (
     <div className="flex items-center space-x-4">
       <Skeleton className="h-12 w-12 rounded-full" />
       <div className="space-y-2">
@@ -24,7 +24,7 @@ export const Default: Story = {
 
 export const CardSkeleton: Story = {
   name: "Card Example",
-  render: (args) => (
+  render: (_args) => (
     <div className="flex flex-col space-y-3">
       <Skeleton className="h-[125px] w-[250px] rounded-xl" />
       <div className="space-y-2">

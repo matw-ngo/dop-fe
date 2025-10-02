@@ -1,8 +1,8 @@
 "use client"; // Cần client component để dùng hook
 
 import { useTranslations } from "next-intl";
-import { Button } from "@/components/ui/button";
 import { ExampleForm } from "@/components/features/example-form";
+import { Button } from "@/components/ui/button";
 
 export default function HomePage() {
   const t = useTranslations("HomePage");

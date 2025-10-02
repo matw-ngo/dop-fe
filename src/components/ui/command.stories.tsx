@@ -1,15 +1,3 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-  CommandSeparator,
-  CommandShortcut,
-  CommandDialog,
-} from "./command";
 import {
   CalendarIcon,
   EnvelopeClosedIcon,
@@ -18,7 +6,19 @@ import {
   PersonIcon,
   RocketIcon,
 } from "@radix-ui/react-icons";
+import type { Meta, StoryObj } from "@storybook/react";
 import React from "react";
+import {
+  Command,
+  CommandDialog,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+  CommandShortcut,
+} from "./command";
 
 const meta: Meta<typeof Command> = {
   title: "UI/Command",

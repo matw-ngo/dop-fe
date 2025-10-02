@@ -1,4 +1,4 @@
-import type { ThemeConfig, ThemeColors, ThemeMode } from "./types";
+import type { ThemeColors, ThemeConfig, ThemeMode } from "./types";
 
 /**
  * Convert camelCase to kebab-case for CSS variables
@@ -133,7 +133,7 @@ export function generateThemeVariants(baseColors: ThemeColors) {
       placeholder: baseColors.mutedForeground,
       focus: {
         border: baseColors.ring,
-        ring: baseColors.ring + "/20",
+        ring: `${baseColors.ring}/20`,
       },
     },
     card: {

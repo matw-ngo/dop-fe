@@ -2,8 +2,8 @@
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
-import { ThemeProvider } from "@/lib/theme/context";
 import { Toaster } from "@/components/ui/sonner";
+import { ThemeProvider } from "@/lib/theme/context";
 
 export default function Providers({
   children,

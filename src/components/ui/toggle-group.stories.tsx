@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { ToggleGroup, ToggleGroupItem } from "./toggle-group";
 import { Bold, Italic, Underline } from "lucide-react";
+import { ToggleGroup, ToggleGroupItem } from "./toggle-group";
 
 const meta: Meta<typeof ToggleGroup> = {
   title: "UI/ToggleGroup",
