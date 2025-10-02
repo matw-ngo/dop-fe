@@ -1,3 +1,17 @@
+# DOP Frontend - Multi-User Theme System
+
+A Next.js application with advanced theme system designed for multiple user groups with different customization requirements.
+
+## 🎨 Theme System Features
+
+- **Multi-User Group Support**: Different themes for Business, Creative, Healthcare, and System users
+- **Dynamic Theme Switching**: Real-time theme changes with CSS variables
+- **Advanced Customization**: Color customization with OKLCH color space
+- **Accessibility First**: WCAG compliant with high contrast support
+- **Scalable Architecture**: Easy to add new themes and user groups
+- **Export/Import**: Export themes as CSS files
+- **Responsive Design**: Works across all device sizes
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started

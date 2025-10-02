@@ -7,6 +7,7 @@ import "../globals.css";
 
 import Providers from "@/components/layout/providers";
 import LanguageSwitcher from "@/components/language-switcher";
+import { ThemeSelector } from "@/components/theme/theme-selector";
 
 export function generateStaticParams() {
   return [{ locale: "vi" }, { locale: "en" }];
@@ -45,7 +46,12 @@ export default async function LocaleLayout({
         <NextIntlClientProvider locale={locale} messages={messages}>
           <Providers>
             {children}
-            <LanguageSwitcher />
+            <div className="fixed bottom-5 left-5 z-50">
+              <ThemeSelector />
+            </div>
+            <div className="fixed bottom-5 right-5 z-50">
+              <LanguageSwitcher />
+            </div>
           </Providers>
         </NextIntlClientProvider>
       </body>
