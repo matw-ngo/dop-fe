@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
-import { ExampleForm } from "@/components/example-form";
+import { ExampleForm } from "@/components/features/example-form";
 
 export default function HomePage() {
   const t = useTranslations("HomePage");

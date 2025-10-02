@@ -5,7 +5,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 // @ts-ignore
 import "../globals.css";
 
-import Providers from "@/components/providers";
+import Providers from "@/components/layout/providers";
 import LanguageSwitcher from "@/components/language-switcher";
 
 export function generateStaticParams() {

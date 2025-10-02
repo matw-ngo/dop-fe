@@ -2,7 +2,14 @@
 
 import { useLocale } from "next-intl";
 import { usePathname, useRouter } from "next/navigation";
-import { ChangeEvent, useTransition } from "react";
+import { useTransition } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export default function LanguageSwitcher() {
   const [isPending, startTransition] = useTransition();
@@ -10,12 +17,8 @@ export default function LanguageSwitcher() {
   const localActive = useLocale();
   const pathname = usePathname();
 
-  const onSelectChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    const nextLocale = e.target.value;
+  const onSelectChange = (nextLocale: string) => {
     startTransition(() => {
-      // This logic assumes the path always starts with the locale.
-      // For the root path, you might need special handling, but for most
-      // pages this will work.
       const newPath = pathname.replace(
         new RegExp(`^/${localActive}`),
         `/${nextLocale}`,
@@ -26,18 +29,19 @@ export default function LanguageSwitcher() {
 
   return (
     <div className="fixed bottom-5 right-5">
-      <label className="relative text-gray-400">
-        <p className="sr-only">Change language</p>
-        <select
-          defaultValue={localActive}
-          className="inline-flex appearance-none rounded-md bg-gray-800 p-2"
-          onChange={onSelectChange}
-          disabled={isPending}
-        >
-          <option value="en">English</option>
-          <option value="vi">Tiếng Việt</option>
-        </select>
-      </label>
+      <Select
+        defaultValue={localActive}
+        onValueChange={onSelectChange}
+        disabled={isPending}
+      >
+        <SelectTrigger className="w-[120px]">
+          <SelectValue placeholder="Language" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="en">English</SelectItem>
+          <SelectItem value="vi">Tiếng Việt</SelectItem>
+        </SelectContent>
+      </Select>
     </div>
   );
 }
