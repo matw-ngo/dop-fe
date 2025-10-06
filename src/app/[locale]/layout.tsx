@@ -61,13 +61,14 @@ export default async function LocaleLayout({
         />
         <Script
           id="oval_custom"
-          src="https://ekyc-web.icenter.ai/lib/VNPTBrowserSDKApp.js"
+          src="/vendor/VNPTBrowserSDKAppV4.0.0.js"
           strategy="beforeInteractive"
         />
         <Script
-          src="https://ekyc-web.icenter.ai/lib/jsQR.js"
+          src="/vendor/VNPTQRBrowserApp.js"
           strategy="beforeInteractive"
         />
+        <Script src="/vendor/VNPTQRUpload.js" strategy="beforeInteractive" />
       </body>
     </html>
   );
