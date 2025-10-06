@@ -55,6 +55,7 @@ export interface BlogPostCardProps {
   truncateTitle?: number;
   truncateExcerpt?: number;
   imageAspectRatio?: "square" | "video" | "portrait";
+  highlight?: boolean;
 }
 
 // Utility function to format date
@@ -114,6 +115,7 @@ export function BlogPostCard({
   truncateTitle,
   truncateExcerpt,
   imageAspectRatio = "video",
+  highlight = false,
 }: BlogPostCardProps) {
   const isClickable = !!onClick;
 
@@ -439,6 +441,7 @@ export function BlogPostCard({
           "transition-all duration-200 hover:shadow-lg",
           isClickable && "cursor-pointer hover:-translate-y-1",
           "h-full",
+          highlight && "ring-2 ring-primary ring-offset-2",
         )}
         onClick={onClick}
       >

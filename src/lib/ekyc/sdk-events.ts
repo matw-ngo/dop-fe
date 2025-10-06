@@ -33,8 +33,8 @@ export class EkycEventManager {
 
       if (result && result.code === 0) {
         this.handlers.onSuccess?.(result.data);
-        if (window.ekycsdk && result.type_document !== undefined) {
-          window.ekycsdk.viewResult(result.type_document, result);
+        if (window.SDK && result.type_document !== undefined) {
+          window.SDK.viewResult(result.type_document, result);
         }
       } else {
         const errorMessage = result.message || "An unknown error occurred.";
@@ -71,10 +71,7 @@ export class EkycEventManager {
           TYPE_DOCUMENT: result.type_document,
         };
 
-        window.ekycsdk.init(faceConfig, (faceResult) => {
-          const combinedResult = Object.assign({}, result, faceResult);
-          window.ekycsdk.viewResult(result.type_document, combinedResult);
-        });
+        window.SDK.launch(faceConfig);
       }
     }
   }

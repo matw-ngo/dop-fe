@@ -213,9 +213,7 @@ export function FeaturesSection({
               features={feature.features}
               buttonText={feature.buttonText}
               onButtonClick={feature.onButtonClick}
-              variant={
-                layout === "mixed" && index === 0 ? "featured" : "default"
-              }
+              variant={"default"}
               size={size}
               highlight={feature.highlight}
               className={styles.card}

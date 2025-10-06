@@ -3,7 +3,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
 import { NextIntlClientProvider } from "next-intl";
 
-// @ts-expect-error
 import "../globals.css";
 
 import LanguageSwitcher from "@/components/language-switcher";
@@ -61,14 +60,14 @@ export default async function LocaleLayout({
         />
         <Script
           id="oval_custom"
-          src="/vendor/VNPTBrowserSDKAppV4.0.0.js"
+          src="/ekyc/lib/VNPTBrowserSDKAppV4.0.0.js"
           strategy="beforeInteractive"
         />
         <Script
-          src="/vendor/VNPTQRBrowserApp.js"
+          src="/ekyc/lib/VNPTQRBrowserApp.js"
           strategy="beforeInteractive"
         />
-        <Script src="/vendor/VNPTQRUpload.js" strategy="beforeInteractive" />
+        <Script src="/ekyc/lib/VNPTQRUpload.js" strategy="beforeInteractive" />
       </body>
     </html>
   );

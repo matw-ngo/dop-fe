@@ -229,7 +229,7 @@ export function StatItem({
     if (!icon) return null;
 
     if (React.isValidElement(icon)) {
-      return React.cloneElement(icon as React.ReactElement, {
+      return React.cloneElement(icon as React.ReactElement<any>, {
         className: cn(styles.icon, sizes.icon, iconClassName),
       });
     }

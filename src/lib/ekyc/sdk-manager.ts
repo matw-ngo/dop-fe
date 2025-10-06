@@ -13,13 +13,9 @@ declare global {
     FaceVNPTBrowserSDK: {
       init: () => Promise<void>;
     };
-    ekycsdk: {
-      init: (
-        initObj: any,
-        callback: (result: any) => void,
-        onFinish?: (result: any) => void,
-      ) => void;
+    SDK: {
       viewResult: (typeDocument: any, result: any) => void;
+      launch: (config: any) => void;
     };
   }
 }
@@ -63,6 +59,7 @@ export class EkycSdkManager {
     options: EkycSdkManagerOptions & { assets?: SdkAssets } = {},
   ): Promise<void> {
     try {
+      console.log("--- [EKYC] Bắt đầu quá trình initialize ---");
       // Initialize config manager with credentials
       const credentialsSource =
         options.credentialsSource ||
@@ -75,9 +72,15 @@ export class EkycSdkManager {
             }
           : "env");
 
+      console.log(
+        "[EKYC] Bước 1: Khởi tạo Config Manager với nguồn:",
+        credentialsSource,
+      );
       await this.configManager.initialize(credentialsSource);
+      console.log("[EKYC] Hoàn thành: Khởi tạo Config Manager.");
 
       // Create configuration using credentials from config manager
+      console.log("[EKYC] Bước 2: Tạo cấu hình SDK...");
       const credentials = this.configManager.getCredentials();
       const baseConfig = createDefaultEkycConfig(credentials.AUTHORIZION);
 
@@ -90,22 +93,31 @@ export class EkycSdkManager {
         ...options.config,
         PARRENT_ID: this.containerId,
       };
+      console.log(
+        "[EKYC] Hoàn thành: Tạo cấu hình SDK. Cấu hình:",
+        this.config,
+      );
 
       // Load SDK assets
+      console.log("[EKYC] Bước 3: Tải assets của SDK. Assets:", options.assets);
       await this.loader.loadSdk(options.assets);
+      console.log("[EKYC] Hoàn thành: Tải assets của SDK.");
 
       // Initialize SDK with configuration
+      console.log("[EKYC] Bước 4: Khởi tạo SDK với cấu hình (SDK.launch).");
       await this.initializeSdk();
+      console.log("[EKYC] Hoàn thành: Khởi tạo SDK.");
 
       this.isInitialized = true;
+      console.log("--- [EKYC] Quá trình initialize hoàn tất thành công ---");
     } catch (error) {
-      console.error("Failed to initialize eKYC SDK:", error);
+      console.error("--- [EKYC] LỖI trong quá trình initialize ---", error);
       throw error;
     }
   }
 
   private async initializeSdk(): Promise<void> {
-    if (!window.ekycsdk) {
+    if (!window.SDK) {
       throw new Error("eKYC SDK not available on window object");
     }
 
@@ -115,7 +127,7 @@ export class EkycSdkManager {
     const resultHandler = this.eventManager.getResultHandler();
     const finishHandler = this.eventManager.getFinishHandler();
 
-    window.ekycsdk.init(this.config, resultHandler, finishHandler);
+    window.SDK.launch(this.config);
   }
 
   updateConfig(newConfig: Partial<EkycSdkConfig>): void {

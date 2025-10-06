@@ -211,18 +211,19 @@ export function StatsSection({
               description={stat.description}
               trend={stat.trend}
               variant={
-                variant === "cards"
-                  ? "card"
-                  : variant === "minimal"
-                    ? "minimal"
-                    : "default"
+                stat.highlight
+                  ? "highlight"
+                  : variant === "cards"
+                    ? "card"
+                    : variant === "minimal"
+                      ? "minimal"
+                      : "default"
               }
               size={sizes.statSize}
               animateOnView={animateOnView}
               suffix={stat.suffix}
               prefix={stat.prefix}
               color={stat.color}
-              highlight={stat.highlight}
             />
           </div>
         ))}

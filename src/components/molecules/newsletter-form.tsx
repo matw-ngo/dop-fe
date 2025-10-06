@@ -354,7 +354,7 @@ export function NewsletterForm({
           <Checkbox
             id="privacy-consent"
             checked={privacyConsent}
-            onCheckedChange={setPrivacyConsent}
+            onCheckedChange={(checked) => setPrivacyConsent(checked === true)}
             className="mt-0.5"
           />
           <Label

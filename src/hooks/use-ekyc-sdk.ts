@@ -57,6 +57,10 @@ export const useEkycSdk = (options: UseEkycSdkOptions): UseEkycSdkReturn => {
   useEffect(() => {
     const initializeSDK = async () => {
       try {
+        console.log(
+          "[useEkycSdk] Bắt đầu khởi tạo. Options nhận được:",
+          options,
+        );
         start(); // Set store status to running
 
         sdkManagerRef.current = new EkycSdkManager({
@@ -65,12 +69,18 @@ export const useEkycSdk = (options: UseEkycSdkOptions): UseEkycSdkReturn => {
         });
 
         if (autoStart) {
-          console.log("Initialize eKYC with ", JSON.stringify(managerOptions));
+          console.log(
+            "[useEkycSdk] Tự động bắt đầu: Gọi sdkManager.initialize với options:",
+            managerOptions,
+          );
           await sdkManagerRef.current.initialize(managerOptions);
         }
       } catch (error) {
-        console.error("Failed to initialize eKYC SDK:", error);
-        console.log("Initialize eKYC with ", JSON.stringify(managerOptions));
+        console.error("[useEkycSdk] Lỗi khi khởi tạo eKYC SDK:", error);
+        console.log(
+          "[useEkycSdk] Options khi xảy ra lỗi:",
+          JSON.stringify(managerOptions),
+        );
         setError(
           error instanceof Error ? error.message : "Failed to initialize SDK",
         );
@@ -78,10 +88,14 @@ export const useEkycSdk = (options: UseEkycSdkOptions): UseEkycSdkReturn => {
     };
 
     if (typeof window !== "undefined") {
+      console.log(
+        "[useEkycSdk] Môi trường window đã sẵn sàng, gọi initializeSDK.",
+      );
       initializeSDK();
     }
 
     return () => {
+      console.log("[useEkycSdk] Cleanup: Dọn dẹp EkycSdkManager.");
       sdkManagerRef.current?.cleanup();
     };
   }, [managerOptions.authToken, managerOptions.containerId]); // Only re-initialize if critical options change

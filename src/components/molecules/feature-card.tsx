@@ -135,7 +135,7 @@ export function FeatureCard({
 
     if (variant === "icon-only" && icon) {
       if (React.isValidElement(icon)) {
-        return React.cloneElement(icon as React.ReactElement, {
+        return React.cloneElement(icon as React.ReactElement<any>, {
           className: cn(sizes.icon, "text-primary"),
         });
       }
@@ -192,7 +192,7 @@ export function FeatureCard({
     if (!icon || variant === "icon-only") return null;
 
     if (React.isValidElement(icon)) {
-      return React.cloneElement(icon as React.ReactElement, {
+      return React.cloneElement(icon as React.ReactElement<any>, {
         className: cn(sizes.icon, "text-primary mb-3"),
       });
     }

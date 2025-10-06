@@ -380,6 +380,8 @@ export function Header({
   const renderActions = () => {
     if (!actions) return null;
 
+    const buttonSize = size === "md" ? "default" : size;
+
     return (
       <div className="flex items-center space-x-3">
         {showLanguageSwitch && renderLanguageSwitch()}
@@ -387,7 +389,7 @@ export function Header({
         {actions.login && (
           <Button
             variant={actions.login.variant || "ghost"}
-            size={size}
+            size={buttonSize}
             className={cn("hidden sm:flex", styles.button)}
             asChild
           >
@@ -401,7 +403,7 @@ export function Header({
         {actions.cta && (
           <Button
             variant={actions.cta.variant || "default"}
-            size={size}
+            size={buttonSize}
             className={styles.button}
             asChild
           >

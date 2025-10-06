@@ -21,8 +21,9 @@ type Story = StoryObj<typeof InputOTP>;
 
 export const Default: Story = {
   name: "Default (6 slots)",
-  render: (args) => (
-    <InputOTP {...args} maxLength={6}>
+  args: {
+    maxLength: 6,
+    children: (
       <InputOTPGroup>
         <InputOTPSlot index={0} />
         <InputOTPSlot index={1} />
@@ -31,33 +32,38 @@ export const Default: Story = {
         <InputOTPSlot index={4} />
         <InputOTPSlot index={5} />
       </InputOTPGroup>
-    </InputOTP>
-  ),
+    ),
+  },
 };
 
 export const WithSeparator: Story = {
   name: "With Separator",
-  render: (args) => (
-    <InputOTP {...args} maxLength={6}>
-      <InputOTPGroup>
-        <InputOTPSlot index={0} />
-        <InputOTPSlot index={1} />
-        <InputOTPSlot index={2} />
-      </InputOTPGroup>
-      <InputOTPSeparator />
-      <InputOTPGroup>
-        <InputOTPSlot index={3} />
-        <InputOTPSlot index={4} />
-        <InputOTPSlot index={5} />
-      </InputOTPGroup>
-    </InputOTP>
-  ),
+  args: {
+    maxLength: 6,
+    children: (
+      <>
+        <InputOTPGroup>
+          <InputOTPSlot index={0} />
+          <InputOTPSlot index={1} />
+          <InputOTPSlot index={2} />
+        </InputOTPGroup>
+        <InputOTPSeparator />
+        <InputOTPGroup>
+          <InputOTPSlot index={3} />
+          <InputOTPSlot index={4} />
+          <InputOTPSlot index={5} />
+        </InputOTPGroup>
+      </>
+    ),
+  },
 };
 
 export const Disabled: Story = {
   name: "Disabled",
-  render: (args) => (
-    <InputOTP {...args} maxLength={6} disabled>
+  args: {
+    maxLength: 6,
+    disabled: true,
+    children: (
       <InputOTPGroup>
         <InputOTPSlot index={0} />
         <InputOTPSlot index={1} />
@@ -66,11 +72,11 @@ export const Disabled: Story = {
         <InputOTPSlot index={4} />
         <InputOTPSlot index={5} />
       </InputOTPGroup>
-    </InputOTP>
-  ),
+    ),
+  },
 };
 
-const StatefulOTPS: Story = () => {
+const StatefulOTP = () => {
   const [value, setValue] = React.useState("");
 
   return (
@@ -102,5 +108,5 @@ const StatefulOTPS: Story = () => {
 
 export const Stateful: Story = {
   name: "Stateful Example",
-  render: () => <StatefulOTPS tory />,
+  render: () => <StatefulOTP />,
 };

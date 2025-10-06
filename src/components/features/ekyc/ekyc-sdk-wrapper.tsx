@@ -2,6 +2,7 @@
 
 import React from "react";
 import { useEkycSdk } from "@/hooks/use-ekyc-sdk";
+import { SdkAssets } from "@/lib/ekyc/sdk-loader";
 
 // TODO: Replace this with a call to your Go backend to fetch the token dynamically.
 // This token should not be hardcoded in the frontend in a production environment.
@@ -14,6 +15,7 @@ interface EkycSdkWrapperProps {
   language?: "vi" | "en";
   style?: React.CSSProperties;
   className?: string;
+  assets?: SdkAssets;
   credentialsSource?:
     | "env"
     | "api"
@@ -25,22 +27,27 @@ interface EkycSdkWrapperProps {
       };
 }
 
-const EkycSdkWrapper: React.FC<EkycSdkWrapperProps> = ({
-  containerId = "ekyc_sdk_intergrated",
-  authToken = process.env.NEXT_PUBLIC_EKYC_AUTH_TOKEN || AUTHORIZATION_TOKEN,
-  flowType = "FACE",
-  language = "vi",
-  style = {
-    width: "100%",
-    height: "100vh",
-  },
-  className,
-  credentialsSource = "env",
-}) => {
+const EkycSdkWrapper: React.FC<EkycSdkWrapperProps> = (props) => {
+  console.log("[EkycSdkWrapper] Props received:", props);
+  const {
+    containerId = "ekyc_sdk_intergrated",
+    authToken = process.env.NEXT_PUBLIC_EKYC_AUTH_TOKEN || AUTHORIZATION_TOKEN,
+    flowType = "FACE",
+    language = "vi",
+    style = {
+      width: "100%",
+      height: "100vh",
+    },
+    className,
+    assets,
+    credentialsSource = "env",
+  } = props;
+
   const { isLoading, error, restart, setFlowType, setLanguage } = useEkycSdk({
     authToken,
     containerId,
     credentialsSource,
+    assets,
     config: {
       FLOW_TYPE: flowType,
       LANGUAGE: language,
