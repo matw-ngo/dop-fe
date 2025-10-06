@@ -2,7 +2,7 @@
 
 import { Download, Monitor, Moon, Palette, Settings, Sun } from "lucide-react";
 import { useTheme as useNextTheme } from "next-themes";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -33,6 +33,7 @@ import {
 } from "@/components/ui/select";
 import { useTheme } from "@/lib/theme/context";
 import { themes, userGroups } from "@/lib/theme/themes";
+import type { ThemeMode } from "@/lib/theme/types";
 import { exportThemeAsCSS } from "@/lib/theme/utils";
 import { ThemeCustomizer } from "./theme-customizer";
 
@@ -49,6 +50,15 @@ export function ThemeSelector() {
   } = useTheme();
 
   const [showCustomizer, setShowCustomizer] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return null;
+  }
 
   const handleModeChange = (mode: string) => {
     setNextTheme(mode);

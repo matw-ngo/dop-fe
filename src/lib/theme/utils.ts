@@ -29,23 +29,15 @@ export function generateCSSVariables(
  */
 export function applyTheme(
   theme: ThemeConfig,
-  mode: ThemeMode = "system",
+  mode: "light" | "dark",
   customizations?: Partial<ThemeColors>,
 ): void {
   if (typeof document === "undefined") return;
 
   const root = document.documentElement;
 
-  // Determine actual mode (resolve 'system')
-  const actualMode =
-    mode === "system"
-      ? window.matchMedia("(prefers-color-scheme: dark)").matches
-        ? "dark"
-        : "light"
-      : mode;
-
   // Get base colors for the mode
-  const baseColors = theme.colors[actualMode];
+  const baseColors = theme.colors[mode];
 
   // Merge with customizations if provided
   const finalColors = customizations

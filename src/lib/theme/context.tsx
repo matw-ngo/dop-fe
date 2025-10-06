@@ -1,23 +1,24 @@
 "use client";
 
-import { ThemeProvider as NextThemesProvider } from "next-themes";
-import type { ThemeProviderProps } from "next-themes/dist/types";
+import {
+  ThemeProvider as NextThemesProvider,
+  ThemeProviderProps,
+  useTheme as useNextTheme,
+} from "next-themes";
 import type React from "react";
 import { createContext, useContext, useEffect, useState } from "react";
 import { themes, userGroups } from "./themes";
-import type { ThemeColors, ThemeMode, ThemeState } from "./types";
+import type { ThemeColors, ThemeState } from "./types";
 import { applyTheme } from "./utils";
 
 interface ThemeContextType {
   // Current state
   currentTheme: string;
-  mode: ThemeMode;
   userGroup: string;
   customizations?: Partial<ThemeColors>;
 
   // Actions
   setTheme: (themeId: string) => void;
-  setMode: (mode: ThemeMode) => void;
   setUserGroup: (groupId: string) => void;
   setCustomizations: (colors: Partial<ThemeColors>) => void;
   resetCustomizations: () => void;
@@ -38,6 +39,25 @@ export function useTheme() {
   return context;
 }
 
+// This component acts as a bridge between next-themes and our custom theme system.
+function ThemeSync() {
+  const { resolvedTheme } = useNextTheme();
+  const { currentTheme, customizations } = useTheme();
+
+  useEffect(() => {
+    const themeConfig = themes[currentTheme];
+    if (themeConfig && resolvedTheme) {
+      applyTheme(
+        themeConfig,
+        resolvedTheme as "light" | "dark",
+        customizations,
+      );
+    }
+  }, [currentTheme, resolvedTheme, customizations]);
+
+  return null;
+}
+
 interface CustomThemeProviderProps
   extends Omit<ThemeProviderProps, "children"> {
   children: React.ReactNode;
@@ -52,20 +72,18 @@ export function ThemeProvider({
   ...props
 }: CustomThemeProviderProps) {
   const [state, setState] = useState<ThemeState>(() => {
-    // Initialize with default values
     const defaultState: ThemeState = {
       currentTheme: userGroups[defaultUserGroup]?.defaultTheme || "default",
-      mode: "system",
       userGroup: defaultUserGroup,
     };
 
-    // Try to load from localStorage on client side
     if (typeof window !== "undefined") {
       try {
         const stored = localStorage.getItem(storageKey);
         if (stored) {
-          const parsed = JSON.parse(stored);
-          return { ...defaultState, ...parsed };
+          // We ignore the 'mode' property from old stored configs
+          const { mode, ...rest } = JSON.parse(stored);
+          return { ...defaultState, ...rest };
         }
       } catch (error) {
         console.warn("Failed to load theme config from localStorage:", error);
@@ -75,7 +93,6 @@ export function ThemeProvider({
     return defaultState;
   });
 
-  // Save to localStorage whenever state changes
   useEffect(() => {
     if (typeof window !== "undefined") {
       try {
@@ -86,22 +103,10 @@ export function ThemeProvider({
     }
   }, [state, storageKey]);
 
-  // Apply theme whenever it changes
-  useEffect(() => {
-    const theme = themes[state.currentTheme];
-    if (theme) {
-      applyTheme(theme, state.mode, state.customizations);
-    }
-  }, [state.currentTheme, state.mode, state.customizations]);
-
   const setTheme = (themeId: string) => {
     if (themes[themeId]) {
       setState((prev) => ({ ...prev, currentTheme: themeId }));
     }
-  };
-
-  const setMode = (mode: ThemeMode) => {
-    setState((prev) => ({ ...prev, mode }));
   };
 
   const setUserGroup = (groupId: string) => {
@@ -111,7 +116,7 @@ export function ThemeProvider({
         ...prev,
         userGroup: groupId,
         currentTheme: group.defaultTheme,
-        customizations: undefined, // Reset customizations when changing groups
+        customizations: undefined,
       }));
     }
   };
@@ -130,7 +135,6 @@ export function ThemeProvider({
     setState((prev) => ({ ...prev, customizations: undefined }));
   };
 
-  // Computed values
   const currentGroup = userGroups[state.userGroup];
   const availableThemes = currentGroup?.availableThemes || ["default"];
   const canCustomize = currentGroup?.customizations?.allowCustomColors || false;
@@ -138,11 +142,9 @@ export function ThemeProvider({
 
   const contextValue: ThemeContextType = {
     currentTheme: state.currentTheme,
-    mode: state.mode,
     userGroup: state.userGroup,
     customizations: state.customizations,
     setTheme,
-    setMode,
     setUserGroup,
     setCustomizations,
     resetCustomizations,
@@ -160,6 +162,7 @@ export function ThemeProvider({
       disableTransitionOnChange
     >
       <ThemeContext.Provider value={contextValue}>
+        <ThemeSync />
         {children}
       </ThemeContext.Provider>
     </NextThemesProvider>

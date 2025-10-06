@@ -1,22 +1,11 @@
-"use client"; // Cần client component để dùng hook
+"use client";
 
-import { useTranslations } from "next-intl";
-import { ExampleForm } from "@/components/features/example-form";
-import { Button } from "@/components/ui/button";
+import EkycExample from "@/components/features/ekyc/ekyc-example";
 
 export default function HomePage() {
-  const t = useTranslations("HomePage");
-
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-24">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">{t("title")}</h1>
-        <p className="text-lg text-muted-foreground mb-8">{t("welcome")}</p>
-        <Button size="lg">{t("ctaButton")}</Button>
-      </div>
-      <div className="mt-12">
-        <ExampleForm />
-      </div>
+    <main className="p-4">
+      <EkycExample />
     </main>
   );
 }

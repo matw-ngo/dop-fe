@@ -80,7 +80,6 @@ export type ThemeMode = "light" | "dark" | "system";
 
 export interface ThemeState {
   currentTheme: string;
-  mode: ThemeMode;
   userGroup: string;
   customizations?: Partial<ThemeColors>;
 }

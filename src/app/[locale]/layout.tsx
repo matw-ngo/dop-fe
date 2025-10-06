@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Script from "next/script";
 import { NextIntlClientProvider } from "next-intl";
 
 // @ts-expect-error
@@ -39,7 +40,7 @@ export default async function LocaleLayout({
   const messages = (await import(`../../../messages/${locale}.json`)).default;
 
   return (
-    <html lang={locale}>
+    <html lang={locale} suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
@@ -54,6 +55,19 @@ export default async function LocaleLayout({
             </div>
           </Providers>
         </NextIntlClientProvider>
+        <Script
+          src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.4/lottie.min.js"
+          strategy="beforeInteractive"
+        />
+        <Script
+          id="oval_custom"
+          src="https://ekyc-web.icenter.ai/lib/VNPTBrowserSDKApp.js"
+          strategy="beforeInteractive"
+        />
+        <Script
+          src="https://ekyc-web.icenter.ai/lib/jsQR.js"
+          strategy="beforeInteractive"
+        />
       </body>
     </html>
   );
