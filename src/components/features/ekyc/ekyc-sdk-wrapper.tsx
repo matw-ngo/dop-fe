@@ -27,7 +27,7 @@ interface EkycSdkWrapperProps {
 
 const EkycSdkWrapper: React.FC<EkycSdkWrapperProps> = ({
   containerId = "ekyc_sdk_intergrated",
-  authToken = AUTHORIZATION_TOKEN,
+  authToken = process.env.NEXT_PUBLIC_EKYC_AUTH_TOKEN || AUTHORIZATION_TOKEN,
   flowType = "FACE",
   language = "vi",
   style = {

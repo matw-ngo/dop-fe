@@ -2,7 +2,7 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap");
 body {
-  background-color: #122f41;
+  /* background-color: #122f41; */
   /* background: #fff; */
   margin: 0;
 }
@@ -1036,7 +1036,7 @@ body {
 }
 
 #ekyc_sdk_intergrated .upload-btn-wrapper .btn-active {
-  background-color: #122f41;
+  /* background-color: #122f41; */
   width: 150px;
   padding: 10px 0;
   border: 2px solid #18d696;

@@ -65,10 +65,12 @@ export const useEkycSdk = (options: UseEkycSdkOptions): UseEkycSdkReturn => {
         });
 
         if (autoStart) {
+          console.log("Initialize eKYC with ", JSON.stringify(managerOptions));
           await sdkManagerRef.current.initialize(managerOptions);
         }
       } catch (error) {
         console.error("Failed to initialize eKYC SDK:", error);
+        console.log("Initialize eKYC with ", JSON.stringify(managerOptions));
         setError(
           error instanceof Error ? error.message : "Failed to initialize SDK",
         );
