@@ -3,5 +3,109 @@
     "title": "Digital Lending Platform",
     "welcome": "Welcome to the project!",
     "ctaButton": "Get Started"
+  },
+  "form": {
+    "field": {
+      "default": {
+        "label": "Field",
+        "placeholder": "Enter value..."
+      },
+      "textarea": {
+        "label": "Text Area",
+        "placeholder": "Enter text..."
+      },
+      "checkbox": {
+        "label": "Checkbox"
+      },
+      "switch": {
+        "label": "Switch"
+      },
+      "slider": {
+        "label": "Slider"
+      },
+      "select": {
+        "label": "Select",
+        "placeholder": "Choose an option..."
+      },
+      "radiogroup": {
+        "label": "Radio Group"
+      },
+      "datepicker": {
+        "label": "Date Picker",
+        "placeholder": "Select a date..."
+      },
+      "daterangepicker": {
+        "label": "Date Range Picker",
+        "placeholder": "Select date range..."
+      },
+      "togglegroup": {
+        "label": "Toggle Group"
+      },
+      "inputotp": {
+        "label": "Verification Code"
+      },
+      "email": {
+        "label": "Email Address",
+        "placeholder": "Enter your email"
+      },
+      "fullName": {
+        "label": "Full Name",
+        "placeholder": "Enter your full name",
+        "description": "This information will be used to verify your account."
+      },
+      "password": {
+        "label": "Password",
+        "placeholder": "Enter a secure password"
+      }
+    },
+    "button": {
+      "default": {
+        "label": "Button"
+      },
+      "submit": "Submit",
+      "next": "Next",
+      "previous": "Previous",
+      "cancel": "Cancel",
+      "save": "Save",
+      "reset": "Reset"
+    },
+    "label": {
+      "default": {
+        "text": "Label"
+      }
+    },
+    "progress": {
+      "default": {
+        "label": "Progress"
+      }
+    },
+    "error": {
+      "required": "This field is required",
+      "minLength": "Must be at least {value} characters",
+      "maxLength": "Must be at most {value} characters",
+      "min": "Must be at least {value}",
+      "max": "Must be at most {value}",
+      "email": {
+        "invalid": "Please enter a valid email address"
+      },
+      "url": {
+        "invalid": "Please enter a valid URL"
+      },
+      "password": {
+        "minLength": "Password must be at least {value} characters",
+        "regex": "Password must contain uppercase, lowercase, and numbers"
+      },
+      "number": "Must be a valid number",
+      "integer": "Must be a whole number",
+      "positive": "Must be a positive number",
+      "negative": "Must be a negative number"
+    }
+  },
+  "common": {
+    "defaultLabel": "Field",
+    "defaultPlaceholder": "Enter here...",
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "success": "Success!"
   }
 }
