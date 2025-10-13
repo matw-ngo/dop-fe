@@ -59,10 +59,10 @@ export const useEkycSdk = (options: UseEkycSdkOptions): UseEkycSdkReturn => {
   useEffect(() => {
     const initializeSDK = async () => {
       try {
-        console.log(
-          "[useEkycSdk] Bắt đầu khởi tạo. Options nhận được:",
-          options,
-        );
+        // console.log(
+        //   "[useEkycSdk] Bắt đầu khởi tạo. Options nhận được:",
+        //   options,
+        // );
         start(); // Set store status to running
 
         sdkManagerRef.current = new EkycSdkManager({
@@ -71,10 +71,10 @@ export const useEkycSdk = (options: UseEkycSdkOptions): UseEkycSdkReturn => {
         });
 
         if (autoStart) {
-          console.log(
-            "[useEkycSdk] Tự động bắt đầu: Gọi sdkManager.initialize với options:",
-            managerOptions,
-          );
+          // console.log(
+          //   "[useEkycSdk] Tự động bắt đầu: Gọi sdkManager.initialize với options:",
+          //   managerOptions,
+          // );
           await sdkManagerRef.current.initialize(managerOptions);
         }
       } catch (error) {

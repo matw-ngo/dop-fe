@@ -22,40 +22,40 @@ export class EkycSdkLoader {
   }
 
   async loadSdk(assets?: SdkAssets): Promise<void> {
-    console.log("[EKYC Loader] Nhận được yêu cầu tải SDK với assets:", assets);
+    // console.log("[EKYC Loader] Nhận được yêu cầu tải SDK với assets:", assets);
     const effectiveAssets = assets || {
       cssPath: "/ekyc/web-sdk-2.1.4.6.css",
       jsPath: "/ekyc/web-sdk-version-3.2.0.0.js",
     };
-    console.log("[EKYC Loader] Assets sẽ được sử dụng:", effectiveAssets);
+    // console.log("[EKYC Loader] Assets sẽ được sử dụng:", effectiveAssets);
 
     if (this.isLoaded) {
-      console.log("[EKYC Loader] SDK đã được tải trước đó. Bỏ qua.");
+      // console.log("[EKYC Loader] SDK đã được tải trước đó. Bỏ qua.");
       return Promise.resolve();
     }
 
     if (this.loadPromise) {
-      console.log(
-        "[EKYC Loader] SDK đang trong quá trình tải. Chờ hoàn thành...",
-      );
+      // console.log(
+      //   "[EKYC Loader] SDK đang trong quá trình tải. Chờ hoàn thành...",
+      // );
       return this.loadPromise;
     }
 
-    console.log("[EKYC Loader] Bắt đầu quá trình tải mới.");
+    // console.log("[EKYC Loader] Bắt đầu quá trình tải mới.");
     this.loadPromise = this._performLoad(effectiveAssets);
     return this.loadPromise;
   }
 
   private async _performLoad(assets: SdkAssets): Promise<void> {
     return new Promise((resolve, reject) => {
-      console.log(`[EKYC Loader] Bắt đầu tải CSS từ: ${assets.cssPath}`);
+      // console.log(`[EKYC Loader] Bắt đầu tải CSS từ: ${assets.cssPath}`);
       // Load CSS
       const styles = document.createElement("link");
       styles.id = "vnpt_ekyc_styles";
       styles.rel = "stylesheet";
       styles.href = assets.cssPath;
       styles.onload = () => {
-        console.log("[EKYC Loader] Tải CSS thành công.");
+        // console.log("[EKYC Loader] Tải CSS thành công.");
       };
       styles.onerror = () => {
         console.error(`[EKYC Loader] Lỗi khi tải CSS từ: ${assets.cssPath}`);
@@ -63,7 +63,7 @@ export class EkycSdkLoader {
       };
       document.head.appendChild(styles);
 
-      console.log(`[EKYC Loader] Bắt đầu tải JS SDK từ: ${assets.jsPath}`);
+      // console.log(`[EKYC Loader] Bắt đầu tải JS SDK từ: ${assets.jsPath}`);
       // Load JS
       const sdkScript = document.createElement("script");
       sdkScript.id = "vnpt_ekyc_sdk";
@@ -71,7 +71,7 @@ export class EkycSdkLoader {
       sdkScript.async = true;
 
       sdkScript.onload = async () => {
-        console.log("[EKYC Loader] Tải file JS SDK thành công.");
+        // console.log("[EKYC Loader] Tải file JS SDK thành công.");
         try {
           if (!window.FaceVNPTBrowserSDK || !window.SDK) {
             const errorMessage =
@@ -81,11 +81,11 @@ export class EkycSdkLoader {
             return;
           }
 
-          console.log(
-            "[EKYC Loader] Bắt đầu khởi tạo FaceVNPTBrowserSDK (window.FaceVNPTBrowserSDK.init)...",
-          );
+          // console.log(
+          //   "[EKYC Loader] Bắt đầu khởi tạo FaceVNPTBrowserSDK (window.FaceVNPTBrowserSDK.init)...",
+          // );
           await window.FaceVNPTBrowserSDK.init();
-          console.log("[EKYC Loader] Khởi tạo FaceVNPTBrowserSDK thành công.");
+          // console.log("[EKYC Loader] Khởi tạo FaceVNPTBrowserSDK thành công.");
 
           this.isLoaded = true;
           resolve();

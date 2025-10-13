@@ -77,10 +77,10 @@ export class EkycSdkManager {
         credentialsSource,
       );
       await this.configManager.initialize(credentialsSource);
-      console.log("[EKYC] Hoàn thành: Khởi tạo Config Manager.");
+      // console.log("[EKYC] Hoàn thành: Khởi tạo Config Manager.");
 
       // Create configuration using credentials from config manager
-      console.log("[EKYC] Bước 2: Tạo cấu hình SDK...");
+      // console.log("[EKYC] Bước 2: Tạo cấu hình SDK...");
       const credentials = this.configManager.getCredentials();
 
       const callbackFn = this.eventManager.getResultHandler();
@@ -99,20 +99,20 @@ export class EkycSdkManager {
         ...options.config,
         CALL_BACK: callbackFn,
       };
-      console.log(
-        "[EKYC] Hoàn thành: Tạo cấu hình SDK. Cấu hình:",
-        this.config,
-      );
+      // console.log(
+      //   "[EKYC] Hoàn thành: Tạo cấu hình SDK. Cấu hình:",
+      //   this.config,
+      // );
 
       // Load SDK assets
-      console.log("[EKYC] Bước 3: Tải assets của SDK. Assets:", options.assets);
+      // console.log("[EKYC] Bước 3: Tải assets của SDK. Assets:", options.assets);
       await this.loader.loadSdk(options.assets);
-      console.log("[EKYC] Hoàn thành: Tải assets của SDK.");
+      // console.log("[EKYC] Hoàn thành: Tải assets của SDK.");
 
       // Initialize SDK with configuration
-      console.log("[EKYC] Bước 4: Khởi tạo SDK với cấu hình (SDK.launch).");
+      // console.log("[EKYC] Bước 4: Khởi tạo SDK với cấu hình (SDK.launch).");
       await this.initializeSdk();
-      console.log("[EKYC] Hoàn thành: Khởi tạo SDK.");
+      // console.log("[EKYC] Hoàn thành: Khởi tạo SDK.");
 
       this.isInitialized = true;
       console.log("--- [EKYC] Quá trình initialize hoàn tất thành công ---");
@@ -130,8 +130,8 @@ export class EkycSdkManager {
     // Store config reference for event handlers
     (this.eventManager as any).getCurrentConfig = () => this.config;
 
-    console.log("[EKYC] Cấu hình truyền vào SDK.launch:", this.config);
-    console.log("[EKYC] CALL_BACK function:", typeof this.config.CALL_BACK);
+    // console.log("[EKYC] Cấu hình truyền vào SDK.launch:", this.config);
+    // console.log("[EKYC] CALL_BACK function:", typeof this.config.CALL_BACK);
 
     if (!this.config.CALL_BACK) {
       throw new Error(

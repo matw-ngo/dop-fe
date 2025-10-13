@@ -29,18 +29,25 @@ export class EkycEventManager {
 
   getResultHandler() {
     return (result: EkycResult) => {
-      console.log("eKYC Result:", result);
+      console.log("========================================");
+      console.log("[EKYC CALLBACK] Nhận được kết quả từ SDK!");
+      console.log("[EKYC CALLBACK] Result:", result);
+      console.log("========================================");
 
       if (result && result.code === 0) {
+        console.log("[EKYC CALLBACK] Code = 0, gọi onSuccess");
         this.handlers.onSuccess?.(result.data);
         if (window.SDK && result.type_document !== undefined) {
+          console.log("[EKYC CALLBACK] Gọi SDK.viewResult");
           window.SDK.viewResult(result.type_document, result);
         }
       } else {
+        console.log("[EKYC CALLBACK] Code != 0, có lỗi:", result.message);
         const errorMessage = result.message || "An unknown error occurred.";
         this.handlers.onError?.(errorMessage);
       }
 
+      console.log("[EKYC CALLBACK] Gọi onResult handler");
       this.handlers.onResult?.(result);
     };
   }
