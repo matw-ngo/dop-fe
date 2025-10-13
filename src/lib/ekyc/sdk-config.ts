@@ -52,9 +52,9 @@ export interface EkycSdkConfig {
     BACKGROUND_COLOR?: string;
   };
 
-  // Callbacks (required)
-  CALL_BACK: (result: any) => void;
+  // Callbacks
   CALL_BACK_DOCUMENT_RESULT?: (result: any) => void | Promise<void>;
+  CALL_BACK_END_FLOW?: (result: any) => void | Promise<void>; // Called when flow ends (replaces CALL_BACK)
 
   // Styling (optional)
   LIST_CHOOSE_STYLE?: ListChooseStyle;
@@ -177,8 +177,31 @@ export class EkycConfigBuilder {
       // Image settings
       MAX_SIZE_IMAGE: 1, // MB
 
-      // Callback (required)
-      CALL_BACK: callbackFn || defaultCallback,
+      // Document callback (field 21 in docs) - for intermediate results
+      CALL_BACK_DOCUMENT_RESULT: async (result: any) => {
+        console.log("📤".repeat(50));
+        console.log("📄 [DOCUMENT CALLBACK] Nhận kết quả document step!");
+        console.log("📤".repeat(50));
+        console.log("[DOCUMENT CALLBACK] Result:", result);
+        console.log("📤".repeat(50));
+      },
+
+      // End flow callback - called when user finishes or cancels (MAIN CALLBACK)
+      CALL_BACK_END_FLOW: async (result: any) => {
+        console.log("🏁".repeat(50));
+        console.log(
+          "🔚 [END FLOW CALLBACK] Flow kết thúc - Đây là callback chính!",
+        );
+        console.log("🏁".repeat(50));
+        console.log("[END FLOW CALLBACK] Result:", result);
+        console.log("[END FLOW CALLBACK] Type:", typeof result);
+        console.log("🏁".repeat(50));
+
+        // Forward to user callback if provided
+        if (callbackFn) {
+          callbackFn(result);
+        }
+      },
     };
   }
 
@@ -200,7 +223,15 @@ export class EkycConfigBuilder {
   }
 
   setCallback(callback: (result: any) => void): EkycConfigBuilder {
-    this.config.CALL_BACK = callback;
+    // Update END_FLOW callback to use the provided callback
+    this.config.CALL_BACK_END_FLOW = async (result: any) => {
+      console.log("🏁".repeat(50));
+      console.log("🔚 [END FLOW CALLBACK] Flow kết thúc!");
+      console.log("🏁".repeat(50));
+      console.log("[END FLOW CALLBACK] Result:", result);
+      console.log("🏁".repeat(50));
+      callback(result);
+    };
     return this;
   }
 

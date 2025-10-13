@@ -28,11 +28,15 @@ export class EkycEventManager {
   }
 
   getResultHandler() {
-    return (result: EkycResult) => {
-      console.log("========================================");
-      console.log("[EKYC CALLBACK] Nhận được kết quả từ SDK!");
+    const handler = (result: EkycResult) => {
+      console.log("\n".repeat(3));
+      console.log("⚡".repeat(50));
+      console.log("📣 [EKYC CALLBACK] ĐƯỢC GỌI TỪ SDK!");
+      console.log("⚡".repeat(50));
       console.log("[EKYC CALLBACK] Result:", result);
-      console.log("========================================");
+      console.log("[EKYC CALLBACK] Result type:", typeof result);
+      console.log("[EKYC CALLBACK] Result code:", result?.code);
+      console.log("⚡".repeat(50));
 
       if (result && result.code === 0) {
         console.log("[EKYC CALLBACK] Code = 0, gọi onSuccess");
@@ -49,7 +53,23 @@ export class EkycEventManager {
 
       console.log("[EKYC CALLBACK] Gọi onResult handler");
       this.handlers.onResult?.(result);
+
+      console.log("⚡".repeat(50));
+      console.log("🔚 [EKYC CALLBACK] KẾt thúc xử lý callback");
+      console.log("⚡".repeat(50));
+      console.log("\n".repeat(3));
     };
+
+    console.log(
+      "🔧 [EKYC] Creating callback handler. Handler type:",
+      typeof handler,
+    );
+    console.log(
+      "🔧 [EKYC] Handler function:",
+      handler.toString().substring(0, 100),
+    );
+
+    return handler;
   }
 
   getFinishHandler() {

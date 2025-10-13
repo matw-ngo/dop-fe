@@ -94,7 +94,17 @@ export class EkycSdkManager {
         TOKEN_ID: credentials.TOKEN_ID,
         ACCESS_TOKEN: credentials.ACCESS_TOKEN,
         ...options.config,
-        CALL_BACK: callbackFn,
+        // Use END_FLOW callback as main callback
+        CALL_BACK_END_FLOW: async (result: any) => {
+          console.log("🏁".repeat(50));
+          console.log("🔚 [END FLOW CALLBACK] Flow kết thúc - Callback chính!");
+          console.log("🏁".repeat(50));
+          console.log("[END FLOW CALLBACK] Result:", result);
+          console.log("🏁".repeat(50));
+          if (callbackFn) {
+            callbackFn(result);
+          }
+        },
       };
       // console.log(
       //   "[EKYC] Hoàn thành: Tạo cấu hình SDK. Cấu hình:",
@@ -128,15 +138,34 @@ export class EkycSdkManager {
     (this.eventManager as any).getCurrentConfig = () => this.config;
 
     // console.log("[EKYC] Cấu hình truyền vào SDK.launch:", this.config);
-    // console.log("[EKYC] CALL_BACK function:", typeof this.config.CALL_BACK);
 
-    if (!this.config.CALL_BACK) {
-      throw new Error(
-        "CALL_BACK function is required but not found in config!",
-      );
+    // Verify callbacks are set
+    console.log(
+      "🔍 [EKYC] CALL_BACK_END_FLOW type:",
+      typeof this.config.CALL_BACK_END_FLOW,
+    );
+    console.log(
+      "🔍 [EKYC] CALL_BACK_DOCUMENT_RESULT type:",
+      typeof this.config.CALL_BACK_DOCUMENT_RESULT,
+    );
+
+    // Test END_FLOW callback manually
+    if (this.config.CALL_BACK_END_FLOW) {
+      console.log("🧪 [EKYC] Testing END_FLOW callback with mock data...");
+      try {
+        await this.config.CALL_BACK_END_FLOW({
+          code: -999,
+          message: "TEST END_FLOW CALLBACK",
+        });
+        console.log("✅ [EKYC] Test END_FLOW callback executed successfully!");
+      } catch (e) {
+        console.error("❌ [EKYC] Test END_FLOW callback failed:", e);
+      }
     }
 
+    console.log("🚀 [EKYC] Launching SDK with config...");
     window.SDK.launch(this.config);
+    console.log("✅ [EKYC] SDK.launch() completed");
   }
 
   updateConfig(newConfig: Partial<EkycSdkConfig>): void {

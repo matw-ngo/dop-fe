@@ -166,7 +166,7 @@ const EkycDemoPage: React.FC = () => {
           HAS_RESULT_SCREEN: true,
 
           // 6. CALL_BACK - Function nhận kết quả (BẮT BUỘC!)
-          CALL_BACK: getResult,
+          CALL_BACK_END_FLOW: getResult,
 
           // 7. ENABLE_API_LIVENESS_DOCUMENT - Check liveness card
           ENABLE_API_LIVENESS_DOCUMENT: true,
