@@ -283,7 +283,7 @@ open http://localhost:3000/user-onboarding
 - Check if storage key is unique
 
 ### eKYC not loading
-- Verify eKYC SDK files are in `/public/ekyc/`
+- Verify eKYC SDK files are in `/public/`
 - Check network tab for script loading errors
 - Ensure auth token is configured
 

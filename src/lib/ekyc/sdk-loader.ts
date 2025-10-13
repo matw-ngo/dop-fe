@@ -24,8 +24,8 @@ export class EkycSdkLoader {
   async loadSdk(assets?: SdkAssets): Promise<void> {
     // console.log("[EKYC Loader] Nhận được yêu cầu tải SDK với assets:", assets);
     const effectiveAssets = assets || {
-      cssPath: "/ekyc/web-sdk-2.1.4.6.css",
-      jsPath: "/ekyc/web-sdk-version-3.2.0.0.js",
+      cssPath: "/web-sdk-2.1.4.6.css",
+      jsPath: "/web-sdk-version-3.2.0.0.js",
     };
     // console.log("[EKYC Loader] Assets sẽ được sử dụng:", effectiveAssets);
 
@@ -73,7 +73,7 @@ export class EkycSdkLoader {
       sdkScript.onload = async () => {
         // console.log("[EKYC Loader] Tải file JS SDK thành công.");
         try {
-          if (!window.FaceVNPTBrowserSDK || !window.SDK) {
+          if (!window.SDK) {
             const errorMessage =
               "VNPT eKYC SDK không tìm thấy trên window object sau khi tải script.";
             console.error(`[EKYC Loader] Lỗi: ${errorMessage}`);
@@ -81,19 +81,10 @@ export class EkycSdkLoader {
             return;
           }
 
-          // console.log(
-          //   "[EKYC Loader] Bắt đầu khởi tạo FaceVNPTBrowserSDK (window.FaceVNPTBrowserSDK.init)...",
-          // );
-          await window.FaceVNPTBrowserSDK.init();
-          // console.log("[EKYC Loader] Khởi tạo FaceVNPTBrowserSDK thành công.");
-
           this.isLoaded = true;
           resolve();
         } catch (error) {
-          console.error(
-            "[EKYC Loader] Lỗi trong quá trình khởi tạo FaceVNPTBrowserSDK:",
-            error,
-          );
+          console.error("[EKYC Loader] Lỗi trong quá trình khởi tạo:", error);
           reject(error);
         }
       };

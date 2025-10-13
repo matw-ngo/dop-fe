@@ -13,6 +13,7 @@ interface EkycSdkWrapperProps {
   authToken?: string;
   flowType?: "DOCUMENT_TO_FACE" | "FACE_TO_DOCUMENT" | "FACE" | "DOCUMENT";
   language?: "vi" | "en";
+  useMethod?: "PHOTO" | "UPLOAD"; // BUG FIX: Không dùng "BOTH"
   style?: React.CSSProperties;
   className?: string;
   assets?: SdkAssets;
@@ -34,6 +35,7 @@ const EkycSdkWrapper: React.FC<EkycSdkWrapperProps> = (props) => {
     authToken = process.env.NEXT_PUBLIC_EKYC_AUTH_TOKEN || AUTHORIZATION_TOKEN,
     flowType = "FACE",
     language = "vi",
+    useMethod = "PHOTO", // Default to PHOTO
     style = {
       width: "100%",
       height: "100vh",
@@ -43,17 +45,19 @@ const EkycSdkWrapper: React.FC<EkycSdkWrapperProps> = (props) => {
     credentialsSource = "env",
   } = props;
 
-  const { isLoading, error, restart, setFlowType, setLanguage } = useEkycSdk({
-    authToken,
-    containerId,
-    credentialsSource,
-    assets,
-    config: {
-      SDK_FLOW: flowType,
-      DEFAULT_LANGUAGE: language,
-    },
-    autoStart: true,
-  });
+  const { isLoading, error, restart, setFlowType, setLanguage, updateConfig } =
+    useEkycSdk({
+      authToken,
+      containerId,
+      credentialsSource,
+      assets,
+      config: {
+        SDK_FLOW: flowType,
+        DEFAULT_LANGUAGE: language,
+        USE_METHOD: useMethod,
+      },
+      autoStart: true,
+    });
 
   // Update flow type when prop changes
   React.useEffect(() => {
@@ -64,6 +68,11 @@ const EkycSdkWrapper: React.FC<EkycSdkWrapperProps> = (props) => {
   React.useEffect(() => {
     setLanguage(language);
   }, [language, setLanguage]);
+
+  // Update use method when prop changes
+  React.useEffect(() => {
+    updateConfig({ USE_METHOD: useMethod });
+  }, [useMethod, updateConfig]);
 
   // Show loading state
   if (isLoading) {

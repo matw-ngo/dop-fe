@@ -5,28 +5,58 @@
 import { DocumentType } from "./types";
 
 export interface EkycSdkConfig {
+  // Required credentials
   BACKEND_URL: string;
   TOKEN_KEY: string;
   TOKEN_ID: string;
   ACCESS_TOKEN: string;
-  ENABLE_GGCAPCHAR?: boolean;
+
+  // Core flow settings
   SDK_FLOW?: "DOCUMENT_TO_FACE" | "FACE_TO_DOCUMENT" | "FACE" | "DOCUMENT";
-  HAS_RESULT_SCREEN?: boolean;
-  SHOW_HELP?: boolean;
-  SHOW_TRADEMARK?: boolean;
+  USE_METHOD?: "PHOTO" | "UPLOAD"; // BUG FIX: "BOTH" không hoạt động theo tài liệu
+  DEFAULT_LANGUAGE?: "vi" | "en";
+
+  // Document settings
+  LIST_TYPE_DOCUMENT?: number[];
+  DOCUMENT_TYPE_START?: DocumentType | number;
+
+  // API enablement flags
   ENABLE_API_LIVENESS_DOCUMENT?: boolean;
   ENABLE_API_LIVENESS_FACE?: boolean;
   ENABLE_API_MASKED_FACE?: boolean;
   ENABLE_API_COMPARE_FACE?: boolean;
-  DEFAULT_LANGUAGE?: "vi" | "en";
-  LIST_TYPE_DOCUMENT?: number[];
-  DOCUMENT_TYPE_START?: DocumentType | number;
-  USE_METHOD?: "BOTH" | "PHOTO" | "UPLOAD";
-  DOUBLE_LIVENESS?: boolean;
+  ENABLE_GGCAPCHAR?: boolean;
+
+  // UI settings
+  HAS_RESULT_SCREEN?: boolean;
+  SHOW_HELP?: boolean;
+  SHOW_TRADEMARK?: boolean;
   SHOW_STEP?: boolean;
   HAS_QR_SCAN?: boolean;
+  DOUBLE_LIVENESS?: boolean;
+
+  // Result screen tabs (theo tài liệu mục 29-31)
+  SHOW_TAB_RESULT_INFORMATION?: boolean;
+  SHOW_TAB_RESULT_VALIDATION?: boolean;
+  SHOW_TAB_RESULT_QRCODE?: boolean;
+
+  // Image settings (mục 36)
+  MAX_SIZE_IMAGE?: number; // MB
+
+  // Optional settings
+  CHALLENGE_CODE?: string;
+  FAKE_CAM_LABEL?: string;
+  CUSTOM_THEME?: {
+    PRIMARY_COLOR?: string;
+    TEXT_COLOR_DEFAULT?: string;
+    BACKGROUND_COLOR?: string;
+  };
+
+  // Callbacks (required)
   CALL_BACK: (result: any) => void;
   CALL_BACK_DOCUMENT_RESULT?: (result: any) => void | Promise<void>;
+
+  // Styling (optional)
   LIST_CHOOSE_STYLE?: ListChooseStyle;
   CAPTURE_IMAGE_STYLE?: CaptureImageStyle;
   RESULT_DEFAULT_STYLE?: ResultDefaultStyle;
@@ -108,26 +138,45 @@ export class EkycConfigBuilder {
     };
 
     this.config = {
+      // Required credentials
       BACKEND_URL: credentials?.BACKEND_URL || "https://api.idg.vnpt.vn",
       TOKEN_KEY: credentials?.TOKEN_KEY || "+==",
       TOKEN_ID: credentials?.TOKEN_ID || "b85b",
       ACCESS_TOKEN: authToken,
-      ENABLE_GGCAPCHAR: true,
+
+      // Core flow settings
       SDK_FLOW: "DOCUMENT_TO_FACE",
-      HAS_RESULT_SCREEN: true,
-      SHOW_HELP: true,
-      SHOW_TRADEMARK: false,
+      USE_METHOD: "PHOTO", // BUG FIX: Mặc định dùng "PHOTO", không dùng "BOTH" (không hoạt động)
+      DEFAULT_LANGUAGE: "vi",
+
+      // Document settings
+      LIST_TYPE_DOCUMENT: [-1, 5, 6, 7, 9],
+      DOCUMENT_TYPE_START: 999, // 999 để hiển thị danh sách chọn document
+
+      // API enablement flags
       ENABLE_API_LIVENESS_DOCUMENT: true,
       ENABLE_API_LIVENESS_FACE: true,
       ENABLE_API_MASKED_FACE: true,
       ENABLE_API_COMPARE_FACE: true,
-      DEFAULT_LANGUAGE: "vi",
-      LIST_TYPE_DOCUMENT: [-1, 5, 6, 7, 9],
-      DOCUMENT_TYPE_START: 999, // 999 để hiển thị danh sách chọn document
-      USE_METHOD: "BOTH",
-      DOUBLE_LIVENESS: false,
+      ENABLE_GGCAPCHAR: true,
+
+      // UI settings
+      HAS_RESULT_SCREEN: true,
+      SHOW_HELP: true,
+      SHOW_TRADEMARK: false,
       SHOW_STEP: true,
       HAS_QR_SCAN: false,
+      DOUBLE_LIVENESS: false,
+
+      // Result screen tabs (theo tài liệu)
+      SHOW_TAB_RESULT_INFORMATION: true,
+      SHOW_TAB_RESULT_VALIDATION: true,
+      SHOW_TAB_RESULT_QRCODE: true,
+
+      // Image settings
+      MAX_SIZE_IMAGE: 1, // MB
+
+      // Callback (required)
       CALL_BACK: callbackFn || defaultCallback,
     };
   }

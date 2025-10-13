@@ -10,9 +10,6 @@ import { EkycConfigManager } from "./config-manager";
 // Extend global window interface
 declare global {
   interface Window {
-    FaceVNPTBrowserSDK: {
-      init: () => Promise<void>;
-    };
     SDK: {
       viewResult: (typeDocument: any, result: any) => void;
       launch: (config: any) => void;

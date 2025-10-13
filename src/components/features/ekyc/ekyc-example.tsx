@@ -12,11 +12,12 @@ import { DocumentType } from "@/lib/ekyc/types";
 const EkycExample: React.FC = () => {
   const [flowType, setFlowType] = useState<
     "DOCUMENT_TO_FACE" | "FACE_TO_DOCUMENT" | "FACE" | "DOCUMENT"
-  >("DOCUMENT");
+  >("DOCUMENT_TO_FACE");
   const [language, setLanguage] = useState<"vi" | "en">("vi");
   const [documentType, setDocumentType] = useState<DocumentType>(
     DocumentType.CCCD,
   );
+  const [useMethod, setUseMethod] = useState<"PHOTO" | "UPLOAD">("PHOTO");
 
   const { status, result, error, reset } = useEkycStore();
 
@@ -83,6 +84,17 @@ const EkycExample: React.FC = () => {
             <option value={DocumentType.HoChieu}>Hộ chiếu</option>
             <option value={DocumentType.BangLaiXe}>Bằng lái xe</option>
             <option value={DocumentType.CMNDQuanDoi}>CMND Quân đội</option>
+          </select>
+        </div>
+
+        <div>
+          <label>Use Method: </label>
+          <select
+            value={useMethod}
+            onChange={(e) => setUseMethod(e.target.value as "PHOTO" | "UPLOAD")}
+          >
+            <option value="PHOTO">PHOTO (Chụp trực tiếp)</option>
+            <option value="UPLOAD">UPLOAD (Tải ảnh lên)</option>
           </select>
         </div>
 
