@@ -67,8 +67,8 @@ export class EkycEventManager {
       if (currentConfig) {
         const faceConfig = {
           ...currentConfig,
-          FLOW_TYPE: "FACE",
-          TYPE_DOCUMENT: result.type_document,
+          SDK_FLOW: "FACE" as const,
+          DOCUMENT_TYPE_START: result.type_document,
         };
 
         window.SDK.launch(faceConfig);

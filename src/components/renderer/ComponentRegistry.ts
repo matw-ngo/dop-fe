@@ -15,6 +15,8 @@ import { CustomDatePicker } from "@/components/wrappers/CustomDatePicker";
 import { CustomDateRangePicker } from "@/components/wrappers/CustomDateRangePicker";
 import { CustomToggleGroup } from "@/components/wrappers/CustomToggleGroup";
 import { CustomInputOTP } from "@/components/wrappers/CustomInputOTP";
+import { CustomEkyc } from "@/components/wrappers/CustomEkyc";
+import { CustomConfirmation } from "@/components/wrappers/CustomConfirmation";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 
@@ -37,6 +39,8 @@ export const ComponentRegistry = {
   DateRangePicker: CustomDateRangePicker,
   ToggleGroup: CustomToggleGroup,
   InputOTP: CustomInputOTP,
+  Ekyc: CustomEkyc,
+  Confirmation: CustomConfirmation,
 
   // Display components
   Label,

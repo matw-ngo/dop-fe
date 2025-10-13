@@ -66,7 +66,7 @@ src/components/features/ekyc/
 
 #### **EkycConfigManager** (`config-manager.ts`)
 
-- Quản lý credentials bảo mật (`BACKEND_URL`, `TOKEN_KEY`, `TOKEN_ID`, `AUTHORIZION`)
+- Quản lý credentials bảo mật (`BACKEND_URL`, `TOKEN_KEY`, `TOKEN_ID`, `ACCESS_TOKEN`)
 - Hỗ trợ load từ environment variables hoặc API
 - Environment-specific configuration
 
@@ -193,10 +193,10 @@ export async function GET() {
 ```tsx
 <EkycSdkWrapper
   credentialsSource={{
-    BACKEND_URL: "http://localhost:3001/api/ekyc-proxy",
+    BACKEND_URL: "https://api.idg.vnpt.vn",
     TOKEN_KEY: "+==",
     TOKEN_ID: "b85b",
-    AUTHORIZION: "your-dev-token",
+    ACCESS_TOKEN: "your-dev-token",
   }}
   flowType="FACE"
   language="vi"

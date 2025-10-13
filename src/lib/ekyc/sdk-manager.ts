@@ -33,7 +33,7 @@ export interface EkycSdkManagerOptions {
         BACKEND_URL: string;
         TOKEN_KEY: string;
         TOKEN_ID: string;
-        AUTHORIZION: string;
+        ACCESS_TOKEN: string;
       };
 }
 
@@ -68,7 +68,7 @@ export class EkycSdkManager {
               BACKEND_URL: "",
               TOKEN_KEY: "+==",
               TOKEN_ID: "b85b",
-              AUTHORIZION: options.authToken,
+              ACCESS_TOKEN: options.authToken,
             }
           : "env");
 
@@ -82,16 +82,22 @@ export class EkycSdkManager {
       // Create configuration using credentials from config manager
       console.log("[EKYC] Bước 2: Tạo cấu hình SDK...");
       const credentials = this.configManager.getCredentials();
-      const baseConfig = createDefaultEkycConfig(credentials.AUTHORIZION);
+
+      const callbackFn = this.eventManager.getResultHandler();
+
+      const baseConfig = createDefaultEkycConfig(
+        credentials.ACCESS_TOKEN,
+        callbackFn,
+      );
 
       this.config = {
         ...baseConfig,
         BACKEND_URL: credentials.BACKEND_URL,
         TOKEN_KEY: credentials.TOKEN_KEY,
         TOKEN_ID: credentials.TOKEN_ID,
-        AUTHORIZION: credentials.AUTHORIZION,
+        ACCESS_TOKEN: credentials.ACCESS_TOKEN,
         ...options.config,
-        PARRENT_ID: this.containerId,
+        CALL_BACK: callbackFn,
       };
       console.log(
         "[EKYC] Hoàn thành: Tạo cấu hình SDK. Cấu hình:",
@@ -124,8 +130,14 @@ export class EkycSdkManager {
     // Store config reference for event handlers
     (this.eventManager as any).getCurrentConfig = () => this.config;
 
-    const resultHandler = this.eventManager.getResultHandler();
-    const finishHandler = this.eventManager.getFinishHandler();
+    console.log("[EKYC] Cấu hình truyền vào SDK.launch:", this.config);
+    console.log("[EKYC] CALL_BACK function:", typeof this.config.CALL_BACK);
+
+    if (!this.config.CALL_BACK) {
+      throw new Error(
+        "CALL_BACK function is required but not found in config!",
+      );
+    }
 
     window.SDK.launch(this.config);
   }
@@ -143,16 +155,18 @@ export class EkycSdkManager {
     this.eventManager.setHandlers(handlers);
   }
 
-  setFlowType(flowType: "DOCUMENT" | "FACE"): void {
-    this.updateConfig({ FLOW_TYPE: flowType });
+  setFlowType(
+    flowType: "DOCUMENT_TO_FACE" | "FACE_TO_DOCUMENT" | "FACE" | "DOCUMENT",
+  ): void {
+    this.updateConfig({ SDK_FLOW: flowType });
   }
 
   setDocumentType(docType: number): void {
-    this.updateConfig({ TYPE_DOCUMENT: docType });
+    this.updateConfig({ DOCUMENT_TYPE_START: docType });
   }
 
   setLanguage(language: "vi" | "en"): void {
-    this.updateConfig({ LANGUAGE: language });
+    this.updateConfig({ DEFAULT_LANGUAGE: language });
   }
 
   restart(): void {

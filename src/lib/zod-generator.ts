@@ -41,6 +41,16 @@ export function generateZodSchema(
       } else {
         fieldSchema = z.string();
       }
+    } else if (field.component === "Ekyc") {
+      // eKYC returns an object with completion status
+      fieldSchema = z
+        .object({
+          completed: z.boolean(),
+          sessionId: z.string().optional(),
+          data: z.any().optional(),
+          timestamp: z.string().optional(),
+        })
+        .or(z.boolean());
     }
 
     const validations = field.props.validations || [];

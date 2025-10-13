@@ -11,7 +11,7 @@ const AUTHORIZATION_TOKEN = ".--PdxRkzOsleZHEyqc2ezc-ssrQZyms1GfQ";
 interface EkycSdkWrapperProps {
   containerId?: string;
   authToken?: string;
-  flowType?: "DOCUMENT" | "FACE";
+  flowType?: "DOCUMENT_TO_FACE" | "FACE_TO_DOCUMENT" | "FACE" | "DOCUMENT";
   language?: "vi" | "en";
   style?: React.CSSProperties;
   className?: string;
@@ -23,7 +23,7 @@ interface EkycSdkWrapperProps {
         BACKEND_URL: string;
         TOKEN_KEY: string;
         TOKEN_ID: string;
-        AUTHORIZION: string;
+        ACCESS_TOKEN: string;
       };
 }
 
@@ -49,8 +49,8 @@ const EkycSdkWrapper: React.FC<EkycSdkWrapperProps> = (props) => {
     credentialsSource,
     assets,
     config: {
-      FLOW_TYPE: flowType,
-      LANGUAGE: language,
+      SDK_FLOW: flowType,
+      DEFAULT_LANGUAGE: language,
     },
     autoStart: true,
   });

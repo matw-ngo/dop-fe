@@ -20,7 +20,9 @@ export interface UseEkycSdkReturn {
   error: string | null;
   restart: () => void;
   updateConfig: (config: Partial<EkycSdkConfig>) => void;
-  setFlowType: (flowType: "DOCUMENT" | "FACE") => void;
+  setFlowType: (
+    flowType: "DOCUMENT_TO_FACE" | "FACE_TO_DOCUMENT" | "FACE" | "DOCUMENT",
+  ) => void;
   setDocumentType: (docType: number) => void;
   setLanguage: (language: "vi" | "en") => void;
 }
@@ -108,9 +110,14 @@ export const useEkycSdk = (options: UseEkycSdkOptions): UseEkycSdkReturn => {
     sdkManagerRef.current?.updateConfig(config);
   }, []);
 
-  const setFlowType = useCallback((flowType: "DOCUMENT" | "FACE") => {
-    sdkManagerRef.current?.setFlowType(flowType);
-  }, []);
+  const setFlowType = useCallback(
+    (
+      flowType: "DOCUMENT_TO_FACE" | "FACE_TO_DOCUMENT" | "FACE" | "DOCUMENT",
+    ) => {
+      sdkManagerRef.current?.setFlowType(flowType);
+    },
+    [],
+  );
 
   const setDocumentType = useCallback((docType: number) => {
     sdkManagerRef.current?.setDocumentType(docType);

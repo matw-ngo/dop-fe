@@ -62,16 +62,37 @@ export function useMultiStepForm(
   const isLastStep = state.currentStep === steps.length - 1;
   const progress = ((state.currentStep + 1) / steps.length) * 100;
 
-  // Save to localStorage when data changes
+  // Helper to filter out sensitive data before saving to localStorage
+  const getDataForPersistence = useCallback((data: Record<string, any>) => {
+    const filteredData = { ...data };
+
+    // Remove eKYC data (sensitive and shouldn't be persisted)
+    // eKYC fields typically end with 'Verification' or contain 'ekyc'
+    Object.keys(filteredData).forEach((key) => {
+      if (
+        key.toLowerCase().includes("ekyc") ||
+        (key.toLowerCase().includes("verification") &&
+          typeof filteredData[key] === "object" &&
+          filteredData[key]?.sessionId)
+      ) {
+        delete filteredData[key];
+      }
+    });
+
+    return filteredData;
+  }, []);
+
+  // Save to localStorage when data changes (excluding sensitive data)
   useEffect(() => {
     if (persistData && typeof window !== "undefined") {
       try {
-        localStorage.setItem(persistKey, JSON.stringify(state.formData));
+        const dataToSave = getDataForPersistence(state.formData);
+        localStorage.setItem(persistKey, JSON.stringify(dataToSave));
       } catch (error) {
         console.error("Failed to persist form data:", error);
       }
     }
-  }, [state.formData, persistData, persistKey]);
+  }, [state.formData, persistData, persistKey, getDataForPersistence]);
 
   // Update step data
   const updateStepData = useCallback((data: Record<string, any>) => {

@@ -8,27 +8,29 @@ export interface EkycSdkConfig {
   BACKEND_URL: string;
   TOKEN_KEY: string;
   TOKEN_ID: string;
-  AUTHORIZION: string;
-  ENABLE_GGCAPCHAR: boolean;
-  PARRENT_ID: string;
-  FLOW_TYPE: "DOCUMENT" | "FACE";
-  SHOW_RESULT: boolean;
-  SHOW_HELP: boolean;
-  SHOW_TRADEMARK: boolean;
-  CHECK_LIVENESS_CARD: boolean;
-  CHECK_LIVENESS_FACE: boolean;
-  CHECK_MASKED_FACE: boolean;
-  COMPARE_FACE: boolean;
-  LANGUAGE: "vi" | "en";
-  LIST_ITEM: number[];
-  TYPE_DOCUMENT: DocumentType | number;
-  USE_WEBCAM: boolean;
-  USE_UPLOAD: boolean;
-  ADVANCE_LIVENESS_FACE: boolean;
-  LIST_CHOOSE_STYLE: ListChooseStyle;
-  CAPTURE_IMAGE_STYLE: CaptureImageStyle;
-  RESULT_DEFAULT_STYLE: ResultDefaultStyle;
-  MOBILE_STYLE: MobileStyle;
+  ACCESS_TOKEN: string;
+  ENABLE_GGCAPCHAR?: boolean;
+  SDK_FLOW?: "DOCUMENT_TO_FACE" | "FACE_TO_DOCUMENT" | "FACE" | "DOCUMENT";
+  HAS_RESULT_SCREEN?: boolean;
+  SHOW_HELP?: boolean;
+  SHOW_TRADEMARK?: boolean;
+  ENABLE_API_LIVENESS_DOCUMENT?: boolean;
+  ENABLE_API_LIVENESS_FACE?: boolean;
+  ENABLE_API_MASKED_FACE?: boolean;
+  ENABLE_API_COMPARE_FACE?: boolean;
+  DEFAULT_LANGUAGE?: "vi" | "en";
+  LIST_TYPE_DOCUMENT?: number[];
+  DOCUMENT_TYPE_START?: DocumentType | number;
+  USE_METHOD?: "BOTH" | "PHOTO" | "UPLOAD";
+  DOUBLE_LIVENESS?: boolean;
+  SHOW_STEP?: boolean;
+  HAS_QR_SCAN?: boolean;
+  CALL_BACK: (result: any) => void;
+  CALL_BACK_DOCUMENT_RESULT?: (result: any) => void | Promise<void>;
+  LIST_CHOOSE_STYLE?: ListChooseStyle;
+  CAPTURE_IMAGE_STYLE?: CaptureImageStyle;
+  RESULT_DEFAULT_STYLE?: ResultDefaultStyle;
+  MOBILE_STYLE?: MobileStyle;
 }
 
 export interface ListChooseStyle {
@@ -99,48 +101,56 @@ export class EkycConfigBuilder {
       TOKEN_KEY?: string;
       TOKEN_ID?: string;
     },
+    callbackFn?: (result: any) => void,
   ) {
+    const defaultCallback = (result: any) => {
+      console.log("[EKYC Default Callback] Kết quả:", result);
+    };
+
     this.config = {
-      BACKEND_URL: credentials?.BACKEND_URL || "",
+      BACKEND_URL: credentials?.BACKEND_URL || "https://api.idg.vnpt.vn",
       TOKEN_KEY: credentials?.TOKEN_KEY || "+==",
       TOKEN_ID: credentials?.TOKEN_ID || "b85b",
-      AUTHORIZION: authToken,
+      ACCESS_TOKEN: authToken,
       ENABLE_GGCAPCHAR: true,
-      PARRENT_ID: "ekyc_sdk_intergrated",
-      FLOW_TYPE: "FACE",
-      SHOW_RESULT: true,
+      SDK_FLOW: "FACE",
+      HAS_RESULT_SCREEN: true,
       SHOW_HELP: true,
       SHOW_TRADEMARK: false,
-      CHECK_LIVENESS_CARD: true,
-      CHECK_LIVENESS_FACE: true,
-      CHECK_MASKED_FACE: true,
-      COMPARE_FACE: true,
-      LANGUAGE: "vi",
-      LIST_ITEM: [-1, 5, 6, 7, 9],
-      TYPE_DOCUMENT: 99,
-      USE_WEBCAM: true,
-      USE_UPLOAD: false,
-      ADVANCE_LIVENESS_FACE: true,
+      ENABLE_API_LIVENESS_DOCUMENT: true,
+      ENABLE_API_LIVENESS_FACE: true,
+      ENABLE_API_MASKED_FACE: true,
+      ENABLE_API_COMPARE_FACE: true,
+      DEFAULT_LANGUAGE: "vi",
+      LIST_TYPE_DOCUMENT: [-1, 5, 6, 7, 9],
+      DOCUMENT_TYPE_START: 999, // 999 để hiển thị danh sách chọn document
+      USE_METHOD: "BOTH",
+      DOUBLE_LIVENESS: false,
+      SHOW_STEP: true,
+      HAS_QR_SCAN: false,
+      CALL_BACK: callbackFn || defaultCallback,
     };
   }
 
-  setFlowType(flowType: "DOCUMENT" | "FACE"): EkycConfigBuilder {
-    this.config.FLOW_TYPE = flowType;
+  setFlowType(
+    flowType: "DOCUMENT_TO_FACE" | "FACE_TO_DOCUMENT" | "FACE" | "DOCUMENT",
+  ): EkycConfigBuilder {
+    this.config.SDK_FLOW = flowType;
     return this;
   }
 
   setDocumentType(docType: DocumentType | number): EkycConfigBuilder {
-    this.config.TYPE_DOCUMENT = docType;
+    this.config.DOCUMENT_TYPE_START = docType;
     return this;
   }
 
   setLanguage(language: "vi" | "en"): EkycConfigBuilder {
-    this.config.LANGUAGE = language;
+    this.config.DEFAULT_LANGUAGE = language;
     return this;
   }
 
-  setParentId(parentId: string): EkycConfigBuilder {
-    this.config.PARRENT_ID = parentId;
+  setCallback(callback: (result: any) => void): EkycConfigBuilder {
+    this.config.CALL_BACK = callback;
     return this;
   }
 
@@ -260,6 +270,11 @@ export class EkycConfigBuilder {
 }
 
 // Default configuration factory
-export const createDefaultEkycConfig = (authToken: string): EkycSdkConfig => {
-  return new EkycConfigBuilder(authToken).withDefaultStyling().build();
+export const createDefaultEkycConfig = (
+  authToken: string,
+  callbackFn?: (result: any) => void,
+): EkycSdkConfig => {
+  return new EkycConfigBuilder(authToken, undefined, callbackFn)
+    .withDefaultStyling()
+    .build();
 };

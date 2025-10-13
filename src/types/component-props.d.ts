@@ -185,6 +185,24 @@ export interface SeparatorProps extends BaseComponentProps {
 }
 
 /**
+ * Props for Ekyc component
+ */
+export interface EkycProps extends BaseComponentProps {
+  flowType?: "DOCUMENT" | "FACE";
+  language?: "vi" | "en";
+  height?: string | number;
+  containerId?: string;
+  authToken?: string;
+}
+
+/**
+ * Props for Confirmation component (read-only review step)
+ */
+export interface ConfirmationProps extends BaseComponentProps {
+  // No specific props needed - it reads from form context
+}
+
+/**
  * Mapping of component names to their prop types
  */
 export interface ComponentPropsMap {
@@ -204,6 +222,8 @@ export interface ComponentPropsMap {
   InputOTP: InputOTPProps;
   Badge: BadgeProps;
   Separator: SeparatorProps;
+  Ekyc: EkycProps;
+  Confirmation: ConfirmationProps;
 }
 
 /**

@@ -7,7 +7,7 @@ export interface EkycCredentials {
   BACKEND_URL: string;
   TOKEN_KEY: string;
   TOKEN_ID: string;
-  AUTHORIZION: string;
+  ACCESS_TOKEN: string;
 }
 
 export interface EkycEnvironmentConfig {
@@ -82,7 +82,7 @@ export class EkycConfigManager {
       BACKEND_URL: backendUrl,
       TOKEN_KEY: tokenKey,
       TOKEN_ID: tokenId,
-      AUTHORIZION: authorization,
+      ACCESS_TOKEN: authorization,
     };
   }
 
@@ -108,7 +108,7 @@ export class EkycConfigManager {
         BACKEND_URL: data.backendUrl || "",
         TOKEN_KEY: data.tokenKey || "+==",
         TOKEN_ID: data.tokenId || "b85b",
-        AUTHORIZION: data.authToken,
+        ACCESS_TOKEN: data.authToken,
       };
     } catch (error) {
       console.error("Error fetching eKYC credentials from API:", error);
@@ -143,7 +143,7 @@ export class EkycConfigManager {
    */
   isValid(): boolean {
     return !!(
-      this.credentials?.AUTHORIZION &&
+      this.credentials?.ACCESS_TOKEN &&
       this.credentials?.TOKEN_ID &&
       this.credentials?.TOKEN_KEY !== undefined
     );
@@ -153,7 +153,7 @@ export class EkycConfigManager {
    * Get backend URL for proxying requests
    */
   getBackendUrl(): string {
-    return this.credentials?.BACKEND_URL || "";
+    return this.credentials?.BACKEND_URL || "https://api.idg.vnpt.vn";
   }
 
   /**
@@ -169,17 +169,17 @@ export class EkycConfigManager {
   getEnvironmentDefaults(): Partial<EkycCredentials> {
     const defaults: EkycEnvironmentConfig = {
       development: {
-        BACKEND_URL: "http://localhost:3000/api/ekyc-proxy",
+        BACKEND_URL: "https://api.idg.vnpt.vn",
         TOKEN_KEY: "+==",
         TOKEN_ID: "b85b",
       },
       staging: {
-        BACKEND_URL: "https://staging-api.datanest.com/api/ekyc-proxy",
+        BACKEND_URL: "https://api.idg.vnpt.vn",
         TOKEN_KEY: "+==",
         TOKEN_ID: "b85b",
       },
       production: {
-        BACKEND_URL: "https://api.datanest.com/api/ekyc-proxy",
+        BACKEND_URL: "https://api.idg.vnpt.vn",
         TOKEN_KEY: "+==",
         TOKEN_ID: "b85b",
       },

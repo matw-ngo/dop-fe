@@ -17,6 +17,7 @@ import type {
   InputOTPProps,
   BadgeProps,
   SeparatorProps,
+  EkycProps,
 } from "@/types/component-props";
 import type { RawFieldConfig, FieldCondition } from "@/types/data-driven-ui";
 
@@ -183,6 +184,28 @@ export function createSeparatorField(
   condition?: FieldCondition,
 ): RawFieldConfig {
   return createField(fieldName, "Separator", props, condition);
+}
+
+/**
+ * Create an Ekyc field with type-safe props
+ */
+export function createEkycField(
+  fieldName: string,
+  props: EkycProps,
+  condition?: FieldCondition,
+): RawFieldConfig {
+  return createField(fieldName, "Ekyc", props, condition);
+}
+
+/**
+ * Create a Confirmation field (read-only review step)
+ */
+export function createConfirmationField(
+  fieldName: string,
+  props?: Partial<import("@/types/component-props").ConfirmationProps>,
+  condition?: FieldCondition,
+): RawFieldConfig {
+  return createField(fieldName, "Confirmation", props || {}, condition);
 }
 
 /**

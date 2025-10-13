@@ -27,9 +27,17 @@ import {
   createDateRangePickerField,
   createToggleGroupField,
   createInputOTPField,
+  createEkycField,
 } from "@/lib/field-builder";
 import { multiStepForm } from "@/lib/multi-step-form-builder";
-import { User, Briefcase, MapPin, FileText, CheckCircle } from "lucide-react";
+import {
+  User,
+  Briefcase,
+  MapPin,
+  FileText,
+  CheckCircle,
+  Shield,
+} from "lucide-react";
 
 export default function DataDrivenFormDemo() {
   const [activeTab, setActiveTab] = useState("basic");
@@ -702,6 +710,24 @@ export default function DataDrivenFormDemo() {
           "Where are you located and what do you prefer? (with Async & Conditional)",
         icon: <MapPin className="h-5 w-5" />,
         optional: true,
+      },
+    )
+    .addStep(
+      "ekyc-verification",
+      "eKYC Verification",
+      [
+        createEkycField("ekycVerification", {
+          flowType: "FACE",
+          language: "vi",
+          height: 600,
+          validations: [
+            { type: "required", messageKey: "form.error.required" },
+          ],
+        }),
+      ],
+      {
+        description: "Verify your identity with facial recognition",
+        icon: <Shield className="h-5 w-5" />,
       },
     )
     .addStep(
