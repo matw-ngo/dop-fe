@@ -230,8 +230,8 @@ function AdvancedComponent() {
   const { isLoading, error, restart, setFlowType, setLanguage } = useEkycSdk({
     credentialsSource: "api",
     config: {
-      LANGUAGE: "vi",
-      FLOW_TYPE: "DOCUMENT",
+      DEFAULT_LANGUAGE: "vi",
+      SDK_FLOW: "DOCUMENT",
     },
     customEventHandlers: {
       onSuccess: (data) => console.log("Success!", data),
@@ -244,6 +244,7 @@ function AdvancedComponent() {
       {isLoading && <div>Đang tải SDK...</div>}
       {error && <div>Lỗi: {error}</div>}
       <button onClick={() => setFlowType("FACE")}>Chuyển sang Face</button>
+      <button onClick={() => setFlowType("DOCUMENT_TO_FACE")}>Luồng đầy đủ</button>
       <button onClick={restart}>Khởi động lại</button>
     </div>
   );
@@ -256,7 +257,7 @@ function AdvancedComponent() {
 import { EkycConfigBuilder, EkycSdkManager } from "@/lib/ekyc";
 
 const customConfig = new EkycConfigBuilder("your-token")
-  .setFlowType("DOCUMENT")
+  .setFlowType("DOCUMENT_TO_FACE") // "DOCUMENT_TO_FACE" | "FACE_TO_DOCUMENT" | "FACE" | "DOCUMENT"
   .setLanguage("en")
   .setDocumentType(DocumentType.CCCD)
   .withCustomStyling({
@@ -310,7 +311,12 @@ EKYC_AUTH_TOKEN="production-token"
 interface EkycSdkWrapperProps {
   containerId?: string; // Default: "ekyc_sdk_intergrated"
   authToken?: string; // Fallback auth token
-  flowType?: "DOCUMENT" | "FACE"; // Default: "FACE"
+  // Luồng eKYC:
+  // - "DOCUMENT_TO_FACE": Luồng đầy đủ (giấy tờ → mặt)
+  // - "FACE_TO_DOCUMENT": Luồng đầy đủ (mặt → giấy tờ)
+  // - "DOCUMENT": Chỉ OCR giấy tờ
+  // - "FACE": Chỉ quét mặt
+  flowType?: "DOCUMENT_TO_FACE" | "FACE_TO_DOCUMENT" | "FACE" | "DOCUMENT"; // Default: "FACE"
   language?: "vi" | "en"; // Default: "vi"
   style?: React.CSSProperties; // Container styles
   className?: string; // CSS class
@@ -327,7 +333,7 @@ interface UseEkycSdkReturn {
   error: string | null;
   restart: () => void;
   updateConfig: (config: Partial<EkycSdkConfig>) => void;
-  setFlowType: (flowType: "DOCUMENT" | "FACE") => void;
+  setFlowType: (flowType: "DOCUMENT_TO_FACE" | "FACE_TO_DOCUMENT" | "FACE" | "DOCUMENT") => void;
   setDocumentType: (docType: number) => void;
   setLanguage: (language: "vi" | "en") => void;
 }

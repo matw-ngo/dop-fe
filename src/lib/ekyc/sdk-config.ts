@@ -113,7 +113,7 @@ export class EkycConfigBuilder {
       TOKEN_ID: credentials?.TOKEN_ID || "b85b",
       ACCESS_TOKEN: authToken,
       ENABLE_GGCAPCHAR: true,
-      SDK_FLOW: "FACE",
+      SDK_FLOW: "DOCUMENT_TO_FACE",
       HAS_RESULT_SCREEN: true,
       SHOW_HELP: true,
       SHOW_TRADEMARK: false,

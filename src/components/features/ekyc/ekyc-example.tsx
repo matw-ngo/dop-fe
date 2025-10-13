@@ -10,7 +10,9 @@ import { useEkycStore } from "@/store/use-ekyc-store";
 import { DocumentType } from "@/lib/ekyc/types";
 
 const EkycExample: React.FC = () => {
-  const [flowType, setFlowType] = useState<"DOCUMENT" | "FACE">("FACE");
+  const [flowType, setFlowType] = useState<
+    "DOCUMENT_TO_FACE" | "FACE_TO_DOCUMENT" | "FACE" | "DOCUMENT"
+  >("DOCUMENT");
   const [language, setLanguage] = useState<"vi" | "en">("vi");
   const [documentType, setDocumentType] = useState<DocumentType>(
     DocumentType.CCCD,
@@ -39,10 +41,21 @@ const EkycExample: React.FC = () => {
           <label>Flow Type: </label>
           <select
             value={flowType}
-            onChange={(e) => setFlowType(e.target.value as "DOCUMENT" | "FACE")}
+            onChange={(e) =>
+              setFlowType(
+                e.target.value as
+                  | "DOCUMENT_TO_FACE"
+                  | "FACE_TO_DOCUMENT"
+                  | "FACE"
+                  | "DOCUMENT",
+              )
+            }
+            style={{ padding: "4px 8px" }}
           >
-            <option value="DOCUMENT">Document</option>
-            <option value="FACE">Face</option>
+            <option value="DOCUMENT_TO_FACE">Đầy đủ: Giấy tờ → Mặt</option>
+            <option value="FACE_TO_DOCUMENT">Đầy đủ: Mặt → Giấy tờ</option>
+            <option value="DOCUMENT">Chỉ OCR giấy tờ</option>
+            <option value="FACE">Chỉ quét mặt</option>
           </select>
         </div>
 
