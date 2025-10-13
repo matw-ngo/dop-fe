@@ -231,10 +231,10 @@ const EkycDemoPage: React.FC = () => {
           // },
 
           // 28. USE_METHOD - Phương thức xác thực
-          // ⚠️ BUG: "BOTH" KHÔNG HOẠT ĐỘNG theo tài liệu!
-          // PHOTO: chỉ cho phép chụp trực tiếp (recommended)
-          // UPLOAD: chỉ cho phép tải ảnh lên
-          USE_METHOD: "PHOTO", // FIX: Dùng "PHOTO" thay vì "BOTH"
+          // ⚠️ LOGIC: KHÔNG truyền field này = cho phép cả PHOTO và UPLOAD (BOTH)
+          // "PHOTO": chỉ cho phép chụp trực tiếp
+          // "UPLOAD": chỉ cho phép tải ảnh lên
+          // USE_METHOD: "PHOTO", // Uncomment để giới hạn chỉ chụp
 
           // 29. SHOW_TAB_RESULT_INFORMATION - Hiện/ẩn tab thông tin
           SHOW_TAB_RESULT_INFORMATION: true,

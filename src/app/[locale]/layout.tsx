@@ -55,10 +55,10 @@ export default async function LocaleLayout({
             </div>
           </Providers>
         </NextIntlClientProvider>
-        <Script
+        {/* <Script
           src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.4/lottie.min.js"
           strategy="beforeInteractive"
-        />
+        /> */}
         {/* <Script
           id="oval_custom"
           src="/lib/VNPTBrowserSDKAppV4.0.0.js"

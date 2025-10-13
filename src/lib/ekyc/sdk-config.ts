@@ -13,7 +13,7 @@ export interface EkycSdkConfig {
 
   // Core flow settings
   SDK_FLOW?: "DOCUMENT_TO_FACE" | "FACE_TO_DOCUMENT" | "FACE" | "DOCUMENT";
-  USE_METHOD?: "PHOTO" | "UPLOAD"; // BUG FIX: "BOTH" không hoạt động theo tài liệu
+  USE_METHOD?: "PHOTO" | "UPLOAD"; // KHÔNG truyền = BOTH (cả 2), chỉ set khi muốn giới hạn
   DEFAULT_LANGUAGE?: "vi" | "en";
 
   // Document settings
@@ -146,7 +146,8 @@ export class EkycConfigBuilder {
 
       // Core flow settings
       SDK_FLOW: "DOCUMENT_TO_FACE",
-      USE_METHOD: "PHOTO", // BUG FIX: Mặc định dùng "PHOTO", không dùng "BOTH" (không hoạt động)
+      // USE_METHOD: undefined = cho phép cả PHOTO và UPLOAD (BOTH)
+      // Chỉ set khi muốn giới hạn 1 trong 2
       DEFAULT_LANGUAGE: "vi",
 
       // Document settings
@@ -254,24 +255,27 @@ export class EkycConfigBuilder {
       redemo_btn_color: "#111127",
     };
 
-    this.config.MOBILE_STYLE = {
-      mobile_capture_btn:
-        "https://ekyc-web.icenter.ai/images/capure_mobile.png",
-      mobile_capture_desc_color: "#18D696",
-      mobile_tutorial_color: "#C8242D",
-      mobile_recapture_btn_background:
-        "linear-gradient(180deg, #FDFDFD 0%, #DEDEDE 100%)",
-      mobile_recapture_btn_border: "1px solid #18D696",
-      mobile_recapture_btn_icon:
-        "https://ekyc-web.icenter.ai/images/hdbank/capture.svg",
-      mobile_recapture_btn_color: "#111127",
-      mobile_nextstep_btn_background: "#18D696",
-      mobile_nextstep_btn_color: "#111127",
-      mobile_nextstep_btn_icon:
-        "https://ekyc-web.icenter.ai/images/next_icon_b.png",
-      mobile_popup2_icon_header:
-        "https://ekyc-web.icenter.ai/images/hdbank/face_icon_popup.svg",
-    };
+    // BUG FIX: MOBILE_STYLE causes SDK to render in mobile mode
+    // which hides the oval frame on desktop browsers
+    // Only uncomment if you specifically want mobile-specific styling
+    // this.config.MOBILE_STYLE = {
+    //   mobile_capture_btn:
+    //     "https://ekyc-web.icenter.ai/images/capure_mobile.png",
+    //   mobile_capture_desc_color: "#18D696",
+    //   mobile_tutorial_color: "#C8242D",
+    //   mobile_recapture_btn_background:
+    //     "linear-gradient(180deg, #FDFDFD 0%, #DEDEDE 100%)",
+    //   mobile_recapture_btn_border: "1px solid #18D696",
+    //   mobile_recapture_btn_icon:
+    //     "https://ekyc-web.icenter.ai/images/hdbank/capture.svg",
+    //   mobile_recapture_btn_color: "#111127",
+    //   mobile_nextstep_btn_background: "#18D696",
+    //   mobile_nextstep_btn_color: "#111127",
+    //   mobile_nextstep_btn_icon:
+    //     "https://ekyc-web.icenter.ai/images/next_icon_b.png",
+    //   mobile_popup2_icon_header:
+    //     "https://ekyc-web.icenter.ai/images/hdbank/face_icon_popup.svg",
+    // };
 
     return this;
   }

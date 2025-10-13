@@ -13,7 +13,7 @@ interface EkycSdkWrapperProps {
   authToken?: string;
   flowType?: "DOCUMENT_TO_FACE" | "FACE_TO_DOCUMENT" | "FACE" | "DOCUMENT";
   language?: "vi" | "en";
-  useMethod?: "PHOTO" | "UPLOAD"; // BUG FIX: Không dùng "BOTH"
+  useMethod?: "BOTH" | "PHOTO" | "UPLOAD"; // "BOTH" = không truyền field USE_METHOD
   style?: React.CSSProperties;
   className?: string;
   assets?: SdkAssets;
@@ -33,9 +33,9 @@ const EkycSdkWrapper: React.FC<EkycSdkWrapperProps> = (props) => {
   const {
     containerId = "ekyc_sdk_intergrated",
     authToken = process.env.NEXT_PUBLIC_EKYC_AUTH_TOKEN || AUTHORIZATION_TOKEN,
-    flowType = "FACE",
+    flowType = "DOCUMENT_TO_FACE",
     language = "vi",
-    useMethod = "PHOTO", // Default to PHOTO
+    useMethod = "BOTH", // Default to BOTH (không truyền USE_METHOD)
     style = {
       width: "100%",
       height: "100vh",
@@ -54,7 +54,8 @@ const EkycSdkWrapper: React.FC<EkycSdkWrapperProps> = (props) => {
       config: {
         SDK_FLOW: flowType,
         DEFAULT_LANGUAGE: language,
-        USE_METHOD: useMethod,
+        // Chỉ truyền USE_METHOD khi không phải BOTH
+        ...(useMethod !== "BOTH" && { USE_METHOD: useMethod }),
       },
       autoStart: true,
     });
@@ -71,7 +72,13 @@ const EkycSdkWrapper: React.FC<EkycSdkWrapperProps> = (props) => {
 
   // Update use method when prop changes
   React.useEffect(() => {
-    updateConfig({ USE_METHOD: useMethod });
+    // Nếu BOTH: không truyền field, nếu PHOTO/UPLOAD: truyền field
+    if (useMethod === "BOTH") {
+      // Remove USE_METHOD from config to allow both
+      updateConfig({ USE_METHOD: undefined });
+    } else {
+      updateConfig({ USE_METHOD: useMethod });
+    }
   }, [useMethod, updateConfig]);
 
   // Show loading state

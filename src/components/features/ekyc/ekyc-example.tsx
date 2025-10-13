@@ -17,8 +17,9 @@ const EkycExample: React.FC = () => {
   const [documentType, setDocumentType] = useState<DocumentType>(
     DocumentType.CCCD,
   );
-  const [useMethod, setUseMethod] = useState<"PHOTO" | "UPLOAD">("PHOTO");
-
+  const [useMethod, setUseMethod] = useState<"BOTH" | "PHOTO" | "UPLOAD">(
+    "BOTH",
+  );
   const { status, result, error, reset } = useEkycStore();
 
   const handleReset = () => {
@@ -91,10 +92,13 @@ const EkycExample: React.FC = () => {
           <label>Use Method: </label>
           <select
             value={useMethod}
-            onChange={(e) => setUseMethod(e.target.value as "PHOTO" | "UPLOAD")}
+            onChange={(e) =>
+              setUseMethod(e.target.value as "BOTH" | "PHOTO" | "UPLOAD")
+            }
           >
-            <option value="PHOTO">PHOTO (Chụp trực tiếp)</option>
-            <option value="UPLOAD">UPLOAD (Tải ảnh lên)</option>
+            <option value="BOTH">BOTH (Cả chụp và upload)</option>
+            <option value="PHOTO">PHOTO (Chỉ chụp trực tiếp)</option>
+            <option value="UPLOAD">UPLOAD (Chỉ tải ảnh lên)</option>
           </select>
         </div>
 
@@ -154,6 +158,7 @@ const EkycExample: React.FC = () => {
         <EkycSdkWrapper
           flowType={flowType}
           language={language}
+          useMethod={useMethod}
           style={{
             width: "100%",
             height: "600px",
