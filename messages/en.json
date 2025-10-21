@@ -88,6 +88,9 @@
       "email": {
         "invalid": "Please enter a valid email address"
       },
+      "phone": {
+        "invalid": "Please enter a valid phone number (10 digits)"
+      },
       "url": {
         "invalid": "Please enter a valid URL"
       },

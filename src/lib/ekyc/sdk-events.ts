@@ -31,27 +31,20 @@ export class EkycEventManager {
     const handler = (result: EkycResult) => {
       console.log("\n".repeat(3));
       console.log("⚡".repeat(50));
-      console.log("📣 [EKYC CALLBACK] ĐƯỢC GỌI TỪ SDK!");
       console.log("⚡".repeat(50));
       console.log("[EKYC CALLBACK] Result:", result);
-      console.log("[EKYC CALLBACK] Result type:", typeof result);
-      console.log("[EKYC CALLBACK] Result code:", result?.code);
       console.log("⚡".repeat(50));
 
       if (result && result.code === 0) {
-        console.log("[EKYC CALLBACK] Code = 0, gọi onSuccess");
         this.handlers.onSuccess?.(result.data);
         if (window.SDK && result.type_document !== undefined) {
-          console.log("[EKYC CALLBACK] Gọi SDK.viewResult");
           window.SDK.viewResult(result.type_document, result);
         }
       } else {
-        console.log("[EKYC CALLBACK] Code != 0, có lỗi:", result.message);
         const errorMessage = result.message || "An unknown error occurred.";
         this.handlers.onError?.(errorMessage);
       }
 
-      console.log("[EKYC CALLBACK] Gọi onResult handler");
       this.handlers.onResult?.(result);
 
       console.log("⚡".repeat(50));
@@ -59,15 +52,6 @@ export class EkycEventManager {
       console.log("⚡".repeat(50));
       console.log("\n".repeat(3));
     };
-
-    console.log(
-      "🔧 [EKYC] Creating callback handler. Handler type:",
-      typeof handler,
-    );
-    console.log(
-      "🔧 [EKYC] Handler function:",
-      handler.toString().substring(0, 100),
-    );
 
     return handler;
   }

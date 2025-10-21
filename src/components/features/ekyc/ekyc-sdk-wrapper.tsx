@@ -4,10 +4,6 @@ import React from "react";
 import { useEkycSdk } from "@/hooks/use-ekyc-sdk";
 import { SdkAssets } from "@/lib/ekyc/sdk-loader";
 
-// TODO: Replace this with a call to your Go backend to fetch the token dynamically.
-// This token should not be hardcoded in the frontend in a production environment.
-const AUTHORIZATION_TOKEN = ".--PdxRkzOsleZHEyqc2ezc-ssrQZyms1GfQ";
-
 interface EkycSdkWrapperProps {
   containerId?: string;
   authToken?: string;
@@ -29,10 +25,9 @@ interface EkycSdkWrapperProps {
 }
 
 const EkycSdkWrapper: React.FC<EkycSdkWrapperProps> = (props) => {
-  console.log("[EkycSdkWrapper] Props received:", props);
   const {
     containerId = "ekyc_sdk_intergrated",
-    authToken = process.env.NEXT_PUBLIC_EKYC_AUTH_TOKEN || AUTHORIZATION_TOKEN,
+    authToken = process.env.NEXT_PUBLIC_EKYC_AUTH_TOKEN,
     flowType = "DOCUMENT_TO_FACE",
     language = "vi",
     useMethod = "BOTH", // Default to BOTH (không truyền USE_METHOD)

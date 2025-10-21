@@ -64,7 +64,7 @@ export class EkycSdkLoader {
           // console.log("[EKYC Loader] Tải CSS thành công.");
         };
         styles.onerror = () => {
-          console.error(`[EKYC Loader] Lỗi khi tải CSS từ: ${assets.cssPath}`);
+          // console.error(`[EKYC Loader] Lỗi khi tải CSS từ: ${assets.cssPath}`);
           // We don't reject here, maybe it's not critical
         };
         document.head.appendChild(styles);
@@ -80,7 +80,7 @@ export class EkycSdkLoader {
           script.src = src;
           script.defer = true;
           script.onload = () => {
-            console.log(`[EKYC Loader] ✅ Loaded: ${src}`);
+            // console.log(`[EKYC Loader] ✅ Loaded: ${src}`);
             resolve();
           };
           script.onerror = () => {
@@ -95,24 +95,24 @@ export class EkycSdkLoader {
       const loadAllScripts = async () => {
         try {
           // 1. Load main SDK
-          console.log(
-            `[EKYC Loader] Bắt đầu tải main SDK từ: ${assets.jsPath}`,
-          );
+          // console.log(
+          //   `[EKYC Loader] Bắt đầu tải main SDK từ: ${assets.jsPath}`,
+          // );
           await loadScript(assets.jsPath, "vnpt_ekyc_sdk");
 
           // 2. Load QR library (if provided)
           if (assets.qrPath) {
-            console.log(
-              `[EKYC Loader] Bắt đầu tải QR library từ: ${assets.qrPath}`,
-            );
+            // console.log(
+            //   `[EKYC Loader] Bắt đầu tải QR library từ: ${assets.qrPath}`,
+            // );
             await loadScript(assets.qrPath, "vnpt_qr_library");
           }
 
           // 3. Load Browser SDK (if provided)
           if (assets.browserSdkPath) {
-            console.log(
-              `[EKYC Loader] Bắt đầu tải Browser SDK từ: ${assets.browserSdkPath}`,
-            );
+            // console.log(
+            //   `[EKYC Loader] Bắt đầu tải Browser SDK từ: ${assets.browserSdkPath}`,
+            // );
             await loadScript(assets.browserSdkPath, "vnpt_browser_sdk");
           }
 

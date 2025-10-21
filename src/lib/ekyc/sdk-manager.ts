@@ -137,35 +137,8 @@ export class EkycSdkManager {
     // Store config reference for event handlers
     (this.eventManager as any).getCurrentConfig = () => this.config;
 
-    // console.log("[EKYC] Cấu hình truyền vào SDK.launch:", this.config);
-
-    // Verify callbacks are set
-    console.log(
-      "🔍 [EKYC] CALL_BACK_END_FLOW type:",
-      typeof this.config.CALL_BACK_END_FLOW,
-    );
-    console.log(
-      "🔍 [EKYC] CALL_BACK_DOCUMENT_RESULT type:",
-      typeof this.config.CALL_BACK_DOCUMENT_RESULT,
-    );
-
-    // Test END_FLOW callback manually
-    if (this.config.CALL_BACK_END_FLOW) {
-      console.log("🧪 [EKYC] Testing END_FLOW callback with mock data...");
-      try {
-        await this.config.CALL_BACK_END_FLOW({
-          code: -999,
-          message: "TEST END_FLOW CALLBACK",
-        });
-        console.log("✅ [EKYC] Test END_FLOW callback executed successfully!");
-      } catch (e) {
-        console.error("❌ [EKYC] Test END_FLOW callback failed:", e);
-      }
-    }
-
-    console.log("🚀 [EKYC] Launching SDK with config...");
     window.SDK.launch(this.config);
-    console.log("✅ [EKYC] SDK.launch() completed");
+    // console.log("✅ [EKYC] SDK.launch() completed");
   }
 
   updateConfig(newConfig: Partial<EkycSdkConfig>): void {

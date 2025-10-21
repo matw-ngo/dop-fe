@@ -20,7 +20,7 @@ const EkycExample: React.FC = () => {
   const [useMethod, setUseMethod] = useState<"BOTH" | "PHOTO" | "UPLOAD">(
     "BOTH",
   );
-  const { status, result, error, reset } = useEkycStore();
+  const { status, rawResult, error, reset } = useEkycStore();
 
   const handleReset = () => {
     reset();
@@ -126,7 +126,7 @@ const EkycExample: React.FC = () => {
             <strong>Error:</strong> {error}
           </div>
         )}
-        {result && (
+        {rawResult && (
           <div style={{ color: "green" }}>
             <strong>Success:</strong> eKYC completed successfully
             <details style={{ marginTop: "10px" }}>
@@ -140,7 +140,7 @@ const EkycExample: React.FC = () => {
                   maxHeight: "200px",
                 }}
               >
-                {JSON.stringify(result, null, 2)}
+                {JSON.stringify(rawResult, null, 2)}
               </pre>
             </details>
           </div>

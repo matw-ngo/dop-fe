@@ -9,118 +9,120 @@ import {
   createEkycField,
   createConfirmationField,
 } from "@/lib/field-builder";
-import { User, Shield, CheckCircle } from "lucide-react";
+import { User, Shield, CheckCircle, RotateCw } from "lucide-react";
+import { useOnboardingFormStore } from "@/store/use-onboarding-form-store";
+import { Button } from "@/components/ui/button";
 
 // Build the user onboarding form
 const userOnboardingForm = multiStepForm()
   // Step 1: Basic Information
-  .addStep(
-    "basic-info",
-    "Thông tin cơ bản",
-    [
-      createInputField("fullName", {
-        label: "Họ và tên",
-        placeholder: "Nguyễn Văn A",
-        validations: [
-          { type: "required", messageKey: "form.error.required" },
-          { type: "minLength", value: 3, messageKey: "form.error.minLength" },
-        ],
-      }),
+  // .addStep(
+  //   "basic-info",
+  //   "Thông tin cơ bản",
+  //   [
+  //     createInputField("fullName", {
+  //       label: "Họ và tên",
+  //       placeholder: "Nguyễn Văn A",
+  //       validations: [
+  //         { type: "required", messageKey: "form.error.required" },
+  //         { type: "minLength", value: 3, messageKey: "form.error.minLength" },
+  //       ],
+  //     }),
 
-      createInputField("email", {
-        type: "email",
-        label: "Email",
-        placeholder: "example@email.com",
-        validations: [
-          { type: "required", messageKey: "form.error.required" },
-          { type: "email", messageKey: "form.error.email.invalid" },
-        ],
-      }),
+  //     createInputField("email", {
+  //       type: "email",
+  //       label: "Email",
+  //       placeholder: "example@email.com",
+  //       validations: [
+  //         { type: "required", messageKey: "form.error.required" },
+  //         { type: "email", messageKey: "form.error.email.invalid" },
+  //       ],
+  //     }),
 
-      createInputField("phone", {
-        type: "tel",
-        label: "Số điện thoại",
-        placeholder: "0912345678",
-        validations: [
-          { type: "required", messageKey: "form.error.required" },
-          {
-            type: "regex",
-            value: "^[0-9]{10}$",
-            messageKey: "form.error.phone.invalid",
-          },
-        ],
-      }),
+  //     createInputField("phone", {
+  //       type: "tel",
+  //       label: "Số điện thoại",
+  //       placeholder: "0912345678",
+  //       validations: [
+  //         { type: "required", messageKey: "form.error.required" },
+  //         {
+  //           type: "regex",
+  //           value: "^[0-9]{10}$",
+  //           messageKey: "form.error.phone.invalid",
+  //         },
+  //       ],
+  //     }),
 
-      createDatePickerField("dateOfBirth", {
-        label: "Ngày sinh",
-        placeholder: "Chọn ngày sinh",
-        validations: [{ type: "required", messageKey: "form.error.required" }],
-      }),
+  //     createDatePickerField("dateOfBirth", {
+  //       label: "Ngày sinh",
+  //       placeholder: "Chọn ngày sinh",
+  //       validations: [{ type: "required", messageKey: "form.error.required" }],
+  //     }),
 
-      createSelectField("gender", {
-        label: "Giới tính",
-        placeholder: "Chọn giới tính",
-        options: [
-          { value: "male", label: "Nam" },
-          { value: "female", label: "Nữ" },
-          { value: "other", label: "Khác" },
-        ],
-        validations: [{ type: "required", messageKey: "form.error.required" }],
-      }),
+  //     createSelectField("gender", {
+  //       label: "Giới tính",
+  //       placeholder: "Chọn giới tính",
+  //       options: [
+  //         { value: "male", label: "Nam" },
+  //         { value: "female", label: "Nữ" },
+  //         { value: "other", label: "Khác" },
+  //       ],
+  //       validations: [{ type: "required", messageKey: "form.error.required" }],
+  //     }),
 
-      createInputField("address", {
-        label: "Địa chỉ hiện tại",
-        placeholder: "Số nhà, đường, quận/huyện, thành phố",
-        validations: [
-          { type: "required", messageKey: "form.error.required" },
-          { type: "minLength", value: 10, messageKey: "form.error.minLength" },
-        ],
-      }),
+  //     createInputField("address", {
+  //       label: "Địa chỉ hiện tại",
+  //       placeholder: "Số nhà, đường, quận/huyện, thành phố",
+  //       validations: [
+  //         { type: "required", messageKey: "form.error.required" },
+  //         { type: "minLength", value: 10, messageKey: "form.error.minLength" },
+  //       ],
+  //     }),
 
-      createSelectField("city", {
-        label: "Tỉnh/Thành phố",
-        placeholder: "Chọn tỉnh/thành phố",
-        options: [
-          { value: "hanoi", label: "Hà Nội" },
-          { value: "hcm", label: "TP. Hồ Chí Minh" },
-          { value: "danang", label: "Đà Nẵng" },
-          { value: "haiphong", label: "Hải Phòng" },
-          { value: "cantho", label: "Cần Thơ" },
-        ],
-        validations: [{ type: "required", messageKey: "form.error.required" }],
-      }),
+  //     createSelectField("city", {
+  //       label: "Tỉnh/Thành phố",
+  //       placeholder: "Chọn tỉnh/thành phố",
+  //       options: [
+  //         { value: "hanoi", label: "Hà Nội" },
+  //         { value: "hcm", label: "TP. Hồ Chí Minh" },
+  //         { value: "danang", label: "Đà Nẵng" },
+  //         { value: "haiphong", label: "Hải Phòng" },
+  //         { value: "cantho", label: "Cần Thơ" },
+  //       ],
+  //       validations: [{ type: "required", messageKey: "form.error.required" }],
+  //     }),
 
-      createSelectField("occupation", {
-        label: "Nghề nghiệp",
-        placeholder: "Chọn nghề nghiệp",
-        options: [
-          { value: "employee", label: "Nhân viên văn phòng" },
-          { value: "business", label: "Kinh doanh" },
-          { value: "freelancer", label: "Tự do" },
-          { value: "student", label: "Sinh viên" },
-          { value: "other", label: "Khác" },
-        ],
-        validations: [{ type: "required", messageKey: "form.error.required" }],
-      }),
+  //     createSelectField("occupation", {
+  //       label: "Nghề nghiệp",
+  //       placeholder: "Chọn nghề nghiệp",
+  //       options: [
+  //         { value: "employee", label: "Nhân viên văn phòng" },
+  //         { value: "business", label: "Kinh doanh" },
+  //         { value: "freelancer", label: "Tự do" },
+  //         { value: "student", label: "Sinh viên" },
+  //         { value: "other", label: "Khác" },
+  //       ],
+  //       validations: [{ type: "required", messageKey: "form.error.required" }],
+  //     }),
 
-      createSelectField("monthlyIncome", {
-        label: "Thu nhập hàng tháng",
-        placeholder: "Chọn mức thu nhập",
-        options: [
-          { value: "under5", label: "Dưới 5 triệu" },
-          { value: "5to10", label: "5 - 10 triệu" },
-          { value: "10to20", label: "10 - 20 triệu" },
-          { value: "20to50", label: "20 - 50 triệu" },
-          { value: "above50", label: "Trên 50 triệu" },
-        ],
-        validations: [{ type: "required", messageKey: "form.error.required" }],
-      }),
-    ],
-    {
-      description: "Vui lòng cung cấp thông tin cá nhân của bạn",
-      icon: <User className="h-5 w-5" />,
-    },
-  )
+  //     createSelectField("monthlyIncome", {
+  //       label: "Thu nhập hàng tháng",
+  //       placeholder: "Chọn mức thu nhập",
+  //       options: [
+  //         { value: "under5", label: "Dưới 5 triệu" },
+  //         { value: "5to10", label: "5 - 10 triệu" },
+  //         { value: "10to20", label: "10 - 20 triệu" },
+  //         { value: "20to50", label: "20 - 50 triệu" },
+  //         { value: "above50", label: "Trên 50 triệu" },
+  //       ],
+  //       validations: [{ type: "required", messageKey: "form.error.required" }],
+  //     }),
+  //   ],
+  //   {
+  //     description: "Vui lòng cung cấp thông tin cá nhân của bạn",
+  //     icon: <User className="h-5 w-5" />,
+  //   },
+  // )
 
   // Step 2: eKYC Verification
   .addStep(
@@ -129,11 +131,17 @@ const userOnboardingForm = multiStepForm()
     [
       createEkycField("ekycVerification", {
         label: "Xác thực danh tính eKYC",
-        description: "Vui lòng hoàn tất xác thực khuôn mặt để tiếp tục",
-        flowType: "FACE",
+        description:
+          "Sử dụng CMND/CCCD và khuôn mặt để xác thực danh tính nhanh chóng",
+        flowType: "DOCUMENT_TO_FACE",
         language: "vi",
-        height: 600,
+        // TODO: Couldnt be used yet, still under development
+        // mode: "modal",  // Khuyến nghị: dùng modal thay vì inline
+        mode: "inline",
+        buttonText: "Bắt đầu xác thực", // Custom button text
+        showDetailedSummary: true, // Hiển thị thông tin chi tiết sau khi thành công
         validations: [{ type: "required", messageKey: "form.error.required" }],
+        height: 600,
       }),
     ],
     {
@@ -232,17 +240,36 @@ const userOnboardingForm = multiStepForm()
   .build();
 
 export default function UserOnboardingPage() {
+  const resetForm = useOnboardingFormStore((state) => state.resetForm);
+
+  const handleReset = () => {
+    // Clear data from both persistence layers
+    localStorage.removeItem("user-onboarding-data");
+    resetForm();
+    // Reload the page to ensure a clean state for all components
+    window.location.reload();
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-8">
+        <div className="text-center mb-8 relative">
           <h1 className="text-4xl font-bold text-gray-900 mb-2">
             Đăng ký tài khoản vay
           </h1>
           <p className="text-lg text-gray-600">
             Hoàn tất các bước sau để bắt đầu sử dụng dịch vụ của chúng tôi
           </p>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleReset}
+            className="absolute top-0 right-0"
+          >
+            <RotateCw className="mr-2 h-4 w-4" />
+            Làm lại từ đầu
+          </Button>
         </div>
 
         {/* Multi-Step Form */}
@@ -253,10 +280,10 @@ export default function UserOnboardingPage() {
         {/* Footer Info */}
         <div className="mt-8 text-center text-sm text-gray-600">
           <p>
-            🔒 Thông tin của bạn được bảo mật tuyệt đối theo{" "}
+            {/* 🔒 Thông tin của bạn được bảo mật tuyệt đối theo{" "}
             <a href="/privacy" className="text-blue-600 hover:underline">
               chính sách bảo mật
-            </a>
+            </a> */}
           </p>
         </div>
       </div>

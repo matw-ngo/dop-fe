@@ -188,11 +188,14 @@ export interface SeparatorProps extends BaseComponentProps {
  * Props for Ekyc component
  */
 export interface EkycProps extends BaseComponentProps {
-  flowType?: "DOCUMENT" | "FACE";
+  flowType?: "DOCUMENT_TO_FACE" | "FACE_TO_DOCUMENT" | "FACE" | "DOCUMENT";
   language?: "vi" | "en";
   height?: string | number;
   containerId?: string;
   authToken?: string;
+  mode?: "modal" | "inline";
+  buttonText?: string;
+  showDetailedSummary?: boolean;
 }
 
 /**

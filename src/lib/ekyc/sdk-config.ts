@@ -151,7 +151,8 @@ export class EkycConfigBuilder {
       DEFAULT_LANGUAGE: "vi",
 
       // Document settings
-      LIST_TYPE_DOCUMENT: [-1, 5, 6, 7, 9],
+      // LIST_TYPE_DOCUMENT: [-1, 5, 6, 7, 9],
+      LIST_TYPE_DOCUMENT: [-1, 5, 6, 7],
       DOCUMENT_TYPE_START: 999, // 999 để hiển thị danh sách chọn document
 
       // API enablement flags
@@ -162,7 +163,7 @@ export class EkycConfigBuilder {
       ENABLE_GGCAPCHAR: true,
 
       // UI settings
-      HAS_RESULT_SCREEN: true,
+      HAS_RESULT_SCREEN: false,
       SHOW_HELP: true,
       SHOW_TRADEMARK: false,
       SHOW_STEP: true,
