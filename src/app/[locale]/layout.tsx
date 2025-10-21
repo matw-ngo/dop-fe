@@ -47,12 +47,12 @@ export default async function LocaleLayout({
         <NextIntlClientProvider locale={locale} messages={messages}>
           <Providers>
             {children}
-            <div className="fixed bottom-5 left-5 z-50">
+            {/* <div className="fixed bottom-5 left-5 z-50">
               <ThemeSelector />
             </div>
             <div className="fixed bottom-5 right-5 z-50">
               <LanguageSwitcher />
-            </div>
+            </div> */}
           </Providers>
         </NextIntlClientProvider>
         {/* <Script

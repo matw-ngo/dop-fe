@@ -60,40 +60,16 @@
       "name_prob": 0.9998669059653031,
       "new_post_code": [
         {
-          "city": [
-            "01",
-            "Thành phố Hà Nội",
-            1
-          ],
-          "district": [
-            "",
-            "",
-            1
-          ],
-          "ward": [
-            "00622",
-            "Phường Xuân Phương ",
-            1
-          ],
+          "city": ["01", "Thành phố Hà Nội", 1],
+          "district": ["", "", 1],
+          "ward": ["00622", "Phường Xuân Phương ", 1],
           "detail": "TDP Ngang",
           "type": "address"
         },
         {
-          "city": [
-            "01",
-            "Thành phố Hà Nội",
-            1
-          ],
-          "district": [
-            "",
-            "",
-            1
-          ],
-          "ward": [
-            "00622",
-            "Phường Xuân Phương ",
-            1
-          ],
+          "city": ["01", "Thành phố Hà Nội", 1],
+          "district": ["", "", 1],
+          "ward": ["00622", "Phường Xuân Phương ", 1],
           "detail": "",
           "type": "hometown"
         }
@@ -107,9 +83,7 @@
         "recaptured_result": "0",
         "check_photocopied_prob": 0,
         "corner_cut_prob": [
-          0.282930463552475,
-          0.282930463552475,
-          0.282930463552475,
+          0.282930463552475, 0.282930463552475, 0.282930463552475,
           0.282930463552475
         ],
         "check_photocopied_result": "0",
@@ -136,10 +110,7 @@
           "bright_spot_likelihood": "unlikely"
         },
         "bright_spot_score": 0,
-        "resolution": [
-          346,
-          553
-        ]
+        "resolution": [346, 553]
       },
       "checking_result_front": {
         "corner_cut_result": "0",
@@ -147,9 +118,7 @@
         "recaptured_result": "0",
         "check_photocopied_prob": 0,
         "corner_cut_prob": [
-          0.18865010142326355,
-          0.18865010142326355,
-          0.18865010142326355,
+          0.18865010142326355, 0.18865010142326355, 0.18865010142326355,
           0.18865010142326355
         ],
         "check_photocopied_result": "0",
@@ -164,25 +133,8 @@
       "recent_location": "TDP Ngang\nĐại Mỗ, Nam Từ Liêm, Hà Nội",
       "id_fake_warning": "no",
       "name_probs": [
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        0.9999998807907104,
-        1,
-        1,
-        1,
-        0.9974715709686279,
-        1,
-        1,
-        1,
-        1,
-        1,
-        0.9999997615814209,
-        1,
-        1
+        1, 1, 1, 1, 1, 1, 0.9999998807907104, 1, 1, 1, 0.9974715709686279, 1, 1,
+        1, 1, 1, 0.9999997615814209, 1, 1
       ],
       "issue_date_prob": 0.9995644629001618,
       "citizen_id": "-",
@@ -195,16 +147,9 @@
       "name_fake_warning_prob": 0.1577092683315277,
       "expire_warning": "no",
       "issue_date_probs": [
-        0.9999986886978149,
-        0.9999861717224121,
-        1,
-        0.999947190284729,
-        0.9998446702957153,
-        0.9999988079071045,
-        0.9999967813491821,
-        0.9997875094413757,
-        0.9960850477218628,
-        0.9999997615814209
+        0.9999986886978149, 0.9999861717224121, 1, 0.999947190284729,
+        0.9998446702957153, 0.9999988079071045, 0.9999967813491821,
+        0.9997875094413757, 0.9960850477218628, 0.9999997615814209
       ],
       "valid_date_prob": 0.9999981999397278,
       "origin_location_prob": 0.9999988851723848,
@@ -222,11 +167,7 @@
       "dob_fake_warning": false,
       "name_fake_warning": "real",
       "type_id": 5,
-      "mrz_probs": [
-        0.9886522889137268,
-        0.9999921917915344,
-        0.9982224702835083
-      ],
+      "mrz_probs": [0.9886522889137268, 0.9999921917915344, 0.9982224702835083],
       "match_qr": {},
       "card_type": "CĂN CƯỚC CÔNG DÂN",
       "quality_front": {
@@ -244,10 +185,7 @@
           "bright_spot_likelihood": "unlikely"
         },
         "bright_spot_score": 0,
-        "resolution": [
-          342,
-          548
-        ]
+        "resolution": [342, 548]
       },
       "match_front_back": {
         "match_sex": "yes",
@@ -265,41 +203,17 @@
       "post_code": [
         {
           "debug": "tree",
-          "city": [
-            "01",
-            "Thành phố Hà Nội",
-            1
-          ],
-          "district": [
-            "019",
-            "Quận Nam Từ Liêm",
-            1
-          ],
-          "ward": [
-            "00634",
-            "Phường Đại Mỗ",
-            1
-          ],
+          "city": ["01", "Thành phố Hà Nội", 1],
+          "district": ["019", "Quận Nam Từ Liêm", 1],
+          "ward": ["00634", "Phường Đại Mỗ", 1],
           "detail": "TDP Ngang",
           "type": "address"
         },
         {
           "debug": "tree",
-          "city": [
-            "01",
-            "Thành phố Hà Nội",
-            1
-          ],
-          "district": [
-            "019",
-            "Quận Nam Từ Liêm",
-            1
-          ],
-          "ward": [
-            "00634",
-            "Phường Đại Mỗ",
-            1
-          ],
+          "city": ["01", "Thành phố Hà Nội", 1],
+          "district": ["019", "Quận Nam Từ Liêm", 1],
+          "ward": ["00634", "Phường Đại Mỗ", 1],
           "detail": "",
           "type": "hometown"
         }
