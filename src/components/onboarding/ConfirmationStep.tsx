@@ -19,8 +19,11 @@ interface ConfirmationStepProps {
 }
 
 export function ConfirmationStep({ formData }: ConfirmationStepProps) {
-  const basicInfo = formData["basic-info"] || {};
-  const ekycInfo = formData["ekyc-verification"] || {};
+  console.log("\n".repeat(3));
+  console.log("[CONFIRMATION] ekycInfo", formData);
+  console.log("\n".repeat(3));
+  const basicInfo = formData["basic-Ifo"] || {};
+  const ekycInfo = formData["ekycVerification"] || {};
 
   // Format date
   const formatDate = (dateValue: any) => {

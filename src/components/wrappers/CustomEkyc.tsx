@@ -147,35 +147,35 @@ export const CustomEkyc = React.forwardRef<HTMLDivElement, CustomEkycProps>(
       setIsDialogOpen(true);
     }, []);
 
-    // // Listen to eKYC SDK events (for inline mode)
-    // React.useEffect(() => {
-    //   if (
-    //     mode !== "inline" ||
-    //     typeof window === "undefined" ||
-    //     disabled ||
-    //     isCompleted
-    //   )
-    //     return;
+    // Listen to eKYC SDK events (for inline mode)
+    React.useEffect(() => {
+      if (
+        mode !== "inline" ||
+        typeof window === "undefined" ||
+        disabled ||
+        isCompleted
+      )
+        return;
 
-    //   const handleEkycComplete = (event: CustomEvent) => {
-    //     console.log("[CustomEkyc] eKYC completed:", event.detail);
-    //     handleEkycSuccess(event.detail);
-    //   };
+      const handleEkycComplete = (event: CustomEvent) => {
+        console.log("[CustomEkyc] eKYC completed:", event.detail);
+        handleEkycSuccess(event.detail);
+      };
 
-    //   const handleEkycErrorEvent = (event: CustomEvent) => {
-    //     console.error("[CustomEkyc] eKYC error:", event.detail);
-    //     handleEkycError(new Error(event.detail?.message || "eKYC failed"));
-    //   };
+      const handleEkycErrorEvent = (event: CustomEvent) => {
+        console.error("[CustomEkyc] eKYC error:", event.detail);
+        handleEkycError(new Error(event.detail?.message || "eKYC failed"));
+      };
 
-    //   // Add event listeners (adjust event names based on actual SDK events)
-    //   window.addEventListener("ekyc:completed" as any, handleEkycComplete);
-    //   window.addEventListener("ekyc:error" as any, handleEkycErrorEvent);
+      // Add event listeners (adjust event names based on actual SDK events)
+      window.addEventListener("ekyc:completed" as any, handleEkycComplete);
+      window.addEventListener("ekyc:error" as any, handleEkycErrorEvent);
 
-    //   return () => {
-    //     window.removeEventListener("ekyc:completed" as any, handleEkycComplete);
-    //     window.removeEventListener("ekyc:error" as any, handleEkycErrorEvent);
-    //   };
-    // }, [mode, disabled, isCompleted, handleEkycSuccess, handleEkycError]);
+      return () => {
+        window.removeEventListener("ekyc:completed" as any, handleEkycComplete);
+        window.removeEventListener("ekyc:error" as any, handleEkycErrorEvent);
+      };
+    }, [mode, disabled, isCompleted, handleEkycSuccess, handleEkycError]);
 
     // // Render modal mode
     // if (mode === "modal") {

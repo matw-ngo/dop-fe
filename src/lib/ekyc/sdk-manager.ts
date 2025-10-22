@@ -96,11 +96,11 @@ export class EkycSdkManager {
         ...options.config,
         // Use END_FLOW callback as main callback
         CALL_BACK_END_FLOW: async (result: any) => {
-          console.log("🏁".repeat(50));
+          console.log("🏁".repeat(20));
           console.log("🔚 [END FLOW CALLBACK] Flow kết thúc - Callback chính!");
-          console.log("🏁".repeat(50));
+          console.log("🏁".repeat(20));
           console.log("[END FLOW CALLBACK] Result:", result);
-          console.log("🏁".repeat(50));
+          console.log("🏁".repeat(20));
           if (callbackFn) {
             callbackFn(result);
           }

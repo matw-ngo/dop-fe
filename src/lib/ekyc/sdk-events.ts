@@ -30,26 +30,26 @@ export class EkycEventManager {
   getResultHandler() {
     const handler = (result: EkycResult) => {
       console.log("\n".repeat(3));
-      console.log("⚡".repeat(50));
-      console.log("⚡".repeat(50));
+      console.log("⚡".repeat(20));
       console.log("[EKYC CALLBACK] Result:", result);
-      console.log("⚡".repeat(50));
+      console.log("⚡".repeat(20));
 
-      if (result && result.code === 0) {
-        this.handlers.onSuccess?.(result.data);
-        if (window.SDK && result.type_document !== undefined) {
-          window.SDK.viewResult(result.type_document, result);
-        }
+      if (result) {
+        this.handlers.onSuccess?.(result);
+        // if (window.SDK && result.type_document !== undefined) {
+        //   window.SDK.viewResult(result.type_document, result);
+        // }
       } else {
-        const errorMessage = result.message || "An unknown error occurred.";
-        this.handlers.onError?.(errorMessage);
+        this.handlers.onError?.("An unknown error occurred.");
       }
 
       this.handlers.onResult?.(result);
 
-      console.log("⚡".repeat(50));
-      console.log("🔚 [EKYC CALLBACK] KẾt thúc xử lý callback");
-      console.log("⚡".repeat(50));
+      console.log("⚡".repeat(20));
+      console.log(
+        "🔚 [EKYC CALLBACK] ================== END CALLBACK ==================",
+      );
+      console.log("⚡".repeat(20));
       console.log("\n".repeat(3));
     };
 
