@@ -212,7 +212,7 @@ export default function OnboardingSuccessPage() {
         </div>
       }
     >
-      <SuccessContent />
+      {/* <SuccessContent /> */}
     </Suspense>
   );
 }

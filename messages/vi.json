@@ -1,103 +1,68 @@
 {
-  "HomePage": {
-    "title": "Nền tảng cho vay kỹ thuật số",
-    "welcome": "Chào mừng bạn đến với dự án!",
-    "ctaButton": "Bắt đầu ngay"
+  "pages": {
+    "homePage": {
+      "title": "Nền tảng cho vay kỹ thuật số",
+      "welcome": "Chào mừng bạn đến với dự án!",
+      "ctaButton": "Bắt đầu ngay"
+    },
+    "userOnboardingPage": {
+      "title": "Đăng ký tài khoản vay",
+      "subtitle": "Hoàn tất các bước sau để bắt đầu sử dụng dịch vụ của chúng tôi",
+      "resetButton": "Làm lại từ đầu",
+      "noConfig": "Không có cấu hình form.",
+      "loadError": "Tải cấu hình đăng ký thất bại: {message}",
+      "successAlert": "Đăng ký thành công!",
+      "steps": {
+        "ekyc": {
+          "title": "Xác thực danh tính",
+          "label": "Xác thực danh tính eKYC",
+          "description": "Xác minh danh tính của bạn qua eKYC"
+        },
+        "confirmation": {
+          "title": "Xác nhận thông tin",
+          "description": "Xem lại và xác nhận thông tin"
+        }
+      },
+      "fields": {
+        "fullName": {
+          "label": "Họ và tên"
+        },
+        "email": {
+          "label": "Email"
+        },
+        "phoneNumber": {
+          "label": "Số điện thoại"
+        },
+        "dateOfBirth": {
+          "label": "Ngày sinh"
+        },
+        "gender": {
+          "label": "Giới tính",
+          "options": {
+            "male": "Nam",
+            "female": "Nữ",
+            "other": "Khác"
+          }
+        }
+      }
+    }
   },
   "form": {
-    "field": {
-      "default": {
-        "label": "Trường dữ liệu",
-        "placeholder": "Nhập giá trị..."
-      },
-      "textarea": {
-        "label": "Vùng văn bản",
-        "placeholder": "Nhập văn bản..."
-      },
-      "checkbox": {
-        "label": "Hộp kiểm"
-      },
-      "switch": {
-        "label": "Công tắc"
-      },
-      "slider": {
-        "label": "Thanh trượt"
-      },
-      "select": {
-        "label": "Lựa chọn",
-        "placeholder": "Chọn một tùy chọn..."
-      },
-      "radiogroup": {
-        "label": "Nhóm nút radio"
-      },
-      "datepicker": {
-        "label": "Chọn ngày",
-        "placeholder": "Chọn một ngày..."
-      },
-      "daterangepicker": {
-        "label": "Chọn khoảng thời gian",
-        "placeholder": "Chọn khoảng thời gian..."
-      },
-      "togglegroup": {
-        "label": "Nhóm chuyển đổi"
-      },
-      "inputotp": {
-        "label": "Mã xác thực"
-      },
-      "email": {
-        "label": "Địa chỉ Email",
-        "placeholder": "Nhập email của bạn"
-      },
-      "fullName": {
-        "label": "Họ và Tên",
-        "placeholder": "Nhập đầy đủ họ và tên của bạn",
-        "description": "Thông tin này sẽ được sử dụng để xác thực tài khoản."
-      },
-      "password": {
-        "label": "Mật khẩu",
-        "placeholder": "Nhập mật khẩu bảo mật"
-      }
-    },
-    "button": {
-      "default": {
-        "label": "Nút"
-      },
-      "submit": "Gửi",
+    "buttons": {
       "next": "Tiếp theo",
-      "previous": "Trước",
-      "cancel": "Hủy",
-      "save": "Lưu",
-      "reset": "Đặt lại"
+      "previous": "Trước"
     },
-    "label": {
-      "default": {
-        "text": "Nhãn"
-      }
-    },
-    "progress": {
-      "default": {
-        "label": "Tiến độ"
-      }
-    },
-    "error": {
+    "errors": {
       "required": "Trường này là bắt buộc",
       "minLength": "Phải có ít nhất {value} ký tự",
       "maxLength": "Phải có tối đa {value} ký tự",
       "min": "Phải có giá trị ít nhất {value}",
       "max": "Phải có giá trị tối đa {value}",
-      "email": {
-        "invalid": "Vui lòng nhập địa chỉ email hợp lệ"
-      },
-      "phone": {
-        "invalid": "Vui lòng nhập số điện thoại hợp lệ (10 chữ số)"
-      },
-      "url": {
-        "invalid": "Vui lòng nhập URL hợp lệ"
-      },
-      "password": {
-        "minLength": "Mật khẩu phải có ít nhất {value} ký tự",
-        "regex": "Mật khẩu phải chứa chữ hoa, chữ thường và số"
-      },
+      "emailInvalid": "Vui lòng nhập địa chỉ email hợp lệ",
+      "phoneInvalid": "Vui lòng nhập số điện thoại hợp lệ (10 chữ số)",
+      "urlInvalid": "Vui lòng nhập URL hợp lệ",
+      "passwordMinLength": "Mật khẩu phải có ít nhất {value} ký tự",
+      "passwordRegex": "Mật khẩu phải chứa chữ hoa, chữ thường và số",
       "number": "Phải là một số hợp lệ",
       "integer": "Phải là một số nguyên",
       "positive": "Phải là một số dương",
@@ -105,10 +70,12 @@
     }
   },
   "common": {
-    "defaultLabel": "Trường dữ liệu",
-    "defaultPlaceholder": "Nhập tại đây...",
     "loading": "Đang tải...",
     "error": "Đã xảy ra lỗi",
-    "success": "Thành công!"
+    "success": "Thành công!",
+    "submit": "Gửi",
+    "cancel": "Hủy",
+    "save": "Lưu",
+    "reset": "Đặt lại"
   }
 }
