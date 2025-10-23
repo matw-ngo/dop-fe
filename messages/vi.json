@@ -76,6 +76,7 @@
     "submit": "Gửi",
     "cancel": "Hủy",
     "save": "Lưu",
-    "reset": "Đặt lại"
+    "reset": "Đặt lại",
+    "retry": "Thử lại"
   }
 }

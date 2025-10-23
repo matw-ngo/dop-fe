@@ -40,6 +40,7 @@ export interface MappedFlow {
   updatedAt: Date;
 }
 
+// Mapper for a single Step
 export function mapApiStepToStep(apiStep: ApiStep): MappedStep {
   return {
     id: apiStep.id,

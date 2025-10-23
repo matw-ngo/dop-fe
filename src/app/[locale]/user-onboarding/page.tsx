@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 import { RotateCw } from "lucide-react";
 import { useOnboardingFormStore } from "@/store/use-onboarding-form-store";
 import { Button } from "@/components/ui/button";
-import { OnboardingForm } from "./components/onboarding-form";
+import { OnboardingFormContainer } from "./components/onboarding-form.container";
 
 export default function UserOnboardingPage() {
   const t = useTranslations("pages.userOnboardingPage");
@@ -35,7 +35,7 @@ export default function UserOnboardingPage() {
           </Button>
         </div>
 
-        <OnboardingForm />
+        <OnboardingFormContainer />
       </div>
     </div>
   );

@@ -1,29 +1,46 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { Loader2 } from "lucide-react";
-import { useOnboardingFormStore } from "@/store/use-onboarding-form-store";
-import { useFlow } from "@/hooks/useFlow";
+import { Loader2, RotateCw } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import { MultiStepFormRenderer } from "@/components/renderer/MultiStepFormRenderer";
 import { useOnboardingFormConfig } from "../hooks/use-onboarding-form-config";
+import type { MappedFlow } from "@/mappers/flowMapper";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Button } from "@/components/ui/button";
 
-export function OnboardingForm() {
+interface OnboardingFormProps {
+  flowData: MappedFlow | undefined;
+  isLoading: boolean;
+  isError: boolean;
+  error: Error | null;
+  refetch: () => void;
+}
+
+export function OnboardingForm({
+  flowData,
+  isLoading,
+  isError,
+  error,
+  refetch,
+}: OnboardingFormProps) {
   const t = useTranslations("pages.userOnboardingPage");
-  const {
-    data: flowData,
-    isLoading,
-    isError,
-    error,
-  } = useFlow("localhost:3000");
-
+  const tCommon = useTranslations("common");
   const formConfig = useOnboardingFormConfig(flowData, t);
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center min-h-[400px]">
-        <Loader2 className="h-16 w-16 animate-spin" />
+      <div className="bg-white rounded-2xl shadow-xl p-8 space-y-8">
+        <Skeleton className="h-8 w-3/4" />
+        <div className="space-y-4 pt-4">
+          <Skeleton className="h-10 w-full" />
+          <Skeleton className="h-10 w-full" />
+          <Skeleton className="h-10 w-2/3" />
+        </div>
+        <div className="flex justify-end pt-4">
+          <Skeleton className="h-12 w-32" />
+        </div>
       </div>
     );
   }
@@ -33,10 +50,16 @@ export function OnboardingForm() {
       <div className="flex justify-center items-center min-h-[400px]">
         <Alert variant="destructive" className="max-w-lg">
           <ExclamationTriangleIcon className="h-4 w-4" />
-          <AlertTitle>Error</AlertTitle>
+          <AlertTitle>{tCommon("error")}</AlertTitle>
           <AlertDescription>
-            {t("loadError", { message: error?.message })}
+            {t("loadError", { message: error?.message || "Unknown error" })}
           </AlertDescription>
+          <div className="mt-4">
+            <Button variant="secondary" onClick={() => refetch()}>
+              <RotateCw className="mr-2 h-4 w-4" />
+              {tCommon("retry")}
+            </Button>
+          </div>
         </Alert>
       </div>
     );
