@@ -4,36 +4,85 @@
  */
 
 export interface paths {
-  "/users": {
+  "/flows/{domain}": {
     parameters: {
       query?: never;
       header?: never;
       path?: never;
       cookie?: never;
     };
-    /** Get all users */
-    get: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path?: never;
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: {
-        /** @description A list of users. */
-        200: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": components["schemas"]["User"][];
-          };
-        };
-      };
-    };
+    /** Get domain onboarding flow */
+    get: operations["get-domain-flow"];
     put?: never;
     post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/leads": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Create a new lead */
+    post: operations["create-lead"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/leads/{id}/submit-info": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Submit lead info */
+    post: operations["submit-info"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/leads/{id}/submit-otp": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Submit OTP for lead */
+    post: operations["submit-otp"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/leads/{id}/resend-otp": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Resend OTP for lead */
+    post: operations["resend-otp"];
     delete?: never;
     options?: never;
     head?: never;
@@ -44,17 +93,303 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
   schemas: {
-    User: {
-      /** Format: int64 */
-      id?: number;
-      name?: string;
+    /** Format: uuid */
+    uuid: string;
+    /**
+     * @description The status of the flow
+     * @enum {string}
+     */
+    FlowStatus: "FLOW_STATUS_ACTIVE" | "FLOW_STATUS_INACTIVE";
+    Step: {
+      id: components["schemas"]["uuid"];
+      use_ekyc: boolean;
+      send_otp: boolean;
+      have_purpose: boolean;
+      required_purpose: boolean;
+      have_phone_number: boolean;
+      required_phone_number: boolean;
+      have_email: boolean;
+      required_email: boolean;
+      have_full_name: boolean;
+      required_full_name: boolean;
+      have_national_id: boolean;
+      required_national_id: boolean;
+      have_second_national_id: boolean;
+      required_second_national_id: boolean;
+      have_gender: boolean;
+      required_gender: boolean;
+      have_location: boolean;
+      required_location: boolean;
+      have_birthday: boolean;
+      required_birthday: boolean;
+      have_income_type: boolean;
+      required_income_type: boolean;
+      have_income: boolean;
+      required_income: boolean;
+      have_having_loan: boolean;
+      required_having_loan: boolean;
+      have_career_status: boolean;
+      required_career_status: boolean;
+      have_career_type: boolean;
+      required_career_type: boolean;
+      have_credit_status: boolean;
+      required_credit_status: boolean;
+      /** Format: date-time */
+      created_at: string;
+      /** Format: date-time */
+      updated_at: string;
+    };
+    /** @description Get Flow by domain response */
+    FlowDetail: {
+      id: components["schemas"]["uuid"];
+      name: string;
+      description: string;
+      flow_status: components["schemas"]["FlowStatus"];
+      steps: components["schemas"]["Step"][];
+      /** Format: date-time */
+      created_at: string;
+      /** Format: date-time */
+      updated_at: string;
+    };
+    /** @enum {string} */
+    OTPType: "sms" | "email" | "voice";
+    /** @enum {string} */
+    Gender: "male" | "female" | "other";
+    /** @enum {string} */
+    HavingLoan:
+      | "no_loan"
+      | "one_loan"
+      | "two_loans"
+      | "three_loans"
+      | "more_than_three_loans";
+    /** @enum {string} */
+    CareerStatus:
+      | "employed"
+      | "self_employed"
+      | "unemployed"
+      | "housewife"
+      | "retired";
+    /** @enum {string} */
+    CreditStatus: "no_bad_debt" | "bad_debt" | "bad_debt_last3_year";
+    SubmitLeadInfoRequestBody: {
+      flow_id: components["schemas"]["uuid"];
+      step_id: components["schemas"]["uuid"];
+      phone_number?: string;
+      /** Format: email */
+      email?: string;
+      purpose?: string;
+      /** Format: int32 */
+      loan_amount?: number;
+      /** Format: int32 */
+      loan_period?: number;
+      otp_type?: components["schemas"]["OTPType"];
+      full_name?: string;
+      national_id?: string;
+      gender?: components["schemas"]["Gender"];
+      location?: components["schemas"]["uuid"];
+      /** Format: date */
+      birthday?: string;
+      income_type?: string;
+      /** Format: int32 */
+      income?: number;
+      having_loan?: components["schemas"]["HavingLoan"];
+      career_status?: components["schemas"]["CareerStatus"];
+      career_type?: string;
+      credit_status?: components["schemas"]["CreditStatus"];
+    };
+    CreateLeadRequestBody: {
+      flow_id: components["schemas"]["uuid"];
+      domain: string;
+      deviece_info: Record<string, never>;
+      tracking_params: Record<string, never>;
+      info: components["schemas"]["SubmitLeadInfoRequestBody"];
+    };
+    CreateLeadResponseBody: {
+      id: components["schemas"]["uuid"];
+      token: string;
+    };
+    SubmitOTPRequestBody: {
+      /** @description The token to submit OTP */
+      token: string;
+      /** @description The OTP code received */
+      otp: string;
+    };
+    ResendOTPRequestBody: {
+      /** @description The phone number or email to resend OTP */
+      target: string;
     };
   };
-  responses: never;
-  parameters: never;
+  responses: {
+    /** @description OK */
+    200: {
+      headers: {
+        [name: string]: unknown;
+      };
+      content?: never;
+    };
+    /** @description Unauthorized */
+    401: {
+      headers: {
+        [name: string]: unknown;
+      };
+      content?: never;
+    };
+    /** @description Forbidden */
+    403: {
+      headers: {
+        [name: string]: unknown;
+      };
+      content?: never;
+    };
+    /** @description Internal Server Error */
+    500: {
+      headers: {
+        [name: string]: unknown;
+      };
+      content?: never;
+    };
+    /** @description Service Unavailable */
+    503: {
+      headers: {
+        [name: string]: unknown;
+      };
+      content?: never;
+    };
+  };
+  parameters: {
+    /** @description domain */
+    domain: string;
+    /** @description lead id */
+    lead_id: string;
+  };
   requestBodies: never;
   headers: never;
   pathItems: never;
 }
 export type $defs = Record<string, never>;
-export type operations = Record<string, never>;
+export interface operations {
+  "get-domain-flow": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description domain */
+        domain: components["parameters"]["domain"];
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description success */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["FlowDetail"];
+        };
+      };
+      401: components["responses"]["401"];
+      403: components["responses"]["403"];
+      500: components["responses"]["500"];
+      503: components["responses"]["503"];
+    };
+  };
+  "create-lead": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateLeadRequestBody"];
+      };
+    };
+    responses: {
+      /** @description success */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["CreateLeadResponseBody"];
+        };
+      };
+      401: components["responses"]["401"];
+      403: components["responses"]["403"];
+      500: components["responses"]["500"];
+      503: components["responses"]["503"];
+    };
+  };
+  "submit-info": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description lead id */
+        id: components["parameters"]["lead_id"];
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["SubmitLeadInfoRequestBody"];
+      };
+    };
+    responses: {
+      200: components["responses"]["200"];
+      401: components["responses"]["401"];
+      403: components["responses"]["403"];
+      500: components["responses"]["500"];
+      503: components["responses"]["503"];
+    };
+  };
+  "submit-otp": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description lead id */
+        id: components["parameters"]["lead_id"];
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["SubmitOTPRequestBody"];
+      };
+    };
+    responses: {
+      200: components["responses"]["200"];
+      401: components["responses"]["401"];
+      403: components["responses"]["403"];
+      500: components["responses"]["500"];
+      503: components["responses"]["503"];
+    };
+  };
+  "resend-otp": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description lead id */
+        id: components["parameters"]["lead_id"];
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["ResendOTPRequestBody"];
+      };
+    };
+    responses: {
+      200: components["responses"]["200"];
+      401: components["responses"]["401"];
+      403: components["responses"]["403"];
+      500: components["responses"]["500"];
+      503: components["responses"]["503"];
+    };
+  };
+}
