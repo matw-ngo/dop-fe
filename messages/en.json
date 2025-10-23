@@ -11,6 +11,7 @@
       "resetButton": "Start Over",
       "noConfig": "No form configuration available.",
       "loadError": "Failed to load onboarding configuration: {message}",
+      "loadErrorTitle": "Could Not Load Form",
       "successAlert": "Registration successful!",
       "steps": {
         "ekyc": {
@@ -78,5 +79,13 @@
     "save": "Save",
     "reset": "Reset",
     "retry": "Retry"
+  },
+  "components": {
+    "errorState": {
+      "defaultTitle": "An Unexpected Error Occurred",
+      "description": "Please try again. If the problem persists, contact support.",
+      "showDetails": "Show Details",
+      "hideDetails": "Hide Details"
+    }
   }
 }

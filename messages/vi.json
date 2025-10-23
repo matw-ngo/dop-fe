@@ -11,6 +11,7 @@
       "resetButton": "Làm lại từ đầu",
       "noConfig": "Không có cấu hình form.",
       "loadError": "Tải cấu hình đăng ký thất bại: {message}",
+      "loadErrorTitle": "Không thể tải được Form",
       "successAlert": "Đăng ký thành công!",
       "steps": {
         "ekyc": {
@@ -78,5 +79,13 @@
     "save": "Lưu",
     "reset": "Đặt lại",
     "retry": "Thử lại"
+  },
+  "components": {
+    "errorState": {
+      "defaultTitle": "Đã xảy ra lỗi không mong muốn",
+      "description": "Vui lòng thử lại. Nếu sự cố vẫn tiếp diễn, hãy liên hệ với bộ phận hỗ trợ.",
+      "showDetails": "Hiển thị chi tiết",
+      "hideDetails": "Ẩn chi tiết"
+    }
   }
 }
