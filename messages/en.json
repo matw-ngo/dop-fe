@@ -46,6 +46,12 @@
           }
         }
       }
+    },
+    "notFoundPage": {
+      "title": "Page Not Found",
+      "description": "Sorry, we couldn’t find the page you’re looking for.",
+      "backToHome": "Go Back Home",
+      "contactSupport": "Contact Support"
     }
   },
   "form": {
@@ -85,7 +91,8 @@
       "defaultTitle": "An Unexpected Error Occurred",
       "description": "Please try again. If the problem persists, contact support.",
       "showDetails": "Show Details",
-      "hideDetails": "Hide Details"
+      "hideDetails": "Hide Details",
+      "retryButton": "Retry"
     }
   }
 }

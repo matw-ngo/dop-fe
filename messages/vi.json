@@ -46,6 +46,12 @@
           }
         }
       }
+    },
+    "notFoundPage": {
+      "title": "Không Tìm Thấy Trang",
+      "description": "Rất tiếc, chúng tôi không thể tìm thấy trang bạn đang tìm kiếm.",
+      "backToHome": "Quay về Trang Chủ",
+      "contactSupport": "Liên hệ hỗ trợ"
     }
   },
   "form": {
@@ -85,7 +91,8 @@
       "defaultTitle": "Đã xảy ra lỗi không mong muốn",
       "description": "Vui lòng thử lại. Nếu sự cố vẫn tiếp diễn, hãy liên hệ với bộ phận hỗ trợ.",
       "showDetails": "Hiển thị chi tiết",
-      "hideDetails": "Ẩn chi tiết"
+      "hideDetails": "Ẩn chi tiết",
+      "retryButton": "Thử lại"
     }
   }
 }
