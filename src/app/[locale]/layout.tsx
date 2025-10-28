@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
+import { Analytics } from "@vercel/analytics/next";
 import { NextIntlClientProvider } from "next-intl";
 
 // @ts-ignore
@@ -69,6 +70,7 @@ export default async function LocaleLayout({
           strategy="beforeInteractive"
         />
         <Script src="/lib/VNPTQRUpload.js" strategy="beforeInteractive" /> */}
+        <Analytics />
       </body>
     </html>
   );

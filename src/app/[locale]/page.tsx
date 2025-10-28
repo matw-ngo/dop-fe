@@ -1,11 +1,21 @@
-"use client";
+import Blog from "@/components/organisms/homepage/blog";
+import Community from "@/components/organisms/homepage/community";
+import Features from "@/components/organisms/homepage/features";
+import Footer from "@/components/organisms/footer.v2";
+import Header from "@/components/organisms/header.v2";
+import Hero from "@/components/organisms/homepage/hero";
+import Stats from "@/components/organisms/homepage/stats";
 
-import EkycExample from "@/components/features/ekyc/ekyc-example";
-
-export default function HomePage() {
+export default function Home() {
   return (
-    <main className="p-4">
-      <EkycExample />
+    <main className="min-h-screen bg-white">
+      <Header />
+      <Hero />
+      <Stats />
+      <Features />
+      <Blog />
+      <Community />
+      <Footer />
     </main>
   );
 }
