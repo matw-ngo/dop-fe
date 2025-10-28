@@ -1,48 +1,30 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Header } from "./header";
-import {
-  CreditCard,
-  Building,
-  Calculator,
-  FileText,
-  HelpCircle,
-  Users,
-  TrendingUp,
-  Shield,
-  Phone,
-} from "lucide-react";
+import Header from "./header";
+import { NavbarConfig } from "@/configs/navbar-config";
 
 const meta: Meta<typeof Header> = {
   title: "Organisms/Header",
   component: Header,
   tags: ["autodocs"],
   parameters: {
-    layout: "padded",
+    layout: "fullscreen",
     docs: {
       description: {
         component:
-          "Header component with navigation, logo, contact info and responsive mobile menu.",
+          "Header component that dynamically renders navigation based on company-specific configuration. It supports multi-level dropdowns, different navigation items per company, and path-based visibility.",
       },
     },
   },
   argTypes: {
-    variant: {
+    company: {
       control: "select",
-      options: ["default", "minimal", "sticky", "transparent"],
-      description: "Visual variant of the header",
+      options: ["finzone", "example-corp"],
+      description: "The company to load the navigation configuration for.",
     },
-    size: {
-      control: "select",
-      options: ["sm", "md", "lg"],
-      description: "Size of the header",
-    },
-    showContactInfo: {
-      control: "boolean",
-      description: "Show contact information bar",
-    },
-    showLanguageSwitch: {
-      control: "boolean",
-      description: "Show language switcher",
+    configOverride: {
+      control: "object",
+      description:
+        "A complete NavbarConfig object to override the default configuration. Use this for custom, one-off headers.",
     },
   },
 };
@@ -50,225 +32,123 @@ const meta: Meta<typeof Header> = {
 export default meta;
 type Story = StoryObj<typeof Header>;
 
-// Sample navigation data
-const sampleNavigation = [
-  {
-    title: "Sản phẩm vay",
-    icon: <CreditCard className="w-4 h-4" />,
-    children: [
-      {
-        title: "Vay tiêu dùng",
-        href: "/loans/personal",
-        description: "Vay nhanh cho nhu cầu cá nhân với lãi suất ưu đãi",
-        icon: <Users className="w-4 h-4" />,
-        badge: "Phổ biến",
-      },
-      {
-        title: "Vay kinh doanh",
-        href: "/loans/business",
-        description: "Hỗ trợ vốn cho doanh nghiệp và cá nhân kinh doanh",
-        icon: <Building className="w-4 h-4" />,
-      },
-      {
-        title: "Vay mua nhà",
-        href: "/loans/home",
-        description: "Thực hiện ước mơ có nhà với lãi suất cạnh tranh",
-        icon: <Shield className="w-4 h-4" />,
-        badge: "Mới",
-      },
-      {
-        title: "Vay trả góp",
-        href: "/loans/installment",
-        description: "Mua sắm thông minh với hình thức trả góp linh hoạt",
-        icon: <Calculator className="w-4 h-4" />,
-      },
-    ],
-  },
-  {
-    title: "Công cụ",
-    icon: <Calculator className="w-4 h-4" />,
-    children: [
-      {
-        title: "Máy tính khoản vay",
-        href: "/calculator",
-        description: "Tính toán số tiền vay và lãi suất phù hợp",
-        icon: <Calculator className="w-4 h-4" />,
-      },
-      {
-        title: "So sánh lãi suất",
-        href: "/compare",
-        description: "So sánh lãi suất từ các ngân hàng khác nhau",
-        icon: <TrendingUp className="w-4 h-4" />,
-      },
-    ],
-  },
-  {
-    title: "Hướng dẫn",
-    href: "/guides",
-    icon: <FileText className="w-4 h-4" />,
-  },
-  {
-    title: "Hỗ trợ",
-    href: "/support",
-    icon: <HelpCircle className="w-4 h-4" />,
-  },
-];
-
-const contactInfo = {
-  phone: "1900 1234",
-  email: "support@loanapp.vn",
-  address: "Tầng 10, Tòa nhà ABC, Quận 1, TP.HCM",
-};
-
-export const Default: Story = {
+export const FinZone: Story = {
+  name: "Default (FinZone)",
   args: {
-    navigation: sampleNavigation,
-    actions: {
-      login: {
-        text: "Đăng nhập",
-        href: "/login",
-        variant: "ghost",
-      },
-      cta: {
-        text: "Đăng ký vay",
-        href: "/apply",
-        variant: "default",
-      },
+    company: "finzone",
+  },
+  parameters: {
+    docs: {
+      storyDescription:
+        "Displays the default header for 'FinZone'. This is the default behavior when no `company` prop is provided or when `company` is 'finzone'.",
     },
   },
 };
 
-export const WithContactInfo: Story = {
+export const ExampleCorp: Story = {
   args: {
-    navigation: sampleNavigation,
-    contactInfo,
-    showContactInfo: true,
-    actions: {
-      login: {
-        text: "Đăng nhập",
-        href: "/login",
-        variant: "ghost",
-      },
-      cta: {
-        text: "Đăng ký vay ngay",
-        href: "/apply",
-        variant: "default",
-      },
+    company: "example-corp",
+  },
+  parameters: {
+    docs: {
+      storyDescription:
+        "Displays the header configured for 'Example Corp', demonstrating the multi-company capability.",
     },
   },
 };
 
-export const WithLanguageSwitch: Story = {
-  args: {
-    navigation: sampleNavigation,
-    showLanguageSwitch: true,
-    currentLanguage: "vi",
-    actions: {
-      login: {
-        text: "Đăng nhập",
-        href: "/login",
-        variant: "ghost",
-      },
-      cta: {
-        text: "Apply Now",
-        href: "/apply",
-        variant: "default",
-      },
+const customConfig: NavbarConfig = {
+  company: "custom",
+  logo: {
+    text: "Custom App",
+    href: "/",
+    iconColor: "#ef4444",
+    iconLetter: "C",
+  },
+  navigation: [
+    { id: "home", label: "Home", type: "link", href: "/" },
+    {
+      id: "products",
+      label: "Products",
+      type: "dropdown",
+      children: [
+        { id: "prod-a", label: "Product A", type: "link", href: "/products/a" },
+        { id: "prod-b", label: "Product B", type: "link", href: "/products/b" },
+      ],
     },
-    onLanguageChange: (lang) => console.log("Language changed to:", lang),
+    { id: "about", label: "About Us", type: "link", href: "/about" },
+    { id: "contact", label: "Contact", type: "link", href: "/contact" },
+  ],
+};
+
+export const CustomConfigOverride: Story = {
+  name: "Custom Config (Override)",
+  args: {
+    configOverride: customConfig,
+  },
+  parameters: {
+    docs: {
+      storyDescription:
+        "Demonstrates providing a complete custom configuration via the `configOverride` prop. This bypasses the built-in company configs and is useful for special cases.",
+    },
   },
 };
 
-export const Sticky: Story = {
+export const HiddenOnPath: Story = {
+  name: "Hidden on Specific Path",
   args: {
-    variant: "sticky",
-    navigation: sampleNavigation,
-    actions: {
-      login: {
-        text: "Đăng nhập",
-        href: "/login",
-        variant: "ghost",
-      },
-      cta: {
-        text: "Đăng ký vay",
-        href: "/apply",
-        variant: "default",
+    company: "finzone",
+  },
+  parameters: {
+    nextjs: {
+      router: {
+        // This path is in the `hideOnPaths` array in the finzone config
+        pathname: "/thong-tin-vay/some-loan-details",
       },
     },
+    docs: {
+      storyDescription:
+        "Demonstrates the `hideOnPaths` feature. The header for 'FinZone' is configured to be hidden on paths containing `/thong-tin-vay/`. The header should not be visible in this story.",
+    },
+  },
+  render: (args) => (
+    <div className="p-8 bg-red-50 text-red-800">
+      <Header {...args} />
+      <p>
+        The header should be hidden on this page (path:
+        /thong-tin-vay/some-loan-details). If you see this message but no
+        header, the story is working correctly.
+      </p>
+    </div>
+  ),
+};
+
+export const StickyBehavior: Story = {
+  name: "Sticky Behavior",
+  args: {
+    company: "finzone",
   },
   render: (args) => (
     <div>
       <Header {...args} />
-      <div className="h-[200vh] bg-gradient-to-b from-blue-50 to-white p-8">
-        <div className="pt-20">
-          <h1 className="text-4xl font-bold text-center mb-8">
-            Scroll to see sticky header effect
+      <div className="h-[200vh] bg-gradient-to-b from-slate-50 to-white p-8">
+        <div className="pt-24 max-w-2xl mx-auto">
+          <h1 className="text-4xl font-bold text-center mb-8 text-slate-800">
+            Scroll Down
           </h1>
-          <p className="text-center text-muted-foreground">
-            The header will become fixed and gain a backdrop blur effect when
-            scrolling.
+          <p className="text-center text-slate-600">
+            The header is sticky by default and will remain fixed at the top of
+            the viewport as you scroll through the page content. This ensures
+            navigation is always accessible.
           </p>
         </div>
       </div>
     </div>
   ),
-};
-
-export const Minimal: Story = {
-  args: {
-    variant: "minimal",
-    navigation: [
-      { title: "Trang chủ", href: "/" },
-      { title: "Sản phẩm", href: "/products" },
-      { title: "Về chúng tôi", href: "/about" },
-      { title: "Liên hệ", href: "/contact" },
-    ],
-    actions: {
-      login: {
-        text: "Đăng nhập",
-        href: "/login",
-        variant: "ghost",
-      },
-    },
-  },
-};
-
-export const Large: Story = {
-  args: {
-    size: "lg",
-    navigation: sampleNavigation,
-    contactInfo,
-    showContactInfo: true,
-    showLanguageSwitch: true,
-    actions: {
-      login: {
-        text: "Đăng nhập tài khoản",
-        href: "/login",
-        variant: "outline",
-      },
-      cta: {
-        text: "Đăng ký vay ngay",
-        href: "/apply",
-        variant: "default",
-      },
-    },
-  },
-};
-
-export const Small: Story = {
-  args: {
-    size: "sm",
-    navigation: [
-      { title: "Vay nhanh", href: "/quick-loan" },
-      { title: "Máy tính", href: "/calculator" },
-      { title: "Hỗ trợ", href: "/support" },
-    ],
-    actions: {
-      cta: {
-        text: "Vay ngay",
-        href: "/apply",
-        variant: "default",
-      },
+  parameters: {
+    docs: {
+      storyDescription:
+        "The header has a `sticky top-0` class by default, making it stay at the top of the page when scrolling. This story uses a long content area to demonstrate this behavior.",
     },
   },
 };

@@ -1,417 +1,212 @@
-"use client";
-
-import * as React from "react";
-import { cn } from "@/lib/utils";
-import { NewsletterForm } from "@/components/molecules/newsletter-form";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { Badge } from "@/components/ui/badge";
-import {
-  Phone,
-  Mail,
-  MapPin,
-  Facebook,
-  Twitter,
-  Instagram,
-  Linkedin,
-  Youtube,
-  Globe,
-  Shield,
-  Award,
-  Clock,
-  ArrowUp,
-} from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
-
-export interface FooterLink {
-  title: string;
-  href: string;
-  external?: boolean;
-  badge?: string;
-}
-
-export interface FooterColumn {
-  title: string;
-  links: FooterLink[];
-}
-
-export interface SocialLink {
-  platform: string;
-  href: string;
-  icon: React.ReactNode;
-}
-
-export interface ContactInfo {
-  phone?: string;
-  email?: string;
-  address?: string;
-  workingHours?: string;
-}
-
-export interface FooterProps {
-  logo?: {
-    src?: string;
-    alt?: string;
-    text?: string;
-    width?: number;
-    height?: number;
-  };
-  description?: string;
-  columns: FooterColumn[];
-  socialLinks?: SocialLink[];
-  contactInfo?: ContactInfo;
-  newsletterConfig?: {
-    show?: boolean;
-    title?: string;
-    description?: string;
-    placeholder?: string;
-  };
-  bottomText?: {
-    copyright?: string;
-    links?: FooterLink[];
-  };
-  variant?: "default" | "minimal" | "detailed" | "newsletter-focus";
-  size?: "sm" | "md" | "lg";
-  className?: string;
-  showBackToTop?: boolean;
-  certifications?: Array<{
-    name: string;
-    icon?: React.ReactNode;
-    description?: string;
-  }>;
-  background?: "default" | "dark" | "gradient";
-}
-
-export function Footer({
-  logo = {
-    text: "LoanApp",
-    width: 120,
-    height: 40,
-  },
-  description = "Nền tảng cho vay trực tuyến uy tín hàng đầu Việt Nam, cung cấp giải pháp tài chính nhanh chóng và an toàn.",
-  columns,
-  socialLinks = [],
-  contactInfo,
-  newsletterConfig = { show: true },
-  bottomText,
-  variant = "default",
-  size = "md",
-  className,
-  showBackToTop = true,
-  certifications = [],
-  background = "default",
-}: FooterProps) {
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
-  const variantStyles = {
-    default: {
-      container: "pt-16 pb-8",
-      mainSection: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12",
-      brandSection: "lg:col-span-1",
-      linksSection: "lg:col-span-3 grid grid-cols-1 md:grid-cols-3 gap-8",
-    },
-    minimal: {
-      container: "pt-12 pb-6",
-      mainSection: "grid grid-cols-1 md:grid-cols-3 gap-8 mb-8",
-      brandSection: "md:col-span-1",
-      linksSection: "md:col-span-2 grid grid-cols-2 gap-8",
-    },
-    detailed: {
-      container: "pt-20 pb-10",
-      mainSection: "grid grid-cols-1 lg:grid-cols-5 gap-8 mb-16",
-      brandSection: "lg:col-span-2",
-      linksSection: "lg:col-span-3 grid grid-cols-1 md:grid-cols-3 gap-8",
-    },
-    "newsletter-focus": {
-      container: "pt-16 pb-8",
-      mainSection: "space-y-12 mb-12",
-      brandSection: "",
-      linksSection: "grid grid-cols-1 md:grid-cols-4 gap-8",
-    },
-  };
-
-  const sizeStyles = {
-    sm: {
-      title: "text-base font-semibold",
-      text: "text-sm",
-      container: "max-w-4xl",
-    },
-    md: {
-      title: "text-lg font-semibold",
-      text: "text-sm",
-      container: "max-w-6xl",
-    },
-    lg: {
-      title: "text-xl font-bold",
-      text: "text-base",
-      container: "max-w-7xl",
-    },
-  };
-
-  const backgroundStyles = {
-    default: "bg-background border-t",
-    dark: "bg-gray-900 text-white",
-    gradient:
-      "bg-gradient-to-br from-primary/5 via-background to-secondary/5 border-t",
-  };
-
-  const styles = variantStyles[variant];
-  const sizes = sizeStyles[size];
-  const bgStyle = backgroundStyles[background];
-
-  const renderLogo = () => (
-    <div className="flex items-center space-x-2 mb-4">
-      {logo.src ? (
-        <Image
-          src={logo.src}
-          alt={logo.alt || "Logo"}
-          width={logo.width}
-          height={logo.height}
-          className="object-contain"
-        />
-      ) : (
-        <div className={cn("font-bold text-primary", sizes.title)}>
-          {logo.text}
-        </div>
-      )}
-    </div>
-  );
-
-  const renderBrandSection = () => (
-    <div className={styles.brandSection}>
-      {renderLogo()}
-
-      {description && (
-        <p
-          className={cn(
-            "text-muted-foreground mb-6 leading-relaxed",
-            sizes.text,
-          )}
-        >
-          {description}
-        </p>
-      )}
-
-      {/* Contact Info */}
-      {contactInfo && (
-        <div className="space-y-3 mb-6">
-          {contactInfo.phone && (
-            <div className="flex items-center space-x-2 text-muted-foreground">
-              <Phone className="w-4 h-4" />
-              <span className={sizes.text}>{contactInfo.phone}</span>
-            </div>
-          )}
-          {contactInfo.email && (
-            <div className="flex items-center space-x-2 text-muted-foreground">
-              <Mail className="w-4 h-4" />
-              <span className={sizes.text}>{contactInfo.email}</span>
-            </div>
-          )}
-          {contactInfo.address && (
-            <div className="flex items-start space-x-2 text-muted-foreground">
-              <MapPin className="w-4 h-4 mt-0.5" />
-              <span className={sizes.text}>{contactInfo.address}</span>
-            </div>
-          )}
-          {contactInfo.workingHours && (
-            <div className="flex items-center space-x-2 text-muted-foreground">
-              <Clock className="w-4 h-4" />
-              <span className={sizes.text}>{contactInfo.workingHours}</span>
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* Social Links */}
-      {socialLinks.length > 0 && (
-        <div className="space-y-3">
-          <h4 className={cn("font-medium", sizes.title)}>Theo dõi chúng tôi</h4>
-          <div className="flex space-x-3">
-            {socialLinks.map((social, index) => (
-              <Button
-                key={index}
-                variant="ghost"
-                size="sm"
-                className="w-9 h-9 p-0"
-                asChild
-              >
-                <a
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={social.platform}
-                >
-                  {social.icon}
-                </a>
-              </Button>
-            ))}
-          </div>
-        </div>
-      )}
-    </div>
-  );
-
-  const renderColumns = () => (
-    <div className={styles.linksSection}>
-      {columns.map((column, index) => (
-        <div key={index}>
-          <h4 className={cn("font-semibold mb-4", sizes.title)}>
-            {column.title}
-          </h4>
-          <ul className="space-y-2">
-            {column.links.map((link, linkIndex) => (
-              <li key={linkIndex}>
-                <Link
-                  href={link.href}
-                  className={cn(
-                    "text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2",
-                    sizes.text,
-                  )}
-                  target={link.external ? "_blank" : undefined}
-                  rel={link.external ? "noopener noreferrer" : undefined}
-                >
-                  {link.title}
-                  {link.badge && (
-                    <Badge variant="secondary" className="text-xs">
-                      {link.badge}
-                    </Badge>
-                  )}
-                  {link.external && <Globe className="w-3 h-3" />}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
-    </div>
-  );
-
-  const renderNewsletter = () => {
-    if (!newsletterConfig.show) return null;
-
-    return (
-      <div className="bg-primary/5 rounded-lg p-6 mb-12">
-        <NewsletterForm
-          title={newsletterConfig.title || "Đăng ký nhận tin"}
-          description={
-            newsletterConfig.description ||
-            "Nhận thông tin mới nhất về sản phẩm và ưu đãi"
-          }
-          placeholder={newsletterConfig.placeholder}
-          variant="card"
-          theme={background === "dark" ? "dark" : "light"}
-          size={size}
-          showPrivacyConsent={false}
-          onSubmit={async (email) => {
-            console.log("Newsletter signup:", email);
-          }}
-        />
-      </div>
-    );
-  };
-
-  const renderCertifications = () => {
-    if (!certifications.length) return null;
-
-    return (
-      <div className="space-y-4 mb-8">
-        <h4 className={cn("font-semibold", sizes.title)}>
-          Chứng nhận & Bảo mật
-        </h4>
-        <div className="flex flex-wrap gap-4">
-          {certifications.map((cert, index) => (
-            <div
-              key={index}
-              className="flex items-center space-x-2 text-muted-foreground"
-            >
-              {cert.icon}
-              <span className={sizes.text}>{cert.name}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  };
-
-  const renderBottomSection = () => (
-    <div className="border-t pt-8">
-      <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-        <div className={cn("text-muted-foreground", sizes.text)}>
-          {bottomText?.copyright ||
-            "© 2024 LoanApp. Tất cả các quyền được bảo lưu."}
-        </div>
-
-        {bottomText?.links && (
-          <div className="flex space-x-6">
-            {bottomText.links.map((link, index) => (
-              <Link
-                key={index}
-                href={link.href}
-                className={cn(
-                  "text-muted-foreground hover:text-foreground transition-colors",
-                  sizes.text,
-                )}
-              >
-                {link.title}
-              </Link>
-            ))}
-          </div>
-        )}
-      </div>
-    </div>
-  );
-
-  const renderBackToTop = () => {
-    if (!showBackToTop) return null;
-
-    return (
-      <Button
-        variant="outline"
-        size="icon"
-        className="fixed bottom-8 right-8 rounded-full shadow-lg z-50"
-        onClick={scrollToTop}
-        aria-label="Scroll to top"
-      >
-        <ArrowUp className="w-4 h-4" />
-      </Button>
-    );
-  };
-
+export default function Footer() {
   return (
-    <>
-      <footer className={cn(bgStyle, className)}>
-        <div
-          className={cn(
-            "container mx-auto px-4",
-            styles.container,
-            sizes.container,
-          )}
-        >
-          {variant === "newsletter-focus" ? (
-            <div className={styles.mainSection}>
-              {renderNewsletter()}
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-                {renderBrandSection()}
-                {renderColumns()}
+    <footer className="bg-teal-700 text-white py-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid md:grid-cols-5 gap-8 mb-12">
+          {/* Company info */}
+          <div>
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+                <span className="text-teal-700 font-bold text-sm">F</span>
               </div>
+              <span className="font-bold text-lg">Fin Zone</span>
             </div>
-          ) : (
-            <div className={styles.mainSection}>
-              {renderBrandSection()}
-              {renderColumns()}
-            </div>
-          )}
+            <p className="text-teal-100 text-sm mb-4">
+              Công ty cổ phần Công nghệ Data Nest - Data Nest Technologies JSC
+            </p>
+            <p className="text-teal-100 text-sm mb-2">
+              Trụ sở: Tầng 7, HITC Building, 239 Xuân Thuỷ, Q. Cầu Giấy, Hà Nội.
+            </p>
+            <p className="text-teal-100 text-sm">
+              Chi nhánh HCM: Tòa nhà Viettel, 285 Cách Mạng Tháng 8, Quận 10, Hồ
+              Chí Minh.
+            </p>
+          </div>
 
-          {variant !== "newsletter-focus" && renderNewsletter()}
-          {renderCertifications()}
-          {renderBottomSection()}
+          {/* About */}
+          <div>
+            <h3 className="font-bold mb-4">ĐƠN VỊ CHỦ QUẢN</h3>
+            <ul className="space-y-2 text-teal-100 text-sm">
+              <li>
+                <a href="#" className="hover:text-white transition">
+                  Giới thiệu
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-white transition">
+                  Blog
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-white transition">
+                  Liên hệ
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-white transition">
+                  Điều khoản
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          {/* Information */}
+          <div>
+            <h3 className="font-bold mb-4">THÔNG TIN</h3>
+            <ul className="space-y-2 text-teal-100 text-sm">
+              <li>
+                <a href="#" className="hover:text-white transition">
+                  Giới thiệu
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-white transition">
+                  Blog
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-white transition">
+                  Liên hệ
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-white transition">
+                  FAQ
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-white transition">
+                  Điều khoản
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          {/* Products */}
+          <div>
+            <h3 className="font-bold mb-4">SẢN PHẨM</h3>
+            <ul className="space-y-2 text-teal-100 text-sm">
+              <li>
+                <a href="#" className="hover:text-white transition">
+                  Vay tiêu dùng
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-white transition">
+                  Thẻ tín dụng
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-white transition">
+                  Bảo hiểm
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          {/* Tools */}
+          <div>
+            <h3 className="font-bold mb-4">CÔNG CỤ</h3>
+            <ul className="space-y-2 text-teal-100 text-sm">
+              <li>
+                <a href="#" className="hover:text-white transition">
+                  Tính toán khoản vay
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-white transition">
+                  Tính lãi tiền gửi
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-white transition">
+                  Tính lương Gross - Net
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-white transition">
+                  Tính lương Net - Gross
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
-      </footer>
 
-      {renderBackToTop()}
-    </>
+        {/* Social media */}
+        <div className="flex justify-end gap-4 mb-8 pb-8 border-t border-teal-600">
+          <a
+            href="#"
+            className="w-10 h-10 bg-teal-600 rounded-full flex items-center justify-center hover:bg-teal-500 transition"
+          >
+            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+            </svg>
+          </a>
+          <a
+            href="#"
+            className="w-10 h-10 bg-teal-600 rounded-full flex items-center justify-center hover:bg-teal-500 transition"
+          >
+            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2s9 5 20 5a9.5 9.5 0 00-9-5.5c4.75 2.25 7-7 7-7" />
+            </svg>
+          </a>
+          <a
+            href="#"
+            className="w-10 h-10 bg-teal-600 rounded-full flex items-center justify-center hover:bg-teal-500 transition"
+          >
+            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <rect
+                x="2"
+                y="2"
+                width="20"
+                height="20"
+                rx="5"
+                ry="5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              />
+              <path
+                d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              />
+              <circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" />
+            </svg>
+          </a>
+          <a
+            href="#"
+            className="w-10 h-10 bg-teal-600 rounded-full flex items-center justify-center hover:bg-teal-500 transition"
+          >
+            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+            </svg>
+          </a>
+        </div>
+
+        {/* Bottom text */}
+        <div className="text-teal-100 text-xs space-y-2">
+          <p>
+            Fin Zone không phải đơn vị cung cấp vay và không phát hành các khoản
+            vay. Dịch vụ của Fin Zone giúp đánh giá các đối tác vay uy tín với
+            các sản phẩm tài chính da dạng, thời gian trả nợ linh hoạt từ 91 đến
+            180 ngày, với lãi suất APR tối thiểu là 0% với đa lựa chọn. Fin Zone
+            không tính phí sử dụng dịch vụ. Chi phí cuối cùng của người vay được
+            tính toán khoản vay. Người dùng được thông tin đầy đủ và chính xác
+            về APR, cũng như tất cả các khoản phí trước khi ký hợp đồng vay.
+          </p>
+          <p>
+            Giấy chứng nhận Đăng ký Kinh doanh số 0108201417 cấp bởi Sở Kế hoạch
+            và Đầu tư TP Hà Nội ngày 27/03/2018
+          </p>
+          <p>
+            Giấy phép Thiết lập Mạng Xã Hội trên mạng số 26/GP-BTTT cấp bởi Bộ
+            Thông Tin và Truyền Thông ngày 06/02/2024
+          </p>
+          <p>Copyright © 2023 Fin Zone, All rights reserved</p>
+        </div>
+      </div>
+    </footer>
   );
 }

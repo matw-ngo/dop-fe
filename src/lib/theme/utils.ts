@@ -24,6 +24,8 @@ export function generateCSSVariables(
   return variables;
 }
 
+let appliedProperties: Set<string> = new Set();
+
 /**
  * Apply theme colors to document root
  */
@@ -35,6 +37,12 @@ export function applyTheme(
   if (typeof document === "undefined") return;
 
   const root = document.documentElement;
+
+  // Clear previously applied properties
+  appliedProperties.forEach((prop) => {
+    root.style.removeProperty(prop);
+  });
+  appliedProperties.clear();
 
   // Get base colors for the mode
   const baseColors = theme.colors[mode];
@@ -49,19 +57,23 @@ export function applyTheme(
 
   Object.entries(variables).forEach(([property, value]) => {
     root.style.setProperty(property, value);
+    appliedProperties.add(property);
   });
 
   // Apply radius if specified
   if (theme.radius) {
     root.style.setProperty("--radius", theme.radius);
+    appliedProperties.add("--radius");
   }
 
   // Apply custom fonts if specified
   if (theme.fonts?.sans) {
     root.style.setProperty("--font-sans", theme.fonts.sans);
+    appliedProperties.add("--font-sans");
   }
   if (theme.fonts?.mono) {
     root.style.setProperty("--font-mono", theme.fonts.mono);
+    appliedProperties.add("--font-mono");
   }
 
   // Apply custom CSS if provided

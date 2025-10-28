@@ -19,7 +19,7 @@ export const userGroups: Record<string, UserGroup> = {
     name: "System Users",
     description: "General system users",
     defaultTheme: "default",
-    availableThemes: ["default"],
+    availableThemes: ["default", "corporate", "creative", "medical"],
     customizations: {
       allowCustomColors: false,
       allowCustomFonts: false,

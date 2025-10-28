@@ -1,10 +1,66 @@
 import type { Preview } from "@storybook/react";
+import { INITIAL_VIEWPORTS } from "@storybook/addon-viewport";
 import "../src/app/globals.css";
 import { withTheme } from "./theme-decorator";
+
+const customViewports = {
+  iphone14: {
+    name: "iPhone 14",
+    styles: {
+      width: "390px",
+      height: "844px",
+    },
+    type: "mobile",
+  },
+  pixel7: {
+    name: "Pixel 7",
+    styles: {
+      width: "412px",
+      height: "915px",
+    },
+    type: "mobile",
+  },
+  ipadMini: {
+    name: "iPad Mini",
+    styles: {
+      width: "768px",
+      height: "1024px",
+    },
+    type: "tablet",
+  },
+  laptop: {
+    name: 'Laptop 13"',
+    styles: {
+      width: "1280px",
+      height: "800px",
+    },
+    type: "desktop",
+  },
+  desktop: {
+    name: 'Desktop 24"',
+    styles: {
+      width: "1920px",
+      height: "1080px",
+    },
+    type: "desktop",
+  },
+};
 
 const preview: Preview = {
   decorators: [withTheme],
   parameters: {
+    viewport: {
+      viewports: {
+        ...customViewports,
+        ...INITIAL_VIEWPORTS,
+      },
+    },
+    nextjs: {
+      appDirectory: true,
+      router: {
+        pathname: "/",
+      },
+    },
     controls: {
       matchers: {
         color: /(background|color)$/i,

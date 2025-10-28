@@ -18,11 +18,22 @@ function ThemeWrapper({
 }) {
   const [mounted, setMounted] = useState(false);
 
+  console.log("[DEBUG] ThemeWrapper rendered with props:", { themeId, mode });
+
   // Apply theme when component mounts or props change
   useEffect(() => {
+    console.log(
+      "[DEBUG] useEffect for theme application triggered for themeId:",
+      themeId,
+    );
     const theme = themes[themeId];
     if (theme) {
+      console.log("[DEBUG] Applying theme object:", theme.name);
       applyTheme(theme, mode as any);
+    } else {
+      console.error(
+        `[DEBUG] Theme with id '${themeId}' not found in themes object.`,
+      );
     }
     setMounted(true);
   }, [themeId, mode]);
@@ -51,14 +62,15 @@ function ThemeWrapper({
     return <div>Loading theme...</div>;
   }
 
-  return (
-    <div className="min-h-screen bg-background text-foreground p-4 min-w-3xl flex items-center justify-center">
-      {children}
-    </div>
-  );
+  return <>{children}</>;
 }
 
 export const withTheme: Decorator = (Story, context) => {
+  console.log(
+    "[DEBUG] withTheme decorator running. Full context.globals:",
+    context.globals,
+  );
+
   const {
     theme: themeId = "default",
     userGroup = "system",
