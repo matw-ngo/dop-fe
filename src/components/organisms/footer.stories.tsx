@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import Footer from "./footer";
-import { finZoneFooterConfig, FooterConfig } from "@/configs/footer-config";
+import { FooterConfig } from "@/configs/footer-config";
 
 const meta: Meta<typeof Footer> = {
   title: "Organisms/Footer",
@@ -11,7 +11,7 @@ const meta: Meta<typeof Footer> = {
     docs: {
       description: {
         component:
-          "A responsive and highly configurable footer component that dynamically renders content based on company-specific settings. It supports multiple link sections, social media integration, and custom color themes through its configuration.",
+          "Configurable footer component that dynamically renders content based on company-specific configuration. It supports multiple sections, social media links, company information, and different themes.",
       },
     },
   },
@@ -19,13 +19,12 @@ const meta: Meta<typeof Footer> = {
     company: {
       control: "select",
       options: ["finzone", "example-corp"],
-      description:
-        "The company identifier to load the specific footer configuration.",
+      description: "The company to load the footer configuration for.",
     },
     configOverride: {
       control: "object",
       description:
-        "A complete FooterConfig object to override any company-specific configuration. Use this for one-off custom footers.",
+        "A complete FooterConfig object to override the default configuration. Use this for custom, one-off footers.",
     },
   },
 };
@@ -41,152 +40,141 @@ export const FinZone: Story = {
   parameters: {
     docs: {
       storyDescription:
-        "Displays the default, full-featured footer for 'FinZone'. This is the default state when no `company` prop is provided.",
+        "Displays the default footer for 'FinZone' with company information, multiple sections, social media links, and business registration details.",
     },
   },
 };
 
 export const ExampleCorp: Story = {
-  name: "Example Corp",
   args: {
     company: "example-corp",
   },
   parameters: {
     docs: {
       storyDescription:
-        "Displays the footer configured for 'Example Corp', showcasing a different layout, color scheme, and content.",
+        "Displays the footer configured for 'Example Corp', demonstrating the multi-company capability with different branding and content.",
     },
   },
 };
 
-const minimalConfig: FooterConfig = {
-  company: "minimal",
+const customConfig: FooterConfig = {
+  company: "tech-startup",
   logo: {
-    text: "Minimal Inc.",
+    text: "Tech Startup",
     href: "/",
-    iconColor: "#ffffff",
-    iconBgColor: "#4f46e5", // indigo-600
-    iconLetter: "M",
-  },
-  companyInfo: {
-    name: "Minimal Inc.",
-    description: "Just the essentials.",
-    addresses: ["123 Simple Lane, Nowhere, NW 00000"],
-    copyright: "© 2023 Minimal Inc.",
-  },
-  sections: [
-    {
-      id: "legal",
-      title: "LEGAL",
-      links: [
-        { id: "privacy", label: "Privacy Policy", href: "/privacy" },
-        { id: "terms", label: "Terms of Service", href: "/terms" },
-      ],
-    },
-  ],
-  socialMedia: [
-    { id: "twitter", platform: "twitter", href: "#" },
-    { id: "linkedin", platform: "linkedin", href: "#" },
-  ],
-  theme: {
-    backgroundColor: "#312e81", // indigo-900
-    textColor: "#ffffff",
-    textSecondaryColor: "#c7d2fe", // indigo-200
-    borderColor: "#4338ca", // indigo-700
-    socialButtonColor: "#4338ca", // indigo-700
-    socialButtonHoverColor: "#4f46e5", // indigo-600
-  },
-};
-
-export const MinimalOverride: Story = {
-  name: "Minimal (Config Override)",
-  args: {
-    configOverride: minimalConfig,
-  },
-  parameters: {
-    docs: {
-      storyDescription:
-        "Demonstrates a minimal footer using the `configOverride` prop. This approach is ideal for special pages or contexts that require a unique footer, bypassing the standard company configurations.",
-    },
-  },
-};
-
-export const HiddenOnPath: Story = {
-  name: "Hidden on Specific Path",
-  args: {
-    company: "finzone",
-  },
-  parameters: {
-    nextjs: {
-      router: {
-        pathname: "/thong-tin-vay/some-details",
-      },
-    },
-    docs: {
-      storyDescription:
-        "Demonstrates the `hideOnPaths` feature from the 'finzone' config. The footer should not be visible in this story as the path is configured to be hidden.",
-    },
-  },
-  render: (args) => (
-    <div className="p-8 bg-red-50 text-red-800">
-      <Footer {...args} />
-      <p>
-        The footer should be hidden on this page (path:
-        /thong-tin-vay/some-details). If you see this message but no footer, the
-        story is working correctly.
-      </p>
-    </div>
-  ),
-};
-
-const dynamicThemeConfig: Omit<FooterConfig, "theme"> = {
-  company: "dynamic",
-  logo: {
-    text: "Dynamic Theme Co.",
-    href: "/",
-    iconColor: "#16a34a", // green-600
+    iconColor: "#7c3aed",
     iconBgColor: "#ffffff",
-    iconLetter: "D",
+    iconLetter: "T",
   },
   companyInfo: {
-    name: "Dynamic Theme Co.",
-    description: "Our styles change with the global theme.",
-    addresses: ["123 Themeable Rd, Style Town, ST 12345"],
-    copyright: "© 2023 Dynamic Theme Co.",
+    name: "Tech Startup",
+    description: "Innovative Technology Solutions for Modern Businesses",
+    addresses: [
+      "Head Office: 123 Innovation Street, Tech Valley, CA 94000",
+      "Development Center: 456 Code Avenue, Silicon City, NY 10001",
+    ],
+    businessRegistration: [
+      "Business Registration #12345678 issued by State of California",
+      "Technology License #TL-2023-001 issued by Department of Technology",
+    ],
+    copyright: "Copyright © 2023 Tech Startup, All rights reserved",
+    disclaimer:
+      "Tech Startup provides cutting-edge technology solutions. All services are provided with comprehensive support and warranty coverage. Terms and conditions apply.",
   },
   sections: [
     {
       id: "company",
       title: "COMPANY",
       links: [
-        { id: "about", label: "About", href: "#" },
-        { id: "blog", label: "Blog", href: "#" },
+        {
+          id: "about",
+          label: "About Us",
+          href: "/about",
+        },
+        {
+          id: "team",
+          label: "Our Team",
+          href: "/team",
+        },
+        {
+          id: "careers",
+          label: "Careers",
+          href: "/careers",
+        },
+      ],
+    },
+    {
+      id: "products",
+      title: "PRODUCTS",
+      links: [
+        {
+          id: "software",
+          label: "Software Solutions",
+          href: "/products/software",
+        },
+        {
+          id: "consulting",
+          label: "Consulting",
+          href: "/products/consulting",
+        },
       ],
     },
     {
       id: "support",
       title: "SUPPORT",
       links: [
-        { id: "contact", label: "Contact Us", href: "#" },
-        { id: "faq", label: "FAQ", href: "#" },
+        {
+          id: "docs",
+          label: "Documentation",
+          href: "/docs",
+        },
+        {
+          id: "contact",
+          label: "Contact",
+          href: "/contact",
+        },
       ],
     },
   ],
   socialMedia: [
-    { id: "facebook", platform: "facebook", href: "#" },
-    { id: "instagram", platform: "instagram", href: "#" },
+    {
+      id: "linkedin",
+      platform: "linkedin",
+      href: "https://linkedin.com/company/tech-startup",
+      ariaLabel: "LinkedIn",
+    },
+    {
+      id: "twitter",
+      platform: "twitter",
+      href: "https://twitter.com/tech_startup",
+      ariaLabel: "Twitter",
+    },
+    {
+      id: "youtube",
+      platform: "youtube",
+      href: "https://youtube.com/tech-startup",
+      ariaLabel: "YouTube",
+    },
   ],
+  theme: {
+    backgroundColor: "#7c3aed",
+    textColor: "#ffffff",
+    textSecondaryColor: "#e9d5ff",
+    borderColor: "#8b5cf6",
+    socialButtonColor: "#8b5cf6",
+    socialButtonHoverColor: "#a78bfa",
+  },
 };
 
-export const DynamicTheme: Story = {
-  name: "Fallback (Dynamic Theme)",
+export const CustomConfigOverride: Story = {
+  name: "Custom Config (Tech Startup)",
   args: {
-    configOverride: dynamicThemeConfig as FooterConfig,
+    configOverride: customConfig,
   },
   parameters: {
     docs: {
       storyDescription:
-        "This story demonstrates the fallback mechanism. By providing a configuration with no `theme` object, the component uses theme-aware Tailwind classes. Try changing the theme and light/dark mode using the Storybook toolbar to see the footer's appearance change dynamically.",
+        "Demonstrates a completely custom footer configuration with purple theme, different sections, and custom branding for a tech startup company.",
     },
   },
 };

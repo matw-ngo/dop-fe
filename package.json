@@ -14,7 +14,7 @@
     "build-storybook": "storybook build"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": "npx @biomejs/biome format --write ."
+    "*.{js,jsx,ts,tsx}": "npx @biomejs/biome format --write"
   },
   "overrides": {
     "webpack": "5.101.2"

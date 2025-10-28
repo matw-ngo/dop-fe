@@ -11,7 +11,7 @@ const meta: Meta<typeof Header> = {
     docs: {
       description: {
         component:
-          "Header component that dynamically renders navigation based on company-specific configuration. It supports multi-level dropdowns, different navigation items per company, and path-based visibility.",
+          "Configurable header component that dynamically renders navigation based on company-specific configuration. It supports multi-level dropdowns, different navigation items per company, and path-based visibility.",
       },
     },
   },
