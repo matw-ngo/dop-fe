@@ -1,21 +1,12 @@
-import Blog from "@/components/organisms/homepage/blog";
-import Community from "@/components/organisms/homepage/community";
-import Features from "@/components/organisms/homepage/features";
-import Footer from "@/components/organisms/footer";
-import Header from "@/components/organisms/header";
-import Hero from "@/components/organisms/homepage/hero";
-import Stats from "@/components/organisms/homepage/stats";
+import Homepage from "@/app/pages/homepage";
+import { getHomepageConfig } from "@/configs/homepage-config";
+
+// In a real app, the company could be determined from the domain, user session, or locale.
+// For now, we'll use the default.
+const company = "finzone";
 
 export default function Home() {
-  return (
-    <main className="min-h-screen bg-white">
-      <Header />
-      <Hero />
-      <Stats />
-      <Features />
-      <Blog />
-      <Community />
-      <Footer />
-    </main>
-  );
+  const homepageConfig = getHomepageConfig(company);
+
+  return <Homepage config={homepageConfig} />;
 }
