@@ -4,8 +4,8 @@ import { useTranslations } from "next-intl";
 import { MultiStepFormRenderer } from "@/components/renderer/MultiStepFormRenderer";
 import { useOnboardingFormConfig } from "../hooks/use-onboarding-form-config";
 import type { MappedFlow } from "@/mappers/flowMapper";
-import { FormSkeleton } from "@/components/organisms/form-skeleton";
-import { ErrorState } from "@/components/organisms/error-state";
+import { FormSkeleton } from "@/components/feedback/form-skeleton";
+import { ErrorState } from "@/components/feedback/error-state";
 
 interface OnboardingFormProps {
   flowData: MappedFlow | undefined;

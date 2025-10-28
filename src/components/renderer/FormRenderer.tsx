@@ -9,19 +9,19 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import { Form } from "@/components/ui/form";
 import { FieldRenderer } from "@/components/renderer/FieldRenderer";
-import { generateZodSchema } from "@/lib/zod-generator";
 import { mergeWithDefaults } from "@/configs/DefaultFieldConfig";
 import {
   isRegisteredComponent,
   type RegisteredComponent,
 } from "@/components/renderer/ComponentRegistry";
 import type { FieldConfig, RawFieldConfig } from "@/types/data-driven-ui";
-import { useMultipleAsyncOptions } from "@/hooks/useAsyncOptions";
 import {
   evaluateCondition,
   isComplexCondition,
   evaluateRule,
 } from "@/types/field-conditions";
+import { useMultipleAsyncOptions } from "@/hooks/form/use-async-options";
+import { generateZodSchema } from "@/lib/builders/zod-generator";
 
 interface FormRendererProps {
   /** Raw field configurations from backend */

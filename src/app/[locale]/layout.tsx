@@ -7,9 +7,7 @@ import { NextIntlClientProvider } from "next-intl";
 // @ts-ignore
 import "../globals.css";
 
-import LanguageSwitcher from "@/components/language-switcher";
 import Providers from "@/components/layout/providers";
-import { ThemeSelector } from "@/components/theme/theme-selector";
 
 export function generateStaticParams() {
   return [{ locale: "vi" }, { locale: "en" }];

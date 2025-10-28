@@ -1,6 +1,6 @@
 "use client";
 
-import { useFlow } from "@/hooks/useFlow";
+import { useFlow } from "@/hooks/flow/use-flow";
 import { OnboardingForm } from "./onboarding-form";
 
 export function OnboardingFormContainer() {

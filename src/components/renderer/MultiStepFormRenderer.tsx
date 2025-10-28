@@ -23,9 +23,9 @@ import {
   ChevronRight,
   Loader2,
 } from "lucide-react";
-import { useMultiStepForm } from "@/hooks/useMultiStepForm";
 import { cn } from "@/lib/utils";
 import type { MultiStepFormRendererProps } from "@/types/multi-step-form";
+import { useMultiStepForm } from "@/hooks/form/use-multi-step-form";
 
 export const MultiStepFormRenderer: React.FC<MultiStepFormRendererProps> = ({
   config,

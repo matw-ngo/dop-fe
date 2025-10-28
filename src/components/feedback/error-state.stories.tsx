@@ -15,7 +15,7 @@ const t = (key: string) => {
 };
 
 const meta: Meta<typeof ErrorState> = {
-  title: "Organisms/ErrorState",
+  title: "Feedback/ErrorState",
   component: ErrorState,
   tags: ["autodocs"],
   decorators: [

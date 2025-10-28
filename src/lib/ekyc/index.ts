@@ -31,8 +31,8 @@ export type { EkycCredentials, EkycEnvironmentConfig } from "./config-manager";
 export * from "./types";
 
 // React integration
-export { useEkycSdk } from "../../hooks/use-ekyc-sdk";
+export { useEkycSdk } from "../../hooks/features/ekyc/use-sdk";
 export type {
   UseEkycSdkOptions,
   UseEkycSdkReturn,
-} from "../../hooks/use-ekyc-sdk";
+} from "../../hooks/features/ekyc/use-sdk";

@@ -3,7 +3,7 @@ import Footer from "./footer";
 import { FooterConfig } from "@/configs/footer-config";
 
 const meta: Meta<typeof Footer> = {
-  title: "Organisms/Footer",
+  title: "Layout/Footer",
   component: Footer,
   tags: ["autodocs"],
   parameters: {

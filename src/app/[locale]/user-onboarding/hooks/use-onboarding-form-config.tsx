@@ -1,14 +1,14 @@
 "use client";
 
 import { useMemo } from "react";
-import { multiStepForm } from "@/lib/multi-step-form-builder";
+import { multiStepForm } from "@/lib/builders/multi-step-form-builder";
 import {
   createInputField,
   createSelectField,
   createDatePickerField,
   createEkycField,
   createConfirmationField,
-} from "@/lib/field-builder";
+} from "@/lib/builders/field-builder";
 import { User, Shield, CheckCircle } from "lucide-react";
 import type { MappedFlow, MappedStep } from "@/mappers/flowMapper";
 

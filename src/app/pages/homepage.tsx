@@ -1,8 +1,8 @@
 "use client";
 
 import React from "react";
-import Header from "@/components/organisms/header";
-import Footer from "@/components/organisms/footer";
+import Header from "@/components/layout/header";
+import Footer from "@/components/layout/footer";
 import Hero from "@/components/organisms/homepage/hero";
 import Stats from "@/components/organisms/homepage/stats";
 import Features from "@/components/organisms/homepage/features";

@@ -3,7 +3,7 @@ import Header from "./header";
 import { NavbarConfig } from "@/configs/navbar-config";
 
 const meta: Meta<typeof Header> = {
-  title: "Organisms/Header",
+  title: "Layout/Header",
   component: Header,
   tags: ["autodocs"],
   parameters: {

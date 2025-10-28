@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { FormSkeleton } from "./form-skeleton";
 
 const meta: Meta<typeof FormSkeleton> = {
-  title: "Organisms/FormSkeleton",
+  title: "Feedback/FormSkeleton",
   component: FormSkeleton,
   tags: ["autodocs"],
   parameters: {

@@ -1,8 +1,8 @@
 "use client";
 
 import React from "react";
-import { useEkycSdk } from "@/hooks/use-ekyc-sdk";
 import { SdkAssets } from "@/lib/ekyc/sdk-loader";
+import { useEkycSdk } from "@/hooks/features/ekyc/use-sdk";
 
 interface EkycSdkWrapperProps {
   containerId?: string;

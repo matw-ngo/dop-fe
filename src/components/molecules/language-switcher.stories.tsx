@@ -10,7 +10,7 @@ const messages = {
 };
 
 const meta: Meta<typeof LanguageSwitcher> = {
-  title: "App/LanguageSwitcher",
+  title: "Molecules/LanguageSwitcher",
   component: LanguageSwitcher,
   tags: ["autodocs"],
   parameters: {
