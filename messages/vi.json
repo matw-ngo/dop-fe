@@ -93,6 +93,11 @@
       "showDetails": "Hiển thị chi tiết",
       "hideDetails": "Ẩn chi tiết",
       "retryButton": "Thử lại"
+    },
+    "onboardingCard": {
+      "title": "Bắt đầu hành trình của bạn",
+      "description": "Nhấp vào nút bên dưới để bắt đầu quá trình giới thiệu người dùng.",
+      "buttonText": "Bắt đầu"
     }
   }
 }

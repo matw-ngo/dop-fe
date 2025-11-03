@@ -2,6 +2,7 @@ import type { Preview } from "@storybook/react";
 import { INITIAL_VIEWPORTS } from "@storybook/addon-viewport";
 import "../src/app/globals.css";
 import { withTheme } from "./theme-decorator";
+import { withIntl } from "./intl-decorator";
 
 const customViewports = {
   iphone14: {
@@ -47,7 +48,7 @@ const customViewports = {
 };
 
 const preview: Preview = {
-  decorators: [withTheme],
+  decorators: [withIntl, withTheme],
   parameters: {
     viewport: {
       viewports: {
