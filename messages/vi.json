@@ -44,7 +44,41 @@
             "female": "Nữ",
             "other": "Khác"
           }
+        },
+        "purpose": {
+          "label": "Mục đích"
+        },
+        "nationalId": {
+          "label": "Số CMND/CCCD"
+        },
+        "secondNationalId": {
+          "label": "Số CMND/CCCD thứ hai"
+        },
+        "location": {
+          "label": "Địa chỉ"
+        },
+        "incomeType": {
+          "label": "Loại thu nhập"
+        },
+        "income": {
+          "label": "Thu nhập"
+        },
+        "havingLoan": {
+          "label": "Đang có khoản vay"
+        },
+        "careerStatus": {
+          "label": "Tình trạng nghề nghiệp"
+        },
+        "careerType": {
+          "label": "Loại nghề nghiệp"
+        },
+        "creditStatus": {
+          "label": "Tình trạng tín dụng"
         }
+      },
+      "common": {
+        "yes": "Có",
+        "no": "Không"
       }
     },
     "notFoundPage": {

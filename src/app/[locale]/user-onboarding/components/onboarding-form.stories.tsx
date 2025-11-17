@@ -2,9 +2,9 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { NextIntlClientProvider } from "next-intl";
 import { OnboardingForm } from "./onboarding-form";
+import { OnboardingFormContainer } from "./onboarding-form.container";
 import type { MappedFlow } from "@/mappers/flowMapper";
 
-// --- MOCK DATA ---
 const MOCK_DEFAULT_FLOW: MappedFlow = {
   id: "flow-1",
   name: "Default Lending Flow",
@@ -28,7 +28,7 @@ const MOCK_DEFAULT_FLOW: MappedFlow = {
         nationalId: { visible: false, required: false },
         secondNationalId: { visible: false, required: false },
         location: { visible: false, required: false },
-        birthday: { visible: false, required: false },
+        dateOfBirth: { visible: false, required: false },
         incomeType: { visible: false, required: false },
         income: { visible: false, required: false },
         havingLoan: { visible: false, required: false },
@@ -43,7 +43,7 @@ const MOCK_DEFAULT_FLOW: MappedFlow = {
       sendOtp: false,
       createdAt: new Date(),
       updatedAt: new Date(),
-      fields: {} as any, // eKYC step has no regular fields
+      fields: {} as any,
     },
   ],
 };
@@ -62,23 +62,22 @@ const MOCK_ALL_FIELDS_FLOW: MappedFlow = {
         email: { visible: true, required: true },
         phoneNumber: { visible: true, required: true },
         gender: { visible: true, required: true },
-        purpose: { visible: false, required: false },
-        nationalId: { visible: false, required: false },
-        secondNationalId: { visible: false, required: false },
-        location: { visible: false, required: false },
-        birthday: { visible: false, required: false },
-        incomeType: { visible: false, required: false },
-        income: { visible: false, required: false },
-        havingLoan: { visible: false, required: false },
-        careerStatus: { visible: false, required: false },
-        careerType: { visible: false, required: false },
-        creditStatus: { visible: false, required: false },
+        purpose: { visible: true, required: false },
+        nationalId: { visible: true, required: false },
+        secondNationalId: { visible: true, required: false },
+        location: { visible: true, required: false },
+        dateOfBirth: { visible: true, required: false },
+        incomeType: { visible: true, required: false },
+        income: { visible: true, required: false },
+        havingLoan: { visible: true, required: false },
+        careerStatus: { visible: true, required: false },
+        careerType: { visible: true, required: false },
+        creditStatus: { visible: true, required: false },
       },
     },
   ],
 };
 
-// --- i18n ---
 const messages = {
   pages: {
     userOnboardingPage: {
@@ -108,6 +107,55 @@ const messages = {
           label: "Gender",
           options: { male: "Male", female: "Female", other: "Other" },
         },
+        purpose: { label: "Purpose of Loan" },
+        nationalId: { label: "National ID" },
+        secondNationalId: { label: "Second National ID" },
+        location: { label: "Location" },
+        // Options for incomeType would likely come from an API
+        incomeType: {
+          label: "Income Type",
+          options: {
+            salary: "Salary",
+            business: "Business",
+            investment: "Investment",
+          },
+        },
+        income: { label: "Monthly Income" },
+        havingLoan: {
+          label: "Currently Have a Loan?",
+        },
+        // Options for careerStatus would likely come from an API
+        careerStatus: {
+          label: "Career Status",
+          options: {
+            employed: "Employed",
+            unemployed: "Unemployed",
+            student: "Student",
+          },
+        },
+        // Options for careerType would likely come from an API
+        careerType: {
+          label: "Career Type",
+          options: {
+            full_time: "Full-time",
+            part_time: "Part-time",
+            contract: "Contract",
+          },
+        },
+        // Options for creditStatus would likely come from an API
+        creditStatus: {
+          label: "Credit Status",
+          options: {
+            good: "Good",
+            fair: "Fair",
+            poor: "Poor",
+            no_history: "No History",
+          },
+        },
+      },
+      common: {
+        yes: "Yes",
+        no: "No",
       },
     },
   },
@@ -120,7 +168,6 @@ const messages = {
   },
 };
 
-// --- STORYBOOK META ---
 const queryClient = new QueryClient();
 
 const meta: Meta<typeof OnboardingForm> = {
@@ -146,7 +193,6 @@ const meta: Meta<typeof OnboardingForm> = {
 export default meta;
 type Story = StoryObj<typeof OnboardingForm>;
 
-// --- STORIES ---
 export const Default: Story = {
   args: {
     flowData: MOCK_DEFAULT_FLOW,
@@ -194,4 +240,12 @@ export const NoConfig: Story = {
     error: null,
     refetch: () => {},
   },
+};
+
+export const ContainerViaHook: Story = {
+  render: () => <OnboardingFormContainer />,
+};
+
+export const ContainerAllFields: Story = {
+  render: () => <OnboardingFormContainer domain="all-fields" />,
 };

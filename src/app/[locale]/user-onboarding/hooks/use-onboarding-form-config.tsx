@@ -48,6 +48,65 @@ const getFieldBuilderMap = (
       ],
       ...config,
     }),
+  nationalId: (config: any) =>
+    createInputField("nationalId", {
+      label: t("fields.nationalId.label"),
+      ...config,
+    }),
+  secondNationalId: (config: any) =>
+    createInputField("secondNationalId", {
+      label: t("fields.secondNationalId.label"),
+      ...config,
+    }),
+  location: (config: any) =>
+    createInputField("location", {
+      label: t("fields.location.label"),
+      ...config,
+    }),
+  incomeType: (config: any) =>
+    createSelectField("incomeType", {
+      label: t("fields.incomeType.label"),
+      options: [], // TODO: Add options
+      ...config,
+    }),
+  income: (config: any) =>
+    createInputField("income", {
+      type: "number",
+      label: t("fields.income.label"),
+      ...config,
+    }),
+  havingLoan: (config: any) =>
+    createSelectField("havingLoan", {
+      label: t("fields.havingLoan.label"),
+      options: [
+        { value: "true", label: t("common.yes") },
+        { value: "false", label: t("common.no") },
+      ],
+      ...config,
+    }),
+  careerStatus: (config: any) =>
+    createSelectField("careerStatus", {
+      label: t("fields.careerStatus.label"),
+      options: [], // TODO: Add options
+      ...config,
+    }),
+  careerType: (config: any) =>
+    createSelectField("careerType", {
+      label: t("fields.careerType.label"),
+      options: [], // TODO: Add options
+      ...config,
+    }),
+  creditStatus: (config: any) =>
+    createSelectField("creditStatus", {
+      label: t("fields.creditStatus.label"),
+      options: [], // TODO: Add options
+      ...config,
+    }),
+  purpose: (config: any) =>
+    createInputField("purpose", {
+      label: t("fields.purpose.label"),
+      ...config,
+    }),
 });
 
 function generateFieldsForStep(

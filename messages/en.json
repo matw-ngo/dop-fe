@@ -44,7 +44,41 @@
             "female": "Female",
             "other": "Other"
           }
+        },
+        "purpose": {
+          "label": "Purpose"
+        },
+        "nationalId": {
+          "label": "National ID"
+        },
+        "secondNationalId": {
+          "label": "Second National ID"
+        },
+        "location": {
+          "label": "Location"
+        },
+        "incomeType": {
+          "label": "Income Type"
+        },
+        "income": {
+          "label": "Income"
+        },
+        "havingLoan": {
+          "label": "Having Loan"
+        },
+        "careerStatus": {
+          "label": "Career Status"
+        },
+        "careerType": {
+          "label": "Career Type"
+        },
+        "creditStatus": {
+          "label": "Credit Status"
         }
+      },
+      "common": {
+        "yes": "Yes",
+        "no": "No"
       }
     },
     "notFoundPage": {
