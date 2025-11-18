@@ -133,5 +133,324 @@
       "description": "Click the button below to start the user onboarding process.",
       "buttonText": "Start Onboarding"
     }
+  },
+  "admin": {
+    "login": {
+      "title": "Admin Login",
+      "subtitle": "Enter your login credentials to access the admin panel",
+      "username": "Username",
+      "password": "Password",
+      "usernamePlaceholder": "admin",
+      "passwordPlaceholder": "admin123",
+      "loginButton": "Login",
+      "loggingIn": "Logging in...",
+      "demoAccount": "Demo account: admin / admin123",
+      "errors": {
+        "invalidCredentials": {
+          "title": "Login Failed",
+          "description": "Invalid username or password"
+        },
+        "systemError": {
+          "title": "System Error",
+          "description": "An error occurred, please try again later"
+        },
+        "missingFields": {
+          "title": "Error",
+          "description": "Please enter username and password"
+        }
+      },
+      "success": {
+        "title": "Login Successful",
+        "description": "Welcome back!"
+      }
+    },
+    "dashboard": {
+      "welcome": "Welcome back, {username}!",
+      "subtitle": "This is your admin dashboard. Here's what's been happening recently.",
+      "createNewFlow": "Create New Flow",
+      "stats": {
+        "totalFlows": "Total Flows",
+        "totalUsers": "Total Users",
+        "visits": "Visits",
+        "changePrefix": "Up {percentage}% from last month"
+      },
+      "quickActions": {
+        "title": "Quick Actions",
+        "flowManagement": {
+          "title": "Flow Management",
+          "description": "Create and manage workflows",
+          "button": "Access"
+        },
+        "userManagement": {
+          "title": "User Management",
+          "description": "Manage user accounts",
+          "button": "Access"
+        },
+        "systemSettings": {
+          "title": "System Settings",
+          "description": "Configure system",
+          "button": "Access"
+        }
+      },
+      "recentActivity": {
+        "title": "Recent Activity",
+        "subtitle": "Recent activities in the system",
+        "flowCreated": "Flow \"{flowName}\" was created",
+        "userRegistered": "New user registered: {username}",
+        "settingsUpdated": "System settings were updated",
+        "minutesAgo": "{minutes} minutes ago",
+        "hoursAgo": "{hours} hours ago"
+      }
+    },
+    "flows": {
+      "title": "Flow Management",
+      "subtitle": "Manage and configure your application flows",
+      "newFlow": "New Flow",
+      "table": {
+        "headers": {
+          "name": "Flow Name",
+          "status": "Status",
+          "steps": "Steps",
+          "created": "Created",
+          "updated": "Updated",
+          "actions": "Actions"
+        },
+        "searchPlaceholder": "Search flows...",
+        "emptyState": "No flows found",
+        "emptyStateWithFilters": "No flows match your filters. Try adjusting your search or filter criteria.",
+        "results": "Showing {filtered} of {total} flows"
+      },
+      "filters": {
+        "searchPlaceholder": "Search flows by name...",
+        "status": "Status",
+        "statusOptions": {
+          "active": "Active",
+          "inactive": "Inactive",
+          "draft": "Draft",
+          "archived": "Archived"
+        },
+        "activeFilters": {
+          "search": "Search: \"{value}\"",
+          "clearAll": "Clear all"
+        }
+      },
+      "actions": {
+        "viewDetails": "View Details",
+        "edit": "Edit",
+        "activate": "Activate",
+        "deactivate": "Deactivate",
+        "duplicate": "Duplicate",
+        "delete": "Delete",
+        "openMenu": "Open menu"
+      },
+      "dialogs": {
+        "delete": {
+          "title": "Delete Flow",
+          "description": "Are you sure you want to delete \"{name}\"? This action cannot be undone and will permanently remove the flow and all its associated data.",
+          "cancel": "Cancel",
+          "confirm": "Delete Flow"
+        },
+        "activate": {
+          "title": "Activate Flow",
+          "description": "Are you sure you want to activate \"{name}\"? This will make the flow available to users.",
+          "cancel": "Cancel",
+          "confirm": "Activate"
+        },
+        "deactivate": {
+          "title": "Deactivate Flow",
+          "description": "Are you sure you want to deactivate \"{name}\"? This will make the flow unavailable to users.",
+          "cancel": "Cancel",
+          "confirm": "Deactivate"
+        }
+      },
+      "bulkActions": {
+        "selected": "{count} flow{plural} selected",
+        "activate": "Activate",
+        "deactivate": "Deactivate",
+        "delete": "Delete",
+        "clearSelection": "Clear selection"
+      },
+      "emptyState": {
+        "title": "No flows found",
+        "message": "Get started by creating your first flow.",
+        "action": "Create Flow"
+      },
+      "errorState": {
+        "title": "Failed to load flows",
+        "message": "An error occurred while loading flows"
+      }
+    },
+    "flowDetail": {
+      "backToFlow": "Back to flow",
+      "editFlow": "Edit Flow",
+      "cards": {
+        "status": "Status",
+        "totalSteps": "Total Steps",
+        "created": "Created",
+        "lastUpdated": "Last Updated"
+      },
+      "steps": {
+        "title": "Steps",
+        "subtitle": "Configure steps in this flow",
+        "addStep": "Add Step",
+        "table": {
+          "headers": {
+            "order": "Order",
+            "name": "Step Name",
+            "ekyc": "eKYC",
+            "otp": "OTP",
+            "fields": "Fields",
+            "status": "Status",
+            "actions": "Actions"
+          },
+          "searchPlaceholder": "Search steps...",
+          "emptyState": "No steps found. Add your first step to get started.",
+          "emptyStateWithFilters": "No steps found"
+        },
+        "actions": {
+          "view": "View",
+          "edit": "Edit",
+          "enable": "Enable",
+          "disable": "Disable",
+          "duplicate": "Duplicate",
+          "delete": "Delete",
+          "openMenu": "Open menu"
+        },
+        "dialogs": {
+          "delete": {
+            "title": "Delete Step",
+            "description": "Are you sure you want to delete \"{name}\"? This action cannot be undone and will permanently remove the step and all its associated fields.",
+            "cancel": "Cancel",
+            "confirm": "Delete Step"
+          },
+          "enable": {
+            "title": "Enable Step",
+            "description": "Are you sure you want to enable \"{name}\"?",
+            "cancel": "Cancel",
+            "confirm": "Enable"
+          },
+          "disable": {
+            "title": "Disable Step",
+            "description": "Are you sure you want to disable \"{name}\"?",
+            "cancel": "Cancel",
+            "confirm": "Disable"
+          }
+        }
+      },
+      "errorState": {
+        "title": "Failed to load flow",
+        "message": "Failed to load flow details"
+      }
+    },
+    "stepDetail": {
+      "backToFlow": "Back to flow",
+      "saveChanges": "Save Changes",
+      "modified": "Modified",
+      "cards": {
+        "status": "Status",
+        "stepOrder": "Step Order",
+        "ekyc": "eKYC",
+        "otp": "OTP"
+      },
+      "fields": {
+        "title": "Fields",
+        "subtitle": "Configure fields in this step",
+        "table": {
+          "headers": {
+            "name": "Field Name",
+            "type": "Type",
+            "visible": "Visible",
+            "required": "Required",
+            "actions": "Actions"
+          },
+          "searchPlaceholder": "Search fields...",
+          "emptyState": "No fields found. Add your first field to get started.",
+          "emptyStateWithFilters": "No fields found"
+        },
+        "actions": {
+          "editField": "Edit field",
+          "deleteField": "Delete field"
+        },
+        "toggle": {
+          "visible": "Visible",
+          "required": "Required",
+          "modified": "Modified"
+        }
+      },
+      "dialogs": {
+        "saveChanges": {
+          "title": "Save Changes",
+          "description": "Are you sure you want to save all changes to this step and its fields? This will update configuration immediately.",
+          "cancel": "Cancel",
+          "confirm": "Save Changes"
+        },
+        "unsavedChanges": {
+          "title": "Unsaved Changes",
+          "description": "You have unsaved changes. Are you sure you want to leave?"
+        }
+      },
+      "errorState": {
+        "title": "Failed to load step",
+        "message": "Failed to load step details"
+      }
+    },
+    "breadcrumb": {
+      "dashboard": "Dashboard",
+      "flows": "Flows",
+      "flow": "Flow {id}",
+      "step": "Step {id}",
+      "toggleMenu": "Toggle menu"
+    },
+    "components": {
+      "loadingStates": {
+        "loading": "Loading..."
+      },
+      "errorStates": {
+        "default": {
+          "title": "Something went wrong",
+          "message": "An error occurred while loading data. Please try again.",
+          "retry": "Try Again"
+        },
+        "empty": {
+          "title": "No data found",
+          "message": "There are no items to display."
+        },
+        "notFound": {
+          "title": "Not Found",
+          "message": "The requested item could not be found.",
+          "goBack": "Go Back"
+        },
+        "networkError": {
+          "title": "Network Error",
+          "message": "Unable to connect to the server. Please check your internet connection and try again."
+        },
+        "permissionError": {
+          "title": "Access Denied",
+          "message": "You don't have permission to access this resource. Please contact your administrator.",
+          "goBack": "Go Back"
+        }
+      }
+    },
+    "layout": {
+      "sidebar": {
+        "title": "Admin Panel",
+        "navigation": "Navigation",
+        "logout": "Logout"
+      },
+      "header": {
+        "welcome": "Hello, {username}"
+      }
+    },
+    "auth": {
+      "protectedRoute": {
+        "checkingAuth": "Checking authentication...",
+        "accessDenied": {
+          "title": "Access Denied",
+          "message": "You don't have permission to access this page."
+        }
+      },
+      "loginSuccess": "Login successful for {username}",
+      "logoutSuccess": "Logout successful"
+    }
   }
 }

@@ -72,4 +72,31 @@ apiClient.use({
   },
 });
 
+// Retry utility for API calls
+export const withRetry = async <T>(
+  apiCall: () => Promise<T>,
+  maxRetries = 3,
+  delay = 1000
+): Promise<T> => {
+  let lastError: Error;
+  
+  for (let i = 0; i <= maxRetries; i++) {
+    try {
+      return await apiCall();
+    } catch (error) {
+      lastError = error instanceof Error ? error : new Error(String(error));
+      
+      if (i === maxRetries) {
+        throw lastError;
+      }
+      
+      // Exponential backoff
+      const backoffDelay = delay * Math.pow(2, i);
+      await new Promise(resolve => setTimeout(resolve, backoffDelay));
+    }
+  }
+  
+  throw lastError!;
+};
+
 export default apiClient;

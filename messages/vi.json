@@ -133,5 +133,324 @@
       "description": "Nhấp vào nút bên dưới để bắt đầu quá trình giới thiệu người dùng.",
       "buttonText": "Bắt đầu"
     }
+  },
+  "admin": {
+    "login": {
+      "title": "Đăng nhập Admin",
+      "subtitle": "Nhập thông tin đăng nhập để truy cập trang quản trị",
+      "username": "Tên đăng nhập",
+      "password": "Mật khẩu",
+      "usernamePlaceholder": "admin",
+      "passwordPlaceholder": "admin123",
+      "loginButton": "Đăng nhập",
+      "loggingIn": "Đang đăng nhập...",
+      "demoAccount": "Tài khoản demo: admin / admin123",
+      "errors": {
+        "invalidCredentials": {
+          "title": "Đăng nhập thất bại",
+          "description": "Tên đăng nhập hoặc mật khẩu không chính xác"
+        },
+        "systemError": {
+          "title": "Lỗi hệ thống",
+          "description": "Đã xảy ra lỗi, vui lòng thử lại sau"
+        },
+        "missingFields": {
+          "title": "Lỗi",
+          "description": "Vui lòng nhập tên đăng nhập và mật khẩu"
+        }
+      },
+      "success": {
+        "title": "Đăng nhập thành công",
+        "description": "Chào mừng trở lại!"
+      }
+    },
+    "dashboard": {
+      "welcome": "Chào mừng trở lại, {username}!",
+      "subtitle": "Đây là trang tổng quan quản trị của bạn. Dưới đây là các hoạt động gần đây.",
+      "createNewFlow": "Tạo Flow mới",
+      "stats": {
+        "totalFlows": "Tổng số flows",
+        "totalUsers": "Tổng số người dùng",
+        "visits": "Lượt truy cập",
+        "changePrefix": "Tăng {percentage}% so với tháng trước"
+      },
+      "quickActions": {
+        "title": "Hành động nhanh",
+        "flowManagement": {
+          "title": "Quản lý Flow",
+          "description": "Tạo và quản lý các luồng làm việc",
+          "button": "Truy cập"
+        },
+        "userManagement": {
+          "title": "Quản lý người dùng",
+          "description": "Quản lý tài khoản người dùng",
+          "button": "Truy cập"
+        },
+        "systemSettings": {
+          "title": "Cài đặt hệ thống",
+          "description": "Cấu hình hệ thống",
+          "button": "Truy cập"
+        }
+      },
+      "recentActivity": {
+        "title": "Hoạt động gần đây",
+        "subtitle": "Các hoạt động gần đây trong hệ thống",
+        "flowCreated": "Flow \"{flowName}\" đã được tạo",
+        "userRegistered": "Người dùng mới đăng ký: {username}",
+        "settingsUpdated": "Cài đặt hệ thống đã được cập nhật",
+        "minutesAgo": "{minutes} phút trước",
+        "hoursAgo": "{hours} giờ trước"
+      }
+    },
+    "flows": {
+      "title": "Quản lý Flow",
+      "subtitle": "Quản lý và cấu hình các luồng ứng dụng của bạn",
+      "newFlow": "Flow mới",
+      "table": {
+        "headers": {
+          "name": "Tên Flow",
+          "status": "Trạng thái",
+          "steps": "Các bước",
+          "created": "Ngày tạo",
+          "updated": "Cập nhật",
+          "actions": "Hành động"
+        },
+        "searchPlaceholder": "Tìm kiếm flows...",
+        "emptyState": "Không tìm thấy flow nào",
+        "emptyStateWithFilters": "Không có flow nào khớp với bộ lọc của bạn. Hãy thử điều chỉnh tiêu chí tìm kiếm hoặc lọc.",
+        "results": "Hiển thị {filtered} của {total} flow"
+      },
+      "filters": {
+        "searchPlaceholder": "Tìm kiếm flows theo tên...",
+        "status": "Trạng thái",
+        "statusOptions": {
+          "active": "Hoạt động",
+          "inactive": "Không hoạt động",
+          "draft": "Bản nháp",
+          "archived": "Đã lưu trữ"
+        },
+        "activeFilters": {
+          "search": "Tìm kiếm: \"{value}\"",
+          "clearAll": "Xóa tất cả"
+        }
+      },
+      "actions": {
+        "viewDetails": "Xem chi tiết",
+        "edit": "Chỉnh sửa",
+        "activate": "Kích hoạt",
+        "deactivate": "Vô hiệu hóa",
+        "duplicate": "Nhân bản",
+        "delete": "Xóa",
+        "openMenu": "Mở menu"
+      },
+      "dialogs": {
+        "delete": {
+          "title": "Xóa Flow",
+          "description": "Bạn có chắc chắn muốn xóa \"{name}\"? Hành động này không thể hoàn tác và sẽ xóa vĩnh viễn flow và tất cả dữ liệu liên quan.",
+          "cancel": "Hủy",
+          "confirm": "Xóa Flow"
+        },
+        "activate": {
+          "title": "Kích hoạt Flow",
+          "description": "Bạn có chắc chắn muốn kích hoạt \"{name}\"? Điều này sẽ làm cho flow có sẵn cho người dùng.",
+          "cancel": "Hủy",
+          "confirm": "Kích hoạt"
+        },
+        "deactivate": {
+          "title": "Vô hiệu hóa Flow",
+          "description": "Bạn có chắc chắn muốn vô hiệu hóa \"{name}\"? Điều này sẽ làm cho flow không còn sẵn có cho người dùng.",
+          "cancel": "Hủy",
+          "confirm": "Vô hiệu hóa"
+        }
+      },
+      "bulkActions": {
+        "selected": "{count} flow đã chọn",
+        "activate": "Kích hoạt",
+        "deactivate": "Vô hiệu hóa",
+        "delete": "Xóa",
+        "clearSelection": "Xóa lựa chọn"
+      },
+      "emptyState": {
+        "title": "Không tìm thấy flow nào",
+        "message": "Bắt đầu bằng cách tạo flow đầu tiên của bạn.",
+        "action": "Tạo Flow"
+      },
+      "errorState": {
+        "title": "Không thể tải flows",
+        "message": "Đã xảy ra lỗi khi tải flows"
+      }
+    },
+    "flowDetail": {
+      "backToFlow": "Quay lại flow",
+      "editFlow": "Chỉnh sửa Flow",
+      "cards": {
+        "status": "Trạng thái",
+        "totalSteps": "Tổng số bước",
+        "created": "Ngày tạo",
+        "lastUpdated": "Cập nhật lần cuối"
+      },
+      "steps": {
+        "title": "Các bước",
+        "subtitle": "Cấu hình các bước trong flow này",
+        "addStep": "Thêm bước",
+        "table": {
+          "headers": {
+            "order": "Thứ tự",
+            "name": "Tên bước",
+            "ekyc": "eKYC",
+            "otp": "OTP",
+            "fields": "Trường",
+            "status": "Trạng thái",
+            "actions": "Hành động"
+          },
+          "searchPlaceholder": "Tìm kiếm các bước...",
+          "emptyState": "Không tìm thấy bước nào. Thêm bước đầu tiên của bạn để bắt đầu.",
+          "emptyStateWithFilters": "Không tìm thấy bước nào"
+        },
+        "actions": {
+          "view": "Xem",
+          "edit": "Chỉnh sửa",
+          "enable": "Kích hoạt",
+          "disable": "Vô hiệu hóa",
+          "duplicate": "Nhân bản",
+          "delete": "Xóa",
+          "openMenu": "Mở menu"
+        },
+        "dialogs": {
+          "delete": {
+            "title": "Xóa bước",
+            "description": "Bạn có chắc chắn muốn xóa \"{name}\"? Hành động này không thể hoàn tác và sẽ xóa vĩnh viễn bước và tất cả các trường liên quan.",
+            "cancel": "Hủy",
+            "confirm": "Xóa bước"
+          },
+          "enable": {
+            "title": "Kích hoạt bước",
+            "description": "Bạn có chắc chắn muốn kích hoạt \"{name}\"?",
+            "cancel": "Hủy",
+            "confirm": "Kích hoạt"
+          },
+          "disable": {
+            "title": "Vô hiệu hóa bước",
+            "description": "Bạn có chắc chắn muốn vô hiệu hóa \"{name}\"?",
+            "cancel": "Hủy",
+            "confirm": "Vô hiệu hóa"
+          }
+        }
+      },
+      "errorState": {
+        "title": "Không thể tải flow",
+        "message": "Không thể tải chi tiết flow"
+      }
+    },
+    "stepDetail": {
+      "backToFlow": "Quay lại flow",
+      "saveChanges": "Lưu thay đổi",
+      "modified": "Đã sửa đổi",
+      "cards": {
+        "status": "Trạng thái",
+        "stepOrder": "Thứ tự bước",
+        "ekyc": "eKYC",
+        "otp": "OTP"
+      },
+      "fields": {
+        "title": "Các trường",
+        "subtitle": "Cấu hình các trường trong bước này",
+        "table": {
+          "headers": {
+            "name": "Tên trường",
+            "type": "Loại",
+            "visible": "Hiển thị",
+            "required": "Bắt buộc",
+            "actions": "Hành động"
+          },
+          "searchPlaceholder": "Tìm kiếm các trường...",
+          "emptyState": "Không tìm thấy trường nào. Thêm trường đầu tiên của bạn để bắt đầu.",
+          "emptyStateWithFilters": "Không tìm thấy trường nào"
+        },
+        "actions": {
+          "editField": "Chỉnh sửa trường",
+          "deleteField": "Xóa trường"
+        },
+        "toggle": {
+          "visible": "Hiển thị",
+          "required": "Bắt buộc",
+          "modified": "Đã sửa đổi"
+        }
+      },
+      "dialogs": {
+        "saveChanges": {
+          "title": "Lưu thay đổi",
+          "description": "Bạn có chắc chắn muốn lưu tất cả thay đổi cho bước này và các trường của nó? Điều này sẽ cập nhật cấu hình ngay lập tức.",
+          "cancel": "Hủy",
+          "confirm": "Lưu thay đổi"
+        },
+        "unsavedChanges": {
+          "title": "Thay đổi chưa lưu",
+          "description": "Bạn có các thay đổi chưa lưu. Bạn có chắc chắn muốn rời đi?"
+        }
+      },
+      "errorState": {
+        "title": "Không thể tải bước",
+        "message": "Không thể tải chi tiết bước"
+      }
+    },
+    "breadcrumb": {
+      "dashboard": "Trang tổng quan",
+      "flows": "Flows",
+      "flow": "Flow {id}",
+      "step": "Bước {id}",
+      "toggleMenu": "Chuyển đổi menu"
+    },
+    "components": {
+      "loadingStates": {
+        "loading": "Đang tải..."
+      },
+      "errorStates": {
+        "default": {
+          "title": "Đã xảy ra lỗi",
+          "message": "Đã xảy ra lỗi khi tải dữ liệu. Vui lòng thử lại.",
+          "retry": "Thử lại"
+        },
+        "empty": {
+          "title": "Không tìm thấy dữ liệu",
+          "message": "Không có mục nào để hiển thị."
+        },
+        "notFound": {
+          "title": "Không tìm thấy",
+          "message": "Không thể tìm thấy mục được yêu cầu.",
+          "goBack": "Quay lại"
+        },
+        "networkError": {
+          "title": "Lỗi mạng",
+          "message": "Không thể kết nối với máy chủ. Vui lòng kiểm tra kết nối internet và thử lại."
+        },
+        "permissionError": {
+          "title": "Truy cập bị từ chối",
+          "message": "Bạn không có quyền truy cập tài nguyên này. Vui lòng liên hệ với quản trị viên của bạn.",
+          "goBack": "Quay lại"
+        }
+      }
+    },
+    "layout": {
+      "sidebar": {
+        "title": "Panel quản trị",
+        "navigation": "Điều hướng",
+        "logout": "Đăng xuất"
+      },
+      "header": {
+        "welcome": "Xin chào, {username}"
+      }
+    },
+    "auth": {
+      "protectedRoute": {
+        "checkingAuth": "Đang kiểm tra xác thực...",
+        "accessDenied": {
+          "title": "Truy cập bị từ chối",
+          "message": "Bạn không có quyền truy cập trang này."
+        }
+      },
+      "loginSuccess": "Đăng nhập thành công cho {username}",
+      "logoutSuccess": "Đăng xuất thành công"
+    }
   }
 }
