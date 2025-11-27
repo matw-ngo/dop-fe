@@ -1,8 +1,11 @@
 "use client";
 
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 import {
   CheckCircle2,
   User,
@@ -13,17 +16,82 @@ import {
   DollarSign,
   Calendar,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
+import apiClient from "@/lib/api/client";
+import { toCreateLeadRequest } from "@/mappers/onboardingMapper";
+import type { components } from "@/lib/api/v1.d.ts";
+
+type CreateLeadResponseBody = components["schemas"]["CreateLeadResponseBody"];
 
 interface ConfirmationStepProps {
   formData: Record<string, any>;
+  flowId: string;
+  stepId: string;
+  domain?: string;
+  onSuccess?: () => void;
+  isSubmitting?: boolean;
 }
 
-export function ConfirmationStep({ formData }: ConfirmationStepProps) {
+export function ConfirmationStep({
+  formData,
+  flowId,
+  stepId,
+  domain = "",
+  onSuccess,
+  isSubmitting = false,
+}: ConfirmationStepProps) {
+  const [submitting, setSubmitting] = useState(isSubmitting);
+  const t = useTranslations("onboarding.confirm");
+  const tForm = useTranslations("form");
+
   console.log("\n".repeat(3));
-  console.log("[CONFIRMATION] ekycInfo", formData);
+  console.log("[CONFIRMATION] formData", formData);
   console.log("\n".repeat(3));
-  const basicInfo = formData["basic-Ifo"] || {};
-  const ekycInfo = formData["ekycVerification"] || {};
+
+  // Dữ liệu nằm trực tiếp trong formData, không trong nested objects
+  const basicInfo = formData || {};
+  const ekycInfo = formData.ekycVerification || {};
+
+  const handleSubmit = async () => {
+    if (!flowId || !stepId) {
+      toast.error(t("errors.missingInfo"));
+      return;
+    }
+
+    try {
+      setSubmitting(true);
+
+      // Log payload for testing
+      const payload = toCreateLeadRequest(formData, flowId, stepId, domain);
+      console.log("[CONFIRMATION] Submit payload:", payload);
+
+      // Make API call to create lead
+      const { data, error } = await apiClient.POST("/leads", {
+        body: payload,
+      });
+
+      if (error) {
+        console.error("[CONFIRMATION] API Error:", error);
+        toast.error(t("errors.submitError"));
+        return;
+      }
+
+      if (data) {
+        console.log("[CONFIRMATION] API Response:", data);
+        toast.success(t("success.submitSuccess"));
+
+        // Call onSuccess callback if provided
+        if (onSuccess) {
+          onSuccess();
+        }
+      }
+    } catch (err) {
+      console.error("[CONFIRMATION] Submit Error:", err);
+      toast.error(t("errors.submitError"));
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   // Format date
   const formatDate = (dateValue: any) => {
@@ -36,42 +104,42 @@ export function ConfirmationStep({ formData }: ConfirmationStepProps) {
   // Get label for select fields
   const getGenderLabel = (value: string) => {
     const labels: Record<string, string> = {
-      male: "Nam",
-      female: "Nữ",
-      other: "Khác",
+      male: t("genderOptions.male"),
+      female: t("genderOptions.female"),
+      other: t("genderOptions.other"),
     };
     return labels[value] || value;
   };
 
   const getCityLabel = (value: string) => {
     const labels: Record<string, string> = {
-      hanoi: "Hà Nội",
-      hcm: "TP. Hồ Chí Minh",
-      danang: "Đà Nẵng",
-      haiphong: "Hải Phòng",
-      cantho: "Cần Thơ",
+      hanoi: t("cityOptions.hanoi"),
+      hcm: t("cityOptions.hcm"),
+      danang: t("cityOptions.danang"),
+      haiphong: t("cityOptions.haiphong"),
+      cantho: t("cityOptions.cantho"),
     };
     return labels[value] || value;
   };
 
   const getOccupationLabel = (value: string) => {
     const labels: Record<string, string> = {
-      employee: "Nhân viên văn phòng",
-      business: "Kinh doanh",
-      freelancer: "Tự do",
-      student: "Sinh viên",
-      other: "Khác",
+      employee: t("occupationOptions.employee"),
+      business: t("occupationOptions.business"),
+      freelancer: t("occupationOptions.freelancer"),
+      student: t("occupationOptions.student"),
+      other: t("occupationOptions.other"),
     };
     return labels[value] || value;
   };
 
   const getIncomeLabel = (value: string) => {
     const labels: Record<string, string> = {
-      under5: "Dưới 5 triệu",
-      "5to10": "5 - 10 triệu",
-      "10to20": "10 - 20 triệu",
-      "20to50": "20 - 50 triệu",
-      above50: "Trên 50 triệu",
+      under5: t("incomeOptions.under5"),
+      "5to10": t("incomeOptions.5to10"),
+      "10to20": t("incomeOptions.10to20"),
+      "20to50": t("incomeOptions.20to50"),
+      above50: t("incomeOptions.above50"),
     };
     return labels[value] || value;
   };
@@ -80,15 +148,13 @@ export function ConfirmationStep({ formData }: ConfirmationStepProps) {
     <div className="space-y-6">
       {/* Header */}
       <div className="text-center">
-        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-100 mb-4">
-          <CheckCircle2 className="w-8 h-8 text-green-600" />
+        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4">
+          <CheckCircle2 className="w-8 h-8 text-primary" />
         </div>
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">
-          Xác nhận thông tin
+        <h2 className="text-2xl font-bold text-foreground mb-2">
+          {t("title")}
         </h2>
-        <p className="text-gray-600">
-          Vui lòng kiểm tra lại thông tin trước khi hoàn tất đăng ký
-        </p>
+        <p className="text-muted-foreground">{t("description")}</p>
       </div>
 
       {/* Basic Information Card */}
@@ -96,112 +162,100 @@ export function ConfirmationStep({ formData }: ConfirmationStepProps) {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <User className="w-5 h-5" />
-            Thông tin cá nhân
+            {t("personalInfo.title")}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Full Name */}
             <div>
-              <label className="text-sm font-medium text-gray-500">
-                Họ và tên
+              <label className="text-sm font-medium text-muted-foreground">
+                {tForm("fields.fullName.label")}
               </label>
-              <p className="mt-1 text-base font-semibold text-gray-900">
+              <p className="mt-1 text-base font-semibold text-foreground">
                 {basicInfo.fullName || "N/A"}
               </p>
             </div>
 
             {/* Email */}
             <div>
-              <label className="text-sm font-medium text-gray-500 flex items-center gap-1">
+              <label className="text-sm font-medium text-muted-foreground flex items-center gap-1">
                 <Mail className="w-4 h-4" />
-                Email
+                {tForm("fields.email.label")}
               </label>
-              <p className="mt-1 text-base text-gray-900">
+              <p className="mt-1 text-base text-foreground">
                 {basicInfo.email || "N/A"}
               </p>
             </div>
 
             {/* Phone */}
             <div>
-              <label className="text-sm font-medium text-gray-500 flex items-center gap-1">
+              <label className="text-sm font-medium text-muted-foreground flex items-center gap-1">
                 <Phone className="w-4 h-4" />
-                Số điện thoại
+                {tForm("fields.phoneNumber.label")}
               </label>
-              <p className="mt-1 text-base text-gray-900">
-                {basicInfo.phone || "N/A"}
+              <p className="mt-1 text-base text-foreground">
+                {basicInfo.phoneNumber || "N/A"}
               </p>
             </div>
 
             {/* Date of Birth */}
             <div>
-              <label className="text-sm font-medium text-gray-500 flex items-center gap-1">
+              <label className="text-sm font-medium text-muted-foreground flex items-center gap-1">
                 <Calendar className="w-4 h-4" />
-                Ngày sinh
+                {tForm("fields.dateOfBirth.label")}
               </label>
-              <p className="mt-1 text-base text-gray-900">
+              <p className="mt-1 text-base text-foreground">
                 {formatDate(basicInfo.dateOfBirth)}
               </p>
             </div>
 
             {/* Gender */}
             <div>
-              <label className="text-sm font-medium text-gray-500">
-                Giới tính
+              <label className="text-sm font-medium text-muted-foreground">
+                {tForm("fields.gender.label")}
               </label>
-              <p className="mt-1 text-base text-gray-900">
+              <p className="mt-1 text-base text-foreground">
                 {getGenderLabel(basicInfo.gender)}
               </p>
             </div>
 
-            {/* City */}
+            {/* National ID */}
             <div>
-              <label className="text-sm font-medium text-gray-500 flex items-center gap-1">
-                <MapPin className="w-4 h-4" />
-                Tỉnh/Thành phố
+              <label className="text-sm font-medium text-muted-foreground">
+                {tForm("fields.nationalId.label")}
               </label>
-              <p className="mt-1 text-base text-gray-900">
-                {getCityLabel(basicInfo.city)}
+              <p className="mt-1 text-base text-foreground">
+                {basicInfo.nationalId || "N/A"}
               </p>
             </div>
           </div>
 
           <Separator />
 
-          {/* Address */}
+          {/* Purpose */}
           <div>
-            <label className="text-sm font-medium text-gray-500">
-              Địa chỉ hiện tại
+            <label className="text-sm font-medium text-muted-foreground">
+              {tForm("fields.purpose.label")}
             </label>
-            <p className="mt-1 text-base text-gray-900">
-              {basicInfo.address || "N/A"}
+            <p className="mt-1 text-base text-foreground">
+              {basicInfo.purpose || "N/A"}
             </p>
           </div>
 
           <Separator />
 
-          {/* Occupation & Income */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Review */}
+          {basicInfo.review && (
             <div>
-              <label className="text-sm font-medium text-gray-500 flex items-center gap-1">
-                <Briefcase className="w-4 h-4" />
-                Nghề nghiệp
+              <label className="text-sm font-medium text-muted-foreground">
+                {t("personalInfo.notes")}
               </label>
-              <p className="mt-1 text-base text-gray-900">
-                {getOccupationLabel(basicInfo.occupation)}
+              <p className="mt-1 text-base text-foreground">
+                {basicInfo.review}
               </p>
             </div>
-
-            <div>
-              <label className="text-sm font-medium text-gray-500 flex items-center gap-1">
-                <DollarSign className="w-4 h-4" />
-                Thu nhập hàng tháng
-              </label>
-              <p className="mt-1 text-base text-gray-900">
-                {getIncomeLabel(basicInfo.monthlyIncome)}
-              </p>
-            </div>
-          </div>
+          )}
         </CardContent>
       </Card>
 
@@ -209,19 +263,19 @@ export function ConfirmationStep({ formData }: ConfirmationStepProps) {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <CheckCircle2 className="w-5 h-5 text-green-600" />
-            Xác thực danh tính
+            <CheckCircle2 className="w-5 h-5 text-primary" />
+            {t("ekyc.title")}
           </CardTitle>
         </CardHeader>
         <CardContent>
           {ekycInfo.ekycVerification?.completed ? (
             <div className="flex items-center gap-3">
-              <Badge className="text-sm py-1.5 px-3 bg-green-100 text-green-800 hover:bg-green-100">
-                ✓ Đã xác thực
+              <Badge className="text-sm py-1.5 px-3 bg-primary/10 text-primary hover:bg-primary/10">
+                ✓ {t("ekyc.verified")}
               </Badge>
               {ekycInfo.ekycVerification.sessionId && (
-                <div className="text-sm text-gray-600">
-                  Session ID:{" "}
+                <div className="text-sm text-muted-foreground">
+                  {t("ekyc.sessionId")}:{" "}
                   <span className="font-mono text-xs">
                     {ekycInfo.ekycVerification.sessionId}
                   </span>
@@ -230,13 +284,13 @@ export function ConfirmationStep({ formData }: ConfirmationStepProps) {
             </div>
           ) : (
             <Badge variant="destructive" className="text-sm py-1.5 px-3">
-              ✗ Chưa xác thực
+              ✗ {t("ekyc.notVerified")}
             </Badge>
           )}
 
           {ekycInfo.ekycVerification?.timestamp && (
-            <p className="mt-2 text-sm text-gray-500">
-              Xác thực lúc:{" "}
+            <p className="mt-2 text-sm text-muted-foreground">
+              {t("ekyc.verifiedAt")}:{" "}
               {new Date(ekycInfo.ekycVerification.timestamp).toLocaleString(
                 "vi-VN",
               )}
@@ -246,7 +300,7 @@ export function ConfirmationStep({ formData }: ConfirmationStepProps) {
       </Card>
 
       {/* Important Notice */}
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+      {/* <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
         <div className="flex gap-3">
           <div className="flex-shrink-0">
             <svg
@@ -272,10 +326,22 @@ export function ConfirmationStep({ formData }: ConfirmationStepProps) {
             </ul>
           </div>
         </div>
+      </div> */}
+
+      {/* Submit Button */}
+      <div className="flex justify-center pt-6">
+        <Button
+          onClick={handleSubmit}
+          disabled={submitting}
+          className="px-8 py-3 text-base font-semibold"
+          size="lg"
+        >
+          {submitting ? t("submitting") : t("submit")}
+        </Button>
       </div>
 
       {/* Action Notice */}
-      <div className="text-center text-sm text-gray-600 pt-4">
+      {/* <div className="text-center text-sm text-gray-600 pt-4">
         <p>
           Bằng cách nhấn "Hoàn tất", bạn đồng ý với{" "}
           <a href="/terms" className="text-blue-600 hover:underline">
@@ -286,7 +352,7 @@ export function ConfirmationStep({ formData }: ConfirmationStepProps) {
             Chính sách bảo mật
           </a>
         </p>
-      </div>
+      </div> */}
     </div>
   );
 }

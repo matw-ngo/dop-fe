@@ -43,7 +43,7 @@ export function OnboardingForm({
   }
 
   return (
-    <div className="bg-white rounded-2xl shadow-xl p-8">
+    <div className="bg-card rounded-2xl shadow-xl p-8 border">
       {formConfig ? (
         <MultiStepFormRenderer config={formConfig} />
       ) : (

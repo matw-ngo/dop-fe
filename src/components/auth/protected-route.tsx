@@ -19,13 +19,14 @@ export function ProtectedRoute({
   requiredRole,
   redirectTo = "/admin/login",
 }: ProtectedRouteProps) {
-  const { isAuthenticated, isLoading, user } = useAuth();
+  const { isAuthenticated, isLoading, isHydrated, user } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
   const t = useTranslations("admin.auth.protectedRoute");
 
   useEffect(() => {
-    if (!isLoading) {
+    // Only check authentication after both loading and hydration are complete
+    if (!isLoading && isHydrated) {
       if (!isAuthenticated) {
         // Create localized redirect URL
         const localizedRedirect = getLocalizedRedirect(redirectTo, pathname);
@@ -36,10 +37,19 @@ export function ProtectedRoute({
         router.push(localizedAdminPath);
       }
     }
-  }, [isAuthenticated, isLoading, user, requiredRole, redirectTo, router, pathname]);
+  }, [
+    isAuthenticated,
+    isLoading,
+    isHydrated,
+    user,
+    requiredRole,
+    redirectTo,
+    router,
+    pathname,
+  ]);
 
-  // Show loading state while checking authentication
-  if (isLoading) {
+  // Show loading state while checking authentication or during hydration
+  if (isLoading || !isHydrated) {
     return (
       <div className="flex h-screen w-full items-center justify-center">
         <div className="flex flex-col items-center space-y-4">

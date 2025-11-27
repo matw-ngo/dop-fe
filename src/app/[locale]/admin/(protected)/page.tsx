@@ -3,18 +3,26 @@
 import Link from "next/link";
 import { useAuth } from "@/lib/auth/auth-context";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   LayoutDashboardIcon,
   FileTextIcon,
   UsersIcon,
   SettingsIcon,
-  ArrowRightIcon
+  ArrowRightIcon,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { useLocalizedPath } from "@/lib/client-utils";
 
 export default function AdminDashboard() {
   const { user } = useAuth();
+  const getLocalizedPath = useLocalizedPath();
   const t = useTranslations("admin.dashboard");
 
   const stats = [
@@ -43,21 +51,21 @@ export default function AdminDashboard() {
       title: t("quickActions.flowManagement.title"),
       description: t("quickActions.flowManagement.description"),
       icon: FileTextIcon,
-      href: "/admin/flows",
+      href: getLocalizedPath("/admin/flows"),
       color: "bg-blue-500",
     },
     {
       title: t("quickActions.userManagement.title"),
       description: t("quickActions.userManagement.description"),
       icon: UsersIcon,
-      href: "/admin/users",
+      href: getLocalizedPath("/admin/users"),
       color: "bg-green-500",
     },
     {
       title: t("quickActions.systemSettings.title"),
       description: t("quickActions.systemSettings.description"),
       icon: SettingsIcon,
-      href: "/admin/settings",
+      href: getLocalizedPath("/admin/settings"),
       color: "bg-purple-500",
     },
   ];
@@ -70,12 +78,10 @@ export default function AdminDashboard() {
           <h1 className="text-3xl font-bold tracking-tight">
             {t("welcome", { username: user?.username || "" })}
           </h1>
-          <p className="text-muted-foreground">
-            {t("subtitle")}
-          </p>
+          <p className="text-muted-foreground">{t("subtitle")}</p>
         </div>
         <Button asChild>
-          <Link href="/admin/flows">
+          <Link href={getLocalizedPath("/admin/flows")}>
             {t("createNewFlow")}
             <ArrowRightIcon className="ml-2 size-4" />
           </Link>
@@ -104,7 +110,9 @@ export default function AdminDashboard() {
 
       {/* Quick Actions */}
       <div>
-        <h2 className="text-xl font-semibold mb-4">{t("quickActions.title")}</h2>
+        <h2 className="text-xl font-semibold mb-4">
+          {t("quickActions.title")}
+        </h2>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {quickActions.map((action, index) => (
             <Card key={index} className="hover:shadow-md transition-shadow">
@@ -134,9 +142,7 @@ export default function AdminDashboard() {
       <Card>
         <CardHeader>
           <CardTitle>{t("recentActivity.title")}</CardTitle>
-          <CardDescription>
-            {t("recentActivity.subtitle")}
-          </CardDescription>
+          <CardDescription>{t("recentActivity.subtitle")}</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
@@ -144,7 +150,9 @@ export default function AdminDashboard() {
               <div className="size-2 rounded-full bg-blue-500"></div>
               <div className="flex-1 space-y-1">
                 <p className="text-sm font-medium leading-none">
-                  {t("recentActivity.flowCreated", { flowName: "Đăng ký tài khoản" })}
+                  {t("recentActivity.flowCreated", {
+                    flowName: "Đăng ký tài khoản",
+                  })}
                 </p>
                 <p className="text-sm text-muted-foreground">
                   {t("recentActivity.minutesAgo", { minutes: "2" })}

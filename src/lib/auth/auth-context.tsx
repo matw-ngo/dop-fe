@@ -11,6 +11,7 @@ interface AuthContextType {
   user: AuthState["user"];
   isAuthenticated: AuthState["isAuthenticated"];
   isLoading: AuthState["isLoading"];
+  isHydrated: AuthState["isHydrated"];
   login: (username: string, password: string) => Promise<boolean>;
   logout: () => void;
   checkAuth: () => void;
@@ -29,25 +30,32 @@ export function AuthProvider({ children }: AuthProviderProps) {
     user,
     isAuthenticated,
     isLoading,
+    isHydrated,
     login: storeLogin,
     logout: storeLogout,
     checkAuth,
   } = useAuthStore();
   const t = useTranslations("admin.auth");
 
-  // Check authentication on app start
+  // Check authentication on app start after hydration
   useEffect(() => {
-    checkAuth();
-  }, [checkAuth]);
+    // Only check auth after hydration is complete
+    if (isHydrated) {
+      checkAuth();
+    }
+  }, [checkAuth, isHydrated]);
 
   // Enhanced login function with locale-aware redirect
-  const login = async (username: string, password: string): Promise<boolean> => {
+  const login = async (
+    username: string,
+    password: string,
+  ): Promise<boolean> => {
     const success = await storeLogin(username, password);
     if (success) {
       // Show success toast
       // Note: In a real implementation, you might want to use a toast library
       console.log(t("loginSuccess", { username }));
-      
+
       // Redirect to admin dashboard with locale
       const adminPath = getLocalizedRedirect("/admin", pathname);
       router.push(adminPath);
@@ -61,7 +69,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     // Show logout toast
     // Note: In a real implementation, you might want to use a toast library
     console.log(t("logoutSuccess"));
-    
+
     // Redirect to login page with locale
     const loginPath = getLocalizedRedirect("/admin/login", pathname);
     router.push(loginPath);
@@ -71,16 +79,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
     user,
     isAuthenticated,
     isLoading,
+    isHydrated,
     login,
     logout,
     checkAuth,
   };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {

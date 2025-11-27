@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "tsc --noEmit && next build --turbopack",
+    "build:static": "tsc --noEmit && next build --turbopack",
     "start": "next start",
     "lint": "biome check",
     "format": "biome format --write",
@@ -51,6 +52,7 @@
     "@radix-ui/react-tooltip": "^1.2.8",
     "@tanstack/react-query": "^5.90.2",
     "@tanstack/react-table": "^8.21.3",
+    "@types/react-window": "^1.8.8",
     "@vercel/analytics": "^1.5.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -70,6 +72,7 @@
     "react-dom": "19.1.0",
     "react-hook-form": "^7.63.0",
     "react-resizable-panels": "^3.0.6",
+    "react-window": "^2.2.3",
     "recharts": "^2.15.4",
     "sonner": "^2.0.7",
     "tailwind-merge": "^3.3.1",

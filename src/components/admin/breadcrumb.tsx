@@ -44,26 +44,16 @@ export function AdminBreadcrumb({ items, className }: AdminBreadcrumbProps) {
 
   // Add flow detail page
   if (params.flowId && !params.stepId) {
-    const flowId = Array.isArray(params.flowId) ? params.flowId[0] : params.flowId;
+    const flowId = Array.isArray(params.flowId)
+      ? params.flowId[0]
+      : params.flowId;
     defaultItems.push({
       label: t("flow", { id: flowId }),
       isActive: true,
     });
   }
 
-  // Add step detail page
-  if (params.flowId && params.stepId) {
-    const flowId = Array.isArray(params.flowId) ? params.flowId[0] : params.flowId;
-    const stepId = Array.isArray(params.stepId) ? params.stepId[0] : params.stepId;
-    defaultItems.push({
-      label: t("flow", { id: flowId }),
-      href: `/admin/flows/${flowId}`,
-    });
-    defaultItems.push({
-      label: t("step", { id: stepId }),
-      isActive: true,
-    });
-  }
+  // Step detail page is now handled by dialog, so no breadcrumb needed for stepId
 
   const breadcrumbItems = items || defaultItems;
 
@@ -80,9 +70,7 @@ export function AdminBreadcrumb({ items, className }: AdminBreadcrumbProps) {
               <BreadcrumbItem>
                 {item.href && !item.isActive ? (
                   <BreadcrumbLink asChild>
-                    <Link href={getLocalizedPath(item.href)}>
-                      {item.label}
-                    </Link>
+                    <Link href={getLocalizedPath(item.href)}>{item.label}</Link>
                   </BreadcrumbLink>
                 ) : (
                   <BreadcrumbPage>{item.label}</BreadcrumbPage>
@@ -120,9 +108,7 @@ export function AdminBreadcrumb({ items, className }: AdminBreadcrumbProps) {
               <BreadcrumbItem>
                 {item.href && !item.isActive ? (
                   <BreadcrumbLink asChild>
-                    <Link href={getLocalizedPath(item.href)}>
-                      {item.label}
-                    </Link>
+                    <Link href={getLocalizedPath(item.href)}>{item.label}</Link>
                   </BreadcrumbLink>
                 ) : (
                   <BreadcrumbPage>{item.label}</BreadcrumbPage>
@@ -143,9 +129,7 @@ export function AdminBreadcrumb({ items, className }: AdminBreadcrumbProps) {
             <BreadcrumbItem>
               {item.href && !item.isActive ? (
                 <BreadcrumbLink asChild>
-                  <Link href={getLocalizedPath(item.href)}>
-                    {item.label}
-                  </Link>
+                  <Link href={getLocalizedPath(item.href)}>{item.label}</Link>
                 </BreadcrumbLink>
               ) : (
                 <BreadcrumbPage>{item.label}</BreadcrumbPage>

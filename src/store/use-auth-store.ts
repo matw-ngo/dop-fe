@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { persist, createJSONStorage } from "zustand/middleware";
 
 export interface User {
   id: string;
@@ -12,6 +12,7 @@ export interface AuthState {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
+  isHydrated: boolean;
   login: (username: string, password: string) => Promise<boolean>;
   logout: () => void;
   checkAuth: () => void;
@@ -30,14 +31,15 @@ export const useAuthStore = create<AuthState>()(
     (set, get) => ({
       user: null,
       isAuthenticated: false,
-      isLoading: false,
+      isLoading: true, // Start with loading true until hydration is complete
+      isHydrated: false, // Track if state has been hydrated from storage
 
       login: async (username: string, password: string) => {
         set({ isLoading: true });
-        
+
         // Simulate API call delay
         await new Promise((resolve) => setTimeout(resolve, 1000));
-        
+
         // Dummy authentication logic
         if (username === "admin" && password === "admin123") {
           set({
@@ -47,7 +49,7 @@ export const useAuthStore = create<AuthState>()(
           });
           return true;
         }
-        
+
         set({ isLoading: false });
         return false;
       },
@@ -76,10 +78,25 @@ export const useAuthStore = create<AuthState>()(
     }),
     {
       name: "auth-storage",
+      storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({
         user: state.user,
         isAuthenticated: state.isAuthenticated,
       }),
-    }
-  )
+      onRehydrateStorage: () => (state) => {
+        // This function is called after rehydration is complete
+        if (state) {
+          state.isHydrated = true;
+          state.isLoading = false;
+
+          // Set authentication status based on rehydrated user
+          if (state.user) {
+            state.isAuthenticated = true;
+          } else {
+            state.isAuthenticated = false;
+          }
+        }
+      },
+    },
+  ),
 );

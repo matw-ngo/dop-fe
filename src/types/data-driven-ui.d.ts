@@ -73,6 +73,9 @@ export interface FieldConfig {
 
   /** (Optional) Condition for rendering this field */
   condition?: FieldCondition;
+
+  /** (Optional) Additional properties for custom fields */
+  [key: string]: any;
 }
 
 /**

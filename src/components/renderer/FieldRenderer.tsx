@@ -118,6 +118,10 @@ export const FieldRenderer: React.FC<FieldRendererProps> = ({
           </div>
         );
 
+      case "Confirmation":
+        // Confirmation component needs form data and additional props
+        return <Component {...restProps} />;
+
       default:
         return null;
     }
@@ -130,6 +134,7 @@ export const FieldRenderer: React.FC<FieldRendererProps> = ({
     "Progress",
     "Badge",
     "Separator",
+    "Confirmation",
   ];
   if (specialComponents.includes(component)) {
     return renderSpecialComponent();

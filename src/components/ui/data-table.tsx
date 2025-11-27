@@ -21,6 +21,28 @@ import {
 } from "@/components/ui/pagination";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Input } from "@/components/ui/input";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+  DropdownMenuLabel,
+  DropdownMenuCheckboxItem,
+} from "@/components/ui/dropdown-menu";
+import { Badge } from "@/components/ui/badge";
+import {
+  SearchIcon,
+  Settings2,
+  Download,
+  RotateCcw,
+  Eye,
+  EyeOff,
+  Filter,
+  FilterX,
+  MoreHorizontal,
+} from "lucide-react";
 import { useDataTable } from "@/hooks/ui/use-data-table";
 import { type ColumnDef } from "@tanstack/react-table";
 
@@ -37,6 +59,13 @@ interface DataTableProps<TData, TValue> {
   enableRowSelection?: boolean;
   onSelectRows?: (rows: TData[]) => void;
   selectedRows?: TData[];
+  enableColumnVisibility?: boolean;
+  enableExport?: boolean;
+  enableFilters?: boolean;
+  onRowClick?: (row: TData) => void;
+  initialPageSize?: number;
+  initialSorting?: { id: string; desc: boolean }[];
+  initialColumnVisibility?: Record<string, boolean>;
 }
 
 export function DataTable<TData, TValue>({
@@ -52,18 +81,48 @@ export function DataTable<TData, TValue>({
   enableRowSelection = false,
   onSelectRows,
   selectedRows = [],
+  enableColumnVisibility = true,
+  enableExport = true,
+  enableFilters = true,
+  onRowClick,
+  initialPageSize = 10,
+  initialSorting = [],
+  initialColumnVisibility = {},
 }: DataTableProps<TData, TValue>) {
   const {
     table,
+    sorting,
+    setSorting,
     columnFilters,
     setColumnFilters,
+    columnVisibility,
+    setColumnVisibility,
     rowSelection,
     setRowSelection,
+    globalFilter,
+    setGlobalFilter,
+    resetFilters,
+    resetSorting,
+    resetAll,
+    exportToCSV,
+    saveTableState,
+    loadTableState,
   } = useDataTable({
     data,
     columns: columns as ColumnDef<TData>[],
     isLoading,
     refetch,
+    initialPageSize,
+    initialSorting,
+    initialColumnVisibility,
+    enableRowSelection,
+    enableMultiSort: true,
+    enableColumnResizing: true,
+    enableColumnPinning: true,
+    enableGlobalFilter: !!searchColumn,
+    globalFilterValue: "",
+    onRowClick,
+    onSelectionChange: onSelectRows,
   });
 
   // Handle row selection changes
@@ -71,7 +130,7 @@ export function DataTable<TData, TValue>({
     if (enableRowSelection && onSelectRows) {
       const selectedRowsData = table
         .getSelectedRowModel()
-        .rows.map(row => row.original);
+        .rows.map((row: any) => row.original);
       onSelectRows(selectedRowsData);
     }
   }, [rowSelection, table, enableRowSelection, onSelectRows]);
@@ -83,15 +142,17 @@ export function DataTable<TData, TValue>({
     return [
       {
         id: "select",
-        header: ({ table }) => (
+        header: ({ table }: any) => (
           <Checkbox
             checked={table.getIsAllPageRowsSelected()}
-            onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+            onCheckedChange={(value) =>
+              table.toggleAllPageRowsSelected(!!value)
+            }
             aria-label="Select all"
             className="translate-y-[2px]"
           />
         ),
-        cell: ({ row }) => (
+        cell: ({ row }: any) => (
           <Checkbox
             checked={row.getIsSelected()}
             onCheckedChange={(value) => row.toggleSelected(!!value)}
@@ -109,11 +170,7 @@ export function DataTable<TData, TValue>({
   // Handle search/filter
   const handleFilterChange = (value: string) => {
     if (searchColumn) {
-      setColumnFilters(
-        value
-          ? [{ id: searchColumn, value }]
-          : []
-      );
+      setGlobalFilter(value);
     }
   };
 
@@ -126,7 +183,7 @@ export function DataTable<TData, TValue>({
   const getPaginationItems = () => {
     const items = [];
     const maxVisiblePages = 5;
-    
+
     if (pageCount <= maxVisiblePages) {
       for (let i = 1; i <= pageCount; i++) {
         items.push(i);
@@ -154,30 +211,161 @@ export function DataTable<TData, TValue>({
         items.push(pageCount);
       }
     }
-    
+
     return items;
   };
 
+  // Get visible columns for dropdown
+  const visibleColumns = React.useMemo(() => {
+    return columns.filter((col) => col.id !== "select" && col.id !== "actions");
+  }, [columns]);
+
+  // Calculate active filters count
+  const activeFiltersCount = React.useMemo(() => {
+    return columnFilters.length + (globalFilter ? 1 : 0);
+  }, [columnFilters, globalFilter]);
+
   return (
-    <div className={className}>
-      {/* Search/Filter */}
-      {searchColumn && (
-        <div className="flex items-center py-4">
-          <input
-            placeholder={searchPlaceholder}
-            value={(columnFilters.find((filter) => filter.id === searchColumn)?.value as string) ?? ""}
-            onChange={(event) => handleFilterChange(event.target.value)}
-            className="max-w-sm flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
-            aria-label={`Search ${searchPlaceholder}`}
-          />
+    <div className={`space-y-4 ${className}`}>
+      {/* Toolbar */}
+      <div className="flex items-center justify-between">
+        {/* Search/Filter */}
+        {enableFilters && (
+          <div className="flex items-center gap-2 flex-1">
+            {searchColumn && (
+              <div className="relative max-w-sm flex-1">
+                <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input
+                  placeholder={searchPlaceholder}
+                  value={globalFilter ?? ""}
+                  onChange={(event) => handleFilterChange(event.target.value)}
+                  className="pl-10 w-full"
+                  aria-label={`Search ${searchPlaceholder}`}
+                />
+              </div>
+            )}
+
+            {/* Active Filters Badge */}
+            {activeFiltersCount > 0 && (
+              <Badge variant="secondary" className="gap-1">
+                <Filter className="h-3 w-3" />
+                {activeFiltersCount} active
+              </Badge>
+            )}
+          </div>
+        )}
+
+        {/* Actions */}
+        <div className="flex items-center gap-2">
+          {/* Reset Filters */}
+          {activeFiltersCount > 0 && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={resetFilters}
+              className="gap-2"
+            >
+              <FilterX className="h-4 w-4" />
+              Reset Filters
+            </Button>
+          )}
+
+          {/* Column Visibility */}
+          {enableColumnVisibility && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="sm" className="gap-2">
+                  <Settings2 className="h-4 w-4" />
+                  Columns
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48">
+                <DropdownMenuLabel>Toggle Columns</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                {visibleColumns.map((column: any) => (
+                  <DropdownMenuCheckboxItem
+                    key={column.id as string}
+                    checked={columnVisibility[column.id as string] ?? false}
+                    onCheckedChange={(value) =>
+                      setColumnVisibility((prev) => ({
+                        ...prev,
+                        [column.id as string]: value,
+                      }))
+                    }
+                  >
+                    {typeof column.header === "string"
+                      ? column.header
+                      : (column.id as string)}
+                  </DropdownMenuCheckboxItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
+
+          {/* Export */}
+          {enableExport && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={exportToCSV}
+              className="gap-2"
+            >
+              <Download className="h-4 w-4" />
+              Export
+            </Button>
+          )}
+
+          {/* More Actions */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="sm">
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={resetSorting}>
+                <RotateCcw className="mr-2 h-4 w-4" />
+                Reset Sorting
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={resetAll}>
+                <RotateCcw className="mr-2 h-4 w-4" />
+                Reset All
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={saveTableState}>
+                <Eye className="mr-2 h-4 w-4" />
+                Save View
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={loadTableState}>
+                <EyeOff className="mr-2 h-4 w-4" />
+                Load View
+              </DropdownMenuItem>
+              {refetch && (
+                <>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={refetch}>
+                    <RotateCcw className="mr-2 h-4 w-4" />
+                    Refresh Data
+                  </DropdownMenuItem>
+                </>
+              )}
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
-      )}
+      </div>
 
       {/* Bulk Actions */}
       {enableRowSelection && table.getSelectedRowModel().rows.length > 0 && (
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 py-2 px-4 bg-muted/50 rounded-md mb-4" role="region" aria-label="Bulk actions">
-          <span className="text-sm text-muted-foreground w-full sm:w-auto" aria-live="polite">
-            {table.getSelectedRowModel().rows.length} item{table.getSelectedRowModel().rows.length > 1 ? 's' : ''} selected
+        <div
+          className="flex flex-col sm:flex-row items-start sm:items-center gap-2 py-2 px-4 bg-muted/50 rounded-md"
+          role="region"
+          aria-label="Bulk actions"
+        >
+          <span
+            className="text-sm text-muted-foreground w-full sm:w-auto"
+            aria-live="polite"
+          >
+            {table.getSelectedRowModel().rows.length} item
+            {table.getSelectedRowModel().rows.length > 1 ? "s" : ""} selected
           </span>
           <div className="flex flex-wrap gap-2 w-full sm:w-auto">
             <Button
@@ -197,43 +385,50 @@ export function DataTable<TData, TValue>({
       <div className="rounded-md border overflow-x-auto">
         <Table className="min-w-full">
           <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
+            {table.getHeaderGroups().map((headerGroup: any) => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
+                {headerGroup.headers.map((header: any) => (
                   <TableHead key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : header.column.getCanSort() ? (
-                          <button
-                            type="button"
-                            onClick={header.column.getToggleSortingHandler()}
-                            className="hover:bg-accent flex h-10 items-center space-x-2 px-2 text-left font-medium"
-                            aria-label={`Sort by ${typeof header.column.columnDef.header === 'string' ? header.column.columnDef.header : header.id}`}
-                            aria-sort={
-                              header.column.getIsSorted() === 'asc' ? 'ascending' :
-                              header.column.getIsSorted() === 'desc' ? 'descending' : 'none'
-                            }
-                          >
-                            <span className="flex items-center space-x-2">
-                              {typeof header.column.columnDef.header === 'function'
-                                ? React.createElement(header.column.columnDef.header as React.ComponentType<any>, header.getContext())
-                                : header.column.columnDef.header as React.ReactNode
-                              }
-                              {{
-                                asc: "↑",
-                                desc: "↓",
-                              }[header.column.getIsSorted() as string] ?? null}
-                            </span>
-                          </button>
-                        ) : (
-                          <div>
-                            {typeof header.column.columnDef.header === 'function'
-                              ? React.createElement(header.column.columnDef.header as React.ComponentType<any>, header.getContext())
-                              : header.column.columnDef.header as React.ReactNode
-                            }
-                          </div>
-                        )
-                    }
+                    {header.isPlaceholder ? null : header.column.getCanSort() ? (
+                      <button
+                        type="button"
+                        onClick={header.column.getToggleSortingHandler()}
+                        className="hover:bg-accent flex h-10 items-center space-x-2 px-2 text-left font-medium"
+                        aria-label={`Sort by ${typeof header.column.columnDef.header === "string" ? header.column.columnDef.header : header.id}`}
+                        aria-sort={
+                          header.column.getIsSorted() === "asc"
+                            ? "ascending"
+                            : header.column.getIsSorted() === "desc"
+                              ? "descending"
+                              : "none"
+                        }
+                      >
+                        <span className="flex items-center space-x-2">
+                          {typeof header.column.columnDef.header === "function"
+                            ? React.createElement(
+                                header.column.columnDef
+                                  .header as React.ComponentType<any>,
+                                header.getContext(),
+                              )
+                            : (header.column.columnDef
+                                .header as React.ReactNode)}
+                          {{
+                            asc: "↑",
+                            desc: "↓",
+                          }[header.column.getIsSorted() as string] ?? null}
+                        </span>
+                      </button>
+                    ) : (
+                      <div>
+                        {typeof header.column.columnDef.header === "function"
+                          ? React.createElement(
+                              header.column.columnDef
+                                .header as React.ComponentType<any>,
+                              header.getContext(),
+                            )
+                          : (header.column.columnDef.header as React.ReactNode)}
+                      </div>
+                    )}
                   </TableHead>
                 ))}
               </TableRow>
@@ -252,16 +447,20 @@ export function DataTable<TData, TValue>({
                 </TableRow>
               ))
             ) : table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
+              table.getRowModel().rows.map((row: any) => (
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
+                  className={
+                    onRowClick ? "cursor-pointer hover:bg-muted/50" : ""
+                  }
+                  onClick={() => onRowClick && onRowClick(row.original)}
                 >
-                  {row.getVisibleCells().map((cell) => (
+                  {row.getVisibleCells().map((cell: any) => (
                     <TableCell key={cell.id}>
                       {React.createElement(
                         cell.column.columnDef.cell as React.ComponentType<any>,
-                        cell.getContext()
+                        cell.getContext(),
                       )}
                     </TableCell>
                   ))}
@@ -269,7 +468,10 @@ export function DataTable<TData, TValue>({
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={(columnsWithSelection || columns).length} className="h-24 text-center">
+                <TableCell
+                  colSpan={(columnsWithSelection || columns).length}
+                  className="h-24 text-center"
+                >
                   {emptyState || "No results."}
                 </TableCell>
               </TableRow>
@@ -282,8 +484,8 @@ export function DataTable<TData, TValue>({
       {pageCount > 1 && (
         <div className="flex items-center justify-between space-x-2 py-4">
           <div className="text-sm text-muted-foreground">
-            Page {currentPage} of {pageCount} ({table.getFilteredRowModel().rows.length} total
-            items)
+            Page {currentPage} of {pageCount} (
+            {table.getFilteredRowModel().rows.length} total items)
           </div>
           <Pagination>
             <PaginationContent>
@@ -297,7 +499,7 @@ export function DataTable<TData, TValue>({
                   }
                 />
               </PaginationItem>
-              
+
               {getPaginationItems().map((item, index) => (
                 <PaginationItem key={`page-${index}`}>
                   {item === "ellipsis" ? (
@@ -313,7 +515,7 @@ export function DataTable<TData, TValue>({
                   )}
                 </PaginationItem>
               ))}
-              
+
               <PaginationItem>
                 <PaginationNext
                   onClick={() => table.nextPage()}

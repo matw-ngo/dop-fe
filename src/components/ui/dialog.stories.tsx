@@ -30,7 +30,7 @@ export const Default: Story = {
       <DialogTrigger asChild>
         <Button variant="outline">Edit Profile</Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent size="md" className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Edit profile</DialogTitle>
           <DialogDescription>

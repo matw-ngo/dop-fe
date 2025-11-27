@@ -7,11 +7,11 @@ import type {
   AdminFlowListResponse,
   AdminStepListResponse,
   BulkUpdateFieldsResponse,
-  AdminFlowQueryOptions
+  AdminFlowQueryOptions,
 } from "./admin-types";
 
 // Environment variable to toggle mock/real API
-export const USE_MOCK_API = process.env.NEXT_PUBLIC_USE_MOCK_API === 'true';
+export const USE_MOCK_API = process.env.NEXT_PUBLIC_USE_MOCK_API === "true";
 
 // Mock data
 const mockFlows: AdminFlowListItem[] = [
@@ -120,7 +120,8 @@ const mockFields: AdminFieldDetail[] = [
 ];
 
 // Utility to simulate API delay
-const delay = (ms: number = 1000) => new Promise(resolve => setTimeout(resolve, ms));
+const delay = (ms: number = 1000) =>
+  new Promise((resolve) => setTimeout(resolve, ms));
 
 // Utility to simulate random errors
 const simulateRandomError = (errorRate: number = 0.1) => {
@@ -132,24 +133,28 @@ const simulateRandomError = (errorRate: number = 0.1) => {
 // Mock API functions
 export const mockAdminApi = {
   // Flow management
-  getFlows: async (options?: AdminFlowQueryOptions): Promise<AdminFlowListResponse> => {
+  getFlows: async (
+    options?: AdminFlowQueryOptions,
+  ): Promise<AdminFlowListResponse> => {
     await delay(800);
     simulateRandomError(0.05);
-    
+
     let filteredFlows = [...mockFlows];
-    
+
     // Filter by status if provided
     if (options?.status) {
-      filteredFlows = filteredFlows.filter(flow => flow.status === options.status);
+      filteredFlows = filteredFlows.filter(
+        (flow) => flow.status === options.status,
+      );
     }
-    
+
     // Pagination
     const page = options?.page || 1;
     const limit = options?.limit || 10;
     const startIndex = (page - 1) * limit;
     const endIndex = startIndex + limit;
     const paginatedFlows = filteredFlows.slice(startIndex, endIndex);
-    
+
     return {
       flows: paginatedFlows,
       pagination: {
@@ -164,16 +169,16 @@ export const mockAdminApi = {
   getFlow: async (id: string): Promise<AdminFlowDetail> => {
     await delay(600);
     simulateRandomError(0.05);
-    
-    const flow = mockFlows.find(f => f.id === id);
+
+    const flow = mockFlows.find((f) => f.id === id);
     if (!flow) {
       throw new Error(`Flow with ID ${id} not found`);
     }
-    
+
     return {
       ...flow,
       description: `Complete ${flow.name.toLowerCase()} process with verification steps`,
-      steps: mockSteps.map(step => ({
+      steps: mockSteps.map((step) => ({
         ...step,
         flowId: id,
       })),
@@ -183,12 +188,12 @@ export const mockAdminApi = {
   updateFlow: async (id: string, updates: any): Promise<AdminFlowDetail> => {
     await delay(1200);
     simulateRandomError(0.1);
-    
-    const flowIndex = mockFlows.findIndex(f => f.id === id);
+
+    const flowIndex = mockFlows.findIndex((f) => f.id === id);
     if (flowIndex === -1) {
       throw new Error(`Flow with ID ${id} not found`);
     }
-    
+
     // Update the flow in mock data
     const updatedFlow = {
       ...mockFlows[flowIndex],
@@ -196,10 +201,90 @@ export const mockAdminApi = {
       updatedAt: new Date().toISOString(),
     };
     mockFlows[flowIndex] = updatedFlow;
-    
+
     return {
       ...updatedFlow,
-      steps: mockSteps.map(step => ({
+      steps: mockSteps.map((step) => ({
+        ...step,
+        flowId: id,
+      })),
+    };
+  },
+
+  deleteFlow: async (id: string): Promise<void> => {
+    await delay(1000);
+    simulateRandomError(0.1);
+
+    const flowIndex = mockFlows.findIndex((f) => f.id === id);
+    if (flowIndex === -1) {
+      throw new Error(`Flow with ID ${id} not found`);
+    }
+
+    // Remove the flow from mock data
+    mockFlows.splice(flowIndex, 1);
+  },
+
+  duplicateFlow: async (
+    id: string,
+    name?: string,
+  ): Promise<AdminFlowDetail> => {
+    await delay(1200);
+    simulateRandomError(0.1);
+
+    const flowToDuplicate = mockFlows.find((f) => f.id === id);
+    if (!flowToDuplicate) {
+      throw new Error(`Flow with ID ${id} not found`);
+    }
+
+    // Create a new flow with duplicated data
+    const newFlow: AdminFlowListItem = {
+      id: `${mockFlows.length + 1}`,
+      name: name || `${flowToDuplicate.name} (Copy)`,
+      status: "draft",
+      stepCount: flowToDuplicate.stepCount,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    // Add to mock data
+    mockFlows.push(newFlow);
+
+    return {
+      ...newFlow,
+      description: `${flowToDuplicate.name} (Copy) - Duplicated flow`,
+      steps: mockSteps.map((step) => ({
+        ...step,
+        flowId: newFlow.id,
+      })),
+    };
+  },
+
+  toggleFlowStatus: async (id: string): Promise<AdminFlowDetail> => {
+    await delay(800);
+    simulateRandomError(0.1);
+
+    const flowIndex = mockFlows.findIndex((f) => f.id === id);
+    if (flowIndex === -1) {
+      throw new Error(`Flow with ID ${id} not found`);
+    }
+
+    // Toggle the flow status
+    const currentFlow = mockFlows[flowIndex];
+    const newStatus: "active" | "inactive" | "draft" | "archived" =
+      currentFlow.status === "active" ? "inactive" : "active";
+
+    const updatedFlow = {
+      ...currentFlow,
+      status: newStatus,
+      updatedAt: new Date().toISOString(),
+    };
+
+    mockFlows[flowIndex] = updatedFlow;
+
+    return {
+      ...updatedFlow,
+      description: `${updatedFlow.name} flow`,
+      steps: mockSteps.map((step) => ({
         ...step,
         flowId: id,
       })),
@@ -210,9 +295,9 @@ export const mockAdminApi = {
   getFlowSteps: async (flowId: string): Promise<AdminStepListResponse> => {
     await delay(500);
     simulateRandomError(0.05);
-    
+
     return {
-      steps: mockSteps.map(step => ({
+      steps: mockSteps.map((step) => ({
         ...step,
         flowId,
       })),
@@ -222,12 +307,12 @@ export const mockAdminApi = {
   getStep: async (id: string): Promise<AdminStepDetail> => {
     await delay(400);
     simulateRandomError(0.05);
-    
-    const step = mockSteps.find(s => s.id === id);
+
+    const step = mockSteps.find((s) => s.id === id);
     if (!step) {
       throw new Error(`Step with ID ${id} not found`);
     }
-    
+
     return {
       ...step,
       flowId: "1", // Default flow ID
@@ -238,19 +323,19 @@ export const mockAdminApi = {
   updateStep: async (id: string, updates: any): Promise<AdminStepDetail> => {
     await delay(800);
     simulateRandomError(0.1);
-    
-    const stepIndex = mockSteps.findIndex(s => s.id === id);
+
+    const stepIndex = mockSteps.findIndex((s) => s.id === id);
     if (stepIndex === -1) {
       throw new Error(`Step with ID ${id} not found`);
     }
-    
+
     // Update the step in mock data
     const updatedStep = {
       ...mockSteps[stepIndex],
       ...updates,
     };
     mockSteps[stepIndex] = updatedStep;
-    
+
     return {
       ...updatedStep,
       flowId: "1", // Default flow ID
@@ -260,42 +345,46 @@ export const mockAdminApi = {
 
   // Field management
   updateField: async (
-    stepId: string, 
-    fieldId: string, 
-    updates: any
+    stepId: string,
+    fieldId: string,
+    updates: any,
   ): Promise<AdminFieldDetail> => {
     await delay(300);
     simulateRandomError(0.08);
-    
-    const fieldIndex = mockFields.findIndex(f => f.id === fieldId);
+
+    const fieldIndex = mockFields.findIndex((f) => f.id === fieldId);
     if (fieldIndex === -1) {
       throw new Error(`Field with ID ${fieldId} not found`);
     }
-    
+
     // Update the field in mock data
     const updatedField = {
       ...mockFields[fieldIndex],
       ...updates,
     };
     mockFields[fieldIndex] = updatedField;
-    
+
     return updatedField;
   },
 
   // Bulk operations
   bulkUpdateFields: async (
-    stepId: string, 
-    updates: Array<{ fieldId: string; data: any }>
+    stepId: string,
+    updates: Array<{ fieldId: string; data: any }>,
   ): Promise<BulkUpdateFieldsResponse> => {
     await delay(1000);
     simulateRandomError(0.15);
-    
+
     const updatedFields: AdminFieldDetail[] = [];
     const errors: Array<{ fieldId: string; error: string }> = [];
-    
+
     for (const { fieldId, data } of updates) {
       try {
-        const updatedField = await mockAdminApi.updateField(stepId, fieldId, data);
+        const updatedField = await mockAdminApi.updateField(
+          stepId,
+          fieldId,
+          data,
+        );
         updatedFields.push(updatedField);
       } catch (error) {
         errors.push({
@@ -304,7 +393,7 @@ export const mockAdminApi = {
         });
       }
     }
-    
+
     return {
       updatedFields,
       errors: errors.length > 0 ? errors : undefined,

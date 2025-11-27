@@ -54,6 +54,21 @@ export const MultiStepFormRenderer: React.FC<MultiStepFormRendererProps> = ({
     await actions.goToNextStep();
   };
 
+  // Handle success callback from confirmation step
+  const handleConfirmationSuccess = () => {
+    // Clear persisted data and redirect to success page
+    if (config.persistData && typeof window !== "undefined") {
+      try {
+        localStorage.removeItem(config.persistKey || "multi-step-form-data");
+      } catch (error) {
+        console.error("Failed to clear persisted form data:", error);
+      }
+    }
+
+    // Redirect to success page
+    window.location.href = "/onboarding-success";
+  };
+
   // Default progress indicator
   const defaultProgressRenderer = () => {
     if (!showProgress) return null;
@@ -186,29 +201,36 @@ export const MultiStepFormRenderer: React.FC<MultiStepFormRendererProps> = ({
   };
 
   // Default navigation buttons
-  const defaultNavigationRenderer = () => (
-    <div className="flex items-center justify-between gap-4">
-      <Button
-        type="button"
-        variant="outline"
-        onClick={actions.goToPreviousStep}
-        disabled={isFirstStep || config.allowBackNavigation === false}
-      >
-        <ChevronLeft className="mr-2 h-4 w-4" />
-        Previous
-      </Button>
+  const defaultNavigationRenderer = () => {
+    // Hide navigation for confirmation step since it has its own submit button
+    if (currentStepConfig.id === "confirmation") {
+      return null;
+    }
 
-      <div className="flex-1" />
+    return (
+      <div className="flex items-center justify-between gap-4">
+        <Button
+          type="button"
+          variant="outline"
+          onClick={actions.goToPreviousStep}
+          disabled={isFirstStep || config.allowBackNavigation === false}
+        >
+          <ChevronLeft className="mr-2 h-4 w-4" />
+          Previous
+        </Button>
 
-      <Button type="submit" disabled={state.isSubmitting}>
-        {state.isSubmitting && (
-          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-        )}
-        {isLastStep ? "Submit" : "Next"}
-        {!isLastStep && <ChevronRight className="ml-2 h-4 w-4" />}
-      </Button>
-    </div>
-  );
+        <div className="flex-1" />
+
+        <Button type="submit" disabled={state.isSubmitting}>
+          {state.isSubmitting && (
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          )}
+          {isLastStep ? "Submit" : "Next"}
+          {!isLastStep && <ChevronRight className="ml-2 h-4 w-4" />}
+        </Button>
+      </div>
+    );
+  };
 
   return (
     <div className={cn("w-full", className)}>
@@ -230,7 +252,20 @@ export const MultiStepFormRenderer: React.FC<MultiStepFormRendererProps> = ({
 
           {/* Current Step Form */}
           <FormRenderer
-            fields={currentStepConfig.fields}
+            fields={currentStepConfig.fields.map((field) => {
+              // Pass success callback to confirmation field
+              if (field.component === "Confirmation") {
+                return {
+                  ...field,
+                  props: {
+                    ...field.props,
+                    onSuccess: handleConfirmationSuccess,
+                    isSubmitting: state.isSubmitting,
+                  },
+                };
+              }
+              return field;
+            })}
             onSubmit={handleStepSubmit}
             defaultValues={state.formData}
             translationNamespace={translationNamespace}

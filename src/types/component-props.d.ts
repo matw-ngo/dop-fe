@@ -202,7 +202,11 @@ export interface EkycProps extends BaseComponentProps {
  * Props for Confirmation component (read-only review step)
  */
 export interface ConfirmationProps extends BaseComponentProps {
-  // No specific props needed - it reads from form context
+  flowId?: string;
+  stepId?: string;
+  domain?: string;
+  onSuccess?: () => void;
+  isSubmitting?: boolean;
 }
 
 /**

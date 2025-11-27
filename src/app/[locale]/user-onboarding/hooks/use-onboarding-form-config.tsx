@@ -171,7 +171,13 @@ export const useOnboardingFormConfig = (
     builder.addStep(
       "confirmation",
       t("steps.confirmation.title"),
-      [createConfirmationField("review")],
+      [
+        createConfirmationField("review", {
+          flowId: flowData?.id,
+          stepId: "confirmation",
+          domain: window.location.hostname,
+        }),
+      ],
       {
         description: t("steps.confirmation.description"),
         icon: <CheckCircle className="h-5 w-5" />,
@@ -184,6 +190,8 @@ export const useOnboardingFormConfig = (
       .setProgressStyle("steps")
       .onComplete(async (allData) => {
         console.log("🎉 Onboarding completed! All data:", allData);
+        // Note: The actual API call is now handled in ConfirmationStep component
+        // This onComplete is only called when the form is completed without using the confirmation button
         localStorage.removeItem("user-onboarding-data");
         alert(t("successAlert"));
       });

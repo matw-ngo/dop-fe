@@ -56,7 +56,7 @@ const mockFlows: Record<string, components["schemas"]["FlowDetail"]> = {
       },
       {
         id: "mock-step-2",
-        use_ekyc: true,
+        use_ekyc: false,
         send_otp: false,
         have_purpose: false,
         required_purpose: false,

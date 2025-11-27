@@ -163,7 +163,7 @@ export default function OnboardingCard({
                 </CardHeader>
 
                 <CardContent className="p-0">
-                  <Link href="/user-onboarding" passHref>
+                  <Link href="/vi/user-onboarding" passHref>
                     <Button size="lg" className="group/button w-full sm:w-auto">
                       {t("buttonText")}
                       <ArrowRight className="ml-2 h-5 w-5 group-hover/button:translate-x-1 transition-transform" />

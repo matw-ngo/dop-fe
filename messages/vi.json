@@ -21,7 +21,12 @@
         },
         "confirmation": {
           "title": "Xác nhận thông tin",
-          "description": "Xem lại và xác nhận thông tin"
+          "description": "Xem lại và xác nhận thông tin",
+          "subtitle": "Vui lòng kiểm tra lại thông tin trước khi hoàn tất đăng ký",
+          "submitButton": "Hoàn tất đăng ký",
+          "submitting": "Đang gửi...",
+          "success": "Đăng ký thành công!",
+          "error": "Gửi thất bại. Vui lòng thử lại."
         }
       },
       "fields": {
@@ -235,6 +240,7 @@
         }
       },
       "actions": {
+        "manageSteps": "Quản lý các bước",
         "viewDetails": "Xem chi tiết",
         "edit": "Chỉnh sửa",
         "activate": "Kích hoạt",

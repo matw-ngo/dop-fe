@@ -195,7 +195,7 @@ export function ThemeSelector() {
                       Customize
                     </Button>
                   </DialogTrigger>
-                  <DialogContent className="max-w-2xl">
+                  <DialogContent size="lg" className="max-w-2xl">
                     <DialogHeader>
                       <DialogTitle>Customize Theme</DialogTitle>
                     </DialogHeader>

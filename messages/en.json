@@ -20,8 +20,13 @@
           "description": "Verify your identity using eKYC"
         },
         "confirmation": {
-          "title": "Confirm Information",
-          "description": "Review and confirm your information"
+          "title": "Confirmation",
+          "description": "Review and confirm details",
+          "subtitle": "Please review your information before completing registration",
+          "submitButton": "Complete Registration",
+          "submitting": "Submitting...",
+          "success": "Registration successful!",
+          "error": "Submission failed. Please try again."
         }
       },
       "fields": {
@@ -235,6 +240,7 @@
         }
       },
       "actions": {
+        "manageSteps": "Manage Steps",
         "viewDetails": "View Details",
         "edit": "Edit",
         "activate": "Activate",
