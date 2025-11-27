@@ -1,50 +1,87 @@
-# DOP Frontend - Multi-User Theme System
+# DOP-FE - Digital Onboarding Platform Frontend
 
-A Next.js application with advanced theme system designed for multiple user groups with different customization requirements.
+## Overview
+DOP-FE là một Next.js 15.5.4 application với TypeScript, được thiết kế cho digital onboarding platform với eKYC integration, dynamic forms, và admin management system.
 
-## 🎨 Theme System Features
+## Key Features
+- **Dynamic Multi-step Forms**: Backend-driven form rendering với real-time validation
+- **eKYC Integration**: VNPT SDK integration cho identity verification
+- **Admin Flow Management**: Comprehensive admin interface cho flow configuration
+- **Internationalization**: Full i18n support (Vietnamese/English)
+- **Modern Tech Stack**: Next.js 15, React 19, TypeScript 5, Tailwind CSS 4
+- **Component-driven Architecture**: shadcn/ui với atomic design patterns
 
-- **Multi-User Group Support**: Different themes for Business, Creative, Healthcare, and System users
-- **Dynamic Theme Switching**: Real-time theme changes with CSS variables
-- **Advanced Customization**: Color customization with OKLCH color space
-- **Accessibility First**: WCAG compliant with high contrast support
-- **Scalable Architecture**: Easy to add new themes and user groups
-- **Export/Import**: Export themes as CSS files
-- **Responsive Design**: Works across all device sizes
-
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
-
-## Getting Started
-
-First, run the development server:
-
+## Quick Start
 ```bash
+# Clone repository
+git clone https://github.com/your-org/dop-fe.git
+cd dop-fe
+
+# Install dependencies
+npm install
+
+# Setup environment
+cp .env.example .env
+# Edit .env với your configuration
+
+# Start development
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Documentation
+- **[Project Architecture](docs/project-architecture-overview.md)** - Comprehensive architecture overview
+- **[Business Flows](docs/business-flows-and-processes.md)** - User journeys và process flows
+- **[Data Models](docs/data-models-and-structures.md)** - Type definitions và data structures
+- **[Dependencies](docs/dependencies-and-integrations.md)** - Dependencies và third-party integrations
+- **[Components](src/docs/application-pages-and-components.tsx)** - Pages và component architecture
+- **[Configuration](docs/configuration-and-environment-setup.md)** - Setup và configuration guide
+- **[Replication Guide](docs/application-replication-guide.md)** - Step-by-step replication instructions
+- **[API Documentation](docs/api-documentation.md)** - Complete API reference
+- **[Contributing](docs/contributing.md)** - Development guidelines và contribution process
+- **[Deployment](docs/deployment-guide.md)** - Deployment strategies và configurations
+- **[Performance](docs/performance-optimization.md)** - Performance optimization guide
+- **[Security](docs/security-best-practices.md)** - Security best practices
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Technology Stack
+- **Framework**: Next.js 15.5.4 (App Router) với Turbopack
+- **UI Library**: React 19.1.0 với shadcn/ui (Radix UI + Tailwind CSS 4)
+- **Language**: TypeScript 5.x với strict mode
+- **State Management**: Zustand 5.0.8 + TanStack Query 5.90.2
+- **Forms**: react-hook-form 7.63.0 + Zod 4.1.11 validation
+- **Styling**: Tailwind CSS 4 với CSS-in-JS
+- **Testing**: Vitest 3.2.4 + Playwright 1.55.1
+- **Build Tools**: Biome 2.2.0 (linting/formatting) + Husky 9.1.7
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Project Structure
+```
+src/
+├── app/                    # Next.js App Router
+│   ├── [locale]/          # Internationalization routes
+│   │   ├── user-onboarding/
+│   │   └── (protected)/
+│   │       └── admin/
+├── components/              # Component library
+│   ├── ui/               # shadcn/ui components
+│   ├── organisms/         # Complex components
+│   ├── features/          # Feature-specific components
+│   ├── wrappers/           # Custom wrappers
+│   └── renderer/          # Dynamic form rendering
+├── lib/                   # Utilities và configurations
+│   ├── api/               # OpenAPI client
+│   ├── builders/           # Form builders
+│   └── ekyc/              # VNPT eKYC integration
+├── store/                  # Zustand stores
+├── types/                  # TypeScript definitions
+├── hooks/                  # Custom React hooks
+└── mappers/                 # Data transformation
+```
 
-## Learn More
+## Development
+- **Development Server**: `npm run dev` (http://localhost:3000)
+- **Build**: `npm run build` (Static export)
+- **Test**: `npm run test` (Vitest + Playwright)
+- **Lint**: `npm run lint` (Biome)
+- **Storybook**: `npm run storybook` (Component development)
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## License
+MIT License - see [LICENSE](LICENSE) file for details.
