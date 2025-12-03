@@ -1,6 +1,7 @@
 import createClient from "openapi-fetch";
 import type { paths } from "./v1.d.ts";
 import { toast } from "sonner";
+import { useTokenStore, securityUtils } from "@/lib/auth/secure-tokens";
 
 // API Configuration based on environment
 const getApiConfig = () => {
@@ -50,63 +51,111 @@ const apiClient = createClient<paths>({
 apiClient.use({
   // Runs on every request
   async onRequest(req) {
-    // const locale = localStorage.getItem('locale') || 'en';
-    // req.request.headers.set('Accept-Language', locale);
+    // Add secure authentication headers
+    const { getAccessToken, isTokenExpired, refreshTokens } = useTokenStore.getState();
+    let token = getAccessToken();
 
-    // Attach the authentication token to the request
-    const token = localStorage.getItem("accessToken");
+    // Check if token needs refresh
+    if (token && isTokenExpired()) {
+      const refreshed = await refreshTokens();
+      token = getAccessToken();
+
+      if (!refreshed || !token) {
+        // Redirect to login if refresh fails
+        if (typeof window !== 'undefined') {
+          window.location.href = '/login';
+        }
+        throw new Error('Authentication failed');
+      }
+    }
+
     if (token) {
       req.request.headers.set("Authorization", `Bearer ${token}`);
+
+      // Add CSRF protection for state-changing requests
+      if (['POST', 'PUT', 'DELETE', 'PATCH'].includes(req.request.method)) {
+        const csrfToken = securityUtils.generateCSRFToken();
+        req.request.headers.set("X-CSRF-Token", csrfToken);
+      }
     }
+
+    // Add request metadata
+    req.request.headers.set("X-Request-ID", crypto.randomUUID());
+    req.request.headers.set("X-Client-Timestamp", new Date().toISOString());
   },
 
   // Runs on every response
   async onResponse(res) {
     // --- Token Refresh Logic ---
-    // Check for 401 Unauthorized and ensure it's not a request to the refresh endpoint itself
-    if (
-      res.response.status === 401 &&
-      !res.request.url.includes("/refresh-token")
-    ) {
+    if (res.response.status === 401 && !res.request.url.includes("/refresh")) {
+      const { refreshTokens, clearTokens } = useTokenStore.getState();
+
       try {
-        console.log("Attempting to refresh token...");
-        // const refreshToken = localStorage.getItem('refreshToken');
-        // if (!refreshToken) throw new Error('No refresh token available');
+        const refreshed = await refreshTokens();
+        if (!refreshed) {
+          throw new Error('Token refresh failed');
+        }
 
-        // const { data: newTokens } = await apiClient.POST('/auth/refresh-token', {
-        //   body: { refreshToken },
-        // });
+        // Note: In a real implementation, you would retry the original request
+        // This requires more complex request cloning logic
 
-        // if (!newTokens) {
-        //   throw new Error('Failed to refresh token');
-        // }
+      } catch (error) {
+        console.error("Token refresh failed, logging out.", error);
+        clearTokens();
 
-        // console.log('Token refreshed successfully.');
-        // localStorage.setItem('accessToken', newTokens.accessToken);
-        // localStorage.setItem('refreshToken', newTokens.refreshToken);
-
-        // Retry the original request with the new token
-        // return apiClient.clone(res.request).retry();
-      } catch (e) {
-        console.error("Token refresh failed, logging out.", e);
-        // If refresh fails, clear tokens and redirect to login
-        // localStorage.removeItem('accessToken');
-        // localStorage.removeItem('refreshToken');
-        // window.location.href = '/login';
+        if (typeof window !== 'undefined') {
+          window.location.href = '/login';
+        }
+        throw new Error('Authentication failed');
       }
+    }
+
+    // --- Security Headers Validation ---
+    const securityHeaders = [
+      'x-content-type-options',
+      'x-frame-options',
+      'x-xss-protection',
+      'strict-transport-security'
+    ];
+
+    const missingHeaders = securityHeaders.filter(header =>
+      !res.response.headers.get(header)
+    );
+
+    if (missingHeaders.length > 0 && process.env.NODE_ENV === 'development') {
+      console.warn('Missing security headers:', missingHeaders);
     }
 
     // --- Global Error Handling & Logging ---
     if (res.response.status >= 500) {
-      // Log the error to a monitoring service in production
-      // if (process.env.NODE_ENV === 'production') {
-      //   logErrorToMonitoringService(res);
-      // }
+      const errorData = {
+        status: res.response.status,
+        url: res.request.url,
+        timestamp: new Date().toISOString(),
+        userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : 'server',
+      };
 
-      // Show a generic error toast to the user
+      // Log to monitoring service in production
+      if (process.env.NODE_ENV === 'production') {
+        console.error('Server error:', errorData);
+        // logErrorToMonitoringService(errorData);
+      }
+
       toast.error("A server error occurred", {
         description: "Please try again later or contact support.",
       });
+    }
+
+    // --- Rate Limiting Detection ---
+    if (res.response.status === 429) {
+      const retryAfter = res.response.headers.get('Retry-After');
+      const waitTime = retryAfter ? parseInt(retryAfter) * 1000 : 60000;
+
+      toast.error("Rate limit exceeded", {
+        description: `Please wait ${Math.ceil(waitTime / 1000)} seconds before trying again.`,
+      });
+
+      throw new Error(`Rate limited. Retry after ${waitTime}ms`);
     }
   },
 });

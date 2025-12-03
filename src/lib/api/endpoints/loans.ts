@@ -1,5 +1,8 @@
 import apiClient from "../client";
 import type { paths } from "../v1.d.ts";
+import { useTokenStore, securityUtils } from "@/lib/auth/secure-tokens";
+import { VietnameseFinancialValidator } from "@/lib/loan-products/validation";
+import { VietnameseComplianceEngine } from "@/lib/loan-products/vietnamese-compliance";
 
 /**
  * Loan Application API endpoints
@@ -158,6 +161,741 @@ export const loanAdminApi = {
       params: {
         query: params,
       },
+    });
+    return response.data;
+  },
+
+  // Enhanced loan application form endpoints
+
+  /**
+   * Validate loan application form data
+   */
+  validateApplicationData: async (stepData: {
+    step: string;
+    data: Record<string, any>;
+    loanType?: string;
+  }) => {
+    const response = await apiClient.POST("/loans/validate", {
+      body: stepData,
+    });
+    return response.data;
+  },
+
+  /**
+   * Get Vietnamese provinces/cities for address dropdowns
+   */
+  getProvinces: async () => {
+    const response = await apiClient.GET("/location/provinces");
+    return response.data;
+  },
+
+  /**
+   * Get districts by province code
+   */
+  getDistricts: async (provinceCode: string) => {
+    const response = await apiClient.GET("/location/districts", {
+      params: {
+        query: { provinceCode },
+      },
+    });
+    return response.data;
+  },
+
+  /**
+   * Get wards by district code
+   */
+  getWards: async (districtCode: string) => {
+    const response = await apiClient.GET("/location/wards", {
+      params: {
+        query: { districtCode },
+      },
+    });
+    return response.data;
+  },
+
+  /**
+   * Get list of supported banks in Vietnam
+   */
+  getBanks: async () => {
+    const response = await apiClient.GET("/banks");
+    return response.data;
+  },
+
+  /**
+   * Get income source options
+   */
+  getIncomeSources: async () => {
+    const response = await apiClient.GET("/config/income-sources");
+    return response.data;
+  },
+
+  /**
+   * Get employment types
+   */
+  getEmploymentTypes: async () => {
+    const response = await apiClient.GET("/config/employment-types");
+    return response.data;
+  },
+
+  /**
+   * Get loan purposes
+   */
+  getLoanPurposes: async () => {
+    const response = await apiClient.GET("/config/loan-purposes");
+    return response.data;
+  },
+
+  /**
+   * Check loan eligibility
+   */
+  checkEligibility: async (criteria: {
+    monthlyIncome?: number;
+    age?: number;
+    employmentType?: string;
+    loanAmount?: number;
+    loanTerm?: number;
+    existingLoans?: number;
+    creditScore?: number;
+  }) => {
+    const response = await apiClient.POST("/loans/eligibility-check", {
+      body: criteria,
+    });
+    return response.data;
+  },
+
+  /**
+   * Calculate loan payment schedule
+   */
+  calculatePaymentSchedule: async (loanDetails: {
+    amount: number;
+    term: number;
+    interestRate: number;
+    interestType: "reducing" | "flat" | "fixed";
+    firstPaymentDate?: string;
+  }) => {
+    const response = await apiClient.POST("/loans/payment-schedule", {
+      body: loanDetails,
+    });
+    return response.data;
+  },
+
+  /**
+   * Upload document for loan application with secure authentication
+   */
+  uploadDocument: async (
+    applicationId: string,
+    documentType: string,
+    file: File,
+    onProgress?: (progress: number) => void
+  ) => {
+    // Validate file type and size
+    const allowedTypes = ['application/pdf', 'image/jpeg', 'image/png', 'image/jpg'];
+    const maxSize = 10 * 1024 * 1024; // 10MB
+
+    if (!allowedTypes.includes(file.type)) {
+      throw new Error("Invalid file type. Only PDF, JPEG, and PNG files are allowed.");
+    }
+
+    if (file.size > maxSize) {
+      throw new Error("File size exceeds 10MB limit.");
+    }
+
+    // Sanitize inputs
+    const sanitizedApplicationId = applicationId.replace(/[^a-zA-Z0-9-]/g, '');
+    const sanitizedDocumentType = documentType.replace(/[^a-zA-Z0-9_-]/g, '');
+
+    const formData = new FormData();
+    formData.append("documentType", sanitizedDocumentType);
+    formData.append("file", file);
+
+    // Create XMLHttpRequest for progress tracking with secure authentication
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+
+      // Track upload progress
+      if (onProgress) {
+        xhr.upload.addEventListener("progress", (event) => {
+          if (event.lengthComputable) {
+            const progress = Math.round((event.loaded / event.total) * 100);
+            onProgress(progress);
+          }
+        });
+      }
+
+      xhr.addEventListener("load", () => {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          try {
+            const response = JSON.parse(xhr.responseText);
+
+            // Validate response structure
+            if (!response || typeof response !== 'object') {
+              throw new Error("Invalid response format");
+            }
+
+            resolve(response);
+          } catch (error) {
+            reject(new Error("Invalid response format"));
+          }
+        } else if (xhr.status === 401) {
+          reject(new Error("Authentication failed. Please log in again."));
+        } else if (xhr.status === 403) {
+          reject(new Error("Permission denied. You don't have access to upload documents."));
+        } else if (xhr.status === 413) {
+          reject(new Error("File too large. Maximum size is 10MB."));
+        } else {
+          reject(new Error(`Upload failed with status ${xhr.status}`));
+        }
+      });
+
+      xhr.addEventListener("error", () => {
+        reject(new Error("Network error during upload"));
+      });
+
+      xhr.addEventListener("timeout", () => {
+        reject(new Error("Upload timeout"));
+      });
+
+      // Configure request with security headers
+      xhr.timeout = 300000; // 5 minutes timeout
+      xhr.open("POST", `/api/v1/loans/applications/${sanitizedApplicationId}/documents`);
+
+      // Add secure auth header
+      const tokenStore = useTokenStore.getState();
+      const token = tokenStore.getAccessToken();
+
+      if (token) {
+        xhr.setRequestHeader("Authorization", `Bearer ${token}`);
+        // Add CSRF protection
+        const csrfToken = securityUtils.generateCSRFToken();
+        xhr.setRequestHeader("X-CSRF-Token", csrfToken);
+      } else {
+        reject(new Error("Authentication required"));
+        return;
+      }
+
+      xhr.send(formData);
+    });
+  },
+
+  /**
+   * Delete uploaded document
+   */
+  deleteDocument: async (applicationId: string, documentId: string) => {
+    const response = await apiClient.DELETE("/loans/applications/{id}/documents/{documentId}", {
+      params: {
+        path: { id: applicationId, documentId },
+      },
+    });
+    return response.data;
+  },
+
+  /**
+   * Get uploaded documents for application
+   */
+  getApplicationDocuments: async (applicationId: string) => {
+    const response = await apiClient.GET("/loans/applications/{id}/documents", {
+      params: {
+        path: { id: applicationId },
+      },
+    });
+    return response.data;
+  },
+
+  /**
+   * Save draft application
+   */
+  saveDraftApplication: async (applicationData: Partial<LoanApplicationData>) => {
+    const response = await apiClient.POST("/loans/applications/draft", {
+      body: applicationData,
+    });
+    return response.data;
+  },
+
+  /**
+   * Get draft application
+   */
+  getDraftApplication: async (draftId?: string) => {
+    const url = draftId ? `/loans/applications/draft/${draftId}` : "/loans/applications/draft";
+    const response = await apiClient.GET(url);
+    return response.data;
+  },
+
+  /**
+   * Submit final loan application
+   */
+  submitFinalApplication: async (applicationData: LoanApplicationData) => {
+    const response = await apiClient.POST("/loans/applications/submit", {
+      body: applicationData,
+    });
+    return response.data;
+  },
+
+  /**
+   * Get application summary for review
+   */
+  getApplicationSummary: async (applicationId: string) => {
+    const response = await apiClient.GET("/loans/applications/{id}/summary", {
+      params: {
+        path: { id: applicationId },
+      },
+    });
+    return response.data;
+  },
+
+  /**
+   * Cancel application
+   */
+  cancelApplication: async (applicationId: string, reason: string) => {
+    const response = await apiClient.POST("/loans/applications/{id}/cancel", {
+      params: {
+        path: { id: applicationId },
+      },
+      body: { reason },
+    });
+    return response.data;
+  },
+
+  /**
+   * Get loan comparison data
+   */
+  compareLoanProducts: async (criteria: {
+    amount: number;
+    term: number;
+    purpose?: string;
+    income?: number;
+    employmentType?: string;
+  }) => {
+    const response = await apiClient.POST("/loans/compare", {
+      body: criteria,
+    });
+    return response.data;
+  },
+
+  /**
+   * Get loan application statistics (for dashboard)
+   */
+  getApplicationStats: async () => {
+    const response = await apiClient.GET("/loans/applications/stats");
+    return response.data;
+  },
+
+  /**
+   * Get loan form configuration
+   */
+  getFormConfiguration: async (loanType?: string) => {
+    const response = await apiClient.GET("/loans/form-config", {
+      params: {
+        query: { loanType },
+      },
+    });
+    return response.data;
+  },
+
+  /**
+   * Generate application PDF
+   */
+  generateApplicationPDF: async (applicationId: string) => {
+    const response = await apiClient.GET("/loans/applications/{id}/pdf", {
+      params: {
+        path: { id: applicationId },
+      },
+    });
+    return response.data;
+  },
+};
+
+/**
+ * Vietnamese Loan Products API
+ * Extended endpoints for loan product catalog, comparison, and matching
+ */
+export const loanProductApi = {
+  /**
+   * Get all available Vietnamese loan products
+   */
+  getVietnameseLoanProducts: async (params?: {
+    loanType?: string;
+    bankCode?: string;
+    minAmount?: number;
+    maxAmount?: number;
+    minTerm?: number;
+    maxTerm?: number;
+    maxInterestRate?: number;
+    collateralRequired?: boolean;
+    featured?: boolean;
+    active?: boolean;
+    limit?: number;
+    offset?: number;
+    sortBy?: "popularity" | "interest_rate" | "processing_time" | "max_amount";
+    sortOrder?: "asc" | "desc";
+  }) => {
+    const response = await apiClient.GET("/loans/vietnamese-products", {
+      params: {
+        query: params,
+      },
+    });
+    return response.data;
+  },
+
+  /**
+   * Get loan product by ID
+   */
+  getVietnameseLoanProduct: async (id: string) => {
+    const response = await apiClient.GET("/loans/vietnamese-products/{id}", {
+      params: {
+        path: { id },
+      },
+    });
+    return response.data;
+  },
+
+  /**
+   * Search loan products by keywords
+   */
+  searchLoanProducts: async (params: {
+    keywords: string;
+    filters?: {
+      loanTypes?: string[];
+      bankCodes?: string[];
+      minAmount?: number;
+      maxAmount?: number;
+      minTerm?: number;
+      maxTerm?: number;
+      maxInterestRate?: number;
+    };
+    limit?: number;
+    offset?: number;
+  }) => {
+    const response = await apiClient.POST("/loans/vietnamese-products/search", {
+      body: params,
+    });
+    return response.data;
+  },
+
+  /**
+   * Get loan products by type
+   */
+  getLoanProductsByType: async (loanType: string, params?: {
+    bankCodes?: string[];
+    minAmount?: number;
+    maxAmount?: number;
+    featured?: boolean;
+    limit?: number;
+  }) => {
+    const response = await apiClient.GET("/loans/vietnamese-products/type/{loanType}", {
+      params: {
+        path: { loanType },
+        query: params,
+      },
+    });
+    return response.data;
+  },
+
+  /**
+   * Get loan products by bank
+   */
+  getLoanProductsByBank: async (bankCode: string, params?: {
+    loanTypes?: string[];
+    minAmount?: number;
+    maxAmount?: number;
+    featured?: boolean;
+    limit?: number;
+  }) => {
+    const response = await apiClient.GET("/loans/vietnamese-products/bank/{bankCode}", {
+      params: {
+        path: { bankCode },
+        query: params,
+      },
+    });
+    return response.data;
+  },
+
+  /**
+   * Get featured loan products
+   */
+  getFeaturedLoanProducts: async (params?: {
+    loanType?: string;
+    limit?: number;
+  }) => {
+    const response = await apiClient.GET("/loans/vietnamese-products/featured", {
+      params: {
+        query: params,
+      },
+    });
+    return response.data;
+  },
+
+  /**
+   * Compare multiple loan products
+   */
+  compareLoanProducts: async (params: {
+    productIds: string[];
+    loanAmount: number;
+    loanTerm: number;
+    includeFees?: boolean;
+    includePromotions?: boolean;
+  }) => {
+    const response = await apiClient.POST("/loans/vietnamese-products/compare", {
+      body: params,
+    });
+    return response.data;
+  },
+
+  /**
+   * Get personalized loan product recommendations
+   */
+  getLoanRecommendations: async (params: {
+    userProfile: {
+      age: number;
+      monthlyIncome: number;
+      employmentType: string;
+      employmentDurationMonths: number;
+      creditScore?: number;
+      existingDebt?: number;
+      hasCollateral: boolean;
+      collateralType?: string;
+      collateralValue?: number;
+      requestedAmount: number;
+      requestedTerm: number;
+      loanPurpose: string;
+    };
+    preferences?: {
+      preferredBanks?: string[];
+      maxInterestRate?: number;
+      maxProcessingTime?: number;
+      requiresOnlineApplication?: boolean;
+      requiresFastApproval?: boolean;
+    };
+    limit?: number;
+  }) => {
+    const response = await apiClient.POST("/loans/vietnamese-products/recommendations", {
+      body: params,
+    });
+    return response.data;
+  },
+
+  /**
+   * Check loan eligibility for multiple products
+   */
+  checkEligibility: async (params: {
+    productIds: string[];
+    applicantProfile: {
+      personalInfo: {
+        fullName: string;
+        dateOfBirth: string;
+        gender: string;
+        nationalId: string;
+        phoneNumber: string;
+        email: string;
+        vietnameseCitizen: boolean;
+      };
+      residenceInfo: {
+        currentAddress: {
+          province: string;
+          district: string;
+          ward: string;
+          street: string;
+        };
+        residenceStatus: string;
+        durationMonths: number;
+      };
+      employmentInfo: {
+        employmentType: string;
+        employmentStatus: string;
+        companyName?: string;
+        jobTitle?: string;
+        workDurationMonths: number;
+        monthlyIncome: number;
+        incomeSource: string;
+        canProvideIncomeProof: boolean;
+      };
+      financialInfo: {
+        existingMonthlyDebtPayments: number;
+        hasBankAccount: boolean;
+        creditScore?: number;
+        previousLoanHistory?: {
+          hasPreviousLoans: boolean;
+          onTimePaymentsPercentage?: number;
+        };
+      };
+      loanRequirements: {
+        requestedAmount: number;
+        requestedTerm: number;
+        collateralAvailable: boolean;
+        collateralType?: string;
+        collateralValue?: number;
+      };
+    };
+  }) => {
+    const response = await apiClient.POST("/loans/vietnamese-products/eligibility", {
+      body: params,
+    });
+    return response.data;
+  },
+
+  /**
+   * Calculate loan payments for comparison
+   */
+  calculateLoanPayments: async (params: {
+    productCalculations: Array<{
+      productId: string;
+      principal: number;
+      term: number;
+      includePromotionalRate?: boolean;
+    }>;
+  }) => {
+    const response = await apiClient.POST("/loans/vietnamese-products/calculate", {
+      body: params,
+    });
+    return response.data;
+  },
+
+  /**
+   * Get real-time interest rates
+   */
+  getRealTimeInterestRates: async (params?: {
+    bankCodes?: string[];
+    loanTypes?: string[];
+  }) => {
+    const response = await apiClient.GET("/loans/vietnamese-products/interest-rates", {
+      params: {
+        query: params,
+      },
+    });
+    return response.data;
+  },
+
+  /**
+   * Get promotional offers
+   */
+  getPromotionalOffers: async (params?: {
+    bankCodes?: string[];
+    loanTypes?: string[];
+    validOnly?: boolean;
+    limit?: number;
+  }) => {
+    const response = await apiClient.GET("/loans/vietnamese-products/promotions", {
+      params: {
+        query: params,
+      },
+    });
+    return response.data;
+  },
+
+  /**
+   * Get bank information
+   */
+  getBanksInfo: async (params?: {
+    includeInactive?: boolean;
+    type?: "state" | "commercial" | "foreign" | "investment";
+  }) => {
+    const response = await apiClient.GET("/loans/vietnamese-products/banks", {
+      params: {
+        query: params,
+      },
+    });
+    return response.data;
+  },
+
+  /**
+   * Get loan product statistics
+   */
+  getProductStatistics: async (params?: {
+    bankCode?: string;
+    loanType?: string;
+    period?: "week" | "month" | "quarter" | "year";
+  }) => {
+    const response = await apiClient.GET("/loans/vietnamese-products/statistics", {
+      params: {
+        query: params,
+      },
+    });
+    return response.data;
+  },
+
+  /**
+   * Save loan product comparison
+   */
+  saveComparison: async (params: {
+    name: string;
+    productIds: string[];
+    loanAmount: number;
+    loanTerm: number;
+    notes?: string;
+    isPublic?: boolean;
+  }) => {
+    const response = await apiClient.POST("/loans/vietnamese-products/comparisons/save", {
+      body: params,
+    });
+    return response.data;
+  },
+
+  /**
+   * Get saved comparisons
+   */
+  getSavedComparisons: async (params?: {
+    limit?: number;
+    offset?: number;
+    includePublic?: boolean;
+  }) => {
+    const response = await apiClient.GET("/loans/vietnamese-products/comparisons", {
+      params: {
+        query: params,
+      },
+    });
+    return response.data;
+  },
+
+  /**
+   * Get saved comparison by ID
+   */
+  getSavedComparison: async (id: string) => {
+    const response = await apiClient.GET("/loans/vietnamese-products/comparisons/{id}", {
+      params: {
+        path: { id },
+      },
+    });
+    return response.data;
+  },
+
+  /**
+   * Delete saved comparison
+   */
+  deleteSavedComparison: async (id: string) => {
+    const response = await apiClient.DELETE("/loans/vietnamese-products/comparisons/{id}", {
+      params: {
+        path: { id },
+      },
+    });
+    return response.data;
+  },
+
+  /**
+   * Share comparison
+   */
+  shareComparison: async (id: string, params?: {
+    expiresIn?: number; // hours
+    allowEdit?: boolean;
+  }) => {
+    const response = await apiClient.POST("/loans/vietnamese-products/comparisons/{id}/share", {
+      params: {
+        path: { id },
+        query: params,
+      },
+    });
+    return response.data;
+  },
+
+  /**
+   * Get loan product analytics
+   */
+  getProductAnalytics: async (params: {
+    productIds: string[];
+    metrics: Array<"views" | "applications" | "approvals" | "clicks">;
+    period?: "week" | "month" | "quarter" | "year";
+    breakdown?: "bank" | "loan_type" | "region";
+  }) => {
+    const response = await apiClient.POST("/loans/vietnamese-products/analytics", {
+      body: params,
     });
     return response.data;
   },
