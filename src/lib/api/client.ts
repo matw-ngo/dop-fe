@@ -2,10 +2,49 @@ import createClient from "openapi-fetch";
 import type { paths } from "./v1.d.ts";
 import { toast } from "sonner";
 
-const baseUrl =
-  process.env.NEXT_PUBLIC_API_URL || "https://dop-stg.datanest.vn/v1";
+// API Configuration based on environment
+const getApiConfig = () => {
+  const nodeEnv = process.env.NODE_ENV || "development";
+  const useMockApi = process.env.NEXT_PUBLIC_USE_MOCK_API === "true";
 
-const apiClient = createClient<paths>({ baseUrl });
+  if (useMockApi) {
+    return {
+      baseUrl: "/api/mock", // Use mock API routes
+      mockMode: true,
+    };
+  }
+
+  const environment = process.env.NEXT_PUBLIC_API_ENVIRONMENT || nodeEnv;
+
+  switch (environment) {
+    case "production":
+      return {
+        baseUrl: "https://api.dop-fe.com/v1",
+        mockMode: false,
+      };
+    case "staging":
+      return {
+        baseUrl: process.env.NEXT_PUBLIC_API_URL || "https://dop-stg.datanest.vn/v1",
+        mockMode: false,
+      };
+    case "development":
+    default:
+      return {
+        baseUrl: process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api/v1",
+        mockMode: false,
+      };
+  }
+};
+
+const apiConfig = getApiConfig();
+const apiClient = createClient<paths>({
+  baseUrl: apiConfig.baseUrl,
+  // Add headers for API versioning
+  headers: {
+    "X-API-Version": "1.0",
+    "X-Client-Version": "1.0.0",
+  },
+});
 
 // Add advanced interceptors for Auth, Token Refresh, and Global Error Handling
 apiClient.use({

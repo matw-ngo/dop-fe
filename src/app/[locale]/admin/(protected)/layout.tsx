@@ -2,6 +2,7 @@
 
 import { ReactNode } from "react";
 import { AdminPageWrapper } from "@/components/admin/admin-page-wrapper";
+import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 
 interface ProtectedLayoutProps {
   children: ReactNode;
@@ -9,8 +10,10 @@ interface ProtectedLayoutProps {
 
 export default function ProtectedLayout({ children }: ProtectedLayoutProps) {
   return (
-    <AdminPageWrapper>
-      {children}
-    </AdminPageWrapper>
+    <ProtectedRoute requiredRole="admin">
+      <AdminPageWrapper>
+        {children}
+      </AdminPageWrapper>
+    </ProtectedRoute>
   );
 }

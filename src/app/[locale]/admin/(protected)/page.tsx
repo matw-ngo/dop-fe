@@ -16,33 +16,111 @@ import {
   UsersIcon,
   SettingsIcon,
   ArrowRightIcon,
+  TrendingUpIcon,
+  ActivityIcon,
+  CreditCardIcon,
+  ClockIcon,
+  CheckCircleIcon,
+  AlertTriangleIcon,
+  DollarSignIcon,
+  UserPlusIcon,
+  FileCheckIcon,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useLocalizedPath } from "@/lib/client-utils";
+import { getLocalizedPath } from "@/lib/client-utils";
+import { useQuery } from "@tanstack/react-query";
+import { authAdminApi } from "@/lib/api/endpoints/auth";
+import { useAdminAccess } from "@/hooks/use-auth-guards";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function AdminDashboard() {
   const { user } = useAuth();
-  const getLocalizedPath = useLocalizedPath();
+  const { canViewAnalytics, canManageUsers, canManageFlows } = useAdminAccess();
+  const getLocalizedPath = getLocalizedPath();
   const t = useTranslations("admin.dashboard");
 
+  // Fetch real-time statistics
+  const { data: userStats, isLoading: isLoadingUsers } = useQuery({
+    queryKey: ["adminUserStats"],
+    queryFn: () => authAdminApi.getAuthStats(),
+    refetchInterval: 60000, // Refresh every minute
+  });
+
+  // Mock loan stats for now
+  const mockLoanStats = {
+    totalFlows: 12,
+    flowsChange: "+8",
+    flowsTrend: "up",
+    totalApplications: 856,
+    applicationsChange: "+15",
+    applicationsTrend: "up",
+    conversionRate: 68.5,
+    conversionRateChange: "+2.3",
+    conversionRateTrend: "up",
+    recentActivities: [
+      {
+        type: "flowCreated",
+        title: t("recentActivity.flowCreated", { flowName: "Đăng ký tài khoản" }),
+        time: "2 phút trước",
+        icon: FileCheckIcon,
+        color: "bg-blue-500",
+      },
+      {
+        type: "userRegistered",
+        title: t("recentActivity.userRegistered", { username: "user123" }),
+        time: "15 phút trước",
+        icon: UserPlusIcon,
+        color: "bg-green-500",
+      },
+      {
+        type: "applicationSubmitted",
+        title: t("recentActivity.applicationSubmitted", { amount: "50,000,000 VNĐ" }),
+        time: "1 giờ trước",
+        icon: DollarSignIcon,
+        color: "bg-orange-500",
+      },
+      {
+        type: "settingsUpdated",
+        title: t("recentActivity.settingsUpdated"),
+        time: "1 giờ trước",
+        icon: SettingsIcon,
+        color: "bg-purple-500",
+      },
+    ],
+  };
+
+  // Enhanced stats with loading states
   const stats = [
     {
       title: t("stats.totalFlows"),
-      value: "12",
-      description: t("stats.changePrefix", { percentage: "2" }),
+      value: mockLoanStats.totalFlows.toString(),
+      description: t("stats.changePrefix", { percentage: mockLoanStats.flowsChange }),
       icon: FileTextIcon,
+      trend: mockLoanStats.flowsTrend,
     },
     {
       title: t("stats.totalUsers"),
-      value: "1,234",
-      description: t("stats.changePrefix", { percentage: "18" }),
+      value: userStats?.totalUsers?.toString() || "1,234",
+      description: userStats?.usersChange
+        ? t("stats.changePrefix", { percentage: userStats.usersChange })
+        : t("stats.noChange"),
       icon: UsersIcon,
+      trend: userStats?.usersTrend,
+      loading: isLoadingUsers,
     },
     {
-      title: t("stats.visits"),
-      value: "8,549",
-      description: t("stats.changePrefix", { percentage: "12" }),
-      icon: LayoutDashboardIcon,
+      title: t("stats.applications"),
+      value: mockLoanStats.totalApplications.toString(),
+      description: t("stats.changePrefix", { percentage: mockLoanStats.applicationsChange }),
+      icon: ActivityIcon,
+      trend: mockLoanStats.applicationsTrend,
+    },
+    {
+      title: t("stats.conversionRate"),
+      value: `${mockLoanStats.conversionRate}%`,
+      description: t("stats.conversionChange", { rate: mockLoanStats.conversionRateChange }),
+      icon: TrendingUpIcon,
+      trend: mockLoanStats.conversionRateTrend,
     },
   ];
 
@@ -53,6 +131,7 @@ export default function AdminDashboard() {
       icon: FileTextIcon,
       href: getLocalizedPath("/admin/flows"),
       color: "bg-blue-500",
+      enabled: canManageFlows,
     },
     {
       title: t("quickActions.userManagement.title"),
@@ -60,6 +139,15 @@ export default function AdminDashboard() {
       icon: UsersIcon,
       href: getLocalizedPath("/admin/users"),
       color: "bg-green-500",
+      enabled: canManageUsers,
+    },
+    {
+      title: t("quickActions.loanApplications.title"),
+      description: t("quickActions.loanApplications.description"),
+      icon: CreditCardIcon,
+      href: getLocalizedPath("/admin/loan-applications"),
+      color: "bg-orange-500",
+      enabled: true,
     },
     {
       title: t("quickActions.systemSettings.title"),
@@ -67,8 +155,28 @@ export default function AdminDashboard() {
       icon: SettingsIcon,
       href: getLocalizedPath("/admin/settings"),
       color: "bg-purple-500",
+      enabled: canViewAnalytics,
     },
   ];
+
+  const recentActivities = mockLoanStats.recentActivities;
+
+  // Helper component for trend indicators
+  const TrendIndicator = ({ trend }: { trend?: string }) => {
+    if (!trend) return null;
+
+    return (
+      <span className={`inline-flex items-center text-xs ${
+        trend === "up" ? "text-green-600" : "text-red-600"
+      }`}>
+        {trend === "up" ? (
+          <TrendingUpIcon className="w-3 h-3 mr-1" />
+        ) : (
+          <TrendingUpIcon className="w-3 h-3 mr-1 rotate-180" />
+        )}
+      </span>
+    );
+  };
 
   return (
     <div className="space-y-6">
@@ -80,8 +188,8 @@ export default function AdminDashboard() {
           </h1>
           <p className="text-muted-foreground">{t("subtitle")}</p>
         </div>
-        <Button asChild>
-          <Link href={getLocalizedPath("/admin/flows")}>
+        <Button asChild disabled={!canManageFlows}>
+          <Link href={canManageFlows ? getLocalizedPath("/admin/flows") : "#"}>
             {t("createNewFlow")}
             <ArrowRightIcon className="ml-2 size-4" />
           </Link>
@@ -89,7 +197,7 @@ export default function AdminDashboard() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         {stats.map((stat, index) => (
           <Card key={index}>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -99,8 +207,11 @@ export default function AdminDashboard() {
               <stat.icon className="size-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{stat.value}</div>
-              <p className="text-xs text-muted-foreground">
+              <div className="text-2xl font-bold">
+                {stat.loading ? <Skeleton className="h-8 w-16" /> : stat.value}
+              </div>
+              <p className="text-xs text-muted-foreground flex items-center">
+                <TrendIndicator trend={stat.trend} />
                 {stat.description}
               </p>
             </CardContent>
@@ -113,9 +224,14 @@ export default function AdminDashboard() {
         <h2 className="text-xl font-semibold mb-4">
           {t("quickActions.title")}
         </h2>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           {quickActions.map((action, index) => (
-            <Card key={index} className="hover:shadow-md transition-shadow">
+            <Card
+              key={index}
+              className={`hover:shadow-md transition-shadow ${
+                !action.enabled ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+            >
               <CardHeader>
                 <div className="flex items-center space-x-2">
                   <div className={`p-2 rounded-md ${action.color}`}>
@@ -126,8 +242,13 @@ export default function AdminDashboard() {
                 <CardDescription>{action.description}</CardDescription>
               </CardHeader>
               <CardContent>
-                <Button variant="outline" className="w-full" asChild>
-                  <Link href={action.href}>
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  asChild
+                  disabled={!action.enabled}
+                >
+                  <Link href={action.enabled ? action.href : "#"}>
                     {t("quickActions.flowManagement.button")}
                     <ArrowRightIcon className="ml-2 size-4" />
                   </Link>
@@ -138,52 +259,82 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      {/* Recent Activity */}
-      <Card>
-        <CardHeader>
-          <CardTitle>{t("recentActivity.title")}</CardTitle>
-          <CardDescription>{t("recentActivity.subtitle")}</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            <div className="flex items-center space-x-4">
-              <div className="size-2 rounded-full bg-blue-500"></div>
-              <div className="flex-1 space-y-1">
-                <p className="text-sm font-medium leading-none">
-                  {t("recentActivity.flowCreated", {
-                    flowName: "Đăng ký tài khoản",
-                  })}
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  {t("recentActivity.minutesAgo", { minutes: "2" })}
-                </p>
+      {/* Additional Dashboard Sections */}
+      <div className="grid gap-6 md:grid-cols-2">
+        {/* Recent Activity */}
+        <Card>
+          <CardHeader>
+            <CardTitle>{t("recentActivity.title")}</CardTitle>
+            <CardDescription>{t("recentActivity.subtitle")}</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {recentActivities.map((activity, index) => (
+                <div key={index} className="flex items-center space-x-4">
+                  <div className={`size-2 rounded-full ${activity.color}`}></div>
+                  <div className="flex-1 space-y-1">
+                    <p className="text-sm font-medium leading-none">
+                      {activity.title}
+                    </p>
+                    <p className="text-sm text-muted-foreground flex items-center">
+                      <ClockIcon className="w-3 h-3 mr-1" />
+                      {activity.time}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* System Status */}
+        <Card>
+          <CardHeader>
+            <CardTitle>{t("systemStatus.title")}</CardTitle>
+            <CardDescription>{t("systemStatus.subtitle")}</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-2">
+                  <CheckCircleIcon className="size-4 text-green-500" />
+                  <span className="text-sm">{t("systemStatus.api")}</span>
+                </div>
+                <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">
+                  {t("systemStatus.operational")}
+                </span>
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-2">
+                  <CheckCircleIcon className="size-4 text-green-500" />
+                  <span className="text-sm">{t("systemStatus.database")}</span>
+                </div>
+                <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">
+                  {t("systemStatus.operational")}
+                </span>
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-2">
+                  <AlertTriangleIcon className="size-4 text-yellow-500" />
+                  <span className="text-sm">{t("systemStatus.ekyc")}</span>
+                </div>
+                <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded">
+                  {t("systemStatus.maintenance")}
+                </span>
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-2">
+                  <CheckCircleIcon className="size-4 text-green-500" />
+                  <span className="text-sm">{t("systemStatus.notifications")}</span>
+                </div>
+                <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">
+                  {t("systemStatus.operational")}
+                </span>
               </div>
             </div>
-            <div className="flex items-center space-x-4">
-              <div className="size-2 rounded-full bg-green-500"></div>
-              <div className="flex-1 space-y-1">
-                <p className="text-sm font-medium leading-none">
-                  {t("recentActivity.userRegistered", { username: "user123" })}
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  {t("recentActivity.minutesAgo", { minutes: "15" })}
-                </p>
-              </div>
-            </div>
-            <div className="flex items-center space-x-4">
-              <div className="size-2 rounded-full bg-purple-500"></div>
-              <div className="flex-1 space-y-1">
-                <p className="text-sm font-medium leading-none">
-                  {t("recentActivity.settingsUpdated")}
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  {t("recentActivity.hoursAgo", { hours: "1" })}
-                </p>
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }

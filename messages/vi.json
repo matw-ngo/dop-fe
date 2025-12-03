@@ -176,8 +176,12 @@
       "stats": {
         "totalFlows": "Tổng số flows",
         "totalUsers": "Tổng số người dùng",
+        "applications": "Đơn vay",
         "visits": "Lượt truy cập",
-        "changePrefix": "Tăng {percentage}% so với tháng trước"
+        "conversionRate": "Tỷ lệ chuyển đổi",
+        "changePrefix": "Tăng {percentage}% so với tháng trước",
+        "conversionChange": "{rate} so với tháng trước",
+        "noChange": "Không thay đổi"
       },
       "quickActions": {
         "title": "Hành động nhanh",
@@ -191,11 +195,26 @@
           "description": "Quản lý tài khoản người dùng",
           "button": "Truy cập"
         },
+        "loanApplications": {
+          "title": "Đơn vay vốn",
+          "description": "Xem và quản lý các đơn vay vốn",
+          "button": "Truy cập"
+        },
         "systemSettings": {
           "title": "Cài đặt hệ thống",
           "description": "Cấu hình hệ thống",
           "button": "Truy cập"
         }
+      },
+      "systemStatus": {
+        "title": "Trạng thái hệ thống",
+        "subtitle": "Trạng thái hoạt động của các dịch vụ chính",
+        "api": "API",
+        "database": "Cơ sở dữ liệu",
+        "ekyc": "eKYC",
+        "notifications": "Thông báo",
+        "operational": "Hoạt động",
+        "maintenance": "Bảo trì"
       },
       "recentActivity": {
         "title": "Hoạt động gần đây",
@@ -456,7 +475,16 @@
         }
       },
       "loginSuccess": "Đăng nhập thành công cho {username}",
-      "logoutSuccess": "Đăng xuất thành công"
+      "logoutSuccess": "Đăng xuất thành công",
+      "unauthorized": "Không có quyền truy cập",
+      "unauthorizedDescription": "Bạn không có đủ quyền để truy cập trang này. Vui lòng liên hệ quản trị viên nếu bạn cho rằng đây là lỗi.",
+      "accessDenied": "Từ chối truy cập",
+      "accessDeniedDescription": "Yêu cầu vai trò quản trị viên để truy cập trang này.",
+      "backToDashboard": "Quay lại trang quản trị",
+      "loginAsDifferentUser": "Đăng nhập bằng tài khoản khác",
+      "backToHome": "Quay lại trang chủ",
+      "needHelp": "Cần trợ giúp?",
+      "contactSupport": "Liên hệ hỗ trợ"
     }
   }
 }
