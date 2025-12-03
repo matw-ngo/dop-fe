@@ -107,6 +107,518 @@ export const loanApi = {
     });
     return response.data;
   },
+
+  // Enhanced status tracking APIs
+
+  /**
+   * Get real-time application status with detailed information
+   */
+  getDetailedApplicationStatus: async (applicationId: string) => {
+    const response = await apiClient.GET("/api/v1/loans/applications/{id}/detailed-status" as any, {
+      params: {
+        path: { id: applicationId },
+      },
+    });
+    return response.data;
+  },
+
+  /**
+   * Subscribe to real-time status updates using WebSocket
+   */
+  subscribeToStatusUpdates: (applicationId: string, onStatusUpdate: (data: any) => void) => {
+    const wsUrl = `${process.env.NEXT_PUBLIC_WS_URL}/loans/applications/${applicationId}/status`;
+    const tokenStore = useTokenStore.getState();
+    const token = tokenStore.getAccessToken();
+
+    const ws = new WebSocket(`${wsUrl}?token=${token}`);
+
+    ws.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        onStatusUpdate(data);
+      } catch (error) {
+        console.error("Failed to parse WebSocket message:", error);
+      }
+    };
+
+    ws.onerror = (error) => {
+      console.error("WebSocket error:", error);
+    };
+
+    ws.onclose = () => {
+      console.log("WebSocket connection closed");
+    };
+
+    return ws;
+  },
+
+  /**
+   * Subscribe to Server-Sent Events for status updates (fallback for WebSocket)
+   */
+  subscribeToStatusUpdatesSSE: (applicationId: string, onStatusUpdate: (data: any) => void) => {
+    const token = useTokenStore.getState().getAccessToken();
+    const eventSource = new EventSource(
+      `/api/v1/loans/applications/${applicationId}/status-stream?token=${token}`
+    );
+
+    eventSource.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        onStatusUpdate(data);
+      } catch (error) {
+        console.error("Failed to parse SSE message:", error);
+      }
+    };
+
+    eventSource.onerror = (error) => {
+      console.error("SSE error:", error);
+    };
+
+    return eventSource;
+  },
+
+  /**
+   * Get application documents status
+   */
+  getApplicationDocumentsStatus: async (applicationId: string) => {
+    const response = await apiClient.GET("/api/v1/loans/applications/{id}/documents-status" as any, {
+      params: {
+        path: { id: applicationId },
+      },
+    });
+    return response.data;
+  },
+
+  /**
+   * Get communication history for application
+   */
+  getApplicationCommunications: async (applicationId: string, params?: {
+    type?: string;
+    status?: string;
+    limit?: number;
+    offset?: number;
+  }) => {
+    const response = await apiClient.GET("/api/v1/loans/applications/{id}/communications" as any, {
+      params: {
+        path: { id: applicationId },
+        query: params,
+      },
+    });
+    return response.data;
+  },
+
+  /**
+   * Send communication message
+   */
+  sendApplicationMessage: async (applicationId: string, message: {
+    type: "sms" | "email" | "in_app" | "zalo";
+    title: string;
+    content: string;
+    priority?: "low" | "normal" | "high" | "urgent";
+    attachments?: Array<{
+      name: string;
+      type: string;
+      size: number;
+      data: string; // base64 encoded
+    }>;
+  }) => {
+    const response = await apiClient.POST("/api/v1/loans/applications/{id}/communications" as any, {
+      params: {
+        path: { id: applicationId },
+      },
+      body: message,
+    });
+    return response.data;
+  },
+
+  /**
+   * Mark communication as read
+   */
+  markCommunicationAsRead: async (communicationId: string) => {
+    const response = await apiClient.PUT("/api/v1/communications/{id}/read" as any, {
+      params: {
+        path: { id: communicationId },
+      },
+    });
+    return response.data;
+  },
+
+  /**
+   * Get notification preferences
+   */
+  getNotificationPreferences: async (applicationId?: string) => {
+    const url = applicationId
+      ? `/api/v1/loans/applications/${applicationId}/notification-preferences`
+      : "/api/v1/user/notification-preferences";
+
+    const response = await apiClient.GET(url as any);
+    return response.data;
+  },
+
+  /**
+   * Update notification preferences
+   */
+  updateNotificationPreferences: async (preferences: {
+    applicationId?: string;
+    channels: {
+      sms: boolean;
+      email: boolean;
+      in_app: boolean;
+      zalo: boolean;
+      phone_call: boolean;
+    };
+    frequency: "real_time" | "daily" | "weekly" | "never";
+    doNotDisturb?: {
+      enabled: boolean;
+      startTime: string; // HH:MM
+      endTime: string; // HH:MM
+      timezone: string;
+    };
+    urgentOnly: boolean;
+  }) => {
+    const url = preferences.applicationId
+      ? `/api/v1/loans/applications/${preferences.applicationId}/notification-preferences`
+      : "/api/v1/user/notification-preferences";
+
+    const response = await apiClient.PUT(url as any, {
+      body: preferences,
+    });
+    return response.data;
+  },
+
+  /**
+   * Get application milestones and estimated completion time
+   */
+  getApplicationMilestones: async (applicationId: string) => {
+    const response = await apiClient.GET("/api/v1/loans/applications/{id}/milestones" as any, {
+      params: {
+        path: { id: applicationId },
+      },
+    });
+    return response.data;
+  },
+
+  /**
+   * Get status transition history
+   */
+  getStatusTransitionHistory: async (applicationId: string) => {
+    const response = await apiClient.GET("/api/v1/loans/applications/{id}/status-history" as any, {
+      params: {
+        path: { id: applicationId },
+      },
+    });
+    return response.data;
+  },
+
+  /**
+   * Get SLA information for current status
+   */
+  getApplicationSLA: async (applicationId: string) => {
+    const response = await apiClient.GET("/api/v1/loans/applications/{id}/sla" as any, {
+      params: {
+        path: { id: applicationId },
+      },
+    });
+    return response.data;
+  },
+
+  /**
+   * Request status update notification
+   */
+  requestStatusNotification: async (applicationId: string, channels: string[]) => {
+    const response = await apiClient.POST("/api/v1/loans/applications/{id}/status-notification" as any, {
+      params: {
+        path: { id: applicationId },
+      },
+      body: { channels },
+    });
+    return response.data;
+  },
+
+  /**
+   * Get application activity log
+   */
+  getApplicationActivityLog: async (applicationId: string, params?: {
+    limit?: number;
+    offset?: number;
+    type?: string;
+    startDate?: string;
+    endDate?: string;
+  }) => {
+    const response = await apiClient.GET("/api/v1/loans/applications/{id}/activity-log" as any, {
+      params: {
+        path: { id: applicationId },
+        query: params,
+      },
+    });
+    return response.data;
+  },
+
+  /**
+   * Get next required actions for current status
+   */
+  getRequiredActions: async (applicationId: string) => {
+    const response = await apiClient.GET("/api/v1/loans/applications/{id}/required-actions" as any, {
+      params: {
+        path: { id: applicationId },
+      },
+    });
+    return response.data;
+  },
+
+  /**
+   * Upload document with progress tracking
+   */
+  uploadDocumentWithProgress: async (
+    applicationId: string,
+    documentType: string,
+    file: File,
+    onProgress?: (progress: number) => void
+  ) => {
+    const formData = new FormData();
+    formData.append("documentType", documentType);
+    formData.append("file", file);
+
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+
+      if (onProgress) {
+        xhr.upload.addEventListener("progress", (event) => {
+          if (event.lengthComputable) {
+            const progress = Math.round((event.loaded / event.total) * 100);
+            onProgress(progress);
+          }
+        });
+      }
+
+      xhr.addEventListener("load", () => {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          try {
+            const response = JSON.parse(xhr.responseText);
+            resolve(response);
+          } catch (error) {
+            reject(new Error("Invalid response format"));
+          }
+        } else {
+          reject(new Error(`Upload failed with status ${xhr.status}`));
+        }
+      });
+
+      xhr.addEventListener("error", () => {
+        reject(new Error("Network error during upload"));
+      });
+
+      const tokenStore = useTokenStore.getState();
+      const token = tokenStore.getAccessToken();
+
+      xhr.open("POST", `/api/v1/loans/applications/${applicationId}/documents-with-progress`);
+      xhr.setRequestHeader("Authorization", `Bearer ${token}`);
+
+      xhr.send(formData);
+    });
+  },
+
+  /**
+   * Get document verification status
+   */
+  getDocumentVerificationStatus: async (applicationId: string, documentId: string) => {
+    const response = await apiClient.GET("/api/v1/loans/applications/{id}/documents/{documentId}/verification" as any, {
+      params: {
+        path: { id: applicationId, documentId },
+      },
+    });
+    return response.data;
+  },
+
+  /**
+   * Resubmit rejected document
+   */
+  resubmitDocument: async (applicationId: string, documentId: string, file: File) => {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const response = await apiClient.POST("/api/v1/loans/applications/{id}/documents/{documentId}/resubmit" as any, {
+      params: {
+        path: { id: applicationId, documentId },
+      },
+      body: formData,
+    });
+    return response.data;
+  },
+
+  /**
+   * Get Vietnamese document types and requirements
+   */
+  getVietnameseDocumentTypes: async (loanType?: string) => {
+    const response = await apiClient.GET("/api/v1/loans/vietnamese-document-types" as any, {
+      params: {
+        query: { loanType },
+      },
+    });
+    return response.data;
+  },
+
+  /**
+   * Get status configuration for Vietnamese market
+   */
+  getVietnameseStatusConfig: async () => {
+    const response = await apiClient.GET("/api/v1/loans/vietnamese-status-config" as any);
+    return response.data;
+  },
+
+  /**
+   * Get processing time standards
+   */
+  getProcessingTimeStandards: async (loanType: string) => {
+    const response = await apiClient.GET("/api/v1/loans/processing-time-standards" as any, {
+      params: {
+        query: { loanType },
+      },
+    });
+    return response.data;
+  },
+
+  /**
+   * Get communication templates
+   */
+  getCommunicationTemplates: async (category?: string) => {
+    const response = await apiClient.GET("/api/v1/loans/communication-templates" as any, {
+      params: {
+        query: { category },
+      },
+    });
+    return response.data;
+  },
+
+  /**
+   * Send message using template
+   */
+  sendTemplatedMessage: async (applicationId: string, templateId: string, variables: Record<string, any>) => {
+    const response = await apiClient.POST("/api/v1/loans/applications/{id}/templated-message" as any, {
+      params: {
+        path: { id: applicationId },
+      },
+      body: { templateId, variables },
+    });
+    return response.data;
+  },
+
+  /**
+   * Get notification delivery status
+   */
+  getNotificationDeliveryStatus: async (notificationId: string) => {
+    const response = await apiClient.GET("/api/v1/notifications/{id}/delivery-status" as any, {
+      params: {
+        path: { id: notificationId },
+      },
+    });
+    return response.data;
+  },
+
+  /**
+   * Escalate application for urgent processing
+   */
+  escalateApplication: async (applicationId: string, reason: string, priority: "high" | "urgent") => {
+    const response = await apiClient.POST("/api/v1/loans/applications/{id}/escalate" as any, {
+      params: {
+        path: { id: applicationId },
+      },
+      body: { reason, priority },
+    });
+    return response.data;
+  },
+
+  /**
+   * Request document extension
+   */
+  requestDocumentExtension: async (applicationId: string, documentId: string, reason: string, requestedDays: number) => {
+    const response = await apiClient.POST("/api/v1/loans/applications/{id}/documents/{documentId}/extension-request" as any, {
+      params: {
+        path: { id: applicationId, documentId },
+      },
+      body: { reason, requestedDays },
+    });
+    return response.data;
+  },
+
+  /**
+   * Get application audit trail
+   */
+  getApplicationAuditTrail: async (applicationId: string, params?: {
+    limit?: number;
+    offset?: number;
+    action?: string;
+    userId?: string;
+  }) => {
+    const response = await apiClient.GET("/api/v1/loans/applications/{id}/audit-trail" as any, {
+      params: {
+        path: { id: applicationId },
+        query: params,
+      },
+    });
+    return response.data;
+  },
+
+  /**
+   * Schedule callback request
+   */
+  scheduleCallback: async (applicationId: string, callback: {
+    preferredDate: string;
+    preferredTime: string;
+    phoneNumber: string;
+    reason: string;
+    topic: string;
+  }) => {
+    const response = await apiClient.POST("/api/v1/loans/applications/{id}/schedule-callback" as any, {
+      params: {
+        path: { id: applicationId },
+      },
+      body: callback,
+    });
+    return response.data;
+  },
+
+  /**
+   * Get upcoming milestones and deadlines
+   */
+  getUpcomingMilestones: async (applicationId: string) => {
+    const response = await apiClient.GET("/api/v1/loans/applications/{id}/upcoming-milestones" as any, {
+      params: {
+        path: { id: applicationId },
+      },
+    });
+    return response.data;
+  },
+
+  /**
+   * Set application reminder
+   */
+  setApplicationReminder: async (applicationId: string, reminder: {
+    type: "document_upload" | "status_check" | "follow_up";
+    scheduledDate: string;
+    message: string;
+    channels: string[];
+  }) => {
+    const response = await apiClient.POST("/api/v1/loans/applications/{id}/reminders" as any, {
+      params: {
+        path: { id: applicationId },
+      },
+      body: reminder,
+    });
+    return response.data;
+  },
+
+  /**
+   * Get estimated completion date based on current status and processing patterns
+   */
+  getEstimatedCompletionDate: async (applicationId: string) => {
+    const response = await apiClient.GET("/api/v1/loans/applications/{id}/estimated-completion" as any, {
+      params: {
+        path: { id: applicationId },
+      },
+    });
+    return response.data;
+  },
 };
 
 /**

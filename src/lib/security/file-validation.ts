@@ -1,13 +1,14 @@
 /**
- * Enhanced File Validation Security Module
+ * Enhanced File Upload Security with Virus Scanning Integration
  * Provides comprehensive file validation with magic number detection,
- * malicious file scanning, and security checks
+ * malicious file scanning, virus scanning integration, and security checks
  */
 
 import { VietnameseDocumentType } from "@/lib/ekyc/document-types";
+import { loanStatusRateLimiter } from './status-rate-limiting';
 
 // Magic numbers for file type validation
-export const FILE_MAGIC_NUMBERS = {
+export const FILE_MAGIC_NUMBERS: Record<string, number[][]> = {
   // Image formats
   'image/jpeg': [
     [0xFF, 0xD8, 0xFF, 0xE0], // JPEG SOI with APP0
@@ -60,10 +61,10 @@ export const FILE_MAGIC_NUMBERS = {
     [0xCE, 0xFA, 0xED, 0xFE], // Mach-O binary (reverse)
     [0xCF, 0xFA, 0xED, 0xFE], // Mach-O binary (reverse, 64-bit)
   ],
-} as const;
+};
 
 // Dangerous file signatures to block
-export const DANGEROUS_SIGNATURES = [
+export const DANGEROUS_SIGNATURES: number[][] = [
   // Windows executables
   [0x4D, 0x5A], // MZ
   // ELF executables
@@ -81,20 +82,19 @@ export const DANGEROUS_SIGNATURES = [
   [0x46, 0x57, 0x53], // FWS
   [0x43, 0x57, 0x53], // CWS (compressed)
   [0x5A, 0x57, 0x53], // ZWS (compressed)
-] as const;
+];
 
 // Malicious patterns to detect
-export const MALICIOUS_PATTERNS = [
+export const MALICIOUS_PATTERNS: RegExp[] = [
   // Base64 encoded shell patterns
-  /base64_decode\s*\(/i,
-  /eval\s*\(/i,
-  /exec\s*\(/i,
-  /system\s*\(/i,
-  /passthru\s*\(/i,
-  /shell_exec\s*\(/i,
+  /base64_decode\s*\(/gi,
+  /eval\s*\(/gi,
+  /exec\s*\(/gi,
+  /system\s*\(/gi,
+  /passthru\s*\(/gi,
+  /shell_exec\s*\(/gi,
 
   // JavaScript dangerous functions
-  /eval\s*\(/gi,
   /Function\s*\(/gi,
   /setTimeout\s*\(/gi,
   /setInterval\s*\(/gi,
@@ -103,37 +103,37 @@ export const MALICIOUS_PATTERNS = [
   /outerHTML\s*\s*=/gi,
 
   // PHP dangerous functions
-  /<\?php/i,
-  /\$_POST\s*\[/i,
-  /\$_GET\s*\[/i,
-  /\$_REQUEST\s*\[/i,
-  /file_get_contents\s*\(/i,
-  /file_put_contents\s*\(/i,
-  /fopen\s*\(/i,
+  /<\?php/gi,
+  /\$_POST\s*\[/gi,
+  /\$_GET\s*\[/gi,
+  /\$_REQUEST\s*\[/gi,
+  /file_get_contents\s*\(/gi,
+  /file_put_contents\s*\(/gi,
+  /fopen\s*\(/gi,
 
   // SQL injection patterns
-  /union\s+select/i,
-  /drop\s+table/i,
-  /delete\s+from/i,
-  /insert\s+into/i,
-  /update\s+.+\s+set/i,
+  /union\s+select/gi,
+  /drop\s+table/gi,
+  /delete\s+from/gi,
+  /insert\s+into/gi,
+  /update\s+.+\s+set/gi,
 
   // XSS patterns
-  /javascript:/i,
-  /onload\s*=/i,
-  /onerror\s*=/i,
-  /onclick\s*=/i,
+  /javascript:/gi,
+  /onload\s*=/gi,
+  /onerror\s*=/gi,
+  /onclick\s*=/gi,
 
   // Path traversal
-  /\.\.\//,
-  /\.\.\\/,
+  /\.\.\//g,
+  /\.\.\\/g,
 
   // Command injection
-  /;\s*rm\s+/i,
-  /;\s*cat\s+/i,
-  /;\s*ls\s+/i,
-  /;\s*dir\s+/i,
-] as const;
+  /;\s*rm\s+/gi,
+  /;\s*cat\s+/gi,
+  /;\s*ls\s+/gi,
+  /;\s*dir\s+/gi,
+];
 
 // Configuration
 export const FILE_VALIDATION_CONFIG = {
@@ -601,9 +601,9 @@ export class SecureFileValidator {
   private async checkVietnameseCompliance(file: File, result: FileValidationResult): Promise<void> {
     // Check for personal data in filename
     const personalDataPatterns = [
-      /cccd/i, /cmnd/i, /passport/i, /hochieu/i,
-      /giay\stoi/gio/i, /can\scuoc/i,
-      /\d{9,12}/, // ID numbers
+      /cccd/gi, /cmnd/gi, /passport/gi, /hochieu/gi,
+      /giay to gio/gi, /can cuoc/gi,
+      /\d{9,12}/g, // ID numbers
     ];
 
     const fileName = file.name.toLowerCase();
@@ -615,20 +615,22 @@ export class SecureFileValidator {
     }
 
     // Check if location data needs to be stripped
-    if (result.metadata.hasExif && result.metadata.exifTags.some(tag =>
+    const hasLocationData = result.metadata.exifTags.some(tag =>
       tag.toLowerCase().includes('gps') || tag.toLowerCase().includes('location')
-    )) {
+    );
+
+    if (result.metadata.hasExif && hasLocationData) {
       result.vietnameseCompliance.locationDataStripped = false;
     } else {
       result.vietnameseCompliance.locationDataStripped = true;
     }
 
     // Check metadata sanitization
-    result.vietnameseCompliance.metadataSanitized =
-      result.metadata.exifTags.length === 0 ||
-      result.metadata.exifTags.every(tag =>
-        !FILE_VALIDATION_CONFIG.EXIF_TAGS_TO_STRIP.includes(tag)
-      );
+    const hasExifToStrip = result.metadata.exifTags.some(tag =>
+      FILE_VALIDATION_CONFIG.EXIF_TAGS_TO_STRIP.includes(tag as any)
+    );
+
+    result.vietnameseCompliance.metadataSanitized = !hasExifToStrip;
   }
 
   /**

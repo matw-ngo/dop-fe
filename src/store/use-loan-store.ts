@@ -8,6 +8,13 @@ import type { VietnameseLoanProduct, VietnameseLoanType } from "@/lib/loan-produ
 import type { ApplicantProfile, EligibilityResult } from "@/lib/loan-products/eligibility-rules";
 import type { LoanCalculationResult, LoanCalculationParams } from "@/lib/loan-products/interest-calculations";
 
+import type {
+  LoanApplicationStatus,
+  DocumentVerificationStatus,
+  StatusConfig,
+  DocumentTypeConfig
+} from "@/lib/loan-status/vietnamese-status-config";
+
 /**
  * Application Summary interface
  */
