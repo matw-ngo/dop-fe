@@ -5,4 +5,5 @@ export { default as InsuranceGrid } from "./InsuranceGrid";
 export { default as InsuranceCatalog } from "./InsuranceCatalog";
 export { default as InsuranceQuotation } from "./InsuranceQuotation";
 export { default as InsuranceSearchBar } from "./SearchBar";
+export { default as InsurancePagination } from "./Pagination";
 export type { SearchBarProps } from "./SearchBar";

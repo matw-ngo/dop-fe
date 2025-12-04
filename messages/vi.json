@@ -322,7 +322,20 @@
       "annually": "Hàng năm",
       "customPeriod": "Tùy chỉnh",
       "minRating": "Đánh giá tối thiểu",
-      "applyFilters": "Áp dụng bộ lọc"
+      "applyFilters": "Áp dụng bộ lọc",
+      "showingItems": "Hiển thị {start}-{end} của {total} kết quả",
+      "itemsPerPage": "Số mục mỗi trang",
+      "items": "sản phẩm",
+      "previous": "Trước",
+      "next": "Tiếp theo",
+      "pageOf": "Trang {current} của {total}",
+      "first": "Đầu",
+      "last": "Cuối",
+      "firstPage": "Trang đầu tiên",
+      "lastPage": "Trang cuối cùng",
+      "previousPage": "Trang trước",
+      "nextPage": "Trang tiếp theo",
+      "paginationNavigation": "Điều hướng phân trang"
     }
   },
   "form": {
