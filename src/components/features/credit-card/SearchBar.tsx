@@ -138,6 +138,11 @@ const SearchBar: React.FC<SearchBarProps> = ({
     setInputValue(newValue);
     onChange?.(newValue);
 
+    // Open popover when user starts typing
+    if (newValue.length > 0 && !isOpen) {
+      setIsOpen(true);
+    }
+
     // Clear existing timer
     if (debounceTimerRef.current) {
       clearTimeout(debounceTimerRef.current);
@@ -250,8 +255,16 @@ const SearchBar: React.FC<SearchBarProps> = ({
     <div className={cn("relative w-full max-w-2xl", className)}>
       <Popover open={isOpen} onOpenChange={setIsOpen}>
         <PopoverTrigger asChild>
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <div
+            className="relative cursor-pointer"
+            onClick={() => {
+              if (!isOpen) {
+                setIsOpen(true);
+                inputRef.current?.focus();
+              }
+            }}
+          >
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
             <Input
               ref={inputRef}
               type="text"
@@ -260,21 +273,25 @@ const SearchBar: React.FC<SearchBarProps> = ({
               onChange={(e) => handleInputChange(e.target.value)}
               onKeyDown={handleKeyPress}
               onFocus={() => {
-                if (inputValue.length >= 2 || recentSearches.length > 0) {
-                  setIsOpen(true);
-                }
+                setIsOpen(true);
               }}
-              className="pl-10 pr-4 h-11 text-base"
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsOpen(true);
+              }}
+              className="pl-10 pr-4 h-11 text-base cursor-pointer"
             />
             {inputValue && (
               <Button
                 variant="ghost"
                 size="sm"
                 className="absolute right-1 top-1/2 transform -translate-y-1/2 h-7 w-7 p-0"
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation();
                   setInputValue("");
                   onChange?.("");
                   setSuggestions([]);
+                  setIsOpen(false);
                 }}
               >
                 ×

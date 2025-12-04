@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { CreditCard as CreditCardIcon } from "lucide-react";
-import { CreditCard } from "@/data/mock-credit-cards";
+import { CreditCard, mockCreditCards } from "@/data/mock-credit-cards";
 
 interface CreditCardCatalogProps {
   onCardSelect: (cardId: string) => void;
