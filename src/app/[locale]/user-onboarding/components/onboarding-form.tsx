@@ -6,6 +6,7 @@ import { useOnboardingFormConfig } from "../hooks/use-onboarding-form-config";
 import type { MappedFlow } from "@/mappers/flowMapper";
 import { FormSkeleton } from "@/components/feedback/form-skeleton";
 import { ErrorState } from "@/components/feedback/error-state";
+import { LoanApplicationForm } from "@/components/features/loan/LoanApplicationForm";
 
 interface OnboardingFormProps {
   flowData: MappedFlow | undefined;
@@ -45,7 +46,26 @@ export function OnboardingForm({
   return (
     <div className="bg-card rounded-2xl shadow-xl p-8 border">
       {formConfig ? (
-        <MultiStepFormRenderer config={formConfig} />
+        <>
+          {/* Check if this is a loan application flow */}
+          {flowData?.name?.toLowerCase().includes("vay") ||
+          flowData?.name?.toLowerCase().includes("loan") ||
+          formConfig.title?.toLowerCase().includes("vay") ? (
+            <LoanApplicationForm
+              flowConfig={formConfig}
+              onComplete={(data) => {
+                console.log("Loan application completed:", data);
+                // Handle successful loan application
+              }}
+              onCancel={() => {
+                console.log("Loan application cancelled");
+                // Handle cancellation
+              }}
+            />
+          ) : (
+            <MultiStepFormRenderer config={formConfig} />
+          )}
+        </>
       ) : (
         <p>{tPage("noConfig")}</p>
       )}

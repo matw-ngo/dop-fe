@@ -6,7 +6,7 @@
 /**
  * Generate unique ID for accessibility elements
  */
-export const generateAriaId = (prefix: string = 'aria'): string => {
+export const generateAriaId = (prefix: string = "aria"): string => {
   return `${prefix}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 };
 
@@ -18,7 +18,7 @@ export const createAccessibleFieldProps = (
   label: string,
   error?: string,
   description?: string,
-  required?: boolean
+  required?: boolean,
 ) => {
   const fieldId = id;
   const errorId = error ? `${fieldId}-error` : undefined;
@@ -26,11 +26,12 @@ export const createAccessibleFieldProps = (
 
   return {
     id: fieldId,
-    'aria-label': label,
-    'aria-required': required || false,
-    'aria-invalid': !!error,
-    'aria-describedby': [descriptionId, errorId].filter(Boolean).join(' ') || undefined,
-    'aria-details': descriptionId,
+    "aria-label": label,
+    "aria-required": required || false,
+    "aria-invalid": !!error,
+    "aria-describedby":
+      [descriptionId, errorId].filter(Boolean).join(" ") || undefined,
+    "aria-details": descriptionId,
   };
 };
 
@@ -40,12 +41,12 @@ export const createAccessibleFieldProps = (
 export const createAccessibleButtonProps = (
   label: string,
   disabled?: boolean,
-  loading?: boolean
+  loading?: boolean,
 ) => {
   return {
-    'aria-label': label,
-    'aria-disabled': disabled || loading || false,
-    'aria-busy': loading || false,
+    "aria-label": label,
+    "aria-disabled": disabled || loading || false,
+    "aria-busy": loading || false,
   };
 };
 
@@ -53,15 +54,15 @@ export const createAccessibleButtonProps = (
  * Create accessible modal props
  */
 export const createAccessibleModalProps = (title: string, isOpen: boolean) => {
-  const titleId = generateAriaId('modal-title');
-  const descriptionId = generateAriaId('modal-description');
+  const titleId = generateAriaId("modal-title");
+  const descriptionId = generateAriaId("modal-description");
 
   return {
-    role: 'dialog' as const,
-    'aria-modal': true,
-    'aria-labelledby': titleId,
-    'aria-describedby': descriptionId,
-    'aria-hidden': !isOpen,
+    role: "dialog" as const,
+    "aria-modal": true,
+    "aria-labelledby": titleId,
+    "aria-describedby": descriptionId,
+    "aria-hidden": !isOpen,
   };
 };
 
@@ -85,64 +86,64 @@ export const keyboardNavigation = {
       onTab?: () => void;
       onHome?: () => void;
       onEnd?: () => void;
-    }
+    },
   ) => {
     switch (event.key) {
-      case 'Enter':
+      case "Enter":
         if (actions.onEnter) {
           event.preventDefault();
           actions.onEnter();
         }
         break;
-      case ' ':
-      case 'Space':
+      case " ":
+      case "Space":
         if (actions.onSpace) {
           event.preventDefault();
           actions.onSpace();
         }
         break;
-      case 'Escape':
+      case "Escape":
         if (actions.onEscape) {
           event.preventDefault();
           actions.onEscape();
         }
         break;
-      case 'ArrowUp':
+      case "ArrowUp":
         if (actions.onArrowUp) {
           event.preventDefault();
           actions.onArrowUp();
         }
         break;
-      case 'ArrowDown':
+      case "ArrowDown":
         if (actions.onArrowDown) {
           event.preventDefault();
           actions.onArrowDown();
         }
         break;
-      case 'ArrowLeft':
+      case "ArrowLeft":
         if (actions.onArrowLeft) {
           event.preventDefault();
           actions.onArrowLeft();
         }
         break;
-      case 'ArrowRight':
+      case "ArrowRight":
         if (actions.onArrowRight) {
           event.preventDefault();
           actions.onArrowRight();
         }
         break;
-      case 'Tab':
+      case "Tab":
         if (actions.onTab) {
           actions.onTab();
         }
         break;
-      case 'Home':
+      case "Home":
         if (actions.onHome) {
           event.preventDefault();
           actions.onHome();
         }
         break;
-      case 'End':
+      case "End":
         if (actions.onEnd) {
           event.preventDefault();
           actions.onEnd();
@@ -159,22 +160,22 @@ export const keyboardNavigation = {
       if (!containerRef.current) return [];
 
       const focusableSelectors = [
-        'button:not([disabled])',
-        'input:not([disabled])',
-        'select:not([disabled])',
-        'textarea:not([disabled])',
-        'a[href]',
+        "button:not([disabled])",
+        "input:not([disabled])",
+        "select:not([disabled])",
+        "textarea:not([disabled])",
+        "a[href]",
         '[tabindex]:not([tabindex="-1"])',
-        '[contenteditable="true"]'
+        '[contenteditable="true"]',
       ];
 
       return Array.from(
-        containerRef.current.querySelectorAll(focusableSelectors.join(', '))
+        containerRef.current.querySelectorAll(focusableSelectors.join(", ")),
       ) as HTMLElement[];
     };
 
     const trapFocus = (event: KeyboardEvent) => {
-      if (event.key !== 'Tab') return;
+      if (event.key !== "Tab") return;
 
       const focusableElements = getFocusableElements();
       if (focusableElements.length === 0) return;
@@ -197,32 +198,32 @@ export const keyboardNavigation = {
 
     return {
       activate: () => {
-        document.addEventListener('keydown', trapFocus);
+        document.addEventListener("keydown", trapFocus);
       },
       deactivate: () => {
-        document.removeEventListener('keydown', trapFocus);
+        document.removeEventListener("keydown", trapFocus);
       },
       focusFirst: () => {
         const focusableElements = getFocusableElements();
         if (focusableElements.length > 0) {
           focusableElements[0].focus();
         }
-      }
+      },
     };
   },
 
   /**
    * Announce screen reader messages
    */
-  announce: (message: string, priority: 'polite' | 'assertive' = 'polite') => {
-    const announcement = document.createElement('div');
-    announcement.setAttribute('aria-live', priority);
-    announcement.setAttribute('aria-atomic', 'true');
-    announcement.style.position = 'absolute';
-    announcement.style.left = '-10000px';
-    announcement.style.width = '1px';
-    announcement.style.height = '1px';
-    announcement.style.overflow = 'hidden';
+  announce: (message: string, priority: "polite" | "assertive" = "polite") => {
+    const announcement = document.createElement("div");
+    announcement.setAttribute("aria-live", priority);
+    announcement.setAttribute("aria-atomic", "true");
+    announcement.style.position = "absolute";
+    announcement.style.left = "-10000px";
+    announcement.style.width = "1px";
+    announcement.style.height = "1px";
+    announcement.style.overflow = "hidden";
 
     document.body.appendChild(announcement);
     announcement.textContent = message;
@@ -230,7 +231,7 @@ export const keyboardNavigation = {
     setTimeout(() => {
       document.body.removeChild(announcement);
     }, 1000);
-  }
+  },
 };
 
 /**
@@ -241,11 +242,7 @@ export const screenReader = {
    * Create screen reader only text
    */
   only: (text: string) => {
-    return (
-      <span className="sr-only" aria-live="polite">
-        {text}
-      </span>
-    );
+    return `<span class="sr-only" aria-live="polite">${text}</span>`;
   },
 
   /**
@@ -253,7 +250,7 @@ export const screenReader = {
    */
   hidden: () => {
     return {
-      'aria-hidden': true,
+      "aria-hidden": true,
       tabIndex: -1,
     };
   },
@@ -267,8 +264,11 @@ export const colorContrast = {
    * Calculate relative luminance of a color
    */
   getLuminance: (hex: string): number => {
-    const rgb = hex.replace('#', '').match(/.{2}/g)?.map(x => parseInt(x, 16)) || [0, 0, 0];
-    const [r, g, b] = rgb.map(c => {
+    const rgb = hex
+      .replace("#", "")
+      .match(/.{2}/g)
+      ?.map((x) => parseInt(x, 16)) || [0, 0, 0];
+    const [r, g, b] = rgb.map((c) => {
       c = c / 255;
       return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
     });
@@ -289,7 +289,11 @@ export const colorContrast = {
   /**
    * Check if contrast meets WCAG AA standards
    */
-  meetsWCAG_AA: (color1: string, color2: string, largeText: boolean = false): boolean => {
+  meetsWCAG_AA: (
+    color1: string,
+    color2: string,
+    largeText: boolean = false,
+  ): boolean => {
     const ratio = colorContrast.getContrastRatio(color1, color2);
     const minimum = largeText ? 3 : 4.5;
     return ratio >= minimum;
@@ -298,7 +302,11 @@ export const colorContrast = {
   /**
    * Check if contrast meets WCAG AAA standards
    */
-  meetsWCAG_AAA: (color1: string, color2: string, largeText: boolean = false): boolean => {
+  meetsWCAG_AAA: (
+    color1: string,
+    color2: string,
+    largeText: boolean = false,
+  ): boolean => {
     const ratio = colorContrast.getContrastRatio(color1, color2);
     const minimum = largeText ? 4.5 : 7;
     return ratio >= minimum;
@@ -313,21 +321,23 @@ export const formAccessibility = {
    * Create accessible form fieldset
    */
   createFieldset: (legend: string, description?: string) => ({
-    role: 'group',
-    'aria-label': legend,
-    'aria-describedby': description ? generateAriaId('fieldset-desc') : undefined,
+    role: "group",
+    "aria-label": legend,
+    "aria-describedby": description
+      ? generateAriaId("fieldset-desc")
+      : undefined,
   }),
 
   /**
    * Create accessible form validation
    */
   createValidationProps: (isValid: boolean, message?: string) => {
-    const messageId = message ? generateAriaId('validation') : undefined;
+    const messageId = message ? generateAriaId("validation") : undefined;
 
     return {
-      'aria-invalid': !isValid,
-      'aria-describedby': messageId,
-      'aria-errormessage': isValid ? undefined : messageId,
+      "aria-invalid": !isValid,
+      "aria-describedby": messageId,
+      "aria-errormessage": isValid ? undefined : messageId,
     };
   },
 
@@ -338,12 +348,12 @@ export const formAccessibility = {
     const percentage = Math.round((current / total) * 100);
 
     return {
-      role: 'progressbar',
-      'aria-valuenow': current,
-      'aria-valuemin': 0,
-      'aria-valuemax': total,
-      'aria-label': label,
-      'aria-valuetext': `${percentage}% complete`,
+      role: "progressbar",
+      "aria-valuenow": current,
+      "aria-valuemin": 0,
+      "aria-valuemax": total,
+      "aria-label": label,
+      "aria-valuetext": `${percentage}% complete`,
     };
   },
 };
@@ -351,15 +361,18 @@ export const formAccessibility = {
 /**
  * Create accessible tabs
  */
-export const createAccessibleTabs = (activeTab: string, onTabChange: (tab: string) => void) => ({
-  role: 'tablist',
-  'aria-orientation': 'horizontal',
+export const createAccessibleTabs = (
+  activeTab: string,
+  onTabChange: (tab: string) => void,
+) => ({
+  role: "tablist",
+  "aria-orientation": "horizontal",
 
   getTabProps: (tabId: string, label: string) => ({
-    role: 'tab',
+    role: "tab",
     id: `tab-${tabId}`,
-    'aria-selected': activeTab === tabId,
-    'aria-controls': `tabpanel-${tabId}`,
+    "aria-selected": activeTab === tabId,
+    "aria-controls": `tabpanel-${tabId}`,
     tabIndex: activeTab === tabId ? 0 : -1,
     onKeyDown: (e: React.KeyboardEvent) => {
       keyboardNavigation.handleKeyboardInteraction(e, {
@@ -372,9 +385,9 @@ export const createAccessibleTabs = (activeTab: string, onTabChange: (tab: strin
   }),
 
   getTabPanelProps: (tabId: string) => ({
-    role: 'tabpanel',
+    role: "tabpanel",
     id: `tabpanel-${tabId}`,
-    'aria-labelledby': `tab-${tabId}`,
+    "aria-labelledby": `tab-${tabId}`,
     hidden: activeTab !== tabId,
   }),
 });
@@ -382,15 +395,18 @@ export const createAccessibleTabs = (activeTab: string, onTabChange: (tab: strin
 /**
  * Create accessible dropdown
  */
-export const createAccessibleDropdown = (isOpen: boolean, onToggle: () => void) => {
-  const id = generateAriaId('dropdown');
+export const createAccessibleDropdown = (
+  isOpen: boolean,
+  onToggle: () => void,
+) => {
+  const id = generateAriaId("dropdown");
 
   return {
     triggerProps: {
       id: `${id}-trigger`,
-      'aria-haspopup': 'listbox',
-      'aria-expanded': isOpen,
-      'aria-controls': `${id}-list`,
+      "aria-haspopup": "listbox",
+      "aria-expanded": isOpen,
+      "aria-controls": `${id}-list`,
       onKeyDown: (e: React.KeyboardEvent) => {
         keyboardNavigation.handleKeyboardInteraction(e, {
           onEnter: onToggle,
@@ -407,14 +423,19 @@ export const createAccessibleDropdown = (isOpen: boolean, onToggle: () => void) 
 
     listProps: {
       id: `${id}-list`,
-      role: 'listbox',
-      'aria-labelledby': `${id}-trigger`,
+      role: "listbox",
+      "aria-labelledby": `${id}-trigger`,
     },
 
-    getOptionProps: (value: string, label: string, isSelected: boolean, onSelect: (value: string) => void) => ({
-      role: 'option',
+    getOptionProps: (
+      value: string,
+      label: string,
+      isSelected: boolean,
+      onSelect: (value: string) => void,
+    ) => ({
+      role: "option",
       id: `${id}-option-${value}`,
-      'aria-selected': isSelected,
+      "aria-selected": isSelected,
       onClick: () => onSelect(value),
       onKeyDown: (e: React.KeyboardEvent) => {
         keyboardNavigation.handleKeyboardInteraction(e, {

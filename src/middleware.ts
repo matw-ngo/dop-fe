@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { createMiddleware } from "next-intl/middleware";
+import createMiddleware from "next-intl/middleware";
 import { locales, defaultLocale } from "./i18n/config";
 
 // Define public routes that don't require authentication
@@ -64,18 +64,27 @@ function authMiddleware(request: NextRequest) {
   const userRole = request.cookies.get("user-role")?.value;
 
   // Extract locale from pathname
-  const pathnameLocale = locales.find((locale) => pathname.startsWith(`/${locale}/`)) || defaultLocale;
-  const pathnameWithoutLocale = pathname.replace(new RegExp(`^/${pathnameLocale}`), "") || "/";
+  const pathnameLocale =
+    locales.find((locale) => pathname.startsWith(`/${locale}/`)) ||
+    defaultLocale;
+  const pathnameWithoutLocale =
+    pathname.replace(new RegExp(`^/${pathnameLocale}`), "") || "/";
 
   // Check if route is public
   const isPublicRoute = publicRoutes.some((route) => {
     // Exact match
     if (pathnameWithoutLocale === route) return true;
     // Prefix match for API routes
-    if (route.startsWith("/api") && pathnameWithoutLocale.startsWith(route)) return true;
+    if (route.startsWith("/api") && pathnameWithoutLocale.startsWith(route))
+      return true;
     // Static assets
-    if (route.startsWith("/_next") && pathnameWithoutLocale.startsWith(route)) return true;
-    if (route.startsWith("/favicon") || route.startsWith("/robots") || route.startsWith("/sitemap")) {
+    if (route.startsWith("/_next") && pathnameWithoutLocale.startsWith(route))
+      return true;
+    if (
+      route.startsWith("/favicon") ||
+      route.startsWith("/robots") ||
+      route.startsWith("/sitemap")
+    ) {
       return pathnameWithoutLocale.includes(route.split("/")[1]);
     }
     return false;
@@ -87,7 +96,9 @@ function authMiddleware(request: NextRequest) {
   }
 
   // Check if route requires authentication
-  const isProtectedRoute = protectedRoutes.some((route) => pathnameWithoutLocale.startsWith(route));
+  const isProtectedRoute = protectedRoutes.some((route) =>
+    pathnameWithoutLocale.startsWith(route),
+  );
 
   if (isProtectedRoute) {
     // Check if user is authenticated
@@ -99,10 +110,15 @@ function authMiddleware(request: NextRequest) {
     }
 
     // Check role-based access for admin-only routes
-    const isAdminRoute = adminOnlyRoutes.some((route) => pathnameWithoutLocale.startsWith(route));
+    const isAdminRoute = adminOnlyRoutes.some((route) =>
+      pathnameWithoutLocale.startsWith(route),
+    );
     if (isAdminRoute && userRole !== "admin") {
       // Redirect to unauthorized page or dashboard
-      const unauthorizedUrl = new URL(`/${pathnameLocale}/admin/unauthorized`, request.url);
+      const unauthorizedUrl = new URL(
+        `/${pathnameLocale}/admin/unauthorized`,
+        request.url,
+      );
       return NextResponse.redirect(unauthorizedUrl);
     }
   }

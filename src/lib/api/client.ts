@@ -6,14 +6,8 @@ import { useTokenStore, securityUtils } from "@/lib/auth/secure-tokens";
 // API Configuration based on environment
 const getApiConfig = () => {
   const nodeEnv = process.env.NODE_ENV || "development";
-  const useMockApi = process.env.NEXT_PUBLIC_USE_MOCK_API === "true";
 
-  if (useMockApi) {
-    return {
-      baseUrl: "/api/mock", // Use mock API routes
-      mockMode: true,
-    };
-  }
+  // Note: Removed mock API dependencies for FE-only deployment
 
   const environment = process.env.NEXT_PUBLIC_API_ENVIRONMENT || nodeEnv;
 
@@ -25,13 +19,15 @@ const getApiConfig = () => {
       };
     case "staging":
       return {
-        baseUrl: process.env.NEXT_PUBLIC_API_URL || "https://dop-stg.datanest.vn/v1",
+        baseUrl:
+          process.env.NEXT_PUBLIC_API_URL || "https://dop-stg.datanest.vn/v1",
         mockMode: false,
       };
     case "development":
     default:
       return {
-        baseUrl: process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api/v1",
+        baseUrl:
+          process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api/v1",
         mockMode: false,
       };
   }
@@ -52,7 +48,8 @@ apiClient.use({
   // Runs on every request
   async onRequest(req) {
     // Add secure authentication headers
-    const { getAccessToken, isTokenExpired, refreshTokens } = useTokenStore.getState();
+    const { getAccessToken, isTokenExpired, refreshTokens } =
+      useTokenStore.getState();
     let token = getAccessToken();
 
     // Check if token needs refresh
@@ -62,10 +59,10 @@ apiClient.use({
 
       if (!refreshed || !token) {
         // Redirect to login if refresh fails
-        if (typeof window !== 'undefined') {
-          window.location.href = '/login';
+        if (typeof window !== "undefined") {
+          window.location.href = "/login";
         }
-        throw new Error('Authentication failed');
+        throw new Error("Authentication failed");
       }
     }
 
@@ -73,7 +70,7 @@ apiClient.use({
       req.request.headers.set("Authorization", `Bearer ${token}`);
 
       // Add CSRF protection for state-changing requests
-      if (['POST', 'PUT', 'DELETE', 'PATCH'].includes(req.request.method)) {
+      if (["POST", "PUT", "DELETE", "PATCH"].includes(req.request.method)) {
         const csrfToken = securityUtils.generateCSRFToken();
         req.request.headers.set("X-CSRF-Token", csrfToken);
       }
@@ -93,37 +90,36 @@ apiClient.use({
       try {
         const refreshed = await refreshTokens();
         if (!refreshed) {
-          throw new Error('Token refresh failed');
+          throw new Error("Token refresh failed");
         }
 
         // Note: In a real implementation, you would retry the original request
         // This requires more complex request cloning logic
-
       } catch (error) {
         console.error("Token refresh failed, logging out.", error);
         clearTokens();
 
-        if (typeof window !== 'undefined') {
-          window.location.href = '/login';
+        if (typeof window !== "undefined") {
+          window.location.href = "/login";
         }
-        throw new Error('Authentication failed');
+        throw new Error("Authentication failed");
       }
     }
 
     // --- Security Headers Validation ---
     const securityHeaders = [
-      'x-content-type-options',
-      'x-frame-options',
-      'x-xss-protection',
-      'strict-transport-security'
+      "x-content-type-options",
+      "x-frame-options",
+      "x-xss-protection",
+      "strict-transport-security",
     ];
 
-    const missingHeaders = securityHeaders.filter(header =>
-      !res.response.headers.get(header)
+    const missingHeaders = securityHeaders.filter(
+      (header) => !res.response.headers.get(header),
     );
 
-    if (missingHeaders.length > 0 && process.env.NODE_ENV === 'development') {
-      console.warn('Missing security headers:', missingHeaders);
+    if (missingHeaders.length > 0 && process.env.NODE_ENV === "development") {
+      console.warn("Missing security headers:", missingHeaders);
     }
 
     // --- Global Error Handling & Logging ---
@@ -132,12 +128,13 @@ apiClient.use({
         status: res.response.status,
         url: res.request.url,
         timestamp: new Date().toISOString(),
-        userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : 'server',
+        userAgent:
+          typeof navigator !== "undefined" ? navigator.userAgent : "server",
       };
 
       // Log to monitoring service in production
-      if (process.env.NODE_ENV === 'production') {
-        console.error('Server error:', errorData);
+      if (process.env.NODE_ENV === "production") {
+        console.error("Server error:", errorData);
         // logErrorToMonitoringService(errorData);
       }
 
@@ -148,7 +145,7 @@ apiClient.use({
 
     // --- Rate Limiting Detection ---
     if (res.response.status === 429) {
-      const retryAfter = res.response.headers.get('Retry-After');
+      const retryAfter = res.response.headers.get("Retry-After");
       const waitTime = retryAfter ? parseInt(retryAfter) * 1000 : 60000;
 
       toast.error("Rate limit exceeded", {
@@ -164,26 +161,26 @@ apiClient.use({
 export const withRetry = async <T>(
   apiCall: () => Promise<T>,
   maxRetries = 3,
-  delay = 1000
+  delay = 1000,
 ): Promise<T> => {
   let lastError: Error;
-  
+
   for (let i = 0; i <= maxRetries; i++) {
     try {
       return await apiCall();
     } catch (error) {
       lastError = error instanceof Error ? error : new Error(String(error));
-      
+
       if (i === maxRetries) {
         throw lastError;
       }
-      
+
       // Exponential backoff
       const backoffDelay = delay * Math.pow(2, i);
-      await new Promise(resolve => setTimeout(resolve, backoffDelay));
+      await new Promise((resolve) => setTimeout(resolve, backoffDelay));
     }
   }
-  
+
   throw lastError!;
 };
 

@@ -5,19 +5,31 @@
  * social insurance contributions, and various compensation scenarios.
  */
 
-import React, { useState, useEffect, useCallback } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Slider } from '@/components/ui/slider';
-import { Switch } from '@/components/ui/switch';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
-import { Progress } from '@/components/ui/progress';
+import React, { useState, useEffect, useCallback } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Slider } from "@/components/ui/slider";
+import { Switch } from "@/components/ui/switch";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import { Progress } from "@/components/ui/progress";
 import {
   Calculator,
   DollarSign,
@@ -32,20 +44,24 @@ import {
   Home,
   Heart,
   Shield,
-} from 'lucide-react';
+} from "lucide-react";
 
 // Import calculation functions
-import { calculateComprehensivePersonalTax } from '@/lib/financial/tax-calculations';
-import { analyzeCompensationTax } from '@/lib/financial/tax-calculations';
-import { SOCIAL_INSURANCE_RATES, FAMILY_DEDUCTIONS, REGIONAL_MINIMUM_WAGE } from '@/lib/financial-data/vietnamese-financial-data';
-import { formatVND } from '@/lib/financial-data/vietnamese-financial-data';
+import { calculateComprehensivePersonalTax } from "@/lib/financial/tax-calculations";
+import { analyzeCompensationTax } from "@/lib/financial/tax-calculations";
+import {
+  SOCIAL_INSURANCE_RATES,
+  FAMILY_DEDUCTIONS,
+  REGIONAL_MINIMUM_WAGE,
+} from "@/lib/financial-data/vietnamese-financial-data";
+import { formatVND } from "@/lib/financial-data/vietnamese-financial-data";
 
 // Types
 interface SalaryFormData {
   grossMonthlyIncome: number;
   numberOfDependents: number;
   region: number;
-  maritalStatus: 'single' | 'married';
+  maritalStatus: "single" | "married";
   spouseIncome?: number;
   hasDisabledDependent: boolean;
   hasSelfAndSpouseOnly: boolean;
@@ -99,7 +115,7 @@ const SalaryConverter: React.FC = () => {
     grossMonthlyIncome: 15000000, // 15 triệu VND default
     numberOfDependents: 0,
     region: 1,
-    maritalStatus: 'single',
+    maritalStatus: "single",
     spouseIncome: 0,
     hasDisabledDependent: false,
     hasSelfAndSpouseOnly: false,
@@ -110,19 +126,25 @@ const SalaryConverter: React.FC = () => {
   });
 
   // Results state
-  const [taxResults, setTaxResults] = useState<TaxCalculationResults | null>(null);
-  const [compensationAnalysis, setCompensationAnalysis] = useState<CompensationAnalysis | null>(null);
+  const [taxResults, setTaxResults] = useState<TaxCalculationResults | null>(
+    null,
+  );
+  const [compensationAnalysis, setCompensationAnalysis] =
+    useState<CompensationAnalysis | null>(null);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<string[]>([]);
-  const [activeTab, setActiveTab] = useState('converter');
+  const [activeTab, setActiveTab] = useState("converter");
 
   // Input change handler
-  const handleInputChange = useCallback((field: keyof SalaryFormData, value: any) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: value,
-    }));
-  }, []);
+  const handleInputChange = useCallback(
+    (field: keyof SalaryFormData, value: any) => {
+      setFormData((prev) => ({
+        ...prev,
+        [field]: value,
+      }));
+    },
+    [],
+  );
 
   // Calculate tax
   const calculateTax = useCallback(async () => {
@@ -132,19 +154,19 @@ const SalaryConverter: React.FC = () => {
     try {
       // Validate inputs
       if (formData.grossMonthlyIncome < 0) {
-        setErrors(['Thu nhập không được âm']);
+        setErrors(["Thu nhập không được âm"]);
         setLoading(false);
         return;
       }
 
       if (formData.numberOfDependents < 0) {
-        setErrors(['Số người phụ thuộc không được âm']);
+        setErrors(["Số người phụ thuộc không được âm"]);
         setLoading(false);
         return;
       }
 
       if (formData.region < 1 || formData.region > 4) {
-        setErrors(['Khu vực không hợp lệ (1-4)']);
+        setErrors(["Khu vực không hợp lệ (1-4)"]);
         setLoading(false);
         return;
       }
@@ -164,23 +186,26 @@ const SalaryConverter: React.FC = () => {
       setTaxResults(calculationResults);
 
       // Calculate compensation analysis if there are bonus/allowance
-      if (formData.bonus > 0 || formData.allowance > 0 || formData.overtimeHours > 0) {
+      if (
+        formData.bonus > 0 ||
+        formData.allowance > 0 ||
+        formData.overtimeHours > 0
+      ) {
         const analysis = analyzeCompensationTax(
           formData.grossMonthlyIncome,
           formData.bonus,
           formData.allowance,
           0, // stockOptions
           formData.numberOfDependents,
-          formData.region
+          formData.region,
         );
         setCompensationAnalysis(analysis);
       } else {
         setCompensationAnalysis(null);
       }
-
     } catch (error) {
-      console.error('Calculation error:', error);
-      setErrors(['Đã xảy ra lỗi khi tính toán. Vui lòng thử lại.']);
+      console.error("Calculation error:", error);
+      setErrors(["Đã xảy ra lỗi khi tính toán. Vui lòng thử lại."]);
     } finally {
       setLoading(false);
     }
@@ -195,10 +220,13 @@ const SalaryConverter: React.FC = () => {
 
   // Format currency
   const formatCurrency = (amount: number | string): string => {
-    const num = typeof amount === 'string' ? parseFloat(amount.replace(/[^\d]/g, '')) : amount;
-    return new Intl.NumberFormat('vi-VN', {
-      style: 'currency',
-      currency: 'VND',
+    const num =
+      typeof amount === "string"
+        ? parseFloat(amount.replace(/[^\d]/g, ""))
+        : amount;
+    return new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(num);
@@ -207,30 +235,45 @@ const SalaryConverter: React.FC = () => {
   // Get regional minimum wage
   const getRegionalMinWage = (region: number): number => {
     switch (region) {
-      case 1: return REGIONAL_MINIMUM_WAGE.region1;
-      case 2: return REGIONAL_MINIMUM_WAGE.region2;
-      case 3: return REGIONAL_MINIMUM_WAGE.region3;
-      case 4: return REGIONAL_MINIMUM_WAGE.region4;
-      default: return REGIONAL_MINIMUM_WAGE.region1;
+      case 1:
+        return REGIONAL_MINIMUM_WAGE.region1;
+      case 2:
+        return REGIONAL_MINIMUM_WAGE.region2;
+      case 3:
+        return REGIONAL_MINIMUM_WAGE.region3;
+      case 4:
+        return REGIONAL_MINIMUM_WAGE.region4;
+      default:
+        return REGIONAL_MINIMUM_WAGE.region1;
     }
   };
 
   // Get region name
   const getRegionName = (region: number): string => {
     switch (region) {
-      case 1: return 'Vùng I (Hà Nội, TP.HCM)';
-      case 2: return 'Vùng II';
-      case 3: return 'Vùng III';
-      case 4: return 'Vùng IV';
-      default: return 'Chưa chọn';
+      case 1:
+        return "Vùng I (Hà Nội, TP.HCM)";
+      case 2:
+        return "Vùng II";
+      case 3:
+        return "Vùng III";
+      case 4:
+        return "Vùng IV";
+      default:
+        return "Chưa chọn";
     }
   };
 
   return (
     <div className="max-w-6xl mx-auto p-6 space-y-6">
       <div className="text-center space-y-2">
-        <h1 className="text-3xl font-bold text-gray-900">Chuyển đổi lương GROSS - NET</h1>
-        <p className="text-gray-600">Công cụ tính toán lương và thuế thu nhập cá nhân chuyên nghiệp cho Việt Nam</p>
+        <h1 className="text-3xl font-bold text-gray-900">
+          Chuyển đổi lương GROSS - NET
+        </h1>
+        <p className="text-gray-600">
+          Công cụ tính toán lương và thuế thu nhập cá nhân chuyên nghiệp cho
+          Việt Nam
+        </p>
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
@@ -264,25 +307,32 @@ const SalaryConverter: React.FC = () => {
                     <DollarSign className="w-5 h-5" />
                     Thông tin lương
                   </CardTitle>
-                  <CardDescription>Nhập thông tin chi tiết về thu nhập của bạn</CardDescription>
+                  <CardDescription>
+                    Nhập thông tin chi tiết về thu nhập của bạn
+                  </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {/* Gross Monthly Income */}
                   <div className="space-y-2">
-                    <Label htmlFor="grossMonthlyIncome">Lương GROSS hàng tháng</Label>
+                    <Label htmlFor="grossMonthlyIncome">
+                      Lương GROSS hàng tháng
+                    </Label>
                     <Input
                       id="grossMonthlyIncome"
                       type="text"
                       value={formatCurrency(formData.grossMonthlyIncome)}
                       onChange={(e) => {
-                        const value = parseFloat(e.target.value.replace(/[^\d]/g, '')) || 0;
-                        handleInputChange('grossMonthlyIncome', value);
+                        const value =
+                          parseFloat(e.target.value.replace(/[^\d]/g, "")) || 0;
+                        handleInputChange("grossMonthlyIncome", value);
                       }}
                       className="text-lg"
                     />
                     <Slider
                       value={[formData.grossMonthlyIncome]}
-                      onValueChange={([value]) => handleInputChange('grossMonthlyIncome', value)}
+                      onValueChange={([value]) =>
+                        handleInputChange("grossMonthlyIncome", value)
+                      }
                       max={200000000}
                       min={4000000}
                       step={1000000}
@@ -300,7 +350,9 @@ const SalaryConverter: React.FC = () => {
                       <Label>Tình trạng hôn nhân</Label>
                       <Select
                         value={formData.maritalStatus}
-                        onValueChange={(value: 'single' | 'married') => handleInputChange('maritalStatus', value)}
+                        onValueChange={(value: "single" | "married") =>
+                          handleInputChange("maritalStatus", value)
+                        }
                       >
                         <SelectTrigger>
                           <SelectValue />
@@ -315,7 +367,9 @@ const SalaryConverter: React.FC = () => {
                       <Label>Vùng lương</Label>
                       <Select
                         value={formData.region.toString()}
-                        onValueChange={(value) => handleInputChange('region', parseInt(value))}
+                        onValueChange={(value) =>
+                          handleInputChange("region", parseInt(value))
+                        }
                       >
                         <SelectTrigger>
                           <SelectValue />
@@ -332,18 +386,27 @@ const SalaryConverter: React.FC = () => {
 
                   {/* Number of Dependents */}
                   <div className="space-y-2">
-                    <Label htmlFor="numberOfDependents">Số người phụ thuộc</Label>
+                    <Label htmlFor="numberOfDependents">
+                      Số người phụ thuộc
+                    </Label>
                     <Input
                       id="numberOfDependents"
                       type="number"
                       value={formData.numberOfDependents}
-                      onChange={(e) => handleInputChange('numberOfDependents', parseInt(e.target.value) || 0)}
+                      onChange={(e) =>
+                        handleInputChange(
+                          "numberOfDependents",
+                          parseInt(e.target.value) || 0,
+                        )
+                      }
                       min="0"
                       max="20"
                     />
                     <Slider
                       value={[formData.numberOfDependents]}
-                      onValueChange={([value]) => handleInputChange('numberOfDependents', value)}
+                      onValueChange={([value]) =>
+                        handleInputChange("numberOfDependents", value)
+                      }
                       max={5}
                       min={0}
                       step={1}
@@ -356,7 +419,7 @@ const SalaryConverter: React.FC = () => {
                   </div>
 
                   {/* Spouse Income */}
-                  {formData.maritalStatus === 'married' && (
+                  {formData.maritalStatus === "married" && (
                     <div className="space-y-2">
                       <Label htmlFor="spouseIncome">Lương vợ/chồng</Label>
                       <Input
@@ -364,8 +427,10 @@ const SalaryConverter: React.FC = () => {
                         type="text"
                         value={formatCurrency(formData.spouseIncome || 0)}
                         onChange={(e) => {
-                          const value = parseFloat(e.target.value.replace(/[^\d]/g, '')) || 0;
-                          handleInputChange('spouseIncome', value);
+                          const value =
+                            parseFloat(e.target.value.replace(/[^\d]/g, "")) ||
+                            0;
+                          handleInputChange("spouseIncome", value);
                         }}
                       />
                     </div>
@@ -373,7 +438,9 @@ const SalaryConverter: React.FC = () => {
 
                   {/* Additional Income */}
                   <div className="space-y-4">
-                    <Label className="text-base font-medium">Thu nhập bổ sung</Label>
+                    <Label className="text-base font-medium">
+                      Thu nhập bổ sung
+                    </Label>
 
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-2">
@@ -383,8 +450,11 @@ const SalaryConverter: React.FC = () => {
                           type="text"
                           value={formatCurrency(formData.bonus)}
                           onChange={(e) => {
-                            const value = parseFloat(e.target.value.replace(/[^\d]/g, '')) || 0;
-                            handleInputChange('bonus', value);
+                            const value =
+                              parseFloat(
+                                e.target.value.replace(/[^\d]/g, ""),
+                              ) || 0;
+                            handleInputChange("bonus", value);
                           }}
                         />
                       </div>
@@ -395,8 +465,11 @@ const SalaryConverter: React.FC = () => {
                           type="text"
                           value={formatCurrency(formData.allowance)}
                           onChange={(e) => {
-                            const value = parseFloat(e.target.value.replace(/[^\d]/g, '')) || 0;
-                            handleInputChange('allowance', value);
+                            const value =
+                              parseFloat(
+                                e.target.value.replace(/[^\d]/g, ""),
+                              ) || 0;
+                            handleInputChange("allowance", value);
                           }}
                         />
                       </div>
@@ -409,7 +482,12 @@ const SalaryConverter: React.FC = () => {
                           id="overtimeHours"
                           type="number"
                           value={formData.overtimeHours}
-                          onChange={(e) => handleInputChange('overtimeHours', parseFloat(e.target.value) || 0)}
+                          onChange={(e) =>
+                            handleInputChange(
+                              "overtimeHours",
+                              parseFloat(e.target.value) || 0,
+                            )
+                          }
                           min="0"
                           max="200"
                         />
@@ -421,8 +499,11 @@ const SalaryConverter: React.FC = () => {
                           type="text"
                           value={formatCurrency(formData.hourlyRate)}
                           onChange={(e) => {
-                            const value = parseFloat(e.target.value.replace(/[^\d]/g, '')) || 0;
-                            handleInputChange('hourlyRate', value);
+                            const value =
+                              parseFloat(
+                                e.target.value.replace(/[^\d]/g, ""),
+                              ) || 0;
+                            handleInputChange("hourlyRate", value);
                           }}
                         />
                       </div>
@@ -431,23 +512,33 @@ const SalaryConverter: React.FC = () => {
 
                   {/* Special Conditions */}
                   <div className="space-y-3">
-                    <Label className="text-base font-medium">Điều kiện đặc biệt</Label>
+                    <Label className="text-base font-medium">
+                      Điều kiện đặc biệt
+                    </Label>
 
                     <div className="flex items-center justify-between">
-                      <Label htmlFor="hasDisabledDependent">Người phụ thuộc tàn tật</Label>
+                      <Label htmlFor="hasDisabledDependent">
+                        Người phụ thuộc tàn tật
+                      </Label>
                       <Switch
                         id="hasDisabledDependent"
                         checked={formData.hasDisabledDependent}
-                        onCheckedChange={(checked) => handleInputChange('hasDisabledDependent', checked)}
+                        onCheckedChange={(checked) =>
+                          handleInputChange("hasDisabledDependent", checked)
+                        }
                       />
                     </div>
 
                     <div className="flex items-center justify-between">
-                      <Label htmlFor="hasSelfAndSpouseOnly">Chỉ có bản thân và vợ/chồng</Label>
+                      <Label htmlFor="hasSelfAndSpouseOnly">
+                        Chỉ có bản thân và vợ/chồng
+                      </Label>
                       <Switch
                         id="hasSelfAndSpouseOnly"
                         checked={formData.hasSelfAndSpouseOnly}
-                        onCheckedChange={(checked) => handleInputChange('hasSelfAndSpouseOnly', checked)}
+                        onCheckedChange={(checked) =>
+                          handleInputChange("hasSelfAndSpouseOnly", checked)
+                        }
                       />
                     </div>
                   </div>
@@ -459,7 +550,7 @@ const SalaryConverter: React.FC = () => {
                     className="w-full"
                     size="lg"
                   >
-                    {loading ? 'Đang tính toán...' : 'Tính toán thuế'}
+                    {loading ? "Đang tính toán..." : "Tính toán thuế"}
                   </Button>
                 </CardContent>
               </Card>
@@ -480,26 +571,40 @@ const SalaryConverter: React.FC = () => {
                     <CardContent className="space-y-4">
                       <div className="grid grid-cols-1 gap-4">
                         <div className="bg-green-50 p-4 rounded-lg">
-                          <div className="text-sm text-green-600 mb-1">Lương NET</div>
-                          <div className="text-2xl font-bold text-green-900">{formatCurrency(taxResults.netIncome)}</div>
+                          <div className="text-sm text-green-600 mb-1">
+                            Lương NET
+                          </div>
+                          <div className="text-2xl font-bold text-green-900">
+                            {formatCurrency(taxResults.netIncome)}
+                          </div>
                         </div>
 
                         <div className="space-y-3">
                           <div className="flex justify-between">
                             <span className="text-gray-600">Lương GROSS:</span>
-                            <span className="font-medium">{formatCurrency(taxResults.grossIncome)}</span>
+                            <span className="font-medium">
+                              {formatCurrency(taxResults.grossIncome)}
+                            </span>
                           </div>
                           <div className="flex justify-between">
                             <span className="text-gray-600">Tổng BHXH:</span>
-                            <span className="font-medium">{formatCurrency(taxResults.totalInsurance)}</span>
+                            <span className="font-medium">
+                              {formatCurrency(taxResults.totalInsurance)}
+                            </span>
                           </div>
                           <div className="flex justify-between">
                             <span className="text-gray-600">Thuế TNCN:</span>
-                            <span className="font-medium">{formatCurrency(taxResults.incomeTax)}</span>
+                            <span className="font-medium">
+                              {formatCurrency(taxResults.incomeTax)}
+                            </span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-gray-600">Thuế suất hiệu quả:</span>
-                            <span className="font-medium">{taxResults.effectiveTaxRate.toFixed(2)}%</span>
+                            <span className="text-gray-600">
+                              Thuế suất hiệu quả:
+                            </span>
+                            <span className="font-medium">
+                              {taxResults.effectiveTaxRate.toFixed(2)}%
+                            </span>
                           </div>
                         </div>
                       </div>
@@ -508,23 +613,33 @@ const SalaryConverter: React.FC = () => {
 
                       {/* Tax Breakdown */}
                       <div className="space-y-2">
-                        <div className="text-sm font-medium">Chi tiết các khoản đóng góp</div>
+                        <div className="text-sm font-medium">
+                          Chi tiết các khoản đóng góp
+                        </div>
                         <div className="space-y-1">
                           <div className="flex justify-between text-sm">
                             <span className="text-gray-600">BHXH (8%):</span>
-                            <span>{formatCurrency(taxResults.socialInsurance)}</span>
+                            <span>
+                              {formatCurrency(taxResults.socialInsurance)}
+                            </span>
                           </div>
                           <div className="flex justify-between text-sm">
                             <span className="text-gray-600">BHYT (1.5%):</span>
-                            <span>{formatCurrency(taxResults.healthInsurance)}</span>
+                            <span>
+                              {formatCurrency(taxResults.healthInsurance)}
+                            </span>
                           </div>
                           <div className="flex justify-between text-sm">
                             <span className="text-gray-600">BHTN (1%):</span>
-                            <span>{formatCurrency(taxResults.unemploymentInsurance)}</span>
+                            <span>
+                              {formatCurrency(taxResults.unemploymentInsurance)}
+                            </span>
                           </div>
                           <div className="flex justify-between text-sm font-medium pt-2 border-t">
                             <span>Giảm trừ gia cảnh:</span>
-                            <span>{formatCurrency(taxResults.familyDeductions)}</span>
+                            <span>
+                              {formatCurrency(taxResults.familyDeductions)}
+                            </span>
                           </div>
                         </div>
                       </div>
@@ -537,31 +652,50 @@ const SalaryConverter: React.FC = () => {
                           <span>{getRegionName(formData.region)}</span>
                         </div>
                         <div className="flex justify-between text-sm">
-                          <span className="text-gray-600">Lương tối thiểu:</span>
-                          <span>{formatCurrency(getRegionalMinWage(formData.region))}</span>
+                          <span className="text-gray-600">
+                            Lương tối thiểu:
+                          </span>
+                          <span>
+                            {formatCurrency(
+                              getRegionalMinWage(formData.region),
+                            )}
+                          </span>
                         </div>
                         <div className="flex justify-between text-sm">
                           <span className="text-gray-600">Xếp hạng thuế:</span>
-                          <span>{taxResults.regionalComparison.percentileRank.toFixed(0)}%</span>
+                          <span>
+                            {taxResults.regionalComparison.percentileRank.toFixed(
+                              0,
+                            )}
+                            %
+                          </span>
                         </div>
                       </div>
                     </CardContent>
                   </Card>
 
                   {/* Insights */}
-                  {taxResults.additionalInsights.taxOptimizationOpportunities.length > 0 && (
+                  {taxResults.additionalInsights.taxOptimizationOpportunities
+                    .length > 0 && (
                     <Card>
                       <CardHeader>
-                        <CardTitle className="text-lg">Gợi ý tối ưu thuế</CardTitle>
+                        <CardTitle className="text-lg">
+                          Gợi ý tối ưu thuế
+                        </CardTitle>
                       </CardHeader>
                       <CardContent>
                         <div className="space-y-2">
-                          {taxResults.additionalInsights.taxOptimizationOpportunities.map((opportunity, index) => (
-                            <div key={index} className="flex items-start gap-2">
-                              <Info className="w-4 h-4 text-blue-500 mt-0.5" />
-                              <span className="text-sm">{opportunity}</span>
-                            </div>
-                          ))}
+                          {taxResults.additionalInsights.taxOptimizationOpportunities.map(
+                            (opportunity, index) => (
+                              <div
+                                key={index}
+                                className="flex items-start gap-2"
+                              >
+                                <Info className="w-4 h-4 text-blue-500 mt-0.5" />
+                                <span className="text-sm">{opportunity}</span>
+                              </div>
+                            ),
+                          )}
                         </div>
                       </CardContent>
                     </Card>
@@ -573,26 +707,47 @@ const SalaryConverter: React.FC = () => {
               {compensationAnalysis && (
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-lg">Phân tích cấu trúc lương</CardTitle>
+                    <CardTitle className="text-lg">
+                      Phân tích cấu trúc lương
+                    </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-3">
                     <div className="space-y-2">
                       <div className="flex justify-between text-sm">
-                        <span className="text-gray-600">Cấu trúc hiệu quả nhất:</span>
-                        <span className="font-medium">{compensationAnalysis.taxEfficiency.mostEfficientStructure}</span>
+                        <span className="text-gray-600">
+                          Cấu trúc hiệu quả nhất:
+                        </span>
+                        <span className="font-medium">
+                          {
+                            compensationAnalysis.taxEfficiency
+                              .mostEfficientStructure
+                          }
+                        </span>
                       </div>
                       <div className="flex justify-between text-sm">
-                        <span className="text-gray-600">Tiết kiệm thuế tiềm năng:</span>
-                        <span className="font-medium text-green-600">{formatCurrency(compensationAnalysis.taxEfficiency.taxSavingsOpportunity)}</span>
+                        <span className="text-gray-600">
+                          Tiết kiệm thuế tiềm năng:
+                        </span>
+                        <span className="font-medium text-green-600">
+                          {formatCurrency(
+                            compensationAnalysis.taxEfficiency
+                              .taxSavingsOpportunity,
+                          )}
+                        </span>
                       </div>
                     </div>
 
-                    {compensationAnalysis.taxEfficiency.recommendations.length > 0 && (
+                    {compensationAnalysis.taxEfficiency.recommendations.length >
+                      0 && (
                       <div className="space-y-1">
                         <div className="text-sm font-medium">Khuyến nghị:</div>
-                        {compensationAnalysis.taxEfficiency.recommendations.slice(0, 3).map((rec, index) => (
-                          <div key={index} className="text-sm text-gray-600">• {rec}</div>
-                        ))}
+                        {compensationAnalysis.taxEfficiency.recommendations
+                          .slice(0, 3)
+                          .map((rec, index) => (
+                            <div key={index} className="text-sm text-gray-600">
+                              • {rec}
+                            </div>
+                          ))}
                       </div>
                     )}
                   </CardContent>
@@ -618,32 +773,41 @@ const SalaryConverter: React.FC = () => {
 
         {/* Detailed Breakdown Tab */}
         <TabsContent value="breakdown">
-          {taxResults && (
+          {taxResults ? (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Tax Bracket Breakdown */}
               <Card>
                 <CardHeader>
                   <CardTitle>Biểu thuế thu nhập cá nhân</CardTitle>
-                  <CardDescription>Chi tiết các mức thuế suất áp dụng</CardDescription>
+                  <CardDescription>
+                    Chi tiết các mức thuế suất áp dụng
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
                     {[
-                      { range: '0 - 5 triệu', rate: '5%', amount: 250000 },
-                      { range: '5 - 10 triệu', rate: '10%', amount: 750000 },
-                      { range: '10 - 18 triệu', rate: '15%', amount: 1950000 },
-                      { range: '18 - 32 triệu', rate: '20%', amount: 4750000 },
-                      { range: '32 - 52 triệu', rate: '25%', amount: 9750000 },
-                      { range: '52 - 80 triệu', rate: '30%', amount: 18150000 },
-                      { range: 'Trên 80 triệu', rate: '35%', amount: 0 },
+                      { range: "0 - 5 triệu", rate: "5%", amount: 250000 },
+                      { range: "5 - 10 triệu", rate: "10%", amount: 750000 },
+                      { range: "10 - 18 triệu", rate: "15%", amount: 1950000 },
+                      { range: "18 - 32 triệu", rate: "20%", amount: 4750000 },
+                      { range: "32 - 52 triệu", rate: "25%", amount: 9750000 },
+                      { range: "52 - 80 triệu", rate: "30%", amount: 18150000 },
+                      { range: "Trên 80 triệu", rate: "35%", amount: 0 },
                     ].map((bracket, index) => (
-                      <div key={index} className="flex items-center justify-between p-2 rounded hover:bg-gray-50">
+                      <div
+                        key={index}
+                        className="flex items-center justify-between p-2 rounded hover:bg-gray-50"
+                      >
                         <div className="flex-1">
                           <div className="font-medium">{bracket.range}</div>
-                          <div className="text-sm text-gray-600">Thuế suất: {bracket.rate}</div>
+                          <div className="text-sm text-gray-600">
+                            Thuế suất: {bracket.rate}
+                          </div>
                         </div>
                         <div className="text-right">
-                          <div className="font-medium">{formatCurrency(bracket.amount)}</div>
+                          <div className="font-medium">
+                            {formatCurrency(bracket.amount)}
+                          </div>
                           {bracket.amount > 0 && (
                             <Progress value={25} className="w-16 h-1 mt-1" />
                           )}
@@ -658,22 +822,34 @@ const SalaryConverter: React.FC = () => {
               <Card>
                 <CardHeader>
                   <CardTitle>Chi tiết bảo hiểm xã hội</CardTitle>
-                  <CardDescription>Phân tích các khoản đóng góp bảo hiểm</CardDescription>
+                  <CardDescription>
+                    Phân tích các khoản đóng góp bảo hiểm
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
                     <div className="space-y-2">
                       <div className="flex items-center gap-2">
                         <Shield className="w-4 h-4 text-blue-500" />
-                        <span className="font-medium">Bảo hiểm xã hội (8%)</span>
+                        <span className="font-medium">
+                          Bảo hiểm xã hội (8%)
+                        </span>
                       </div>
                       <div className="bg-blue-50 p-3 rounded">
                         <div className="flex justify-between">
-                          <span className="text-sm text-gray-600">Đóng góp:</span>
-                          <span className="font-medium">{formatCurrency(taxResults.socialInsurance)}</span>
+                          <span className="text-sm text-gray-600">
+                            Đóng góp:
+                          </span>
+                          <span className="font-medium">
+                            {formatCurrency(taxResults.socialInsurance)}
+                          </span>
                         </div>
                         <div className="text-xs text-gray-500 mt-1">
-                          Mức trần: {formatCurrency(taxResults.additionalInsights.pensionContributionLimit)}
+                          Mức trần:{" "}
+                          {formatCurrency(
+                            taxResults.additionalInsights
+                              .pensionContributionLimit,
+                          )}
                         </div>
                       </div>
                     </div>
@@ -681,15 +857,24 @@ const SalaryConverter: React.FC = () => {
                     <div className="space-y-2">
                       <div className="flex items-center gap-2">
                         <Heart className="w-4 h-4 text-red-500" />
-                        <span className="font-medium">Bảo hiểm y tế (1.5%)</span>
+                        <span className="font-medium">
+                          Bảo hiểm y tế (1.5%)
+                        </span>
                       </div>
                       <div className="bg-red-50 p-3 rounded">
                         <div className="flex justify-between">
-                          <span className="text-sm text-gray-600">Đóng góp:</span>
-                          <span className="font-medium">{formatCurrency(taxResults.healthInsurance)}</span>
+                          <span className="text-sm text-gray-600">
+                            Đóng góp:
+                          </span>
+                          <span className="font-medium">
+                            {formatCurrency(taxResults.healthInsurance)}
+                          </span>
                         </div>
                         <div className="text-xs text-gray-500 mt-1">
-                          Mức trần: {formatCurrency(taxResults.additionalInsights.healthInsuranceLimit)}
+                          Mức trần:{" "}
+                          {formatCurrency(
+                            taxResults.additionalInsights.healthInsuranceLimit,
+                          )}
                         </div>
                       </div>
                     </div>
@@ -697,12 +882,18 @@ const SalaryConverter: React.FC = () => {
                     <div className="space-y-2">
                       <div className="flex items-center gap-2">
                         <Briefcase className="w-4 h-4 text-green-500" />
-                        <span className="font-medium">Bảo hiểm thất nghiệp (1%)</span>
+                        <span className="font-medium">
+                          Bảo hiểm thất nghiệp (1%)
+                        </span>
                       </div>
                       <div className="bg-green-50 p-3 rounded">
                         <div className="flex justify-between">
-                          <span className="text-sm text-gray-600">Đóng góp:</span>
-                          <span className="font-medium">{formatCurrency(taxResults.unemploymentInsurance)}</span>
+                          <span className="text-sm text-gray-600">
+                            Đóng góp:
+                          </span>
+                          <span className="font-medium">
+                            {formatCurrency(taxResults.unemploymentInsurance)}
+                          </span>
                         </div>
                         <div className="text-xs text-gray-500 mt-1">
                           Mức trần theo vùng {getRegionName(formData.region)}
@@ -718,7 +909,9 @@ const SalaryConverter: React.FC = () => {
               <CardContent className="text-center py-12">
                 <Receipt className="w-12 h-12 mx-auto text-gray-400 mb-4" />
                 <p className="text-gray-500">Chưa có kết quả tính toán</p>
-                <p className="text-sm text-gray-400">Vui lòng tính toán lương trước</p>
+                <p className="text-sm text-gray-400">
+                  Vui lòng tính toán lương trước
+                </p>
               </CardContent>
             </Card>
           )}
@@ -736,13 +929,20 @@ const SalaryConverter: React.FC = () => {
                   {[1, 2, 3, 4].map((region) => {
                     const minWage = getRegionalMinWage(region);
                     const taxRate = taxResults?.effectiveTaxRate || 0;
-                    const netIncome = formData.grossMonthlyIncome - (formData.grossMonthlyIncome * taxRate / 100);
+                    const netIncome =
+                      formData.grossMonthlyIncome -
+                      (formData.grossMonthlyIncome * taxRate) / 100;
 
                     return (
-                      <div key={region} className={`p-3 rounded ${region === formData.region ? 'bg-blue-50 ring-2 ring-blue-500' : 'bg-gray-50'}`}>
+                      <div
+                        key={region}
+                        className={`p-3 rounded ${region === formData.region ? "bg-blue-50 ring-2 ring-blue-500" : "bg-gray-50"}`}
+                      >
                         <div className="flex justify-between items-center">
                           <span className="font-medium">Vùng {region}</span>
-                          {region === formData.region && <Badge variant="default">Hiện tại</Badge>}
+                          {region === formData.region && (
+                            <Badge variant="default">Hiện tại</Badge>
+                          )}
                         </div>
                         <div className="text-sm text-gray-600 mt-1">
                           Lương tối thiểu: {formatCurrency(minWage)}
@@ -759,13 +959,22 @@ const SalaryConverter: React.FC = () => {
 
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">Tác động của người phụ thuộc</CardTitle>
+                <CardTitle className="text-lg">
+                  Tác động của người phụ thuộc
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
                   {[0, 1, 2, 3].map((dependents) => {
-                    const familyDeduction = FAMILY_DEDUCTIONS.taxpayerDeduction + (dependents * FAMILY_DEDUCTIONS.dependentDeduction);
-                    const newTaxableIncome = Math.max(0, formData.grossMonthlyIncome - taxResults!.totalInsurance - familyDeduction);
+                    const familyDeduction =
+                      FAMILY_DEDUCTIONS.taxpayerDeduction +
+                      dependents * FAMILY_DEDUCTIONS.dependentDeduction;
+                    const newTaxableIncome = Math.max(
+                      0,
+                      formData.grossMonthlyIncome -
+                        taxResults!.totalInsurance -
+                        familyDeduction,
+                    );
 
                     // Simple tax calculation for comparison
                     let newTax = 0;
@@ -773,14 +982,24 @@ const SalaryConverter: React.FC = () => {
                     if (newTaxableIncome > 10000000) newTax += 750000;
                     if (newTaxableIncome > 18000000) newTax += 1950000;
 
-                    const newNetIncome = formData.grossMonthlyIncome - taxResults!.totalInsurance - newTax;
+                    const newNetIncome =
+                      formData.grossMonthlyIncome -
+                      taxResults!.totalInsurance -
+                      newTax;
                     const taxDifference = taxResults!.incomeTax - newTax;
 
                     return (
-                      <div key={dependents} className={`p-3 rounded ${dependents === formData.numberOfDependents ? 'bg-green-50 ring-2 ring-green-500' : 'bg-gray-50'}`}>
+                      <div
+                        key={dependents}
+                        className={`p-3 rounded ${dependents === formData.numberOfDependents ? "bg-green-50 ring-2 ring-green-500" : "bg-gray-50"}`}
+                      >
                         <div className="flex justify-between items-center">
-                          <span className="font-medium">{dependents} người phụ thuộc</span>
-                          {dependents === formData.numberOfDependents && <Badge variant="default">Hiện tại</Badge>}
+                          <span className="font-medium">
+                            {dependents} người phụ thuộc
+                          </span>
+                          {dependents === formData.numberOfDependents && (
+                            <Badge variant="default">Hiện tại</Badge>
+                          )}
                         </div>
                         <div className="text-sm text-gray-600 mt-1">
                           Giảm trừ: {formatCurrency(familyDeduction)}
@@ -808,33 +1027,55 @@ const SalaryConverter: React.FC = () => {
                 <div className="space-y-4">
                   <div className="space-y-2">
                     <div className="flex justify-between">
-                      <span className="text-sm text-gray-600">Thuế suất hiệu quả:</span>
-                      <span className="font-medium">{taxResults?.effectiveTaxRate.toFixed(2)}%</span>
+                      <span className="text-sm text-gray-600">
+                        Thuế suất hiệu quả:
+                      </span>
+                      <span className="font-medium">
+                        {taxResults?.effectiveTaxRate.toFixed(2)}%
+                      </span>
                     </div>
-                    <Progress value={taxResults?.effectiveTaxRate || 0} className="h-2" />
+                    <Progress
+                      value={taxResults?.effectiveTaxRate || 0}
+                      className="h-2"
+                    />
                   </div>
 
                   <div className="space-y-2">
                     <div className="flex justify-between">
-                      <span className="text-sm text-gray-600">Xếp hạng thuế vùng:</span>
-                      <span className="font-medium">{taxResults?.regionalComparison.percentileRank.toFixed(0)}%</span>
+                      <span className="text-sm text-gray-600">
+                        Xếp hạng thuế vùng:
+                      </span>
+                      <span className="font-medium">
+                        {taxResults?.regionalComparison.percentileRank.toFixed(
+                          0,
+                        )}
+                        %
+                      </span>
                     </div>
-                    <Progress value={taxResults?.regionalComparison.percentileRank || 0} className="h-2" />
+                    <Progress
+                      value={taxResults?.regionalComparison.percentileRank || 0}
+                      className="h-2"
+                    />
                   </div>
 
                   <div className="space-y-2">
                     <Label className="text-sm">Phân loại thu nhập</Label>
-                    <div className={`p-3 rounded ${
-                      (taxResults?.additionalInsights.isHighIncomeEarner) ? 'bg-red-50' : 'bg-green-50'
-                    }`}>
+                    <div
+                      className={`p-3 rounded ${
+                        taxResults?.additionalInsights.isHighIncomeEarner
+                          ? "bg-red-50"
+                          : "bg-green-50"
+                      }`}
+                    >
                       <div className="font-medium">
-                        {taxResults?.additionalInsights.isHighIncomeEarner ? 'Thu nhập cao' : 'Thu nhập trung bình'}
+                        {taxResults?.additionalInsights.isHighIncomeEarner
+                          ? "Thu nhập cao"
+                          : "Thu nhập trung bình"}
                       </div>
                       <div className="text-sm text-gray-600">
                         {taxResults?.additionalInsights.isHighIncomeEarner
-                          ? 'Cần kê khai thuế định kỳ'
-                          : 'Kê khai thuế năm nếu có thay đổi'
-                        }
+                          ? "Cần kê khai thuế định kỳ"
+                          : "Kê khai thuế năm nếu có thay đổi"}
                       </div>
                     </div>
                   </div>
@@ -858,7 +1099,8 @@ const SalaryConverter: React.FC = () => {
                     Đăng ký người phụ thuộc
                   </h4>
                   <p className="text-sm text-gray-600">
-                    Mỗi người phụ thuộc giúp giảm trừ 4.4 triệu/tháng, tiết kiệm thuế đáng kể
+                    Mỗi người phụ thuộc giúp giảm trừ 4.4 triệu/tháng, tiết kiệm
+                    thuế đáng kể
                   </p>
                 </div>
                 <div className="space-y-2">
@@ -890,7 +1132,7 @@ const SalaryConverter: React.FC = () => {
                 <div className="space-y-2">
                   <h4 className="font-medium">Kê khai thuế</h4>
                   <ul className="text-sm text-gray-600 space-y-1">
-                    <li>• Thu nhập > 120 triệu/năm phải kê khai thuế</li>
+                    <li>• Thu nhập &gt; 120 triệu/năm phải kê khai thuế</li>
                     <li>• Có nhiều nguồn thu nhập cần kê khai tổng hợp</li>
                     <li>• Nộp hồ sơ trước 31/3 năm sau</li>
                   </ul>
