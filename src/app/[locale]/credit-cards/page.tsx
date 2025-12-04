@@ -5,7 +5,6 @@ import { useLocale } from "next-intl";
 import { useCreditCardsStore } from "@/store/use-credit-cards-store";
 import type { CreditCardFilters, SortOption } from "@/types/credit-card";
 
-// Import refactored components
 import { CreditCardsPageHeader } from "@/components/features/credit-card/CreditCardsPageHeader";
 import { CreditCardsPageControls } from "@/components/features/credit-card/CreditCardsPageControls";
 import { CreditCardsPageResults } from "@/components/features/credit-card/CreditCardsPageResults";

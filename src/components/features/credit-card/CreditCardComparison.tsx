@@ -1,7 +1,8 @@
 import React from "react";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { CreditCard as CreditCardIcon, Check } from "lucide-react";
-import { getCreditCardById } from "@/data/mock-credit-cards";
+import { vietnameseCreditCards } from "@/data/credit-cards";
 
 interface CreditCardComparisonProps {
   cardIds: string[];
@@ -10,8 +11,9 @@ interface CreditCardComparisonProps {
 export const CreditCardComparison: React.FC<CreditCardComparisonProps> = ({
   cardIds,
 }) => {
+  const t = useTranslations("pages.creditCard");
   const cardsToCompare = cardIds
-    .map((id) => getCreditCardById(id))
+    .map((id) => vietnameseCreditCards.find((card) => card.id === id))
     .filter(Boolean);
 
   if (cardsToCompare.length === 0) {
@@ -19,21 +21,25 @@ export const CreditCardComparison: React.FC<CreditCardComparisonProps> = ({
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+    <div className="bg-card rounded-lg border shadow-sm overflow-hidden">
       <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
-            <tr className="bg-gray-50">
-              <th className="text-left p-4 border-b">Tiêu chí</th>
+            <tr className="bg-muted/50">
+              <th className="text-left p-4 border-b font-medium">
+                {t("criteria") || "Tiêu chí"}
+              </th>
               {cardsToCompare.map((card, index) => (
                 <th key={index} className="text-center p-4 border-b">
                   <div className="space-y-2">
-                    <div className="w-12 h-8 bg-blue-100 rounded mx-auto flex items-center justify-center">
-                      <CreditCardIcon className="w-6 h-6 text-blue-600" />
+                    <div className="w-12 h-8 bg-primary/10 rounded mx-auto flex items-center justify-center">
+                      <CreditCardIcon className="w-6 h-6 text-primary" />
                     </div>
                     <div>
                       <p className="font-semibold">{card!.name}</p>
-                      <p className="text-sm text-gray-600">{card!.bank}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {card!.issuer}
+                      </p>
                     </div>
                   </div>
                 </th>
@@ -42,33 +48,45 @@ export const CreditCardComparison: React.FC<CreditCardComparisonProps> = ({
           </thead>
           <tbody>
             <tr>
-              <td className="p-4 border-b font-medium">Phí thường niên</td>
+              <td className="p-4 border-b font-medium">
+                {t("annualFee") || "Phí thường niên"}
+              </td>
               {cardsToCompare.map((card, index) => (
                 <td key={index} className="text-center p-4 border-b">
                   {card!.annualFee}
                 </td>
               ))}
             </tr>
-            <tr className="bg-gray-50">
-              <td className="p-4 border-b font-medium">Lãi suất</td>
+            <tr className="bg-muted/30">
+              <td className="p-4 border-b font-medium">
+                {t("interestRate") || "Lãi suất"}
+              </td>
               {cardsToCompare.map((card, index) => (
                 <td key={index} className="text-center p-4 border-b">
                   {card!.interestRate}
                 </td>
               ))}
             </tr>
-            {cardsToCompare.some((card) => card!.cashback) && (
+            {cardsToCompare.some(
+              (card) => card!.rewardsProgram?.type === "cashback",
+            ) && (
               <tr>
-                <td className="p-4 border-b font-medium">Hoàn tiền</td>
+                <td className="p-4 border-b font-medium">
+                  {t("cashback") || "Hoàn tiền"}
+                </td>
                 {cardsToCompare.map((card, index) => (
                   <td key={index} className="text-center p-4 border-b">
-                    {card!.cashback || "N/A"}
+                    {card!.rewardsProgram?.type === "cashback"
+                      ? `${card!.rewardsProgram.earnRate}/1000 VND`
+                      : "N/A"}
                   </td>
                 ))}
               </tr>
             )}
-            <tr className="bg-gray-50">
-              <td className="p-4 border-b font-medium">Tính năng nổi bật</td>
+            <tr className="bg-muted/30">
+              <td className="p-4 border-b font-medium">
+                {t("keyFeatures") || "Tính năng nổi bật"}
+              </td>
               {cardsToCompare.map((card, index) => (
                 <td key={index} className="text-center p-4 border-b">
                   <ul className="text-sm space-y-1">
@@ -77,7 +95,7 @@ export const CreditCardComparison: React.FC<CreditCardComparisonProps> = ({
                         key={idx}
                         className="flex items-center justify-start gap-1"
                       >
-                        <Check className="w-3 h-3 text-green-500 flex-shrink-0" />
+                        <Check className="w-3 h-3 text-green-600 dark:text-green-500 flex-shrink-0" />
                         <span>{feature}</span>
                       </li>
                     ))}
@@ -88,12 +106,12 @@ export const CreditCardComparison: React.FC<CreditCardComparisonProps> = ({
           </tbody>
         </table>
       </div>
-      <div className="p-4 border-t bg-gray-50">
+      <div className="p-4 border-t bg-muted/30">
         <div className="flex justify-center gap-4">
-          <Button className="bg-green-600 hover:bg-green-700">
-            Đăng ký thẻ tốt nhất
+          <Button className="bg-green-600 hover:bg-green-700 text-white">
+            {t("applyForBestCard") || "Đăng ký thẻ tốt nhất"}
           </Button>
-          <Button variant="outline">Tìm hiểu thêm</Button>
+          <Button variant="outline">{t("learnMore") || "Tìm hiểu thêm"}</Button>
         </div>
       </div>
     </div>

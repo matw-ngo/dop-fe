@@ -112,7 +112,6 @@
       "clearFilters": "Xóa bộ lọc",
       "searchResultsFor": "Kết quả tìm kiếm cho '{query}'",
       "cardsSelected": "thẻ đã chọn",
-      "compareCards": "So sánh thẻ",
       "creditCardGrid": "{count, plural, one {# thẻ} other {# thẻ}}",
       "filter": "Lọc",
       "sort": "Sắp xếp",
@@ -163,9 +162,27 @@
       "sortNameDesc": "Tên Z-A",
       "showingItems": "Hiển thị {start}-{end} của {total} kết quả",
       "itemsPerPage": "Số mục mỗi trang",
+      "items": "mục",
       "previous": "Trước",
       "next": "Tiếp theo",
-      "pageOf": "Trang {current} của {total}"
+      "pageOf": "Trang {current} của {total}",
+      "compareCards": "So sánh thẻ tín dụng",
+      "compareDescription": "So sánh chi tiết các thẻ tín dụng đã chọn",
+      "criteria": "Tiêu chí",
+      "cashback": "Hoàn tiền",
+      "keyFeatures": "Tính năng nổi bật",
+      "applyForBestCard": "Đăng ký thẻ tốt nhất",
+      "learnMore": "Tìm hiểu thêm",
+      "noCardsToCompare": "Chưa có thẻ nào để so sánh",
+      "selectAtLeastTwo": "Vui lòng chọn ít nhất 2 thẻ để so sánh",
+      "selectCardsToCompare": "Chọn thẻ để so sánh",
+      "cardDetails": "Chi tiết thẻ tín dụng",
+      "cardDetailsDescription": "Thông tin chi tiết và điều kiện thẻ",
+      "features": "Tính năng nổi bật",
+      "requirements": "Điều kiện mở thẻ",
+      "pros": "Ưu điểm",
+      "cons": "Nhược điểm",
+      "applyNow": "Đăng ký ngay"
     }
   },
   "form": {
@@ -198,7 +215,8 @@
     "cancel": "Hủy",
     "save": "Lưu",
     "reset": "Đặt lại",
-    "retry": "Thử lại"
+    "retry": "Thử lại",
+    "back": "Quay lại"
   },
   "components": {
     "errorState": {

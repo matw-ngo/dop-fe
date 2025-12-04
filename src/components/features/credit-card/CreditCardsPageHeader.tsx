@@ -40,7 +40,9 @@ export function CreditCardsPageHeader({
             )}
             {comparisonCards.length > 0 && (
               <Button variant="outline" asChild size="sm">
-                <a href={`/${locale}/credit-cards/compare`}>
+                <a
+                  href={`/${locale}/credit-cards/compare?cards=${comparisonCards.map((c) => c.id).join(",")}`}
+                >
                   {t("compareCards")} ({comparisonCards.length})
                 </a>
               </Button>

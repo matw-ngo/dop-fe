@@ -64,7 +64,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   const [suggestions, setSuggestions] = useState<SearchSuggestion[]>([]);
   const [loading, setLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-  const debounceTimerRef = useRef<NodeJS.Timeout>();
+  const debounceTimerRef = useRef<NodeJS.Timeout>(null);
 
   // Predefined search suggestions
   const predefinedSuggestions: SearchSuggestion[] = [

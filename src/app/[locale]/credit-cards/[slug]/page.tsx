@@ -4,30 +4,33 @@ import { useParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { CreditCardDetails } from "@/components/features/credit-card/CreditCardDetails";
 
 export default function CardDetailsPage() {
   const params = useParams();
   const slug = params.slug as string;
+  const t = useTranslations();
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="bg-white border-b">
+      <div className="border-b bg-card">
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center gap-4">
             <Link href="/vi/credit-cards">
               <Button variant="outline" size="sm">
                 <ArrowLeft className="w-4 h-4 mr-2" />
-                Quay lại
+                {t("common.back") || "Quay lại"}
               </Button>
             </Link>
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">
-                Chi tiết thẻ tín dụng
+              <h1 className="text-2xl font-bold tracking-tight">
+                {t("pages.creditCard.cardDetails") || "Chi tiết thẻ tín dụng"}
               </h1>
-              <p className="text-gray-600">
-                Thông tin chi tiết và điều kiện thẻ
+              <p className="text-muted-foreground">
+                {t("pages.creditCard.cardDetailsDescription") ||
+                  "Thông tin chi tiết và điều kiện thẻ"}
               </p>
             </div>
           </div>

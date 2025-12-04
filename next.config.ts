@@ -5,14 +5,16 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: process.cwd(),
   },
-  // Enable static export for deployment
-  output: "export",
-  // Ensure proper trailing slashes for static hosting
-  trailingSlash: true,
-  // Disable image optimization for static export
-  images: {
-    unoptimized: true,
-  },
+  // Enable static export for deployment (only in production)
+  ...(process.env.NODE_ENV === "production" && {
+    output: "export",
+    // Ensure proper trailing slashes for static hosting
+    trailingSlash: true,
+    // Disable image optimization for static export
+    images: {
+      unoptimized: true,
+    },
+  }),
   // Configure asset prefix for static hosting if needed
   // assetPrefix: process.env.NODE_ENV === 'production' ? '' : '',
   // Skip build-time generation for dynamic routes
