@@ -29,7 +29,11 @@ import {
   TrendingUp,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { CreditCardFilters } from "@/types/credit-card";
+import {
+  CreditCardFilters,
+  CardNetwork,
+  CardCategory,
+} from "@/types/credit-card";
 import {
   CARD_CATEGORIES,
   CARD_NETWORKS,
@@ -200,27 +204,30 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
           icon={<CreditCardIcon className="h-4 w-4" />}
         >
           <div className="grid grid-cols-2 gap-2">
-            {Object.entries(CARD_CATEGORIES).map(([key, category]) => (
-              <div key={key} className="flex items-center space-x-2">
-                <Checkbox
-                  id={`category-${key}`}
-                  checked={filters.categories.includes(key)}
-                  onCheckedChange={(checked) =>
-                    handleCheckboxGroupChange(
-                      "categories",
-                      key,
-                      checked as boolean,
-                    )
-                  }
-                />
-                <label
-                  htmlFor={`category-${key}`}
-                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
-                >
-                  {category.name}
-                </label>
-              </div>
-            ))}
+            {Object.entries(CARD_CATEGORIES).map(([key, category]) => {
+              const categoryKey = key as CardCategory;
+              return (
+                <div key={key} className="flex items-center space-x-2">
+                  <Checkbox
+                    id={`category-${key}`}
+                    checked={filters.categories.includes(categoryKey)}
+                    onCheckedChange={(checked) =>
+                      handleCheckboxGroupChange(
+                        "categories",
+                        categoryKey,
+                        checked as boolean,
+                      )
+                    }
+                  />
+                  <label
+                    htmlFor={`category-${key}`}
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                  >
+                    {category.name}
+                  </label>
+                </div>
+              );
+            })}
           </div>
         </FilterSection>
 
@@ -230,22 +237,29 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
           icon={<Tag className="h-4 w-4" />}
         >
           <div className="flex flex-wrap gap-2">
-            {Object.entries(CARD_NETWORKS).map(([key, network]) => (
-              <Badge
-                key={key}
-                variant={filters.networks.includes(key) ? "default" : "outline"}
-                className="cursor-pointer"
-                onClick={() =>
-                  handleCheckboxGroupChange(
-                    "networks",
-                    key,
-                    !filters.networks.includes(key),
-                  )
-                }
-              >
-                {network.name}
-              </Badge>
-            ))}
+            {Object.entries(CARD_NETWORKS).map(([key, network]) => {
+              const networkKey = key as CardNetwork;
+              return (
+                <Badge
+                  key={key}
+                  variant={
+                    filters.networks.includes(networkKey)
+                      ? "default"
+                      : "outline"
+                  }
+                  className="cursor-pointer"
+                  onClick={() =>
+                    handleCheckboxGroupChange(
+                      "networks",
+                      networkKey,
+                      !filters.networks.includes(networkKey),
+                    )
+                  }
+                >
+                  {network.name}
+                </Badge>
+              );
+            })}
           </div>
         </FilterSection>
 
@@ -315,10 +329,13 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
         >
           <div className="space-y-4">
             <div className="grid grid-cols-1 gap-2">
-              {CREDIT_LIMIT_TIERS.map((tier) => (
-                <div key={tier.value} className="flex items-center space-x-2">
+              {CREDIT_LIMIT_TIERS.map((tier, index) => (
+                <div
+                  key={`credit-limit-${index}`}
+                  className="flex items-center space-x-2"
+                >
                   <Checkbox
-                    id={`limit-${tier.value}`}
+                    id={`limit-${index}`}
                     checked={
                       filters.creditLimitRange.min === tier.value.min &&
                       filters.creditLimitRange.max === tier.value.max
@@ -332,7 +349,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
                     }}
                   />
                   <label
-                    htmlFor={`limit-${tier.value}`}
+                    htmlFor={`limit-${index}`}
                     className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
                   >
                     {tier.label}
