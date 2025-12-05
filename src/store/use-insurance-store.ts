@@ -10,7 +10,7 @@ import { devtools, persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 import { useState, useEffect, useMemo } from "react";
 import { useShallow } from "zustand/shallow";
-import type {
+import {
   InsuranceProduct,
   InsuranceCategory,
   InsuranceCategoryInfo,
@@ -634,7 +634,7 @@ export const useInsuranceStore = create<InsuranceStore>()(
           comparison: defaultComparison,
 
           searchQuery: "",
-          sortOption: SortOption.FEATURED,
+          sortOption: "featured" as SortOption,
           pagination: {
             ...defaultPagination,
             total: INSURANCE_PRODUCTS.length,

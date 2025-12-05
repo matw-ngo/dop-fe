@@ -14,14 +14,26 @@ import {
   GraduationCap,
   ChevronRight,
   Clock,
-  User
+  User,
 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 // Tutorial categories with icons
 const tutorialCategories = [
@@ -31,7 +43,7 @@ const tutorialCategories = [
     descriptionKey: "tutorials.categories.basics.description",
     icon: BookOpen,
     color: "bg-blue-500",
-    count: 8
+    count: 8,
   },
   {
     id: "vehicle",
@@ -39,7 +51,7 @@ const tutorialCategories = [
     descriptionKey: "tutorials.categories.vehicle.description",
     icon: Car,
     color: "bg-green-500",
-    count: 12
+    count: 12,
   },
   {
     id: "health",
@@ -47,7 +59,7 @@ const tutorialCategories = [
     descriptionKey: "tutorials.categories.health.description",
     icon: Heart,
     color: "bg-red-500",
-    count: 6
+    count: 6,
   },
   {
     id: "property",
@@ -55,7 +67,7 @@ const tutorialCategories = [
     descriptionKey: "tutorials.categories.property.description",
     icon: Home,
     color: "bg-purple-500",
-    count: 5
+    count: 5,
   },
   {
     id: "travel",
@@ -63,7 +75,7 @@ const tutorialCategories = [
     descriptionKey: "tutorials.categories.travel.description",
     icon: Plane,
     color: "bg-indigo-500",
-    count: 4
+    count: 4,
   },
   {
     id: "life",
@@ -71,8 +83,8 @@ const tutorialCategories = [
     descriptionKey: "tutorials.categories.life.description",
     icon: GraduationCap,
     color: "bg-yellow-500",
-    count: 7
-  }
+    count: 7,
+  },
 ];
 
 // Mock tutorial data
@@ -87,7 +99,7 @@ const tutorials = [
     authorKey: "tutorials.articles.basics.author",
     publishedAt: "2024-01-15",
     image: "/images/tutorials/insurance-basics.jpg",
-    featured: true
+    featured: true,
   },
   {
     id: "compulsory-insurance-vietnam",
@@ -99,7 +111,7 @@ const tutorials = [
     authorKey: "tutorials.articles.compulsory.author",
     publishedAt: "2024-01-20",
     image: "/images/tutorials/compulsory-insurance.jpg",
-    featured: true
+    featured: true,
   },
   {
     id: "calculate-vehicle-insurance",
@@ -111,7 +123,7 @@ const tutorials = [
     authorKey: "tutorials.articles.calculation.author",
     publishedAt: "2024-01-25",
     image: "/images/tutorials/calculation-guide.jpg",
-    featured: false
+    featured: false,
   },
   {
     id: "claims-process-guide",
@@ -123,7 +135,7 @@ const tutorials = [
     authorKey: "tutorials.articles.claims.author",
     publishedAt: "2024-01-18",
     image: "/images/tutorials/claims-process.jpg",
-    featured: false
+    featured: false,
   },
   {
     id: "health-insurance-guide",
@@ -135,7 +147,7 @@ const tutorials = [
     authorKey: "tutorials.articles.health.author",
     publishedAt: "2024-01-22",
     image: "/images/tutorials/health-insurance.jpg",
-    featured: false
+    featured: false,
   },
   {
     id: "property-insurance-basics",
@@ -147,14 +159,14 @@ const tutorials = [
     authorKey: "tutorials.articles.property.author",
     publishedAt: "2024-01-28",
     image: "/images/tutorials/property-insurance.jpg",
-    featured: false
-  }
+    featured: false,
+  },
 ];
 
 const difficultyColors = {
   beginner: "bg-green-100 text-green-800",
   intermediate: "bg-yellow-100 text-yellow-800",
-  advanced: "bg-red-100 text-red-800"
+  advanced: "bg-red-100 text-red-800",
 };
 
 interface InsuranceTutorialProps {
@@ -171,20 +183,24 @@ export default function InsuranceTutorial({ locale }: InsuranceTutorialProps) {
   const filteredTutorials = tutorials.filter((tutorial) => {
     const title = t(tutorial.titleKey).toLowerCase();
     const description = t(tutorial.descriptionKey).toLowerCase();
-    const matchesSearch = title.includes(searchQuery.toLowerCase()) ||
-                         description.includes(searchQuery.toLowerCase());
+    const matchesSearch =
+      title.includes(searchQuery.toLowerCase()) ||
+      description.includes(searchQuery.toLowerCase());
 
-    const matchesCategory = selectedCategory === "all" || tutorial.categoryId === selectedCategory;
-    const matchesDifficulty = selectedDifficulty === "all" || tutorial.difficulty === selectedDifficulty;
+    const matchesCategory =
+      selectedCategory === "all" || tutorial.categoryId === selectedCategory;
+    const matchesDifficulty =
+      selectedDifficulty === "all" ||
+      tutorial.difficulty === selectedDifficulty;
 
     return matchesSearch && matchesCategory && matchesDifficulty;
   });
 
   // Get featured tutorials
-  const featuredTutorials = tutorials.filter(tutorial => tutorial.featured);
+  const featuredTutorials = tutorials.filter((tutorial) => tutorial.featured);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="bg-gray-50">
       {/* Header */}
       <div className="bg-white border-b">
         <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
@@ -206,29 +222,50 @@ export default function InsuranceTutorial({ locale }: InsuranceTutorialProps) {
       <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <Link href="/insurance/calculator">
-            <Button variant="outline" className="w-full h-auto p-4 justify-start">
+            <Button
+              variant="outline"
+              className="w-full h-auto p-4 justify-start"
+            >
               <Calculator className="h-5 w-5 mr-3 flex-shrink-0" />
               <div className="text-left">
-                <div className="font-medium">{t("tutorials.quickActions.calculator")}</div>
-                <div className="text-sm text-gray-500">{t("tutorials.quickActions.calculatorDesc")}</div>
+                <div className="font-medium">
+                  {t("tutorials.quickActions.calculator")}
+                </div>
+                <div className="text-sm text-gray-500">
+                  {t("tutorials.quickActions.calculatorDesc")}
+                </div>
               </div>
             </Button>
           </Link>
           <Link href="/insurance/fee-tables">
-            <Button variant="outline" className="w-full h-auto p-4 justify-start">
+            <Button
+              variant="outline"
+              className="w-full h-auto p-4 justify-start"
+            >
               <FileText className="h-5 w-5 mr-3 flex-shrink-0" />
               <div className="text-left">
-                <div className="font-medium">{t("tutorials.quickActions.feeTables")}</div>
-                <div className="text-sm text-gray-500">{t("tutorials.quickActions.feeTablesDesc")}</div>
+                <div className="font-medium">
+                  {t("tutorials.quickActions.feeTables")}
+                </div>
+                <div className="text-sm text-gray-500">
+                  {t("tutorials.quickActions.feeTablesDesc")}
+                </div>
               </div>
             </Button>
           </Link>
           <Link href="/insurance/regulations">
-            <Button variant="outline" className="w-full h-auto p-4 justify-start">
+            <Button
+              variant="outline"
+              className="w-full h-auto p-4 justify-start"
+            >
               <Shield className="h-5 w-5 mr-3 flex-shrink-0" />
               <div className="text-left">
-                <div className="font-medium">{t("tutorials.quickActions.regulations")}</div>
-                <div className="text-sm text-gray-500">{t("tutorials.quickActions.regulationsDesc")}</div>
+                <div className="font-medium">
+                  {t("tutorials.quickActions.regulations")}
+                </div>
+                <div className="text-sm text-gray-500">
+                  {t("tutorials.quickActions.regulationsDesc")}
+                </div>
               </div>
             </Button>
           </Link>
@@ -243,7 +280,10 @@ export default function InsuranceTutorial({ locale }: InsuranceTutorialProps) {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {featuredTutorials.slice(0, 4).map((tutorial) => (
-              <Card key={tutorial.id} className="group hover:shadow-lg transition-shadow cursor-pointer">
+              <Card
+                key={tutorial.id}
+                className="group hover:shadow-lg transition-shadow cursor-pointer"
+              >
                 <Link href={`/insurance/tutorials/${tutorial.id}`}>
                   <CardHeader>
                     <div className="flex items-start gap-4">
@@ -272,7 +312,13 @@ export default function InsuranceTutorial({ locale }: InsuranceTutorialProps) {
                           {t(tutorial.authorKey)}
                         </div>
                       </div>
-                      <Badge className={difficultyColors[tutorial.difficulty as keyof typeof difficultyColors]}>
+                      <Badge
+                        className={
+                          difficultyColors[
+                            tutorial.difficulty as keyof typeof difficultyColors
+                          ]
+                        }
+                      >
                         {t(`tutorials.difficulty.${tutorial.difficulty}`)}
                       </Badge>
                     </div>
@@ -301,7 +347,9 @@ export default function InsuranceTutorial({ locale }: InsuranceTutorialProps) {
                 <Card className="group-hover:shadow-md transition-shadow">
                   <CardContent className="p-6">
                     <div className="flex items-center gap-4">
-                      <div className={`p-3 ${category.color} rounded-lg text-white`}>
+                      <div
+                        className={`p-3 ${category.color} rounded-lg text-white`}
+                      >
                         <Icon className="h-6 w-6" />
                       </div>
                       <div className="flex-1">
@@ -343,7 +391,9 @@ export default function InsuranceTutorial({ locale }: InsuranceTutorialProps) {
               <SelectValue placeholder={t("tutorials.filterByCategory")} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">{t("tutorials.allCategories")}</SelectItem>
+              <SelectItem value="all">
+                {t("tutorials.allCategories")}
+              </SelectItem>
               {tutorialCategories.map((category) => (
                 <SelectItem key={category.id} value={category.id}>
                   {t(category.titleKey)}
@@ -351,15 +401,26 @@ export default function InsuranceTutorial({ locale }: InsuranceTutorialProps) {
               ))}
             </SelectContent>
           </Select>
-          <Select value={selectedDifficulty} onValueChange={setSelectedDifficulty}>
+          <Select
+            value={selectedDifficulty}
+            onValueChange={setSelectedDifficulty}
+          >
             <SelectTrigger className="w-full lg:w-48">
               <SelectValue placeholder={t("tutorials.filterByDifficulty")} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">{t("tutorials.allDifficulties")}</SelectItem>
-              <SelectItem value="beginner">{t("tutorials.difficulty.beginner")}</SelectItem>
-              <SelectItem value="intermediate">{t("tutorials.difficulty.intermediate")}</SelectItem>
-              <SelectItem value="advanced">{t("tutorials.difficulty.advanced")}</SelectItem>
+              <SelectItem value="all">
+                {t("tutorials.allDifficulties")}
+              </SelectItem>
+              <SelectItem value="beginner">
+                {t("tutorials.difficulty.beginner")}
+              </SelectItem>
+              <SelectItem value="intermediate">
+                {t("tutorials.difficulty.intermediate")}
+              </SelectItem>
+              <SelectItem value="advanced">
+                {t("tutorials.difficulty.advanced")}
+              </SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -375,18 +436,29 @@ export default function InsuranceTutorial({ locale }: InsuranceTutorialProps) {
         {filteredTutorials.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredTutorials.map((tutorial) => (
-              <Card key={tutorial.id} className="group hover:shadow-lg transition-shadow">
+              <Card
+                key={tutorial.id}
+                className="group hover:shadow-lg transition-shadow"
+              >
                 <Link href={`/insurance/tutorials/${tutorial.id}`}>
                   <div className="aspect-video bg-gray-200 rounded-t-lg flex items-center justify-center">
                     <BookOpen className="h-12 w-12 text-gray-400" />
                   </div>
                   <CardHeader>
                     <div className="flex items-center gap-2 mb-2">
-                      <Badge className={difficultyColors[tutorial.difficulty as keyof typeof difficultyColors]}>
+                      <Badge
+                        className={
+                          difficultyColors[
+                            tutorial.difficulty as keyof typeof difficultyColors
+                          ]
+                        }
+                      >
                         {t(`tutorials.difficulty.${tutorial.difficulty}`)}
                       </Badge>
                       {tutorial.featured && (
-                        <Badge variant="secondary">{t("tutorials.featured")}</Badge>
+                        <Badge variant="secondary">
+                          {t("tutorials.featured")}
+                        </Badge>
                       )}
                     </div>
                     <CardTitle className="text-lg group-hover:text-blue-600 transition-colors line-clamp-2">
@@ -420,9 +492,7 @@ export default function InsuranceTutorial({ locale }: InsuranceTutorialProps) {
             <h3 className="text-lg font-medium text-gray-900 mb-2">
               {t("tutorials.noResults")}
             </h3>
-            <p className="text-gray-600">
-              {t("tutorials.noResultsDesc")}
-            </p>
+            <p className="text-gray-600">{t("tutorials.noResultsDesc")}</p>
           </div>
         )}
       </div>

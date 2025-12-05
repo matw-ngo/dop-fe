@@ -13,7 +13,7 @@ import type {
   InsuranceCategory,
   InsuranceType,
   FeeType,
-  CoveragePeriod
+  CoveragePeriod,
 } from "@/types/insurance";
 import { DEFAULT_PAGE_SIZE } from "@/constants/insurance";
 
@@ -101,13 +101,21 @@ export const searchParamsToInsuranceFilters = (
   const premiumMax = searchParams.get("premiumMax");
   if (premiumMin || premiumMax) {
     filters.premiumRange = {
-      min: premiumMin ? parseInt(premiumMin) : DEFAULT_FILTERS_FOR_URL.premiumRange.min,
-      max: premiumMax ? parseInt(premiumMax) : DEFAULT_FILTERS_FOR_URL.premiumRange.max,
+      min: premiumMin
+        ? parseInt(premiumMin)
+        : DEFAULT_FILTERS_FOR_URL.premiumRange.min,
+      max: premiumMax
+        ? parseInt(premiumMax)
+        : DEFAULT_FILTERS_FOR_URL.premiumRange.max,
     };
   }
 
   // Coverage range filters (nested)
-  const coverageTypes = ["personalAccident", "propertyDamage", "medicalExpenses"] as const;
+  const coverageTypes = [
+    "personalAccident",
+    "propertyDamage",
+    "medicalExpenses",
+  ] as const;
   coverageTypes.forEach((coverageType) => {
     const coverageMin = searchParams.get(`coverage[${coverageType}][min]`);
     const coverageMax = searchParams.get(`coverage[${coverageType}][max]`);
@@ -116,8 +124,16 @@ export const searchParamsToInsuranceFilters = (
         filters.coverageRange = { ...DEFAULT_FILTERS_FOR_URL.coverageRange };
       }
       (filters.coverageRange as any)[coverageType] = {
-        min: coverageMin ? parseInt(coverageMin) : DEFAULT_FILTERS_FOR_URL.coverageRange[coverageType as keyof typeof DEFAULT_FILTERS_FOR_URL.coverageRange].min,
-        max: coverageMax ? parseInt(coverageMax) : DEFAULT_FILTERS_FOR_URL.coverageRange[coverageType as keyof typeof DEFAULT_FILTERS_FOR_URL.coverageRange].max,
+        min: coverageMin
+          ? parseInt(coverageMin)
+          : DEFAULT_FILTERS_FOR_URL.coverageRange[
+              coverageType as keyof typeof DEFAULT_FILTERS_FOR_URL.coverageRange
+            ].min,
+        max: coverageMax
+          ? parseInt(coverageMax)
+          : DEFAULT_FILTERS_FOR_URL.coverageRange[
+              coverageType as keyof typeof DEFAULT_FILTERS_FOR_URL.coverageRange
+            ].max,
       };
     }
   });
@@ -133,7 +149,11 @@ export const searchParamsToInsuranceFilters = (
   }
 
   // Numeric filters
-  const numericFields = ["minApprovalRate", "maxProcessingTime", "minRating"] as const;
+  const numericFields = [
+    "minApprovalRate",
+    "maxProcessingTime",
+    "minRating",
+  ] as const;
   numericFields.forEach((field) => {
     const value = searchParams.get(field);
     if (value) {
@@ -203,11 +223,19 @@ export const insuranceFiltersToSearchParams = (
   }
 
   // Coverage range filters (nested)
-  const coverageTypes = ["personalAccident", "propertyDamage", "medicalExpenses"] as const;
+  const coverageTypes = [
+    "personalAccident",
+    "propertyDamage",
+    "medicalExpenses",
+  ] as const;
   coverageTypes.forEach((coverageType) => {
-    const range = filters.coverageRange[coverageType as keyof typeof filters.coverageRange];
+    const range =
+      filters.coverageRange[coverageType as keyof typeof filters.coverageRange];
     if (range) {
-      const defaultRange = DEFAULT_FILTERS_FOR_URL.coverageRange[coverageType as keyof typeof DEFAULT_FILTERS_FOR_URL.coverageRange];
+      const defaultRange =
+        DEFAULT_FILTERS_FOR_URL.coverageRange[
+          coverageType as keyof typeof DEFAULT_FILTERS_FOR_URL.coverageRange
+        ];
       if (range.min !== defaultRange.min) {
         params.set(`coverage[${coverageType}][min]`, range.min.toString());
       }
@@ -231,7 +259,8 @@ export const insuranceFiltersToSearchParams = (
   if (filters.minApprovalRate > 0) {
     params.set("minApprovalRate", filters.minApprovalRate.toString());
   }
-  if (filters.maxProcessingTime < 30) { // Only if less than default
+  if (filters.maxProcessingTime < 30) {
+    // Only if less than default
     params.set("maxProcessingTime", filters.maxProcessingTime.toString());
   }
   if (filters.minRating > 0) {
@@ -412,7 +441,9 @@ export const usePaginationFromUrl = () => {
  * Combined hook for full URL synchronization
  * This hook both initializes from URL and syncs changes back to URL
  */
-export const useInsuranceUrlSyncFull = (options: UseInsuranceUrlSyncOptions) => {
+export const useInsuranceUrlSyncFull = (
+  options: UseInsuranceUrlSyncOptions,
+) => {
   // Initialize from URL on mount
   useInsuranceUrlInit(options);
 

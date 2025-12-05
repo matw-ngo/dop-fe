@@ -35,7 +35,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     logout: storeLogout,
     checkAuth,
   } = useAuthStore();
-  const t = useTranslations("admin.auth");
+  const t = useTranslations("pages.admin.auth");
 
   // Check authentication on app start after hydration
   useEffect(() => {

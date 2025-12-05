@@ -6,7 +6,7 @@
 "use client";
 
 import { useInsuranceStore } from "@/store/use-insurance-store";
-import { useInsuranceUrlSyncFull } from "@/hooks/use-insurance-url-sync";
+import { useInsuranceUrlSyncFull } from "@/hooks/features/insurance/use-insurance-url-sync";
 
 export function InsuranceFiltersWithUrlSync() {
   // Get all state and setters from the insurance store
@@ -57,7 +57,7 @@ export function InsuranceFiltersWithUrlSync() {
             onChange={(e) => {
               const categories = e.target.checked
                 ? [...filters.categories, "vehicle"]
-                : filters.categories.filter(c => c !== "vehicle");
+                : filters.categories.filter((c) => c !== "vehicle");
               setFilters({ categories });
             }}
           />
@@ -71,7 +71,7 @@ export function InsuranceFiltersWithUrlSync() {
             onChange={(e) => {
               const categories = e.target.checked
                 ? [...filters.categories, "health"]
-                : filters.categories.filter(c => c !== "health");
+                : filters.categories.filter((c) => c !== "health");
               setFilters({ categories });
             }}
           />

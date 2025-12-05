@@ -76,39 +76,39 @@ const CreditCardGrid: React.FC<CreditCardGridProps> = ({
             >
               {viewMode === "compact" ? (
                 <div className="flex items-center space-x-3">
-                  <div className="h-10 w-16 bg-gray-200 rounded"></div>
+                  <div className="h-10 w-16 bg-muted rounded"></div>
                   <div className="flex-1 space-y-2">
-                    <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-                    <div className="h-3 bg-gray-200 rounded w-1/2"></div>
+                    <div className="h-4 bg-muted rounded w-3/4"></div>
+                    <div className="h-3 bg-muted rounded w-1/2"></div>
                   </div>
                 </div>
               ) : (
                 <div className="space-y-4">
                   <div className="flex justify-between items-start">
                     <div className="space-y-2">
-                      <div className="h-6 bg-gray-200 rounded w-2/3"></div>
-                      <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+                      <div className="h-6 bg-muted rounded w-2/3"></div>
+                      <div className="h-4 bg-muted rounded w-1/2"></div>
                       <div className="flex space-x-1">
-                        <div className="h-4 w-4 bg-gray-200 rounded"></div>
-                        <div className="h-4 w-4 bg-gray-200 rounded"></div>
-                        <div className="h-4 w-4 bg-gray-200 rounded"></div>
-                        <div className="h-4 w-4 bg-gray-200 rounded"></div>
-                        <div className="h-4 w-4 bg-gray-200 rounded"></div>
+                        <div className="h-4 w-4 bg-muted rounded"></div>
+                        <div className="h-4 w-4 bg-muted rounded"></div>
+                        <div className="h-4 w-4 bg-muted rounded"></div>
+                        <div className="h-4 w-4 bg-muted rounded"></div>
+                        <div className="h-4 w-4 bg-muted rounded"></div>
                       </div>
                     </div>
                     <div className="space-y-2">
-                      <div className="h-8 w-16 bg-gray-200 rounded"></div>
-                      <div className="h-8 w-8 bg-gray-200 rounded"></div>
+                      <div className="h-8 w-16 bg-muted rounded"></div>
+                      <div className="h-8 w-8 bg-muted rounded"></div>
                     </div>
                   </div>
-                  <div className="h-32 bg-gray-200 rounded"></div>
+                  <div className="h-32 bg-muted rounded"></div>
                   <div className="grid grid-cols-2 gap-2">
-                    <div className="h-10 bg-gray-200 rounded"></div>
-                    <div className="h-10 bg-gray-200 rounded"></div>
-                    <div className="h-10 bg-gray-200 rounded"></div>
-                    <div className="h-10 bg-gray-200 rounded"></div>
+                    <div className="h-10 bg-muted rounded"></div>
+                    <div className="h-10 bg-muted rounded"></div>
+                    <div className="h-10 bg-muted rounded"></div>
+                    <div className="h-10 bg-muted rounded"></div>
                   </div>
-                  <div className="h-10 bg-gray-200 rounded w-full"></div>
+                  <div className="h-10 bg-muted rounded w-full"></div>
                 </div>
               )}
             </div>
@@ -128,9 +128,9 @@ const CreditCardGrid: React.FC<CreditCardGridProps> = ({
         )}
       >
         <div className="text-center space-y-4 max-w-md">
-          <div className="w-24 h-24 mx-auto bg-gray-100 rounded-full flex items-center justify-center">
+          <div className="w-24 h-24 mx-auto bg-muted rounded-full flex items-center justify-center">
             <svg
-              className="w-12 h-12 text-gray-400"
+              className="w-12 h-12 text-muted-foreground"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -143,10 +143,10 @@ const CreditCardGrid: React.FC<CreditCardGridProps> = ({
               />
             </svg>
           </div>
-          <h3 className="text-lg font-semibold text-gray-900">
+          <h3 className="text-lg font-semibold text-foreground">
             {t("noCardsFound")}
           </h3>
-          <p className="text-gray-600">
+          <p className="text-muted-foreground">
             {emptyStateMessage || t("tryAdjustingFilters")}
           </p>
         </div>
@@ -176,7 +176,7 @@ const CreditCardGrid: React.FC<CreditCardGridProps> = ({
       {viewMode !== "compact" && (
         <div className="mt-6 text-sm text-muted-foreground text-center">
           {t("showingResults", {
-            current: paginatedCards.length,
+            count: paginatedCards.length,
             total: cards.length,
           })}
         </div>

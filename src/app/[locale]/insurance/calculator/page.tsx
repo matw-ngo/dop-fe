@@ -1,4 +1,7 @@
 import InsuranceCostCalculator from "@/components/features/insurance/InsuranceCostCalculator";
+import Header from "@/components/layout/header";
+import Footer from "@/components/layout/footer";
+import { getInsuranceNavbarConfig } from "@/configs/insurance-navbar-config";
 
 interface CalculatorPageProps {
   params: {
@@ -19,5 +22,13 @@ export async function generateMetadata({
 export default function CalculatorPage({
   params: { locale },
 }: CalculatorPageProps) {
-  return <InsuranceCostCalculator />;
+  return (
+    <>
+      <Header configOverride={getInsuranceNavbarConfig()} />
+      <main>
+        <InsuranceCostCalculator />
+      </main>
+      <Footer company="finzone" />
+    </>
+  );
 }

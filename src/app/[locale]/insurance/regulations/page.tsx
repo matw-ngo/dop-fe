@@ -1,4 +1,7 @@
 import RegulationContent from "@/components/features/insurance/RegulationContent";
+import Header from "@/components/layout/header";
+import Footer from "@/components/layout/footer";
+import { getInsuranceNavbarConfig } from "@/configs/insurance-navbar-config";
 
 interface RegulationsPageProps {
   params: {
@@ -19,5 +22,13 @@ export async function generateMetadata({
 export default function RegulationsPage({
   params: { locale },
 }: RegulationsPageProps) {
-  return <RegulationContent />;
+  return (
+    <>
+      <Header configOverride={getInsuranceNavbarConfig()} />
+      <main>
+        <RegulationContent />
+      </main>
+      <Footer company="finzone" />
+    </>
+  );
 }

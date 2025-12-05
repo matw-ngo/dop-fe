@@ -204,17 +204,11 @@
       "comparisonCountMessage": "Đang có {count} sản phẩm trong danh sách so sánh",
       "viewComparison": "Xem so sánh",
       "comparisonLimitMessage": "Đã đạt giới hạn {max} sản phẩm. Vui lòng xóa sản phẩm khỏi danh sách để thêm sản phẩm mới.",
-      "compareProducts": "So sánh sản phẩm",
-      "applyNow": "Mua bảo hiểm",
       "ctaNote": "Thêm sản phẩm vào danh sách so sánh để dễ dàng đưa ra quyết định tốt nhất",
       "recommended": "Đề xuất",
       "new": "Mới",
-      "premium": "Phí bảo hiểm",
       "coverage": "Mức bảo hiểm",
-      "coveragePeriod": "Thời gian bảo hiểm",
       "claimsApproval": "Tỷ lệ duyệt bồi thường",
-      "processingTime": "Thời gian xử lý",
-      "days": "ngày",
       "keyCoverages": "Quyền lợi chính",
       "roadsideAssistance": "Cứu hộ đường bộ",
       "personalAccident": "Tai nạn cá nhân",
@@ -222,11 +216,7 @@
       "medicalExpenses": "Chi phí y tế",
       "thirdPartyLiability": "Trách nhiệm bên thứ ba",
       "more": "thêm",
-      "category": "Danh mục",
-      "type": "Loại",
-      "rating": "Đánh giá",
       "outOf": "trên",
-      "reviews": "đánh giá",
       "insuranceProducts": "Sản phẩm bảo hiểm",
       "insuranceProductsDescription": "So sánh và tìm gói bảo hiểm phù hợp",
       "searchInsurance": "Tìm sản phẩm bảo hiểm...",
@@ -274,7 +264,6 @@
       "cons": "Nhược điểm",
       "applyNow": "Đăng ký ngay",
       "recentSearches": "Tìm kiếm gần đây",
-      "clear": "Xóa",
       "clearRecentSearches": "Xóa lịch sử",
       "clearFilters": "Xóa bộ lọc",
       "searchResultsFor": "Kết quả tìm kiếm cho '{query}'",
@@ -334,12 +323,6 @@
       "customPeriod": "Tùy chỉnh",
       "minRating": "Đánh giá tối thiểu",
       "applyFilters": "Áp dụng bộ lọc",
-      "showingItems": "Hiển thị {start}-{end} của {total} kết quả",
-      "itemsPerPage": "Số mục mỗi trang",
-      "items": "sản phẩm",
-      "previous": "Trước",
-      "next": "Tiếp theo",
-      "pageOf": "Trang {current} của {total}",
       "first": "Đầu",
       "last": "Cuối",
       "firstPage": "Trang đầu tiên",
@@ -349,7 +332,6 @@
       "paginationNavigation": "Điều hướng phân trang",
       "pageTitle": "Bảo hiểm",
       "pageDescription": "So sánh và tìm sản phẩm bảo hiểm phù hợp với nhu cầu của bạn",
-      "searchPlaceholder": "Tìm kiếm sản phẩm bảo hiểm...",
       "clearSearch": "Xóa tìm kiếm",
       "noSearchResults": "Không tìm thấy sản phẩm nào khớp với tìm kiếm của bạn",
       "noFilterResults": "Không tìm thấy sản phẩm nào khớp với bộ lọc của bạn",
@@ -357,855 +339,855 @@
       "searchAndFilterResults": "Tìm thấy {count} sản phẩm cho '{query}' với bộ lọc",
       "filterResults": "Tìm thấy {count} sản phẩm với bộ lọc",
       "footerText": "© 2024 Nền tảng so sánh bảo hiểm. Tất cả quyền được bảo lưu.",
-    "breadcrumb": {
-      "home": "Trang chủ",
-      "insurance": "Bảo hiểm"
-    },
-    "keyHighlights": "Điểm nổi bật",
-    "premium": "Phí bảo hiểm",
-    "maxCoverage": "Mức bồi thường cao nhất",
-    "premiumInfo": "Thông tin phí bảo hiểm",
-    "basePremium": "Phí cơ bản",
-    "vatTax": "Thuế VAT ({rate}%):",
-    "totalPremium": "Tổng phí",
-    "installmentSupported": "Hỗ trợ trả góp",
-    "contactInfo": "Thông tin liên hệ",
-    "claimsInfo": "Thông tin bồi thường",
-    "approvalRate": "Tỷ lệ duyệt",
-    "processingTime": "Thời gian xử lý",
-    "workingDays": "ngày làm việc",
-    "averageClaimTime": "Thời gian chi trả trung bình",
-    "days": "ngày",
-    "productCode": "Mã sản phẩm",
-    "rating": "Đánh giá",
-    "reviews": "đánh giá",
-    "compareProduct": "So sánh sản phẩm",
-    "categories": {
-      "vehicle": "Bảo hiểm xe cơ giới",
-      "health": "Bảo hiểm sức khỏe",
-      "life": "Bảo hiểm nhân thọ",
-      "travel": "Bảo hiểm du lịch",
-      "property": "Bảo hiểm tài sản"
-    },
-    "coveragePeriods": {
-      "monthly": "tháng",
-      "quarterly": "quý",
-      "semiAnnually": "6 tháng",
-      "annually": "năm",
-      "custom": "chu kỳ"
-    },
-    "currency": {
-      "billion": "tỷ VNĐ",
-      "million": "triệu VNĐ"
-    },
-    "tutorials": {
-      "title": "Hướng dẫn bảo hiểm",
-      "description": "Tìm hiểu về bảo hiểm và cách chọn gói phù hợp với nhu cầu của bạn",
-      "featured": "Nổi bật",
-      "articles": "bài viết",
-      "minutesRead": "phút đọc",
-      "allCategories": "Tất cả danh mục",
-      "allDifficulties": "Tất cả cấp độ",
-      "filterByCategory": "Lọc theo danh mục",
-      "filterByDifficulty": "Lọc theo cấp độ",
-      "searchPlaceholder": "Tìm kiếm bài viết...",
-      "resultsCount": "Tìm thấy {count} bài viết",
-      "noResults": "Không tìm thấy bài viết nào",
-      "noResultsDesc": "Thử thay đổi bộ lọc hoặc từ khóa tìm kiếm",
-      "difficulty": {
-        "beginner": "Cơ bản",
-        "intermediate": "Trung cấp",
-        "advanced": "Nâng cao"
+      "breadcrumb": {
+        "home": "Trang chủ",
+        "insurance": "Bảo hiểm"
       },
+      "keyHighlights": "Điểm nổi bật",
+      "premium": "Phí bảo hiểm",
+      "maxCoverage": "Mức bồi thường cao nhất",
+      "premiumInfo": "Thông tin phí bảo hiểm",
+      "basePremium": "Phí cơ bản",
+      "vatTax": "Thuế VAT ({rate}%):",
+      "totalPremium": "Tổng phí",
+      "installmentSupported": "Hỗ trợ trả góp",
+      "contactInfo": "Thông tin liên hệ",
+      "claimsInfo": "Thông tin bồi thường",
+      "approvalRate": "Tỷ lệ duyệt",
+      "processingTime": "Thời gian xử lý",
+      "workingDays": "ngày làm việc",
+      "averageClaimTime": "Thời gian chi trả trung bình",
+      "days": "ngày",
+      "productCode": "Mã sản phẩm",
+      "rating": "Đánh giá",
+      "reviews": "đánh giá",
+      "compareProduct": "So sánh sản phẩm",
       "categories": {
-        "title": "Danh mục",
-        "basics": {
-          "title": "Cơ bản",
-          "description": "Các khái niệm bảo hiểm cơ bản"
+        "vehicle": "Bảo hiểm xe cơ giới",
+        "health": "Bảo hiểm sức khỏe",
+        "life": "Bảo hiểm nhân thọ",
+        "travel": "Bảo hiểm du lịch",
+        "property": "Bảo hiểm tài sản"
+      },
+      "coveragePeriods": {
+        "monthly": "tháng",
+        "quarterly": "quý",
+        "semiAnnually": "6 tháng",
+        "annually": "năm",
+        "custom": "chu kỳ"
+      },
+      "currency": {
+        "billion": "tỷ VNĐ",
+        "million": "triệu VNĐ"
+      },
+      "tutorials": {
+        "title": "Hướng dẫn bảo hiểm",
+        "description": "Tìm hiểu về bảo hiểm và cách chọn gói phù hợp với nhu cầu của bạn",
+        "featured": "Nổi bật",
+        "minutesRead": "phút đọc",
+        "allCategories": "Tất cả danh mục",
+        "allDifficulties": "Tất cả cấp độ",
+        "filterByCategory": "Lọc theo danh mục",
+        "filterByDifficulty": "Lọc theo cấp độ",
+        "searchPlaceholder": "Tìm kiếm bài viết...",
+        "resultsCount": "Tìm thấy {count} bài viết",
+        "noResults": "Không tìm thấy bài viết nào",
+        "noResultsDesc": "Thử thay đổi bộ lọc hoặc từ khóa tìm kiếm",
+        "difficulty": {
+          "beginner": "Cơ bản",
+          "intermediate": "Trung cấp",
+          "advanced": "Nâng cao"
         },
-        "vehicle": {
-          "title": "Bảo hiểm xe",
-          "description": "Bảo hiểm cho các loại xe cơ giới"
+        "categories": {
+          "title": "Danh mục",
+          "basics": {
+            "title": "Cơ bản",
+            "description": "Các khái niệm bảo hiểm cơ bản"
+          },
+          "vehicle": {
+            "title": "Bảo hiểm xe",
+            "description": "Bảo hiểm cho các loại xe cơ giới"
+          },
+          "health": {
+            "title": "Bảo hiểm sức khỏe",
+            "description": "Bảo hiểm chăm sóc sức khỏe"
+          },
+          "property": {
+            "title": "Bảo hiểm tài sản",
+            "description": "Bảo hiểm nhà cửa và tài sản"
+          },
+          "travel": {
+            "title": "Bảo hiểm du lịch",
+            "description": "Bảo hiểm khi đi du lịch"
+          },
+          "life": {
+            "title": "Bảo hiểm nhân thọ",
+            "description": "Bảo hiểm cuộc sống và nhân thọ"
+          }
         },
-        "health": {
-          "title": "Bảo hiểm sức khỏe",
-          "description": "Bảo hiểm chăm sóc sức khỏe"
+        "quickActions": {
+          "calculator": "Công cụ tính phí",
+          "calculatorDesc": "Tính phí bảo hiểm nhanh chóng",
+          "feeTables": "Biểu phí",
+          "feeTablesDesc": "Xem biểu phí chi tiết",
+          "regulations": "Quy định",
+          "regulationsDesc": "Tìm hiểu quy định pháp luật"
         },
-        "property": {
-          "title": "Bảo hiểm tài sản",
-          "description": "Bảo hiểm nhà cửa và tài sản"
-        },
-        "travel": {
-          "title": "Bảo hiểm du lịch",
-          "description": "Bảo hiểm khi đi du lịch"
-        },
-        "life": {
-          "title": "Bảo hiểm nhân thọ",
-          "description": "Bảo hiểm cuộc sống và nhân thọ"
+        "articles": {
+          "basics": {
+            "title": "Bảo hiểm là gì?",
+            "description": "Tìm hiểu về khái niệm bảo hiểm và lợi ích",
+            "author": "Biên tập viên",
+            "sections": {
+              "what": {
+                "title": "Bảo hiểm là gì?",
+                "content": "Bảo hiểm là một hợp đồng giữa bên mua bảo hiểm và công ty bảo hiểm..."
+              },
+              "types": {
+                "title": "Các loại bảo hiểm",
+                "content": "Có nhiều loại bảo hiểm khác nhau phục vụ nhu cầu đa dạng",
+                "items": {
+                  "compulsory": "Bảo hiểm bắt buộc - theo quy định pháp luật",
+                  "voluntary": "Bảo hiểm tự nguyện - theo nhu cầu cá nhân"
+                }
+              },
+              "benefits": {
+                "title": "Lợi ích của bảo hiểm",
+                "content": "Bảo hiểm mang lại nhiều lợi ích thiết thực cho cá nhân và gia đình"
+              },
+              "choose": {
+                "title": "Cách chọn bảo hiểm phù hợp",
+                "content": "Việc chọn bảo hiểm phù hợp cần xem xét nhiều yếu tố như nhu cầu, khả năng tài chính và mức độ rủi ro"
+              }
+            }
+          },
+          "compulsory": {
+            "title": "Bảo hiểm bắt buộc tại Việt Nam",
+            "description": "Các loại bảo hiểm bắt buộc theo quy định pháp luật Việt Nam",
+            "author": "Chuyên gia pháp chế",
+            "sections": {
+              "overview": {
+                "title": "Tổng quan về bảo hiểm bắt buộc",
+                "content": "Bảo hiểm bắt buộc là loại hình bảo hiểm mà pháp luật yêu cầu mọi cá nhân, tổ chức phải tham gia..."
+              },
+              "types": {
+                "title": "Các loại hình bảo hiểm bắt buộc",
+                "content": "Tại Việt Nam hiện có các loại hình bảo hiểm bắt buộc chính..."
+              },
+              "vehicle": {
+                "title": "Bảo hiểm TNDS bắt buộc xe cơ giới",
+                "content": "Đây là loại hình bảo hiểm bắt buộc phổ biến nhất..."
+              },
+              "requirements": {
+                "title": "Yêu cầu và điều kiện",
+                "content": "Để tham gia bảo hiểm bắt buộc, cần đáp ứng các điều kiện sau:",
+                "items": {
+                  "registration": "Xe đã đăng ký hợp lệ",
+                  "inspection": "Xe qua kiểm định kỹ thuật",
+                  "documents": "Giấy tờ hợp lệ"
+                }
+              },
+              "penalties": {
+                "title": "Mức xử phạt vi phạm",
+                "content": "Không tham gia bảo hiểm bắt buộc sẽ bị xử phạt theo quy định..."
+              }
+            }
+          },
+          "calculation": {
+            "title": "Cách tính phí bảo hiểm xe",
+            "description": "Hướng dẫn chi tiết cách tính phí bảo hiểm các loại xe",
+            "author": "Chuyên gia bảo hiểm",
+            "sections": {
+              "factors": {
+                "title": "Các yếu tố ảnh hưởng đến phí bảo hiểm",
+                "content": "Phí bảo hiểm phụ thuộc vào các yếu tố:",
+                "items": {
+                  "vehicleType": "Loại xe",
+                  "capacity": "Dung tích xi lanh",
+                  "purpose": "Mục đích sử dụng",
+                  "seats": "Số chỗ ngồi"
+                }
+              },
+              "formula": {
+                "title": "Công thức tính phí",
+                "content": "Phí bảo hiểm = Phí cơ bản × Hệ số điều chỉnh\nPhí cơ bản theo quy định của Bộ Tài chính"
+              },
+              "examples": {
+                "title": "Ví dụ thực tế",
+                "content": "Ví dụ: Ô tô con dưới 9 chỗ có phí bảo hiểm bắt buộc là 437.000 VNĐ/năm"
+              },
+              "tools": {
+                "title": "Công cụ hỗ trợ",
+                "content": "Sử dụng công cụ tính phí bảo hiểm của chúng tôi để có kết quả chính xác"
+              }
+            }
+          },
+          "claims": {
+            "title": "Quy trình bồi thường bảo hiểm",
+            "description": "Hướng dẫn chi tiết các bước bồi thường khi có tổn thất",
+            "author": "Chuyên gia bồi thường",
+            "sections": {
+              "when": {
+                "title": "Khi nào cần bồi thường?",
+                "content": "Cần báo ngay cho công ty bảo hiểm khi xảy ra sự kiện bảo hiểm..."
+              },
+              "steps": {
+                "title": "Các bước bồi thường",
+                "content": "Quy trình bồi thường gồm các bước:",
+                "items": {
+                  "report": "Báo cáo sự kiện",
+                  "documents": "Chuẩn bị hồ sơ",
+                  "assessment": "Giám định tổn thất",
+                  "approval": "Phê duyệt bồi thường",
+                  "payment": "Chi trả bồi thường"
+                }
+              },
+              "documents": {
+                "title": "Hồ sơ cần thiết",
+                "content": "Hồ sơ bồi thường bao gồm:",
+                "items": {
+                  "claimForm": "Đơn yêu cầu bồi thường",
+                  "policy": "Hợp đồng bảo hiểm",
+                  "idCard": "Giấy tờ tùy thân",
+                  "evidence": "Bằng chứng tổn thất",
+                  "policeReport": "Biên bản cơ quan chức năng"
+                }
+              },
+              "timeline": {
+                "title": "Thời gian xử lý",
+                "content": "Thời gian xử lý bồi thường thường từ 5-15 ngày làm việc kể từ khi nhận đủ hồ sơ"
+              },
+              "tips": {
+                "title": "Lưu ý quan trọng",
+                "content": "- Báo cáo sự kiện ngay lập tức\n- Giữ gìn hiện trường\n- Chuẩn bị đầy đủ hồ sơ\n- Theo dõi sát sao quá trình xử lý"
+              }
+            }
+          },
+          "health": {
+            "title": "Bảo hiểm sức khỏe toàn diện",
+            "description": "Tìm hiểu về bảo hiểm sức khỏe và quyền lợi đi kèm",
+            "author": "Chuyên gia y tế",
+            "sections": {
+              "overview": {
+                "title": "Tổng quan bảo hiểm sức khỏe",
+                "content": "Bảo hiểm sức khỏe giúp trang trải chi phí y tế khi ốm đau, tai nạn..."
+              },
+              "coverage": {
+                "title": "Phạm vi bảo hiểm",
+                "content": "Bảo hiểm sức khỏe chi trả cho:",
+                "items": {
+                  "inpatient": "Chi phí điều trị nội trú",
+                  "outpatient": "Chi phí khám chữa bệnh ngoại trú",
+                  "emergency": "Chi phí cấp cứu",
+                  "dental": "Chi phí nha khoa",
+                  "maternity": "Chi phí sản phụ khoa"
+                }
+              },
+              "exclusions": {
+                "title": "Các trường hợp không bảo hiểm",
+                "content": "Bảo hiểm sức khỏe không chi trả cho:",
+                "items": {
+                  "preExisting": "Bệnh sẵn có trước khi tham gia",
+                  "cosmetic": "Phẫu thuật thẩm mỹ",
+                  "experimental": "Phương pháp điều trị thử nghiệm"
+                }
+              },
+              "choose": {
+                "title": "Lựa chọn bảo hiểm sức khỏe",
+                "content": "Khi chọn bảo hiểm sức khỏe cần xem xét: mức phí, phạm vi bảo hiểm, mạng lưới bệnh viện..."
+              }
+            }
+          },
+          "property": {
+            "title": "Bảo hiểm tài sản nhà cửa",
+            "description": "Bảo vệ tài sản của bạn trước các rủi ro",
+            "author": "Chuyên gia tài sản",
+            "sections": {
+              "what": {
+                "title": "Bảo hiểm tài sản là gì?",
+                "content": "Bảo hiểm tài sản giúp bảo vệ nhà cửa và tài sản cá nhân trước các rủi ro..."
+              },
+              "coverage": {
+                "title": "Các rủi ro được bảo hiểm",
+                "content": "Bảo hiểm tài sản chi trả cho:",
+                "items": {
+                  "fire": "Thiệt hại do cháy nổ",
+                  "natural": "Thiệt hại do thiên tai",
+                  "theft": "Mất cắp tài sản",
+                  "water": "Thiệt hại do đứt vỡ đường ống nước"
+                }
+              },
+              "factors": {
+                "title": "Yếu tố ảnh hưởng đến phí",
+                "content": "Phí bảo hiểm phụ thuộc vào: giá trị tài sản, địa điểm, các biện pháp an toàn..."
+              }
+            }
+          }
         }
       },
-      "quickActions": {
-        "calculator": "Công cụ tính phí",
-        "calculatorDesc": "Tính phí bảo hiểm nhanh chóng",
-        "feeTables": "Biểu phí",
-        "feeTablesDesc": "Xem biểu phí chi tiết",
-        "regulations": "Quy định",
-        "regulationsDesc": "Tìm hiểu quy định pháp luật"
-      },
-      "articles": {
-        "basics": {
-          "title": "Bảo hiểm là gì?",
-          "description": "Tìm hiểu về khái niệm bảo hiểm và lợi ích",
-          "author": "Biên tập viên",
-          "sections": {
-            "what": {
-              "title": "Bảo hiểm là gì?",
-              "content": "Bảo hiểm là một hợp đồng giữa bên mua bảo hiểm và công ty bảo hiểm..."
-            },
-            "types": {
-              "title": "Các loại bảo hiểm",
-              "content": "Có nhiều loại bảo hiểm khác nhau phục vụ nhu cầu đa dạng",
-              "items": {
-                "compulsory": "Bảo hiểm bắt buộc - theo quy định pháp luật",
-                "voluntary": "Bảo hiểm tự nguyện - theo nhu cầu cá nhân"
-              }
-            },
-            "benefits": {
-              "title": "Lợi ích của bảo hiểm",
-              "content": "Bảo hiểm mang lại nhiều lợi ích thiết thực cho cá nhân và gia đình"
-            },
-            "choose": {
-              "title": "Cách chọn bảo hiểm phù hợp",
-              "content": "Việc chọn bảo hiểm phù hợp cần xem xét nhiều yếu tố như nhu cầu, khả năng tài chính và mức độ rủi ro"
-            }
-          }
-        },
-        "compulsory": {
-          "title": "Bảo hiểm bắt buộc tại Việt Nam",
-          "description": "Các loại bảo hiểm bắt buộc theo quy định pháp luật Việt Nam",
-          "author": "Chuyên gia pháp chế",
-          "sections": {
-            "overview": {
-              "title": "Tổng quan về bảo hiểm bắt buộc",
-              "content": "Bảo hiểm bắt buộc là loại hình bảo hiểm mà pháp luật yêu cầu mọi cá nhân, tổ chức phải tham gia..."
-            },
-            "types": {
-              "title": "Các loại hình bảo hiểm bắt buộc",
-              "content": "Tại Việt Nam hiện có các loại hình bảo hiểm bắt buộc chính..."
-            },
-            "vehicle": {
-              "title": "Bảo hiểm TNDS bắt buộc xe cơ giới",
-              "content": "Đây là loại hình bảo hiểm bắt buộc phổ biến nhất..."
-            },
-            "requirements": {
-              "title": "Yêu cầu và điều kiện",
-              "content": "Để tham gia bảo hiểm bắt buộc, cần đáp ứng các điều kiện sau:",
-              "items": {
-                "registration": "Xe đã đăng ký hợp lệ",
-                "inspection": "Xe qua kiểm định kỹ thuật",
-                "documents": "Giấy tờ hợp lệ"
-              }
-            },
-            "penalties": {
-              "title": "Mức xử phạt vi phạm",
-              "content": "Không tham gia bảo hiểm bắt buộc sẽ bị xử phạt theo quy định..."
-            }
-          }
-        },
-        "calculation": {
-          "title": "Cách tính phí bảo hiểm xe",
-          "description": "Hướng dẫn chi tiết cách tính phí bảo hiểm các loại xe",
-          "author": "Chuyên gia bảo hiểm",
-          "sections": {
-            "factors": {
-              "title": "Các yếu tố ảnh hưởng đến phí bảo hiểm",
-              "content": "Phí bảo hiểm phụ thuộc vào các yếu tố:",
-              "items": {
-                "vehicleType": "Loại xe",
-                "capacity": "Dung tích xi lanh",
-                "purpose": "Mục đích sử dụng",
-                "seats": "Số chỗ ngồi"
-              }
-            },
-            "formula": {
-              "title": "Công thức tính phí",
-              "content": "Phí bảo hiểm = Phí cơ bản × Hệ số điều chỉnh\nPhí cơ bản theo quy định của Bộ Tài chính"
-            },
-            "examples": {
-              "title": "Ví dụ thực tế",
-              "content": "Ví dụ: Ô tô con dưới 9 chỗ có phí bảo hiểm bắt buộc là 437.000 VNĐ/năm"
-            },
-            "tools": {
-              "title": "Công cụ hỗ trợ",
-              "content": "Sử dụng công cụ tính phí bảo hiểm của chúng tôi để có kết quả chính xác"
-            }
-          }
-        },
-        "claims": {
-          "title": "Quy trình bồi thường bảo hiểm",
-          "description": "Hướng dẫn chi tiết các bước bồi thường khi có tổn thất",
-          "author": "Chuyên gia bồi thường",
-          "sections": {
-            "when": {
-              "title": "Khi nào cần bồi thường?",
-              "content": "Cần báo ngay cho công ty bảo hiểm khi xảy ra sự kiện bảo hiểm..."
-            },
-            "steps": {
-              "title": "Các bước bồi thường",
-              "content": "Quy trình bồi thường gồm các bước:",
-              "items": {
-                "report": "Báo cáo sự kiện",
-                "documents": "Chuẩn bị hồ sơ",
-                "assessment": "Giám định tổn thất",
-                "approval": "Phê duyệt bồi thường",
-                "payment": "Chi trả bồi thường"
-              }
-            },
-            "documents": {
-              "title": "Hồ sơ cần thiết",
-              "content": "Hồ sơ bồi thường bao gồm:",
-              "items": {
-                "claimForm": "Đơn yêu cầu bồi thường",
-                "policy": "Hợp đồng bảo hiểm",
-                "idCard": "Giấy tờ tùy thân",
-                "evidence": "Bằng chứng tổn thất",
-                "policeReport": "Biên bản cơ quan chức năng"
-              }
-            },
-            "timeline": {
-              "title": "Thời gian xử lý",
-              "content": "Thời gian xử lý bồi thường thường từ 5-15 ngày làm việc kể từ khi nhận đủ hồ sơ"
-            },
-            "tips": {
-              "title": "Lưu ý quan trọng",
-              "content": "- Báo cáo sự kiện ngay lập tức\n- Giữ gìn hiện trường\n- Chuẩn bị đầy đủ hồ sơ\n- Theo dõi sát sao quá trình xử lý"
-            }
-          }
-        },
-        "health": {
-          "title": "Bảo hiểm sức khỏe toàn diện",
-          "description": "Tìm hiểu về bảo hiểm sức khỏe và quyền lợi đi kèm",
-          "author": "Chuyên gia y tế",
-          "sections": {
-            "overview": {
-              "title": "Tổng quan bảo hiểm sức khỏe",
-              "content": "Bảo hiểm sức khỏe giúp trang trải chi phí y tế khi ốm đau, tai nạn..."
-            },
-            "coverage": {
-              "title": "Phạm vi bảo hiểm",
-              "content": "Bảo hiểm sức khỏe chi trả cho:",
-              "items": {
-                "inpatient": "Chi phí điều trị nội trú",
-                "outpatient": "Chi phí khám chữa bệnh ngoại trú",
-                "emergency": "Chi phí cấp cứu",
-                "dental": "Chi phí nha khoa",
-                "maternity": "Chi phí sản phụ khoa"
-              }
-            },
-            "exclusions": {
-              "title": "Các trường hợp không bảo hiểm",
-              "content": "Bảo hiểm sức khỏe không chi trả cho:",
-              "items": {
-                "preExisting": "Bệnh sẵn có trước khi tham gia",
-                "cosmetic": "Phẫu thuật thẩm mỹ",
-                "experimental": "Phương pháp điều trị thử nghiệm"
-              }
-            },
-            "choose": {
-              "title": "Lựa chọn bảo hiểm sức khỏe",
-              "content": "Khi chọn bảo hiểm sức khỏe cần xem xét: mức phí, phạm vi bảo hiểm, mạng lưới bệnh viện..."
-            }
-          }
-        },
-        "property": {
-          "title": "Bảo hiểm tài sản nhà cửa",
-          "description": "Bảo vệ tài sản của bạn trước các rủi ro",
-          "author": "Chuyên gia tài sản",
-          "sections": {
-            "what": {
-              "title": "Bảo hiểm tài sản là gì?",
-              "content": "Bảo hiểm tài sản giúp bảo vệ nhà cửa và tài sản cá nhân trước các rủi ro..."
-            },
-            "coverage": {
-              "title": "Các rủi ro được bảo hiểm",
-              "content": "Bảo hiểm tài sản chi trả cho:",
-              "items": {
-                "fire": "Thiệt hại do cháy nổ",
-                "natural": "Thiệt hại do thiên tai",
-                "theft": "Mất cắp tài sản",
-                "water": "Thiệt hại do đứt vỡ đường ống nước"
-              }
-            },
-            "factors": {
-              "title": "Yếu tố ảnh hưởng đến phí",
-              "content": "Phí bảo hiểm phụ thuộc vào: giá trị tài sản, địa điểm, các biện pháp an toàn..."
-            }
-          }
-        }
-      }
-    },
-    "calculator": {
-      "title": "Công cụ tính phí bảo hiểm",
-      "description": "Tính nhanh phí bảo hiểm cho các loại xe tại Việt Nam",
-      "form": {
-        "title": "Thông tin xe",
-        "description": "Nhập thông tin chi tiết để tính phí bảo hiểm chính xác",
-        "insuranceType": "Loại bảo hiểm",
-        "compulsory": "Bắt buộc TNDS",
-        "voluntary": "Tự nguyện",
-        "vehicleType": "Loại xe",
-        "selectVehicleType": "Chọn loại xe",
-        "seats": "Số chỗ ngồi",
-        "enterSeats": "Nhập số chỗ ngồi",
-        "usage": "Mục đích sử dụng",
-        "vehicleValue": "Giá trị xe",
-        "vehicleValueNote": "Nhập giá trị xe tính theo VNĐ (ví dụ: 500000000)",
-        "coverage": "Mức bảo hiểm",
-        "coverageOptions": {
-          "100M": "100 triệu VNĐ",
-          "500M": "500 triệu VNĐ",
-          "1B": "1 tỷ VNĐ",
-          "2B": "2 tỷ VNĐ"
-        },
-        "reset": "Làm lại",
-        "export": "Xuất báo giá"
-      },
-      "result": {
-        "title": "Kết quả tính phí",
-        "premium": "Phí bảo hiểm",
-        "tax": "Thuế VAT",
-        "total": "Tổng cộng",
-        "noCalculation": "Chưa có kết quả",
-        "validityTitle": "Thời hạn hiệu lực",
-        "validityDesc": "Phí bảo hiểm tính cho 1 năm kể từ ngày hiệu lực"
-      },
-      "info": {
-        "title": "Lưu ý",
-        "description": "Thông tin tham khảo về phí bảo hiểm",
-        "note1": "Phí bảo hiểm có thể thay đổi tùy theo công ty và chính sách",
-        "note2": "Phí trên đây chưa bao gồm các loại thuế, phí khác",
-        "note3": "Liên hệ công ty bảo hiểm để có báo giá chính xác"
-      },
-      "tabs": {
-        "fees": "Biểu phí",
-        "regulations": "Quy định"
-      },
-      "fees": {
-        "title": "Biểu phí tham khảo",
-        "description": "Biểu phí bảo hiểm theo quy định hiện hành",
-        "table": {
-          "vehicle": "Loại xe",
-          "type": "Loại hình",
-          "baseFee": "Phí cơ bản",
-          "additional": "Phí cộng thêm"
-        }
-      },
-      "regulations": {
-        "title": "Quy định pháp luật",
-        "description": "Các văn bản pháp quy liên quan",
-        "important": "Quan trọng",
-        "importantDesc": "Bảo hiểm TNDS bắt buộc là yêu cầu pháp luật khi tham gia giao thông",
-        "requirements": "Yêu cầu bắt buộc",
-        "req1": "Phải có bảo hiểm TNDS khi tham gia giao thông",
-        "req2": "Phải mang theo giấy chứng nhận bảo hiểm",
-        "req3": "Phải xuất trình bảo hiểm khi được yêu cầu",
-        "req4": "Bảo hiểm có hiệu lực trên toàn lãnh thổ Việt Nam"
-      },
-      "export": {
-        "noData": "Không có dữ liệu để xuất",
-        "success": "Đã xuất báo giá thành công"
-      }
-    },
-    "feeTables": {
-      "title": "Biểu phí bảo hiểm",
-      "description": "Biểu phí chi tiết các loại bảo hiểm theo quy định hiện hành",
-      "searchPlaceholder": "Tìm kiếm biểu phí...",
-      "exportPDF": "Xuất PDF",
-      "compulsory": {
-        "title": "Bảo hiểm bắt buộc",
-        "description": "Biểu phí bảo hiểm TNDS bắt buộc theo Thông tư 04/2021/TT-BTC",
-        "cars": "Ô tô con",
-        "trucks": "Xe tải",
-        "motorcycles": "Xe máy",
-        "specialized": "Xe chuyên dụng",
-        "table": {
+      "calculator": {
+        "title": "Công cụ tính phí bảo hiểm",
+        "description": "Tính nhanh phí bảo hiểm cho các loại xe tại Việt Nam",
+        "form": {
+          "title": "Thông tin xe",
+          "description": "Nhập thông tin chi tiết để tính phí bảo hiểm chính xác",
+          "insuranceType": "Loại bảo hiểm",
+          "compulsory": "Bắt buộc TNDS",
+          "voluntary": "Tự nguyện",
           "vehicleType": "Loại xe",
-          "baseFee": "Phí cơ bản",
-          "unit": "Đơn vị tính",
-          "description": "Ghi chú"
+          "selectVehicleType": "Chọn loại xe",
+          "seats": "Số chỗ ngồi",
+          "enterSeats": "Nhập số chỗ ngồi",
+          "usage": "Mục đích sử dụng",
+          "vehicleValue": "Giá trị xe",
+          "vehicleValueNote": "Nhập giá trị xe tính theo VNĐ (ví dụ: 500000000)",
+          "coverage": "Mức bảo hiểm",
+          "coverageOptions": {
+            "100M": "100 triệu VNĐ",
+            "500M": "500 triệu VNĐ",
+            "1B": "1 tỷ VNĐ",
+            "2B": "2 tỷ VNĐ"
+          },
+          "reset": "Làm lại",
+          "export": "Xuất báo giá"
         },
-        "noteTitle": "Lưu ý quan trọng",
-        "note1": "Biểu phí áp dụng theo Thông tư 04/2021/TT-BTC",
-        "note2": "Phí bảo hiểm đã bao gồm thuế VAT",
-        "note3": "Thời hạn bảo hiểm là 1 năm kể từ ngày hiệu lực"
+        "result": {
+          "title": "Kết quả tính phí",
+          "premium": "Phí bảo hiểm",
+          "tax": "Thuế VAT",
+          "total": "Tổng cộng",
+          "noCalculation": "Chưa có kết quả",
+          "validityTitle": "Thời hạn hiệu lực",
+          "validityDesc": "Phí bảo hiểm tính cho 1 năm kể từ ngày hiệu lực"
+        },
+        "info": {
+          "title": "Lưu ý",
+          "description": "Thông tin tham khảo về phí bảo hiểm",
+          "note1": "Phí bảo hiểm có thể thay đổi tùy theo công ty và chính sách",
+          "note2": "Phí trên đây chưa bao gồm các loại thuế, phí khác",
+          "note3": "Liên hệ công ty bảo hiểm để có báo giá chính xác"
+        },
+        "tabs": {
+          "fees": "Biểu phí",
+          "regulations": "Quy định"
+        },
+        "fees": {
+          "title": "Biểu phí tham khảo",
+          "description": "Biểu phí bảo hiểm theo quy định hiện hành",
+          "table": {
+            "vehicle": "Loại xe",
+            "type": "Loại hình",
+            "baseFee": "Phí cơ bản",
+            "additional": "Phí cộng thêm"
+          }
+        },
+        "regulations": {
+          "title": "Quy định pháp luật",
+          "description": "Các văn bản pháp quy liên quan",
+          "important": "Quan trọng",
+          "importantDesc": "Bảo hiểm TNDS bắt buộc là yêu cầu pháp luật khi tham gia giao thông",
+          "requirements": "Yêu cầu bắt buộc",
+          "req1": "Phải có bảo hiểm TNDS khi tham gia giao thông",
+          "req2": "Phải mang theo giấy chứng nhận bảo hiểm",
+          "req3": "Phải xuất trình bảo hiểm khi được yêu cầu",
+          "req4": "Bảo hiểm có hiệu lực trên toàn lãnh thổ Việt Nam"
+        },
+        "export": {
+          "noData": "Không có dữ liệu để xuất",
+          "success": "Đã xuất báo giá thành công"
+        }
       },
-      "voluntary": {
-        "title": "Bảo hiểm tự nguyện",
-        "description": "Biểu phí tham khảo cho các loại bảo hiểm tự nguyện",
-        "material": "Thiệt hại vật chất",
-        "personal": "Tai nạn cá nhân",
-        "thirdParty": "Trách nhiệm bên thứ ba",
-        "table": {
-          "coverage": "Quyền lợi bảo hiểm",
-          "coverageLimit": "Mức bảo hiểm",
-          "rate": "Tỷ lệ phí",
-          "basePremium": "Phí tối thiểu",
-          "description": "Mô tả"
+      "feeTables": {
+        "title": "Biểu phí bảo hiểm",
+        "description": "Biểu phí chi tiết các loại bảo hiểm theo quy định hiện hành",
+        "searchPlaceholder": "Tìm kiếm biểu phí...",
+        "exportPDF": "Xuất PDF",
+        "compulsory": {
+          "title": "Bảo hiểm bắt buộc",
+          "description": "Biểu phí bảo hiểm TNDS bắt buộc theo Thông tư 04/2021/TT-BTC",
+          "cars": "Ô tô con",
+          "trucks": "Xe tải",
+          "motorcycles": "Xe máy",
+          "specialized": "Xe chuyên dụng",
+          "table": {
+            "vehicleType": "Loại xe",
+            "baseFee": "Phí cơ bản",
+            "unit": "Đơn vị tính",
+            "description": "Ghi chú"
+          },
+          "noteTitle": "Lưu ý quan trọng",
+          "note1": "Biểu phí áp dụng theo Thông tư 04/2021/TT-BTC",
+          "note2": "Phí bảo hiểm đã bao gồm thuế VAT",
+          "note3": "Thời hạn bảo hiểm là 1 năm kể từ ngày hiệu lực"
         },
-        "noteTitle": "Lưu ý",
-        "note1": "Biểu phí chỉ mang tính chất tham khảo",
-        "note2": "Phí thực tế có thể thay đổi tùy công ty bảo hiểm",
-        "note3": "Liên hệ trực tiếp để có báo giá chính xác"
+        "voluntary": {
+          "title": "Bảo hiểm tự nguyện",
+          "description": "Biểu phí tham khảo cho các loại bảo hiểm tự nguyện",
+          "material": "Thiệt hại vật chất",
+          "personal": "Tai nạn cá nhân",
+          "thirdParty": "Trách nhiệm bên thứ ba",
+          "table": {
+            "coverage": "Quyền lợi bảo hiểm",
+            "coverageLimit": "Mức bảo hiểm",
+            "rate": "Tỷ lệ phí",
+            "basePremium": "Phí tối thiểu",
+            "description": "Mô tả"
+          },
+          "noteTitle": "Lưu ý",
+          "note1": "Biểu phí chỉ mang tính chất tham khảo",
+          "note2": "Phí thực tế có thể thay đổi tùy công ty bảo hiểm",
+          "note3": "Liên hệ trực tiếp để có báo giá chính xác"
+        },
+        "regulations": {
+          "title": "Văn bản pháp quy",
+          "description": "Các văn bản pháp luật quy định về biểu phí bảo hiểm",
+          "issued": "Ban hành",
+          "effective": "Hiệu lực"
+        },
+        "export": {
+          "success": "Đã xuất file {format} thành công"
+        }
       },
       "regulations": {
-        "title": "Văn bản pháp quy",
-        "description": "Các văn bản pháp luật quy định về biểu phí bảo hiểm",
-        "issued": "Ban hành",
-        "effective": "Hiệu lực"
+        "title": "Quy định pháp luật về bảo hiểm",
+        "description": "Tổng hợp các văn bản pháp quy, thông tư, nghị định về bảo hiểm tại Việt Nam",
+        "searchPlaceholder": "Tìm kiếm quy định...",
+        "importantNotice": "Thông báo quan trọng",
+        "importantNoticeDesc": "Các quy định được cập nhật đến tháng 12/2024. Vui lòng kiểm tra các văn bản mới nhất có hiệu lực.",
+        "noResults": "Không tìm thấy quy định nào",
+        "noResultsDesc": "Thử thay đổi từ khóa tìm kiếm",
+        "highlights": "Điểm chính",
+        "feeTable": "Biểu phí",
+        "process": "Quy trình",
+        "violations": "Vi phạm và xử phạt",
+        "documents": "Tài liệu liên quan",
+        "download": {
+          "started": "Đang tải xuống {document}..."
+        }
       },
-      "export": {
-        "success": "Đã xuất file {format} thành công"
+      "tutorial": {
+        "back": "Quay lại",
+        "share": {
+          "label": "Chia sẻ",
+          "copied": "Đã sao chép liên kết"
+        },
+        "bookmark": {
+          "removed": "Đã xóa khỏi danh sách lưu",
+          "added": "Đã thêm vào danh sách lưu"
+        },
+        "tableOfContents": "Mục lục",
+        "relatedArticles": "Bài viết liên quan",
+        "actions": {
+          "calculate": "Tính phí bảo hiểm",
+          "calculateDesc": "Sử dụng công cụ tính phí",
+          "browse": "Xem sản phẩm",
+          "browseDesc": "So sánh các sản phẩm"
+        },
+        "feedback": {
+          "title": "Bài viết này có hữu ích không?",
+          "helpful": "Hữu ích",
+          "comment": "Góp ý",
+          "thanks": "Cảm ơn phản hồi của bạn!"
+        }
+      },
+      "nav": {
+        "insurance": "Bảo hiểm"
       }
     },
-    "regulations": {
-      "title": "Quy định pháp luật về bảo hiểm",
-      "description": "Tổng hợp các văn bản pháp quy, thông tư, nghị định về bảo hiểm tại Việt Nam",
-      "searchPlaceholder": "Tìm kiếm quy định...",
-      "importantNotice": "Thông báo quan trọng",
-      "importantNoticeDesc": "Các quy định được cập nhật đến tháng 12/2024. Vui lòng kiểm tra các văn bản mới nhất có hiệu lực.",
-      "noResults": "Không tìm thấy quy định nào",
-      "noResultsDesc": "Thử thay đổi từ khóa tìm kiếm",
-      "highlights": "Điểm chính",
-      "feeTable": "Biểu phí",
-      "process": "Quy trình",
-      "violations": "Vi phạm và xử phạt",
-      "documents": "Tài liệu liên quan",
-      "download": {
-        "started": "Đang tải xuống {document}..."
-      }
-    },
-    "tutorial": {
-      "back": "Quay lại",
-      "share": {
-        "label": "Chia sẻ",
-        "copied": "Đã sao chép liên kết"
+    "form": {
+      "buttons": {
+        "next": "Tiếp theo",
+        "previous": "Trước"
       },
-      "bookmark": {
-        "removed": "Đã xóa khỏi danh sách lưu",
-        "added": "Đã thêm vào danh sách lưu"
-      },
-      "tableOfContents": "Mục lục",
-      "relatedArticles": "Bài viết liên quan",
-      "actions": {
-        "calculate": "Tính phí bảo hiểm",
-        "calculateDesc": "Sử dụng công cụ tính phí",
-        "browse": "Xem sản phẩm",
-        "browseDesc": "So sánh các sản phẩm"
-      },
-      "feedback": {
-        "title": "Bài viết này có hữu ích không?",
-        "helpful": "Hữu ích",
-        "comment": "Góp ý",
-        "thanks": "Cảm ơn phản hồi của bạn!"
-      }
-    },
-    "nav": {
-      "insurance": "Bảo hiểm"
-    }
-  },
-  "form": {
-    "buttons": {
-      "next": "Tiếp theo",
-      "previous": "Trước"
-    },
-    "errors": {
-      "required": "Trường này là bắt buộc",
-      "minLength": "Phải có ít nhất {value} ký tự",
-      "maxLength": "Phải có tối đa {value} ký tự",
-      "min": "Phải có giá trị ít nhất {value}",
-      "max": "Phải có giá trị tối đa {value}",
-      "emailInvalid": "Vui lòng nhập địa chỉ email hợp lệ",
-      "phoneInvalid": "Vui lòng nhập số điện thoại hợp lệ (10 chữ số)",
-      "urlInvalid": "Vui lòng nhập URL hợp lệ",
-      "passwordMinLength": "Mật khẩu phải có ít nhất {value} ký tự",
-      "passwordRegex": "Mật khẩu phải chứa chữ hoa, chữ thường và số",
-      "number": "Phải là một số hợp lệ",
-      "integer": "Phải là một số nguyên",
-      "positive": "Phải là một số dương",
-      "negative": "Phải là một số âm"
-    }
-  },
-  "common": {
-    "loading": "Đang tải...",
-    "error": "Đã xảy ra lỗi",
-    "success": "Thành công!",
-    "submit": "Gửi",
-    "cancel": "Hủy",
-    "save": "Lưu",
-    "reset": "Đặt lại",
-    "retry": "Thử lại",
-    "back": "Quay lại"
-  },
-  "components": {
-    "errorState": {
-      "defaultTitle": "Đã xảy ra lỗi không mong muốn",
-      "description": "Vui lòng thử lại. Nếu sự cố vẫn tiếp diễn, hãy liên hệ với bộ phận hỗ trợ.",
-      "showDetails": "Hiển thị chi tiết",
-      "hideDetails": "Ẩn chi tiết",
-      "retryButton": "Thử lại"
-    },
-    "onboardingCard": {
-      "title": "Bắt đầu hành trình của bạn",
-      "description": "Nhấp vào nút bên dưới để bắt đầu quá trình giới thiệu người dùng.",
-      "buttonText": "Bắt đầu"
-    }
-  },
-  "admin": {
-    "login": {
-      "title": "Đăng nhập Admin",
-      "subtitle": "Nhập thông tin đăng nhập để truy cập trang quản trị",
-      "username": "Tên đăng nhập",
-      "password": "Mật khẩu",
-      "usernamePlaceholder": "admin",
-      "passwordPlaceholder": "admin123",
-      "loginButton": "Đăng nhập",
-      "loggingIn": "Đang đăng nhập...",
-      "demoAccount": "Tài khoản demo: admin / admin123",
       "errors": {
-        "invalidCredentials": {
-          "title": "Đăng nhập thất bại",
-          "description": "Tên đăng nhập hoặc mật khẩu không chính xác"
-        },
-        "systemError": {
-          "title": "Lỗi hệ thống",
-          "description": "Đã xảy ra lỗi, vui lòng thử lại sau"
-        },
-        "missingFields": {
-          "title": "Lỗi",
-          "description": "Vui lòng nhập tên đăng nhập và mật khẩu"
-        }
-      },
-      "success": {
-        "title": "Đăng nhập thành công",
-        "description": "Chào mừng trở lại!"
+        "required": "Trường này là bắt buộc",
+        "minLength": "Phải có ít nhất {value} ký tự",
+        "maxLength": "Phải có tối đa {value} ký tự",
+        "min": "Phải có giá trị ít nhất {value}",
+        "max": "Phải có giá trị tối đa {value}",
+        "emailInvalid": "Vui lòng nhập địa chỉ email hợp lệ",
+        "phoneInvalid": "Vui lòng nhập số điện thoại hợp lệ (10 chữ số)",
+        "urlInvalid": "Vui lòng nhập URL hợp lệ",
+        "passwordMinLength": "Mật khẩu phải có ít nhất {value} ký tự",
+        "passwordRegex": "Mật khẩu phải chứa chữ hoa, chữ thường và số",
+        "number": "Phải là một số hợp lệ",
+        "integer": "Phải là một số nguyên",
+        "positive": "Phải là một số dương",
+        "negative": "Phải là một số âm"
       }
     },
-    "dashboard": {
-      "welcome": "Chào mừng trở lại, {username}!",
-      "subtitle": "Đây là trang tổng quan quản trị của bạn. Dưới đây là các hoạt động gần đây.",
-      "createNewFlow": "Tạo Flow mới",
-      "stats": {
-        "totalFlows": "Tổng số flows",
-        "totalUsers": "Tổng số người dùng",
-        "applications": "Đơn vay",
-        "visits": "Lượt truy cập",
-        "conversionRate": "Tỷ lệ chuyển đổi",
-        "changePrefix": "Tăng {percentage}% so với tháng trước",
-        "conversionChange": "{rate} so với tháng trước",
-        "noChange": "Không thay đổi"
-      },
-      "quickActions": {
-        "title": "Hành động nhanh",
-        "flowManagement": {
-          "title": "Quản lý Flow",
-          "description": "Tạo và quản lý các luồng làm việc",
-          "button": "Truy cập"
-        },
-        "userManagement": {
-          "title": "Quản lý người dùng",
-          "description": "Quản lý tài khoản người dùng",
-          "button": "Truy cập"
-        },
-        "loanApplications": {
-          "title": "Đơn vay vốn",
-          "description": "Xem và quản lý các đơn vay vốn",
-          "button": "Truy cập"
-        },
-        "systemSettings": {
-          "title": "Cài đặt hệ thống",
-          "description": "Cấu hình hệ thống",
-          "button": "Truy cập"
-        }
-      },
-      "systemStatus": {
-        "title": "Trạng thái hệ thống",
-        "subtitle": "Trạng thái hoạt động của các dịch vụ chính",
-        "api": "API",
-        "database": "Cơ sở dữ liệu",
-        "ekyc": "eKYC",
-        "notifications": "Thông báo",
-        "operational": "Hoạt động",
-        "maintenance": "Bảo trì"
-      },
-      "recentActivity": {
-        "title": "Hoạt động gần đây",
-        "subtitle": "Các hoạt động gần đây trong hệ thống",
-        "flowCreated": "Flow \"{flowName}\" đã được tạo",
-        "userRegistered": "Người dùng mới đăng ký: {username}",
-        "settingsUpdated": "Cài đặt hệ thống đã được cập nhật",
-        "minutesAgo": "{minutes} phút trước",
-        "hoursAgo": "{hours} giờ trước"
-      }
+    "common": {
+      "loading": "Đang tải...",
+      "error": "Đã xảy ra lỗi",
+      "success": "Thành công!",
+      "submit": "Gửi",
+      "cancel": "Hủy",
+      "save": "Lưu",
+      "reset": "Đặt lại",
+      "retry": "Thử lại",
+      "back": "Quay lại"
     },
-    "flows": {
-      "title": "Quản lý Flow",
-      "subtitle": "Quản lý và cấu hình các luồng ứng dụng của bạn",
-      "newFlow": "Flow mới",
-      "table": {
-        "headers": {
-          "name": "Tên Flow",
-          "status": "Trạng thái",
-          "steps": "Các bước",
-          "created": "Ngày tạo",
-          "updated": "Cập nhật",
-          "actions": "Hành động"
-        },
-        "searchPlaceholder": "Tìm kiếm flows...",
-        "emptyState": "Không tìm thấy flow nào",
-        "emptyStateWithFilters": "Không có flow nào khớp với bộ lọc của bạn. Hãy thử điều chỉnh tiêu chí tìm kiếm hoặc lọc.",
-        "results": "Hiển thị {filtered} của {total} flow"
-      },
-      "filters": {
-        "searchPlaceholder": "Tìm kiếm flows theo tên...",
-        "status": "Trạng thái",
-        "statusOptions": {
-          "active": "Hoạt động",
-          "inactive": "Không hoạt động",
-          "draft": "Bản nháp",
-          "archived": "Đã lưu trữ"
-        },
-        "activeFilters": {
-          "search": "Tìm kiếm: \"{value}\"",
-          "clearAll": "Xóa tất cả"
-        }
-      },
-      "actions": {
-        "manageSteps": "Quản lý các bước",
-        "viewDetails": "Xem chi tiết",
-        "edit": "Chỉnh sửa",
-        "activate": "Kích hoạt",
-        "deactivate": "Vô hiệu hóa",
-        "duplicate": "Nhân bản",
-        "delete": "Xóa",
-        "openMenu": "Mở menu"
-      },
-      "dialogs": {
-        "delete": {
-          "title": "Xóa Flow",
-          "description": "Bạn có chắc chắn muốn xóa \"{name}\"? Hành động này không thể hoàn tác và sẽ xóa vĩnh viễn flow và tất cả dữ liệu liên quan.",
-          "cancel": "Hủy",
-          "confirm": "Xóa Flow"
-        },
-        "activate": {
-          "title": "Kích hoạt Flow",
-          "description": "Bạn có chắc chắn muốn kích hoạt \"{name}\"? Điều này sẽ làm cho flow có sẵn cho người dùng.",
-          "cancel": "Hủy",
-          "confirm": "Kích hoạt"
-        },
-        "deactivate": {
-          "title": "Vô hiệu hóa Flow",
-          "description": "Bạn có chắc chắn muốn vô hiệu hóa \"{name}\"? Điều này sẽ làm cho flow không còn sẵn có cho người dùng.",
-          "cancel": "Hủy",
-          "confirm": "Vô hiệu hóa"
-        }
-      },
-      "bulkActions": {
-        "selected": "{count} flow đã chọn",
-        "activate": "Kích hoạt",
-        "deactivate": "Vô hiệu hóa",
-        "delete": "Xóa",
-        "clearSelection": "Xóa lựa chọn"
-      },
-      "emptyState": {
-        "title": "Không tìm thấy flow nào",
-        "message": "Bắt đầu bằng cách tạo flow đầu tiên của bạn.",
-        "action": "Tạo Flow"
-      },
+    "components": {
       "errorState": {
-        "title": "Không thể tải flows",
-        "message": "Đã xảy ra lỗi khi tải flows"
+        "defaultTitle": "Đã xảy ra lỗi không mong muốn",
+        "description": "Vui lòng thử lại. Nếu sự cố vẫn tiếp diễn, hãy liên hệ với bộ phận hỗ trợ.",
+        "showDetails": "Hiển thị chi tiết",
+        "hideDetails": "Ẩn chi tiết",
+        "retryButton": "Thử lại"
+      },
+      "onboardingCard": {
+        "title": "Bắt đầu hành trình của bạn",
+        "description": "Nhấp vào nút bên dưới để bắt đầu quá trình giới thiệu người dùng.",
+        "buttonText": "Bắt đầu"
       }
     },
-    "flowDetail": {
-      "backToFlow": "Quay lại flow",
-      "editFlow": "Chỉnh sửa Flow",
-      "cards": {
-        "status": "Trạng thái",
-        "totalSteps": "Tổng số bước",
-        "created": "Ngày tạo",
-        "lastUpdated": "Cập nhật lần cuối"
+    "admin": {
+      "login": {
+        "title": "Đăng nhập Admin",
+        "subtitle": "Nhập thông tin đăng nhập để truy cập trang quản trị",
+        "username": "Tên đăng nhập",
+        "password": "Mật khẩu",
+        "usernamePlaceholder": "admin",
+        "passwordPlaceholder": "admin123",
+        "loginButton": "Đăng nhập",
+        "loggingIn": "Đang đăng nhập...",
+        "demoAccount": "Tài khoản demo: admin / admin123",
+        "errors": {
+          "invalidCredentials": {
+            "title": "Đăng nhập thất bại",
+            "description": "Tên đăng nhập hoặc mật khẩu không chính xác"
+          },
+          "systemError": {
+            "title": "Lỗi hệ thống",
+            "description": "Đã xảy ra lỗi, vui lòng thử lại sau"
+          },
+          "missingFields": {
+            "title": "Lỗi",
+            "description": "Vui lòng nhập tên đăng nhập và mật khẩu"
+          }
+        },
+        "success": {
+          "title": "Đăng nhập thành công",
+          "description": "Chào mừng trở lại!"
+        }
       },
-      "steps": {
-        "title": "Các bước",
-        "subtitle": "Cấu hình các bước trong flow này",
-        "addStep": "Thêm bước",
+      "dashboard": {
+        "welcome": "Chào mừng trở lại, {username}!",
+        "subtitle": "Đây là trang tổng quan quản trị của bạn. Dưới đây là các hoạt động gần đây.",
+        "createNewFlow": "Tạo Flow mới",
+        "stats": {
+          "totalFlows": "Tổng số flows",
+          "totalUsers": "Tổng số người dùng",
+          "applications": "Đơn vay",
+          "visits": "Lượt truy cập",
+          "conversionRate": "Tỷ lệ chuyển đổi",
+          "changePrefix": "Tăng {percentage}% so với tháng trước",
+          "conversionChange": "{rate} so với tháng trước",
+          "noChange": "Không thay đổi"
+        },
+        "quickActions": {
+          "title": "Hành động nhanh",
+          "flowManagement": {
+            "title": "Quản lý Flow",
+            "description": "Tạo và quản lý các luồng làm việc",
+            "button": "Truy cập"
+          },
+          "userManagement": {
+            "title": "Quản lý người dùng",
+            "description": "Quản lý tài khoản người dùng",
+            "button": "Truy cập"
+          },
+          "loanApplications": {
+            "title": "Đơn vay vốn",
+            "description": "Xem và quản lý các đơn vay vốn",
+            "button": "Truy cập"
+          },
+          "systemSettings": {
+            "title": "Cài đặt hệ thống",
+            "description": "Cấu hình hệ thống",
+            "button": "Truy cập"
+          }
+        },
+        "systemStatus": {
+          "title": "Trạng thái hệ thống",
+          "subtitle": "Trạng thái hoạt động của các dịch vụ chính",
+          "api": "API",
+          "database": "Cơ sở dữ liệu",
+          "ekyc": "eKYC",
+          "notifications": "Thông báo",
+          "operational": "Hoạt động",
+          "maintenance": "Bảo trì"
+        },
+        "recentActivity": {
+          "title": "Hoạt động gần đây",
+          "subtitle": "Các hoạt động gần đây trong hệ thống",
+          "flowCreated": "Flow \"{flowName}\" đã được tạo",
+          "userRegistered": "Người dùng mới đăng ký: {username}",
+          "settingsUpdated": "Cài đặt hệ thống đã được cập nhật",
+          "minutesAgo": "{minutes} phút trước",
+          "hoursAgo": "{hours} giờ trước"
+        }
+      },
+      "flows": {
+        "title": "Quản lý Flow",
+        "subtitle": "Quản lý và cấu hình các luồng ứng dụng của bạn",
+        "newFlow": "Flow mới",
         "table": {
           "headers": {
-            "order": "Thứ tự",
-            "name": "Tên bước",
-            "ekyc": "eKYC",
-            "otp": "OTP",
-            "fields": "Trường",
+            "name": "Tên Flow",
             "status": "Trạng thái",
+            "steps": "Các bước",
+            "created": "Ngày tạo",
+            "updated": "Cập nhật",
             "actions": "Hành động"
           },
-          "searchPlaceholder": "Tìm kiếm các bước...",
-          "emptyState": "Không tìm thấy bước nào. Thêm bước đầu tiên của bạn để bắt đầu.",
-          "emptyStateWithFilters": "Không tìm thấy bước nào"
+          "searchPlaceholder": "Tìm kiếm flows...",
+          "emptyState": "Không tìm thấy flow nào",
+          "emptyStateWithFilters": "Không có flow nào khớp với bộ lọc của bạn. Hãy thử điều chỉnh tiêu chí tìm kiếm hoặc lọc.",
+          "results": "Hiển thị {filtered} của {total} flow"
+        },
+        "filters": {
+          "searchPlaceholder": "Tìm kiếm flows theo tên...",
+          "status": "Trạng thái",
+          "statusOptions": {
+            "active": "Hoạt động",
+            "inactive": "Không hoạt động",
+            "draft": "Bản nháp",
+            "archived": "Đã lưu trữ"
+          },
+          "activeFilters": {
+            "search": "Tìm kiếm: \"{value}\"",
+            "clearAll": "Xóa tất cả"
+          }
         },
         "actions": {
-          "view": "Xem",
+          "manageSteps": "Quản lý các bước",
+          "viewDetails": "Xem chi tiết",
           "edit": "Chỉnh sửa",
-          "enable": "Kích hoạt",
-          "disable": "Vô hiệu hóa",
+          "activate": "Kích hoạt",
+          "deactivate": "Vô hiệu hóa",
           "duplicate": "Nhân bản",
           "delete": "Xóa",
           "openMenu": "Mở menu"
         },
         "dialogs": {
           "delete": {
-            "title": "Xóa bước",
-            "description": "Bạn có chắc chắn muốn xóa \"{name}\"? Hành động này không thể hoàn tác và sẽ xóa vĩnh viễn bước và tất cả các trường liên quan.",
+            "title": "Xóa Flow",
+            "description": "Bạn có chắc chắn muốn xóa \"{name}\"? Hành động này không thể hoàn tác và sẽ xóa vĩnh viễn flow và tất cả dữ liệu liên quan.",
             "cancel": "Hủy",
-            "confirm": "Xóa bước"
+            "confirm": "Xóa Flow"
           },
-          "enable": {
-            "title": "Kích hoạt bước",
-            "description": "Bạn có chắc chắn muốn kích hoạt \"{name}\"?",
+          "activate": {
+            "title": "Kích hoạt Flow",
+            "description": "Bạn có chắc chắn muốn kích hoạt \"{name}\"? Điều này sẽ làm cho flow có sẵn cho người dùng.",
             "cancel": "Hủy",
             "confirm": "Kích hoạt"
           },
-          "disable": {
-            "title": "Vô hiệu hóa bước",
-            "description": "Bạn có chắc chắn muốn vô hiệu hóa \"{name}\"?",
+          "deactivate": {
+            "title": "Vô hiệu hóa Flow",
+            "description": "Bạn có chắc chắn muốn vô hiệu hóa \"{name}\"? Điều này sẽ làm cho flow không còn sẵn có cho người dùng.",
             "cancel": "Hủy",
             "confirm": "Vô hiệu hóa"
           }
+        },
+        "bulkActions": {
+          "selected": "{count} flow đã chọn",
+          "activate": "Kích hoạt",
+          "deactivate": "Vô hiệu hóa",
+          "delete": "Xóa",
+          "clearSelection": "Xóa lựa chọn"
+        },
+        "emptyState": {
+          "title": "Không tìm thấy flow nào",
+          "message": "Bắt đầu bằng cách tạo flow đầu tiên của bạn.",
+          "action": "Tạo Flow"
+        },
+        "errorState": {
+          "title": "Không thể tải flows",
+          "message": "Đã xảy ra lỗi khi tải flows"
         }
       },
-      "errorState": {
-        "title": "Không thể tải flow",
-        "message": "Không thể tải chi tiết flow"
-      }
-    },
-    "stepDetail": {
-      "backToFlow": "Quay lại flow",
-      "saveChanges": "Lưu thay đổi",
-      "modified": "Đã sửa đổi",
-      "cards": {
-        "status": "Trạng thái",
-        "stepOrder": "Thứ tự bước",
-        "ekyc": "eKYC",
-        "otp": "OTP"
+      "flowDetail": {
+        "backToFlow": "Quay lại flow",
+        "editFlow": "Chỉnh sửa Flow",
+        "cards": {
+          "status": "Trạng thái",
+          "totalSteps": "Tổng số bước",
+          "created": "Ngày tạo",
+          "lastUpdated": "Cập nhật lần cuối"
+        },
+        "steps": {
+          "title": "Các bước",
+          "subtitle": "Cấu hình các bước trong flow này",
+          "addStep": "Thêm bước",
+          "table": {
+            "headers": {
+              "order": "Thứ tự",
+              "name": "Tên bước",
+              "ekyc": "eKYC",
+              "otp": "OTP",
+              "fields": "Trường",
+              "status": "Trạng thái",
+              "actions": "Hành động"
+            },
+            "searchPlaceholder": "Tìm kiếm các bước...",
+            "emptyState": "Không tìm thấy bước nào. Thêm bước đầu tiên của bạn để bắt đầu.",
+            "emptyStateWithFilters": "Không tìm thấy bước nào"
+          },
+          "actions": {
+            "view": "Xem",
+            "edit": "Chỉnh sửa",
+            "enable": "Kích hoạt",
+            "disable": "Vô hiệu hóa",
+            "duplicate": "Nhân bản",
+            "delete": "Xóa",
+            "openMenu": "Mở menu"
+          },
+          "dialogs": {
+            "delete": {
+              "title": "Xóa bước",
+              "description": "Bạn có chắc chắn muốn xóa \"{name}\"? Hành động này không thể hoàn tác và sẽ xóa vĩnh viễn bước và tất cả các trường liên quan.",
+              "cancel": "Hủy",
+              "confirm": "Xóa bước"
+            },
+            "enable": {
+              "title": "Kích hoạt bước",
+              "description": "Bạn có chắc chắn muốn kích hoạt \"{name}\"?",
+              "cancel": "Hủy",
+              "confirm": "Kích hoạt"
+            },
+            "disable": {
+              "title": "Vô hiệu hóa bước",
+              "description": "Bạn có chắc chắn muốn vô hiệu hóa \"{name}\"?",
+              "cancel": "Hủy",
+              "confirm": "Vô hiệu hóa"
+            }
+          }
+        },
+        "errorState": {
+          "title": "Không thể tải flow",
+          "message": "Không thể tải chi tiết flow"
+        }
       },
-      "fields": {
-        "title": "Các trường",
-        "subtitle": "Cấu hình các trường trong bước này",
-        "table": {
-          "headers": {
-            "name": "Tên trường",
-            "type": "Loại",
+      "stepDetail": {
+        "backToFlow": "Quay lại flow",
+        "saveChanges": "Lưu thay đổi",
+        "modified": "Đã sửa đổi",
+        "cards": {
+          "status": "Trạng thái",
+          "stepOrder": "Thứ tự bước",
+          "ekyc": "eKYC",
+          "otp": "OTP"
+        },
+        "fields": {
+          "title": "Các trường",
+          "subtitle": "Cấu hình các trường trong bước này",
+          "table": {
+            "headers": {
+              "name": "Tên trường",
+              "type": "Loại",
+              "visible": "Hiển thị",
+              "required": "Bắt buộc",
+              "actions": "Hành động"
+            },
+            "searchPlaceholder": "Tìm kiếm các trường...",
+            "emptyState": "Không tìm thấy trường nào. Thêm trường đầu tiên của bạn để bắt đầu.",
+            "emptyStateWithFilters": "Không tìm thấy trường nào"
+          },
+          "actions": {
+            "editField": "Chỉnh sửa trường",
+            "deleteField": "Xóa trường"
+          },
+          "toggle": {
             "visible": "Hiển thị",
             "required": "Bắt buộc",
-            "actions": "Hành động"
+            "modified": "Đã sửa đổi"
+          }
+        },
+        "dialogs": {
+          "saveChanges": {
+            "title": "Lưu thay đổi",
+            "description": "Bạn có chắc chắn muốn lưu tất cả thay đổi cho bước này và các trường của nó? Điều này sẽ cập nhật cấu hình ngay lập tức.",
+            "cancel": "Hủy",
+            "confirm": "Lưu thay đổi"
           },
-          "searchPlaceholder": "Tìm kiếm các trường...",
-          "emptyState": "Không tìm thấy trường nào. Thêm trường đầu tiên của bạn để bắt đầu.",
-          "emptyStateWithFilters": "Không tìm thấy trường nào"
+          "unsavedChanges": {
+            "title": "Thay đổi chưa lưu",
+            "description": "Bạn có các thay đổi chưa lưu. Bạn có chắc chắn muốn rời đi?"
+          }
         },
-        "actions": {
-          "editField": "Chỉnh sửa trường",
-          "deleteField": "Xóa trường"
-        },
-        "toggle": {
-          "visible": "Hiển thị",
-          "required": "Bắt buộc",
-          "modified": "Đã sửa đổi"
+        "errorState": {
+          "title": "Không thể tải bước",
+          "message": "Không thể tải chi tiết bước"
         }
       },
-      "dialogs": {
-        "saveChanges": {
-          "title": "Lưu thay đổi",
-          "description": "Bạn có chắc chắn muốn lưu tất cả thay đổi cho bước này và các trường của nó? Điều này sẽ cập nhật cấu hình ngay lập tức.",
-          "cancel": "Hủy",
-          "confirm": "Lưu thay đổi"
+      "breadcrumb": {
+        "dashboard": "Trang tổng quan",
+        "flows": "Flows",
+        "flow": "Flow {id}",
+        "step": "Bước {id}",
+        "toggleMenu": "Chuyển đổi menu"
+      },
+      "components": {
+        "loadingStates": {
+          "loading": "Đang tải..."
         },
-        "unsavedChanges": {
-          "title": "Thay đổi chưa lưu",
-          "description": "Bạn có các thay đổi chưa lưu. Bạn có chắc chắn muốn rời đi?"
+        "errorStates": {
+          "default": {
+            "title": "Đã xảy ra lỗi",
+            "message": "Đã xảy ra lỗi khi tải dữ liệu. Vui lòng thử lại.",
+            "retry": "Thử lại"
+          },
+          "empty": {
+            "title": "Không tìm thấy dữ liệu",
+            "message": "Không có mục nào để hiển thị."
+          },
+          "notFound": {
+            "title": "Không tìm thấy",
+            "message": "Không thể tìm thấy mục được yêu cầu.",
+            "goBack": "Quay lại"
+          },
+          "networkError": {
+            "title": "Lỗi mạng",
+            "message": "Không thể kết nối với máy chủ. Vui lòng kiểm tra kết nối internet và thử lại."
+          },
+          "permissionError": {
+            "title": "Truy cập bị từ chối",
+            "message": "Bạn không có quyền truy cập tài nguyên này. Vui lòng liên hệ với quản trị viên của bạn.",
+            "goBack": "Quay lại"
+          }
         }
       },
-      "errorState": {
-        "title": "Không thể tải bước",
-        "message": "Không thể tải chi tiết bước"
+      "layout": {
+        "sidebar": {
+          "title": "Panel quản trị",
+          "navigation": "Điều hướng",
+          "logout": "Đăng xuất"
+        },
+        "header": {
+          "welcome": "Xin chào, {username}"
+        }
+      },
+      "auth": {
+        "protectedRoute": {
+          "checkingAuth": "Đang kiểm tra xác thực...",
+          "accessDenied": {
+            "title": "Truy cập bị từ chối",
+            "message": "Bạn không có quyền truy cập trang này."
+          }
+        },
+        "loginSuccess": "Đăng nhập thành công cho {username}",
+        "logoutSuccess": "Đăng xuất thành công",
+        "unauthorized": "Không có quyền truy cập",
+        "unauthorizedDescription": "Bạn không có đủ quyền để truy cập trang này. Vui lòng liên hệ quản trị viên nếu bạn cho rằng đây là lỗi.",
+        "accessDenied": "Từ chối truy cập",
+        "accessDeniedDescription": "Yêu cầu vai trò quản trị viên để truy cập trang này.",
+        "backToDashboard": "Quay lại trang quản trị",
+        "loginAsDifferentUser": "Đăng nhập bằng tài khoản khác",
+        "backToHome": "Quay lại trang chủ",
+        "needHelp": "Cần trợ giúp?",
+        "contactSupport": "Liên hệ hỗ trợ"
       }
-    },
-    "breadcrumb": {
-      "dashboard": "Trang tổng quan",
-      "flows": "Flows",
-      "flow": "Flow {id}",
-      "step": "Bước {id}",
-      "toggleMenu": "Chuyển đổi menu"
-    },
-    "components": {
-      "loadingStates": {
-        "loading": "Đang tải..."
-      },
-      "errorStates": {
-        "default": {
-          "title": "Đã xảy ra lỗi",
-          "message": "Đã xảy ra lỗi khi tải dữ liệu. Vui lòng thử lại.",
-          "retry": "Thử lại"
-        },
-        "empty": {
-          "title": "Không tìm thấy dữ liệu",
-          "message": "Không có mục nào để hiển thị."
-        },
-        "notFound": {
-          "title": "Không tìm thấy",
-          "message": "Không thể tìm thấy mục được yêu cầu.",
-          "goBack": "Quay lại"
-        },
-        "networkError": {
-          "title": "Lỗi mạng",
-          "message": "Không thể kết nối với máy chủ. Vui lòng kiểm tra kết nối internet và thử lại."
-        },
-        "permissionError": {
-          "title": "Truy cập bị từ chối",
-          "message": "Bạn không có quyền truy cập tài nguyên này. Vui lòng liên hệ với quản trị viên của bạn.",
-          "goBack": "Quay lại"
-        }
-      }
-    },
-    "layout": {
-      "sidebar": {
-        "title": "Panel quản trị",
-        "navigation": "Điều hướng",
-        "logout": "Đăng xuất"
-      },
-      "header": {
-        "welcome": "Xin chào, {username}"
-      }
-    },
-    "auth": {
-      "protectedRoute": {
-        "checkingAuth": "Đang kiểm tra xác thực...",
-        "accessDenied": {
-          "title": "Truy cập bị từ chối",
-          "message": "Bạn không có quyền truy cập trang này."
-        }
-      },
-      "loginSuccess": "Đăng nhập thành công cho {username}",
-      "logoutSuccess": "Đăng xuất thành công",
-      "unauthorized": "Không có quyền truy cập",
-      "unauthorizedDescription": "Bạn không có đủ quyền để truy cập trang này. Vui lòng liên hệ quản trị viên nếu bạn cho rằng đây là lỗi.",
-      "accessDenied": "Từ chối truy cập",
-      "accessDeniedDescription": "Yêu cầu vai trò quản trị viên để truy cập trang này.",
-      "backToDashboard": "Quay lại trang quản trị",
-      "loginAsDifferentUser": "Đăng nhập bằng tài khoản khác",
-      "backToHome": "Quay lại trang chủ",
-      "needHelp": "Cần trợ giúp?",
-      "contactSupport": "Liên hệ hỗ trợ"
     }
   }
 }

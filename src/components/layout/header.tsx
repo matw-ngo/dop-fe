@@ -154,7 +154,7 @@ export default function Header({ company, configOverride }: HeaderProps) {
 
   return (
     <header className="sticky top-0 z-50 bg-card border-b border-border">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href={config.logo.href} className="flex items-center gap-2">

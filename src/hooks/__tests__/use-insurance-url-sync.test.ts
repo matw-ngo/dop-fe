@@ -3,8 +3,14 @@
  */
 
 import { renderHook } from "@testing-library/react";
-import { useInsuranceUrlSync } from "../use-insurance-url-sync";
-import { InsuranceCategory, InsuranceType, SortOption, FeeType, CoveragePeriod } from "@/types/insurance";
+import { useInsuranceUrlSync } from "../features/insurance/use-insurance-url-sync";
+import {
+  InsuranceCategory,
+  InsuranceType,
+  SortOption,
+  FeeType,
+  CoveragePeriod,
+} from "@/types/insurance";
 import { DEFAULT_FILTERS } from "@/constants/insurance";
 
 // Mock next/navigation
@@ -44,7 +50,7 @@ describe("useInsuranceUrlSync", () => {
           hasNext: false,
           hasPrev: false,
         },
-      })
+      }),
     );
 
     // Should not have called replaceState immediately (due to debounce)
@@ -65,7 +71,7 @@ describe("useInsuranceUrlSync", () => {
           hasNext: false,
           hasPrev: false,
         },
-      })
+      }),
     );
 
     // Wait for debounce
@@ -74,7 +80,7 @@ describe("useInsuranceUrlSync", () => {
     expect(mockReplaceState).toHaveBeenCalledWith(
       {},
       "",
-      "/en/insurance?search=test+search"
+      "/en/insurance?search=test+search",
     );
   });
 
@@ -100,7 +106,7 @@ describe("useInsuranceUrlSync", () => {
           hasNext: false,
           hasPrev: false,
         },
-      })
+      }),
     );
 
     // Wait for debounce
@@ -109,27 +115,27 @@ describe("useInsuranceUrlSync", () => {
     expect(mockReplaceState).toHaveBeenCalledWith(
       {},
       "",
-      expect.stringContaining("categories=vehicle,health")
+      expect.stringContaining("categories=vehicle,health"),
     );
     expect(mockReplaceState).toHaveBeenCalledWith(
       {},
       "",
-      expect.stringContaining("issuers=insurer1,insurer2")
+      expect.stringContaining("issuers=insurer1,insurer2"),
     );
     expect(mockReplaceState).toHaveBeenCalledWith(
       {},
       "",
-      expect.stringContaining("hasRoadsideAssistance=true")
+      expect.stringContaining("hasRoadsideAssistance=true"),
     );
     expect(mockReplaceState).toHaveBeenCalledWith(
       {},
       "",
-      expect.stringContaining("premiumMin=1000000")
+      expect.stringContaining("premiumMin=1000000"),
     );
     expect(mockReplaceState).toHaveBeenCalledWith(
       {},
       "",
-      expect.stringContaining("premiumMax=5000000")
+      expect.stringContaining("premiumMax=5000000"),
     );
   });
 
@@ -147,7 +153,7 @@ describe("useInsuranceUrlSync", () => {
           hasNext: false,
           hasPrev: false,
         },
-      })
+      }),
     );
 
     // Wait for debounce
@@ -156,7 +162,7 @@ describe("useInsuranceUrlSync", () => {
     expect(mockReplaceState).toHaveBeenCalledWith(
       {},
       "",
-      "/en/insurance?sort=premium-asc"
+      "/en/insurance?sort=premium-asc",
     );
   });
 
@@ -174,7 +180,7 @@ describe("useInsuranceUrlSync", () => {
           hasNext: false,
           hasPrev: false,
         },
-      })
+      }),
     );
 
     // Wait for debounce
@@ -183,7 +189,7 @@ describe("useInsuranceUrlSync", () => {
     expect(mockReplaceState).toHaveBeenCalledWith(
       {},
       "",
-      "/en/insurance?page=2&limit=24"
+      "/en/insurance?page=2&limit=24",
     );
   });
 
@@ -210,7 +216,7 @@ describe("useInsuranceUrlSync", () => {
           hasNext: false,
           hasPrev: false,
         },
-      })
+      }),
     );
 
     // Wait for debounce
@@ -219,12 +225,12 @@ describe("useInsuranceUrlSync", () => {
     expect(mockReplaceState).toHaveBeenCalledWith(
       {},
       "",
-      expect.stringContaining("coverage[personalAccident][min]=100000000")
+      expect.stringContaining("coverage[personalAccident][min]=100000000"),
     );
     expect(mockReplaceState).toHaveBeenCalledWith(
       {},
       "",
-      expect.stringContaining("coverage[personalAccident][max]=500000000")
+      expect.stringContaining("coverage[personalAccident][max]=500000000"),
     );
   });
 });

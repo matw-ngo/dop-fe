@@ -10,13 +10,25 @@ import {
   Info,
   RefreshCw,
   AlertTriangle,
-  CheckCircle
+  CheckCircle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
@@ -30,7 +42,11 @@ const vehicleTypes = [
   { value: "truck", label: "Xe tải", seatsRange: { min: 0, max: 0 } },
   { value: "motorcycle", label: "Xe máy", seatsRange: { min: 0, max: 0 } },
   { value: "tractor", label: "Máy kéo", seatsRange: { min: 0, max: 0 } },
-  { value: "specialized", label: "Xe chuyên dùng", seatsRange: { min: 0, max: 0 } }
+  {
+    value: "specialized",
+    label: "Xe chuyên dùng",
+    seatsRange: { min: 0, max: 0 },
+  },
 ];
 
 // Vehicle usage types
@@ -38,7 +54,7 @@ const vehicleUsages = [
   { value: "personal", label: "Cá nhân", coefficient: 1.0 },
   { value: "business", label: "Kinh doanh", coefficient: 1.2 },
   { value: "taxi", label: "Taxi", coefficient: 1.5 },
-  { value: "training", label: "Dạy lái", coefficient: 1.3 }
+  { value: "training", label: "Dạy lái", coefficient: 1.3 },
 ];
 
 // Premium rates (simplified for calculation)
@@ -46,47 +62,47 @@ const premiumRates = {
   compulsory: {
     car: {
       base: 437000, // VND
-      seatRate: 95000 // per seat > 5
+      seatRate: 95000, // per seat > 5
     },
     motorcycle: {
       base: 66000,
-      seatRate: 0
+      seatRate: 0,
     },
     truck: {
       base: 1249000,
-      seatRate: 0
+      seatRate: 0,
     },
     tractor: {
       base: 358000,
-      seatRate: 0
+      seatRate: 0,
     },
     specialized: {
       base: 1249000,
-      seatRate: 0
-    }
+      seatRate: 0,
+    },
   },
   voluntary: {
     car: {
       base: 5000000,
-      seatRate: 500000
+      seatRate: 500000,
     },
     motorcycle: {
       base: 500000,
-      seatRate: 0
+      seatRate: 0,
     },
     truck: {
       base: 8000000,
-      seatRate: 0
+      seatRate: 0,
     },
     tractor: {
       base: 3000000,
-      seatRate: 0
+      seatRate: 0,
     },
     specialized: {
       base: 10000000,
-      seatRate: 0
-    }
-  }
+      seatRate: 0,
+    },
+  },
 };
 
 export default function InsuranceCostCalculator() {
@@ -102,7 +118,10 @@ export default function InsuranceCostCalculator() {
   const calculation = useMemo(() => {
     if (!vehicleType) return null;
 
-    const rates = premiumRates[insuranceType as keyof typeof premiumRates][vehicleType as keyof typeof premiumRates.compulsory];
+    const rates =
+      premiumRates[insuranceType as keyof typeof premiumRates][
+        vehicleType as keyof typeof premiumRates.compulsory
+      ];
     if (!rates) return null;
 
     let premium = rates.base;
@@ -116,7 +135,8 @@ export default function InsuranceCostCalculator() {
     }
 
     // Apply usage coefficient
-    const usageCoeff = vehicleUsages.find(u => u.value === usage)?.coefficient || 1;
+    const usageCoeff =
+      vehicleUsages.find((u) => u.value === usage)?.coefficient || 1;
     premium *= usageCoeff;
 
     // Calculate tax (10% VAT)
@@ -127,7 +147,7 @@ export default function InsuranceCostCalculator() {
       premium: Math.round(premium),
       tax: Math.round(tax),
       total: Math.round(total),
-      currency: "VND"
+      currency: "VND",
     };
   }, [insuranceType, vehicleType, seats, usage]);
 
@@ -144,7 +164,8 @@ export default function InsuranceCostCalculator() {
     premium = Math.max(premium, minPremium);
 
     // Apply usage coefficient
-    const usageCoeff = vehicleUsages.find(u => u.value === usage)?.coefficient || 1;
+    const usageCoeff =
+      vehicleUsages.find((u) => u.value === usage)?.coefficient || 1;
     premium *= usageCoeff;
 
     // Calculate tax
@@ -155,7 +176,7 @@ export default function InsuranceCostCalculator() {
       premium: Math.round(premium),
       tax: Math.round(tax),
       total: Math.round(total),
-      currency: "VND"
+      currency: "VND",
     };
   }, [insuranceType, vehicleValue, usage]);
 
@@ -178,9 +199,9 @@ export default function InsuranceCostCalculator() {
     const content = `
 Báo giá bảo hiểm ${insuranceType === "compulsory" ? "bắt buộc" : "tự nguyện"}
 
-Loại xe: ${vehicleTypes.find(v => v.value === vehicleType)?.label}
+Loại xe: ${vehicleTypes.find((v) => v.value === vehicleType)?.label}
 Số chỗ ngồi: ${seats || "N/A"}
-Mục đích sử dụng: ${vehicleUsages.find(u => u.value === usage)?.label}
+Mục đích sử dụng: ${vehicleUsages.find((u) => u.value === usage)?.label}
 ${vehicleValue ? `Giá trị xe: ${parseInt(vehicleValue).toLocaleString()} VNĐ` : ""}
 
 Phí bảo hiểm: ${data?.premium.toLocaleString()} VNĐ
@@ -201,24 +222,24 @@ Ngày tính: ${new Date().toLocaleDateString("vi-VN")}
     toast.success(t("calculator.export.success"));
   };
 
-  const selectedVehicleType = vehicleTypes.find(v => v.value === vehicleType);
+  const selectedVehicleType = vehicleTypes.find((v) => v.value === vehicleType);
   const showSeatsInput = vehicleType === "car";
   const showVehicleValue = insuranceType === "voluntary";
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-white border-b">
+    <div className="bg-muted">
+      {/* Page Header */}
+      <div className="bg-card border-b">
         <div className="max-w-4xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
           <div className="flex items-center gap-3 mb-4">
-            <div className="p-2 bg-green-100 rounded-lg">
-              <Calculator className="h-6 w-6 text-green-600" />
+            <div className="p-2 bg-primary/10 rounded-lg">
+              <Calculator className="h-6 w-6 text-primary" />
             </div>
-            <h1 className="text-3xl font-bold text-gray-900">
+            <h1 className="text-3xl font-bold text-foreground">
               {t("calculator.title")}
             </h1>
           </div>
-          <p className="text-lg text-gray-600">
+          <p className="text-lg text-muted-foreground">
             {t("calculator.description")}
           </p>
         </div>
@@ -242,14 +263,21 @@ Ngày tính: ${new Date().toLocaleDateString("vi-VN")}
                 {/* Insurance Type */}
                 <div className="space-y-2">
                   <Label>{t("calculator.form.insuranceType")}</Label>
-                  <RadioGroup value={insuranceType} onValueChange={setInsuranceType}>
+                  <RadioGroup
+                    value={insuranceType}
+                    onValueChange={setInsuranceType}
+                  >
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="compulsory" id="compulsory" />
-                      <Label htmlFor="compulsory">{t("calculator.form.compulsory")}</Label>
+                      <Label htmlFor="compulsory">
+                        {t("calculator.form.compulsory")}
+                      </Label>
                     </div>
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="voluntary" id="voluntary" />
-                      <Label htmlFor="voluntary">{t("calculator.form.voluntary")}</Label>
+                      <Label htmlFor="voluntary">
+                        {t("calculator.form.voluntary")}
+                      </Label>
                     </div>
                   </RadioGroup>
                 </div>
@@ -258,10 +286,14 @@ Ngày tính: ${new Date().toLocaleDateString("vi-VN")}
 
                 {/* Vehicle Type */}
                 <div className="space-y-2">
-                  <Label htmlFor="vehicleType">{t("calculator.form.vehicleType")}</Label>
+                  <Label htmlFor="vehicleType">
+                    {t("calculator.form.vehicleType")}
+                  </Label>
                   <Select value={vehicleType} onValueChange={setVehicleType}>
                     <SelectTrigger>
-                      <SelectValue placeholder={t("calculator.form.selectVehicleType")} />
+                      <SelectValue
+                        placeholder={t("calculator.form.selectVehicleType")}
+                      />
                     </SelectTrigger>
                     <SelectContent>
                       {vehicleTypes.map((type) => (
@@ -286,8 +318,11 @@ Ngày tính: ${new Date().toLocaleDateString("vi-VN")}
                       onChange={(e) => setSeats(e.target.value)}
                       placeholder={t("calculator.form.enterSeats")}
                     />
-                    <p className="text-sm text-gray-500">
-                      {selectedVehicleType?.label}: {selectedVehicleType?.seatsRange.min}-{selectedVehicleType?.seatsRange.max} {t("calculator.form.seats")}
+                    <p className="text-sm text-muted-foreground">
+                      {selectedVehicleType?.label}:{" "}
+                      {selectedVehicleType?.seatsRange.min}-
+                      {selectedVehicleType?.seatsRange.max}{" "}
+                      {t("calculator.form.seats")}
                     </p>
                   </div>
                 )}
@@ -301,7 +336,10 @@ Ngày tính: ${new Date().toLocaleDateString("vi-VN")}
                     </SelectTrigger>
                     <SelectContent>
                       {vehicleUsages.map((usageType) => (
-                        <SelectItem key={usageType.value} value={usageType.value}>
+                        <SelectItem
+                          key={usageType.value}
+                          value={usageType.value}
+                        >
                           <div className="flex items-center justify-between w-full">
                             <span>{usageType.label}</span>
                             {usageType.coefficient !== 1 && (
@@ -319,7 +357,9 @@ Ngày tính: ${new Date().toLocaleDateString("vi-VN")}
                 {/* Vehicle Value (for voluntary insurance) */}
                 {showVehicleValue && (
                   <div className="space-y-2">
-                    <Label htmlFor="vehicleValue">{t("calculator.form.vehicleValue")}</Label>
+                    <Label htmlFor="vehicleValue">
+                      {t("calculator.form.vehicleValue")}
+                    </Label>
                     <Input
                       id="vehicleValue"
                       type="number"
@@ -329,7 +369,7 @@ Ngày tính: ${new Date().toLocaleDateString("vi-VN")}
                       onChange={(e) => setVehicleValue(e.target.value)}
                       placeholder="500000000"
                     />
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-muted-foreground">
                       {t("calculator.form.vehicleValueNote")}
                     </p>
                   </div>
@@ -338,8 +378,13 @@ Ngày tính: ${new Date().toLocaleDateString("vi-VN")}
                 {/* Coverage Amount */}
                 {insuranceType === "voluntary" && (
                   <div className="space-y-2">
-                    <Label htmlFor="coverage">{t("calculator.form.coverage")}</Label>
-                    <Select value={coverageAmount} onValueChange={setCoverageAmount}>
+                    <Label htmlFor="coverage">
+                      {t("calculator.form.coverage")}
+                    </Label>
+                    <Select
+                      value={coverageAmount}
+                      onValueChange={setCoverageAmount}
+                    >
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
@@ -363,7 +408,11 @@ Ngày tính: ${new Date().toLocaleDateString("vi-VN")}
 
                 {/* Actions */}
                 <div className="flex gap-3 pt-4">
-                  <Button onClick={handleReset} variant="outline" className="flex items-center gap-2">
+                  <Button
+                    onClick={handleReset}
+                    variant="outline"
+                    className="flex items-center gap-2"
+                  >
                     <RefreshCw className="h-4 w-4" />
                     {t("calculator.form.reset")}
                   </Button>
@@ -391,39 +440,56 @@ Ngày tính: ${new Date().toLocaleDateString("vi-VN")}
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                {(calculation || voluntaryCalculation) ? (
+                {calculation || voluntaryCalculation ? (
                   <div className="space-y-4">
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <p className="text-sm text-gray-600">{t("calculator.result.premium")}</p>
-                        <p className="text-2xl font-bold text-gray-900">
-                          {((calculation || voluntaryCalculation)?.premium || 0).toLocaleString()} VNĐ
+                        <p className="text-sm text-muted-foreground">
+                          {t("calculator.result.premium")}
+                        </p>
+                        <p className="text-2xl font-bold text-foreground">
+                          {(
+                            (calculation || voluntaryCalculation)?.premium || 0
+                          ).toLocaleString()}{" "}
+                          VNĐ
                         </p>
                       </div>
                       <div>
-                        <p className="text-sm text-gray-600">{t("calculator.result.tax")}</p>
-                        <p className="text-2xl font-bold text-gray-900">
-                          {((calculation || voluntaryCalculation)?.tax || 0).toLocaleString()} VNĐ
+                        <p className="text-sm text-muted-foreground">
+                          {t("calculator.result.tax")}
+                        </p>
+                        <p className="text-2xl font-bold text-foreground">
+                          {(
+                            (calculation || voluntaryCalculation)?.tax || 0
+                          ).toLocaleString()}{" "}
+                          VNĐ
                         </p>
                       </div>
                     </div>
                     <Separator />
                     <div>
-                      <p className="text-sm text-gray-600">{t("calculator.result.total")}</p>
-                      <p className="text-3xl font-bold text-blue-600">
-                        {((calculation || voluntaryCalculation)?.total || 0).toLocaleString()} VNĐ
+                      <p className="text-sm text-muted-foreground">
+                        {t("calculator.result.total")}
+                      </p>
+                      <p className="text-3xl font-bold text-primary">
+                        {(
+                          (calculation || voluntaryCalculation)?.total || 0
+                        ).toLocaleString()}{" "}
+                        VNĐ
                       </p>
                     </div>
                     <Alert>
                       <CheckCircle className="h-4 w-4" />
-                      <AlertTitle>{t("calculator.result.validityTitle")}</AlertTitle>
+                      <AlertTitle>
+                        {t("calculator.result.validityTitle")}
+                      </AlertTitle>
                       <AlertDescription>
                         {t("calculator.result.validityDesc")}
                       </AlertDescription>
                     </Alert>
                   </div>
                 ) : (
-                  <div className="text-center py-8 text-gray-500">
+                  <div className="text-center py-8 text-muted-foreground">
                     <Calculator className="h-12 w-12 mx-auto mb-3 opacity-50" />
                     <p>{t("calculator.result.noCalculation")}</p>
                   </div>
@@ -451,24 +517,36 @@ Ngày tính: ${new Date().toLocaleDateString("vi-VN")}
         <Tabs defaultValue="fees" className="mt-12">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="fees">{t("calculator.tabs.fees")}</TabsTrigger>
-            <TabsTrigger value="regulations">{t("calculator.tabs.regulations")}</TabsTrigger>
+            <TabsTrigger value="regulations">
+              {t("calculator.tabs.regulations")}
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="fees" className="mt-6">
             <Card>
               <CardHeader>
                 <CardTitle>{t("calculator.fees.title")}</CardTitle>
-                <CardDescription>{t("calculator.fees.description")}</CardDescription>
+                <CardDescription>
+                  {t("calculator.fees.description")}
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead>
                       <tr className="border-b">
-                        <th className="text-left p-2">{t("calculator.fees.table.vehicle")}</th>
-                        <th className="text-left p-2">{t("calculator.fees.table.type")}</th>
-                        <th className="text-right p-2">{t("calculator.fees.table.baseFee")}</th>
-                        <th className="text-right p-2">{t("calculator.fees.table.additional")}</th>
+                        <th className="text-left p-2">
+                          {t("calculator.fees.table.vehicle")}
+                        </th>
+                        <th className="text-left p-2">
+                          {t("calculator.fees.table.type")}
+                        </th>
+                        <th className="text-right p-2">
+                          {t("calculator.fees.table.baseFee")}
+                        </th>
+                        <th className="text-right p-2">
+                          {t("calculator.fees.table.additional")}
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
@@ -476,7 +554,9 @@ Ngày tính: ${new Date().toLocaleDateString("vi-VN")}
                         <td className="p-2">Ô tô con</td>
                         <td className="p-2">Bắt buộc</td>
                         <td className="p-2 text-right">437,000 VNĐ</td>
-                        <td className="p-2 text-right">95,000 VNĐ/chỗ > 5</td>
+                        <td className="p-2 text-right">
+                          95,000 VNĐ/chỗ &gt; 5
+                        </td>
                       </tr>
                       <tr className="border-b">
                         <td className="p-2">Xe máy</td>
@@ -501,19 +581,25 @@ Ngày tính: ${new Date().toLocaleDateString("vi-VN")}
             <Card>
               <CardHeader>
                 <CardTitle>{t("calculator.regulations.title")}</CardTitle>
-                <CardDescription>{t("calculator.regulations.description")}</CardDescription>
+                <CardDescription>
+                  {t("calculator.regulations.description")}
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   <Alert>
                     <AlertTriangle className="h-4 w-4" />
-                    <AlertTitle>{t("calculator.regulations.important")}</AlertTitle>
+                    <AlertTitle>
+                      {t("calculator.regulations.important")}
+                    </AlertTitle>
                     <AlertDescription>
                       {t("calculator.regulations.importantDesc")}
                     </AlertDescription>
                   </Alert>
                   <div className="prose prose-sm max-w-none">
-                    <h4 className="font-semibold">{t("calculator.regulations.requirements")}</h4>
+                    <h4 className="font-semibold">
+                      {t("calculator.regulations.requirements")}
+                    </h4>
                     <ul className="list-disc list-inside space-y-1">
                       <li>{t("calculator.regulations.req1")}</li>
                       <li>{t("calculator.regulations.req2")}</li>

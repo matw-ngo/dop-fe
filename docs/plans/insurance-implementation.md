@@ -91,30 +91,6 @@ This plan outlines the implementation of a comprehensive insurance feature for t
 
 ---
 
-## Phase 7: Advanced Features (Total: 6h)
-
-| # | Task | Size | Files |
-|---|------|------|-------|
-| 35 | Implement insurance redirect tracking | M | `src/app/[locale]/insurance/redirect/page.tsx` |
-| 36 | Create bookmark/favorite feature | M | `src/components/features/insurance/BookmarkButton.tsx` |
-| 37 | Add print-friendly comparison view | S | `src/components/features/insurance/PrintableView.tsx` |
-| 38 | Implement advanced search with filters | M | `src/components/features/insurance/AdvancedSearch.tsx` |
-| 39 | Create insurance recommendation engine | L | `src/components/features/insurance/InsuranceRecommendations.tsx` |
-
----
-
-## Phase 8: Testing & Optimization (Total: 5h)
-
-| # | Task | Size | Files |
-|---|------|------|-------|
-| 40 | Write unit tests for components | L | `src/components/features/insurance/__tests__/` |
-| 41 | Create integration tests for pages | M | `src/app/[locale]/insurance/__tests__/` |
-| 42 | Add E2E tests for user flows | M | `tests/e2e/insurance.spec.ts` |
-| 43 | Implement performance optimizations | M | Various |
-| 44 | Add error boundaries and handling | S | `src/components/features/insurance/ErrorBoundary.tsx` |
-
----
-
 ## Detailed Implementation Notes
 
 ### Data Structure

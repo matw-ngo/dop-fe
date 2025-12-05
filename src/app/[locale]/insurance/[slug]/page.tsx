@@ -15,6 +15,9 @@ import { formatCurrency } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import Head from "next/head";
+import Header from "@/components/layout/header";
+import Footer from "@/components/layout/footer";
+import { getInsuranceNavbarConfig } from "@/configs/insurance-navbar-config";
 
 // Helper function to get product by slug
 function getInsuranceProductBySlug(slug: string): InsuranceProduct | undefined {
@@ -114,13 +117,20 @@ export default function InsuranceProductDetailPage() {
 
   if (loading || !product) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center">{tCommon("loading") || "Đang tải..."}</div>
-      </div>
+      <>
+        <Header configOverride={getInsuranceNavbarConfig()} />
+        <main className="min-h-screen bg-background flex items-center justify-center">
+          <div className="text-center">
+            {tCommon("loading") || "Đang tải..."}
+          </div>
+        </main>
+        <Footer company="finzone" />
+      </>
     );
   }
 
   const structuredData = generateStructuredData(product);
+  const insuranceNavbarConfig = getInsuranceNavbarConfig();
 
   // Breadcrumb items
   const breadcrumbItems = [
@@ -148,6 +158,7 @@ export default function InsuranceProductDetailPage() {
       />
 
       <div className="min-h-screen bg-background">
+        <Header configOverride={insuranceNavbarConfig} />
         {/* Header */}
         <div className="border-b bg-card">
           <div className="container mx-auto px-4 py-6">
@@ -405,6 +416,7 @@ export default function InsuranceProductDetailPage() {
           </div>
         </div>
       </div>
+      <Footer company="finzone" />
     </>
   );
 }

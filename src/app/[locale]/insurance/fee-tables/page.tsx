@@ -1,4 +1,7 @@
 import FeeTables from "@/components/features/insurance/FeeTables";
+import Header from "@/components/layout/header";
+import Footer from "@/components/layout/footer";
+import { getInsuranceNavbarConfig } from "@/configs/insurance-navbar-config";
 
 interface FeeTablesPageProps {
   params: {
@@ -19,5 +22,13 @@ export async function generateMetadata({
 export default function FeeTablesPage({
   params: { locale },
 }: FeeTablesPageProps) {
-  return <FeeTables />;
+  return (
+    <>
+      <Header configOverride={getInsuranceNavbarConfig()} />
+      <main>
+        <FeeTables />
+      </main>
+      <Footer company="finzone" />
+    </>
+  );
 }

@@ -1,4 +1,3 @@
-import React from "react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -10,21 +9,21 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Grid, List, Loader2, SlidersHorizontal, X } from "lucide-react";
-import SearchBar from "@/components/features/credit-card/SearchBar";
-import SortDropdown from "@/components/features/credit-card/SortDropdown";
-import FilterPanel from "@/components/features/credit-card/FilterPanel";
-import type { CreditCardFilters, SortOption } from "@/types/credit-card";
+import InsuranceSearchBar from "@/components/features/insurance/SearchBar";
+import SortDropdown from "@/components/features/insurance/SortDropdown";
+import InsuranceFilterPanel from "@/components/features/insurance/FilterPanel";
+import type { InsuranceFilters } from "@/types/insurance";
 
-interface CreditCardsPageControlsProps {
+interface InsurancePageControlsProps {
   searchQuery: string;
-  sortBy: SortOption;
-  viewMode: "grid" | "list" | "compact";
-  filters: CreditCardFilters;
   onSearch: (query: string) => void;
-  onSortChange: (sortValue: SortOption) => void;
-  onFiltersChange: (filters: Partial<CreditCardFilters>) => void;
-  onClearFilters: () => void;
+  sortOption: any;
+  onSortChange: (sort: any) => void;
+  viewMode: "grid" | "list" | "compact";
   onViewModeChange: (mode: "grid" | "list" | "compact") => void;
+  filters: InsuranceFilters;
+  onFiltersChange: (filters: Partial<InsuranceFilters>) => void;
+  onClearFilters: () => void;
   isLoading: boolean;
   totalProducts: number;
   filteredProductsCount: number;
@@ -33,34 +32,34 @@ interface CreditCardsPageControlsProps {
   onMobileFiltersChange: (open: boolean) => void;
 }
 
-export function CreditCardsPageControls({
+export default function InsurancePageControls({
   searchQuery,
-  sortBy,
-  viewMode,
-  filters,
   onSearch,
+  sortOption,
   onSortChange,
+  viewMode,
+  onViewModeChange,
+  filters,
   onFiltersChange,
   onClearFilters,
-  onViewModeChange,
   isLoading,
   totalProducts,
   filteredProductsCount,
   activeFiltersCount,
   mobileFiltersOpen,
   onMobileFiltersChange,
-}: CreditCardsPageControlsProps) {
-  const t = useTranslations("pages.creditCard");
+}: InsurancePageControlsProps) {
+  const t = useTranslations("pages.insurance");
 
   return (
     <div className="bg-card border-b sticky top-0 z-40">
       <div className="container mx-auto px-4 py-4">
         {/* Search Bar */}
         <div className="mb-4">
-          <SearchBar
+          <InsuranceSearchBar
             value={searchQuery}
             onChange={onSearch}
-            placeholder={t("searchCreditCards")}
+            placeholder={t("searchPlaceholder")}
           />
         </div>
 
@@ -73,8 +72,8 @@ export function CreditCardsPageControls({
                 <Loader2 className="w-4 h-4 animate-spin" />
               ) : (
                 t("showingResults", {
-                  count: filteredProductsCount,
-                  total: totalProducts,
+                  count: totalProducts,
+                  total: filteredProductsCount,
                 })
               )}
             </div>
@@ -91,11 +90,11 @@ export function CreditCardsPageControls({
             )}
           </div>
 
-          {/* Right: Sort, View Mode */}
+          {/* Right: Sort, View Mode, and Items per Page */}
           <div className="flex items-center gap-2 sm:gap-4">
             {/* Sort Dropdown */}
             <SortDropdown
-              value={sortBy}
+              value={sortOption}
               onChange={onSortChange}
               variant="select"
               size="sm"
@@ -110,7 +109,7 @@ export function CreditCardsPageControls({
                 onClick={() => onViewModeChange("grid")}
                 className="h-7 w-7 p-0"
               >
-                <Grid className="h-4 w-4" />
+                <Grid className="w-4 h-4" />
               </Button>
               <Button
                 variant={viewMode === "list" ? "default" : "ghost"}
@@ -118,7 +117,7 @@ export function CreditCardsPageControls({
                 onClick={() => onViewModeChange("list")}
                 className="h-7 w-7 p-0"
               >
-                <List className="h-4 w-4" />
+                <List className="w-4 h-4" />
               </Button>
             </div>
 
@@ -154,10 +153,11 @@ export function CreditCardsPageControls({
                     </SheetTitle>
                   </SheetHeader>
                   <div className="mt-6">
-                    <FilterPanel
+                    <InsuranceFilterPanel
                       filters={filters}
                       onFiltersChange={onFiltersChange}
                       onClearFilters={onClearFilters}
+                      isMobile={true}
                     />
                   </div>
                 </SheetContent>

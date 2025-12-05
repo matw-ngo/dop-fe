@@ -21,7 +21,7 @@ import {
   AlertCircle,
   FileText,
   Calculator,
-  Calculator as CalculatorIcon
+  Calculator as CalculatorIcon,
 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -37,7 +37,11 @@ interface TutorialDetailProps {
   locale: string;
 }
 
-export default function TutorialDetail({ tutorial, content, locale }: TutorialDetailProps) {
+export default function TutorialDetail({
+  tutorial,
+  content,
+  locale,
+}: TutorialDetailProps) {
   const t = useTranslations("insurance");
   const params = useParams();
   const router = useRouter();
@@ -54,7 +58,11 @@ export default function TutorialDetail({ tutorial, content, locale }: TutorialDe
     };
 
     if (platform in shareUrls) {
-      window.open(shareUrls[platform as keyof typeof shareUrls], "_blank", "width=600,height=400");
+      window.open(
+        shareUrls[platform as keyof typeof shareUrls],
+        "_blank",
+        "width=600,height=400",
+      );
     } else if (platform === "copy") {
       try {
         await navigator.clipboard.writeText(url);
@@ -67,15 +75,19 @@ export default function TutorialDetail({ tutorial, content, locale }: TutorialDe
 
   const handleBookmark = () => {
     setIsBookmarked(!isBookmarked);
-    toast.success(isBookmarked ? t("tutorial.bookmark.removed") : t("tutorial.bookmark.added"));
+    toast.success(
+      isBookmarked
+        ? t("tutorial.bookmark.removed")
+        : t("tutorial.bookmark.added"),
+    );
   };
 
-  const relatedTutorials = tutorials.filter(t =>
-    content.relatedArticles?.includes(t.id)
+  const relatedTutorials = tutorials.filter((t) =>
+    content.relatedArticles?.includes(t.id),
   );
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="bg-white">
       {/* Header */}
       <div className="bg-white border-b sticky top-0 z-10">
         <div className="max-w-4xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
@@ -95,7 +107,10 @@ export default function TutorialDetail({ tutorial, content, locale }: TutorialDe
                   {t("nav.insurance")}
                 </Link>
                 <ChevronRight className="h-4 w-4" />
-                <Link href="/insurance/tutorials" className="hover:text-gray-700">
+                <Link
+                  href="/insurance/tutorials"
+                  className="hover:text-gray-700"
+                >
                   {t("tutorials.title")}
                 </Link>
                 <ChevronRight className="h-4 w-4" />
@@ -109,7 +124,9 @@ export default function TutorialDetail({ tutorial, content, locale }: TutorialDe
                 onClick={handleBookmark}
                 className={isBookmarked ? "text-blue-600" : ""}
               >
-                <Bookmark className={`h-4 w-4 ${isBookmarked ? "fill-current" : ""}`} />
+                <Bookmark
+                  className={`h-4 w-4 ${isBookmarked ? "fill-current" : ""}`}
+                />
               </Button>
               <Button
                 variant="ghost"
@@ -156,17 +173,23 @@ export default function TutorialDetail({ tutorial, content, locale }: TutorialDe
             </div>
             <div className="flex items-center gap-2">
               <Calendar className="h-4 w-4" />
-              <span>{new Date(tutorial.publishedAt).toLocaleDateString(locale)}</span>
+              <span>
+                {new Date(tutorial.publishedAt).toLocaleDateString(locale)}
+              </span>
             </div>
             <div className="flex items-center gap-2">
               <Clock className="h-4 w-4" />
-              <span>{tutorial.readTime} {t("tutorials.minutesRead")}</span>
+              <span>
+                {tutorial.readTime} {t("tutorials.minutesRead")}
+              </span>
             </div>
           </div>
 
           {/* Share buttons */}
           <div className="mt-6 flex items-center gap-3">
-            <span className="text-sm text-gray-600">{t("tutorial.share.label")}:</span>
+            <span className="text-sm text-gray-600">
+              {t("tutorial.share.label")}:
+            </span>
             <Button
               variant="outline"
               size="sm"
@@ -200,7 +223,9 @@ export default function TutorialDetail({ tutorial, content, locale }: TutorialDe
         {/* Table of Contents */}
         <Card className="mb-8">
           <CardHeader>
-            <CardTitle className="text-lg">{t("tutorial.tableOfContents")}</CardTitle>
+            <CardTitle className="text-lg">
+              {t("tutorial.tableOfContents")}
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <nav className="space-y-2">
@@ -220,7 +245,11 @@ export default function TutorialDetail({ tutorial, content, locale }: TutorialDe
         {/* Article Content */}
         <article className="prose prose-lg max-w-none mb-12">
           {content.sections.map((section: any, index: number) => (
-            <section key={index} id={`section-${index}`} className="mb-8 scroll-mt-24">
+            <section
+              key={index}
+              id={`section-${index}`}
+              className="mb-8 scroll-mt-24"
+            >
               <h2 className="text-2xl font-bold text-gray-900 mb-4">
                 {t(section.titleKey)}
               </h2>
@@ -272,14 +301,20 @@ export default function TutorialDetail({ tutorial, content, locale }: TutorialDe
 
               {section.type === "tips" && (
                 <div className="space-y-3">
-                  {t(section.contentKey).split("\n").map((tip: string, tipIndex: number) => (
-                    tip.trim() && (
-                      <div key={tipIndex} className="flex gap-3 bg-blue-50 p-4 rounded-lg">
-                        <CheckCircle className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                        <p className="text-gray-700">{tip}</p>
-                      </div>
-                    )
-                  ))}
+                  {t(section.contentKey)
+                    .split("\n")
+                    .map(
+                      (tip: string, tipIndex: number) =>
+                        tip.trim() && (
+                          <div
+                            key={tipIndex}
+                            className="flex gap-3 bg-blue-50 p-4 rounded-lg"
+                          >
+                            <CheckCircle className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                            <p className="text-gray-700">{tip}</p>
+                          </div>
+                        ),
+                    )}
                 </div>
               )}
             </section>
@@ -292,17 +327,28 @@ export default function TutorialDetail({ tutorial, content, locale }: TutorialDe
             <Button className="w-full h-auto p-4 justify-start">
               <Calculator className="h-5 w-5 mr-3 flex-shrink-0" />
               <div className="text-left">
-                <div className="font-medium">{t("tutorial.actions.calculate")}</div>
-                <div className="text-sm opacity-90">{t("tutorial.actions.calculateDesc")}</div>
+                <div className="font-medium">
+                  {t("tutorial.actions.calculate")}
+                </div>
+                <div className="text-sm opacity-90">
+                  {t("tutorial.actions.calculateDesc")}
+                </div>
               </div>
             </Button>
           </Link>
           <Link href="/insurance">
-            <Button variant="outline" className="w-full h-auto p-4 justify-start">
+            <Button
+              variant="outline"
+              className="w-full h-auto p-4 justify-start"
+            >
               <FileText className="h-5 w-5 mr-3 flex-shrink-0" />
               <div className="text-left">
-                <div className="font-medium">{t("tutorial.actions.browse")}</div>
-                <div className="text-sm text-gray-600">{t("tutorial.actions.browseDesc")}</div>
+                <div className="font-medium">
+                  {t("tutorial.actions.browse")}
+                </div>
+                <div className="text-sm text-gray-600">
+                  {t("tutorial.actions.browseDesc")}
+                </div>
               </div>
             </Button>
           </Link>
@@ -337,10 +383,22 @@ export default function TutorialDetail({ tutorial, content, locale }: TutorialDe
                           <div className="flex items-center gap-3 mt-2 text-xs text-gray-500">
                             <div className="flex items-center gap-1">
                               <Clock className="h-3 w-3" />
-                              {relatedTutorial.readTime} {t("tutorials.minutesRead")}
+                              {relatedTutorial.readTime}{" "}
+                              {t("tutorials.minutesRead")}
                             </div>
-                            <Badge className={relatedTutorial.difficulty === "beginner" ? "bg-green-100 text-green-800" : relatedTutorial.difficulty === "intermediate" ? "bg-yellow-100 text-yellow-800" : "bg-red-100 text-red-800"}>
-                              {t(`tutorials.difficulty.${relatedTutorial.difficulty}`)}
+                            <Badge
+                              className={
+                                relatedTutorial.difficulty === "beginner"
+                                  ? "bg-green-100 text-green-800"
+                                  : relatedTutorial.difficulty ===
+                                      "intermediate"
+                                    ? "bg-yellow-100 text-yellow-800"
+                                    : "bg-red-100 text-red-800"
+                              }
+                            >
+                              {t(
+                                `tutorials.difficulty.${relatedTutorial.difficulty}`,
+                              )}
                             </Badge>
                           </div>
                         </div>
@@ -356,7 +414,9 @@ export default function TutorialDetail({ tutorial, content, locale }: TutorialDe
         {/* Feedback Section */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg">{t("tutorial.feedback.title")}</CardTitle>
+            <CardTitle className="text-lg">
+              {t("tutorial.feedback.title")}
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex flex-col sm:flex-row gap-4">

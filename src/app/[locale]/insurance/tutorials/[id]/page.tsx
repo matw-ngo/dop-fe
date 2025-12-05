@@ -2,6 +2,9 @@ import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import InsuranceTutorialDetail from "@/components/features/insurance/TutorialDetail";
 import { tutorials } from "@/components/features/insurance/InsuranceTutorial";
+import Header from "@/components/layout/header";
+import Footer from "@/components/layout/footer";
+import { getInsuranceNavbarConfig } from "@/configs/insurance-navbar-config";
 
 // Tutorial content data
 const tutorialContent: Record<string, any> = {
@@ -247,10 +250,16 @@ export default async function TutorialPage({
   const content = tutorialContent[id];
 
   return (
-    <InsuranceTutorialDetail
-      tutorial={tutorial}
-      content={content}
-      locale={locale}
-    />
+    <>
+      <Header configOverride={getInsuranceNavbarConfig()} />
+      <main>
+        <InsuranceTutorialDetail
+          tutorial={tutorial}
+          content={content}
+          locale={locale}
+        />
+      </main>
+      <Footer company="finzone" />
+    </>
   );
 }

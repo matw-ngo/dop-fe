@@ -204,7 +204,6 @@ const InsuranceGrid: React.FC<InsuranceGridProps> = ({
               onProductClick && "cursor-pointer",
             )}
             onClick={() => onProductClick?.(product)}
-            role="listitem"
           />
         ))}
       </div>
@@ -216,7 +215,7 @@ const InsuranceGrid: React.FC<InsuranceGridProps> = ({
         aria-live="polite"
       >
         {t("showingResults", {
-          current: products.length,
+          count: products.length,
           total: products.length,
         })}
       </div>

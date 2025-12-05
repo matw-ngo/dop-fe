@@ -97,6 +97,10 @@ const SearchBar: React.FC<SearchBarProps> = ({
   const inputRef = useRef<HTMLInputElement>(null);
   const debounceTimerRef = useRef<NodeJS.Timeout>(null);
 
+  useEffect(() => {
+    setInputValue(value);
+  }, [value]);
+
   // Use external values if provided, otherwise use internal state
   const recentSearches = externalRecentSearches || internalRecentSearches;
   const loading =

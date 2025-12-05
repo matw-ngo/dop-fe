@@ -1,0 +1,130 @@
+import { useTranslations } from "next-intl";
+import { Shield, Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import InsuranceGrid from "@/components/features/insurance/InsuranceGrid";
+import InsuranceFilterPanel from "@/components/features/insurance/FilterPanel";
+import Pagination from "@/components/features/insurance/Pagination";
+import type { InsuranceProduct } from "@/types/insurance";
+
+interface InsurancePageContentProps {
+  isLoading: boolean;
+  paginatedProducts: InsuranceProduct[];
+  filters: any;
+  onFiltersChange: (filters: any) => void;
+  onClearFilters: () => void;
+  onProductClick: (product: InsuranceProduct) => void;
+  onCompareToggle: (productId: string) => void;
+  totalPages: number;
+  currentPage: number;
+  totalItems: number;
+  itemsPerPage: number;
+  onPageChange: (page: number) => void;
+  onItemsPerPageChange: (itemsPerPage: number) => void;
+  hasMultiplePages: boolean;
+  searchQuery: string;
+  activeFiltersCount: number;
+  onSearchClear: () => void;
+}
+
+export default function InsurancePageContent({
+  isLoading,
+  paginatedProducts,
+  filters,
+  onFiltersChange,
+  onClearFilters,
+  onProductClick,
+  onCompareToggle,
+  totalPages,
+  currentPage,
+  totalItems,
+  itemsPerPage,
+  onPageChange,
+  onItemsPerPageChange,
+  hasMultiplePages,
+  searchQuery,
+  activeFiltersCount,
+  onSearchClear,
+}: InsurancePageContentProps) {
+  const t = useTranslations("pages.insurance");
+
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <div className="flex gap-8">
+        {/* Sidebar - Desktop */}
+        <aside className="hidden lg:block w-80 flex-shrink-0">
+          <div className="sticky top-24">
+            <InsuranceFilterPanel
+              filters={filters}
+              onFiltersChange={onFiltersChange}
+              onClearFilters={onClearFilters}
+            />
+          </div>
+        </aside>
+
+        {/* Main Content Area */}
+        <div className="flex-1 min-w-0">
+          {isLoading ? (
+            /* Loading State */
+            <div className="flex items-center justify-center py-20">
+              <div className="flex flex-col items-center gap-4">
+                <Loader2 className="w-8 h-8 animate-spin text-primary" />
+                <p className="text-muted-foreground">{t("loading")}</p>
+              </div>
+            </div>
+          ) : paginatedProducts.length > 0 ? (
+            /* Product Grid */
+            <>
+              <InsuranceGrid
+                products={paginatedProducts}
+                viewMode="grid" // TODO: Make this configurable
+                onProductClick={onProductClick}
+                onCompareToggle={onCompareToggle}
+                comparingProducts={[]} // Will be populated from store
+              />
+
+              {/* Pagination */}
+              {hasMultiplePages && (
+                <div className="mt-8">
+                  <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    itemsPerPage={itemsPerPage}
+                    totalItems={totalItems}
+                    onPageChange={onPageChange}
+                    onItemsPerPageChange={onItemsPerPageChange}
+                    showItemsPerPageSelector={true}
+                  />
+                </div>
+              )}
+            </>
+          ) : (
+            /* No Results State */
+            <div className="flex flex-col items-center justify-center py-20">
+              <Shield className="w-16 h-16 text-muted-foreground mb-4" />
+              <h3 className="text-lg font-semibold text-foreground mb-2">
+                {searchQuery ? t("noSearchResults") : t("noFilterResults")}
+              </h3>
+              <p className="text-muted-foreground text-center mb-6 max-w-md">
+                {searchQuery
+                  ? t("tryDifferentSearch")
+                  : t("tryAdjustingFilters")}
+              </p>
+              <div className="flex gap-3">
+                {searchQuery && (
+                  <Button variant="outline" onClick={onSearchClear}>
+                    {t("clearSearch")}
+                  </Button>
+                )}
+                {activeFiltersCount > 0 && (
+                  <Button variant="outline" onClick={onClearFilters}>
+                    {t("clearFilters")}
+                  </Button>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}

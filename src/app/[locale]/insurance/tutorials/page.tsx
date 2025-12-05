@@ -1,4 +1,7 @@
 import InsuranceTutorial from "@/components/features/insurance/InsuranceTutorial";
+import Header from "@/components/layout/header";
+import Footer from "@/components/layout/footer";
+import { getInsuranceNavbarConfig } from "@/configs/insurance-navbar-config";
 
 interface TutorialsPageProps {
   params: {
@@ -14,5 +17,13 @@ interface TutorialsPageProps {
 export default function TutorialsPage({
   params: { locale },
 }: TutorialsPageProps) {
-  return <InsuranceTutorial locale={locale} />;
+  return (
+    <>
+      <Header configOverride={getInsuranceNavbarConfig()} />
+      <main>
+        <InsuranceTutorial locale={locale} />
+      </main>
+      <Footer company="finzone" />
+    </>
+  );
 }
