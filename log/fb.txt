@@ -1,0 +1,9 @@
+/research Research Insurance pages chú trọng tới các tính năng như:
+1. CHọn để so sánh
+2. Snackbar
+3. Compare
+4. Cách tổ chức code của insurance pages, và các components
+5. và các tính năng khác
+
+sau đó viết plan để apply các thứ đó sang `/credit-cards` pages và các components. 
+/plan Viết plan vào docs/plans để chuẩn bị impl
