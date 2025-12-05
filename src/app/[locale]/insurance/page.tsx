@@ -20,8 +20,10 @@ import {
   useInsuranceActions,
   useInsuranceFilters,
   useFilteredInsuranceProducts,
+  useInsuranceGetters,
 } from "@/store/use-insurance-store";
 import { InsuranceThemeProvider } from "@/components/features/insurance/InsuranceThemeProvider";
+import ComparisonSnackbar from "@/components/features/insurance/ComparisonSnackbar";
 
 /**
  * Insurance listing page with filtering, search, and pagination
@@ -56,6 +58,10 @@ export default function InsurancePage() {
   } = useInsuranceActions();
   const { filters, activeFiltersCount } = useInsuranceFilters();
 
+  // Store actions for handlers
+  const { addToComparison, removeFromComparison } = useInsuranceActions();
+  const { isInComparison } = useInsuranceGetters();
+
   // URL Sync
   // useInsuranceUrlSyncFull({
   //   searchQuery,
@@ -79,6 +85,12 @@ export default function InsurancePage() {
       setItemsPerPage,
     },
     { setFiltersState, itemsPerPage },
+    {
+      addToComparison,
+      removeFromComparison,
+      isInComparison,
+      setViewMode,
+    },
   );
 
   // Computed values
@@ -154,6 +166,9 @@ export default function InsurancePage() {
 
         {/* Footer */}
         <Footer company="finzone" />
+
+        {/* Comparison Status Snack Bar */}
+        <ComparisonSnackbar />
       </div>
     </InsuranceThemeProvider>
   );

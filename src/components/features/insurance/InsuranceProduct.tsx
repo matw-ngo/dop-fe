@@ -402,10 +402,9 @@ const InsuranceProductCard: React.FC<InsuranceProductProps> = ({
                 </div>
                 {showCompareButton && (
                   <Button
-                    variant="outline"
+                    variant={isComparing ? "secondary" : "outline"}
                     size="sm"
                     onClick={handleCompareClick}
-                    disabled={isComparing}
                     role="switch"
                     aria-checked={isComparing}
                     aria-label={
@@ -413,6 +412,11 @@ const InsuranceProductCard: React.FC<InsuranceProductProps> = ({
                         ? t("removeFromComparison")
                         : t("addToComparison")
                     }
+                    className={cn(
+                      isComparing
+                        ? "bg-primary text-primary-foreground hover:bg-primary/90"
+                        : "hover:bg-accent",
+                    )}
                   >
                     {isComparing ? (
                       <>
@@ -479,11 +483,14 @@ const InsuranceProductCard: React.FC<InsuranceProductProps> = ({
           </div>
           {showCompareButton && (
             <Button
-              variant="ghost"
+              variant={isComparing ? "default" : "ghost"}
               size="sm"
-              className="h-8 w-8 p-0"
+              className={cn(
+                "h-8 w-8 p-0",
+                isComparing &&
+                  "bg-primary text-primary-foreground hover:bg-primary/90",
+              )}
               onClick={handleCompareClick}
-              disabled={isComparing}
               role="switch"
               aria-checked={isComparing}
               aria-label={
@@ -491,7 +498,7 @@ const InsuranceProductCard: React.FC<InsuranceProductProps> = ({
               }
             >
               {isComparing ? (
-                <CheckCircle className="h-4 w-4 text-primary" />
+                <CheckCircle className="h-4 w-4" />
               ) : (
                 <Plus className="h-4 w-4" />
               )}

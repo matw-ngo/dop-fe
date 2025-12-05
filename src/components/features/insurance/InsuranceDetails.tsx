@@ -75,7 +75,11 @@ import {
   ExternalLink,
 } from "lucide-react";
 import { formatCurrency } from "@/lib/utils";
-import { useInsuranceStore, useInsuranceComparison, useInsuranceActions } from "@/store/use-insurance-store";
+import {
+  useInsuranceStore,
+  useInsuranceComparison,
+  useInsuranceActions,
+} from "@/store/use-insurance-store";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { toast } from "sonner";
@@ -97,14 +101,19 @@ export function InsuranceDetails({ product }: InsuranceDetailsProps) {
   const handleCompareAction = () => {
     if (isInComparisonList) {
       removeFromComparison(product.id);
-      toast.success(t("removedFromComparison") || "Đã xóa khỏi danh sách so sánh");
+      toast.success(
+        t("removedFromComparison") || "Đã xóa khỏi danh sách so sánh",
+      );
     } else {
       if (canAddMore) {
         addToComparison(product.id);
-        toast.success(t("addedToComparison") || "Đã thêm vào danh sách so sánh");
+        toast.success(
+          t("addedToComparison") || "Đã thêm vào danh sách so sánh",
+        );
       } else {
         toast.error(
-          t("comparisonLimitReached") || `Chỉ có thể so sánh tối đa ${comparison.maxProducts} sản phẩm`
+          t("comparisonLimitReached") ||
+            `Chỉ có thể so sánh tối đa ${comparison.maxProducts} sản phẩm`,
         );
       }
     }
@@ -259,7 +268,9 @@ export function InsuranceDetails({ product }: InsuranceDetailsProps) {
                         <p className="font-medium">Độ tuổi được bảo hiểm</p>
                         <p className="text-sm text-muted-foreground">
                           Từ {product.eligibility.ageRange.min}
-                          {product.eligibility.ageRange.max && ` đến ${product.eligibility.ageRange.max}`} tuổi
+                          {product.eligibility.ageRange.max &&
+                            ` đến ${product.eligibility.ageRange.max}`}{" "}
+                          tuổi
                         </p>
                       </div>
                     </div>
@@ -269,11 +280,17 @@ export function InsuranceDetails({ product }: InsuranceDetailsProps) {
                         <div>
                           <p className="font-medium">Nghề nghiệp áp dụng</p>
                           <div className="flex flex-wrap gap-1 mt-1">
-                            {product.eligibility.occupation.map((occ, index) => (
-                              <Badge key={index} variant="outline" className="text-xs">
-                                {occ}
-                              </Badge>
-                            ))}
+                            {product.eligibility.occupation.map(
+                              (occ, index) => (
+                                <Badge
+                                  key={index}
+                                  variant="outline"
+                                  className="text-xs"
+                                >
+                                  {occ}
+                                </Badge>
+                              ),
+                            )}
                           </div>
                         </div>
                       </div>
@@ -291,17 +308,20 @@ export function InsuranceDetails({ product }: InsuranceDetailsProps) {
                         </p>
                       </div>
                     </div>
-                    {product.category === "vehicle" && product.vehicleCoverage && (
-                      <div className="flex items-start gap-3">
-                        <Car className="w-5 h-5 text-blue-600 mt-0.5" />
-                        <div>
-                          <p className="font-medium">Loại xe được bảo hiểm</p>
-                          <p className="text-sm text-muted-foreground">
-                            {getVehicleTypeText(product.vehicleCoverage.vehicleType)}
-                          </p>
+                    {product.category === "vehicle" &&
+                      product.vehicleCoverage && (
+                        <div className="flex items-start gap-3">
+                          <Car className="w-5 h-5 text-blue-600 mt-0.5" />
+                          <div>
+                            <p className="font-medium">Loại xe được bảo hiểm</p>
+                            <p className="text-sm text-muted-foreground">
+                              {getVehicleTypeText(
+                                product.vehicleCoverage.vehicleType,
+                              )}
+                            </p>
+                          </div>
                         </div>
-                      </div>
-                    )}
+                      )}
                   </div>
                 </div>
               </div>
@@ -454,7 +474,9 @@ export function InsuranceDetails({ product }: InsuranceDetailsProps) {
                         {!product.vehicleCoverage.naturalDisasters.disabled && (
                           <CoverageItem
                             title="Thiên tai"
-                            limit={product.vehicleCoverage.naturalDisasters.limit}
+                            limit={
+                              product.vehicleCoverage.naturalDisasters.limit
+                            }
                             maxLimit={maxCoverageLimit}
                             icon={<Cloud className="w-4 h-4" />}
                             color="gray"
@@ -473,11 +495,23 @@ export function InsuranceDetails({ product }: InsuranceDetailsProps) {
                   Lưu ý đặc biệt về phạm vi bảo hiểm
                 </h4>
                 <ul className="space-y-1 text-sm text-amber-700">
-                  <li>• Mức bồi thường thực tế có thể thay đổi tùy thuộc vào điều khoản cụ thể của hợp đồng</li>
+                  <li>
+                    • Mức bồi thường thực tế có thể thay đổi tùy thuộc vào điều
+                    khoản cụ thể của hợp đồng
+                  </li>
                   <li>• Một số quyền lợi có thể yêu cầu điều kiện bổ sung</li>
                   {product.category === "vehicle" && (
                     <>
-                      <li>• Giá trị xe được bảo hiểm: {formatCurrency(product.vehicleCoverage?.vehicleValueRange.min || 0)} - {formatCurrency(product.vehicleCoverage?.vehicleValueRange.max || 0)}</li>
+                      <li>
+                        • Giá trị xe được bảo hiểm:{" "}
+                        {formatCurrency(
+                          product.vehicleCoverage?.vehicleValueRange.min || 0,
+                        )}{" "}
+                        -{" "}
+                        {formatCurrency(
+                          product.vehicleCoverage?.vehicleValueRange.max || 0,
+                        )}
+                      </li>
                     </>
                   )}
                 </ul>
@@ -491,10 +525,15 @@ export function InsuranceDetails({ product }: InsuranceDetailsProps) {
                     Mức miễn thường
                   </h4>
                   <p className="text-sm text-yellow-700">
-                    Mức miễn thường chuẩn: <strong>{formatCurrency(product.deductibles.standardDeductible)}</strong>
-                    {product.deductibles.voluntaryDeductibleOptions.length > 0 && (
+                    Mức miễn thường chuẩn:{" "}
+                    <strong>
+                      {formatCurrency(product.deductibles.standardDeductible)}
+                    </strong>
+                    {product.deductibles.voluntaryDeductibleOptions.length >
+                      0 && (
                       <span>
-                        {" "}(Tùy chọn:{" "}
+                        {" "}
+                        (Tùy chọn:{" "}
                         {product.deductibles.voluntaryDeductibleOptions
                           .map((option) => formatCurrency(option))
                           .join(", ")}
@@ -503,7 +542,8 @@ export function InsuranceDetails({ product }: InsuranceDetailsProps) {
                     )}
                   </p>
                   <p className="text-xs text-yellow-600 mt-1">
-                    Mức miễn thường là số tiền bạn phải tự chi trả cho mỗi sự cố bảo hiểm
+                    Mức miễn thường là số tiền bạn phải tự chi trả cho mỗi sự cố
+                    bảo hiểm
                   </p>
                 </div>
               )}
@@ -519,7 +559,10 @@ export function InsuranceDetails({ product }: InsuranceDetailsProps) {
                 </h3>
                 <div className="grid md:grid-cols-2 gap-4">
                   {product.benefits.map((benefit, index) => (
-                    <div key={index} className="flex items-start gap-3 p-3 bg-white rounded-lg shadow-sm">
+                    <div
+                      key={index}
+                      className="flex items-start gap-3 p-3 bg-white rounded-lg shadow-sm"
+                    >
                       <Check className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
                       <span className="text-sm">{benefit}</span>
                     </div>
@@ -535,7 +578,10 @@ export function InsuranceDetails({ product }: InsuranceDetailsProps) {
                 </h3>
                 <div className="grid gap-3">
                   {product.features.map((feature, index) => (
-                    <div key={index} className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                    <div
+                      key={index}
+                      className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+                    >
                       <Star className="w-4 h-4 text-yellow-500 flex-shrink-0" />
                       <span className="text-sm">{feature}</span>
                     </div>
@@ -551,13 +597,15 @@ export function InsuranceDetails({ product }: InsuranceDetailsProps) {
                     Dịch vụ bổ sung & Hỗ trợ 24/7
                   </h3>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                    {Object.entries(product.additionalServices).map(([key, value]) => (
-                      <ServiceCard
-                        key={key}
-                        service={key}
-                        available={value}
-                      />
-                    ))}
+                    {Object.entries(product.additionalServices).map(
+                      ([key, value]) => (
+                        <ServiceCard
+                          key={key}
+                          service={key}
+                          available={value}
+                        />
+                      ),
+                    )}
                   </div>
 
                   <div className="mt-6 p-4 bg-blue-50 rounded-xl">
@@ -572,8 +620,12 @@ export function InsuranceDetails({ product }: InsuranceDetailsProps) {
                       >
                         <Phone className="w-4 h-4 text-red-500" />
                         <div>
-                          <p className="text-xs text-muted-foreground">Hotline 24/7</p>
-                          <p className="font-medium">{product.claims.contactInfo.hotline}</p>
+                          <p className="text-xs text-muted-foreground">
+                            Hotline 24/7
+                          </p>
+                          <p className="font-medium">
+                            {product.claims.contactInfo.hotline}
+                          </p>
                         </div>
                       </a>
                       <a
@@ -582,8 +634,12 @@ export function InsuranceDetails({ product }: InsuranceDetailsProps) {
                       >
                         <Mail className="w-4 h-4 text-blue-500" />
                         <div>
-                          <p className="text-xs text-muted-foreground">Email hỗ trợ</p>
-                          <p className="font-medium text-sm">{product.claims.contactInfo.email}</p>
+                          <p className="text-xs text-muted-foreground">
+                            Email hỗ trợ
+                          </p>
+                          <p className="font-medium text-sm">
+                            {product.claims.contactInfo.email}
+                          </p>
                         </div>
                       </a>
                       {product.claims.contactInfo.website && (
@@ -595,8 +651,12 @@ export function InsuranceDetails({ product }: InsuranceDetailsProps) {
                         >
                           <Globe className="w-4 h-4 text-green-500" />
                           <div>
-                            <p className="text-xs text-muted-foreground">Website</p>
-                            <p className="font-medium text-sm">{product.claims.contactInfo.website}</p>
+                            <p className="text-xs text-muted-foreground">
+                              Website
+                            </p>
+                            <p className="font-medium text-sm">
+                              {product.claims.contactInfo.website}
+                            </p>
                           </div>
                         </a>
                       )}
@@ -613,13 +673,21 @@ export function InsuranceDetails({ product }: InsuranceDetailsProps) {
                 </h3>
                 <div className="grid md:grid-cols-2 gap-4">
                   {product.paymentOptions.discounts?.map((discount, index) => (
-                    <div key={index} className="flex items-center gap-3 p-3 bg-white rounded-lg">
+                    <div
+                      key={index}
+                      className="flex items-center gap-3 p-3 bg-white rounded-lg"
+                    >
                       <Percent className="w-5 h-5 text-purple-500" />
                       <div>
                         <p className="font-medium text-sm">
-                          Giảm {discount.type === "percentage" ? `${discount.value}%` : formatCurrency(discount.value)}
+                          Giảm{" "}
+                          {discount.type === "percentage"
+                            ? `${discount.value}%`
+                            : formatCurrency(discount.value)}
                         </p>
-                        <p className="text-xs text-muted-foreground">{discount.condition}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {discount.condition}
+                        </p>
                       </div>
                     </div>
                   ))}
@@ -629,7 +697,8 @@ export function InsuranceDetails({ product }: InsuranceDetailsProps) {
                       <div>
                         <p className="font-medium text-sm">Không tổn thất</p>
                         <p className="text-xs text-muted-foreground">
-                          Giảm đến {product.renewal.noClaimBonus.maxDiscount}% sau {product.renewal.noClaimBonus.maxYears} năm
+                          Giảm đến {product.renewal.noClaimBonus.maxDiscount}%
+                          sau {product.renewal.noClaimBonus.maxYears} năm
                         </p>
                       </div>
                     </div>
@@ -647,11 +716,15 @@ export function InsuranceDetails({ product }: InsuranceDetailsProps) {
                   Điều khoản loại trừ
                 </h3>
                 <p className="text-sm text-muted-foreground mb-4">
-                  Các trường hợp sau đây không được bảo hiểm theo điều khoản hợp đồng:
+                  Các trường hợp sau đây không được bảo hiểm theo điều khoản hợp
+                  đồng:
                 </p>
                 <div className="grid gap-3">
                   {product.exclusions.map((exclusion, index) => (
-                    <div key={index} className="flex items-start gap-3 p-3 bg-white rounded-lg border border-red-100">
+                    <div
+                      key={index}
+                      className="flex items-start gap-3 p-3 bg-white rounded-lg border border-red-100"
+                    >
                       <X className="w-5 h-5 text-red-500 mt-0.5 flex-shrink-0" />
                       <span className="text-sm">{exclusion}</span>
                     </div>
@@ -660,14 +733,16 @@ export function InsuranceDetails({ product }: InsuranceDetailsProps) {
               </div>
 
               {/* Waiting Periods */}
-              {(product.waitingPeriods.general > 0 || product.waitingPeriods.specific) && (
+              {(product.waitingPeriods.general > 0 ||
+                product.waitingPeriods.specific) && (
                 <div className="bg-blue-50 border border-blue-200 p-6 rounded-xl">
                   <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
                     <Clock className="w-5 h-5 text-blue-600" />
                     Thời gian chờ
                   </h3>
                   <p className="text-sm text-muted-foreground mb-4">
-                    Thời gian chờ là khoảng thời gian từ ngày hợp đồng có hiệu lực đến ngày quyền lợi bảo hiểm được chi trả
+                    Thời gian chờ là khoảng thời gian từ ngày hợp đồng có hiệu
+                    lực đến ngày quyền lợi bảo hiểm được chi trả
                   </p>
 
                   {product.waitingPeriods.general > 0 && (
@@ -692,14 +767,24 @@ export function InsuranceDetails({ product }: InsuranceDetailsProps) {
                         Thời gian chờ theo từng quyền lợi
                       </h4>
                       <div className="grid gap-3">
-                        {Object.entries(product.waitingPeriods.specific).map(([condition, days]) => (
-                          <div key={condition} className="flex justify-between items-center p-3 bg-white rounded-lg">
-                            <span className="text-sm font-medium">{condition}</span>
-                            <Badge variant="outline" className="text-blue-600 border-blue-200">
-                              {days} ngày
-                            </Badge>
-                          </div>
-                        ))}
+                        {Object.entries(product.waitingPeriods.specific).map(
+                          ([condition, days]) => (
+                            <div
+                              key={condition}
+                              className="flex justify-between items-center p-3 bg-white rounded-lg"
+                            >
+                              <span className="text-sm font-medium">
+                                {condition}
+                              </span>
+                              <Badge
+                                variant="outline"
+                                className="text-blue-600 border-blue-200"
+                              >
+                                {days} ngày
+                              </Badge>
+                            </div>
+                          ),
+                        )}
                       </div>
                     </div>
                   )}
@@ -714,49 +799,81 @@ export function InsuranceDetails({ product }: InsuranceDetailsProps) {
                     Bệnh sẵn có
                   </h3>
 
-                  {product.eligibility.preExistingConditions.allowed.length > 0 && (
+                  {product.eligibility.preExistingConditions.allowed.length >
+                    0 && (
                     <div className="mb-4">
-                      <h4 className="font-medium mb-2 text-green-700">Bệnh sẵn có được chấp nhận:</h4>
+                      <h4 className="font-medium mb-2 text-green-700">
+                        Bệnh sẵn có được chấp nhận:
+                      </h4>
                       <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-                        {product.eligibility.preExistingConditions.allowed.map((condition, index) => (
-                          <Badge key={index} variant="secondary" className="bg-green-100 text-green-700">
-                            <Check className="w-3 h-3 mr-1" />
-                            {condition}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {product.eligibility.preExistingConditions.notAllowed.length > 0 && (
-                    <div className="mb-4">
-                      <h4 className="font-medium mb-2 text-red-700">Bệnh sẵn có không được chấp nhận:</h4>
-                      <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-                        {product.eligibility.preExistingConditions.notAllowed.map((condition, index) => (
-                          <Badge key={index} variant="secondary" className="bg-red-100 text-red-700">
-                            <X className="w-3 h-3 mr-1" />
-                            {condition}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {product.eligibility.preExistingConditions.loading && product.eligibility.preExistingConditions.loading.length > 0 && (
-                    <div>
-                      <h4 className="font-medium mb-2 text-amber-700">Phụ thu theo bệnh sẵn có:</h4>
-                      <div className="space-y-2">
-                        {product.eligibility.preExistingConditions.loading.map((item, index) => (
-                          <div key={index} className="flex justify-between items-center p-2 bg-white rounded">
-                            <span className="text-sm">{item.condition}</span>
-                            <Badge variant="outline" className="text-amber-600">
-                              +{item.increase}%
+                        {product.eligibility.preExistingConditions.allowed.map(
+                          (condition, index) => (
+                            <Badge
+                              key={index}
+                              variant="secondary"
+                              className="bg-green-100 text-green-700"
+                            >
+                              <Check className="w-3 h-3 mr-1" />
+                              {condition}
                             </Badge>
-                          </div>
-                        ))}
+                          ),
+                        )}
                       </div>
                     </div>
                   )}
+
+                  {product.eligibility.preExistingConditions.notAllowed.length >
+                    0 && (
+                    <div className="mb-4">
+                      <h4 className="font-medium mb-2 text-red-700">
+                        Bệnh sẵn có không được chấp nhận:
+                      </h4>
+                      <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                        {product.eligibility.preExistingConditions.notAllowed.map(
+                          (condition, index) => (
+                            <Badge
+                              key={index}
+                              variant="secondary"
+                              className="bg-red-100 text-red-700"
+                            >
+                              <X className="w-3 h-3 mr-1" />
+                              {condition}
+                            </Badge>
+                          ),
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  {product.eligibility.preExistingConditions.loading &&
+                    product.eligibility.preExistingConditions.loading.length >
+                      0 && (
+                      <div>
+                        <h4 className="font-medium mb-2 text-amber-700">
+                          Phụ thu theo bệnh sẵn có:
+                        </h4>
+                        <div className="space-y-2">
+                          {product.eligibility.preExistingConditions.loading.map(
+                            (item, index) => (
+                              <div
+                                key={index}
+                                className="flex justify-between items-center p-2 bg-white rounded"
+                              >
+                                <span className="text-sm">
+                                  {item.condition}
+                                </span>
+                                <Badge
+                                  variant="outline"
+                                  className="text-amber-600"
+                                >
+                                  +{item.increase}%
+                                </Badge>
+                              </div>
+                            ),
+                          )}
+                        </div>
+                      </div>
+                    )}
                 </div>
               )}
 
@@ -773,15 +890,22 @@ export function InsuranceDetails({ product }: InsuranceDetailsProps) {
                   </li>
                   <li className="flex items-start gap-2">
                     <ChevronRight className="w-4 h-4 mt-0.5 flex-shrink-0 text-gray-500" />
-                    <span>Thay đổi thông tin phải được thông báo cho công ty bảo hiểm</span>
+                    <span>
+                      Thay đổi thông tin phải được thông báo cho công ty bảo
+                      hiểm
+                    </span>
                   </li>
                   <li className="flex items-start gap-2">
                     <ChevronRight className="w-4 h-4 mt-0.5 flex-shrink-0 text-gray-500" />
-                    <span>Yêu cầu bồi thường phải được gửi trong thời hạn quy định</span>
+                    <span>
+                      Yêu cầu bồi thường phải được gửi trong thời hạn quy định
+                    </span>
                   </li>
                   <li className="flex items-start gap-2">
                     <ChevronRight className="w-4 h-4 mt-0.5 flex-shrink-0 text-gray-500" />
-                    <span>Vi phạm điều khoản có thể dẫn đến từ chối bồi thường</span>
+                    <span>
+                      Vi phạm điều khoản có thể dẫn đến từ chối bồi thường
+                    </span>
                   </li>
                 </ul>
               </div>
@@ -798,11 +922,36 @@ export function InsuranceDetails({ product }: InsuranceDetailsProps) {
 
                 <div className="grid md:grid-cols-5 gap-4">
                   {[
-                    { step: 1, title: "Báo cáo sự cố", icon: <Phone className="w-5 h-5" />, desc: "Ngay khi xảy ra sự cố" },
-                    { step: 2, title: "Nộp hồ sơ", icon: <FileText className="w-5 h-5" />, desc: "Trong vòng 7 ngày" },
-                    { step: 3, title: "Thẩm định", icon: <FileSearch className="w-5 h-5" />, desc: "3-5 ngày làm việc" },
-                    { step: 4, title: "Phê duyệt", icon: <FileCheck className="w-5 h-5" />, desc: "1-2 ngày làm việc" },
-                    { step: 5, title: "Chi trả", icon: <Banknote className="w-5 h-5" />, desc: "Trong 24h sau duyệt" },
+                    {
+                      step: 1,
+                      title: "Báo cáo sự cố",
+                      icon: <Phone className="w-5 h-5" />,
+                      desc: "Ngay khi xảy ra sự cố",
+                    },
+                    {
+                      step: 2,
+                      title: "Nộp hồ sơ",
+                      icon: <FileText className="w-5 h-5" />,
+                      desc: "Trong vòng 7 ngày",
+                    },
+                    {
+                      step: 3,
+                      title: "Thẩm định",
+                      icon: <FileSearch className="w-5 h-5" />,
+                      desc: "3-5 ngày làm việc",
+                    },
+                    {
+                      step: 4,
+                      title: "Phê duyệt",
+                      icon: <FileCheck className="w-5 h-5" />,
+                      desc: "1-2 ngày làm việc",
+                    },
+                    {
+                      step: 5,
+                      title: "Chi trả",
+                      icon: <Banknote className="w-5 h-5" />,
+                      desc: "Trong 24h sau duyệt",
+                    },
                   ].map((item) => (
                     <div key={item.step} className="text-center">
                       <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center mx-auto mb-2 shadow-md">
@@ -812,13 +961,17 @@ export function InsuranceDetails({ product }: InsuranceDetailsProps) {
                         {item.step}
                       </div>
                       <h4 className="font-medium text-sm mb-1">{item.title}</h4>
-                      <p className="text-xs text-muted-foreground">{item.desc}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {item.desc}
+                      </p>
                     </div>
                   ))}
                 </div>
 
                 <div className="mt-4 p-4 bg-white rounded-lg">
-                  <p className="text-sm text-gray-700">{product.claims.processDescription}</p>
+                  <p className="text-sm text-gray-700">
+                    {product.claims.processDescription}
+                  </p>
                 </div>
               </div>
 
@@ -830,7 +983,10 @@ export function InsuranceDetails({ product }: InsuranceDetailsProps) {
                 </h3>
                 <div className="grid gap-3">
                   {product.claims.requiredDocuments.map((doc, index) => (
-                    <div key={index} className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50">
+                    <div
+                      key={index}
+                      className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50"
+                    >
                       <FileText className="w-4 h-4 text-blue-500 flex-shrink-0" />
                       <span className="text-sm">{doc}</span>
                     </div>
@@ -846,7 +1002,10 @@ export function InsuranceDetails({ product }: InsuranceDetailsProps) {
                 </h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   {product.claims.claimMethods.map((method, index) => (
-                    <div key={index} className="bg-white p-4 rounded-lg border border-gray-200 hover:shadow-md transition-shadow">
+                    <div
+                      key={index}
+                      className="bg-white p-4 rounded-lg border border-gray-200 hover:shadow-md transition-shadow"
+                    >
                       <div className="text-3xl mb-2 text-center">
                         {getClaimMethodIcon(method)}
                       </div>
@@ -872,16 +1031,26 @@ export function InsuranceDetails({ product }: InsuranceDetailsProps) {
                     <div>
                       <div className="flex justify-between text-sm mb-1">
                         <span>Thời gian xử lý trung bình</span>
-                        <span className="font-medium">{product.claims.averageClaimTime} ngày</span>
+                        <span className="font-medium">
+                          {product.claims.averageClaimTime} ngày
+                        </span>
                       </div>
-                      <Progress value={(product.claims.averageClaimTime / 30) * 100} className="h-2" />
+                      <Progress
+                        value={(product.claims.averageClaimTime / 30) * 100}
+                        className="h-2"
+                      />
                     </div>
                     <div>
                       <div className="flex justify-between text-sm mb-1">
                         <span>Cam kết xử lý</span>
-                        <span className="font-medium">{product.claims.processingTime} ngày làm việc</span>
+                        <span className="font-medium">
+                          {product.claims.processingTime} ngày làm việc
+                        </span>
                       </div>
-                      <Progress value={(product.claims.processingTime / 30) * 100} className="h-2" />
+                      <Progress
+                        value={(product.claims.processingTime / 30) * 100}
+                        className="h-2"
+                      />
                     </div>
                   </div>
                 </div>
@@ -896,11 +1065,18 @@ export function InsuranceDetails({ product }: InsuranceDetailsProps) {
                       {product.claims.approvalRate}%
                     </div>
                     <div className="flex-1">
-                      <Progress value={product.claims.approvalRate} className="h-3" />
+                      <Progress
+                        value={product.claims.approvalRate}
+                        className="h-3"
+                      />
                       <p className="text-xs text-muted-foreground mt-1">
-                        {product.claims.approvalRate >= 95 ? "Tỷ lệ rất cao" :
-                         product.claims.approvalRate >= 90 ? "Tỷ lệ cao" :
-                         product.claims.approvalRate >= 80 ? "Tỷ lệ tốt" : "Tỷ lệ trung bình"}
+                        {product.claims.approvalRate >= 95
+                          ? "Tỷ lệ rất cao"
+                          : product.claims.approvalRate >= 90
+                            ? "Tỷ lệ cao"
+                            : product.claims.approvalRate >= 80
+                              ? "Tỷ lệ tốt"
+                              : "Tỷ lệ trung bình"}
                       </p>
                     </div>
                   </div>
@@ -919,7 +1095,9 @@ export function InsuranceDetails({ product }: InsuranceDetailsProps) {
                       <Phone className="w-5 h-5 text-red-500" />
                       <div>
                         <p className="font-medium">Hotline khẩn cấp</p>
-                        <p className="text-lg font-bold text-red-600">{product.claims.contactInfo.hotline}</p>
+                        <p className="text-lg font-bold text-red-600">
+                          {product.claims.contactInfo.hotline}
+                        </p>
                         <p className="text-xs text-muted-foreground">24/7</p>
                       </div>
                     </div>
@@ -931,7 +1109,9 @@ export function InsuranceDetails({ product }: InsuranceDetailsProps) {
                       <div>
                         <p className="font-medium">Cấp cứu 115</p>
                         <p className="text-lg font-bold text-red-600">115</p>
-                        <p className="text-xs text-muted-foreground">Miễn phí</p>
+                        <p className="text-xs text-muted-foreground">
+                          Miễn phí
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -941,8 +1121,12 @@ export function InsuranceDetails({ product }: InsuranceDetailsProps) {
                       <MessageCircle className="w-5 h-5 text-blue-500" />
                       <div>
                         <p className="font-medium">Zalo Support</p>
-                        <p className="text-lg font-bold text-blue-600">{product.claims.contactInfo.hotline}</p>
-                        <p className="text-xs text-muted-foreground">8:00 - 22:00</p>
+                        <p className="text-lg font-bold text-blue-600">
+                          {product.claims.contactInfo.hotline}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          8:00 - 22:00
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -966,38 +1150,64 @@ export function InsuranceDetails({ product }: InsuranceDetailsProps) {
               </div>
 
               {/* Installment Options */}
-              {product.paymentOptions.installmentAvailable && product.paymentOptions.installmentPlans && (
-                <div>
-                  <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                    <Calculator className="w-5 h-5 text-blue-600" />
-                    Lựa chọn trả góp
-                  </h3>
-                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {product.paymentOptions.installmentPlans.map((plan, index) => (
-                      <div key={index} className="bg-white p-4 rounded-lg border border-gray-200">
-                        <div className="flex justify-between items-start mb-2">
-                          <h4 className="font-medium">{plan.months} tháng</h4>
-                          {plan.interestRate === 0 && (
-                            <Badge variant="secondary" className="bg-green-100 text-green-700">
-                              0% lãi suất
-                            </Badge>
-                          )}
-                        </div>
-                        <p className="text-sm text-muted-foreground">
-                          {plan.interestRate ? `Lãi suất: ${plan.interestRate}% năm` : "Miễn lãi suất"}
-                        </p>
-                        <p className="text-sm text-muted-foreground">
-                          Thanh toán: {formatCurrency(Math.ceil(product.pricing.totalPremium / plan.months))}/tháng
-                        </p>
-                      </div>
-                    ))}
+              {product.paymentOptions.installmentAvailable &&
+                product.paymentOptions.installmentPlans && (
+                  <div>
+                    <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                      <Calculator className="w-5 h-5 text-blue-600" />
+                      Lựa chọn trả góp
+                    </h3>
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {product.paymentOptions.installmentPlans.map(
+                        (plan, index) => (
+                          <div
+                            key={index}
+                            className="bg-white p-4 rounded-lg border border-gray-200"
+                          >
+                            <div className="flex justify-between items-start mb-2">
+                              <h4 className="font-medium">
+                                {plan.months} tháng
+                              </h4>
+                              {plan.interestRate === 0 && (
+                                <Badge
+                                  variant="secondary"
+                                  className="bg-green-100 text-green-700"
+                                >
+                                  0% lãi suất
+                                </Badge>
+                              )}
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                              {plan.interestRate
+                                ? `Lãi suất: ${plan.interestRate}% năm`
+                                : "Miễn lãi suất"}
+                            </p>
+                            <p className="text-sm text-muted-foreground">
+                              Thanh toán:{" "}
+                              {formatCurrency(
+                                Math.ceil(
+                                  product.pricing.totalPremium / plan.months,
+                                ),
+                              )}
+                              /tháng
+                            </p>
+                          </div>
+                        ),
+                      )}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
 
               {/* Auto-renewal Details */}
-              <div className={product.renewal.autoRenewal ? "bg-green-50 border border-green-200" : "bg-gray-50 border border-gray-200"}
-                   p-6 rounded-xl>
+              <div
+                className={
+                  product.renewal.autoRenewal
+                    ? "bg-green-50 border border-green-200"
+                    : "bg-gray-50 border border-gray-200"
+                }
+                p-6
+                rounded-xl
+              >
                 <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
                   <RotateCcw className="w-5 h-6" />
                   Tự động gia hạn
@@ -1010,7 +1220,9 @@ export function InsuranceDetails({ product }: InsuranceDetailsProps) {
                         <Check className="w-5 h-5 text-green-600" />
                         <div>
                           <p className="font-medium">Tự động gia hạn</p>
-                          <p className="text-sm text-muted-foreground">Hợp đồng sẽ được gia hạn tự động</p>
+                          <p className="text-sm text-muted-foreground">
+                            Hợp đồng sẽ được gia hạn tự động
+                          </p>
                         </div>
                       </div>
 
@@ -1041,7 +1253,9 @@ export function InsuranceDetails({ product }: InsuranceDetailsProps) {
                   <div className="flex items-center gap-3">
                     <X className="w-5 h-5 text-gray-500" />
                     <div>
-                      <p className="font-medium">Không hỗ trợ gia hạn tự động</p>
+                      <p className="font-medium">
+                        Không hỗ trợ gia hạn tự động
+                      </p>
                       <p className="text-sm text-muted-foreground">
                         Vui lòng liên hệ để gia hạn hợp đồng trước khi hết hạn
                       </p>
@@ -1061,12 +1275,27 @@ export function InsuranceDetails({ product }: InsuranceDetailsProps) {
                   <div>
                     <h4 className="font-medium mb-3">Quy tắc tích lũy</h4>
                     <div className="space-y-2">
-                      {Array.from({ length: product.renewal.noClaimBonus.maxYears }, (_, i) => i + 1).map((year) => {
-                        const discount = Math.min((year / product.renewal.noClaimBonus.maxYears) * product.renewal.noClaimBonus.maxDiscount, product.renewal.noClaimBonus.maxDiscount);
+                      {Array.from(
+                        { length: product.renewal.noClaimBonus.maxYears },
+                        (_, i) => i + 1,
+                      ).map((year) => {
+                        const discount = Math.min(
+                          (year / product.renewal.noClaimBonus.maxYears) *
+                            product.renewal.noClaimBonus.maxDiscount,
+                          product.renewal.noClaimBonus.maxDiscount,
+                        );
                         return (
-                          <div key={year} className="flex justify-between items-center p-2 bg-white rounded">
-                            <span className="text-sm">{year} năm không tổn thất</span>
-                            <Badge variant="outline" className="text-yellow-600">
+                          <div
+                            key={year}
+                            className="flex justify-between items-center p-2 bg-white rounded"
+                          >
+                            <span className="text-sm">
+                              {year} năm không tổn thất
+                            </span>
+                            <Badge
+                              variant="outline"
+                              className="text-yellow-600"
+                            >
                               -{Math.round(discount)}%
                             </Badge>
                           </div>
@@ -1088,7 +1317,10 @@ export function InsuranceDetails({ product }: InsuranceDetailsProps) {
                       </li>
                       <li className="flex items-start gap-2">
                         <Info className="w-4 h-4 mt-0.5 text-yellow-600 flex-shrink-0" />
-                        <span>Mức giảm tối đa: {product.renewal.noClaimBonus.maxDiscount}%</span>
+                        <span>
+                          Mức giảm tối đa:{" "}
+                          {product.renewal.noClaimBonus.maxDiscount}%
+                        </span>
                       </li>
                     </ul>
                   </div>
@@ -1106,24 +1338,34 @@ export function InsuranceDetails({ product }: InsuranceDetailsProps) {
                   <div>
                     <h4 className="font-medium mb-2">Thời gian cân nhắc</h4>
                     <p className="text-sm text-gray-700">
-                      Trong vòng {product.renewal.gracePeriod} ngày kể từ ngày hiệu lực hợp đồng,
-                      bạn có quyền hủy hợp đồng và được hoàn lại 100% phí bảo hiểm.
+                      Trong vòng {product.renewal.gracePeriod} ngày kể từ ngày
+                      hiệu lực hợp đồng, bạn có quyền hủy hợp đồng và được hoàn
+                      lại 100% phí bảo hiểm.
                     </p>
                   </div>
 
                   <div>
                     <h4 className="font-medium mb-2">Sau thời gian cân nhắc</h4>
                     <ul className="space-y-1 text-sm text-gray-700">
-                      <li>• Hủy hợp đồng trước hạn: Hoàn lại phí bảo hiểm tương ứng với thời gian còn hiệu lực</li>
-                      <li>• Phí hủy hợp đồng: Tối đa 10% phí bảo hiểm đã đóng</li>
-                      <li>• Thủ tục: Gửi yêu cầu bằng văn bản kèm giấy chứng minh nhân dân</li>
+                      <li>
+                        • Hủy hợp đồng trước hạn: Hoàn lại phí bảo hiểm tương
+                        ứng với thời gian còn hiệu lực
+                      </li>
+                      <li>
+                        • Phí hủy hợp đồng: Tối đa 10% phí bảo hiểm đã đóng
+                      </li>
+                      <li>
+                        • Thủ tục: Gửi yêu cầu bằng văn bản kèm giấy chứng minh
+                        nhân dân
+                      </li>
                     </ul>
                   </div>
 
                   <div className="bg-white p-4 rounded-lg">
                     <p className="text-xs text-gray-600">
-                      <strong>Lưu ý:</strong> Hợp đồng sẽ tự động terminate nếu phí bảo hiểm không được thanh toán
-                      sau thời gian gia hạn {product.renewal.gracePeriod} ngày.
+                      <strong>Lưu ý:</strong> Hợp đồng sẽ tự động terminate nếu
+                      phí bảo hiểm không được thanh toán sau thời gian gia hạn{" "}
+                      {product.renewal.gracePeriod} ngày.
                     </p>
                   </div>
                 </div>
@@ -1146,8 +1388,12 @@ export function InsuranceDetails({ product }: InsuranceDetailsProps) {
                     {t("comparisonStatus") || "Trạng thái so sánh"}
                   </span>
                 </div>
-                <Badge variant="secondary" className="bg-blue-100 text-blue-800">
-                  {comparisonCount}/{comparison.maxProducts} {t("products") || "sản phẩm"}
+                <Badge
+                  variant="secondary"
+                  className="bg-blue-100 text-blue-800"
+                >
+                  {comparisonCount}/{comparison.maxProducts}{" "}
+                  {t("products") || "sản phẩm"}
                 </Badge>
               </div>
               {comparisonCount > 0 && (
@@ -1156,8 +1402,12 @@ export function InsuranceDetails({ product }: InsuranceDetailsProps) {
                     {t("comparisonCountMessage", { count: comparisonCount }) ||
                       `Đang có ${comparisonCount} sản phẩm trong danh sách so sánh`}
                   </p>
-                  <Link href="/insurance/comparison">
-                    <Button variant="outline" size="sm" className="text-blue-600 border-blue-200 hover:bg-blue-50">
+                  <Link href="/insurance/compare">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="text-blue-600 border-blue-200 hover:bg-blue-50"
+                    >
                       <ExternalLink className="w-4 h-4 mr-1" />
                       {t("viewComparison") || "Xem so sánh"}
                     </Button>
@@ -1175,20 +1425,26 @@ export function InsuranceDetails({ product }: InsuranceDetailsProps) {
             </div>
 
             {/* Action Buttons */}
-            <div className={`${comparisonCount > 0 ? "grid grid-cols-1 md:grid-cols-3 gap-3" : "grid grid-cols-1 md:grid-cols-2 gap-3"}`}>
+            <div
+              className={`${comparisonCount > 0 ? "grid grid-cols-1 md:grid-cols-3 gap-3" : "grid grid-cols-1 md:grid-cols-2 gap-3"}`}
+            >
               {/* Add/Remove from Comparison Button */}
               <Button
                 variant={isInComparisonList ? "secondary" : "outline"}
                 onClick={handleCompareAction}
                 disabled={!canAddMore && !isInComparisonList}
-                aria-label={isInComparisonList
-                  ? (t("removeFromComparisonAria") || `Xóa ${product.name} khỏi danh sách so sánh`)
-                  : (t("addToComparisonAria") || `Thêm ${product.name} vào danh sách so sánh`)
+                aria-label={
+                  isInComparisonList
+                    ? t("removeFromComparisonAria") ||
+                      `Xóa ${product.name} khỏi danh sách so sánh`
+                    : t("addToComparisonAria") ||
+                      `Thêm ${product.name} vào danh sách so sánh`
                 }
                 className={`
-                  ${isInComparisonList
-                    ? "bg-red-50 text-red-600 border-red-200 hover:bg-red-100"
-                    : "text-blue-600 border-blue-200 hover:bg-blue-50"
+                  ${
+                    isInComparisonList
+                      ? "bg-red-50 text-red-600 border-red-200 hover:bg-red-100"
+                      : "text-blue-600 border-blue-200 hover:bg-blue-50"
                   }
                   ${!canAddMore && !isInComparisonList ? "opacity-50 cursor-not-allowed" : ""}
                 `}
@@ -1208,11 +1464,17 @@ export function InsuranceDetails({ product }: InsuranceDetailsProps) {
 
               {/* View Comparison Button (only show when there are products in comparison) */}
               {comparisonCount > 0 && (
-                <Link href="/insurance/comparison" className="w-full">
-                  <Button variant="default" className="w-full bg-blue-600 hover:bg-blue-700">
+                <Link href="/insurance/compare" className="w-full">
+                  <Button
+                    variant="default"
+                    className="w-full bg-blue-600 hover:bg-blue-700"
+                  >
                     <BarChart3 className="w-4 h-4 mr-2" />
                     {t("compareProducts") || "So sánh sản phẩm"}
-                    <Badge variant="secondary" className="ml-2 bg-white text-blue-600">
+                    <Badge
+                      variant="secondary"
+                      className="ml-2 bg-white text-blue-600"
+                    >
                       {comparisonCount}
                     </Badge>
                   </Button>
@@ -1249,7 +1511,13 @@ interface CoverageItemProps {
   color: string;
 }
 
-function CoverageItem({ title, limit, maxLimit, icon, color }: CoverageItemProps) {
+function CoverageItem({
+  title,
+  limit,
+  maxLimit,
+  icon,
+  color,
+}: CoverageItemProps) {
   const progress = Math.min((limit / maxLimit) * 100, 100);
   const colorClasses = {
     blue: "bg-blue-100 text-blue-700",
@@ -1283,7 +1551,9 @@ function CoverageItem({ title, limit, maxLimit, icon, color }: CoverageItemProps
     <div className="p-4 bg-white rounded-lg border shadow-sm">
       <div className="flex justify-between items-start mb-2">
         <div className="flex items-center gap-2">
-          <div className={`p-2 rounded-full ${colorClasses[color as keyof typeof colorClasses]}`}>
+          <div
+            className={`p-2 rounded-full ${colorClasses[color as keyof typeof colorClasses]}`}
+          >
             {icon}
           </div>
           <span className="font-medium">{title}</span>
@@ -1295,8 +1565,13 @@ function CoverageItem({ title, limit, maxLimit, icon, color }: CoverageItemProps
           <span>Mức bảo vệ</span>
           <span>{Math.round(progress)}%</span>
         </div>
-        <Progress value={progress} className="h-2"
-                  indicatorClassName={progressColors[color as keyof typeof progressColors]} />
+        <Progress
+          value={progress}
+          className="h-2"
+          indicatorClassName={
+            progressColors[color as keyof typeof progressColors]
+          }
+        />
       </div>
     </div>
   );
@@ -1311,9 +1586,13 @@ function ServiceCard({ service, available }: ServiceCardProps) {
   const serviceInfo = getServiceInfo(service);
 
   return (
-    <div className={`p-4 rounded-lg border ${available ? 'bg-green-50 border-green-200' : 'bg-gray-50 border-gray-200'}`}>
+    <div
+      className={`p-4 rounded-lg border ${available ? "bg-green-50 border-green-200" : "bg-gray-50 border-gray-200"}`}
+    >
       <div className="flex flex-col items-center text-center">
-        <div className={`w-10 h-10 rounded-full flex items-center justify-center mb-2 ${available ? 'bg-green-200' : 'bg-gray-200'}`}>
+        <div
+          className={`w-10 h-10 rounded-full flex items-center justify-center mb-2 ${available ? "bg-green-200" : "bg-gray-200"}`}
+        >
           {available ? (
             <Check className="w-5 h-5 text-green-600" />
           ) : (
@@ -1321,7 +1600,9 @@ function ServiceCard({ service, available }: ServiceCardProps) {
           )}
         </div>
         <p className="text-sm font-medium mb-1">{serviceInfo.name}</p>
-        <p className="text-xs text-muted-foreground">{serviceInfo.description}</p>
+        <p className="text-xs text-muted-foreground">
+          {serviceInfo.description}
+        </p>
       </div>
     </div>
   );
@@ -1339,7 +1620,9 @@ function PaymentMethodCard({ method }: PaymentMethodCardProps) {
       <div className="flex flex-col items-center text-center">
         <div className="text-3xl mb-2">{methodInfo.icon}</div>
         <p className="font-medium text-sm">{methodInfo.name}</p>
-        <p className="text-xs text-muted-foreground mt-1">{methodInfo.description}</p>
+        <p className="text-xs text-muted-foreground mt-1">
+          {methodInfo.description}
+        </p>
       </div>
     </div>
   );
@@ -1372,55 +1655,58 @@ function getServiceInfo(service: string) {
   const services: Record<string, { name: string; description: string }> = {
     roadsideAssistance: {
       name: "Cứu hộ 24/7",
-      description: "Kéo xe, thay lốp, sửa chữa tại chỗ"
+      description: "Kéo xe, thay lốp, sửa chữa tại chỗ",
     },
     medicalHotline: {
       name: "Tổng đài y tế",
-      description: "Tư vấn sức khỏe 24/7"
+      description: "Tư vấn sức khỏe 24/7",
     },
     legalSupport: {
       name: "Hỗ trợ pháp lý",
-      description: "Tư vấn pháp lý miễn phí"
+      description: "Tư vấn pháp lý miễn phí",
     },
     homeVisit: {
       name: "Khám tại nhà",
-      description: "Bác sĩ đến tận nhà"
+      description: "Bác sĩ đến tận nhà",
     },
     worldwideCoverage: {
       name: "Bảo vệ toàn cầu",
-      description: "Áp dụng trên toàn thế giới"
-    }
+      description: "Áp dụng trên toàn thế giới",
+    },
   };
   return services[service] || { name: service, description: "" };
 }
 
 function getPaymentMethodInfo(method: string) {
-  const methods: Record<string, { name: string; icon: string; description: string }> = {
+  const methods: Record<
+    string,
+    { name: string; icon: string; description: string }
+  > = {
     cash: {
       name: "Tiền mặt",
       icon: "💵",
-      description: "Thanh toán trực tiếp"
+      description: "Thanh toán trực tiếp",
     },
     bank_transfer: {
       name: "Chuyển khoản",
       icon: "🏦",
-      description: "Qua ngân hàng"
+      description: "Qua ngân hàng",
     },
     credit_card: {
       name: "Thẻ tín dụng",
       icon: "💳",
-      description: "Visa/Mastercard"
+      description: "Visa/Mastercard",
     },
     mobile_banking: {
       name: "Ngân hàng số",
       icon: "📱",
-      description: "App ngân hàng"
+      description: "App ngân hàng",
     },
     ewallet: {
       name: "Ví điện tử",
       icon: "👛",
-      description: "Momo, ZaloPay..."
-    }
+      description: "Momo, ZaloPay...",
+    },
   };
   return methods[method] || { name: method, icon: "💳", description: "" };
 }

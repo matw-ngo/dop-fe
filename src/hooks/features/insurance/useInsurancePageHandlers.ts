@@ -25,6 +25,12 @@ export function useInsurancePageHandlers(
     setFiltersState,
     itemsPerPage,
   }: Pick<UseInsurancePageStateReturn, "setFiltersState" | "itemsPerPage">,
+  storeActions: {
+    addToComparison: (productId: string) => void;
+    removeFromComparison: (productId: string) => void;
+    isInComparison: (productId: string) => boolean;
+    setViewMode: (mode: "grid" | "list" | "compact") => void;
+  },
 ) {
   const handleSearch = useCallback(
     (query: string) => {
@@ -75,16 +81,21 @@ export function useInsurancePageHandlers(
 
   const handleViewModeChange = useCallback(
     (mode: "grid" | "list" | "compact") => {
-      // TODO: Implement view mode change when available
-      console.log("View mode change:", mode);
+      storeActions.setViewMode(mode);
     },
-    [],
+    [storeActions.setViewMode],
   );
 
-  const handleCompareToggle = useCallback((productId: string) => {
-    // TODO: Implement comparison functionality
-    console.log("Toggle compare for product:", productId);
-  }, []);
+  const handleCompareToggle = useCallback(
+    (productId: string) => {
+      if (storeActions.isInComparison(productId)) {
+        storeActions.removeFromComparison(productId);
+      } else {
+        storeActions.addToComparison(productId);
+      }
+    },
+    [storeActions],
+  );
 
   return {
     handleSearch,

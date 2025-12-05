@@ -185,6 +185,14 @@
       "applyNow": "Đăng ký ngay"
     },
     "insurance": {
+      "comparisonProgress": "Tiến trình so sánh",
+      "maxProductsReached": "Số lượng sản phẩm đã đạt tối đa",
+      "comparisonPanel": "Bảng so sánh",
+      "shareComparison": "Chia sẻ",
+      "exportComparison": "Xuất",
+      "comparisonLimit": "Giới hạn so sánh",
+      "youMightAlsoLike": "Bạn cũng có thể thích",
+      "noMoreSuggestions": "Không có gợi ý nào",
       "noProductsFound": "Không tìm thấy sản phẩm bảo hiểm nào",
       "tryAdjustingFilters": "Thử điều chỉnh bộ lọc của bạn",
       "showingResults": "Hiển thị {count} của {total} sản phẩm",
@@ -256,6 +264,11 @@
       "noProductsToCompare": "Chưa có sản phẩm nào để so sánh",
       "selectAtLeastTwo": "Vui lòng chọn ít nhất 2 sản phẩm để so sánh",
       "selectProductsToCompare": "Chọn sản phẩm để so sánh",
+      "comparisonSnackbar": {
+        "selected": "Đã chọn {count} sản phẩm để so sánh",
+        "viewComparison": "Xem so sánh",
+        "clearAll": "Xóa tất cả"
+      },
       "productDetails": "Chi tiết sản phẩm bảo hiểm",
       "productDetailsDescription": "Thông tin chi tiết và điều kiện bảo hiểm",
       "features": "Tính năng nổi bật",
@@ -816,17 +829,6 @@
         "negative": "Phải là một số âm"
       }
     },
-    "common": {
-      "loading": "Đang tải...",
-      "error": "Đã xảy ra lỗi",
-      "success": "Thành công!",
-      "submit": "Gửi",
-      "cancel": "Hủy",
-      "save": "Lưu",
-      "reset": "Đặt lại",
-      "retry": "Thử lại",
-      "back": "Quay lại"
-    },
     "components": {
       "errorState": {
         "defaultTitle": "Đã xảy ra lỗi không mong muốn",
@@ -1189,5 +1191,18 @@
         "contactSupport": "Liên hệ hỗ trợ"
       }
     }
+  },
+  "common": {
+    "home": "Trang chủ",
+    "loading": "Đang tải...",
+    "error": "Đã xảy ra lỗi",
+    "success": "Thành công!",
+    "submit": "Gửi",
+    "cancel": "Hủy",
+    "save": "Lưu",
+    "reset": "Đặt lại",
+    "retry": "Thử lại",
+    "back": "Quay lại",
+    "close": "Đóng"
   }
 }

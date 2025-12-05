@@ -19,64 +19,10 @@ import { useInsuranceStore } from "@/store/use-insurance-store";
 import { InsuranceProduct } from "@/types/insurance";
 import InsuranceGrid from "@/components/features/insurance/InsuranceGrid";
 import ComparisonPanel from "@/components/features/insurance/ComparisonPanel";
+import { InsuranceComparison } from "@/components/features/insurance/InsuranceComparison";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 import { getInsuranceNavbarConfig } from "@/configs/insurance-navbar-config";
-
-// Placeholder components - to be created in subsequent tasks
-const InsuranceComparison = ({ productIds }: { productIds: string[] }) => {
-  const t = useTranslations();
-  const { getProductById } = useInsuranceStore();
-
-  const products = productIds
-    .map((id) => getProductById(id))
-    .filter(Boolean) as InsuranceProduct[];
-
-  if (products.length === 0) {
-    return null;
-  }
-
-  return (
-    <div className="space-y-6">
-      <div className="text-center">
-        <h2 className="text-2xl font-bold mb-2">
-          {t("pages.insurance.comparingProducts", { count: products.length }) ||
-            `Đang so sánh ${products.length} sản phẩm bảo hiểm`}
-        </h2>
-        <p className="text-muted-foreground">
-          {t("pages.insurance.comparingDescription") ||
-            "So sánh chi tiết các tính năng và quyền lợi của các sản phẩm đã chọn"}
-        </p>
-      </div>
-
-      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-        <p className="text-sm text-yellow-800">
-          <strong>Lưu ý:</strong> This is a placeholder for the
-          InsuranceComparison component. The actual comparison component will be
-          implemented in Task 25.
-        </p>
-      </div>
-
-      {/* Temporary display of selected products */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {products.map((product) => (
-          <div key={product.id} className="border rounded-lg p-4">
-            <h3 className="font-semibold mb-2">{product.name}</h3>
-            <p className="text-sm text-muted-foreground mb-2">
-              {product.issuer}
-            </p>
-            <p className="text-lg font-bold text-primary">
-              {new Intl.NumberFormat("vi-VN", {
-                style: "currency",
-                currency: "VND",
-              }).format(product.pricing.totalPremium)}
-            </p>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
 
 // Comparison Panel Integration Component
 const ComparisonPanelWrapper = ({
@@ -128,31 +74,34 @@ export default function InsuranceComparePage() {
   const [productIds, setProductIds] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Get comparison actions from store
+  // Get comparison state from store
+  const storeComparisonProducts = useInsuranceStore(
+    (state: any) => state.comparison.selectedProducts,
+  );
   const { clearComparison, getProductById } = useInsuranceStore();
 
   useEffect(() => {
-    // Read comparison IDs from URL parameters
-    // Support both 'ids' and 'products' parameter names
+    // First try to get IDs from URL parameters (for direct link access)
     const idsParam = searchParams.get("ids");
     const productsParam = searchParams.get("products");
 
     const ids = idsParam || productsParam;
 
     if (ids) {
+      // If URL has IDs, use them
       const idArray = ids.split(",").filter((id) => id.trim());
-      // Validate that the products exist
       const validIds = idArray.filter((id) => {
         const product = getProductById(id);
         return product !== undefined;
       });
       setProductIds(validIds);
     } else {
-      setProductIds([]);
+      // If no URL params, use store state
+      setProductIds(storeComparisonProducts);
     }
 
     setIsLoading(false);
-  }, [searchParams, getProductById]);
+  }, [searchParams, getProductById, storeComparisonProducts]);
 
   // Handle clearing comparison
   const handleClearComparison = () => {
@@ -276,7 +225,28 @@ export default function InsuranceComparePage() {
 
               {/* Main Comparison Area */}
               <div>
-                <InsuranceComparison productIds={productIds} />
+                {productIds.length > 0 && (
+                  <InsuranceComparison
+                    products={
+                      productIds
+                        .map((id) => getProductById(id))
+                        .filter(Boolean) as InsuranceProduct[]
+                    }
+                    onRemove={(productId) => {
+                      // Remove from store
+                      const store = useInsuranceStore.getState();
+                      store.removeFromComparison(productId);
+                      // Update local state
+                      const updatedIds = productIds.filter(
+                        (id) => id !== productId,
+                      );
+                      setProductIds(updatedIds);
+                    }}
+                    onClear={() => {
+                      handleClearComparison();
+                    }}
+                  />
+                )}
               </div>
 
               {/* Suggestions Section */}

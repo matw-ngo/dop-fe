@@ -255,6 +255,11 @@
       "noProductsToCompare": "No products to compare yet",
       "selectAtLeastTwo": "Please select at least 2 products to compare",
       "selectProductsToCompare": "Select products to compare",
+      "comparisonSnackbar": {
+        "selected": "{count} product(s) selected for comparison",
+        "viewComparison": "View Comparison",
+        "clearAll": "Clear All"
+      },
       "productDetails": "Insurance Product Details",
       "productDetailsDescription": "Detailed information and insurance conditions",
       "features": "Key Features",
@@ -404,7 +409,8 @@
       "save": "Save",
       "reset": "Reset",
       "retry": "Retry",
-      "back": "Back"
+      "back": "Back",
+      "close": "Close"
     },
     "components": {
       "errorState": {

@@ -6,6 +6,7 @@ import InsuranceFilterPanel from "@/components/features/insurance/FilterPanel";
 import Pagination from "@/components/features/insurance/Pagination";
 import type { InsuranceProduct } from "@/types/insurance";
 import { useTheme } from "@/lib/theme/context";
+import { useInsuranceStore } from "@/store/use-insurance-store";
 
 interface InsurancePageContentProps {
   isLoading: boolean;
@@ -49,6 +50,11 @@ export default function InsurancePageContent({
   const t = useTranslations("pages.insurance");
   const { themeConfig } = useTheme();
 
+  // Get comparison state from store
+  const comparisonProducts = useInsuranceStore(
+    (state: any) => state.comparison.selectedProducts,
+  );
+
   const isMedicalTheme = themeConfig?.id === "medical";
 
   return (
@@ -87,7 +93,7 @@ export default function InsurancePageContent({
                 viewMode="grid" // TODO: Make this configurable
                 onProductClick={onProductClick}
                 onCompareToggle={onCompareToggle}
-                comparingProducts={[]} // Will be populated from store
+                comparingProducts={comparisonProducts}
               />
 
               {/* Pagination */}
