@@ -10,6 +10,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Grid, List, Loader2, SlidersHorizontal, X } from "lucide-react";
+import { useTheme } from "@/lib/theme/context";
 import SearchBar from "@/components/features/credit-card/SearchBar";
 import SortDropdown from "@/components/features/credit-card/SortDropdown";
 import FilterPanel from "@/components/features/credit-card/FilterPanel";
@@ -51,9 +52,14 @@ export function CreditCardsPageControls({
   onMobileFiltersChange,
 }: CreditCardsPageControlsProps) {
   const t = useTranslations("pages.creditCard");
+  const { themeConfig } = useTheme();
+
+  const isCorporateTheme = themeConfig?.id === "corporate";
 
   return (
-    <div className="bg-card border-b sticky top-0 z-40">
+    <div
+      className={`bg-card border-b sticky top-0 z-40 ${isCorporateTheme ? "shadow-sm" : ""}`}
+    >
       <div className="container mx-auto px-4 py-4">
         {/* Search Bar */}
         <div className="mb-4">
@@ -103,12 +109,22 @@ export function CreditCardsPageControls({
             />
 
             {/* View Mode Toggle - Desktop Only */}
-            <div className="hidden sm:flex items-center gap-1 p-1 bg-muted rounded-lg">
+            <div
+              className={`hidden sm:flex items-center gap-1 p-1 rounded-lg ${
+                isCorporateTheme
+                  ? "bg-primary/5 border border-primary/20"
+                  : "bg-muted"
+              }`}
+            >
               <Button
                 variant={viewMode === "grid" ? "default" : "ghost"}
                 size="sm"
                 onClick={() => onViewModeChange("grid")}
-                className="h-7 w-7 p-0"
+                className={`h-7 w-7 p-0 transition-colors ${
+                  isCorporateTheme && viewMode !== "grid"
+                    ? "hover:bg-primary/10 text-muted-foreground"
+                    : ""
+                }`}
               >
                 <Grid className="h-4 w-4" />
               </Button>
@@ -116,7 +132,11 @@ export function CreditCardsPageControls({
                 variant={viewMode === "list" ? "default" : "ghost"}
                 size="sm"
                 onClick={() => onViewModeChange("list")}
-                className="h-7 w-7 p-0"
+                className={`h-7 w-7 p-0 transition-colors ${
+                  isCorporateTheme && viewMode !== "list"
+                    ? "hover:bg-primary/10 text-muted-foreground"
+                    : ""
+                }`}
               >
                 <List className="h-4 w-4" />
               </Button>

@@ -4,15 +4,16 @@ import React, { useState } from "react";
 import { useLocale } from "next-intl";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
-import { getNavbarConfig } from "@/configs/navbar-config";
 import { useCreditCardsStore } from "@/store/use-credit-cards-store";
 import type { CreditCardFilters, SortOption } from "@/types/credit-card";
 import { useCreditCardsPageState } from "./hooks/useCreditCardsPageState";
+import { useCreditCardsNavbarTheme } from "@/hooks/features/credit-card/useCreditCardsNavbarTheme";
 
 import CreditCardsPageHero from "@/components/features/credit-card/CreditCardsPageHero";
 import { CreditCardsPageControls } from "@/components/features/credit-card/CreditCardsPageControls";
 import { CreditCardsPageResults } from "@/components/features/credit-card/CreditCardsPageResults";
 import FilterPanel from "@/components/features/credit-card/FilterPanel";
+import { CreditCardsThemeProvider } from "@/components/features/credit-card/CreditCardsThemeProvider";
 
 // Import custom hooks
 import {
@@ -107,75 +108,78 @@ export default function CreditCardsPage() {
     setCurrentPage(1); // Reset to first page
   };
 
-  const navbarConfig = getNavbarConfig();
+  // Configuration - use theme-aware navbar config
+  const creditCardsNavbarConfig = useCreditCardsNavbarTheme();
 
   return (
-    <div className="flex flex-col min-h-screen bg-background">
-      <Header configOverride={navbarConfig} />
+    <CreditCardsThemeProvider>
+      <div className="flex flex-col min-h-screen bg-background">
+        <Header configOverride={creditCardsNavbarConfig} />
 
-      <CreditCardsPageHero
-        titleKey="creditCards"
-        descriptionKey="creditCardsDescription"
-        comparisonCards={comparisonCards}
-        locale={locale}
-      />
+        <CreditCardsPageHero
+          titleKey="creditCards"
+          descriptionKey="creditCardsDescription"
+          comparisonCards={comparisonCards}
+          locale={locale}
+        />
 
-      <CreditCardsPageControls
-        searchQuery={searchQuery}
-        sortBy={sortBy}
-        viewMode={viewMode}
-        filters={filters}
-        onSearch={handleSearch}
-        onSortChange={handleSortChange}
-        onFiltersChange={handleFiltersChange}
-        onClearFilters={clearFilters}
-        onViewModeChange={setViewMode}
-        isLoading={false}
-        totalProducts={cards.length}
-        filteredProductsCount={filteredCards.length}
-        activeFiltersCount={activeFiltersCount}
-        mobileFiltersOpen={mobileFiltersOpen}
-        onMobileFiltersChange={setMobileFiltersOpen}
-      />
+        <CreditCardsPageControls
+          searchQuery={searchQuery}
+          sortBy={sortBy}
+          viewMode={viewMode}
+          filters={filters}
+          onSearch={handleSearch}
+          onSortChange={handleSortChange}
+          onFiltersChange={handleFiltersChange}
+          onClearFilters={clearFilters}
+          onViewModeChange={setViewMode}
+          isLoading={false}
+          totalProducts={cards.length}
+          filteredProductsCount={filteredCards.length}
+          activeFiltersCount={activeFiltersCount}
+          mobileFiltersOpen={mobileFiltersOpen}
+          onMobileFiltersChange={setMobileFiltersOpen}
+        />
 
-      <main className="flex-grow">
-        <div className="container mx-auto px-4 py-6">
-          <div className="flex gap-6">
-            {/* Sidebar - Desktop */}
-            <div className="hidden lg:block w-80 flex-shrink-0">
-              <div className="sticky top-6">
-                <FilterPanel
-                  filters={filters}
-                  onFiltersChange={handleFiltersChange}
+        <main className="flex-grow">
+          <div className="container mx-auto px-4 py-6">
+            <div className="flex gap-6">
+              {/* Sidebar - Desktop */}
+              <div className="hidden lg:block w-80 flex-shrink-0">
+                <div className="sticky top-6">
+                  <FilterPanel
+                    filters={filters}
+                    onFiltersChange={handleFiltersChange}
+                    onClearFilters={clearFilters}
+                  />
+                </div>
+              </div>
+
+              {/* Main content */}
+              <div className="flex-1">
+                {/* Results */}
+                <CreditCardsPageResults
+                  filteredCards={filteredCards}
+                  paginatedCards={paginatedCards}
+                  searchQuery={searchQuery}
+                  viewMode={viewMode}
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  itemsPerPage={itemsPerPage}
+                  comparisonCards={comparisonCards}
+                  locale={locale}
                   onClearFilters={clearFilters}
+                  onPageChange={handlePageChange}
+                  onItemsPerPageChange={handleItemsPerPageChange}
+                  onCompareToggle={handleCompareToggle}
                 />
               </div>
             </div>
-
-            {/* Main content */}
-            <div className="flex-1">
-              {/* Results */}
-              <CreditCardsPageResults
-                filteredCards={filteredCards}
-                paginatedCards={paginatedCards}
-                searchQuery={searchQuery}
-                viewMode={viewMode}
-                currentPage={currentPage}
-                totalPages={totalPages}
-                itemsPerPage={itemsPerPage}
-                comparisonCards={comparisonCards}
-                locale={locale}
-                onClearFilters={clearFilters}
-                onPageChange={handlePageChange}
-                onItemsPerPageChange={handleItemsPerPageChange}
-                onCompareToggle={handleCompareToggle}
-              />
-            </div>
           </div>
-        </div>
-      </main>
+        </main>
 
-      <Footer company="finzone" />
-    </div>
+        <Footer company="finzone" />
+      </div>
+    </CreditCardsThemeProvider>
   );
 }

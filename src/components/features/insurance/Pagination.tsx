@@ -297,7 +297,7 @@ const Pagination: React.FC<PaginationProps> = ({
             aria-label={t("lastPage")}
           >
             <ChevronRight className="h-4 w-4 sm:mr-1 sm:ml-0" />
-            <ChevronRight className="h-4 w-4 -mr-3 sm:ml-0" />
+            <ChevronRight className="h-4 w-4 sm:mr-1 sm:ml-0" />
             <span className="hidden sm:inline">{t("last")}</span>
           </Button>
         </nav>

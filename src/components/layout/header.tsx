@@ -9,6 +9,7 @@ import {
   NavbarItem,
 } from "@/configs/navbar-config";
 import { ChevronDown, Menu, X } from "lucide-react";
+import { ThemeSwitcher } from "@/components/theme/theme-switcher";
 
 interface HeaderProps {
   company?: string;
@@ -178,6 +179,11 @@ export default function Header({ company, configOverride }: HeaderProps) {
             </ul>
           </nav>
 
+          {/* Theme Switcher - Desktop */}
+          <div className="hidden md:block">
+            <ThemeSwitcher />
+          </div>
+
           {/* Mobile menu button */}
           <button
             className="md:hidden p-2"
@@ -197,6 +203,12 @@ export default function Header({ company, configOverride }: HeaderProps) {
             <ul className="py-2">
               {config.navigation.map((item) => renderNavItem(item, true))}
             </ul>
+
+            {/* Theme Switcher - Mobile */}
+            <div className="flex items-center justify-between px-4 py-3 border-t border-border">
+              <span className="text-sm font-medium text-foreground">Theme</span>
+              <ThemeSwitcher />
+            </div>
           </div>
         )}
       </div>

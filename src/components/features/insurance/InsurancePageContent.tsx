@@ -5,6 +5,7 @@ import InsuranceGrid from "@/components/features/insurance/InsuranceGrid";
 import InsuranceFilterPanel from "@/components/features/insurance/FilterPanel";
 import Pagination from "@/components/features/insurance/Pagination";
 import type { InsuranceProduct } from "@/types/insurance";
+import { useTheme } from "@/lib/theme/context";
 
 interface InsurancePageContentProps {
   isLoading: boolean;
@@ -46,13 +47,20 @@ export default function InsurancePageContent({
   onSearchClear,
 }: InsurancePageContentProps) {
   const t = useTranslations("pages.insurance");
+  const { themeConfig } = useTheme();
+
+  const isMedicalTheme = themeConfig?.id === "medical";
 
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex gap-8">
         {/* Sidebar - Desktop */}
         <aside className="hidden lg:block w-80 flex-shrink-0">
-          <div className="sticky top-24">
+          <div
+            className={`sticky top-24 rounded-lg border p-4 ${
+              isMedicalTheme ? "bg-primary/5 border-primary/20" : "bg-card"
+            }`}
+          >
             <InsuranceFilterPanel
               filters={filters}
               onFiltersChange={onFiltersChange}
@@ -99,8 +107,22 @@ export default function InsurancePageContent({
             </>
           ) : (
             /* No Results State */
-            <div className="flex flex-col items-center justify-center py-20">
-              <Shield className="w-16 h-16 text-muted-foreground mb-4" />
+            <div
+              className={`flex flex-col items-center justify-center py-20 rounded-lg border p-12 ${
+                isMedicalTheme ? "bg-primary/5 border-primary/20" : ""
+              }`}
+            >
+              <div
+                className={`p-4 rounded-full mb-4 ${
+                  isMedicalTheme ? "bg-primary/10" : "bg-muted"
+                }`}
+              >
+                <Shield
+                  className={`w-16 h-16 ${
+                    isMedicalTheme ? "text-primary" : "text-muted-foreground"
+                  }`}
+                />
+              </div>
               <h3 className="text-lg font-semibold text-foreground mb-2">
                 {searchQuery ? t("noSearchResults") : t("noFilterResults")}
               </h3>
@@ -111,12 +133,28 @@ export default function InsurancePageContent({
               </p>
               <div className="flex gap-3">
                 {searchQuery && (
-                  <Button variant="outline" onClick={onSearchClear}>
+                  <Button
+                    variant="outline"
+                    onClick={onSearchClear}
+                    className={
+                      isMedicalTheme
+                        ? "border-primary/30 hover:bg-primary/10"
+                        : ""
+                    }
+                  >
                     {t("clearSearch")}
                   </Button>
                 )}
                 {activeFiltersCount > 0 && (
-                  <Button variant="outline" onClick={onClearFilters}>
+                  <Button
+                    variant="outline"
+                    onClick={onClearFilters}
+                    className={
+                      isMedicalTheme
+                        ? "border-primary/30 hover:bg-primary/10"
+                        : ""
+                    }
+                  >
                     {t("clearFilters")}
                   </Button>
                 )}

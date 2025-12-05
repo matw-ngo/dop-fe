@@ -13,6 +13,7 @@ import InsuranceSearchBar from "@/components/features/insurance/SearchBar";
 import SortDropdown from "@/components/features/insurance/SortDropdown";
 import InsuranceFilterPanel from "@/components/features/insurance/FilterPanel";
 import type { InsuranceFilters } from "@/types/insurance";
+import { useTheme } from "@/lib/theme/context";
 
 interface InsurancePageControlsProps {
   searchQuery: string;
@@ -50,9 +51,14 @@ export default function InsurancePageControls({
   onMobileFiltersChange,
 }: InsurancePageControlsProps) {
   const t = useTranslations("pages.insurance");
+  const { themeConfig } = useTheme();
+
+  const isMedicalTheme = themeConfig?.id === "medical";
 
   return (
-    <div className="bg-card border-b sticky top-0 z-40">
+    <div
+      className={`bg-card border-b sticky top-0 z-40 ${isMedicalTheme ? "shadow-sm" : ""}`}
+    >
       <div className="container mx-auto px-4 py-4">
         {/* Search Bar */}
         <div className="mb-4">
@@ -102,12 +108,22 @@ export default function InsurancePageControls({
             />
 
             {/* View Mode Toggle - Desktop Only */}
-            <div className="hidden sm:flex items-center gap-1 p-1 bg-muted rounded-lg">
+            <div
+              className={`hidden sm:flex items-center gap-1 p-1 rounded-lg ${
+                isMedicalTheme
+                  ? "bg-primary/5 border border-primary/20"
+                  : "bg-muted"
+              }`}
+            >
               <Button
                 variant={viewMode === "grid" ? "default" : "ghost"}
                 size="sm"
                 onClick={() => onViewModeChange("grid")}
-                className="h-7 w-7 p-0"
+                className={`h-7 w-7 p-0 transition-colors ${
+                  isMedicalTheme && viewMode !== "grid"
+                    ? "hover:bg-primary/10 text-muted-foreground"
+                    : ""
+                }`}
               >
                 <Grid className="w-4 h-4" />
               </Button>
@@ -115,7 +131,11 @@ export default function InsurancePageControls({
                 variant={viewMode === "list" ? "default" : "ghost"}
                 size="sm"
                 onClick={() => onViewModeChange("list")}
-                className="h-7 w-7 p-0"
+                className={`h-7 w-7 p-0 transition-colors ${
+                  isMedicalTheme && viewMode !== "list"
+                    ? "hover:bg-primary/10 text-muted-foreground"
+                    : ""
+                }`}
               >
                 <List className="w-4 h-4" />
               </Button>

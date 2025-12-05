@@ -1,12 +1,12 @@
 import { NavbarConfig } from "./navbar-config";
 
 // Insurance-specific navigation configuration
-export const insuranceNavbarConfig: NavbarConfig = {
+export const baseInsuranceNavbarConfig: NavbarConfig = {
   company: "finzone",
   logo: {
     text: "Fin Zone",
     href: "/",
-    iconColor: "#2563eb", // Blue color for insurance theme
+    iconColor: "#2563eb", // Default blue color
     iconLetter: "F",
   },
   navigation: [
@@ -134,7 +134,7 @@ export const insuranceNavbarConfig: NavbarConfig = {
   ],
 };
 
-// Function to get insurance navbar config
+// Function to get insurance navbar config (fallback without theme context)
 export function getInsuranceNavbarConfig(): NavbarConfig {
-  return insuranceNavbarConfig;
+  return baseInsuranceNavbarConfig;
 }

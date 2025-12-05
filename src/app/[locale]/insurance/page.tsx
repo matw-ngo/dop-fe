@@ -3,7 +3,7 @@
 import { useTranslations } from "next-intl";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
-import { getInsuranceNavbarConfig } from "@/configs/insurance-navbar-config";
+import { useInsuranceNavbarTheme } from "@/hooks/features/insurance/useInsuranceNavbarTheme";
 import InsurancePageHero from "@/components/features/insurance/InsurancePageHero";
 import InsurancePageControls from "@/components/features/insurance/InsurancePageControls";
 import InsurancePageContent from "@/components/features/insurance/InsurancePageContent";
@@ -21,6 +21,7 @@ import {
   useInsuranceFilters,
   useFilteredInsuranceProducts,
 } from "@/store/use-insurance-store";
+import { InsuranceThemeProvider } from "@/components/features/insurance/InsuranceThemeProvider";
 
 /**
  * Insurance listing page with filtering, search, and pagination
@@ -28,8 +29,8 @@ import {
 export default function InsurancePage() {
   const t = useTranslations("pages.insurance");
 
-  // Configuration
-  const insuranceNavbarConfig = getInsuranceNavbarConfig();
+  // Configuration - use theme-aware navbar config
+  const insuranceNavbarConfig = useInsuranceNavbarTheme();
 
   // State management
   const {
@@ -95,63 +96,65 @@ export default function InsurancePage() {
   );
 
   return (
-    <div className="flex flex-col min-h-screen bg-background">
-      {/* Header */}
-      <Header configOverride={insuranceNavbarConfig} />
+    <InsuranceThemeProvider>
+      <div className="flex flex-col min-h-screen bg-background">
+        {/* Header */}
+        <Header configOverride={insuranceNavbarConfig} />
 
-      {/* Hero Section */}
-      <InsurancePageHero
-        titleKey="pageTitle"
-        descriptionKey="pageDescription"
-      />
+        {/* Hero Section */}
+        <InsurancePageHero
+          titleKey="pageTitle"
+          descriptionKey="pageDescription"
+        />
 
-      {/* Search and Controls */}
-      <InsurancePageControls
-        searchQuery={searchQuery}
-        onSearch={handlers.handleSearch}
-        sortOption={sortOption}
-        onSortChange={handlers.handleSortChange}
-        viewMode={viewMode}
-        onViewModeChange={handlers.handleViewModeChange}
-        filters={filters}
-        onFiltersChange={handlers.handleFiltersChange}
-        onClearFilters={handlers.handleClearFilters}
-        isLoading={isLoading}
-        totalProducts={totalProducts}
-        filteredProductsCount={filteredProducts.length}
-        activeFiltersCount={activeFiltersCount}
-        mobileFiltersOpen={mobileFiltersOpen}
-        onMobileFiltersChange={setMobileFiltersOpen}
-      />
-
-      {/* Main Content */}
-      <main className="flex-grow">
-        <InsurancePageContent
-          isLoading={isLoading}
-          paginatedProducts={paginatedProducts}
+        {/* Search and Controls */}
+        <InsurancePageControls
+          searchQuery={searchQuery}
+          onSearch={handlers.handleSearch}
+          sortOption={sortOption}
+          onSortChange={handlers.handleSortChange}
+          viewMode={viewMode}
+          onViewModeChange={handlers.handleViewModeChange}
           filters={filters}
           onFiltersChange={handlers.handleFiltersChange}
           onClearFilters={handlers.handleClearFilters}
-          onProductClick={(product) => {
-            // TODO: Implement navigation to product details
-            console.log("Selected product:", product.id);
-          }}
-          onCompareToggle={handlers.handleCompareToggle}
-          totalPages={totalPages}
-          currentPage={pagination.page}
-          totalItems={totalProducts}
-          itemsPerPage={itemsPerPage}
-          onPageChange={handlers.handlePageChange}
-          onItemsPerPageChange={handlers.handleItemsPerPageChange}
-          hasMultiplePages={hasMultiplePages}
-          searchQuery={searchQuery}
+          isLoading={isLoading}
+          totalProducts={totalProducts}
+          filteredProductsCount={filteredProducts.length}
           activeFiltersCount={activeFiltersCount}
-          onSearchClear={() => handlers.handleSearch("")}
+          mobileFiltersOpen={mobileFiltersOpen}
+          onMobileFiltersChange={setMobileFiltersOpen}
         />
-      </main>
 
-      {/* Footer */}
-      <Footer company="finzone" />
-    </div>
+        {/* Main Content */}
+        <main className="flex-grow">
+          <InsurancePageContent
+            isLoading={isLoading}
+            paginatedProducts={paginatedProducts}
+            filters={filters}
+            onFiltersChange={handlers.handleFiltersChange}
+            onClearFilters={handlers.handleClearFilters}
+            onProductClick={(product) => {
+              // TODO: Implement navigation to product details
+              console.log("Selected product:", product.id);
+            }}
+            onCompareToggle={handlers.handleCompareToggle}
+            totalPages={totalPages}
+            currentPage={pagination.page}
+            totalItems={totalProducts}
+            itemsPerPage={itemsPerPage}
+            onPageChange={handlers.handlePageChange}
+            onItemsPerPageChange={handlers.handleItemsPerPageChange}
+            hasMultiplePages={hasMultiplePages}
+            searchQuery={searchQuery}
+            activeFiltersCount={activeFiltersCount}
+            onSearchClear={() => handlers.handleSearch("")}
+          />
+        </main>
+
+        {/* Footer */}
+        <Footer company="finzone" />
+      </div>
+    </InsuranceThemeProvider>
   );
 }
