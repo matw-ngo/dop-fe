@@ -412,7 +412,7 @@ export const ComparisonPanel: React.FC<ComparisonPanelProps> = ({
           <div className="flex items-center justify-center space-x-2">
             <Loader2 className="h-4 w-4 animate-spin" />
             <span className="text-sm text-muted-foreground">
-              {t("pages.insurance.loadingComparison") || "Đang tải so sánh..."}
+              {t("pages.insurance.loadingComparison")}
             </span>
           </div>
         </CardContent>
@@ -449,249 +449,249 @@ export const ComparisonPanel: React.FC<ComparisonPanelProps> = ({
           className
         )}>
           <CardContent className="p-6 space-y-6">
-          {/* Header */}
-          <div className="flex items-center justify-between print-break-inside-avoid">
-            <div className="flex items-center space-x-2">
-              <Shield className="h-5 w-5 text-primary" />
-              <h3 className="text-lg font-semibold">
-                {t("pages.insurance.comparisonPanel") || "So sánh sản phẩm"}
-              </h3>
-              <Badge variant="secondary" className="ml-2">
-                {products.length}/{maxProducts}
-              </Badge>
+            {/* Header */}
+            <div className="flex items-center justify-between print-break-inside-avoid">
+              <div className="flex items-center space-x-2">
+                <Shield className="h-5 w-5 text-primary" />
+                <h3 className="text-lg font-semibold">
+                  {t("pages.insurance.comparisonPanel")}
+                </h3>
+                <Badge variant="secondary" className="ml-2">
+                  {products.length}/{maxProducts}
+                </Badge>
+              </div>
+              {products.length > 0 && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={onClear}
+                  className="text-muted-foreground hover:text-destructive no-print"
+                >
+                  <X className="h-4 w-4 mr-1" />
+                  {t("pages.insurance.clearAll")}
+                </Button>
+              )}
             </div>
-            {products.length > 0 && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={onClear}
-                className="text-muted-foreground hover:text-destructive no-print"
-              >
-                <X className="h-4 w-4 mr-1" />
-                {t("pages.insurance.clearAll") || "Xóa tất cả"}
-              </Button>
-            )}
-          </div>
 
-          {/* Progress Bar */}
-          <div className="space-y-2">
-            <div className="flex justify-between text-sm text-muted-foreground">
-              <span>
-                {t("pages.insurance.comparisonProgress") || "Tiến trình so sánh"}
-              </span>
-              <span>{Math.round(progressPercentage)}%</span>
-            </div>
-            <Progress
-              value={progressPercentage}
-              className="h-2"
-            />
-            <p className="text-xs text-muted-foreground">
-              {canAddMore
-                ? t("pages.insurance.canAddMore", {
+            {/* Progress Bar */}
+            <div className="space-y-2">
+              <div className="flex justify-between text-sm text-muted-foreground">
+                <span>
+                  {t("pages.insurance.comparisonProgress")}
+                </span>
+                <span>{Math.round(progressPercentage)}%</span>
+              </div>
+              <Progress
+                value={progressPercentage}
+                className="h-2"
+              />
+              <p className="text-xs text-muted-foreground">
+                {canAddMore
+                  ? t("pages.insurance.canAddMore", {
                     remaining: maxProducts - products.length
                   }) || `Bạn có thể thêm ${maxProducts - products.length} sản phẩm nữa`
-                : t("pages.insurance.maxProductsReached") || "Đạt tối đa sản phẩm"
-              }
-            </p>
-          </div>
-
-          {/* Product List */}
-          {products.length > 0 && (
-            <div className="space-y-3">
-              <div className="grid gap-3">
-                {products.map((product, index) => (
-                  <div
-                    key={product.id}
-                    className="flex items-center space-x-3 p-3 bg-muted/30 rounded-lg group hover:bg-muted/50 transition-colors"
-                  >
-                    <div className="flex-shrink-0">
-                      <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                        <Shield className="w-6 h-6 text-primary" />
-                      </div>
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="font-medium text-sm truncate">
-                        {product.name}
-                      </p>
-                      <p className="text-xs text-muted-foreground truncate">
-                        {product.issuer}
-                      </p>
-                      <p className="text-xs font-semibold text-primary">
-                        {new Intl.NumberFormat("vi-VN", {
-                          style: "currency",
-                          currency: "VND",
-                        }).format(product.pricing.totalPremium)}
-                      </p>
-                    </div>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => onRemove(product.id)}
-                          className="opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground hover:text-destructive"
-                        >
-                          <X className="h-4 w-4" />
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>{t("pages.insurance.removeProduct") || "Xóa sản phẩm"}</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </div>
-                ))}
-              </div>
-
-              {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row gap-2 pt-2 no-print">
-                {canAddMore && (
-                  <Button
-                    onClick={onAdd}
-                    variant="outline"
-                    size="sm"
-                    className="flex-1"
-                  >
-                    <Plus className="h-4 w-4 mr-2" />
-                    {t("pages.insurance.addProduct") || "Thêm sản phẩm"}
-                  </Button>
-                )}
-
-                {/* Share Button with Dropdown */}
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="flex-1"
-                      disabled={isSharing}
-                    >
-                      {isSharing ? (
-                        <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                      ) : (
-                        <Share2 className="h-4 w-4 mr-2" />
-                      )}
-                      {t("pages.insurance.shareComparison") || "Chia sẻ"}
-                      <ChevronDown className="h-4 w-4 ml-2" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="w-56">
-                    <DropdownMenuItem onClick={handleShare}>
-                      <Share2 className="h-4 w-4 mr-2" />
-                      Chia sẻ qua hệ thống
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={handleCopyLink}>
-                      <Link className="h-4 w-4 mr-2" />
-                      {copiedStates.link ? (
-                        <>
-                          <Check className="h-4 w-4 mr-2 text-green-500" />
-                          Đã sao chép!
-                        </>
-                      ) : (
-                        "Sao chép liên kết"
-                      )}
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={() => handleSocialShare('facebook')}>
-                      <div className="h-4 w-4 mr-2 bg-blue-600 rounded" />
-                      Facebook
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => handleSocialShare('twitter')}>
-                      <div className="h-4 w-4 mr-2 bg-sky-500 rounded" />
-                      Twitter
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => handleSocialShare('linkedin')}>
-                      <div className="h-4 w-4 mr-2 bg-blue-700 rounded" />
-                      LinkedIn
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-
-                {/* Export Button with Dropdown */}
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="flex-1"
-                      disabled={isExporting}
-                    >
-                      {isExporting ? (
-                        <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                      ) : (
-                        <Download className="h-4 w-4 mr-2" />
-                      )}
-                      {t("pages.insurance.exportComparison") || "Xuất"}
-                      <ChevronDown className="h-4 w-4 ml-2" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="w-56">
-                    <DropdownMenuItem onClick={handleCSVExport}>
-                      <FileText className="h-4 w-4 mr-2" />
-                      Xuất file CSV
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={handlePDFExport}>
-                      <FileText className="h-4 w-4 mr-2" />
-                      Xuất file PDF
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={handleCopyToClipboard}>
-                      {copiedStates.clipboard ? (
-                        <>
-                          <Check className="h-4 w-4 mr-2 text-green-500" />
-                          Đã sao chép!
-                        </>
-                      ) : (
-                        <>
-                          <Copy className="h-4 w-4 mr-2" />
-                          Sao chép vào clipboard
-                        </>
-                      )}
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={handlePrint}>
-                      <Printer className="h-4 w-4 mr-2" />
-                      In phiên bản rút gọn
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-            </div>
-          )}
-
-          {/* Empty State */}
-          {products.length === 0 && (
-            <div className="text-center py-6 space-y-4">
-              <div className="w-16 h-16 mx-auto bg-muted rounded-full flex items-center justify-center">
-                <BarChart3 className="w-8 h-8 text-muted-foreground" />
-              </div>
-              <div>
-                <h4 className="font-medium mb-1">
-                  {t("pages.insurance.noProductsInComparison") || "Chưa có sản phẩm nào"}
-                </h4>
-                <p className="text-sm text-muted-foreground">
-                  {t("pages.insurance.addProductsToCompare") ||
-                    "Thêm sản phẩm để bắt đầu so sánh và tìm thấy lựa chọn tốt nhất"}
-                </p>
-              </div>
-              <Button onClick={onAdd} className="w-full">
-                <Plus className="h-4 w-4 mr-2" />
-                {t("pages.insurance.selectProducts") || "Chọn sản phẩm"}
-              </Button>
-            </div>
-          )}
-
-          {/* Comparison Limit Notice */}
-          {isFull && (
-            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
-              <p className="text-sm text-yellow-800">
-                <strong>{t("pages.insurance.comparisonLimit") || "Giới hạn so sánh"}:</strong>{" "}
-                {t("pages.insurance.comparisonLimitMessage", { max: maxProducts }) ||
-                  `Bạn chỉ có thể so sánh tối đa ${maxProducts} sản phẩm tại một thời điểm`}
+                  : t("pages.insurance.maxProductsReached")
+                }
               </p>
             </div>
-          )}
-        </CardContent>
-      </Card>
-    </TooltipProvider>
+
+            {/* Product List */}
+            {products.length > 0 && (
+              <div className="space-y-3">
+                <div className="grid gap-3">
+                  {products.map((product, index) => (
+                    <div
+                      key={product.id}
+                      className="flex items-center space-x-3 p-3 bg-muted/30 rounded-lg group hover:bg-muted/50 transition-colors"
+                    >
+                      <div className="flex-shrink-0">
+                        <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                          <Shield className="w-6 h-6 text-primary" />
+                        </div>
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-medium text-sm truncate">
+                          {product.name}
+                        </p>
+                        <p className="text-xs text-muted-foreground truncate">
+                          {product.issuer}
+                        </p>
+                        <p className="text-xs font-semibold text-primary">
+                          {new Intl.NumberFormat("vi-VN", {
+                            style: "currency",
+                            currency: "VND",
+                          }).format(product.pricing.totalPremium)}
+                        </p>
+                      </div>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => onRemove(product.id)}
+                            className="opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground hover:text-destructive"
+                          >
+                            <X className="h-4 w-4" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>{t("pages.insurance.removeProduct")}</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex flex-col sm:flex-row gap-2 pt-2 no-print">
+                  {canAddMore && (
+                    <Button
+                      onClick={onAdd}
+                      variant="outline"
+                      size="sm"
+                      className="flex-1"
+                    >
+                      <Plus className="h-4 w-4 mr-2" />
+                      {t("pages.insurance.addProduct")}
+                    </Button>
+                  )}
+
+                  {/* Share Button with Dropdown */}
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="flex-1"
+                        disabled={isSharing}
+                      >
+                        {isSharing ? (
+                          <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                        ) : (
+                          <Share2 className="h-4 w-4 mr-2" />
+                        )}
+                        {t("pages.insurance.shareComparison")}
+                        <ChevronDown className="h-4 w-4 ml-2" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-56">
+                      <DropdownMenuItem onClick={handleShare}>
+                        <Share2 className="h-4 w-4 mr-2" />
+                        Chia sẻ qua hệ thống
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={handleCopyLink}>
+                        <Link className="h-4 w-4 mr-2" />
+                        {copiedStates.link ? (
+                          <>
+                            <Check className="h-4 w-4 mr-2 text-green-500" />
+                            Đã sao chép!
+                          </>
+                        ) : (
+                          "Sao chép liên kết"
+                        )}
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem onClick={() => handleSocialShare('facebook')}>
+                        <div className="h-4 w-4 mr-2 bg-blue-600 rounded" />
+                        Facebook
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => handleSocialShare('twitter')}>
+                        <div className="h-4 w-4 mr-2 bg-sky-500 rounded" />
+                        Twitter
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => handleSocialShare('linkedin')}>
+                        <div className="h-4 w-4 mr-2 bg-blue-700 rounded" />
+                        LinkedIn
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+
+                  {/* Export Button with Dropdown */}
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="flex-1"
+                        disabled={isExporting}
+                      >
+                        {isExporting ? (
+                          <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                        ) : (
+                          <Download className="h-4 w-4 mr-2" />
+                        )}
+                        {t("pages.insurance.exportComparison")}
+                        <ChevronDown className="h-4 w-4 ml-2" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-56">
+                      <DropdownMenuItem onClick={handleCSVExport}>
+                        <FileText className="h-4 w-4 mr-2" />
+                        Xuất file CSV
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={handlePDFExport}>
+                        <FileText className="h-4 w-4 mr-2" />
+                        Xuất file PDF
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={handleCopyToClipboard}>
+                        {copiedStates.clipboard ? (
+                          <>
+                            <Check className="h-4 w-4 mr-2 text-green-500" />
+                            Đã sao chép!
+                          </>
+                        ) : (
+                          <>
+                            <Copy className="h-4 w-4 mr-2" />
+                            Sao chép vào clipboard
+                          </>
+                        )}
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem onClick={handlePrint}>
+                        <Printer className="h-4 w-4 mr-2" />
+                        In phiên bản rút gọn
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+              </div>
+            )}
+
+            {/* Empty State */}
+            {products.length === 0 && (
+              <div className="text-center py-6 space-y-4">
+                <div className="w-16 h-16 mx-auto bg-muted rounded-full flex items-center justify-center">
+                  <BarChart3 className="w-8 h-8 text-muted-foreground" />
+                </div>
+                <div>
+                  <h4 className="font-medium mb-1">
+                    {t("pages.insurance.noProductsInComparison")}
+                  </h4>
+                  <p className="text-sm text-muted-foreground">
+                    {t("pages.insurance.addProductsToCompare") ||
+                      "Thêm sản phẩm để bắt đầu so sánh và tìm thấy lựa chọn tốt nhất"}
+                  </p>
+                </div>
+                <Button onClick={onAdd} className="w-full">
+                  <Plus className="h-4 w-4 mr-2" />
+                  {t("pages.insurance.selectProducts")}
+                </Button>
+              </div>
+            )}
+
+            {/* Comparison Limit Notice */}
+            {isFull && (
+              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
+                <p className="text-sm text-yellow-800">
+                  <strong>{t("pages.insurance.comparisonLimit")}:</strong>{" "}
+                  {t("pages.insurance.comparisonLimitMessage", { max: maxProducts }) ||
+                    `Bạn chỉ có thể so sánh tối đa ${maxProducts} sản phẩm tại một thời điểm`}
+                </p>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      </TooltipProvider>
     </>
   );
 };

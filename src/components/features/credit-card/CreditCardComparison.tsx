@@ -27,7 +27,7 @@ export const CreditCardComparison: React.FC<CreditCardComparisonProps> = ({
           <thead>
             <tr className="bg-muted/50">
               <th className="text-left p-4 border-b font-medium">
-                {t("criteria") || "Tiêu chí"}
+                {t("criteria")}
               </th>
               {cardsToCompare.map((card, index) => (
                 <th key={index} className="text-center p-4 border-b">
@@ -49,7 +49,7 @@ export const CreditCardComparison: React.FC<CreditCardComparisonProps> = ({
           <tbody>
             <tr>
               <td className="p-4 border-b font-medium">
-                {t("annualFee") || "Phí thường niên"}
+                {t("annualFee")}
               </td>
               {cardsToCompare.map((card, index) => (
                 <td key={index} className="text-center p-4 border-b">
@@ -59,7 +59,7 @@ export const CreditCardComparison: React.FC<CreditCardComparisonProps> = ({
             </tr>
             <tr className="bg-muted/30">
               <td className="p-4 border-b font-medium">
-                {t("interestRate") || "Lãi suất"}
+                {t("interestRate")}
               </td>
               {cardsToCompare.map((card, index) => (
                 <td key={index} className="text-center p-4 border-b">
@@ -70,22 +70,22 @@ export const CreditCardComparison: React.FC<CreditCardComparisonProps> = ({
             {cardsToCompare.some(
               (card) => card!.rewardsProgram?.type === "cashback",
             ) && (
-              <tr>
-                <td className="p-4 border-b font-medium">
-                  {t("cashback") || "Hoàn tiền"}
-                </td>
-                {cardsToCompare.map((card, index) => (
-                  <td key={index} className="text-center p-4 border-b">
-                    {card!.rewardsProgram?.type === "cashback"
-                      ? `${card!.rewardsProgram.earnRate}/1000 VND`
-                      : "N/A"}
+                <tr>
+                  <td className="p-4 border-b font-medium">
+                    {t("cashback")}
                   </td>
-                ))}
-              </tr>
-            )}
+                  {cardsToCompare.map((card, index) => (
+                    <td key={index} className="text-center p-4 border-b">
+                      {card!.rewardsProgram?.type === "cashback"
+                        ? `${card!.rewardsProgram.earnRate}/1000 VND`
+                        : "N/A"}
+                    </td>
+                  ))}
+                </tr>
+              )}
             <tr className="bg-muted/30">
               <td className="p-4 border-b font-medium">
-                {t("keyFeatures") || "Tính năng nổi bật"}
+                {t("keyFeatures")}
               </td>
               {cardsToCompare.map((card, index) => (
                 <td key={index} className="text-center p-4 border-b">
@@ -109,9 +109,9 @@ export const CreditCardComparison: React.FC<CreditCardComparisonProps> = ({
       <div className="p-4 border-t bg-muted/30">
         <div className="flex justify-center gap-4">
           <Button className="bg-green-600 hover:bg-green-700 text-white">
-            {t("applyForBestCard") || "Đăng ký thẻ tốt nhất"}
+            {t("applyForBestCard")}
           </Button>
-          <Button variant="outline">{t("learnMore") || "Tìm hiểu thêm"}</Button>
+          <Button variant="outline">{t("learnMore")}</Button>
         </div>
       </div>
     </div>

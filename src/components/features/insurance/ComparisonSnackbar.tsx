@@ -152,7 +152,7 @@ export default function ComparisonSnackbar({
                       onClick={handleClearAll}
                     >
                       <Trash2 className="h-4 w-4 mr-2" />
-                      {t("comparisonSnackbar.clearAll") || "Xóa tất cả"}
+                      {t("comparisonSnackbar.clearAll")}
                     </DropdownMenuItem>
                   </>
                 )}
@@ -165,7 +165,7 @@ export default function ComparisonSnackbar({
                 size="sm"
                 className="gap-2 bg-primary hover:bg-primary/90 transition-colors"
               >
-                {t("comparisonSnackbar.viewComparison") || "Xem so sánh"}
+                {t("comparisonSnackbar.viewComparison")}
                 <ArrowRight className="h-4 w-4" />
               </Button>
             </Link>
@@ -176,7 +176,7 @@ export default function ComparisonSnackbar({
               size="sm"
               onClick={handleClose}
               className="h-8 w-8 p-0 hover:bg-accent transition-colors"
-              aria-label={t("common.close") || "Đóng"}
+              aria-label={t("common.close")}
             >
               <X className="h-4 w-4" />
             </Button> */}

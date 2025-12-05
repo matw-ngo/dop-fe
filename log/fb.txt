@@ -5,5 +5,7 @@
 4. Cách tổ chức code của insurance pages, và các components
 5. và các tính năng khác
 
+Chỉ đồng bộ tính năng của 3 pages: src/app/[locale]/insurance/page.tsx, src/app/[locale]/insurance/compare/page.tsx, src/app/[locale]/insurance/[slug]/page.tsx
+
 sau đó viết plan để apply các thứ đó sang `/credit-cards` pages và các components. 
 /plan Viết plan vào docs/plans để chuẩn bị impl

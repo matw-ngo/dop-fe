@@ -100,7 +100,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
             <div className="flex items-center justify-between">
               <SheetTitle className="flex items-center space-x-2 text-lg font-semibold">
                 <SlidersHorizontal className="h-5 w-5" />
-                <span>{t("filters") || "Bộ lọc"}</span>
+                <span>{t("filters")}</span>
                 {activeFiltersCount > 0 && (
                   <Badge variant="secondary" className="ml-2">
                     {activeFiltersCount}
@@ -112,13 +112,13 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                 size="sm"
                 onClick={onClose}
                 className="h-8 w-8 p-0"
-                aria-label={t("close") || "Đóng"}
+                aria-label={t("close")}
               >
                 <X className="h-4 w-4" />
               </Button>
             </div>
             <p id="filter-description" className="text-sm text-muted-foreground">
-              {t("filterDescription") || "Lọc sản phẩm bảo hiểm theo nhu cầu của bạn"}
+              {t("filterDescription")}
             </p>
           </SheetHeader>
 
@@ -145,7 +145,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
         className
       )}
       role="complementary"
-      aria-label={t("filterSidebar") || "Thanh bộ lọc"}
+      aria-label={t("filterSidebar")}
     >
       {/* Sidebar Header */}
       <div className="p-4 border-b border-border bg-muted/30 sticky top-0 z-10">
@@ -153,7 +153,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
           <div className="flex items-center space-x-2">
             <Filter className="h-5 w-5 text-primary" />
             <h2 className="text-lg font-semibold">
-              {t("filters") || "Bộ lọc"}
+              {t("filters")}
             </h2>
             {activeFiltersCount > 0 && (
               <Badge variant="secondary" className="ml-2">
@@ -163,7 +163,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
           </div>
         </div>
         <p className="text-sm text-muted-foreground mb-3">
-          {t("filterDescription") || "Lọc sản phẩm bảo hiểm theo nhu cầu của bạn"}
+          {t("filterDescription")}
         </p>
         <Button
           variant="outline"
@@ -171,10 +171,10 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
           onClick={onClearFilters}
           className="w-full justify-start"
           disabled={activeFiltersCount === 0}
-          aria-label={t("clearAllFilters") || "Xóa tất cả bộ lọc"}
+          aria-label={t("clearAllFilters")}
         >
           <RotateCcw className="h-4 w-4 mr-2" />
-          {t("clearAll") || "Xóa tất cả"}
+          {t("clearAll")}
         </Button>
       </div>
 

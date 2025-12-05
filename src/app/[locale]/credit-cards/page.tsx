@@ -6,7 +6,7 @@ import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 import { useCreditCardsStore } from "@/store/use-credit-cards-store";
 import type { CreditCardFilters, SortOption } from "@/types/credit-card";
-import { useCreditCardsPageState } from "./hooks/useCreditCardsPageState";
+import { useCreditCardsPageState } from "../../../hooks/features/credit-card/useCreditCardsPageState";
 import { useCreditCardsNavbarTheme } from "@/hooks/features/credit-card/useCreditCardsNavbarTheme";
 
 import CreditCardsPageHero from "@/components/features/credit-card/CreditCardsPageHero";

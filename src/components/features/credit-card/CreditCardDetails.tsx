@@ -35,13 +35,13 @@ export const CreditCardDetails: React.FC<CreditCardDetailsProps> = ({
           <div className="grid md:grid-cols-2 gap-4 mb-6">
             <div className="bg-muted/30 p-4 rounded-lg">
               <p className="text-sm text-muted-foreground">
-                {t("annualFee") || "Phí thường niên"}
+                {t("annualFee")}
               </p>
               <p className="text-xl font-semibold">{card.annualFee}</p>
             </div>
             <div className="bg-muted/30 p-4 rounded-lg">
               <p className="text-sm text-muted-foreground">
-                {t("interestRate") || "Lãi suất"}
+                {t("interestRate")}
               </p>
               <p className="text-xl font-semibold">{card.interestRate}</p>
             </div>
@@ -51,7 +51,7 @@ export const CreditCardDetails: React.FC<CreditCardDetailsProps> = ({
         {/* Features */}
         <div className="bg-card rounded-lg shadow-md p-6">
           <h3 className="text-xl font-semibold mb-4">
-            {t("features") || "Tính năng nổi bật"}
+            {t("features")}
           </h3>
           <ul className="space-y-2">
             {card.features.map((feature: string, index: number) => (
@@ -67,7 +67,7 @@ export const CreditCardDetails: React.FC<CreditCardDetailsProps> = ({
         {card.requirements && card.requirements.length > 0 && (
           <div className="bg-card rounded-lg shadow-md p-6">
             <h3 className="text-xl font-semibold mb-4">
-              {t("requirements") || "Điều kiện mở thẻ"}
+              {t("requirements")}
             </h3>
             <ul className="space-y-2">
               {card.requirements.map((req: string, index: number) => (
@@ -88,7 +88,7 @@ export const CreditCardDetails: React.FC<CreditCardDetailsProps> = ({
           <div className="bg-card rounded-lg shadow-md p-6">
             <div className="mb-4">
               <h4 className="font-semibold text-green-600 mb-2">
-                {t("pros") || "Ưu điểm"}
+                {t("pros")}
               </h4>
               <ul className="space-y-1">
                 {card.pros.map((pro: string, index: number) => (
@@ -102,7 +102,7 @@ export const CreditCardDetails: React.FC<CreditCardDetailsProps> = ({
 
             <div>
               <h4 className="font-semibold text-destructive mb-2">
-                {t("cons") || "Nhược điểm"}
+                {t("cons")}
               </h4>
               <ul className="space-y-1">
                 {card.cons.map((con: string, index: number) => (
@@ -119,10 +119,10 @@ export const CreditCardDetails: React.FC<CreditCardDetailsProps> = ({
         {/* CTA Buttons */}
         <div className="bg-card rounded-lg shadow-md p-6">
           <Button className="w-full mb-3" size="lg">
-            {t("applyNow") || "Đăng ký ngay"}
+            {t("applyNow")}
           </Button>
           <Button variant="outline" className="w-full">
-            {t("learnMore") || "Tìm hiểu thêm"}
+            {t("learnMore")}
           </Button>
         </div>
       </div>

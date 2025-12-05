@@ -21,12 +21,12 @@ export default function CardDetailsPage() {
             <Link href="/vi/credit-cards">
               <Button variant="outline" size="sm">
                 <ArrowLeft className="w-4 h-4 mr-2" />
-                {t("common.back") || "Quay lại"}
+                {t("common.back")}
               </Button>
             </Link>
             <div>
               <h1 className="text-2xl font-bold tracking-tight">
-                {t("pages.creditCard.cardDetails") || "Chi tiết thẻ tín dụng"}
+                {t("pages.creditCard.cardDetails")}
               </h1>
               <p className="text-muted-foreground">
                 {t("pages.creditCard.cardDetailsDescription") ||

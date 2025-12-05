@@ -185,7 +185,9 @@
       "applyNow": "Đăng ký ngay"
     },
     "insurance": {
+      "removeProduct": "Xóa sản phẩm",
       "comparisonProgress": "Tiến trình so sánh",
+      "canAddMore": "Có thể chọn thêm sản phẩm",
       "maxProductsReached": "Số lượng sản phẩm đã đạt tối đa",
       "comparisonPanel": "Bảng so sánh",
       "shareComparison": "Chia sẻ",
@@ -375,6 +377,238 @@
       "rating": "Đánh giá",
       "reviews": "đánh giá",
       "compareProduct": "So sánh sản phẩm",
+      "addToComparisonAria": "Thêm sản phẩm vào so sánh",
+      "removeFromComparisonAria": "Xóa sản phẩm khỏi so sánh",
+      "coverageLevel": "Mức bảo vệ",
+      "productOverview": {
+        "title": "Tổng quan sản phẩm",
+        "basicInfo": "Thông tin cơ bản",
+        "provider": "Nhà cung cấp",
+        "insuranceType": "Loại bảo hiểm",
+        "compulsory": "Bắt buộc",
+        "voluntary": "Tự nguyện",
+        "coveragePeriod": "Thời hạn bảo hiểm",
+        "productCode": "Mã sản phẩm",
+        "insuredObjects": "Đối tượng bảo hiểm",
+        "ageRange": "Độ tuổi",
+        "occupation": "Nghề nghiệp"
+      },
+      "productDetails": {
+        "title": "Thông tin chi tiết sản phẩm"
+      },
+      "tabs": {
+        "coverage": {
+          "title": "Đối tượng và Phạm vi",
+          "shortTitle": "Phạm vi",
+          "insuredObjects": {
+            "title": "Đối tượng bảo hiểm",
+            "ageRangeTitle": "Độ tuổi được bảo hiểm",
+            "ageRangeText": "Từ {min} đến {max} tuổi",
+            "occupationTitle": "Nghề nghiệp áp dụng",
+            "geographicScope": "Phạm vi địa lý",
+            "nationwide": "Toàn quốc",
+            "provincesCount": "{count} tỉnh/thành",
+            "vehicleType": "Loại xe được bảo hiểm"
+          },
+          "coverageScope": {
+            "title": "Phạm vi bảo hiểm",
+            "personalCoverage": "Bảo vệ con người",
+            "propertyLiability": "Tài sản & Trách nhiệm"
+          },
+          "specialNotes": {
+            "title": "Lưu ý đặc biệt về phạm vi bảo hiểm",
+            "note1": "• Mức bồi thường thực tế có thể thay đổi tùy thuộc vào điều khoản cụ thể của hợp đồng",
+            "note2": "• Một số quyền lợi có thể yêu cầu điều kiện bổ sung",
+            "vehicleValue": "• Giá trị xe được bảo hiểm: {min} - {max}"
+          },
+          "deductibles": {
+            "title": "Mức miễn thường",
+            "standardAmount": "Mức miễn thường chuẩn: {amount}",
+            "voluntaryOptions": " (Tùy chọn: {options})",
+            "explanation": "Mức miễn thường là số tiền bạn phải tự chi trả cho mỗi sự cố bảo hiểm"
+          }
+        },
+        "benefits": {
+          "title": "Quyền lợi",
+          "shortTitle": "Quyền lợi",
+          "mainBenefits": {
+            "title": "Quyền lợi bảo hiểm chính"
+          },
+          "features": {
+            "title": "Tính năng nổi bật"
+          },
+          "services": {
+            "title": "Dịch vụ bổ sung & Hỗ trợ 24/7"
+          },
+          "emergencySupport": {
+            "title": "Thông tin hỗ trợ khẩn cấp",
+            "hotline247": "Hotline 24/7",
+            "email": "Email hỗ trợ",
+            "website": "Website"
+          },
+          "offers": {
+            "title": "Ưu đãi đặc biệt",
+            "discount": "Giảm {value}",
+            "noClaimBonus": "Không tổn thất",
+            "noClaimBonusDesc": "Giảm đến {maxDiscount}% sau {maxYears} năm"
+          }
+        },
+        "exclusions": {
+          "title": "Điểm loại trừ",
+          "shortTitle": "Loại trừ",
+          "list": {
+            "title": "Điều khoản loại trừ",
+            "description": "Các trường hợp sau đây không được bảo hiểm theo điều khoản hợp đồng:"
+          },
+          "waitingPeriods": {
+            "title": "Thời gian chờ",
+            "description": "Thời gian chờ là khoảng thời gian từ ngày hợp đồng có hiệu lực đến ngày quyền lợi bảo hiểm được chi trả",
+            "general": "Thời gian chờ chung",
+            "specific": "Thời gian chờ theo từng quyền lợi"
+          },
+          "preExistingConditions": {
+            "title": "Bệnh sẵn có",
+            "allowed": "Bệnh sẵn có được chấp nhận:",
+            "notAllowed": "Bệnh sẵn có không được chấp nhận:",
+            "loading": "Phụ thu theo bệnh sẵn có:"
+          },
+          "specialTerms": {
+            "title": "Điều khoản đặc biệt",
+            "term1": "Thông tin khai báo phải đầy đủ và trung thực",
+            "term2": "Thay đổi thông tin phải được thông báo cho công ty bảo hiểm",
+            "term3": "Yêu cầu bồi thường phải được gửi trong thời hạn quy định",
+            "term4": "Vi phạm điều khoản có thể dẫn đến từ chối bồi thường"
+          }
+        },
+        "claims": {
+          "title": "Quy trình bồi thường",
+          "shortTitle": "Bồi thường",
+          "process": {
+            "title": "Quy trình bồi thường 5 bước",
+            "steps": {
+              "report": {
+                "title": "Báo cáo sự cố",
+                "description": "Ngay khi xảy ra sự cố"
+              },
+              "documents": {
+                "title": "Nộp hồ sơ",
+                "description": "Trong vòng 7 ngày"
+              },
+              "assessment": {
+                "title": "Thẩm định",
+                "description": "3-5 ngày làm việc"
+              },
+              "approval": {
+                "title": "Phê duyệt",
+                "description": "1-2 ngày làm việc"
+              },
+              "payment": {
+                "title": "Chi trả",
+                "description": "Trong 24h sau duyệt"
+              }
+            }
+          },
+          "documents": {
+            "title": "Hồ sơ cần chuẩn bị"
+          },
+          "methods": {
+            "title": "Phương thức yêu cầu bồi thường"
+          },
+          "metrics": {
+            "processingTime": {
+              "title": "Thời gian xử lý",
+              "average": "Thời gian xử lý trung bình",
+              "commitment": "Cam kết xử lý",
+              "workingDays": "ngày làm việc"
+            },
+            "approvalRate": {
+              "title": "Tỷ lệ duyệt hồ sơ",
+              "veryHigh": "Tỷ lệ rất cao",
+              "high": "Tỷ lệ cao",
+              "good": "Tỷ lệ tốt",
+              "average": "Tỷ lệ trung bình"
+            }
+          },
+          "emergency": {
+            "title": "Liên hệ khẩn cấp",
+            "hotline": "Hotline khẩn cấp",
+            "emergency115": "Cấp cứu 115",
+            "free": "Miễn phí",
+            "zaloSupport": "Zalo Support",
+            "hours": "8:00 - 22:00"
+          }
+        },
+        "payment": {
+          "title": "Thanh toán & Gia hạn",
+          "shortTitle": "Thanh toán",
+          "methods": {
+            "title": "Phương thức thanh toán"
+          },
+          "installment": {
+            "title": "Lựa chọn trả góp",
+            "zeroInterest": "0% lãi suất",
+            "interestRate": "Lãi suất: {rate}% năm",
+            "interestFree": "Miễn lãi suất",
+            "monthlyPayment": "Thanh toán: {amount}/tháng"
+          },
+          "autoRenewal": {
+            "title": "Tự động gia hạn",
+            "enabled": "Tự động gia hạn",
+            "enabledDesc": "Hợp đồng sẽ được gia hạn tự động",
+            "reminder": "Nhắc nhở gia hạn",
+            "reminderDesc": "Trước {days} ngày",
+            "notSupported": "Không hỗ trợ gia hạn tự động",
+            "notSupportedDesc": "Vui lòng liên hệ để gia hạn hợp đồng trước khi hết hạn",
+            "benefits": {
+              "title": "Lợi ích gia hạn tự động:",
+              "benefit1": "Không gián đoạn bảo hiểm",
+              "benefit2": "Tiết kiệm thời gian và công sức",
+              "benefit3": "Duy trì quyền lợi không tổn thất",
+              "benefit4": "Nhận ưu đãi đặc biệt khi gia hạn"
+            }
+          },
+          "noClaimBonus": {
+            "title": "Ưu đãi không tổn thất",
+            "accumulationRules": "Quy tắc tích lũy",
+            "importantNotes": "Lưu ý quan trọng",
+            "yearsWithoutClaim": "{years} năm không tổn thất",
+            "note1": "Ưu đãi áp dụng khi gia hạn đúng hạn",
+            "note2": "Một tổn thất sẽ làm giảm mức ưu đãi",
+            "note3": "Mức giảm tối đa: {maxDiscount}%"
+          },
+          "cancellation": {
+            "title": "Chính sách hủy hợp đồng",
+            "considerationPeriod": "Thời gian cân nhắc",
+            "considerationPeriodDesc": "Trong vòng {days} ngày kể từ ngày hiệu lực hợp đồng, bạn có quyền hủy hợp đồng và được hoàn lại 100% phí bảo hiểm.",
+            "afterConsideration": "Sau thời gian cân nhắc",
+            "beforeExpiry": "Hủy hợp đồng trước hạn: Hoàn lại phí bảo hiểm tương ứng với thời gian còn hiệu lực",
+            "cancellationFee": "Phí hủy hợp đồng: Tối đa 10% phí bảo hiểm đã đóng",
+            "procedure": "Thủ tục: Gửi yêu cầu bằng văn bản kèm giấy chứng minh nhân dân",
+            "note": "Lưu ý",
+            "termination": "Hợp đồng sẽ tự động terminate nếu phí bảo hiểm không được thanh toán sau thời gian gia hạn {days} ngày."
+          }
+        }
+      },
+      "coverageTypes": {
+        "personalAccident": "Tai nạn cá nhân",
+        "death": "Tử vong",
+        "disability": "Thương tật toàn bộ/vĩnh viễn",
+        "medicalExpenses": "Chi phí y tế",
+        "hospitalization": "Phí viện phòng",
+        "surgery": "Phí phẫu thuật",
+        "criticalIllness": "Bệnh hiểm nghèo",
+        "lossOfIncome": "Mất thu nhập",
+        "propertyDamage": "Thiệt hại tài sản",
+        "thirdPartyLiability": "Trách nhiệm dân sự",
+        "ownDamage": "Thiệt hại vật chất xe",
+        "theft": "Mất cắp toàn bộ",
+        "fire": "Cháy nổ",
+        "naturalDisasters": "Thiên tai"
+      },
+      "units": {
+        "days": "ngày",
+        "months": "tháng"
+      },
       "categories": {
         "vehicle": "Bảo hiểm xe cơ giới",
         "health": "Bảo hiểm sức khỏe",

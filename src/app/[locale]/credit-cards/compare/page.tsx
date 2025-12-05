@@ -27,12 +27,12 @@ export default function ComparePage() {
             <Link href="/vi/credit-cards">
               <Button variant="outline" size="sm">
                 <ArrowLeft className="w-4 h-4 mr-2" />
-                {t("common.back") || "Quay lại"}
+                {t("common.back")}
               </Button>
             </Link>
             <div>
               <h1 className="text-2xl font-bold tracking-tight">
-                {t("pages.creditCard.compareCards") || "So sánh thẻ tín dụng"}
+                {t("pages.creditCard.compareCards")}
               </h1>
               <p className="text-muted-foreground">
                 {t("pages.creditCard.compareDescription") ||

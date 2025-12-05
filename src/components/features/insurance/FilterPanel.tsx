@@ -310,7 +310,7 @@ const InsuranceFilterPanel: React.FC<FilterPanelProps> = React.memo(
         // Insurance Categories
         {
           id: "categories",
-          title: t("category") || "Loại bảo hiểm",
+          title: t("category"),
           icon: <Shield className="h-4 w-4" />,
           content: (
             <div className="grid grid-cols-1 gap-2">
@@ -347,7 +347,7 @@ const InsuranceFilterPanel: React.FC<FilterPanelProps> = React.memo(
         // Insurance Types
         {
           id: "types",
-          title: t("type") || "Loại hình",
+          title: t("type"),
           icon: <HelpCircle className="h-4 w-4" />,
           content: (
             <RadioGroup
@@ -410,7 +410,7 @@ const InsuranceFilterPanel: React.FC<FilterPanelProps> = React.memo(
         // Premium Range
         {
           id: "premium",
-          title: t("premium") || "Phí bảo hiểm",
+          title: t("premium"),
           icon: <DollarSign className="h-4 w-4" />,
           content: (
             <div className="space-y-4">
@@ -850,7 +850,7 @@ const InsuranceFilterPanel: React.FC<FilterPanelProps> = React.memo(
                 className="cursor-pointer"
                 onClick={() => handleBooleanChange("isNew", !filters.isNew)}
               >
-                {t("new") || "Mới"}
+                {t("new")}
               </Badge>
               <Badge
                 variant={filters.isRecommended ? "default" : "outline"}
@@ -859,7 +859,7 @@ const InsuranceFilterPanel: React.FC<FilterPanelProps> = React.memo(
                   handleBooleanChange("isRecommended", !filters.isRecommended)
                 }
               >
-                {t("recommended") || "Đề xuất"}
+                {t("recommended")}
               </Badge>
               <Badge
                 variant={filters.isExclusive ? "default" : "outline"}
@@ -903,7 +903,7 @@ const InsuranceFilterPanel: React.FC<FilterPanelProps> = React.memo(
           <div className="flex items-center justify-between p-4 border-b bg-background sticky top-0 z-10">
             <div className="flex items-center space-x-2">
               <Filter className="h-5 w-5" />
-              <h3 className="font-semibold">{t("filters") || "Bộ lọc"}</h3>
+              <h3 className="font-semibold">{t("filters")}</h3>
               {activeFiltersCount > 0 && (
                 <Badge variant="secondary">{activeFiltersCount}</Badge>
               )}
@@ -915,7 +915,7 @@ const InsuranceFilterPanel: React.FC<FilterPanelProps> = React.memo(
               className="text-muted-foreground hover:text-foreground"
             >
               <RotateCcw className="h-4 w-4 mr-1" />
-              {t("clearAll") || "Xóa tất cả"}
+              {t("clearAll")}
             </Button>
           </div>
 
@@ -946,7 +946,7 @@ const InsuranceFilterPanel: React.FC<FilterPanelProps> = React.memo(
             {/* Apply Button for Mobile */}
             <div className="pt-4 border-t sticky bottom-0 bg-background">
               <Button onClick={() => {}} className="w-full">
-                {t("apply") || "Áp dụng bộ lọc"}
+                {t("apply")}
               </Button>
             </div>
           </div>
@@ -961,7 +961,7 @@ const InsuranceFilterPanel: React.FC<FilterPanelProps> = React.memo(
         <div className="flex items-center justify-between p-4 border-b">
           <div className="flex items-center space-x-2">
             <Filter className="h-5 w-5" />
-            <h3 className="font-semibold">{t("filters") || "Bộ lọc"}</h3>
+            <h3 className="font-semibold">{t("filters")}</h3>
             {activeFiltersCount > 0 && (
               <Badge variant="secondary">{activeFiltersCount}</Badge>
             )}
@@ -973,7 +973,7 @@ const InsuranceFilterPanel: React.FC<FilterPanelProps> = React.memo(
             className="text-muted-foreground hover:text-foreground"
           >
             <RotateCcw className="h-4 w-4 mr-1" />
-            {t("clearAll") || "Xóa tất cả"}
+            {t("clearAll")}
           </Button>
         </div>
 
