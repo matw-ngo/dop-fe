@@ -50,7 +50,7 @@ export function CreditCardsPageResults({
       <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h2 className="text-lg font-semibold">
-            {t("results", { count: filteredCards.length })}
+            {t("results.count", { count: filteredCards.length })}
           </h2>
           {searchQuery && (
             <p className="text-sm text-muted-foreground">

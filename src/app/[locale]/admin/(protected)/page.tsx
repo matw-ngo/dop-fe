@@ -27,7 +27,7 @@ import {
   FileCheckIcon,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { getLocalizedPath } from "@/lib/client-utils";
+import { useLocalizedPath } from "@/lib/client-utils";
 import { useQuery } from "@tanstack/react-query";
 import { authAdminApi } from "@/lib/api/endpoints/auth";
 import { useAdminAccess } from "@/hooks/use-auth-guards";
@@ -36,7 +36,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 export default function AdminDashboard() {
   const { user } = useAuth();
   const { canViewAnalytics, canManageUsers, canManageFlows } = useAdminAccess();
-  const getLocalizedPath = getLocalizedPath();
+  const getLocalizedPath = useLocalizedPath();
   const t = useTranslations("admin.dashboard");
 
   // Fetch real-time statistics
@@ -60,7 +60,9 @@ export default function AdminDashboard() {
     recentActivities: [
       {
         type: "flowCreated",
-        title: t("recentActivity.flowCreated", { flowName: "Đăng ký tài khoản" }),
+        title: t("recentActivity.flowCreated", {
+          flowName: "Đăng ký tài khoản",
+        }),
         time: "2 phút trước",
         icon: FileCheckIcon,
         color: "bg-blue-500",
@@ -74,7 +76,9 @@ export default function AdminDashboard() {
       },
       {
         type: "applicationSubmitted",
-        title: t("recentActivity.applicationSubmitted", { amount: "50,000,000 VNĐ" }),
+        title: t("recentActivity.applicationSubmitted", {
+          amount: "50,000,000 VNĐ",
+        }),
         time: "1 giờ trước",
         icon: DollarSignIcon,
         color: "bg-orange-500",
@@ -94,7 +98,9 @@ export default function AdminDashboard() {
     {
       title: t("stats.totalFlows"),
       value: mockLoanStats.totalFlows.toString(),
-      description: t("stats.changePrefix", { percentage: mockLoanStats.flowsChange }),
+      description: t("stats.changePrefix", {
+        percentage: mockLoanStats.flowsChange,
+      }),
       icon: FileTextIcon,
       trend: mockLoanStats.flowsTrend,
     },
@@ -111,14 +117,18 @@ export default function AdminDashboard() {
     {
       title: t("stats.applications"),
       value: mockLoanStats.totalApplications.toString(),
-      description: t("stats.changePrefix", { percentage: mockLoanStats.applicationsChange }),
+      description: t("stats.changePrefix", {
+        percentage: mockLoanStats.applicationsChange,
+      }),
       icon: ActivityIcon,
       trend: mockLoanStats.applicationsTrend,
     },
     {
       title: t("stats.conversionRate"),
       value: `${mockLoanStats.conversionRate}%`,
-      description: t("stats.conversionChange", { rate: mockLoanStats.conversionRateChange }),
+      description: t("stats.conversionChange", {
+        rate: mockLoanStats.conversionRateChange,
+      }),
       icon: TrendingUpIcon,
       trend: mockLoanStats.conversionRateTrend,
     },
@@ -166,9 +176,11 @@ export default function AdminDashboard() {
     if (!trend) return null;
 
     return (
-      <span className={`inline-flex items-center text-xs ${
-        trend === "up" ? "text-green-600" : "text-red-600"
-      }`}>
+      <span
+        className={`inline-flex items-center text-xs ${
+          trend === "up" ? "text-green-600" : "text-red-600"
+        }`}
+      >
         {trend === "up" ? (
           <TrendingUpIcon className="w-3 h-3 mr-1" />
         ) : (
@@ -271,7 +283,9 @@ export default function AdminDashboard() {
             <div className="space-y-4">
               {recentActivities.map((activity, index) => (
                 <div key={index} className="flex items-center space-x-4">
-                  <div className={`size-2 rounded-full ${activity.color}`}></div>
+                  <div
+                    className={`size-2 rounded-full ${activity.color}`}
+                  ></div>
                   <div className="flex-1 space-y-1">
                     <p className="text-sm font-medium leading-none">
                       {activity.title}
@@ -325,7 +339,9 @@ export default function AdminDashboard() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
                   <CheckCircleIcon className="size-4 text-green-500" />
-                  <span className="text-sm">{t("systemStatus.notifications")}</span>
+                  <span className="text-sm">
+                    {t("systemStatus.notifications")}
+                  </span>
                 </div>
                 <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">
                   {t("systemStatus.operational")}

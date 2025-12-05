@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { useLocale } from "next-intl";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
-import { useCreditCardsStore } from "@/store/use-credit-cards-store";
+import { useCreditCardsStoreLegacy } from "@/store/use-credit-cards-store";
 import type { CreditCardFilters, SortOption } from "@/types/credit-card";
 import { useCreditCardsPageState } from "../../../hooks/features/credit-card/useCreditCardsPageState";
 import { useCreditCardsNavbarTheme } from "@/hooks/features/credit-card/useCreditCardsNavbarTheme";
@@ -12,8 +12,9 @@ import { useCreditCardsNavbarTheme } from "@/hooks/features/credit-card/useCredi
 import CreditCardsPageHero from "@/components/features/credit-card/CreditCardsPageHero";
 import { CreditCardsPageControls } from "@/components/features/credit-card/CreditCardsPageControls";
 import { CreditCardsPageResults } from "@/components/features/credit-card/CreditCardsPageResults";
-import FilterPanel from "@/components/features/credit-card/FilterPanel";
+import CreditCardFilterPanel from "@/components/features/credit-cards/CreditCardFilterPanel";
 import { CreditCardsThemeProvider } from "@/components/features/credit-card/CreditCardsThemeProvider";
+import { CreditCardComparisonSnackbar } from "@/components/features/credit-cards";
 
 // Import custom hooks
 import {
@@ -47,7 +48,13 @@ export default function CreditCardsPage() {
     removeFromComparison,
     comparisonCards,
     clearFilters,
-  } = useCreditCardsStore();
+  } = useCreditCardsStoreLegacy();
+
+  // Get available issuers from the cards
+  const availableIssuers = React.useMemo(() => {
+    const uniqueIssuers = new Set(cards.map((card) => card.issuer));
+    return Array.from(uniqueIssuers).sort();
+  }, [cards]);
 
   // Initialize state from URL parameters
   useCreditCardsUrlInit({
@@ -108,6 +115,13 @@ export default function CreditCardsPage() {
     setCurrentPage(1); // Reset to first page
   };
 
+  // Handle viewMode change with type compatibility
+  const handleViewModeChange = (mode: "grid" | "list" | "compact") => {
+    // Convert 'compact' to 'grid' if needed since store only supports grid/list
+    const supportedMode = mode === "compact" ? "grid" : mode;
+    setViewMode(supportedMode);
+  };
+
   // Configuration - use theme-aware navbar config
   const creditCardsNavbarConfig = useCreditCardsNavbarTheme();
 
@@ -132,7 +146,7 @@ export default function CreditCardsPage() {
           onSortChange={handleSortChange}
           onFiltersChange={handleFiltersChange}
           onClearFilters={clearFilters}
-          onViewModeChange={setViewMode}
+          onViewModeChange={handleViewModeChange}
           isLoading={false}
           totalProducts={cards.length}
           filteredProductsCount={filteredCards.length}
@@ -147,10 +161,13 @@ export default function CreditCardsPage() {
               {/* Sidebar - Desktop */}
               <div className="hidden lg:block w-80 flex-shrink-0">
                 <div className="sticky top-6">
-                  <FilterPanel
+                  <CreditCardFilterPanel
                     filters={filters}
                     onFiltersChange={handleFiltersChange}
                     onClearFilters={clearFilters}
+                    availableOptions={{
+                      issuers: availableIssuers,
+                    }}
                   />
                 </div>
               </div>
@@ -179,6 +196,9 @@ export default function CreditCardsPage() {
         </main>
 
         <Footer company="finzone" />
+
+        {/* Comparison Snackbar */}
+        <CreditCardComparisonSnackbar />
       </div>
     </CreditCardsThemeProvider>
   );

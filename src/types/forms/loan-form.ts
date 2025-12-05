@@ -75,7 +75,12 @@ export interface PersonalInfoData {
   dependentsCount: number;
 
   /** Education level */
-  educationLevel: "high_school" | "college" | "university" | "postgraduate" | "other";
+  educationLevel:
+    | "high_school"
+    | "college"
+    | "university"
+    | "postgraduate"
+    | "other";
 
   /** Residence status */
   residenceStatus: "owner" | "renter" | "family" | "other";
@@ -92,7 +97,13 @@ export interface FinancialInfoData {
   exactMonthlyIncome?: number;
 
   /** Income source */
-  incomeSource: "salary" | "business" | "investment" | "rental" | "pension" | "other";
+  incomeSource:
+    | "salary"
+    | "business"
+    | "investment"
+    | "rental"
+    | "pension"
+    | "other";
 
   /** Income source details */
   incomeSourceDetails?: string;
@@ -170,10 +181,21 @@ export interface FinancialInfoData {
  */
 export interface EmploymentInfoData {
   /** Employment type */
-  employmentType: "formal" | "informal" | "self_employed" | "retired" | "unemployed" | "student";
+  employmentType:
+    | "formal"
+    | "informal"
+    | "self_employed"
+    | "retired"
+    | "unemployed"
+    | "student";
 
   /** Employment status */
-  employmentStatus: "full_time" | "part_time" | "contract" | "freelance" | "temporary";
+  employmentStatus:
+    | "full_time"
+    | "part_time"
+    | "contract"
+    | "freelance"
+    | "temporary";
 
   /** Company/Organization name */
   companyName?: string;
@@ -225,7 +247,12 @@ export interface EmploymentInfoData {
   /** Income verification */
   incomeVerification: {
     /** Method of income verification */
-    method: "payslip" | "bank_statement" | "tax_return" | "certificate" | "other";
+    method:
+      | "payslip"
+      | "bank_statement"
+      | "tax_return"
+      | "certificate"
+      | "other";
     /** Can provide documents */
     canProvideDocuments: boolean;
     /** Additional notes */
@@ -280,7 +307,11 @@ export interface DocumentUploadData {
   /** Address proof documents */
   addressProof: {
     /** Document type */
-    documentType: "utility_bill" | "rental_agreement" | "household_registration" | "other";
+    documentType:
+      | "utility_bill"
+      | "rental_agreement"
+      | "household_registration"
+      | "other";
     /** Document files */
     files: File[];
     /** Upload status */
@@ -292,7 +323,9 @@ export interface DocumentUploadData {
   /** Income proof documents */
   incomeProof: {
     /** Document types */
-    documentTypes: Array<"payslip" | "bank_statement" | "tax_return" | "certificate" | "other">;
+    documentTypes: Array<
+      "payslip" | "bank_statement" | "tax_return" | "certificate" | "other"
+    >;
     /** Document files mapped by type */
     files: Record<string, File[]>;
     /** Upload status */
@@ -304,7 +337,9 @@ export interface DocumentUploadData {
   /** Employment proof documents */
   employmentProof: {
     /** Document types */
-    documentTypes: Array<"employment_contract" | "work_certificate" | "business_license" | "other">;
+    documentTypes: Array<
+      "employment_contract" | "work_certificate" | "business_license" | "other"
+    >;
     /** Document files mapped by type */
     files: Record<string, File[]>;
     /** Upload status */
@@ -353,7 +388,12 @@ export interface LoanDetailsData {
     /** Has collateral */
     hasCollateral: boolean;
     /** Collateral type */
-    collateralType?: "real_estate" | "vehicle" | "savings" | "guarantor" | "other";
+    collateralType?:
+      | "real_estate"
+      | "vehicle"
+      | "savings"
+      | "guarantor"
+      | "other";
     /** Collateral details */
     collateralDetails?: string;
     /** Estimated collateral value */
@@ -410,7 +450,13 @@ export interface LoanApplicationData {
     /** Application date */
     applicationDate: string;
     /** Application status */
-    status: "draft" | "submitted" | "under_review" | "approved" | "rejected" | "requires_more_info";
+    status:
+      | "draft"
+      | "submitted"
+      | "under_review"
+      | "approved"
+      | "rejected"
+      | "requires_more_info";
     /** IP address */
     ipAddress?: string;
     /** User agent */
@@ -539,38 +585,6 @@ export interface LoanProductConfig {
       type: "fixed" | "percentage";
     }>;
   };
-}
-
-/**
- * Form Validation Rules
- */
-export interface LoanFormValidationRules {
-  /** Vietnamese phone number validation */
-  phoneNumberRegex: /^(03[2-9]|05[6-9]|07[0-9]|08[1-9]|09[0-9])[0-9]{8}$/;
-
-  /** National ID (CCCD) validation */
-  nationalIdRegex: /^[0-9]{12}$/;
-
-  /** Email validation */
-  emailRegex: /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-  /** Name validation (Vietnamese characters allowed) */
-  nameRegex: /^[a-zA-ZàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđĐ\s]+$/;
-
-  /** Required field validation */
-  required: (value: any) => !!value && value.toString().trim().length > 0;
-
-  /** Age validation */
-  validateAge: (dateOfBirth: string, minAge: number, maxAge: number) => boolean;
-
-  /** Income validation */
-  validateIncome: (income: number, minIncome: number) => boolean;
-
-  /** File size validation (max 5MB) */
-  validateFileSize: (file: File, maxSize: number) => boolean;
-
-  /** File type validation */
-  validateFileType: (file: File, allowedTypes: string[]) => boolean;
 }
 
 /**

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import RegulationContent from "@/components/features/insurance/RegulationContent";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";

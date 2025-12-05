@@ -8,13 +8,16 @@
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
+import { useShallow } from "zustand/shallow";
 import type {
   CreditCard,
   CardCategory,
   CardNetwork,
   CreditCardFilters,
   SortOption,
+  PaginationOptions,
+  ComparisonState,
 } from "@/types/credit-card";
 import { vietnameseCreditCards } from "@/data/credit-cards";
 
@@ -35,32 +38,41 @@ export interface CreditCardsStore {
   activeFiltersCount: number;
 
   // Comparison
-  comparisonCards: CreditCard[];
-  maxComparisonCards: 3;
+  comparison: ComparisonState;
 
   // UI State
   searchQuery: string;
   sortBy: SortOption;
-  currentPage: number;
+  pagination: PaginationOptions;
   viewMode: "grid" | "list";
+  isLoading: boolean;
+  isError: boolean;
+  error?: string;
 
-  // Computed values (derived state)
-  filteredCards: CreditCard[];
-  paginatedCards: CreditCard[];
-  availableCategories: CardCategory[];
-  availableNetworks: CardNetwork[];
-  availableIssuers: string[];
+  // Sidebar/Mobile UI
+  sidebarOpen: boolean;
+  mobileFiltersOpen: boolean;
+  searchFocused: boolean;
 
   // Actions
   setFilters: (filters: Partial<CreditCardFilters>) => void;
   clearFilters: () => void;
+  setSearchQuery: (query: string) => void;
+  setSortBy: (option: SortOption) => void;
+  setPagination: (pagination: Partial<PaginationOptions>) => void;
+  setLoading: (loading: boolean) => void;
+  setError: (error: string | undefined) => void;
+
+  // Comparison actions
   addToComparison: (cardId: string) => void;
   removeFromComparison: (cardId: string) => void;
   clearComparison: () => void;
-  setSearchQuery: (query: string) => void;
-  setSortBy: (option: SortOption) => void;
-  setCurrentPage: (page: number) => void;
+
+  // UI actions
   setViewMode: (mode: "grid" | "list") => void;
+  toggleSidebar: () => void;
+  setMobileFiltersOpen: (open: boolean) => void;
+  setSearchFocused: (focused: boolean) => void;
 
   // Utility actions
   resetStore: () => void;
@@ -122,6 +134,28 @@ const defaultFilters: CreditCardFilters = {
 
   // Rating Filter
   minRating: 1,
+};
+
+/**
+ * Default pagination state
+ */
+const defaultPagination: PaginationOptions = {
+  page: 1,
+  limit: 12,
+  total: 0,
+  totalPages: 0,
+  hasNext: false,
+  hasPrev: false,
+};
+
+/**
+ * Default comparison state
+ */
+const defaultComparison: ComparisonState = {
+  selectedCards: [],
+  maxCards: 3,
+  canAddMore: true,
+  isFull: false,
 };
 
 /**
@@ -450,52 +484,29 @@ export const useCreditCardsStore = create<CreditCardsStore>()(
   devtools(
     persist(
       immer((set, get) => {
-        // Initialize available options from the data
-        const availableCategories = getAvailableCategories(
-          vietnameseCreditCards,
-        );
-        const availableNetworks = getAvailableNetworks(vietnameseCreditCards);
-        const availableIssuers = getAvailableIssuers(vietnameseCreditCards);
-
         return {
           // Initial state
           cards: vietnameseCreditCards,
-          categories: availableCategories,
-          availableCategories,
-          availableNetworks,
-          availableIssuers,
+          categories: getAvailableCategories(vietnameseCreditCards),
 
           filters: defaultFilters,
           activeFiltersCount: 0,
 
-          comparisonCards: [],
-          maxComparisonCards: 3,
+          comparison: defaultComparison,
 
           searchQuery: "",
-          sortBy: "featured",
-          currentPage: 1,
+          sortBy: "featured" as SortOption,
+          pagination: {
+            ...defaultPagination,
+            total: vietnameseCreditCards.length,
+          },
           viewMode: "grid",
+          isLoading: false,
+          isError: false,
 
-          // Computed values
-          get filteredCards() {
-            const state = get();
-            const filtered = applyFilters(
-              state.cards,
-              state.filters,
-              state.searchQuery,
-            );
-            return sortCards(filtered, state.sortBy);
-          },
-
-          get paginatedCards() {
-            const state = get();
-            const itemsPerPage = 12; // You can make this configurable
-            const startIndex = (state.currentPage - 1) * itemsPerPage;
-            return state.filteredCards.slice(
-              startIndex,
-              startIndex + itemsPerPage,
-            );
-          },
+          sidebarOpen: false,
+          mobileFiltersOpen: false,
+          searchFocused: false,
 
           // Actions
           setFilters: (newFilters) => {
@@ -504,7 +515,7 @@ export const useCreditCardsStore = create<CreditCardsStore>()(
               state.activeFiltersCount = calculateActiveFiltersCount(
                 state.filters,
               );
-              state.currentPage = 1; // Reset to first page when filters change
+              state.pagination.page = 1; // Reset to first page when filters change
             });
           },
 
@@ -512,49 +523,14 @@ export const useCreditCardsStore = create<CreditCardsStore>()(
             set((state) => {
               state.filters = { ...defaultFilters };
               state.activeFiltersCount = 0;
-              state.currentPage = 1;
-            });
-          },
-
-          addToComparison: (cardId) => {
-            set((state) => {
-              const card = state.cards.find((c) => c.id === cardId);
-              if (
-                !card ||
-                state.comparisonCards.length >= state.maxComparisonCards
-              ) {
-                return;
-              }
-
-              const alreadyInComparison = state.comparisonCards.some(
-                (c) => c.id === cardId,
-              );
-              if (alreadyInComparison) {
-                return;
-              }
-
-              state.comparisonCards.push(card);
-            });
-          },
-
-          removeFromComparison: (cardId) => {
-            set((state) => {
-              state.comparisonCards = state.comparisonCards.filter(
-                (card) => card.id !== cardId,
-              );
-            });
-          },
-
-          clearComparison: () => {
-            set((state) => {
-              state.comparisonCards = [];
+              state.pagination.page = 1;
             });
           },
 
           setSearchQuery: (query) => {
             set((state) => {
               state.searchQuery = query;
-              state.currentPage = 1; // Reset to first page when search changes
+              state.pagination.page = 1; // Reset to first page when search changes
             });
           },
 
@@ -564,15 +540,86 @@ export const useCreditCardsStore = create<CreditCardsStore>()(
             });
           },
 
-          setCurrentPage: (page) => {
+          setPagination: (newPagination) => {
             set((state) => {
-              state.currentPage = page;
+              Object.assign(state.pagination, newPagination);
+              // Note: totalPages, hasNext, and hasPrev will be calculated in selectors
             });
           },
 
+          setLoading: (loading) => {
+            set((state) => {
+              state.isLoading = loading;
+            });
+          },
+
+          setError: (error) => {
+            set((state) => {
+              state.isError = !!error;
+              state.error = error;
+            });
+          },
+
+          // Comparison actions
+          addToComparison: (cardId) => {
+            set((state) => {
+              if (
+                state.comparison.selectedCards.length >=
+                  state.comparison.maxCards ||
+                state.comparison.selectedCards.includes(cardId)
+              ) {
+                return;
+              }
+
+              state.comparison.selectedCards.push(cardId);
+              state.comparison.canAddMore =
+                state.comparison.selectedCards.length <
+                state.comparison.maxCards;
+              state.comparison.isFull =
+                state.comparison.selectedCards.length >=
+                state.comparison.maxCards;
+            });
+          },
+
+          removeFromComparison: (cardId) => {
+            set((state) => {
+              state.comparison.selectedCards =
+                state.comparison.selectedCards.filter((id) => id !== cardId);
+              state.comparison.canAddMore = true;
+              state.comparison.isFull = false;
+            });
+          },
+
+          clearComparison: () => {
+            set((state) => {
+              state.comparison.selectedCards = [];
+              state.comparison.canAddMore = true;
+              state.comparison.isFull = false;
+            });
+          },
+
+          // UI actions
           setViewMode: (viewMode) => {
             set((state) => {
               state.viewMode = viewMode;
+            });
+          },
+
+          toggleSidebar: () => {
+            set((state) => {
+              state.sidebarOpen = !state.sidebarOpen;
+            });
+          },
+
+          setMobileFiltersOpen: (open) => {
+            set((state) => {
+              state.mobileFiltersOpen = open;
+            });
+          },
+
+          setSearchFocused: (focused) => {
+            set((state) => {
+              state.searchFocused = focused;
             });
           },
 
@@ -581,11 +628,23 @@ export const useCreditCardsStore = create<CreditCardsStore>()(
             set((state) => {
               state.filters = { ...defaultFilters };
               state.activeFiltersCount = 0;
-              state.comparisonCards = [];
+              state.comparison = { ...defaultComparison };
               state.searchQuery = "";
-              state.sortBy = "featured";
-              state.currentPage = 1;
+              state.sortBy = "featured" as SortOption;
+              state.pagination = {
+                ...defaultPagination,
+                total: state.cards.length,
+                totalPages: Math.ceil(
+                  state.cards.length / defaultPagination.limit,
+                ),
+              };
               state.viewMode = "grid";
+              state.isLoading = false;
+              state.isError = false;
+              state.error = undefined;
+              state.sidebarOpen = false;
+              state.mobileFiltersOpen = false;
+              state.searchFocused = false;
             });
           },
 
@@ -596,12 +655,14 @@ export const useCreditCardsStore = create<CreditCardsStore>()(
 
           isInComparison: (cardId) => {
             const state = get();
-            return state.comparisonCards.some((card) => card.id === cardId);
+            return state.comparison.selectedCards.includes(cardId);
           },
 
           canAddToComparison: () => {
             const state = get();
-            return state.comparisonCards.length < state.maxComparisonCards;
+            return (
+              state.comparison.selectedCards.length < state.comparison.maxCards
+            );
           },
         };
       }),
@@ -610,26 +671,26 @@ export const useCreditCardsStore = create<CreditCardsStore>()(
         // Persist specific fields to avoid bloating storage
         partialize: (state) => ({
           filters: state.filters,
-          comparisonCards: state.comparisonCards.map((card) => card.id), // Only store IDs
+          comparison: state.comparison,
           searchQuery: state.searchQuery,
           sortBy: state.sortBy,
           viewMode: state.viewMode,
-          currentPage: state.currentPage,
+          pagination: {
+            page: state.pagination.page,
+            limit: state.pagination.limit,
+          },
+          sidebarOpen: state.sidebarOpen,
         }),
         version: 1,
-        // Hydrate comparison cards from stored IDs
         onRehydrateStorage: () => (state) => {
-          if (
-            state &&
-            state.comparisonCards.length > 0 &&
-            typeof state.comparisonCards[0] === "string"
-          ) {
-            // Convert stored IDs back to card objects
-            state.comparisonCards = state.comparisonCards
-              .map((card) =>
-                vietnameseCreditCards.find((_card) => _card.id === card.id),
-              )
-              .filter(Boolean) as CreditCard[];
+          // Validate and fix comparison data on rehydration
+          if (state && state.comparison) {
+            // Ensure comparison state is valid
+            state.comparison.canAddMore =
+              state.comparison.selectedCards.length < state.comparison.maxCards;
+            state.comparison.isFull =
+              state.comparison.selectedCards.length >=
+              state.comparison.maxCards;
           }
         },
       },
@@ -647,66 +708,215 @@ export const useCreditCardsStore = create<CreditCardsStore>()(
 /**
  * Hook to get filtered and sorted cards
  */
-export const useFilteredCreditCards = () =>
-  useCreditCardsStore((state) => state.filteredCards);
+export const useFilteredCreditCards = () => {
+  const { cards, filters, searchQuery, sortBy } = useCreditCardsStore(
+    useShallow((state) => ({
+      cards: state.cards,
+      filters: state.filters,
+      searchQuery: state.searchQuery,
+      sortBy: state.sortBy,
+    })),
+  );
+
+  return useMemo(() => {
+    const filtered = applyFilters(cards, filters, searchQuery);
+    return sortCards(filtered, sortBy);
+  }, [cards, filters, searchQuery, sortBy]);
+};
 
 /**
  * Hook to get paginated cards
  */
-export const usePaginatedCreditCards = () =>
-  useCreditCardsStore((state) => state.paginatedCards);
+export const usePaginatedCreditCards = () => {
+  const filteredCards = useFilteredCreditCards();
+  const { page, limit } = useCreditCardsStore(
+    useShallow((state) => ({
+      page: state.pagination.page,
+      limit: state.pagination.limit,
+    })),
+  );
+
+  return useMemo(() => {
+    const startIndex = (page - 1) * limit;
+    const endIndex = startIndex + limit;
+    return filteredCards.slice(startIndex, endIndex);
+  }, [filteredCards, page, limit]);
+};
 
 /**
  * Hook to get comparison state
  */
-export const useCreditCardComparison = () =>
-  useCreditCardsStore((state) => ({
-    comparisonCards: state.comparisonCards,
-    canAddMore: state.canAddToComparison(),
-    isFull: state.comparisonCards.length >= state.maxComparisonCards,
-    maxCards: state.maxComparisonCards,
-  }));
+export const useCreditCardComparison = () => {
+  const { comparison, getCardById } = useCreditCardsStore(
+    useShallow((state) => ({
+      comparison: state.comparison,
+      getCardById: state.getCardById,
+    })),
+  );
+
+  return useMemo(
+    () => ({
+      comparison,
+      comparisonCards: comparison.selectedCards
+        .map((id) => getCardById(id))
+        .filter(Boolean) as CreditCard[],
+      canAddMore: comparison.selectedCards.length < comparison.maxCards,
+      isFull: comparison.selectedCards.length >= comparison.maxCards,
+      maxCards: comparison.maxCards,
+    }),
+    [comparison, getCardById],
+  );
+};
 
 /**
  * Hook to get filter state
  */
-export const useCreditCardFilters = () =>
-  useCreditCardsStore((state) => ({
-    filters: state.filters,
-    activeFiltersCount: state.activeFiltersCount,
-    availableCategories: state.availableCategories,
-    availableNetworks: state.availableNetworks,
-    availableIssuers: state.availableIssuers,
-  }));
+export const useCreditCardFilters = () => {
+  const { filters, activeFiltersCount, cards } = useCreditCardsStore(
+    useShallow((state) => ({
+      filters: state.filters,
+      activeFiltersCount: state.activeFiltersCount,
+      cards: state.cards,
+    })),
+  );
+
+  const computedValues = useMemo(
+    () => ({
+      availableCategories: getAvailableCategories(cards),
+      availableNetworks: getAvailableNetworks(cards),
+      availableIssuers: getAvailableIssuers(cards),
+    }),
+    [cards],
+  );
+
+  return useMemo(
+    () => ({
+      filters,
+      activeFiltersCount,
+      ...computedValues,
+    }),
+    [filters, activeFiltersCount, computedValues],
+  );
+};
 
 /**
  * Hook to get search and sort state
  */
-export const useCreditCardSearch = () =>
-  useCreditCardsStore((state) => ({
-    searchQuery: state.searchQuery,
-    sortBy: state.sortBy,
-    viewMode: state.viewMode,
-    currentPage: state.currentPage,
-    totalCards: state.filteredCards.length,
-  }));
+export const useCreditCardSearch = () => {
+  const { searchQuery, sortBy, viewMode, pagination, cards, filters } =
+    useCreditCardsStore(
+      useShallow((state) => ({
+        searchQuery: state.searchQuery,
+        sortBy: state.sortBy,
+        viewMode: state.viewMode,
+        pagination: state.pagination,
+        cards: state.cards,
+        filters: state.filters,
+      })),
+    );
+
+  const totalCards = useMemo(() => {
+    const filtered = applyFilters(cards, filters, searchQuery);
+    return filtered.length;
+  }, [cards, filters, searchQuery]);
+
+  return useMemo(
+    () => ({
+      searchQuery,
+      sortBy,
+      viewMode,
+      pagination: {
+        ...pagination,
+        totalPages: Math.ceil(totalCards / pagination.limit),
+        hasNext: pagination.page < Math.ceil(totalCards / pagination.limit),
+        hasPrev: pagination.page > 1,
+      },
+      totalCards,
+    }),
+    [searchQuery, sortBy, viewMode, pagination, totalCards],
+  );
+};
+
+/**
+ * Hook to get UI state
+ */
+export const useCreditCardUI = () =>
+  useCreditCardsStore(
+    useShallow((state) => ({
+      viewMode: state.viewMode,
+      sidebarOpen: state.sidebarOpen,
+      mobileFiltersOpen: state.mobileFiltersOpen,
+      searchFocused: state.searchFocused,
+      isLoading: state.isLoading,
+      isError: state.isError,
+      error: state.error,
+    })),
+  );
 
 /**
  * Hook to get card actions
  */
 export const useCreditCardActions = () =>
-  useCreditCardsStore((state) => ({
-    setFilters: state.setFilters,
-    clearFilters: state.clearFilters,
-    addToComparison: state.addToComparison,
-    removeFromComparison: state.removeFromComparison,
-    clearComparison: state.clearComparison,
-    setSearchQuery: state.setSearchQuery,
-    setSortBy: state.setSortBy,
-    setCurrentPage: state.setCurrentPage,
-    setViewMode: state.setViewMode,
-    resetStore: state.resetStore,
-  }));
+  useCreditCardsStore(
+    useShallow((state) => ({
+      setFilters: state.setFilters,
+      clearFilters: state.clearFilters,
+      addToComparison: state.addToComparison,
+      removeFromComparison: state.removeFromComparison,
+      clearComparison: state.clearComparison,
+      setSearchQuery: state.setSearchQuery,
+      setSortBy: state.setSortBy,
+      setPagination: state.setPagination,
+      setViewMode: state.setViewMode,
+      toggleSidebar: state.toggleSidebar,
+      setMobileFiltersOpen: state.setMobileFiltersOpen,
+      setSearchFocused: state.setSearchFocused,
+      resetStore: state.resetStore,
+      setLoading: state.setLoading,
+      setError: state.setError,
+    })),
+  );
+
+/**
+ * Hook to get card getters
+ */
+export const useCreditCardGetters = () =>
+  useCreditCardsStore(
+    useShallow((state) => ({
+      getProductById: state.getCardById, // Renamed for consistency
+      getCardById: state.getCardById, // Backward compatibility
+      isInComparison: state.isInComparison,
+      canAddToComparison: state.canAddToComparison,
+    })),
+  );
+
+/**
+ * Hook to get computed properties for backward compatibility
+ */
+export const useCreditCardsComputedState = () => {
+  const filteredCards = useFilteredCreditCards();
+  const { pagination, comparison } = useCreditCardsStore(
+    useShallow((state) => ({
+      pagination: state.pagination,
+      comparison: state.comparison,
+    })),
+  );
+  const { getCardById } = useCreditCardGetters();
+
+  return useMemo(
+    () => ({
+      filteredCards,
+      currentPage: pagination.page,
+      comparisonCards: comparison.selectedCards
+        .map((id) => getCardById(id))
+        .filter(Boolean) as CreditCard[],
+      setCurrentPage: (page: number) => {
+        useCreditCardsStore.getState().setPagination({ page });
+      },
+    }),
+    [filteredCards, pagination.page, comparison.selectedCards, getCardById],
+  );
+};
 
 /**
  * Hook for store hydration
@@ -721,4 +931,29 @@ export const useCreditCardsHydrated = () => {
   }, []);
 
   return hydrated;
+};
+
+/**
+ * Backward compatibility hook that provides the old store interface
+ * This should be used by components that haven't migrated to the new selector-based hooks
+ */
+export const useCreditCardsStoreLegacy = () => {
+  const store = useCreditCardsStore();
+  const filteredCards = useFilteredCreditCards();
+  const { getCardById } = useCreditCardGetters();
+  const { comparisonCards } = useCreditCardComparison();
+
+  return {
+    // Direct store properties
+    ...store,
+
+    // Computed properties for backward compatibility
+    filteredCards,
+    currentPage: store.pagination.page,
+    comparisonCards,
+    setCurrentPage: (page: number) => store.setPagination({ page }),
+
+    // Backward compatibility aliases
+    getProductById: store.getCardById,
+  };
 };

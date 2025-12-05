@@ -13,7 +13,8 @@ import { Grid, List, Loader2, SlidersHorizontal, X } from "lucide-react";
 import { useTheme } from "@/lib/theme/context";
 import SearchBar from "@/components/features/credit-card/SearchBar";
 import SortDropdown from "@/components/features/credit-card/SortDropdown";
-import FilterPanel from "@/components/features/credit-card/FilterPanel";
+import CreditCardFilterPanel from "@/components/features/credit-cards/CreditCardFilterPanel";
+import { CreditCardActiveFilters } from "@/components/features/credit-cards/CreditCardActiveFilters";
 import type { CreditCardFilters, SortOption } from "@/types/credit-card";
 
 interface CreditCardsPageControlsProps {
@@ -70,30 +71,39 @@ export function CreditCardsPageControls({
           />
         </div>
 
+        {/* Active Filters */}
+        {activeFiltersCount > 0 && (
+          <div className="mb-4">
+            <CreditCardActiveFilters
+              filters={filters}
+              onClearFilter={(filterType, value) => {
+                if (value) {
+                  const currentValues = filters[
+                    filterType as keyof CreditCardFilters
+                  ] as string[];
+                  onFiltersChange({
+                    [filterType]: currentValues.filter((v) => v !== value),
+                  });
+                } else {
+                  onClearFilters();
+                }
+              }}
+              onClearAll={onClearFilters}
+            />
+          </div>
+        )}
+
         {/* Controls Row */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          {/* Left: Results count and active filters */}
-          <div className="flex items-center gap-4">
-            <div className="text-sm text-muted-foreground">
-              {isLoading ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
-              ) : (
-                t("showingResults", {
-                  count: filteredProductsCount,
-                  total: totalProducts,
-                })
-              )}
-            </div>
-            {activeFiltersCount > 0 && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={onClearFilters}
-                className="text-sm text-primary hover:text-primary/90"
-              >
-                <X className="w-3 h-3 mr-1" />
-                {t("clearFilters")}
-              </Button>
+          {/* Left: Results count */}
+          <div className="text-sm text-muted-foreground">
+            {isLoading ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : (
+              t("showingResults", {
+                count: filteredProductsCount,
+                total: totalProducts,
+              })
             )}
           </div>
 
@@ -151,7 +161,7 @@ export function CreditCardsPageControls({
                 <SheetTrigger asChild>
                   <Button variant="outline" className="flex items-center gap-2">
                     <SlidersHorizontal className="w-4 h-4" />
-                    {t("filters")}
+                    {t("filters.title")}
                     {activeFiltersCount > 0 && (
                       <Badge variant="secondary" className="ml-1">
                         {activeFiltersCount}
@@ -162,7 +172,7 @@ export function CreditCardsPageControls({
                 <SheetContent side="left" className="w-[320px] overflow-y-auto">
                   <SheetHeader>
                     <SheetTitle className="flex items-center justify-between">
-                      {t("filters")}
+                      {t("filters.title")}
                       <Button
                         variant="ghost"
                         size="sm"
@@ -173,13 +183,12 @@ export function CreditCardsPageControls({
                       </Button>
                     </SheetTitle>
                   </SheetHeader>
-                  <div className="mt-6">
-                    <FilterPanel
-                      filters={filters}
-                      onFiltersChange={onFiltersChange}
-                      onClearFilters={onClearFilters}
-                    />
-                  </div>
+                  <CreditCardFilterPanel
+                    filters={filters}
+                    onFiltersChange={onFiltersChange}
+                    onClearFilters={onClearFilters}
+                    isMobile={true}
+                  />
                 </SheetContent>
               </Sheet>
             </div>

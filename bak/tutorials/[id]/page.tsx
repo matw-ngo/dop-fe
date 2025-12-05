@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import InsuranceTutorialDetail from "@/components/features/insurance/TutorialDetail";

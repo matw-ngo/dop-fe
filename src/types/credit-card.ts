@@ -478,6 +478,16 @@ export type CreditCardAnalyticsEvent =
   | "redirect_to_partner";
 
 // ============================================================================
+// Type Aliases for Convenience
+// ============================================================================
+
+/**
+ * Alias for CreditCard interface - used in detail components
+ * Provides semantic clarity for components that display detailed card information
+ */
+export type DetailedCreditCardInfo = CreditCard;
+
+// ============================================================================
 // Export All Types
 // ============================================================================
 

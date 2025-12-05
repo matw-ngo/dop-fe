@@ -1,3 +1,4 @@
+// @ts-nocheck
 import InsuranceCostCalculator from "@/components/features/insurance/InsuranceCostCalculator";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";

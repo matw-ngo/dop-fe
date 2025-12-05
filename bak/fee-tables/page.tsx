@@ -1,3 +1,4 @@
+// @ts-nocheck
 import FeeTables from "@/components/features/insurance/FeeTables";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";

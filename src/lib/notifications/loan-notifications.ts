@@ -6,17 +6,20 @@
 
 import type {
   LoanApplicationStatus,
-  StatusConfig
+  StatusConfig,
 } from "@/lib/loan-status/vietnamese-status-config";
 
-import {
-  getStatusConfig
-} from "@/lib/loan-status/vietnamese-status-config";
+import { getStatusConfig } from "@/lib/loan-status/vietnamese-status-config";
 
 /**
  * Notification channel types
  */
-export type NotificationChannel = "sms" | "email" | "in_app" | "zalo" | "phone_call";
+export type NotificationChannel =
+  | "sms"
+  | "email"
+  | "in_app"
+  | "zalo"
+  | "phone_call";
 
 /**
  * Notification priority levels
@@ -126,8 +129,17 @@ export const VIETNAMESE_NOTIFICATION_TEMPLATES: NotificationTemplate[] = [
     category: "status_updates",
     channels: ["in_app", "sms", "email"],
     subject: "Hồ sơ vay vốn đã được tiếp nhận",
-    content: "Chào anh/chị {{customerName}},\n\nHồ sơ vay vốn mã {{applicationId}} của Quý khách đã được tiếp nhận thành công vào {{applicationDate}}.\n\nTrạng thái hiện tại: {{currentStatus}}\nSố tiền vay: {{requestedAmount}} VNĐ\nThời hạn vay: {{loanTerm}} tháng\n\nChúng tôi sẽ xử lý hồ sơ và cập nhật cho Quý khách trong thời gian sớm nhất.\n\nTrân trọng,\n{{bankName}}",
-    variables: ["customerName", "applicationId", "applicationDate", "currentStatus", "requestedAmount", "loanTerm", "bankName"],
+    content:
+      "Chào anh/chị {{customerName}},\n\nHồ sơ vay vốn mã {{applicationId}} của Quý khách đã được tiếp nhận thành công vào {{applicationDate}}.\n\nTrạng thái hiện tại: {{currentStatus}}\nSố tiền vay: {{requestedAmount}} VNĐ\nThời hạn vay: {{loanTerm}} tháng\n\nChúng tôi sẽ xử lý hồ sơ và cập nhật cho Quý khách trong thời gian sớm nhất.\n\nTrân trọng,\n{{bankName}}",
+    variables: [
+      "customerName",
+      "applicationId",
+      "applicationDate",
+      "currentStatus",
+      "requestedAmount",
+      "loanTerm",
+      "bankName",
+    ],
     frequency: "once",
     enabled: true,
   },
@@ -140,7 +152,8 @@ export const VIETNAMESE_NOTIFICATION_TEMPLATES: NotificationTemplate[] = [
     category: "status_updates",
     channels: ["in_app", "sms"],
     subject: "Hồ sơ đang được xử lý",
-    content: "Chào anh/chị {{customerName}},\n\nHồ sơ {{applicationId}} của Quý khách đang được các chuyên viên tín dụng xem xét và kiểm tra.\n\nThời gian xử lý dự kiến: {{estimatedTime}} ngày làm việc.\n\nQuý khách không cần thực hiện thêm thao tác nào lúc này.\n\nTrân trọng,\n{{bankName}}",
+    content:
+      "Chào anh/chị {{customerName}},\n\nHồ sơ {{applicationId}} của Quý khách đang được các chuyên viên tín dụng xem xét và kiểm tra.\n\nThời gian xử lý dự kiến: {{estimatedTime}} ngày làm việc.\n\nQuý khách không cần thực hiện thêm thao tác nào lúc này.\n\nTrân trọng,\n{{bankName}}",
     variables: ["customerName", "applicationId", "estimatedTime", "bankName"],
     frequency: "once",
     enabled: true,
@@ -153,8 +166,17 @@ export const VIETNAMESE_NOTIFICATION_TEMPLATES: NotificationTemplate[] = [
     category: "document_requests",
     channels: ["in_app", "sms", "email"],
     subject: "Yêu cầu bổ sung giấy tờ cho hồ sơ vay vốn",
-    content: "Chào anh/chị {{customerName}},\n\nĐể tiếp tục xử lý hồ sơ {{applicationId}}, Quý khách vui lòng bổ sung các giấy tờ sau:\n\n{{requiredDocuments}}\n\nVui lòng tải lên giấy tờ trước {{deadline}}.\n\nNếu cần hỗ trợ, Quý khách có thể liên hệ:\n- Hotline: {{hotline}}\n- Email: {{supportEmail}}\n\nTrân trọng,\n{{bankName}}",
-    variables: ["customerName", "applicationId", "requiredDocuments", "deadline", "hotline", "supportEmail", "bankName"],
+    content:
+      "Chào anh/chị {{customerName}},\n\nĐể tiếp tục xử lý hồ sơ {{applicationId}}, Quý khách vui lòng bổ sung các giấy tờ sau:\n\n{{requiredDocuments}}\n\nVui lòng tải lên giấy tờ trước {{deadline}}.\n\nNếu cần hỗ trợ, Quý khách có thể liên hệ:\n- Hotline: {{hotline}}\n- Email: {{supportEmail}}\n\nTrân trọng,\n{{bankName}}",
+    variables: [
+      "customerName",
+      "applicationId",
+      "requiredDocuments",
+      "deadline",
+      "hotline",
+      "supportEmail",
+      "bankName",
+    ],
     frequency: "once",
     enabled: true,
   },
@@ -166,8 +188,16 @@ export const VIETNAMESE_NOTIFICATION_TEMPLATES: NotificationTemplate[] = [
     category: "status_updates",
     channels: ["in_app", "email"],
     subject: "Hồ sơ đang được thẩm định chuyên sâu",
-    content: "Chào anh/chị {{customerName}},\n\nHồ sơ {{applicationId}} của Quý khách đã hoàn thành giai đoạn kiểm tra ban đầu và đang được thẩm định chuyên sâu.\n\nThẩm định viên: {{officerName}}\nĐiện thoại: {{officerPhone}}\n\nThời gian thẩm định dự kiến: {{estimatedTime}} ngày làm việc.\n\nTrân trọng,\n{{bankName}}",
-    variables: ["customerName", "applicationId", "officerName", "officerPhone", "estimatedTime", "bankName"],
+    content:
+      "Chào anh/chị {{customerName}},\n\nHồ sơ {{applicationId}} của Quý khách đã hoàn thành giai đoạn kiểm tra ban đầu và đang được thẩm định chuyên sâu.\n\nThẩm định viên: {{officerName}}\nĐiện thoại: {{officerPhone}}\n\nThời gian thẩm định dự kiến: {{estimatedTime}} ngày làm việc.\n\nTrân trọng,\n{{bankName}}",
+    variables: [
+      "customerName",
+      "applicationId",
+      "officerName",
+      "officerPhone",
+      "estimatedTime",
+      "bankName",
+    ],
     frequency: "once",
     enabled: true,
   },
@@ -179,8 +209,20 @@ export const VIETNAMESE_NOTIFICATION_TEMPLATES: NotificationTemplate[] = [
     category: "status_updates",
     channels: ["in_app", "sms", "email"],
     subject: "Chúc mừng! Hồ sơ vay vốn đã được phê duyệt",
-    content: "Chào anh/chị {{customerName}},\n\nChúc mừng! Hồ sơ vay vốn {{applicationId}} của Quý khách đã được phê duyệt.\n\nThông tin khoản vay được duyệt:\n- Số tiền: {{approvedAmount}} VNĐ\n- Lãi suất: {{interestRate}}%/năm\n- Thời hạn: {{approvedTerm}} tháng\n- Phương thức trả nợ: {{repaymentMethod}}\n\nQuý khách vui lòng hoàn tất các thủ tục sau để nhận giải ngân:\n{{nextSteps}}\n\nChuyên viên phụ trách: {{officerName}} - {{officerPhone}}\n\nTrân trọng,\n{{bankName}}",
-    variables: ["customerName", "applicationId", "approvedAmount", "interestRate", "approvedTerm", "repaymentMethod", "nextSteps", "officerName", "officerPhone", "bankName"],
+    content:
+      "Chào anh/chị {{customerName}},\n\nChúc mừng! Hồ sơ vay vốn {{applicationId}} của Quý khách đã được phê duyệt.\n\nThông tin khoản vay được duyệt:\n- Số tiền: {{approvedAmount}} VNĐ\n- Lãi suất: {{interestRate}}%/năm\n- Thời hạn: {{approvedTerm}} tháng\n- Phương thức trả nợ: {{repaymentMethod}}\n\nQuý khách vui lòng hoàn tất các thủ tục sau để nhận giải ngân:\n{{nextSteps}}\n\nChuyên viên phụ trách: {{officerName}} - {{officerPhone}}\n\nTrân trọng,\n{{bankName}}",
+    variables: [
+      "customerName",
+      "applicationId",
+      "approvedAmount",
+      "interestRate",
+      "approvedTerm",
+      "repaymentMethod",
+      "nextSteps",
+      "officerName",
+      "officerPhone",
+      "bankName",
+    ],
     frequency: "once",
     enabled: true,
   },
@@ -192,8 +234,16 @@ export const VIETNAMESE_NOTIFICATION_TEMPLATES: NotificationTemplate[] = [
     category: "status_updates",
     channels: ["in_app", "sms"],
     subject: "Hồ sơ đang chờ giải ngân",
-    content: "Chào anh/chị {{customerName}},\n\nHồ sơ {{applicationId}} đã hoàn tất tất cả thủ tục và đang chờ giải ngân.\n\nSố tiền giải ngân: {{disbursementAmount}} VNĐ\nTài khoản nhận: {{bankAccount}}\n\nThời gian giải ngân dự kiến: {{estimatedTime}}.\n\nTrân trọng,\n{{bankName}}",
-    variables: ["customerName", "applicationId", "disbursementAmount", "bankAccount", "estimatedTime", "bankName"],
+    content:
+      "Chào anh/chị {{customerName}},\n\nHồ sơ {{applicationId}} đã hoàn tất tất cả thủ tục và đang chờ giải ngân.\n\nSố tiền giải ngân: {{disbursementAmount}} VNĐ\nTài khoản nhận: {{bankAccount}}\n\nThời gian giải ngân dự kiến: {{estimatedTime}}.\n\nTrân trọng,\n{{bankName}}",
+    variables: [
+      "customerName",
+      "applicationId",
+      "disbursementAmount",
+      "bankAccount",
+      "estimatedTime",
+      "bankName",
+    ],
     frequency: "once",
     enabled: true,
   },
@@ -205,8 +255,19 @@ export const VIETNAMESE_NOTIFICATION_TEMPLATES: NotificationTemplate[] = [
     category: "status_updates",
     channels: ["in_app", "sms", "email", "zalo"],
     subject: "Khoản vay đã được giải ngân thành công",
-    content: "Chào anh/chị {{customerName}},\n\nKhoản vay {{applicationId}} đã được giải ngân thành công vào tài khoản của Quý khách.\n\nSố tiền: {{disbursementAmount}} VNĐ\nThời gian giải ngân: {{disbursementTime}}\nTài khoản nhận: {{bankAccount}}\n\nThông tin trả nợ:\n- Ngày trả nợ đầu tiên: {{firstPaymentDate}}\n- Số tiền trả nợ hàng tháng: {{monthlyPayment}} VNĐ\n- Tài khoản trích nợ: {{repaymentAccount}}\n\nQuý khách vui lòng đảm bảo số dư tài khoản đủ vào ngày trả nợ.\n\nTrân trọng,\n{{bankName}}",
-    variables: ["customerName", "applicationId", "disbursementAmount", "disbursementTime", "bankAccount", "firstPaymentDate", "monthlyPayment", "repaymentAccount", "bankName"],
+    content:
+      "Chào anh/chị {{customerName}},\n\nKhoản vay {{applicationId}} đã được giải ngân thành công vào tài khoản của Quý khách.\n\nSố tiền: {{disbursementAmount}} VNĐ\nThời gian giải ngân: {{disbursementTime}}\nTài khoản nhận: {{bankAccount}}\n\nThông tin trả nợ:\n- Ngày trả nợ đầu tiên: {{firstPaymentDate}}\n- Số tiền trả nợ hàng tháng: {{monthlyPayment}} VNĐ\n- Tài khoản trích nợ: {{repaymentAccount}}\n\nQuý khách vui lòng đảm bảo số dư tài khoản đủ vào ngày trả nợ.\n\nTrân trọng,\n{{bankName}}",
+    variables: [
+      "customerName",
+      "applicationId",
+      "disbursementAmount",
+      "disbursementTime",
+      "bankAccount",
+      "firstPaymentDate",
+      "monthlyPayment",
+      "repaymentAccount",
+      "bankName",
+    ],
     frequency: "once",
     enabled: true,
   },
@@ -218,8 +279,16 @@ export const VIETNAMESE_NOTIFICATION_TEMPLATES: NotificationTemplate[] = [
     category: "status_updates",
     channels: ["in_app", "email", "phone_call"],
     subject: "Thông báo về kết quả hồ sơ vay vốn",
-    content: "Chào anh/chị {{customerName}},\n\nSau khi xem xét kỹ lưỡng, rất tiếc hồ sơ vay vốn {{applicationId}} của Quý khách chưa đáp ứng điều kiện phê duyệt tại thời điểm này.\n\nLý do: {{rejectionReason}}\n\nQuý khách có thể:\n1. Cải thiện tình hình tài chính và nộp lại hồ sơ sau 3 tháng\n2. Liên hệ chuyên viên để được tư vấn các sản phẩm phù hợp khác\n\nChuyên viên tư vấn: {{officerName}} - {{officerPhone}}\n\nCảm ơn Quý khách đã tin tưởng và lựa chọn {{bankName}}.\n\nTrân trọng,\n{{bankName}}",
-    variables: ["customerName", "applicationId", "rejectionReason", "officerName", "officerPhone", "bankName"],
+    content:
+      "Chào anh/chị {{customerName}},\n\nSau khi xem xét kỹ lưỡng, rất tiếc hồ sơ vay vốn {{applicationId}} của Quý khách chưa đáp ứng điều kiện phê duyệt tại thời điểm này.\n\nLý do: {{rejectionReason}}\n\nQuý khách có thể:\n1. Cải thiện tình hình tài chính và nộp lại hồ sơ sau 3 tháng\n2. Liên hệ chuyên viên để được tư vấn các sản phẩm phù hợp khác\n\nChuyên viên tư vấn: {{officerName}} - {{officerPhone}}\n\nCảm ơn Quý khách đã tin tưởng và lựa chọn {{bankName}}.\n\nTrân trọng,\n{{bankName}}",
+    variables: [
+      "customerName",
+      "applicationId",
+      "rejectionReason",
+      "officerName",
+      "officerPhone",
+      "bankName",
+    ],
     frequency: "once",
     enabled: true,
   },
@@ -232,7 +301,8 @@ export const VIETNAMESE_NOTIFICATION_TEMPLATES: NotificationTemplate[] = [
     category: "document_updates",
     channels: ["in_app"],
     subject: "Giấy tờ đã được tải lên thành công",
-    content: "Giấy tờ {{documentName}} đã được tải lên thành công cho hồ sơ {{applicationId}}.\n\nTrạng thái: Đang chờ xác minh.",
+    content:
+      "Giấy tờ {{documentName}} đã được tải lên thành công cho hồ sơ {{applicationId}}.\n\nTrạng thái: Đang chờ xác minh.",
     variables: ["documentName", "applicationId"],
     frequency: "once",
     enabled: true,
@@ -245,7 +315,8 @@ export const VIETNAMESE_NOTIFICATION_TEMPLATES: NotificationTemplate[] = [
     category: "document_updates",
     channels: ["in_app", "sms"],
     subject: "Giấy tờ đã được xác minh",
-    content: "Giấy tờ {{documentName}} đã được xác minh thành công cho hồ sơ {{applicationId}}.",
+    content:
+      "Giấy tờ {{documentName}} đã được xác minh thành công cho hồ sơ {{applicationId}}.",
     variables: ["documentName", "applicationId"],
     frequency: "once",
     enabled: true,
@@ -258,7 +329,8 @@ export const VIETNAMESE_NOTIFICATION_TEMPLATES: NotificationTemplate[] = [
     category: "document_updates",
     channels: ["in_app", "sms", "email"],
     subject: "Giấy tờ cần được tải lại",
-    content: "Giấy tờ {{documentName}} đã bị từ chối cho hồ sơ {{applicationId}}.\n\nLý do: {{rejectionReason}}\n\nVui lòng tải lại giấy tờ hợp lệ để tiếp tục xử lý hồ sơ.",
+    content:
+      "Giấy tờ {{documentName}} đã bị từ chối cho hồ sơ {{applicationId}}.\n\nLý do: {{rejectionReason}}\n\nVui lòng tải lại giấy tờ hợp lệ để tiếp tục xử lý hồ sơ.",
     variables: ["documentName", "applicationId", "rejectionReason"],
     frequency: "once",
     enabled: true,
@@ -272,7 +344,8 @@ export const VIETNAMESE_NOTIFICATION_TEMPLATES: NotificationTemplate[] = [
     category: "reminders",
     channels: ["in_app", "sms"],
     subject: "Nhắc nhở: Vui lòng tải lên giấy tờ còn thiếu",
-    content: "Nhắc nhở: Hồ sơ {{applicationId}} của Quý khách vẫn còn {{pendingDocuments}} giấy tờ chưa được tải lên.\n\nVui lòng hoàn tất trước {{deadline}} để không ảnh hưởng đến tiến độ xử lý.",
+    content:
+      "Nhắc nhở: Hồ sơ {{applicationId}} của Quý khách vẫn còn {{pendingDocuments}} giấy tờ chưa được tải lên.\n\nVui lòng hoàn tất trước {{deadline}} để không ảnh hưởng đến tiến độ xử lý.",
     variables: ["applicationId", "pendingDocuments", "deadline"],
     frequency: "daily",
     enabled: true,
@@ -285,8 +358,14 @@ export const VIETNAMESE_NOTIFICATION_TEMPLATES: NotificationTemplate[] = [
     category: "reminders",
     channels: ["sms", "email", "zalo"],
     subject: "Nhắc nhở ngày trả nợ khoản vay",
-    content: "Nhắc nhở: Khoản vay {{applicationId}} có ngày trả nợ vào {{paymentDate}}.\n\nSố tiền thanh toán: {{paymentAmount}} VNĐ\nVui lòng đảm bảo số dư tài khoản {{repaymentAccount}} đủ để thanh toán đúng hạn.",
-    variables: ["applicationId", "paymentDate", "paymentAmount", "repaymentAccount"],
+    content:
+      "Nhắc nhở: Khoản vay {{applicationId}} có ngày trả nợ vào {{paymentDate}}.\n\nSố tiền thanh toán: {{paymentAmount}} VNĐ\nVui lòng đảm bảo số dư tài khoản {{repaymentAccount}} đủ để thanh toán đúng hạn.",
+    variables: [
+      "applicationId",
+      "paymentDate",
+      "paymentAmount",
+      "repaymentAccount",
+    ],
     frequency: "once",
     enabled: true,
   },
@@ -299,7 +378,8 @@ export const VIETNAMESE_NOTIFICATION_TEMPLATES: NotificationTemplate[] = [
     category: "system",
     channels: ["in_app", "email"],
     subject: "Thông báo bảo trì hệ thống",
-    content: "Hệ thống quản lý khoản vay sẽ được bảo trì từ {{startTime}} đến {{endTime}} ngày {{maintenanceDate}}.\n\nTrong thời gian này, Quý khách có thể không thể truy cập các tính năng sau:\n- Kiểm tra trạng thái hồ sơ\n- Tải lên giấy tờ\n- Gửi yêu cầu hỗ trợ\n\nChúng tôi xin lỗi vì sự bất tiện này.",
+    content:
+      "Hệ thống quản lý khoản vay sẽ được bảo trì từ {{startTime}} đến {{endTime}} ngày {{maintenanceDate}}.\n\nTrong thời gian này, Quý khách có thể không thể truy cập các tính năng sau:\n- Kiểm tra trạng thái hồ sơ\n- Tải lên giấy tờ\n- Gửi yêu cầu hỗ trợ\n\nChúng tôi xin lỗi vì sự bất tiện này.",
     variables: ["startTime", "endTime", "maintenanceDate"],
     frequency: "once",
     enabled: true,
@@ -320,8 +400,8 @@ export const CHANNEL_CONFIGS = {
     workingHours: {
       start: "08:00",
       end: "20:00",
-      timezone: "Asia/Ho_Chi_Minh"
-    }
+      timezone: "Asia/Ho_Chi_Minh",
+    },
   },
   email: {
     name: "Email",
@@ -333,8 +413,8 @@ export const CHANNEL_CONFIGS = {
     workingHours: {
       start: "00:00",
       end: "23:59",
-      timezone: "Asia/Ho_Chi_Minh"
-    }
+      timezone: "Asia/Ho_Chi_Minh",
+    },
   },
   in_app: {
     name: "In-App",
@@ -346,8 +426,8 @@ export const CHANNEL_CONFIGS = {
     workingHours: {
       start: "00:00",
       end: "23:59",
-      timezone: "Asia/Ho_Chi_Minh"
-    }
+      timezone: "Asia/Ho_Chi_Minh",
+    },
   },
   zalo: {
     name: "Zalo",
@@ -359,8 +439,8 @@ export const CHANNEL_CONFIGS = {
     workingHours: {
       start: "08:00",
       end: "20:00",
-      timezone: "Asia/Ho_Chi_Minh"
-    }
+      timezone: "Asia/Ho_Chi_Minh",
+    },
   },
   phone_call: {
     name: "Phone Call",
@@ -372,9 +452,9 @@ export const CHANNEL_CONFIGS = {
     workingHours: {
       start: "08:00",
       end: "18:00",
-      timezone: "Asia/Ho_Chi_Minh"
-    }
-  }
+      timezone: "Asia/Ho_Chi_Minh",
+    },
+  },
 } as const;
 
 /**
@@ -387,29 +467,34 @@ export class LoanNotificationManager {
    * Get notification template by ID
    */
   getTemplate(templateId: string): NotificationTemplate | null {
-    return this.templates.find(template => template.id === templateId) || null;
-  },
+    return (
+      this.templates.find((template) => template.id === templateId) || null
+    );
+  }
 
   /**
    * Get templates by category
    */
   getTemplatesByCategory(category: string): NotificationTemplate[] {
-    return this.templates.filter(template => template.category === category);
-  },
+    return this.templates.filter((template) => template.category === category);
+  }
 
   /**
    * Get templates by status
    */
   getTemplatesByStatus(status: LoanApplicationStatus): NotificationTemplate[] {
-    return this.templates.filter(template =>
-      template.conditions?.statuses?.includes(status) || false
+    return this.templates.filter(
+      (template) => template.conditions?.statuses?.includes(status) || false,
     );
-  },
+  }
 
   /**
    * Render notification template with variables
    */
-  renderTemplate(template: NotificationTemplate, variables: Record<string, any>): {
+  renderTemplate(
+    template: NotificationTemplate,
+    variables: Record<string, any>,
+  ): {
     subject: string;
     content: string;
   } {
@@ -419,12 +504,12 @@ export class LoanNotificationManager {
     // Replace variables in subject and content
     Object.entries(variables).forEach(([key, value]) => {
       const placeholder = `{{${key}}}`;
-      subject = subject.replace(new RegExp(placeholder, 'g'), String(value));
-      content = content.replace(new RegExp(placeholder, 'g'), String(value));
+      subject = subject.replace(new RegExp(placeholder, "g"), String(value));
+      content = content.replace(new RegExp(placeholder, "g"), String(value));
     });
 
     return { subject, content };
-  },
+  }
 
   /**
    * Validate notification message
@@ -450,7 +535,10 @@ export class LoanNotificationManager {
     }
 
     // Validate phone number for SMS/Zalo
-    if ((message.channel === "sms" || message.channel === "zalo") && !message.recipient.phone) {
+    if (
+      (message.channel === "sms" || message.channel === "zalo") &&
+      !message.recipient.phone
+    ) {
       errors.push("Phone number is required for SMS/Zalo notifications");
     }
 
@@ -461,16 +549,16 @@ export class LoanNotificationManager {
 
     return {
       isValid: errors.length === 0,
-      errors
+      errors,
     };
-  },
+  }
 
   /**
    * Check if notification should be sent based on preferences
    */
   shouldSendNotification(
     message: NotificationMessage,
-    preferences: NotificationPreferences
+    preferences: NotificationPreferences,
   ): boolean {
     // Check if channel is enabled
     if (!preferences.channels[message.channel]) {
@@ -493,13 +581,16 @@ export class LoanNotificationManager {
       const currentTime = now.toTimeString().slice(0, 5); // HH:MM format
 
       // Simple time comparison (could be improved with timezone handling)
-      if (currentTime >= preferences.doNotDisturb.startTime && currentTime <= preferences.doNotDisturb.endTime) {
+      if (
+        currentTime >= preferences.doNotDisturb.startTime &&
+        currentTime <= preferences.doNotDisturb.endTime
+      ) {
         return message.priority === "urgent"; // Only send urgent messages during DND
       }
     }
 
     return true;
-  },
+  }
 
   /**
    * Schedule notification
@@ -513,7 +604,7 @@ export class LoanNotificationManager {
     options?: {
       priority?: NotificationPriority;
       scheduledAt?: string;
-    }
+    },
   ): NotificationMessage {
     const template = this.getTemplate(templateId);
     if (!template) {
@@ -536,7 +627,7 @@ export class LoanNotificationManager {
       status: "pending",
       deliveryAttempts: 0,
     };
-  },
+  }
 
   /**
    * Create status change notification
@@ -545,7 +636,7 @@ export class LoanNotificationManager {
     applicationId: string,
     newStatus: LoanApplicationStatus,
     recipient: NotificationMessage["recipient"],
-    applicationData: Record<string, any>
+    applicationData: Record<string, any>,
   ): NotificationMessage[] {
     const messages: NotificationMessage[] = [];
     const statusConfig = getStatusConfig(newStatus);
@@ -557,7 +648,7 @@ export class LoanNotificationManager {
     // Get relevant templates for this status
     const relevantTemplates = this.getTemplatesByStatus(newStatus);
 
-    relevantTemplates.forEach(template => {
+    relevantTemplates.forEach((template) => {
       try {
         const message = this.scheduleNotification(
           applicationId,
@@ -568,16 +659,19 @@ export class LoanNotificationManager {
             ...applicationData,
             newStatus: statusConfig.label,
             statusDescription: statusConfig.description,
-          }
+          },
         );
         messages.push(message);
       } catch (error) {
-        console.error(`Failed to create notification for template ${template.id}:`, error);
+        console.error(
+          `Failed to create notification for template ${template.id}:`,
+          error,
+        );
       }
     });
 
     return messages;
-  },
+  }
 
   /**
    * Create document notification
@@ -587,7 +681,7 @@ export class LoanNotificationManager {
     documentType: string,
     action: "uploaded" | "verified" | "rejected",
     recipient: NotificationMessage["recipient"],
-    metadata?: Record<string, any>
+    metadata?: Record<string, any>,
   ): NotificationMessage | null {
     const templateId = `document_${action}`;
     const template = this.getTemplate(templateId);
@@ -606,14 +700,14 @@ export class LoanNotificationManager {
           documentName: documentType,
           applicationId,
           rejectionReason: metadata?.rejectionReason,
-          ...metadata
-        }
+          ...metadata,
+        },
       );
     } catch (error) {
       console.error(`Failed to create document notification:`, error);
       return null;
     }
-  },
+  }
 
   /**
    * Format Vietnamese currency
@@ -621,9 +715,9 @@ export class LoanNotificationManager {
   formatCurrency(amount: number): string {
     return new Intl.NumberFormat("vi-VN", {
       style: "currency",
-      currency: "VND"
+      currency: "VND",
     }).format(amount);
-  },
+  }
 
   /**
    * Format Vietnamese date
@@ -646,7 +740,7 @@ export class LoanNotificationManager {
         year: "numeric",
       });
     }
-  },
+  }
 
   /**
    * Check if current time is within working hours for a channel
@@ -662,7 +756,7 @@ export class LoanNotificationManager {
     const { start, end } = config.workingHours;
 
     return currentTime >= start && currentTime <= end;
-  },
+  }
 
   /**
    * Get next available delivery time
@@ -686,8 +780,8 @@ export class LoanNotificationManager {
     }
 
     return nextAvailable;
-  },
-};
+  }
+}
 
 // Export singleton instance
 export const loanNotificationManager = new LoanNotificationManager();
@@ -696,7 +790,7 @@ export const loanNotificationManager = new LoanNotificationManager();
  * Utility function to create notification preferences with Vietnamese defaults
  */
 export function createDefaultNotificationPreferences(
-  applicationId?: string
+  applicationId?: string,
 ): NotificationPreferences {
   return {
     applicationId,
@@ -729,7 +823,7 @@ export function isTemplateApplicable(
     status?: LoanApplicationStatus;
     loanType?: string;
     amount?: number;
-  }
+  },
 ): boolean {
   // Check if template is enabled
   if (!template.enabled) {
