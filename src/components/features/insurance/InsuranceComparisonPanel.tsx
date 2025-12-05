@@ -16,13 +16,18 @@ import {
   Printer,
   Link,
   Check,
-  ChevronDown
+  ChevronDown,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Card, CardContent } from "@/components/ui/card";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -34,20 +39,22 @@ import { InsuranceProduct } from "@/types/insurance";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/ui/use-toast";
 
-interface ComparisonPanelProps {
+interface InsuranceComparisonPanelProps {
   products: InsuranceProduct[];
   onAdd: () => void;
   onRemove: (productId: string) => void;
   onClear: () => void;
   onShare?: () => void;
-  onExport?: (format: 'csv' | 'pdf' | 'clipboard' | 'print') => void;
+  onExport?: (format: "csv" | "pdf" | "clipboard" | "print") => void;
   maxProducts?: number;
   isSticky?: boolean;
   className?: string;
   isLoading?: boolean;
 }
 
-export const ComparisonPanel: React.FC<ComparisonPanelProps> = ({
+export const InsuranceComparisonPanel: React.FC<
+  InsuranceComparisonPanelProps
+> = ({
   products,
   onAdd,
   onRemove,
@@ -63,7 +70,9 @@ export const ComparisonPanel: React.FC<ComparisonPanelProps> = ({
   const { toast } = useToast();
   const [isExporting, setIsExporting] = useState(false);
   const [isSharing, setIsSharing] = useState(false);
-  const [copiedStates, setCopiedStates] = useState<{ [key: string]: boolean }>({});
+  const [copiedStates, setCopiedStates] = useState<{ [key: string]: boolean }>(
+    {},
+  );
 
   // Calculate progress
   const progressPercentage = (products.length / maxProducts) * 100;
@@ -81,22 +90,26 @@ export const ComparisonPanel: React.FC<ComparisonPanelProps> = ({
   // Generate shareable URL with comparison data
   const generateShareableUrl = () => {
     const url = new URL(window.location.href);
-    const productIds = products.map(p => p.id).join(',');
-    url.searchParams.set('compare', productIds);
+    const productIds = products.map((p) => p.id).join(",");
+    url.searchParams.set("compare", productIds);
     return url.toString();
   };
 
   // Handle copy with visual feedback
-  const handleCopyWithFeedback = async (text: string, key: string, successMessage: string) => {
+  const handleCopyWithFeedback = async (
+    text: string,
+    key: string,
+    successMessage: string,
+  ) => {
     try {
       await navigator.clipboard.writeText(text);
-      setCopiedStates(prev => ({ ...prev, [key]: true }));
+      setCopiedStates((prev) => ({ ...prev, [key]: true }));
       toast({
         title: "Thành công!",
         description: successMessage,
       });
       setTimeout(() => {
-        setCopiedStates(prev => ({ ...prev, [key]: false }));
+        setCopiedStates((prev) => ({ ...prev, [key]: false }));
       }, 2000);
     } catch (err) {
       toast({
@@ -112,7 +125,7 @@ export const ComparisonPanel: React.FC<ComparisonPanelProps> = ({
     setIsExporting(true);
     try {
       if (onExport) {
-        onExport('csv');
+        onExport("csv");
         return;
       }
 
@@ -147,43 +160,67 @@ export const ComparisonPanel: React.FC<ComparisonPanelProps> = ({
 
       const csvContent = [
         headers.join(","),
-        ...products.map((product) => [
-          `"${product.name}"`,
-          `"${product.issuer}"`,
-          `"${t(`pages.insurance.categories.${product.category}`) || product.category}"`,
-          product.pricing.totalPremium,
-          product.pricing.basePremium,
-          product.pricing.taxAmount,
-          product.pricing.coveragePeriod,
-          product.coverage.personalAccident.disabled ? "0" : product.coverage.personalAccident.limit,
-          product.coverage.propertyDamage.disabled ? "0" : product.coverage.propertyDamage.limit,
-          product.coverage.medicalExpenses.disabled ? "0" : product.coverage.medicalExpenses.limit,
-          product.coverage.thirdPartyLiability.disabled ? "0" : product.coverage.thirdPartyLiability.limit,
-          product.coverage.death.disabled ? "0" : product.coverage.death.limit,
-          product.coverage.disability.disabled ? "0" : product.coverage.disability.limit,
-          product.coverage.hospitalization.disabled ? "0" : product.coverage.hospitalization.limit,
-          product.coverage.surgery.disabled ? "0" : product.coverage.surgery.limit,
-          product.coverage.criticalIllness.disabled ? "0" : product.coverage.criticalIllness.limit,
-          product.coverage.lossOfIncome.disabled ? "0" : product.coverage.lossOfIncome.limit,
-          product.rating,
-          product.reviewCount,
-          product.claims.approvalRate,
-          product.claims.averageClaimTime,
-          product.additionalServices?.roadsideAssistance ? "Có" : "Không",
-          product.additionalServices?.medicalHotline ? "Có" : "Không",
-          product.additionalServices?.legalSupport ? "Có" : "Không",
-          product.additionalServices?.worldwideCoverage ? "Có" : "Không",
-          `"${product.applyLink}"`,
-        ].join(",")),
+        ...products.map((product) =>
+          [
+            `"${product.name}"`,
+            `"${product.issuer}"`,
+            `"${t(`pages.insurance.categories.${product.category}`) || product.category}"`,
+            product.pricing.totalPremium,
+            product.pricing.basePremium,
+            product.pricing.taxAmount,
+            product.pricing.coveragePeriod,
+            product.coverage.personalAccident.disabled
+              ? "0"
+              : product.coverage.personalAccident.limit,
+            product.coverage.propertyDamage.disabled
+              ? "0"
+              : product.coverage.propertyDamage.limit,
+            product.coverage.medicalExpenses.disabled
+              ? "0"
+              : product.coverage.medicalExpenses.limit,
+            product.coverage.thirdPartyLiability.disabled
+              ? "0"
+              : product.coverage.thirdPartyLiability.limit,
+            product.coverage.death.disabled
+              ? "0"
+              : product.coverage.death.limit,
+            product.coverage.disability.disabled
+              ? "0"
+              : product.coverage.disability.limit,
+            product.coverage.hospitalization.disabled
+              ? "0"
+              : product.coverage.hospitalization.limit,
+            product.coverage.surgery.disabled
+              ? "0"
+              : product.coverage.surgery.limit,
+            product.coverage.criticalIllness.disabled
+              ? "0"
+              : product.coverage.criticalIllness.limit,
+            product.coverage.lossOfIncome.disabled
+              ? "0"
+              : product.coverage.lossOfIncome.limit,
+            product.rating,
+            product.reviewCount,
+            product.claims.approvalRate,
+            product.claims.averageClaimTime,
+            product.additionalServices?.roadsideAssistance ? "Có" : "Không",
+            product.additionalServices?.medicalHotline ? "Có" : "Không",
+            product.additionalServices?.legalSupport ? "Có" : "Không",
+            product.additionalServices?.worldwideCoverage ? "Có" : "Không",
+            `"${product.applyLink}"`,
+          ].join(","),
+        ),
       ].join("\n");
 
       // Add BOM for proper UTF-8 handling in Excel
-      const BOM = '\uFEFF';
-      const blob = new Blob([BOM + csvContent], { type: "text/csv;charset=utf-8;" });
+      const BOM = "\uFEFF";
+      const blob = new Blob([BOM + csvContent], {
+        type: "text/csv;charset=utf-8;",
+      });
       const link = document.createElement("a");
       const url = URL.createObjectURL(blob);
       link.setAttribute("href", url);
-      const fileName = `so-sanh-bao-hiem-${new Date().toISOString().split('T')[0]}.csv`;
+      const fileName = `so-sanh-bao-hiem-${new Date().toISOString().split("T")[0]}.csv`;
       link.setAttribute("download", fileName);
       link.style.visibility = "hidden";
       document.body.appendChild(link);
@@ -211,17 +248,19 @@ export const ComparisonPanel: React.FC<ComparisonPanelProps> = ({
     setIsExporting(true);
     try {
       if (onExport) {
-        onExport('pdf');
+        onExport("pdf");
         return;
       }
 
       // Create a new window for printing
-      const printWindow = window.open('', '_blank');
+      const printWindow = window.open("", "_blank");
       if (!printWindow) {
         throw new Error("Không thể mở cửa sổ in");
       }
 
-      const productTable = products.map(product => `
+      const productTable = products
+        .map(
+          (product) => `
         <tr>
           <td style="border: 1px solid #ddd; padding: 8px;">${product.name}</td>
           <td style="border: 1px solid #ddd; padding: 8px;">${product.issuer}</td>
@@ -230,7 +269,9 @@ export const ComparisonPanel: React.FC<ComparisonPanelProps> = ({
           <td style="border: 1px solid #ddd; padding: 8px;">${product.rating}/5</td>
           <td style="border: 1px solid #ddd; padding: 8px;">${product.claims.approvalRate}%</td>
         </tr>
-      `).join('');
+      `,
+        )
+        .join("");
 
       const htmlContent = `
         <!DOCTYPE html>
@@ -249,7 +290,7 @@ export const ComparisonPanel: React.FC<ComparisonPanelProps> = ({
         </head>
         <body>
           <h1>So Sánh Sản Phẩm Bảo Hiểm</h1>
-          <p>Ngày xuất: ${new Date().toLocaleDateString('vi-VN')}</p>
+          <p>Ngày xuất: ${new Date().toLocaleDateString("vi-VN")}</p>
           <p>Số lượng sản phẩm: ${products.length}</p>
 
           <table>
@@ -305,23 +346,36 @@ export const ComparisonPanel: React.FC<ComparisonPanelProps> = ({
     setIsExporting(true);
     try {
       if (onExport) {
-        onExport('clipboard');
+        onExport("clipboard");
         return;
       }
 
-      const text = products.map(product =>
-        `${product.name} - ${product.issuer}\n` +
-        `  Phí bảo hiểm: ${formatCurrency(product.pricing.totalPremium)}\n` +
-        `  Đánh giá: ${product.rating}/5 (${product.reviewCount} đánh giá)\n` +
-        `  Quyền lợi chính: ${Object.entries(product.coverage)
-          .filter(([_, c]: [string, { disabled: boolean; limit: number }]) => !c.disabled && c.limit > 0)
-          .map(([key, c]: [string, { disabled: boolean; limit: number }]) => `${formatCurrency(c.limit)}`)
-          .join(', ')}\n`
-      ).join('\n');
+      const text = products
+        .map(
+          (product) =>
+            `${product.name} - ${product.issuer}\n` +
+            `  Phí bảo hiểm: ${formatCurrency(product.pricing.totalPremium)}\n` +
+            `  Đánh giá: ${product.rating}/5 (${product.reviewCount} đánh giá)\n` +
+            `  Quyền lợi chính: ${Object.entries(product.coverage)
+              .filter(
+                ([_, c]: [string, { disabled: boolean; limit: number }]) =>
+                  !c.disabled && c.limit > 0,
+              )
+              .map(
+                ([key, c]: [string, { disabled: boolean; limit: number }]) =>
+                  `${formatCurrency(c.limit)}`,
+              )
+              .join(", ")}\n`,
+        )
+        .join("\n");
 
-      const fullText = `SO SÁNH SẢN PHẨM BẢO HIỂM\n${'='.repeat(40)}\n\n${text}\n${'='.repeat(40)}\nNguồn: ${window.location.href}\nNgày: ${new Date().toLocaleDateString('vi-VN')}`;
+      const fullText = `SO SÁNH SẢN PHẨM BẢO HIỂM\n${"=".repeat(40)}\n\n${text}\n${"=".repeat(40)}\nNguồn: ${window.location.href}\nNgày: ${new Date().toLocaleDateString("vi-VN")}`;
 
-      await handleCopyWithFeedback(fullText, 'clipboard', 'Đã sao chép thông tin so sánh!');
+      await handleCopyWithFeedback(
+        fullText,
+        "clipboard",
+        "Đã sao chép thông tin so sánh!",
+      );
     } finally {
       setIsExporting(false);
     }
@@ -332,7 +386,7 @@ export const ComparisonPanel: React.FC<ComparisonPanelProps> = ({
     setIsExporting(true);
     try {
       if (onExport) {
-        onExport('print');
+        onExport("print");
         return;
       }
       window.print();
@@ -366,7 +420,7 @@ export const ComparisonPanel: React.FC<ComparisonPanelProps> = ({
         handleCopyLink();
       }
     } catch (error) {
-      if ((error as Error).name !== 'AbortError') {
+      if ((error as Error).name !== "AbortError") {
         toast({
           title: "Lỗi!",
           description: "Không thể chia sẻ. Vui lòng thử lại.",
@@ -381,28 +435,32 @@ export const ComparisonPanel: React.FC<ComparisonPanelProps> = ({
   // Copy comparison link
   const handleCopyLink = async () => {
     const shareableUrl = generateShareableUrl();
-    await handleCopyWithFeedback(shareableUrl, 'link', 'Đã sao chép liên kết so sánh!');
+    await handleCopyWithFeedback(
+      shareableUrl,
+      "link",
+      "Đã sao chép liên kết so sánh!",
+    );
   };
 
   // Social media sharing
-  const handleSocialShare = (platform: 'facebook' | 'twitter' | 'linkedin') => {
+  const handleSocialShare = (platform: "facebook" | "twitter" | "linkedin") => {
     const url = generateShareableUrl();
     const text = `Đang so sánh ${products.length} sản phẩm bảo hiểm`;
 
-    let shareUrl = '';
+    let shareUrl = "";
     switch (platform) {
-      case 'facebook':
+      case "facebook":
         shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
         break;
-      case 'twitter':
+      case "twitter":
         shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
         break;
-      case 'linkedin':
+      case "linkedin":
         shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`;
         break;
     }
 
-    window.open(shareUrl, '_blank', 'width=600,height=400');
+    window.open(shareUrl, "_blank", "width=600,height=400");
   };
 
   if (isLoading) {
@@ -443,11 +501,13 @@ export const ComparisonPanel: React.FC<ComparisonPanelProps> = ({
         }
       `}</style>
       <TooltipProvider>
-        <Card className={cn(
-          "w-full transition-all duration-200",
-          isSticky && "sticky top-4 z-10",
-          className
-        )}>
+        <Card
+          className={cn(
+            "w-full transition-all duration-200",
+            isSticky && "sticky top-4 z-10",
+            className,
+          )}
+        >
           <CardContent className="p-6 space-y-6">
             {/* Header */}
             <div className="flex items-center justify-between print-break-inside-avoid">
@@ -476,22 +536,17 @@ export const ComparisonPanel: React.FC<ComparisonPanelProps> = ({
             {/* Progress Bar */}
             <div className="space-y-2">
               <div className="flex justify-between text-sm text-muted-foreground">
-                <span>
-                  {t("pages.insurance.comparisonProgress")}
-                </span>
+                <span>{t("pages.insurance.comparisonProgress")}</span>
                 <span>{Math.round(progressPercentage)}%</span>
               </div>
-              <Progress
-                value={progressPercentage}
-                className="h-2"
-              />
+              <Progress value={progressPercentage} className="h-2" />
               <p className="text-xs text-muted-foreground">
                 {canAddMore
                   ? t("pages.insurance.canAddMore", {
-                    remaining: maxProducts - products.length
-                  }) || `Bạn có thể thêm ${maxProducts - products.length} sản phẩm nữa`
-                  : t("pages.insurance.maxProductsReached")
-                }
+                      remaining: maxProducts - products.length,
+                    }) ||
+                    `Bạn có thể thêm ${maxProducts - products.length} sản phẩm nữa`
+                  : t("pages.insurance.maxProductsReached")}
               </p>
             </div>
 
@@ -591,15 +646,21 @@ export const ComparisonPanel: React.FC<ComparisonPanelProps> = ({
                         )}
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
-                      <DropdownMenuItem onClick={() => handleSocialShare('facebook')}>
+                      <DropdownMenuItem
+                        onClick={() => handleSocialShare("facebook")}
+                      >
                         <div className="h-4 w-4 mr-2 bg-blue-600 rounded" />
                         Facebook
                       </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => handleSocialShare('twitter')}>
+                      <DropdownMenuItem
+                        onClick={() => handleSocialShare("twitter")}
+                      >
                         <div className="h-4 w-4 mr-2 bg-sky-500 rounded" />
                         Twitter
                       </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => handleSocialShare('linkedin')}>
+                      <DropdownMenuItem
+                        onClick={() => handleSocialShare("linkedin")}
+                      >
                         <div className="h-4 w-4 mr-2 bg-blue-700 rounded" />
                         LinkedIn
                       </DropdownMenuItem>
@@ -684,7 +745,9 @@ export const ComparisonPanel: React.FC<ComparisonPanelProps> = ({
               <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
                 <p className="text-sm text-yellow-800">
                   <strong>{t("pages.insurance.comparisonLimit")}:</strong>{" "}
-                  {t("pages.insurance.comparisonLimitMessage", { max: maxProducts }) ||
+                  {t("pages.insurance.comparisonLimitMessage", {
+                    max: maxProducts,
+                  }) ||
                     `Bạn chỉ có thể so sánh tối đa ${maxProducts} sản phẩm tại một thời điểm`}
                 </p>
               </div>
@@ -696,4 +759,4 @@ export const ComparisonPanel: React.FC<ComparisonPanelProps> = ({
   );
 };
 
-export default ComparisonPanel;
+export default InsuranceComparisonPanel;

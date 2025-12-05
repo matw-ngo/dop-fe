@@ -2,8 +2,8 @@ import { useTranslations } from "next-intl";
 import { Shield, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import InsuranceGrid from "@/components/features/insurance/InsuranceGrid";
-import InsuranceFilterPanel from "@/components/features/insurance/FilterPanel";
-import Pagination from "@/components/features/insurance/Pagination";
+import InsuranceFilterPanel from "@/components/features/insurance/InsuranceFilterPanel";
+import Pagination from "@/components/features/insurance/InsurancePagination";
 import type { InsuranceProduct } from "@/types/insurance";
 import { useTheme } from "@/lib/theme/context";
 import { useInsuranceStore } from "@/store/use-insurance-store";
@@ -26,6 +26,7 @@ interface InsurancePageContentProps {
   searchQuery: string;
   activeFiltersCount: number;
   onSearchClear: () => void;
+  viewMode: "grid" | "list" | "compact";
 }
 
 export default function InsurancePageContent({
@@ -46,6 +47,7 @@ export default function InsurancePageContent({
   searchQuery,
   activeFiltersCount,
   onSearchClear,
+  viewMode,
 }: InsurancePageContentProps) {
   const t = useTranslations("pages.insurance");
   const { themeConfig } = useTheme();
@@ -90,7 +92,7 @@ export default function InsurancePageContent({
             <>
               <InsuranceGrid
                 products={paginatedProducts}
-                viewMode="grid" // TODO: Make this configurable
+                viewMode={viewMode === "compact" ? "grid" : viewMode}
                 onProductClick={onProductClick}
                 onCompareToggle={onCompareToggle}
                 comparingProducts={comparisonProducts}

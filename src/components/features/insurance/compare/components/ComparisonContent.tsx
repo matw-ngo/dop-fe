@@ -1,6 +1,6 @@
 import InsuranceGrid from "@/components/features/insurance/InsuranceGrid";
 import { InsuranceComparison } from "@/components/features/insurance/InsuranceComparison";
-import ComparisonPanel from "@/components/features/insurance/ComparisonPanel";
+import ComparisonPanel from "@/components/features/insurance/InsuranceComparisonPanel";
 import { useTranslations, useLocale } from "next-intl";
 import { InsuranceProduct } from "@/types/insurance";
 
@@ -10,7 +10,11 @@ interface ComparisonContentProps {
   onClearAll: () => void;
 }
 
-export function ComparisonContent({ products, onRemoveProduct, onClearAll }: ComparisonContentProps) {
+export function ComparisonContent({
+  products,
+  onRemoveProduct,
+  onClearAll,
+}: ComparisonContentProps) {
   const t = useTranslations();
   const locale = useLocale();
 
@@ -53,9 +57,7 @@ export function ComparisonContent({ products, onRemoveProduct, onClearAll }: Com
           products={[]} // Will be populated with suggestions in Task 28
           columns={3}
           gap="4"
-          emptyStateMessage={
-            t("pages.insurance.noMoreSuggestions")
-          }
+          emptyStateMessage={t("pages.insurance.noMoreSuggestions")}
         />
       </div>
     </div>

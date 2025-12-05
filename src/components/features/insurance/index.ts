@@ -1,15 +1,14 @@
 // Legacy exports
 export { default as InsuranceProduct } from "./InsuranceProduct";
 export { default as InsuranceSkeleton } from "./InsuranceSkeleton";
-export { default as InsuranceFilterPanel } from "./FilterPanel";
+export { default as InsuranceFilterPanel } from "./InsuranceFilterPanel";
 export { default as InsuranceGrid } from "./InsuranceGrid";
-export { default as InsuranceCatalog } from "./InsuranceCatalog";
 export { default as InsuranceQuotation } from "./InsuranceQuotation";
-export { default as InsuranceSearchBar } from "./SearchBar";
-export { default as InsurancePagination } from "./Pagination";
+export { default as InsuranceSearchBar } from "./InsuranceSearchBar";
+export { default as InsurancePagination } from "./InsurancePagination";
 export { InsuranceDetails } from "./InsuranceDetails";
 export { default as RelatedProducts } from "./RelatedProducts";
-export type { SearchBarProps } from "./SearchBar";
+export type { SearchBarProps } from "./InsuranceSearchBar";
 
 // Sub-components
 export {

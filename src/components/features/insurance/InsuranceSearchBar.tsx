@@ -48,7 +48,7 @@ import {
 } from "@/constants/insurance";
 import { InsuranceCategory } from "@/types/insurance";
 
-export interface SearchBarProps {
+export interface InsuranceSearchBarProps {
   value?: string;
   onChange?: (value: string) => void;
   onSearch?: (value: string) => void;
@@ -71,7 +71,7 @@ interface SearchSuggestion {
   icon?: React.ReactNode;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({
+const InsuranceSearchBar: React.FC<InsuranceSearchBarProps> = ({
   value = "",
   onChange,
   onSearch,
@@ -592,4 +592,4 @@ const SearchBar: React.FC<SearchBarProps> = ({
   );
 };
 
-export default SearchBar;
+export default InsuranceSearchBar;

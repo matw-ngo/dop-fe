@@ -23,7 +23,7 @@ import {
   useInsuranceGetters,
 } from "@/store/use-insurance-store";
 import { InsuranceThemeProvider } from "@/components/features/insurance/InsuranceThemeProvider";
-import ComparisonSnackbar from "@/components/features/insurance/ComparisonSnackbar";
+import ComparisonSnackbar from "@/components/features/insurance/InsuranceComparisonSnackbar";
 
 /**
  * Insurance listing page with filtering, search, and pagination
@@ -161,6 +161,7 @@ export default function InsurancePage() {
             searchQuery={searchQuery}
             activeFiltersCount={activeFiltersCount}
             onSearchClear={() => handlers.handleSearch("")}
+            viewMode={viewMode}
           />
         </main>
 

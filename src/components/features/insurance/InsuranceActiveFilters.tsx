@@ -37,6 +37,7 @@ import {
   InsuranceType,
   FeeType,
   CoveragePeriod,
+  VehicleType,
 } from "@/types/insurance";
 import {
   INSURANCE_CATEGORIES,
@@ -81,13 +82,7 @@ interface FilterGroup {
 }
 
 const InsuranceActiveFilters: React.FC<ActiveFiltersProps> = React.memo(
-  ({
-    filters,
-    onFiltersChange,
-    onClearAll,
-    maxDisplay = 10,
-    className,
-  }) => {
+  ({ filters, onFiltersChange, onClearAll, maxDisplay = 10, className }) => {
     const t = useTranslations("pages.insurance");
 
     // Format currency values
@@ -108,11 +103,13 @@ const InsuranceActiveFilters: React.FC<ActiveFiltersProps> = React.memo(
     const formatRangeLabel = useCallback(
       (min: number, max: number, ranges: typeof PREMIUM_RANGES) => {
         const range = ranges.find(
-          (r) => r.value.min === min && r.value.max === max
+          (r) => r.value.min === min && r.value.max === max,
         );
-        return range ? range.label : `${formatCurrency(min)} - ${formatCurrency(max)}`;
+        return range
+          ? range.label
+          : `${formatCurrency(min)} - ${formatCurrency(max)}`;
       },
-      [formatCurrency]
+      [formatCurrency],
     );
 
     // Get category icon
@@ -147,7 +144,9 @@ const InsuranceActiveFilters: React.FC<ActiveFiltersProps> = React.memo(
             label: INSURANCE_CATEGORIES[category]?.name || category,
             value: category,
             onRemove: () => {
-              const newCategories = filters.categories.filter((c) => c !== category);
+              const newCategories = filters.categories.filter(
+                (c) => c !== category,
+              );
               onFiltersChange({ categories: newCategories });
             },
           })),
@@ -202,7 +201,7 @@ const InsuranceActiveFilters: React.FC<ActiveFiltersProps> = React.memo(
               label: formatRangeLabel(
                 filters.premiumRange.min,
                 filters.premiumRange.max,
-                PREMIUM_RANGES
+                PREMIUM_RANGES,
               ),
               value: filters.premiumRange,
               onRemove: () => {
@@ -230,14 +229,15 @@ const InsuranceActiveFilters: React.FC<ActiveFiltersProps> = React.memo(
           label: `TN cá nhân: ${formatRangeLabel(
             filters.coverageRange.personalAccident.min,
             filters.coverageRange.personalAccident.max,
-            PERSONAL_ACCIDENT_COVERAGE_RANGES
+            PERSONAL_ACCIDENT_COVERAGE_RANGES,
           )}`,
           value: filters.coverageRange.personalAccident,
           onRemove: () => {
             onFiltersChange({
               coverageRange: {
                 ...filters.coverageRange,
-                personalAccident: DEFAULT_FILTERS.coverageRange.personalAccident,
+                personalAccident:
+                  DEFAULT_FILTERS.coverageRange.personalAccident,
               },
             });
           },
@@ -256,7 +256,7 @@ const InsuranceActiveFilters: React.FC<ActiveFiltersProps> = React.memo(
           label: `Tài sản: ${formatRangeLabel(
             filters.coverageRange.propertyDamage.min,
             filters.coverageRange.propertyDamage.max,
-            PROPERTY_DAMAGE_COVERAGE_RANGES
+            PROPERTY_DAMAGE_COVERAGE_RANGES,
           )}`,
           value: filters.coverageRange.propertyDamage,
           onRemove: () => {
@@ -282,7 +282,7 @@ const InsuranceActiveFilters: React.FC<ActiveFiltersProps> = React.memo(
           label: `Y tế: ${formatRangeLabel(
             filters.coverageRange.medicalExpenses.min,
             filters.coverageRange.medicalExpenses.max,
-            MEDICAL_EXPENSES_COVERAGE_RANGES
+            MEDICAL_EXPENSES_COVERAGE_RANGES,
           )}`,
           value: filters.coverageRange.medicalExpenses,
           onRemove: () => {
@@ -315,7 +315,7 @@ const InsuranceActiveFilters: React.FC<ActiveFiltersProps> = React.memo(
             value: coverage,
             onRemove: () => {
               const newCoverages = filters.specificCoverages.filter(
-                (c) => c !== coverage
+                (c) => c !== coverage,
               );
               onFiltersChange({ specificCoverages: newCoverages });
             },
@@ -325,15 +325,19 @@ const InsuranceActiveFilters: React.FC<ActiveFiltersProps> = React.memo(
 
       // Provinces
       if (filters.provinces.length > 0 && !filters.nationalAvailability) {
-        const provinceFilters = filters.provinces.slice(0, 3).map((province) => ({
-          key: `province-${province}`,
-          label: province,
-          value: province,
-          onRemove: () => {
-            const newProvinces = filters.provinces.filter((p) => p !== province);
-            onFiltersChange({ provinces: newProvinces });
-          },
-        }));
+        const provinceFilters = filters.provinces
+          .slice(0, 3)
+          .map((province) => ({
+            key: `province-${province}`,
+            label: province,
+            value: province,
+            onRemove: () => {
+              const newProvinces = filters.provinces.filter(
+                (p) => p !== province,
+              );
+              onFiltersChange({ provinces: newProvinces });
+            },
+          }));
 
         if (filters.provinces.length > 3) {
           provinceFilters.push({
@@ -451,7 +455,7 @@ const InsuranceActiveFilters: React.FC<ActiveFiltersProps> = React.memo(
     // Flatten all filters for counting
     const allFilters = useMemo(
       () => filterGroups.flatMap((group) => group.filters),
-      [filterGroups]
+      [filterGroups],
     );
 
     // No active filters
@@ -478,7 +482,7 @@ const InsuranceActiveFilters: React.FC<ActiveFiltersProps> = React.memo(
                     className="group relative inline-flex items-center gap-1 max-w-full hover:bg-destructive hover:text-destructive-foreground transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-destructive"
                     onClick={filter.onRemove}
                     onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
+                      if (e.key === "Enter" || e.key === " ") {
                         e.preventDefault();
                         filter.onRemove();
                       }
@@ -487,7 +491,9 @@ const InsuranceActiveFilters: React.FC<ActiveFiltersProps> = React.memo(
                     tabIndex={0}
                     aria-label={`Xóa bộ lọc: ${filter.label}`}
                   >
-                    <span className="truncate max-w-[150px]">{filter.label}</span>
+                    <span className="truncate max-w-[150px]">
+                      {filter.label}
+                    </span>
                     <X className="h-3 w-3 flex-shrink-0" aria-hidden="true" />
                   </Badge>
                 ))}
@@ -504,7 +510,7 @@ const InsuranceActiveFilters: React.FC<ActiveFiltersProps> = React.memo(
                           // This could open a modal or expand the list in a real implementation
                         }}
                         onKeyDown={(e) => {
-                          if (e.key === 'Enter' || e.key === ' ') {
+                          if (e.key === "Enter" || e.key === " ") {
                             e.preventDefault();
                             // Show all filters by temporarily increasing maxDisplay
                             // This could open a modal or expand the list in a real implementation
@@ -514,8 +520,8 @@ const InsuranceActiveFilters: React.FC<ActiveFiltersProps> = React.memo(
                         tabIndex={0}
                         aria-label={`Xem thêm ${hiddenFilters.length} bộ lọc`}
                       >
-                        <Plus className="h-3 w-3 mr-1" aria-hidden="true" />
-                        +{hiddenFilters.length}
+                        <Plus className="h-3 w-3 mr-1" aria-hidden="true" />+
+                        {hiddenFilters.length}
                       </Badge>
                     </TooltipTrigger>
                     <TooltipContent>
@@ -565,7 +571,7 @@ const InsuranceActiveFilters: React.FC<ActiveFiltersProps> = React.memo(
         </Card>
       </TooltipProvider>
     );
-  }
+  },
 );
 
 InsuranceActiveFilters.displayName = "InsuranceActiveFilters";

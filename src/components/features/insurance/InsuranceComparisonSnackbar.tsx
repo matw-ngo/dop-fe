@@ -24,13 +24,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-interface ComparisonSnackbarProps {
+interface InsuranceComparisonSnackbarProps {
   onClose?: () => void;
 }
 
-export default function ComparisonSnackbar({
+export default function InsuranceComparisonSnackbar({
   onClose,
-}: ComparisonSnackbarProps) {
+}: InsuranceComparisonSnackbarProps) {
   const t = useTranslations("pages.insurance");
   const locale = useLocale();
   const [isVisible, setIsVisible] = useState(true);

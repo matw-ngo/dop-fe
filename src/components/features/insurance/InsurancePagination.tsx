@@ -14,7 +14,7 @@ import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ITEMS_PER_PAGE_OPTIONS } from "@/constants/insurance";
 
-interface PaginationProps {
+interface InsurancePaginationProps {
   currentPage: number;
   totalPages: number;
   onPageChange: (page: number) => void;
@@ -25,7 +25,7 @@ interface PaginationProps {
   className?: string;
 }
 
-const Pagination: React.FC<PaginationProps> = ({
+const InsurancePagination: React.FC<InsurancePaginationProps> = ({
   currentPage,
   totalPages,
   onPageChange,
@@ -39,13 +39,15 @@ const Pagination: React.FC<PaginationProps> = ({
 
   // Validate props
   if (totalItems < 0) {
-    console.warn("Pagination: totalItems must be a non-negative number");
+    console.warn(
+      "InsurancePagination: totalItems must be a non-negative number",
+    );
   }
   if (currentPage < 1) {
-    console.warn("Pagination: currentPage must be a positive number");
+    console.warn("InsurancePagination: currentPage must be a positive number");
   }
   if (totalPages < 1) {
-    console.warn("Pagination: totalPages must be a positive number");
+    console.warn("InsurancePagination: totalPages must be a positive number");
   }
 
   // Don't render pagination if there's only one page
@@ -318,4 +320,4 @@ const Pagination: React.FC<PaginationProps> = ({
   );
 };
 
-export default Pagination;
+export default InsurancePagination;

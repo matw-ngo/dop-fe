@@ -9,9 +9,9 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Grid, List, Loader2, SlidersHorizontal, X } from "lucide-react";
-import InsuranceSearchBar from "@/components/features/insurance/SearchBar";
-import SortDropdown from "@/components/features/insurance/SortDropdown";
-import InsuranceFilterPanel from "@/components/features/insurance/FilterPanel";
+import InsuranceSearchBar from "@/components/features/insurance/InsuranceSearchBar";
+import SortDropdown from "@/components/features/insurance/InsuranceSortDropdown";
+import InsuranceFilterPanel from "@/components/features/insurance/InsuranceFilterPanel";
 import type { InsuranceFilters } from "@/types/insurance";
 import { useTheme } from "@/lib/theme/context";
 

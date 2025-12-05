@@ -11,7 +11,7 @@ import {
   ProductSidebar,
 } from "@/components/features/insurance/detail/components";
 import { InsuranceThemeProvider } from "@/components/features/insurance/InsuranceThemeProvider";
-import ComparisonSnackbar from "@/components/features/insurance/ComparisonSnackbar";
+import ComparisonSnackbar from "@/components/features/insurance/InsuranceComparisonSnackbar";
 
 interface ProductPageClientProps {
   product: InsuranceProduct;

@@ -4,18 +4,19 @@ import React, { useMemo } from "react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { cn } from "@/lib/utils";
 import {
-  Filter,
-  X,
-  RotateCcw,
-  SlidersHorizontal,
-} from "lucide-react";
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { cn } from "@/lib/utils";
+import { Filter, X, RotateCcw, SlidersHorizontal } from "lucide-react";
 import { InsuranceFilters } from "@/types/insurance";
-import InsuranceFilterPanel from "./FilterPanel";
+import InsuranceFilterPanel from "./InsuranceFilterPanel";
 
-interface FilterSidebarProps {
+interface InsuranceFilterSidebarProps {
   filters: InsuranceFilters;
   onFiltersChange: (filters: Partial<InsuranceFilters>) => void;
   onClearFilters: () => void;
@@ -31,10 +32,10 @@ interface FilterSidebarProps {
 }
 
 /**
- * FilterSidebar component that wraps the InsuranceFilterPanel for use in a sidebar layout.
+ * InsuranceFilterSidebar component that wraps the InsuranceFilterPanel for use in a sidebar layout.
  * Provides desktop sidebar styling and mobile drawer integration.
  */
-const FilterSidebar: React.FC<FilterSidebarProps> = ({
+const InsuranceFilterSidebar: React.FC<InsuranceFilterSidebarProps> = ({
   filters,
   onFiltersChange,
   onClearFilters,
@@ -57,7 +58,8 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
     if (filters.coveragePeriods.length > 0) count++;
     if (filters.provinces.length > 0) count++;
     if (filters.ageRange.min > 18 || filters.ageRange.max < 80) count++;
-    if (filters.premiumRange.min > 0 || filters.premiumRange.max < 50000000) count++;
+    if (filters.premiumRange.min > 0 || filters.premiumRange.max < 50000000)
+      count++;
     if (
       filters.coverageRange.personalAccident.min > 0 ||
       filters.coverageRange.personalAccident.max < 2000000000
@@ -117,7 +119,10 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                 <X className="h-4 w-4" />
               </Button>
             </div>
-            <p id="filter-description" className="text-sm text-muted-foreground">
+            <p
+              id="filter-description"
+              className="text-sm text-muted-foreground"
+            >
               {t("filterDescription")}
             </p>
           </SheetHeader>
@@ -142,7 +147,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
     <div
       className={cn(
         "w-80 h-full bg-background border-r border-border flex flex-col",
-        className
+        className,
       )}
       role="complementary"
       aria-label={t("filterSidebar")}
@@ -152,9 +157,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center space-x-2">
             <Filter className="h-5 w-5 text-primary" />
-            <h2 className="text-lg font-semibold">
-              {t("filters")}
-            </h2>
+            <h2 className="text-lg font-semibold">{t("filters")}</h2>
             {activeFiltersCount > 0 && (
               <Badge variant="secondary" className="ml-2">
                 {activeFiltersCount}
@@ -203,6 +206,6 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
   );
 };
 
-FilterSidebar.displayName = "FilterSidebar";
+InsuranceFilterSidebar.displayName = "InsuranceFilterSidebar";
 
-export default FilterSidebar;
+export default InsuranceFilterSidebar;

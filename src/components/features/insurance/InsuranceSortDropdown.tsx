@@ -33,7 +33,7 @@ import { cn } from "@/lib/utils";
 import { SortOption } from "@/types/insurance";
 import { SORT_OPTIONS } from "@/constants/insurance";
 
-interface SortDropdownProps {
+interface InsuranceSortDropdownProps {
   value?: SortOption;
   onChange?: (value: SortOption) => void;
   variant?: "select" | "dropdown";
@@ -42,7 +42,7 @@ interface SortDropdownProps {
   showDirectionIcon?: boolean;
 }
 
-const SortDropdown: React.FC<SortDropdownProps> = ({
+const InsuranceSortDropdown: React.FC<InsuranceSortDropdownProps> = ({
   value,
   onChange,
   variant = "select",
@@ -185,4 +185,4 @@ const SortDropdown: React.FC<SortDropdownProps> = ({
   );
 };
 
-export default SortDropdown;
+export default InsuranceSortDropdown;

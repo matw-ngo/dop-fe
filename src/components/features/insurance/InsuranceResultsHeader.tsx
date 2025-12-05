@@ -21,9 +21,9 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { SortOption } from "@/types/insurance";
-import SortDropdown from "./SortDropdown";
+import InsuranceSortDropdown from "./InsuranceSortDropdown";
 
-interface ResultsHeaderProps {
+interface InsuranceResultsHeaderProps {
   total: number;
   currentPage: number;
   itemsPerPage: number;
@@ -35,7 +35,7 @@ interface ResultsHeaderProps {
   className?: string;
 }
 
-const ResultsHeader: React.FC<ResultsHeaderProps> = ({
+const InsuranceResultsHeader: React.FC<InsuranceResultsHeaderProps> = ({
   total,
   currentPage,
   itemsPerPage,
@@ -134,7 +134,7 @@ const ResultsHeader: React.FC<ResultsHeaderProps> = ({
 
         {/* Sort dropdown */}
         <div className="shrink-0">
-          <SortDropdown
+          <InsuranceSortDropdown
             value={sortOption}
             onChange={onSortChange}
             variant="dropdown"
@@ -159,7 +159,9 @@ const ResultsHeader: React.FC<ResultsHeaderProps> = ({
             <AlertCircle className="h-8 w-8 text-muted-foreground" />
           </div>
           <h3 className="text-lg font-semibold mb-2">
-            {searchQuery ? "Không tìm thấy kết quả" : "Không tìm thấy sản phẩm nào"}
+            {searchQuery
+              ? "Không tìm thấy kết quả"
+              : "Không tìm thấy sản phẩm nào"}
           </h3>
           <p className="text-muted-foreground mb-4 max-w-md">
             {searchQuery
@@ -184,8 +186,7 @@ const ResultsHeader: React.FC<ResultsHeaderProps> = ({
           <div className="flex items-center gap-1">
             <ArrowUpDown className="h-4 w-4" />
             <span>
-              Đang sắp xếp theo:{" "}
-              {(() => {
+              Đang sắp xếp theo: {(() => {
                 const sortLabels = {
                   [SortOption.FEATURED]: "Nổi bật",
                   [SortOption.RATING_DESC]: "Đánh giá cao",
@@ -210,6 +211,6 @@ const ResultsHeader: React.FC<ResultsHeaderProps> = ({
   );
 };
 
-ResultsHeader.displayName = "ResultsHeader";
+InsuranceResultsHeader.displayName = "InsuranceResultsHeader";
 
-export default ResultsHeader;
+export default InsuranceResultsHeader;
