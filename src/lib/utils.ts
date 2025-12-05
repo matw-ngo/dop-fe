@@ -33,3 +33,17 @@ export function getGapClass(gap?: string | number): string {
 
   return gapMap[gap.toString()] || "gap-6";
 }
+
+/**
+ * Formats a number as Vietnamese Dong (VND) currency
+ * @param amount - The amount to format
+ * @returns Formatted currency string (e.g., "1.000.000 VND")
+ */
+export function formatCurrency(amount: number): string {
+  return new Intl.NumberFormat("vi-VN", {
+    style: "currency",
+    currency: "VND",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(amount);
+}
