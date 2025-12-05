@@ -17,20 +17,21 @@ import { formatCurrency } from "@/lib/utils";
 
 interface PaymentTabProps {
   product: any;
-  t: (key: string) => string;
+  t: any;
 }
 
 export const PaymentTab: React.FC<PaymentTabProps> = ({ product, t }) => {
   const noClaimBonusYears = Array.from(
     { length: product.renewal.noClaimBonus.maxYears },
-    (_, i) => i + 1
+    (_, i) => i + 1,
   );
 
-  const calculateNoClaimBonus = (year: number, maxYears: number, maxDiscount: number) => {
-    return Math.min(
-      (year / maxYears) * maxDiscount,
-      maxDiscount
-    );
+  const calculateNoClaimBonus = (
+    year: number,
+    maxYears: number,
+    maxDiscount: number,
+  ) => {
+    return Math.min((year / maxYears) * maxDiscount, maxDiscount);
   };
 
   const calculateMonthlyPayment = (totalPremium: number, months: number) => {
@@ -40,15 +41,17 @@ export const PaymentTab: React.FC<PaymentTabProps> = ({ product, t }) => {
   return (
     <div className="mt-6 space-y-6">
       {/* Payment Methods */}
-      <div className="bg-gradient-to-r from-green-50 to-teal-50 p-6 rounded-xl">
+      <div className="bg-muted/30 p-6 rounded-xl">
         <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-          <CreditCard className="w-5 h-5 text-green-600" />
+          <CreditCard className="w-5 h-5 text-primary" />
           {t("tabs.payment.methods.title")}
         </h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {product.paymentOptions.methods.map((method: string, index: number) => (
-            <PaymentMethodCard key={index} method={method} />
-          ))}
+          {product.paymentOptions.methods.map(
+            (method: string, index: number) => (
+              <PaymentMethodCard key={index} method={method} />
+            ),
+          )}
         </div>
       </div>
 
@@ -57,16 +60,13 @@ export const PaymentTab: React.FC<PaymentTabProps> = ({ product, t }) => {
         product.paymentOptions.installmentPlans && (
           <div>
             <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-              <Calculator className="w-5 h-5 text-blue-600" />
+              <Calculator className="w-5 h-5 text-primary" />
               {t("tabs.payment.installment.title")}
             </h3>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
               {product.paymentOptions.installmentPlans.map(
                 (plan: any, index: number) => (
-                  <div
-                    key={index}
-                    className="bg-white p-4 rounded-lg border border-gray-200"
-                  >
+                  <div key={index} className="bg-card p-4 rounded-lg border">
                     <div className="flex justify-between items-start mb-2">
                       <h4 className="font-medium">
                         {plan.months} {t("units.months")}
@@ -74,7 +74,7 @@ export const PaymentTab: React.FC<PaymentTabProps> = ({ product, t }) => {
                       {plan.interestRate === 0 && (
                         <Badge
                           variant="secondary"
-                          className="bg-green-100 text-green-700"
+                          className="bg-primary/10 text-primary"
                         >
                           {t("tabs.payment.installment.zeroInterest")}
                         </Badge>
@@ -82,13 +82,18 @@ export const PaymentTab: React.FC<PaymentTabProps> = ({ product, t }) => {
                     </div>
                     <p className="text-sm text-muted-foreground">
                       {plan.interestRate
-                        ? t("tabs.payment.installment.interestRate", { rate: plan.interestRate })
+                        ? t("tabs.payment.installment.interestRate", {
+                            rate: plan.interestRate,
+                          })
                         : t("tabs.payment.installment.interestFree")}
                     </p>
                     <p className="text-sm text-muted-foreground">
                       {t("tabs.payment.installment.monthlyPayment", {
                         amount: formatCurrency(
-                          calculateMonthlyPayment(product.pricing.totalPremium, plan.months),
+                          calculateMonthlyPayment(
+                            product.pricing.totalPremium,
+                            plan.months,
+                          ),
                         ),
                       })}
                     </p>
@@ -103,12 +108,12 @@ export const PaymentTab: React.FC<PaymentTabProps> = ({ product, t }) => {
       <div
         className={`${
           product.renewal.autoRenewal
-            ? "bg-green-50 border border-green-200"
-            : "bg-gray-50 border border-gray-200"
+            ? "bg-primary/5 border border-primary/20"
+            : "bg-muted/30 border border-border"
         } p-6 rounded-xl`}
       >
         <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-          <RotateCcw className="w-5 h-6" />
+          <RotateCcw className="w-5 h-6 text-primary" />
           {t("tabs.payment.autoRenewal.title")}
         </h3>
 
@@ -116,9 +121,11 @@ export const PaymentTab: React.FC<PaymentTabProps> = ({ product, t }) => {
           <div>
             <div className="grid md:grid-cols-2 gap-4 mb-4">
               <div className="flex items-center gap-3">
-                <Check className="w-5 h-5 text-green-600" />
+                <Check className="w-5 h-5 text-primary" />
                 <div>
-                  <p className="font-medium">{t("tabs.payment.autoRenewal.enabled")}</p>
+                  <p className="font-medium">
+                    {t("tabs.payment.autoRenewal.enabled")}
+                  </p>
                   <p className="text-sm text-muted-foreground">
                     {t("tabs.payment.autoRenewal.enabledDesc")}
                   </p>
@@ -126,21 +133,25 @@ export const PaymentTab: React.FC<PaymentTabProps> = ({ product, t }) => {
               </div>
 
               <div className="flex items-center gap-3">
-                <Clock className="w-5 h-5 text-blue-600" />
+                <Clock className="w-5 h-5 text-primary" />
                 <div>
-                  <p className="font-medium">{t("tabs.payment.autoRenewal.reminder")}</p>
+                  <p className="font-medium">
+                    {t("tabs.payment.autoRenewal.reminder")}
+                  </p>
                   <p className="text-sm text-muted-foreground">
-                    {t("tabs.payment.autoRenewal.reminderDesc", { days: product.renewal.renewalReminderDays })}
+                    {t("tabs.payment.autoRenewal.reminderDesc", {
+                      days: product.renewal.renewalReminderDays,
+                    })}
                   </p>
                 </div>
               </div>
             </div>
 
-            <div className="bg-white p-4 rounded-lg">
-              <p className="text-sm text-gray-700 mb-2">
+            <div className="bg-card p-4 rounded-lg border">
+              <p className="text-sm text-foreground mb-2">
                 <strong>{t("tabs.payment.autoRenewal.benefits.title")}:</strong>
               </p>
-              <ul className="space-y-1 text-sm text-gray-600">
+              <ul className="space-y-1 text-sm text-muted-foreground">
                 <li>• {t("tabs.payment.autoRenewal.benefits.benefit1")}</li>
                 <li>• {t("tabs.payment.autoRenewal.benefits.benefit2")}</li>
                 <li>• {t("tabs.payment.autoRenewal.benefits.benefit3")}</li>
@@ -150,7 +161,7 @@ export const PaymentTab: React.FC<PaymentTabProps> = ({ product, t }) => {
           </div>
         ) : (
           <div className="flex items-center gap-3">
-            <X className="w-5 h-5 text-gray-500" />
+            <X className="w-5 h-5 text-muted-foreground" />
             <div>
               <p className="font-medium">
                 {t("tabs.payment.autoRenewal.notSupported")}
@@ -164,34 +175,35 @@ export const PaymentTab: React.FC<PaymentTabProps> = ({ product, t }) => {
       </div>
 
       {/* No Claim Bonus */}
-      <div className="bg-gradient-to-r from-yellow-50 to-orange-50 p-6 rounded-xl">
+      <div className="bg-muted/30 p-6 rounded-xl">
         <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-          <Trophy className="w-5 h-5 text-yellow-600" />
+          <Trophy className="w-5 h-5 text-primary" />
           {t("tabs.payment.noClaimBonus.title")}
         </h3>
 
         <div className="grid md:grid-cols-2 gap-6">
           <div>
-            <h4 className="font-medium mb-3">{t("tabs.payment.noClaimBonus.accumulationRules")}</h4>
+            <h4 className="font-medium mb-3">
+              {t("tabs.payment.noClaimBonus.accumulationRules")}
+            </h4>
             <div className="space-y-2">
               {noClaimBonusYears.map((year) => {
                 const discount = calculateNoClaimBonus(
                   year,
                   product.renewal.noClaimBonus.maxYears,
-                  product.renewal.noClaimBonus.maxDiscount
+                  product.renewal.noClaimBonus.maxDiscount,
                 );
                 return (
                   <div
                     key={year}
-                    className="flex justify-between items-center p-2 bg-white rounded"
+                    className="flex justify-between items-center p-2 bg-card rounded border"
                   >
                     <span className="text-sm">
-                      {t("tabs.payment.noClaimBonus.yearsWithoutClaim", { years: year })}
+                      {t("tabs.payment.noClaimBonus.yearsWithoutClaim", {
+                        years: year,
+                      })}
                     </span>
-                    <Badge
-                      variant="outline"
-                      className="text-yellow-600"
-                    >
+                    <Badge variant="outline" className="text-primary">
                       -{Math.round(discount)}%
                     </Badge>
                   </div>
@@ -201,8 +213,10 @@ export const PaymentTab: React.FC<PaymentTabProps> = ({ product, t }) => {
           </div>
 
           <div>
-            <h4 className="font-medium mb-3">{t("tabs.payment.noClaimBonus.importantNotes")}</h4>
-            <ul className="space-y-2 text-sm text-gray-700">
+            <h4 className="font-medium mb-3">
+              {t("tabs.payment.noClaimBonus.importantNotes")}
+            </h4>
+            <ul className="space-y-2 text-sm text-muted-foreground">
               <li className="flex items-start gap-2">
                 <Info className="w-4 h-4 mt-0.5 text-yellow-600 flex-shrink-0" />
                 <span>{t("tabs.payment.noClaimBonus.note1")}</span>
@@ -212,8 +226,12 @@ export const PaymentTab: React.FC<PaymentTabProps> = ({ product, t }) => {
                 <span>{t("tabs.payment.noClaimBonus.note2")}</span>
               </li>
               <li className="flex items-start gap-2">
-                <Info className="w-4 h-4 mt-0.5 text-yellow-600 flex-shrink-0" />
-                <span>{t("tabs.payment.noClaimBonus.note3", { maxDiscount: product.renewal.noClaimBonus.maxDiscount })}</span>
+                <Info className="w-4 h-4 mt-0.5 text-muted-foreground flex-shrink-0" />
+                <span>
+                  {t("tabs.payment.noClaimBonus.note3", {
+                    maxDiscount: product.renewal.noClaimBonus.maxDiscount,
+                  })}
+                </span>
               </li>
             </ul>
           </div>
@@ -221,32 +239,41 @@ export const PaymentTab: React.FC<PaymentTabProps> = ({ product, t }) => {
       </div>
 
       {/* Cancellation Policy */}
-      <div className="bg-gray-50 border border-gray-200 p-6 rounded-xl">
+      <div className="bg-muted/30 border border-border p-6 rounded-xl">
         <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-          <FileX className="w-5 h-5 text-gray-600" />
+          <FileX className="w-5 h-5 text-muted-foreground" />
           {t("tabs.payment.cancellation.title")}
         </h3>
 
         <div className="space-y-4">
           <div>
-            <h4 className="font-medium mb-2">{t("tabs.payment.cancellation.considerationPeriod")}</h4>
+            <h4 className="font-medium mb-2">
+              {t("tabs.payment.cancellation.considerationPeriod")}
+            </h4>
             <p className="text-sm text-gray-700">
-              {t("tabs.payment.cancellation.considerationPeriodDesc", { days: product.renewal.gracePeriod })}
+              {t("tabs.payment.cancellation.considerationPeriodDesc", {
+                days: product.renewal.gracePeriod,
+              })}
             </p>
           </div>
 
           <div>
-            <h4 className="font-medium mb-2">{t("tabs.payment.cancellation.afterConsideration")}</h4>
-            <ul className="space-y-1 text-sm text-gray-700">
+            <h4 className="font-medium mb-2">
+              {t("tabs.payment.cancellation.afterConsideration")}
+            </h4>
+            <ul className="space-y-1 text-sm text-muted-foreground">
               <li>• {t("tabs.payment.cancellation.beforeExpiry")}</li>
               <li>• {t("tabs.payment.cancellation.cancellationFee")}</li>
               <li>• {t("tabs.payment.cancellation.procedure")}</li>
             </ul>
           </div>
 
-          <div className="bg-white p-4 rounded-lg">
-            <p className="text-xs text-gray-600">
-              <strong>{t("tabs.payment.cancellation.note")}:</strong> {t("tabs.payment.cancellation.termination", { days: product.renewal.gracePeriod })}
+          <div className="bg-card p-4 rounded-lg border">
+            <p className="text-xs text-muted-foreground">
+              <strong>{t("tabs.payment.cancellation.note")}:</strong>{" "}
+              {t("tabs.payment.cancellation.termination", {
+                days: product.renewal.gracePeriod,
+              })}
             </p>
           </div>
         </div>

@@ -24,9 +24,15 @@ export const ProductSidebar = ({ product, locale }: ProductSidebarProps) => {
       <ClaimsInformationCard product={product} t={t} />
     </div>
   );
-}
+};
 
-function KeyHighlightsCard({ product, t }: { product: InsuranceProduct; t: any }) {
+function KeyHighlightsCard({
+  product,
+  t,
+}: {
+  product: InsuranceProduct;
+  t: any;
+}) {
   return (
     <Card>
       <CardHeader>
@@ -38,9 +44,7 @@ function KeyHighlightsCard({ product, t }: { product: InsuranceProduct; t: any }
       <CardContent className="space-y-4">
         <div className="grid grid-cols-2 gap-4">
           <div className="bg-muted/30 p-3 rounded-lg">
-            <p className="text-xs text-muted-foreground mb-1">
-              {t("premium")}
-            </p>
+            <p className="text-xs text-muted-foreground mb-1">{t("premium")}</p>
             <p className="text-lg font-semibold text-primary">
               {formatCurrency(product.pricing.totalPremium)}
             </p>
@@ -60,8 +64,8 @@ function KeyHighlightsCard({ product, t }: { product: InsuranceProduct; t: any }
 
         {product.features.slice(0, 3).map((feature, index) => (
           <div key={index} className="flex items-start gap-2">
-            <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-              <span className="text-green-600 text-xs">✓</span>
+            <div className="w-5 h-5 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+              <span className="text-primary text-xs">✓</span>
             </div>
             <span className="text-sm">{feature}</span>
           </div>
@@ -71,19 +75,21 @@ function KeyHighlightsCard({ product, t }: { product: InsuranceProduct; t: any }
   );
 }
 
-function PremiumInformationCard({ product, t }: { product: InsuranceProduct; t: any }) {
+function PremiumInformationCard({
+  product,
+  t,
+}: {
+  product: InsuranceProduct;
+  t: any;
+}) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>
-          {t("premiumInfo")}
-        </CardTitle>
+        <CardTitle>{t("premiumInfo")}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
         <div className="flex justify-between">
-          <span className="text-muted-foreground">
-            {t("basePremium")}:
-          </span>
+          <span className="text-muted-foreground">{t("basePremium")}:</span>
           <span className="font-medium">
             {formatCurrency(product.pricing.basePremium)}
           </span>
@@ -100,9 +106,7 @@ function PremiumInformationCard({ product, t }: { product: InsuranceProduct; t: 
         )}
         <div className="border-t pt-3">
           <div className="flex justify-between">
-            <span className="font-semibold">
-              {t("totalPremium")}:
-            </span>
+            <span className="font-semibold">{t("totalPremium")}:</span>
             <span className="font-bold text-lg text-primary">
               {formatCurrency(product.pricing.totalPremium)}
             </span>
@@ -118,14 +122,20 @@ function PremiumInformationCard({ product, t }: { product: InsuranceProduct; t: 
   );
 }
 
-function CTAButtons({ product, locale, t }: { product: InsuranceProduct; locale: string; t: any }) {
+function CTAButtons({
+  product,
+  locale,
+  t,
+}: {
+  product: InsuranceProduct;
+  locale: string;
+  t: any;
+}) {
   return (
     <Card>
       <CardContent className="pt-6 space-y-3">
         <Button className="w-full" size="lg" asChild>
-          <Link href={product.applyLink}>
-            {t("applyNow")}
-          </Link>
+          <Link href={product.applyLink}>{t("applyNow")}</Link>
         </Button>
         <Button variant="outline" className="w-full" asChild>
           <Link href={`/${locale}/insurance/compare?ids=${product.id}`}>
@@ -174,30 +184,29 @@ function ContactInformationCard({ product }: { product: InsuranceProduct }) {
   );
 }
 
-function ClaimsInformationCard({ product, t }: { product: InsuranceProduct; t: any }) {
+function ClaimsInformationCard({
+  product,
+  t,
+}: {
+  product: InsuranceProduct;
+  t: any;
+}) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>
-          {t("claimsInfo")}
-        </CardTitle>
+        <CardTitle>{t("claimsInfo")}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
         <div className="flex justify-between text-sm">
-          <span className="text-muted-foreground">
-            {t("approvalRate")}:
-          </span>
+          <span className="text-muted-foreground">{t("approvalRate")}:</span>
           <span className="font-medium text-green-600">
             {product.claims.approvalRate}%
           </span>
         </div>
         <div className="flex justify-between text-sm">
-          <span className="text-muted-foreground">
-            {t("processingTime")}:
-          </span>
+          <span className="text-muted-foreground">{t("processingTime")}:</span>
           <span className="font-medium">
-            {product.claims.processingTime}{" "}
-            {t("workingDays")}
+            {product.claims.processingTime} {t("workingDays")}
           </span>
         </div>
         <div className="flex justify-between text-sm">

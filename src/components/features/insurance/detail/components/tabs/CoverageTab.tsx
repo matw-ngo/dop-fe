@@ -31,24 +31,26 @@ import { getVehicleTypeText } from "../../utils";
 
 interface CoverageTabProps {
   product: any;
-  t: (key: string) => string;
+  t: any;
 }
 
 export const CoverageTab: React.FC<CoverageTabProps> = ({ product, t }) => {
   return (
     <div className="mt-6 space-y-6">
       {/* Insured Objects Section */}
-      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-xl">
+      <div className="bg-gradient-to-r from-primary/10 to-primary/5 p-6 rounded-xl">
         <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-          <Users className="w-5 h-5 text-blue-600" />
+          <Users className="w-5 h-5 text-primary" />
           {t("tabs.coverage.insuredObjects.title")}
         </h3>
         <div className="grid md:grid-cols-2 gap-4">
           <div className="space-y-3">
             <div className="flex items-start gap-3">
-              <UserCheck className="w-5 h-5 text-blue-600 mt-0.5" />
+              <UserCheck className="w-5 h-5 text-primary mt-0.5" />
               <div>
-                <p className="font-medium">{t("tabs.coverage.insuredObjects.ageRangeTitle")}</p>
+                <p className="font-medium">
+                  {t("tabs.coverage.insuredObjects.ageRangeTitle")}
+                </p>
                 <p className="text-sm text-muted-foreground">
                   {t("tabs.coverage.insuredObjects.ageRangeText", {
                     min: product.eligibility.ageRange.min,
@@ -59,19 +61,23 @@ export const CoverageTab: React.FC<CoverageTabProps> = ({ product, t }) => {
             </div>
             {product.eligibility.occupation && (
               <div className="flex items-start gap-3">
-                <Briefcase className="w-5 h-5 text-blue-600 mt-0.5" />
+                <Briefcase className="w-5 h-5 text-primary mt-0.5" />
                 <div>
-                  <p className="font-medium">{t("tabs.coverage.insuredObjects.occupationTitle")}</p>
+                  <p className="font-medium">
+                    {t("tabs.coverage.insuredObjects.occupationTitle")}
+                  </p>
                   <div className="flex flex-wrap gap-1 mt-1">
-                    {product.eligibility.occupation.map((occ: string, index: number) => (
-                      <Badge
-                        key={index}
-                        variant="outline"
-                        className="text-xs"
-                      >
-                        {occ}
-                      </Badge>
-                    ))}
+                    {product.eligibility.occupation.map(
+                      (occ: string, index: number) => (
+                        <Badge
+                          key={index}
+                          variant="outline"
+                          className="text-xs"
+                        >
+                          {occ}
+                        </Badge>
+                      ),
+                    )}
                   </div>
                 </div>
               </div>
@@ -79,9 +85,11 @@ export const CoverageTab: React.FC<CoverageTabProps> = ({ product, t }) => {
           </div>
           <div className="space-y-3">
             <div className="flex items-start gap-3">
-              <MapPin className="w-5 h-5 text-blue-600 mt-0.5" />
+              <MapPin className="w-5 h-5 text-primary mt-0.5" />
               <div>
-                <p className="font-medium">{t("tabs.coverage.insuredObjects.geographicScope")}</p>
+                <p className="font-medium">
+                  {t("tabs.coverage.insuredObjects.geographicScope")}
+                </p>
                 <p className="text-sm text-muted-foreground">
                   {product.availability.nationalAvailability
                     ? t("tabs.coverage.insuredObjects.nationwide")
@@ -93,9 +101,11 @@ export const CoverageTab: React.FC<CoverageTabProps> = ({ product, t }) => {
             </div>
             {product.category === "vehicle" && product.vehicleCoverage && (
               <div className="flex items-start gap-3">
-                <Car className="w-5 h-5 text-blue-600 mt-0.5" />
+                <Car className="w-5 h-5 text-primary mt-0.5" />
                 <div>
-                  <p className="font-medium">{t("tabs.coverage.insuredObjects.vehicleType")}</p>
+                  <p className="font-medium">
+                    {t("tabs.coverage.insuredObjects.vehicleType")}
+                  </p>
                   <p className="text-sm text-muted-foreground">
                     {getVehicleTypeText(product.vehicleCoverage.vehicleType)}
                   </p>
@@ -109,14 +119,14 @@ export const CoverageTab: React.FC<CoverageTabProps> = ({ product, t }) => {
       {/* Coverage Scope Section */}
       <div>
         <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-          <ShieldCheck className="w-5 h-5 text-green-600" />
+          <ShieldCheck className="w-5 h-5 text-primary" />
           {t("tabs.coverage.coverageScope.title")}
         </h3>
 
         {/* Personal Coverage */}
         <div className="mb-6">
           <h4 className="font-medium mb-3 flex items-center gap-2">
-            <HeartPulse className="w-4 h-4 text-red-500" />
+            <HeartPulse className="w-4 h-4 text-primary" />
             {t("tabs.coverage.coverageScope.personalCoverage")}
           </h4>
           <div className="grid gap-3">
@@ -206,7 +216,7 @@ export const CoverageTab: React.FC<CoverageTabProps> = ({ product, t }) => {
         {/* Property & Liability Coverage */}
         <div>
           <h4 className="font-medium mb-3 flex items-center gap-2">
-            <DollarSign className="w-4 h-4 text-green-500" />
+            <DollarSign className="w-4 h-4 text-primary" />
             {t("tabs.coverage.coverageScope.propertyLiability")}
           </h4>
           <div className="grid gap-3">
@@ -281,12 +291,12 @@ export const CoverageTab: React.FC<CoverageTabProps> = ({ product, t }) => {
       </div>
 
       {/* Special Coverage Notes */}
-      <div className="bg-amber-50 border border-amber-200 p-4 rounded-xl">
+      <div className="bg-muted/30 border border-border p-4 rounded-xl">
         <h4 className="font-medium mb-2 flex items-center gap-2">
-          <Info className="w-4 h-4 text-amber-600" />
+          <Info className="w-4 h-4 text-muted-foreground" />
           {t("tabs.coverage.specialNotes.title")}
         </h4>
-        <ul className="space-y-1 text-sm text-amber-700">
+        <ul className="space-y-1 text-sm text-muted-foreground">
           <li>{t("tabs.coverage.specialNotes.note1")}</li>
           <li>{t("tabs.coverage.specialNotes.note2")}</li>
           {product.category === "vehicle" && (
@@ -306,12 +316,12 @@ export const CoverageTab: React.FC<CoverageTabProps> = ({ product, t }) => {
 
       {/* Deductibles */}
       {product.deductibles.standardDeductible > 0 && (
-        <div className="bg-yellow-50 border border-yellow-200 p-4 rounded-xl">
+        <div className="bg-muted/30 border border-border p-4 rounded-xl">
           <h4 className="font-medium mb-2 flex items-center gap-2">
-            <Calculator className="w-4 h-4 text-yellow-600" />
+            <Calculator className="w-4 h-4 text-muted-foreground" />
             {t("tabs.coverage.deductibles.title")}
           </h4>
-          <p className="text-sm text-yellow-700">
+          <p className="text-sm text-foreground">
             {t("tabs.coverage.deductibles.standardAmount", {
               amount: formatCurrency(product.deductibles.standardDeductible),
             })}
@@ -322,7 +332,7 @@ export const CoverageTab: React.FC<CoverageTabProps> = ({ product, t }) => {
                   .join(", "),
               })}
           </p>
-          <p className="text-xs text-yellow-600 mt-1">
+          <p className="text-xs text-muted-foreground mt-1">
             {t("tabs.coverage.deductibles.explanation")}
           </p>
         </div>

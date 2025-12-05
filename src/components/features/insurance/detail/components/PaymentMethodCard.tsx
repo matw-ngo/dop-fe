@@ -8,7 +8,7 @@ export const PaymentMethodCard = React.memo(function PaymentMethodCard({
   const methodInfo = getPaymentMethodInfo(method);
 
   return (
-    <div className="bg-white p-4 rounded-lg border border-gray-200 hover:shadow-md transition-shadow">
+    <div className="bg-card p-4 rounded-lg border hover:shadow-md transition-shadow">
       <div className="flex flex-col items-center text-center">
         <div className="text-3xl mb-2">{methodInfo.icon}</div>
         <p className="font-medium text-sm">{methodInfo.name}</p>

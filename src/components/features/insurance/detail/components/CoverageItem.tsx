@@ -2,7 +2,11 @@ import React from "react";
 import { Progress } from "@/components/ui/progress";
 import { formatCurrency } from "@/lib/utils";
 import type { CoverageItemProps } from "../types";
-import { getCoverageProgress, getColorClass, getProgressColorClass } from "../utils";
+import {
+  getCoverageProgress,
+  getColorClass,
+  getProgressColorClass,
+} from "../utils";
 
 export const CoverageItem = React.memo(function CoverageItem({
   title,
@@ -15,7 +19,7 @@ export const CoverageItem = React.memo(function CoverageItem({
   const progress = getCoverageProgress(limit, maxLimit);
 
   return (
-    <div className="p-4 bg-white rounded-lg border shadow-sm">
+    <div className="p-4 bg-card rounded-lg border">
       <div className="flex justify-between items-start mb-2">
         <div className="flex items-center gap-2">
           <div className={`p-2 rounded-full ${getColorClass(color)}`}>

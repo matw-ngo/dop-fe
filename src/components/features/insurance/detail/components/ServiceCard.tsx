@@ -14,20 +14,20 @@ export const ServiceCard = React.memo(function ServiceCard({
     <div
       className={`p-4 rounded-lg border ${
         available
-          ? "bg-green-50 border-green-200"
-          : "bg-gray-50 border-gray-200"
+          ? "bg-primary/5 border-primary/20"
+          : "bg-muted/30 border-border"
       }`}
     >
       <div className="flex flex-col items-center text-center">
         <div
           className={`w-10 h-10 rounded-full flex items-center justify-center mb-2 ${
-            available ? "bg-green-200" : "bg-gray-200"
+            available ? "bg-primary/10" : "bg-muted"
           }`}
         >
           {available ? (
-            <Check className="w-5 h-5 text-green-600" />
+            <Check className="w-5 h-5 text-primary" />
           ) : (
-            <X className="w-5 h-5 text-gray-400" />
+            <X className="w-5 h-5 text-muted-foreground" />
           )}
         </div>
         <p className="text-sm font-medium mb-1">{serviceInfo.name}</p>

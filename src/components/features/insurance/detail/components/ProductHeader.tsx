@@ -55,7 +55,7 @@ export const ProductHeader = ({ product, locale }: ProductHeaderProps) => {
                 {product.isRecommended && (
                   <Badge
                     variant="secondary"
-                    className="bg-yellow-100 text-yellow-800"
+                    className="bg-primary/10 text-primary"
                   >
                     {t("recommended")}
                   </Badge>
@@ -63,7 +63,7 @@ export const ProductHeader = ({ product, locale }: ProductHeaderProps) => {
                 {product.isNew && (
                   <Badge
                     variant="secondary"
-                    className="bg-green-100 text-green-800"
+                    className="bg-primary/10 text-primary"
                   >
                     {t("new")}
                   </Badge>
@@ -74,13 +74,11 @@ export const ProductHeader = ({ product, locale }: ProductHeaderProps) => {
               </p>
               <div className="flex items-center gap-4 text-sm text-muted-foreground">
                 <span>
-                  {t("productCode")}:{" "}
-                  {product.productCode || product.id}
+                  {t("productCode")}: {product.productCode || product.id}
                 </span>
                 <span>•</span>
                 <span>
-                  {t("rating")}: {product.rating}/5 (
-                  {t("reviews")})
+                  {t("rating")}: {product.rating}/5 ({t("reviews")})
                   {product.reviewCount.toLocaleString("vi-VN")}
                 </span>
               </div>
@@ -90,7 +88,7 @@ export const ProductHeader = ({ product, locale }: ProductHeaderProps) => {
       </div>
     </div>
   );
-}
+};
 
 function getCategoryDisplayName(category: string, t: any): string {
   const categoryKeys: Record<string, string> = {

@@ -14,16 +14,16 @@ import {
 
 interface ExclusionsTabProps {
   product: any;
-  t: (key: string) => string;
+  t: any;
 }
 
 export const ExclusionsTab: React.FC<ExclusionsTabProps> = ({ product, t }) => {
   return (
     <div className="mt-6 space-y-6">
       {/* Exclusions List */}
-      <div className="bg-gradient-to-r from-red-50 to-orange-50 p-6 rounded-xl">
+      <div className="bg-destructive/5 p-6 rounded-xl">
         <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-          <Ban className="w-5 h-5 text-red-600" />
+          <Ban className="w-5 h-5 text-destructive" />
           {t("tabs.exclusions.list.title")}
         </h3>
         <p className="text-sm text-muted-foreground mb-4">
@@ -33,9 +33,9 @@ export const ExclusionsTab: React.FC<ExclusionsTabProps> = ({ product, t }) => {
           {product.exclusions.map((exclusion: string, index: number) => (
             <div
               key={index}
-              className="flex items-start gap-3 p-3 bg-white rounded-lg border border-red-100"
+              className="flex items-start gap-3 p-3 bg-card rounded-lg border border-destructive/20"
             >
-              <X className="w-5 h-5 text-red-500 mt-0.5 flex-shrink-0" />
+              <X className="w-5 h-5 text-destructive mt-0.5 flex-shrink-0" />
               <span className="text-sm">{exclusion}</span>
             </div>
           ))}
@@ -43,10 +43,11 @@ export const ExclusionsTab: React.FC<ExclusionsTabProps> = ({ product, t }) => {
       </div>
 
       {/* Waiting Periods */}
-      {(product.waitingPeriods.general > 0 || product.waitingPeriods.specific) && (
-        <div className="bg-blue-50 border border-blue-200 p-6 rounded-xl">
+      {(product.waitingPeriods.general > 0 ||
+        product.waitingPeriods.specific) && (
+        <div className="bg-primary/5 border border-primary/20 p-6 rounded-xl">
           <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-            <Clock className="w-5 h-5 text-blue-600" />
+            <Clock className="w-5 h-5 text-primary" />
             {t("tabs.exclusions.waitingPeriods.title")}
           </h3>
           <p className="text-sm text-muted-foreground mb-4">
@@ -54,13 +55,15 @@ export const ExclusionsTab: React.FC<ExclusionsTabProps> = ({ product, t }) => {
           </p>
 
           {product.waitingPeriods.general > 0 && (
-            <div className="mb-4 p-4 bg-white rounded-lg">
+            <div className="mb-4 p-4 bg-card rounded-lg border">
               <div className="flex items-center gap-2 mb-2">
-                <Timer className="w-4 h-4 text-blue-600" />
-                <span className="font-medium">{t("tabs.exclusions.waitingPeriods.general")}</span>
+                <Timer className="w-4 h-4 text-primary" />
+                <span className="font-medium">
+                  {t("tabs.exclusions.waitingPeriods.general")}
+                </span>
               </div>
               <div className="flex items-center gap-4">
-                <span className="text-2xl font-bold text-blue-600">
+                <span className="text-2xl font-bold text-primary">
                   {product.waitingPeriods.general}
                 </span>
                 <span className="text-muted-foreground">{t("units.days")}</span>
@@ -71,20 +74,20 @@ export const ExclusionsTab: React.FC<ExclusionsTabProps> = ({ product, t }) => {
           {product.waitingPeriods.specific && (
             <div>
               <h4 className="font-medium mb-3 flex items-center gap-2">
-                <Calendar className="w-4 h-4 text-blue-600" />
+                <Calendar className="w-4 h-4 text-primary" />
                 {t("tabs.exclusions.waitingPeriods.specific")}
               </h4>
               <div className="grid gap-3">
                 {Object.entries(product.waitingPeriods.specific).map(
-                  ([condition, days]) => (
+                  ([condition, days]: [string, any]) => (
                     <div
                       key={condition}
-                      className="flex justify-between items-center p-3 bg-white rounded-lg"
+                      className="flex justify-between items-center p-3 bg-card rounded-lg border"
                     >
                       <span className="text-sm font-medium">{condition}</span>
                       <Badge
                         variant="outline"
-                        className="text-blue-600 border-blue-200"
+                        className="text-primary border-primary/20"
                       >
                         {days} {t("units.days")}
                       </Badge>
@@ -99,15 +102,15 @@ export const ExclusionsTab: React.FC<ExclusionsTabProps> = ({ product, t }) => {
 
       {/* Pre-existing Conditions */}
       {product.eligibility.preExistingConditions && (
-        <div className="bg-amber-50 border border-amber-200 p-6 rounded-xl">
+        <div className="bg-muted/30 border border-border p-6 rounded-xl">
           <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-            <AlertTriangle className="w-5 h-5 text-amber-600" />
+            <AlertTriangle className="w-5 h-5 text-muted-foreground" />
             {t("tabs.exclusions.preExistingConditions.title")}
           </h3>
 
           {product.eligibility.preExistingConditions.allowed.length > 0 && (
             <div className="mb-4">
-              <h4 className="font-medium mb-2 text-green-700">
+              <h4 className="font-medium mb-2 text-foreground">
                 {t("tabs.exclusions.preExistingConditions.allowed")}
               </h4>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
@@ -116,7 +119,7 @@ export const ExclusionsTab: React.FC<ExclusionsTabProps> = ({ product, t }) => {
                     <Badge
                       key={index}
                       variant="secondary"
-                      className="bg-green-100 text-green-700"
+                      className="bg-primary/10 text-primary"
                     >
                       <Check className="w-3 h-3 mr-1" />
                       {condition}
@@ -129,7 +132,7 @@ export const ExclusionsTab: React.FC<ExclusionsTabProps> = ({ product, t }) => {
 
           {product.eligibility.preExistingConditions.notAllowed.length > 0 && (
             <div className="mb-4">
-              <h4 className="font-medium mb-2 text-red-700">
+              <h4 className="font-medium mb-2 text-destructive">
                 {t("tabs.exclusions.preExistingConditions.notAllowed")}
               </h4>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
@@ -138,7 +141,7 @@ export const ExclusionsTab: React.FC<ExclusionsTabProps> = ({ product, t }) => {
                     <Badge
                       key={index}
                       variant="secondary"
-                      className="bg-red-100 text-red-700"
+                      className="bg-destructive/10 text-destructive"
                     >
                       <X className="w-3 h-3 mr-1" />
                       {condition}
@@ -152,7 +155,7 @@ export const ExclusionsTab: React.FC<ExclusionsTabProps> = ({ product, t }) => {
           {product.eligibility.preExistingConditions.loading &&
             product.eligibility.preExistingConditions.loading.length > 0 && (
               <div>
-                <h4 className="font-medium mb-2 text-amber-700">
+                <h4 className="font-medium mb-2 text-foreground">
                   {t("tabs.exclusions.preExistingConditions.loading")}
                 </h4>
                 <div className="space-y-2">
@@ -160,10 +163,13 @@ export const ExclusionsTab: React.FC<ExclusionsTabProps> = ({ product, t }) => {
                     (item: any, index: number) => (
                       <div
                         key={index}
-                        className="flex justify-between items-center p-2 bg-white rounded"
+                        className="flex justify-between items-center p-2 bg-card rounded border"
                       >
                         <span className="text-sm">{item.condition}</span>
-                        <Badge variant="outline" className="text-amber-600">
+                        <Badge
+                          variant="outline"
+                          className="text-muted-foreground"
+                        >
                           +{item.increase}%
                         </Badge>
                       </div>
@@ -176,26 +182,26 @@ export const ExclusionsTab: React.FC<ExclusionsTabProps> = ({ product, t }) => {
       )}
 
       {/* Special Terms */}
-      <div className="bg-gray-50 border border-gray-200 p-6 rounded-xl">
+      <div className="bg-muted/30 border border-border p-6 rounded-xl">
         <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-          <FileText className="w-5 h-5 text-gray-600" />
+          <FileText className="w-5 h-5 text-muted-foreground" />
           {t("tabs.exclusions.specialTerms.title")}
         </h3>
-        <ul className="space-y-2 text-sm text-gray-700">
+        <ul className="space-y-2 text-sm text-muted-foreground">
           <li className="flex items-start gap-2">
-            <ChevronRight className="w-4 h-4 mt-0.5 flex-shrink-0 text-gray-500" />
+            <ChevronRight className="w-4 h-4 mt-0.5 flex-shrink-0 text-muted-foreground" />
             <span>{t("tabs.exclusions.specialTerms.term1")}</span>
           </li>
           <li className="flex items-start gap-2">
-            <ChevronRight className="w-4 h-4 mt-0.5 flex-shrink-0 text-gray-500" />
+            <ChevronRight className="w-4 h-4 mt-0.5 flex-shrink-0 text-muted-foreground" />
             <span>{t("tabs.exclusions.specialTerms.term2")}</span>
           </li>
           <li className="flex items-start gap-2">
-            <ChevronRight className="w-4 h-4 mt-0.5 flex-shrink-0 text-gray-500" />
+            <ChevronRight className="w-4 h-4 mt-0.5 flex-shrink-0 text-muted-foreground" />
             <span>{t("tabs.exclusions.specialTerms.term3")}</span>
           </li>
           <li className="flex items-start gap-2">
-            <ChevronRight className="w-4 h-4 mt-0.5 flex-shrink-0 text-gray-500" />
+            <ChevronRight className="w-4 h-4 mt-0.5 flex-shrink-0 text-muted-foreground" />
             <span>{t("tabs.exclusions.specialTerms.term4")}</span>
           </li>
         </ul>

@@ -36,21 +36,15 @@ export function getPaymentMethodInfo(method: string) {
 }
 
 export function getClaimMethodIcon(method: string): string {
-  return (
-    CLAIM_METHODS[method as keyof typeof CLAIM_METHODS]?.icon || "📄"
-  );
+  return CLAIM_METHODS[method as keyof typeof CLAIM_METHODS]?.icon || "📄";
 }
 
 export function getClaimMethodName(method: string): string {
-  return (
-    CLAIM_METHODS[method as keyof typeof CLAIM_METHODS]?.name || method
-  );
+  return CLAIM_METHODS[method as keyof typeof CLAIM_METHODS]?.name || method;
 }
 
 export function getClaimMethodDescription(method: string): string {
-  return (
-    CLAIM_METHODS[method as keyof typeof CLAIM_METHODS]?.description || ""
-  );
+  return CLAIM_METHODS[method as keyof typeof CLAIM_METHODS]?.description || "";
 }
 
 export function getVehicleTypeText(type: string): string {
@@ -60,17 +54,14 @@ export function getVehicleTypeText(type: string): string {
 export function calculateNoClaimBonusYear(
   year: number,
   maxYears: number,
-  maxDiscount: number
+  maxDiscount: number,
 ): number {
-  return Math.min(
-    (year / maxYears) * maxDiscount,
-    maxDiscount
-  );
+  return Math.min((year / maxYears) * maxDiscount, maxDiscount);
 }
 
 export function calculateMonthlyPayment(
   totalPremium: number,
-  months: number
+  months: number,
 ): number {
   return Math.ceil(totalPremium / months);
 }
@@ -79,9 +70,10 @@ export function hasVehicleSpecificCoverage(product: InsuranceProduct): boolean {
   return Boolean(product.vehicleCoverage);
 }
 
-export function hasActiveCoverage(
-  coverage: { disabled: boolean; limit: number }
-): boolean {
+export function hasActiveCoverage(coverage: {
+  disabled: boolean;
+  limit: number;
+}): boolean {
   return !coverage.disabled && coverage.limit > 0;
 }
 
@@ -106,14 +98,14 @@ export function getApprovalRateLevel(approvalRate: number): string {
 
 export function isComparisonLimitReached(
   currentCount: number,
-  maxProducts: number
+  maxProducts: number,
 ): boolean {
   return currentCount >= maxProducts;
 }
 
 export function getColorClass(color: ColorVariant): string {
   const colorClasses = {
-    blue: "bg-blue-100 text-blue-700",
+    blue: "bg-primary/10 text-primary",
     red: "bg-red-100 text-red-700",
     orange: "bg-orange-100 text-orange-700",
     green: "bg-green-100 text-green-700",
@@ -130,7 +122,7 @@ export function getColorClass(color: ColorVariant): string {
 
 export function getProgressColorClass(color: ColorVariant): string {
   const progressColors = {
-    blue: "bg-blue-500",
+    blue: "bg-primary",
     red: "bg-red-500",
     orange: "bg-orange-500",
     green: "bg-green-500",
