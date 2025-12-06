@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { CreditCardFilterSidebar } from "./CreditCardFilterSidebar";
 import { CreditCardSortDropdown } from "./CreditCardSortDropdown";
 import { CreditCardSearchBar } from "./CreditCardSearchBar";
-import { CreditCardFilters } from "@/types/credit-card";
+import { CreditCardFilters, SortOption } from "@/types/credit-card";
 import { Grid3X3, List, LayoutGrid, SlidersHorizontal } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -13,8 +13,8 @@ export type ViewMode = "grid" | "list" | "compact";
 interface CreditCardPageControlsProps {
   filters: CreditCardFilters;
   onFiltersChange: (filters: Partial<CreditCardFilters>) => void;
-  sortOption: string;
-  onSortChange: (value: string) => void;
+  sortOption: SortOption;
+  onSortChange: (value: SortOption) => void;
   totalResults: number;
   viewMode: ViewMode;
   onViewModeChange: (mode: ViewMode) => void;

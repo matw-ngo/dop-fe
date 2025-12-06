@@ -4,8 +4,8 @@ import {
   PAYMENT_METHODS,
   CLAIM_METHODS,
   VEHICLE_TYPES,
-  type ColorVariant,
 } from "../constants";
+import type { ColorVariant } from "../types";
 import type { InsuranceProduct } from "@/types/insurance";
 
 export function getCoverageProgress(limit: number, maxLimit: number): number {

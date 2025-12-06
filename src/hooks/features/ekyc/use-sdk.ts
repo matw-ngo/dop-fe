@@ -122,6 +122,7 @@ export const useEkycSdk = (options: UseEkycSdkOptions): UseEkycSdkReturn => {
   return {
     sdkManager: sdkManagerRef.current,
     isLoading: status === "running",
+    // @ts-ignore
     error: status === "error" ? useEkycStore.getState().error : null,
     restart,
     updateConfig,

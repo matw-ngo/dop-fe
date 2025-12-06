@@ -1,9 +1,10 @@
 import React, { useCallback, useMemo } from "react";
-import { FixedSizeGrid as Grid } from "react-window";
+import { Grid } from "react-window";
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
-import CreditCardComponent from "../credit-card/CreditCard";
+import "react-window/dist/styles.css";
 import { CreditCard } from "@/types/credit-card";
+import CreditCardComponent from "../../credit-card/CreditCard";
 
 interface VirtualizedCardGridProps {
   cards: CreditCard[];
@@ -22,6 +23,26 @@ interface GridItemProps {
   columnIndex: number;
   rowIndex: number;
   style: React.CSSProperties;
+  cards: CreditCard[];
+  columns: number;
+  columnWidth: number;
+  rowHeight: number;
+  onCardClick?: (card: CreditCard) => void;
+  onCompareToggle?: (cardId: string) => void;
+  comparisonCards: CreditCard[];
+  viewMode?: "grid" | "list" | "compact";
+}
+
+// Grid component for react-window
+const GridItem = ({
+  columnIndex,
+  rowIndex,
+  style,
+  data,
+}: {
+  columnIndex: number;
+  rowIndex: number;
+  style: React.CSSProperties;
   data: {
     cards: CreditCard[];
     columns: number;
@@ -32,13 +53,6 @@ interface GridItemProps {
     comparisonCards: CreditCard[];
     viewMode?: "grid" | "list" | "compact";
   };
-}
-
-const GridItem: React.FC<GridItemProps> = ({
-  columnIndex,
-  rowIndex,
-  style,
-  data,
 }) => {
   const {
     cards,
@@ -52,7 +66,7 @@ const GridItem: React.FC<GridItemProps> = ({
   const card = cards[cardIndex];
 
   if (!card) {
-    return null;
+    return <div />;
   }
 
   const isInComparison = comparisonCards.some((c) => c.id === card.id);
@@ -63,7 +77,7 @@ const GridItem: React.FC<GridItemProps> = ({
         card={card}
         viewMode={viewMode === "compact" ? "compact" : viewMode}
         onCardClick={() => onCardClick?.(card)}
-        onCompareToggle={() => onCompareToggle?.(card.id)}
+        onCompare={() => onCompareToggle?.(card.id)}
         isInComparison={isInComparison}
         className="h-full"
       />
@@ -115,20 +129,18 @@ export const VirtualizedCardGrid: React.FC<VirtualizedCardGridProps> = ({
 
   // Memoize the Grid component to prevent recreation
   const GridComponent = useMemo(
-    () => (
-      <Grid
-        columnCount={columns}
-        rowCount={rowCount}
-        width={width}
-        height={height}
-        columnWidth={columnWidth}
-        rowHeight={rowHeight}
-        itemData={itemData}
-        className="outline-none"
-      >
-        {GridItem}
-      </Grid>
-    ),
+    () =>
+      React.createElement(Grid as any, {
+        columnCount: columns,
+        rowCount: rowCount,
+        columnWidth: columnWidth,
+        rowHeight: rowHeight,
+        width: width,
+        height: height,
+        itemData: itemData,
+        className: "outline-none",
+        cellComponent: GridItem as any,
+      }),
     [columns, rowCount, width, height, columnWidth, rowHeight, itemData],
   );
 

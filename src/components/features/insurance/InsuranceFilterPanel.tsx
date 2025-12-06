@@ -353,7 +353,9 @@ const InsuranceFilterPanel: React.FC<FilterPanelProps> = React.memo(
             <RadioGroup
               value={filters.types[0] || ""}
               onValueChange={(value) =>
-                onFiltersChange({ types: value ? [value] : [] })
+                onFiltersChange({
+                  types: value ? [value as InsuranceType] : [],
+                })
               }
             >
               {Object.entries(INSURANCE_TYPES).map(([key, type]) => (
@@ -668,7 +670,7 @@ const InsuranceFilterPanel: React.FC<FilterPanelProps> = React.memo(
                           onFiltersChange({ provinces: [] });
                         } else if (checked) {
                           onFiltersChange({
-                            provinces: group.provinces as string[],
+                            provinces: [...group.provinces],
                           });
                         } else {
                           onFiltersChange({ provinces: [] });

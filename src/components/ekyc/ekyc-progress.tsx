@@ -100,9 +100,9 @@ const EKYC_STEPS_INFO: StepInfo[] = [
 const getStepStatus = (
   step: StepInfo,
   steps: any[],
-  currentStep: string
+  currentStep: string,
 ): "completed" | "in_progress" | "pending" | "failed" | "skipped" => {
-  const stepData = steps.find(s => s.id === step.id);
+  const stepData = steps.find((s) => s.id === step.id);
   if (!stepData) return "pending";
 
   if (stepData.status === "completed") return "completed";
@@ -137,13 +137,16 @@ const formatDuration = (seconds: number): string => {
   return `${seconds}s`;
 };
 
-const calculateEstimatedTimeRemaining = (steps: any[], currentStep: string): number => {
-  const currentStepIndex = steps.findIndex(s => s.id === currentStep);
+const calculateEstimatedTimeRemaining = (
+  steps: any[],
+  currentStep: string,
+): number => {
+  const currentStepIndex = steps.findIndex((s) => s.id === currentStep);
   if (currentStepIndex === -1) return 0;
 
   let remainingTime = 0;
   for (let i = currentStepIndex; i < steps.length; i++) {
-    const stepInfo = EKYC_STEPS_INFO.find(info => info.id === steps[i]?.id);
+    const stepInfo = EKYC_STEPS_INFO.find((info) => info.id === steps[i]?.id);
     if (stepInfo && stepInfo.estimatedDuration) {
       remainingTime += stepInfo.estimatedDuration;
     }
@@ -158,13 +161,17 @@ export const eKYCProgress: React.FC<eKYCProgressProps> = ({
   className,
   variant = "default",
 }) => {
-  const { steps, currentStep, progress, status, errors, warnings } = useEkycStore();
+  const { steps, currentStep, progress, status, errors, warnings } =
+    useEkycStore();
 
   // Overall progress stats
-  const completedSteps = steps.filter(s => s.status === "completed").length;
-  const failedSteps = steps.filter(s => s.status === "failed").length;
+  const completedSteps = steps.filter((s) => s.status === "completed").length;
+  const failedSteps = steps.filter((s) => s.status === "failed").length;
   const totalSteps = steps.length;
-  const estimatedTimeRemaining = calculateEstimatedTimeRemaining(steps, currentStep);
+  const estimatedTimeRemaining = calculateEstimatedTimeRemaining(
+    steps,
+    currentStep,
+  );
 
   // Compact variant - simple progress bar
   if (variant === "compact") {
@@ -222,21 +229,21 @@ export const eKYCProgress: React.FC<eKYCProgressProps> = ({
           <div className="space-y-3">
             {EKYC_STEPS_INFO.map((stepInfo) => {
               const stepStatus = getStepStatus(stepInfo, steps, currentStep);
-              const stepData = steps.find(s => s.id === stepInfo.id);
+              const stepData = steps.find((s) => s.id === stepInfo.id);
 
               return (
                 <div
                   key={stepInfo.id}
                   className={cn(
                     "flex items-center gap-3 p-3 rounded-lg border",
-                    stepStatus === "in_progress" && "bg-blue-50 border-blue-200",
-                    stepStatus === "completed" && "bg-green-50 border-green-200",
-                    stepStatus === "failed" && "bg-red-50 border-red-200"
+                    stepStatus === "in_progress" &&
+                      "bg-blue-50 border-blue-200",
+                    stepStatus === "completed" &&
+                      "bg-green-50 border-green-200",
+                    stepStatus === "failed" && "bg-red-50 border-red-200",
                   )}
                 >
-                  <div className="flex-shrink-0">
-                    {getStepIcon(stepStatus)}
-                  </div>
+                  <div className="flex-shrink-0">{getStepIcon(stepStatus)}</div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
                       <span className="font-medium">{stepInfo.nameVi}</span>
@@ -251,18 +258,22 @@ export const eKYCProgress: React.FC<eKYCProgressProps> = ({
                     </p>
                     {stepData?.duration && (
                       <p className="text-xs text-muted-foreground mt-1">
-                        Hoàn thành trong {formatDuration(Math.round(stepData.duration / 1000))}
+                        Hoàn thành trong{" "}
+                        {formatDuration(Math.round(stepData.duration / 1000))}
                       </p>
                     )}
-                    {stepData?.retryCount > 0 && (
+                    {(stepData?.retryCount || 0) > 0 && (
                       <Badge variant="secondary" className="mt-1">
-                        Thử lại {stepData.retryCount} lần
+                        Thử lại {stepData?.retryCount || 0} lần
                       </Badge>
                     )}
                   </div>
                   {stepStatus === "in_progress" && (
                     <div className="w-16">
-                      <Progress value={stepData?.progress || 0} className="h-1" />
+                      <Progress
+                        value={stepData?.progress || 0}
+                        className="h-1"
+                      />
                     </div>
                   )}
                 </div>
@@ -279,7 +290,9 @@ export const eKYCProgress: React.FC<eKYCProgressProps> = ({
               </h4>
               <ul className="text-sm text-red-700 space-y-1">
                 {errors.slice(0, 3).map((error, index) => (
-                  <li key={index} className="line-clamp-1">{error}</li>
+                  <li key={index} className="line-clamp-1">
+                    {error}
+                  </li>
                 ))}
                 {errors.length > 3 && (
                   <li className="text-xs text-red-600">
@@ -299,7 +312,9 @@ export const eKYCProgress: React.FC<eKYCProgressProps> = ({
               </h4>
               <ul className="text-sm text-amber-700 space-y-1">
                 {warnings.slice(0, 3).map((warning, index) => (
-                  <li key={index} className="line-clamp-1">{warning}</li>
+                  <li key={index} className="line-clamp-1">
+                    {warning}
+                  </li>
                 ))}
                 {warnings.length > 3 && (
                   <li className="text-xs text-amber-600">
@@ -313,17 +328,23 @@ export const eKYCProgress: React.FC<eKYCProgressProps> = ({
           {/* Statistics */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4 border-t">
             <div className="text-center">
-              <div className="text-2xl font-bold text-green-600">{completedSteps}</div>
+              <div className="text-2xl font-bold text-green-600">
+                {completedSteps}
+              </div>
               <div className="text-xs text-muted-foreground">Hoàn thành</div>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-blue-600">
-                {steps.filter(s => s.status === "in_progress").length}
+                {steps.filter((s) => s.status === "in_progress").length}
               </div>
-              <div className="text-xs text-muted-foreground">Đang thực hiện</div>
+              <div className="text-xs text-muted-foreground">
+                Đang thực hiện
+              </div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-red-600">{failedSteps}</div>
+              <div className="text-2xl font-bold text-red-600">
+                {failedSteps}
+              </div>
               <div className="text-xs text-muted-foreground">Thất bại</div>
             </div>
             <div className="text-center">
@@ -362,10 +383,14 @@ export const eKYCProgress: React.FC<eKYCProgressProps> = ({
           <RefreshCw className="h-4 w-4 text-blue-500 animate-spin" />
           <div>
             <div className="font-medium text-blue-900">
-              {steps.find(s => s.id === currentStep)?.nameVi || "Đang xử lý..."}
+              {steps.find((s) => s.id === currentStep)?.nameVi ||
+                "Đang xử lý..."}
             </div>
             <div className="text-sm text-blue-700">
-              {EKYC_STEPS_INFO.find(info => info.id === currentStep)?.descriptionVi}
+              {
+                EKYC_STEPS_INFO.find((info) => info.id === currentStep)
+                  ?.descriptionVi
+              }
             </div>
           </div>
         </div>
@@ -377,13 +402,15 @@ export const eKYCProgress: React.FC<eKYCProgressProps> = ({
             return (
               <div key={stepInfo.id} className="flex items-center gap-2">
                 {getStepIcon(stepStatus)}
-                <span className={cn(
-                  "text-sm",
-                  stepStatus === "completed" && "text-green-600",
-                  stepStatus === "in_progress" && "text-blue-600 font-medium",
-                  stepStatus === "failed" && "text-red-600",
-                  stepStatus === "skipped" && "text-gray-400 line-through"
-                )}>
+                <span
+                  className={cn(
+                    "text-sm",
+                    stepStatus === "completed" && "text-green-600",
+                    stepStatus === "in_progress" && "text-blue-600 font-medium",
+                    stepStatus === "failed" && "text-red-600",
+                    stepStatus === "skipped" && "text-gray-400 line-through",
+                  )}
+                >
                   {stepInfo.nameVi}
                 </span>
               </div>
@@ -407,8 +434,8 @@ export const eKYCProgress: React.FC<eKYCProgressProps> = ({
           )}
           {showTimeEstimates && estimatedTimeRemaining > 0 && (
             <Badge variant="outline" className="flex items-center gap-1">
-              <Clock className="h-3 w-3" />
-              ~{formatDuration(estimatedTimeRemaining)}
+              <Clock className="h-3 w-3" />~
+              {formatDuration(estimatedTimeRemaining)}
             </Badge>
           )}
         </div>

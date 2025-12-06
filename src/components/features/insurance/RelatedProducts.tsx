@@ -240,19 +240,14 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({
     <Card className="text-center py-12">
       <CardContent>
         <Shield className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-        <h3 className="text-lg font-semibold mb-2">
-          {t("noRelatedProducts", "Không tìm thấy sản phẩm liên quan")}
-        </h3>
+        <h3 className="text-lg font-semibold mb-2">{t("noRelatedProducts")}</h3>
         <p className="text-muted-foreground mb-4">
-          {t(
-            "noRelatedProductsDesc",
-            "Hiện tại chưa có sản phẩm nào tương tự.",
-          )}
+          {t("noRelatedProductsDesc")}
         </p>
         {showViewAll && (
           <Button asChild variant="outline">
             <Link href="/insurance">
-              {t("viewAllProducts", "Xem tất cả sản phẩm")}
+              {t("viewAllProducts")}
               <ArrowRight className="h-4 w-4 ml-2" />
             </Link>
           </Button>
@@ -357,7 +352,7 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({
       <section className={cn("space-y-6", className)}>
         <div className="flex items-center justify-between">
           <h2 className="text-2xl font-bold">
-            {title || t("relatedProducts", "Sản phẩm liên quan")}
+            {title || t("relatedProducts")}
           </h2>
         </div>
         {renderSkeleton()}
@@ -370,7 +365,7 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({
       <section className={cn("space-y-6", className)}>
         <div className="flex items-center justify-between">
           <h2 className="text-2xl font-bold">
-            {title || t("relatedProducts", "Sản phẩm liên quan")}
+            {title || t("relatedProducts")}
           </h2>
         </div>
         {renderEmptyState()}
@@ -381,9 +376,7 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({
   return (
     <section className={cn("space-y-6", className)}>
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold">
-          {title || t("relatedProducts", "Sản phẩm liên quan")}
-        </h2>
+        <h2 className="text-2xl font-bold">{title || t("relatedProducts")}</h2>
         {showViewAll && (
           <Button asChild variant="ghost" className="hidden md:flex">
             <Link
@@ -391,7 +384,7 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({
                 viewAllLink || `/insurance/category/${currentProduct.category}`
               }
             >
-              {t("viewAllInCategory", "Xem tất cả")}
+              {t("viewAllInCategory")}
               <ArrowRight className="h-4 w-4 ml-2" />
             </Link>
           </Button>
@@ -437,7 +430,7 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({
                 viewAllLink || `/insurance/category/${currentProduct.category}`
               }
             >
-              {t("viewAllInCategory", "Xem tất cả")}
+              {t("viewAllInCategory")}
               <ArrowRight className="h-4 w-4 ml-2" />
             </Link>
           </Button>

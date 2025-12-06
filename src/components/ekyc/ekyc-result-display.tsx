@@ -42,7 +42,10 @@ import {
 } from "lucide-react";
 import { EkycFullResult, getEkycSummary } from "@/lib/ekyc/ekyc-data-mapper";
 import { useEkycStore } from "@/store/use-ekyc-store";
-import { VietnameseDocumentType, getDocumentTypeById } from "@/lib/ekyc/document-types";
+import {
+  VietnameseDocumentType,
+  getDocumentTypeById,
+} from "@/lib/ekyc/document-types";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
@@ -117,9 +120,7 @@ const DataField: React.FC<{
   return (
     <div className="flex items-center gap-3 p-3 border rounded-lg">
       {field.icon && (
-        <div className="flex-shrink-0 text-muted-foreground">
-          {field.icon}
-        </div>
+        <div className="flex-shrink-0 text-muted-foreground">{field.icon}</div>
       )}
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 mb-1">
@@ -142,7 +143,9 @@ const DataField: React.FC<{
               {formatValue(field.value, field.format)}
             </span>
             {field.confidence && (
-              <span className={cn("text-xs", getConfidenceColor(field.confidence))}>
+              <span
+                className={cn("text-xs", getConfidenceColor(field.confidence))}
+              >
                 ({field.confidence}%)
               </span>
             )}
@@ -230,9 +233,14 @@ export const eKYCResultDisplay: React.FC<eKYCResultDisplayProps> = ({
     {
       label: "gender",
       labelVi: "Giới tính",
-      value: formData?.gender === "male" ? "Nam" :
-             formData?.gender === "female" ? "Nữ" :
-             formData?.gender === "other" ? "Khác" : "N/A",
+      value:
+        formData?.gender === "male"
+          ? "Nam"
+          : formData?.gender === "female"
+            ? "Nữ"
+            : formData?.gender === "other"
+              ? "Khác"
+              : "N/A",
       editable: allowEdit,
       icon: <User className="h-4 w-4" />,
       verification: "verified",
@@ -299,9 +307,17 @@ export const eKYCResultDisplay: React.FC<eKYCResultDisplayProps> = ({
     }
 
     if (summary.matchScore && summary.matchScore >= 80) {
-      return <Badge className="bg-green-100 text-green-800">Khớp ({Math.round(summary.matchScore)}%)</Badge>;
+      return (
+        <Badge className="bg-green-100 text-green-800">
+          Khớp ({Math.round(summary.matchScore)}%)
+        </Badge>
+      );
     } else if (summary.matchScore && summary.matchScore >= 60) {
-      return <Badge className="bg-amber-100 text-amber-800">Khớp một phần ({Math.round(summary.matchScore)}%)</Badge>;
+      return (
+        <Badge className="bg-amber-100 text-amber-800">
+          Khớp một phần ({Math.round(summary.matchScore)}%)
+        </Badge>
+      );
     } else {
       return <Badge variant="destructive">Không khớp</Badge>;
     }
@@ -364,7 +380,9 @@ export const eKYCResultDisplay: React.FC<eKYCResultDisplayProps> = ({
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="text-sm text-muted-foreground">Khớp khuôn mặt:</span>
+            <span className="text-sm text-muted-foreground">
+              Khớp khuôn mặt:
+            </span>
             {getFaceMatchBadge()}
           </div>
 
@@ -375,11 +393,19 @@ export const eKYCResultDisplay: React.FC<eKYCResultDisplayProps> = ({
 
           {showActions && (
             <div className="flex gap-2">
-              <Button variant="outline" size="sm" onClick={() => handleExport("pdf")}>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handleExport("pdf")}
+              >
                 <Download className="h-4 w-4 mr-2" />
                 PDF
               </Button>
-              <Button variant="outline" size="sm" onClick={() => handleExport("json")}>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handleExport("json")}
+              >
                 <Copy className="h-4 w-4 mr-2" />
                 JSON
               </Button>
@@ -414,7 +440,9 @@ export const eKYCResultDisplay: React.FC<eKYCResultDisplayProps> = ({
               <h4 className="font-medium">Thông tin cá nhân</h4>
               {personalInfoFields.slice(0, 3).map((field) => (
                 <div key={field.label} className="flex justify-between">
-                  <span className="text-sm text-muted-foreground">{field.labelVi}:</span>
+                  <span className="text-sm text-muted-foreground">
+                    {field.labelVi}:
+                  </span>
                   <span className="text-sm font-medium">{field.value}</span>
                 </div>
               ))}
@@ -423,7 +451,9 @@ export const eKYCResultDisplay: React.FC<eKYCResultDisplayProps> = ({
               <h4 className="font-medium">Thông tin giấy tờ</h4>
               {documentFields.slice(0, 3).map((field) => (
                 <div key={field.label} className="flex justify-between">
-                  <span className="text-sm text-muted-foreground">{field.labelVi}:</span>
+                  <span className="text-sm text-muted-foreground">
+                    {field.labelVi}:
+                  </span>
                   <span className="text-sm font-medium">{field.value}</span>
                 </div>
               ))}
@@ -532,7 +562,9 @@ export const eKYCResultDisplay: React.FC<eKYCResultDisplayProps> = ({
                 <div className="text-2xl font-bold text-green-600 mb-1">
                   {getOverallScore()}%
                 </div>
-                <div className="text-sm text-muted-foreground">Độ tin cậy tổng thể</div>
+                <div className="text-sm text-muted-foreground">
+                  Độ tin cậy tổng thể
+                </div>
               </CardContent>
             </Card>
             <Card>
@@ -540,15 +572,22 @@ export const eKYCResultDisplay: React.FC<eKYCResultDisplayProps> = ({
                 <div className="text-2xl font-bold text-blue-600 mb-1">
                   {summary.matchScore ? Math.round(summary.matchScore) : 0}%
                 </div>
-                <div className="text-sm text-muted-foreground">Khớp khuôn mặt</div>
+                <div className="text-sm text-muted-foreground">
+                  Khớp khuôn mặt
+                </div>
               </CardContent>
             </Card>
             <Card>
               <CardContent className="p-4 text-center">
                 <div className="text-2xl font-bold text-purple-600 mb-1">
-                  {ekycResult.ocr?.object?.name_prob ? Math.round(ekycResult.ocr.object.name_prob) : 0}%
+                  {ekycResult.ocr?.object?.name_prob
+                    ? Math.round(ekycResult.ocr.object.name_prob)
+                    : 0}
+                  %
                 </div>
-                <div className="text-sm text-muted-foreground">Độ chính xác OCR</div>
+                <div className="text-sm text-muted-foreground">
+                  Độ chính xác OCR
+                </div>
               </CardContent>
             </Card>
           </div>
@@ -572,7 +611,9 @@ export const eKYCResultDisplay: React.FC<eKYCResultDisplayProps> = ({
                     </div>
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Giấy tờ:</span>
-                      <span className="font-medium">{documentType?.nameVi || "N/A"}</span>
+                      <span className="font-medium">
+                        {documentType?.nameVi || "N/A"}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -594,7 +635,8 @@ export const eKYCResultDisplay: React.FC<eKYCResultDisplayProps> = ({
                         <AlertCircle className="h-4 w-4 text-amber-500" />
                       )}
                       <span className="text-sm">
-                        So sánh khuôn mặt: {summary.faceMatch ? "Hoàn thành" : "Chưa thực hiện"}
+                        So sánh khuôn mặt:{" "}
+                        {summary.faceMatch ? "Hoàn thành" : "Chưa thực hiện"}
                       </span>
                     </div>
                   </div>
@@ -672,13 +714,24 @@ export const eKYCResultDisplay: React.FC<eKYCResultDisplayProps> = ({
                     {ekycResult.ocr?.object?.quality_front && (
                       <div className="flex justify-between text-sm">
                         <span>Mặt trước:</span>
-                        <span>{Math.round(ekycResult.ocr.object.quality_front.blur_score * 100)}%</span>
+                        <span>
+                          {Math.round(
+                            ekycResult.ocr.object.quality_front.blur_score *
+                              100,
+                          )}
+                          %
+                        </span>
                       </div>
                     )}
                     {ekycResult.ocr?.object?.quality_back && (
                       <div className="flex justify-between text-sm">
                         <span>Mặt sau:</span>
-                        <span>{Math.round(ekycResult.ocr.object.quality_back.blur_score * 100)}%</span>
+                        <span>
+                          {Math.round(
+                            ekycResult.ocr.object.quality_back.blur_score * 100,
+                          )}
+                          %
+                        </span>
                       </div>
                     )}
                   </div>
@@ -719,14 +772,27 @@ export const eKYCResultDisplay: React.FC<eKYCResultDisplayProps> = ({
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
                       <span>Trạng thái:</span>
-                      <Badge variant={ekycResult.liveness_face?.object?.liveness === "success" ? "default" : "destructive"}>
-                        {ekycResult.liveness_face?.object?.liveness_msg || "N/A"}
+                      <Badge
+                        variant={
+                          ekycResult.liveness_face?.object?.liveness ===
+                          "success"
+                            ? "default"
+                            : "destructive"
+                        }
+                      >
+                        {ekycResult.liveness_face?.object?.liveness_msg ||
+                          "N/A"}
                       </Badge>
                     </div>
                     {ekycResult.liveness_face?.object?.liveness_prob && (
                       <div className="flex justify-between text-sm">
                         <span>Độ tin cậy:</span>
-                        <span>{Math.round(ekycResult.liveness_face.object.liveness_prob)}%</span>
+                        <span>
+                          {Math.round(
+                            ekycResult.liveness_face.object.liveness_prob,
+                          )}
+                          %
+                        </span>
                       </div>
                     )}
                   </div>

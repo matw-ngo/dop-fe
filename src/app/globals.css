@@ -51,3 +51,19 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* React Window CSS Reset */
+.react-window {
+  overflow: auto !important;
+}
+
+.react-window__Container {
+  overflow: auto !important;
+}
+
+.react-window__Item {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+}

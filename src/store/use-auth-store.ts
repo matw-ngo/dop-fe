@@ -36,7 +36,7 @@ export interface OTPVerificationState {
   isResendingOTP: boolean;
 
   // OTP Flow state
-  currentStep: 'idle' | 'phone' | 'otp' | 'verified' | 'locked';
+  currentStep: "idle" | "phone" | "otp" | "verified" | "locked";
   phoneNumber: string;
   verificationCode: string;
   telcoInfo: any;
@@ -72,7 +72,7 @@ export interface AuthState {
 
   // OTP State setters
   setOTPSession: (session: OTPSession | null) => void;
-  setCurrentOTPStep: (step: OTPVerificationState['currentStep']) => void;
+  setCurrentOTPStep: (step: OTPVerificationState["currentStep"]) => void;
   setPhoneNumber: (phone: string) => void;
   setVerificationCode: (code: string) => void;
   setTelcoInfo: (telco: any) => void;
@@ -115,9 +115,9 @@ export const useAuthStore = create<AuthState>()(
         isRequestingOTP: false,
         isVerifyingOTP: false,
         isResendingOTP: false,
-        currentStep: 'idle',
-        phoneNumber: '',
-        verificationCode: '',
+        currentStep: "idle",
+        phoneNumber: "",
+        verificationCode: "",
         telcoInfo: null,
         resendCooldownRemaining: 0,
         sessionTimeRemaining: 0,
@@ -182,13 +182,13 @@ export const useAuthStore = create<AuthState>()(
             ...prev.otp,
             isRequestingOTP: true,
             phoneNumber,
-            currentStep: 'otp',
-          }
+            currentStep: "otp",
+          },
         }));
 
         try {
           // Import OTP API dynamically to avoid circular dependencies
-          const { otpApi } = await import('@/lib/api/endpoints/otp');
+          const { otpApi } = await import("@/lib/api/endpoints/otp");
 
           const response = await otpApi.requestOTP(phoneNumber);
 
@@ -215,24 +215,24 @@ export const useAuthStore = create<AuthState>()(
                 otpSession,
                 hasActiveSession: true,
                 isRequestingOTP: false,
-                telcoInfo: response.data.telco,
+                telcoInfo: response.data?.telco,
                 resendCooldownRemaining: otpSession.resendCooldown,
                 sessionTimeRemaining: otpSession.sessionExpiry,
-                currentStep: 'otp',
-              }
+                currentStep: "otp",
+              },
             }));
 
             return response.data.requestId;
           } else {
-            throw new Error(response.message || 'Failed to request OTP');
+            throw new Error(response.message || "Failed to request OTP");
           }
         } catch (error) {
           set((prev) => ({
             otp: {
               ...prev.otp,
               isRequestingOTP: false,
-              currentStep: 'phone',
-            }
+              currentStep: "phone",
+            },
           }));
           throw error;
         }
@@ -246,7 +246,7 @@ export const useAuthStore = create<AuthState>()(
         }
 
         if (state.otp.isLocked) {
-          throw new Error('Session is locked due to too many failed attempts');
+          throw new Error("Session is locked due to too many failed attempts");
         }
 
         set((prev) => ({
@@ -254,16 +254,16 @@ export const useAuthStore = create<AuthState>()(
             ...prev.otp,
             isVerifyingOTP: true,
             verificationCode: otpCode,
-          }
+          },
         }));
 
         try {
-          const { otpApi } = await import('@/lib/api/endpoints/otp');
+          const { otpApi } = await import("@/lib/api/endpoints/otp");
 
           const response = await otpApi.verifyOTP(
             state.otp.otpSession.phoneNumber,
             otpCode,
-            state.otp.otpSession.requestId
+            state.otp.otpSession.requestId,
           );
 
           if (response.success && response.data?.verified) {
@@ -281,20 +281,20 @@ export const useAuthStore = create<AuthState>()(
                 otp: {
                   ...state.otp,
                   isVerifyingOTP: false,
-                  currentStep: 'verified',
+                  currentStep: "verified",
                   hasActiveSession: false,
                   otpSession: null,
-                }
+                },
               });
             } else {
               set((prev) => ({
                 otp: {
                   ...prev.otp,
                   isVerifyingOTP: false,
-                  currentStep: 'verified',
+                  currentStep: "verified",
                   hasActiveSession: false,
                   otpSession: null,
-                }
+                },
               }));
             }
 
@@ -303,7 +303,9 @@ export const useAuthStore = create<AuthState>()(
             // Increment failed attempts
             const newAttempts = state.otp.otpSession.currentAttempts + 1;
             const isLocked = newAttempts >= state.otp.otpSession.maxAttempts;
-            const lockoutEnd = isLocked ? new Date(Date.now() + 15 * 60 * 1000) : null;
+            const lockoutEnd = isLocked
+              ? new Date(Date.now() + 15 * 60 * 1000)
+              : null;
 
             if (isLocked) {
               get().lockOTPSession(lockoutEnd);
@@ -317,17 +319,17 @@ export const useAuthStore = create<AuthState>()(
                 isVerifyingOTP: false,
                 isLocked,
                 lockoutEnd,
-              }
+              },
             }));
 
-            throw new Error(response.message || 'Invalid OTP code');
+            throw new Error(response.message || "Invalid OTP code");
           }
         } catch (error) {
           set((prev) => ({
             otp: {
               ...prev.otp,
               isVerifyingOTP: false,
-            }
+            },
           }));
           throw error;
         }
@@ -336,7 +338,11 @@ export const useAuthStore = create<AuthState>()(
       resendOTP: async () => {
         const state = get();
 
-        if (!state.otp.otpSession || state.otp.isResendingOTP || state.otp.resendCooldownRemaining > 0) {
+        if (
+          !state.otp.otpSession ||
+          state.otp.isResendingOTP ||
+          state.otp.resendCooldownRemaining > 0
+        ) {
           return false;
         }
 
@@ -344,19 +350,20 @@ export const useAuthStore = create<AuthState>()(
           otp: {
             ...prev.otp,
             isResendingOTP: true,
-          }
+          },
         }));
 
         try {
-          const { otpApi } = await import('@/lib/api/endpoints/otp');
+          const { otpApi } = await import("@/lib/api/endpoints/otp");
 
           const response = await otpApi.resendOTP(
             state.otp.otpSession.phoneNumber,
-            state.otp.otpSession.requestId
+            state.otp.otpSession.requestId,
           );
 
           if (response.success) {
-            const newSessionExpiry = response.data?.expiry || state.otp.otpSession.sessionExpiry;
+            const newSessionExpiry =
+              response.data?.expiry || state.otp.otpSession.sessionExpiry;
 
             set((prev) => ({
               otp: {
@@ -364,24 +371,26 @@ export const useAuthStore = create<AuthState>()(
                 isResendingOTP: false,
                 resendCooldownRemaining: state.otp.otpSession.resendCooldown,
                 sessionTimeRemaining: newSessionExpiry,
-                otpSession: prev.otpSession ? {
-                  ...prev.otpSession,
-                  lastActivity: new Date(),
-                  sessionExpiry: newSessionExpiry,
-                } : null,
-              }
+                otpSession: prev.otp.otpSession
+                  ? {
+                      ...prev.otp.otpSession,
+                      lastActivity: new Date(),
+                      sessionExpiry: newSessionExpiry,
+                    }
+                  : null,
+              },
             }));
 
             return true;
           } else {
-            throw new Error(response.message || 'Failed to resend OTP');
+            throw new Error(response.message || "Failed to resend OTP");
           }
         } catch (error) {
           set((prev) => ({
             otp: {
               ...prev.otp,
               isResendingOTP: false,
-            }
+            },
           }));
           throw error;
         }
@@ -395,39 +404,43 @@ export const useAuthStore = create<AuthState>()(
         }
 
         try {
-          const { otpApi } = await import('@/lib/api/endpoints/otp');
+          const { otpApi } = await import("@/lib/api/endpoints/otp");
 
-          const response = await otpApi.checkOTPStatus(state.otp.otpSession.requestId);
+          const response = await otpApi.checkOTPStatus(
+            state.otp.otpSession.requestId,
+          );
 
           // Update session status based on response
           if (response.data?.status) {
             const status = response.data.status;
 
-            if (status === 'expired') {
+            if (status === "expired") {
               set((prev) => ({
                 otp: {
                   ...prev.otp,
-                  otpSession: prev.otpSession ? {
-                    ...prev.otpSession,
-                    isExpired: true,
-                  } : null,
-                }
+                  otpSession: prev.otpSession
+                    ? {
+                        ...prev.otpSession,
+                        isExpired: true,
+                      }
+                    : null,
+                },
               }));
-            } else if (status === 'verified') {
+            } else if (status === "verified") {
               set((prev) => ({
                 otp: {
                   ...prev.otp,
-                  currentStep: 'verified',
+                  currentStep: "verified",
                   hasActiveSession: false,
                   otpSession: null,
-                }
+                },
               }));
             }
           }
 
           return response.data;
         } catch (error) {
-          console.warn('Failed to check OTP status:', error);
+          console.warn("Failed to check OTP status:", error);
           return null;
         }
       },
@@ -436,16 +449,16 @@ export const useAuthStore = create<AuthState>()(
         set((prev) => ({
           otp: {
             ...prev.otp,
-            currentStep: 'idle',
+            currentStep: "idle",
             hasActiveSession: false,
             otpSession: null,
-            phoneNumber: '',
-            verificationCode: '',
+            phoneNumber: "",
+            verificationCode: "",
             telcoInfo: null,
             resendCooldownRemaining: 0,
             sessionTimeRemaining: 0,
             lockoutTimeRemaining: 0,
-          }
+          },
         }));
       },
 
@@ -453,17 +466,17 @@ export const useAuthStore = create<AuthState>()(
         set((prev) => ({
           otp: {
             ...prev.otp,
-            currentStep: 'idle',
+            currentStep: "idle",
             hasActiveSession: false,
             otpSession: null,
-            phoneNumber: '',
-            verificationCode: '',
+            phoneNumber: "",
+            verificationCode: "",
             telcoInfo: null,
             resendCooldownRemaining: 0,
             sessionTimeRemaining: 0,
             lockoutTimeRemaining: 0,
             isLocked: false,
-          }
+          },
         }));
       },
 
@@ -474,7 +487,7 @@ export const useAuthStore = create<AuthState>()(
             ...prev.otp,
             otpSession: session,
             hasActiveSession: !!session,
-          }
+          },
         }));
       },
 
@@ -483,7 +496,7 @@ export const useAuthStore = create<AuthState>()(
           otp: {
             ...prev.otp,
             currentStep: step,
-          }
+          },
         }));
       },
 
@@ -492,7 +505,7 @@ export const useAuthStore = create<AuthState>()(
           otp: {
             ...prev.otp,
             phoneNumber: phone,
-          }
+          },
         }));
       },
 
@@ -501,7 +514,7 @@ export const useAuthStore = create<AuthState>()(
           otp: {
             ...prev.otp,
             verificationCode: code,
-          }
+          },
         }));
       },
 
@@ -510,7 +523,7 @@ export const useAuthStore = create<AuthState>()(
           otp: {
             ...prev.otp,
             telcoInfo: telco,
-          }
+          },
         }));
       },
 
@@ -519,7 +532,7 @@ export const useAuthStore = create<AuthState>()(
           otp: {
             ...prev.otp,
             resendCooldownRemaining: seconds,
-          }
+          },
         }));
       },
 
@@ -527,12 +540,14 @@ export const useAuthStore = create<AuthState>()(
         set((prev) => ({
           otp: {
             ...prev.otp,
-            otpSession: prev.otpSession ? {
-              ...prev.otpSession,
-              currentAttempts: prev.otpSession.currentAttempts + 1,
-              lastActivity: new Date(),
-            } : null,
-          }
+            otpSession: prev.otp.otpSession
+              ? {
+                  ...prev.otp.otpSession,
+                  currentAttempts: prev.otp.otpSession.currentAttempts + 1,
+                  lastActivity: new Date(),
+                }
+              : null,
+          },
         }));
       },
 
@@ -541,14 +556,18 @@ export const useAuthStore = create<AuthState>()(
           otp: {
             ...prev.otp,
             isLocked: true,
-            lockoutTimeRemaining: Math.ceil((lockoutEnd.getTime() - Date.now()) / 1000),
-            currentStep: 'locked',
-            otpSession: prev.otpSession ? {
-              ...prev.otpSession,
-              isLocked: true,
-              lockoutEnd,
-            } : null,
-          }
+            lockoutTimeRemaining: Math.ceil(
+              (lockoutEnd.getTime() - Date.now()) / 1000,
+            ),
+            currentStep: "locked",
+            otpSession: prev.otpSession
+              ? {
+                  ...prev.otpSession,
+                  isLocked: true,
+                  lockoutEnd,
+                }
+              : null,
+          },
         }));
       },
 
@@ -556,11 +575,13 @@ export const useAuthStore = create<AuthState>()(
         set((prev) => ({
           otp: {
             ...prev.otp,
-            otpSession: prev.otpSession ? {
-              ...prev.otpSession,
-              lastActivity: new Date(),
-            } : null,
-          }
+            otpSession: prev.otpSession
+              ? {
+                  ...prev.otpSession,
+                  lastActivity: new Date(),
+                }
+              : null,
+          },
         }));
       },
 
@@ -579,10 +600,15 @@ export const useAuthStore = create<AuthState>()(
           };
         }
 
-        const canVerify = !state.otp.isLocked && !session.isExpired && state.otp.currentStep === 'otp';
-        const canResend = !state.otp.isLocked && state.otp.resendCooldownRemaining === 0;
+        const canVerify =
+          !state.otp.isLocked &&
+          !session.isExpired &&
+          state.otp.currentStep === "otp";
+        const canResend =
+          !state.otp.isLocked && state.otp.resendCooldownRemaining === 0;
         const isLocked = state.otp.isLocked || session.isLocked;
-        const isExpired = session.isExpired || state.otp.sessionTimeRemaining <= 0;
+        const isExpired =
+          session.isExpired || state.otp.sessionTimeRemaining <= 0;
         const attemptsRemaining = session.maxAttempts - session.currentAttempts;
 
         return {
@@ -615,9 +641,9 @@ export const useAuthStore = create<AuthState>()(
             isRequestingOTP: false,
             isVerifyingOTP: false,
             isResendingOTP: false,
-            currentStep: 'idle',
-            phoneNumber: '',
-            verificationCode: '',
+            currentStep: "idle",
+            phoneNumber: "",
+            verificationCode: "",
             telcoInfo: null,
             resendCooldownRemaining: 0,
             sessionTimeRemaining: 0,

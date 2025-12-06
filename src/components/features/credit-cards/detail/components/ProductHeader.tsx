@@ -1,6 +1,9 @@
 import React from "react";
 import { useTranslations } from "next-intl";
-import { useCreditCardsStore } from "@/store/use-credit-cards-store";
+import {
+  useCreditCardsStore,
+  useCreditCardComparison,
+} from "@/store/use-credit-cards-store";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Share2, Bookmark, Plus } from "lucide-react";
 import { DetailedCreditCardInfo } from "@/types/credit-card";
@@ -15,13 +18,14 @@ export const ProductHeader: React.FC<ProductHeaderProps> = ({
   onBack,
 }) => {
   const t = useTranslations("pages.creditCard");
-  const { addToComparison, comparisonCards } = useCreditCardsStore();
+  const { comparisonCards } = useCreditCardComparison();
+  const { addToComparison, removeFromComparison } = useCreditCardsStore();
 
-  const isComparing = comparisonCards.includes(card.id);
+  const isComparing = comparisonCards.some((c) => c.id === card.id);
 
   const handleToggleComparison = () => {
     if (isComparing) {
-      // TODO: Implement removeFromComparison
+      removeFromComparison(card.id);
     } else {
       addToComparison(card.id);
     }

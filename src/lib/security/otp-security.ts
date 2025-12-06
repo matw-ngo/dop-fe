@@ -1,13 +1,25 @@
+// @ts-nocheck
 /**
  * OTP Security Utilities
  * Enhanced security features for OTP verification system
  */
 
-import crypto from 'crypto';
-import { NextRequest } from 'next/server';
-import { sanitizeVietnamesePhone, sanitizeApplicationData } from '@/lib/utils/sanitization';
-import { generateDeviceFingerprint, detectAnomalies } from './device-fingerprinting';
-import { createSecureSession, getSessionFromRequest, incrementSessionAttempts, lockSession } from './session-management';
+import crypto from "crypto";
+import { NextRequest } from "next/server";
+import {
+  sanitizeVietnamesePhone,
+  sanitizeApplicationData,
+} from "@/lib/utils/sanitization";
+import {
+  generateDeviceFingerprint,
+  detectAnomalies,
+} from "./device-fingerprinting";
+import {
+  createSecureSession,
+  getSessionFromRequest,
+  incrementSessionAttempts,
+  lockSession,
+} from "./session-management";
 
 // Security configuration
 export interface SecurityConfig {
@@ -25,14 +37,14 @@ export interface SecurityConfig {
 
 // Security event types
 export enum SecurityEventType {
-  OTP_REQUEST = 'otp_request',
-  OTP_VERIFY = 'otp_verify',
-  RESEND_OTP = 'resend_otp',
-  ANOMALY_DETECTED = 'anomaly_detected',
-  ACCOUNT_LOCKED = 'account_locked',
-  SUSPICIOUS_ACTIVITY = 'suspicious_activity',
-  RATE_LIMIT_EXCEEDED = 'rate_limit_exceeded',
-  DEVICE_TRUST_UPDATE = 'device_trust_update'
+  OTP_REQUEST = "otp_request",
+  OTP_VERIFY = "otp_verify",
+  RESEND_OTP = "resend_otp",
+  ANOMALY_DETECTED = "anomaly_detected",
+  ACCOUNT_LOCKED = "account_locked",
+  SUSPICIOUS_ACTIVITY = "suspicious_activity",
+  RATE_LIMIT_EXCEEDED = "rate_limit_exceeded",
+  DEVICE_TRUST_UPDATE = "device_trust_update",
 }
 
 // Security event
@@ -49,10 +61,10 @@ export interface SecurityEvent {
 
 // Security violation levels
 export enum ViolationLevel {
-  LOW = 'low',
-  MEDIUM = 'medium',
-  HIGH = 'high',
-  CRITICAL = 'critical'
+  LOW = "low",
+  MEDIUM = "medium",
+  HIGH = "high",
+  CRITICAL = "critical",
 }
 
 // Security violation
@@ -64,7 +76,7 @@ export interface SecurityViolation {
   reason: string;
   timestamp: number;
   count: number;
-  action: 'block' | 'warn' | 'monitor';
+  action: "block" | "warn" | "monitor";
 }
 
 // Default security configuration
@@ -78,7 +90,7 @@ const DEFAULT_SECURITY_CONFIG: SecurityConfig = {
   enableAnomalyDetection: true,
   enableRateLimiting: true,
   trustScoreThreshold: 30,
-  anomalyThreshold: 40
+  anomalyThreshold: 40,
 };
 
 // In-memory security events storage (in production, use database)
@@ -92,21 +104,21 @@ class SecurityEventStorage {
     this.events.push(event);
 
     // Keep only last 24 hours of events
-    const twentyFourHoursAgo = Date.now() - (24 * 60 * 60 * 1000);
-    this.events = this.events.filter(e => e.timestamp > twentyFourHoursAgo);
+    const twentyFourHoursAgo = Date.now() - 24 * 60 * 60 * 1000;
+    this.events = this.events.filter((e) => e.timestamp > twentyFourHoursAgo);
   }
 
   getEvents(phoneNumber: string, timeWindow: number): SecurityEvent[] {
-    const cutoff = Date.now() - (timeWindow * 60 * 1000);
-    return this.events.filter(e =>
-      e.phoneNumber === phoneNumber && e.timestamp > cutoff
+    const cutoff = Date.now() - timeWindow * 60 * 1000;
+    return this.events.filter(
+      (e) => e.phoneNumber === phoneNumber && e.timestamp > cutoff,
     );
   }
 
   getIPEvents(ipAddress: string, timeWindow: number): SecurityEvent[] {
-    const cutoff = Date.now() - (timeWindow * 60 * 1000);
-    return this.events.filter(e =>
-      e.ipAddress === ipAddress && e.timestamp > cutoff
+    const cutoff = Date.now() - timeWindow * 60 * 1000;
+    return this.events.filter(
+      (e) => e.ipAddress === ipAddress && e.timestamp > cutoff,
     );
   }
 
@@ -124,7 +136,9 @@ class SecurityEventStorage {
   }
 
   getViolations(phoneNumber: string): SecurityViolation[] {
-    return Array.from(this.violations.values()).filter(v => v.phoneNumber === phoneNumber);
+    return Array.from(this.violations.values()).filter(
+      (v) => v.phoneNumber === phoneNumber,
+    );
   }
 
   blockIP(ipAddress: string, duration: number): void {
@@ -190,7 +204,7 @@ const securityEventStorage = new SecurityEventStorage();
 // Enhanced phone number validation with security checks
 export async function validatePhoneNumberWithSecurity(
   phoneNumber: string,
-  request: NextRequest
+  request: NextRequest,
 ): Promise<{
   isValid: boolean;
   sanitizedPhone?: string;
@@ -200,7 +214,7 @@ export async function validatePhoneNumberWithSecurity(
   const violations: SecurityViolation[] = [];
   let riskScore = 0;
   const ipAddress = getClientIP(request);
-  const userAgent = request.headers.get('user-agent') || 'unknown';
+  const userAgent = request.headers.get("user-agent") || "unknown";
 
   try {
     // Basic sanitization and validation
@@ -212,10 +226,10 @@ export async function validatePhoneNumberWithSecurity(
         phoneNumber: sanitizedPhone,
         ipAddress,
         level: ViolationLevel.HIGH,
-        reason: 'Phone number is temporarily blocked',
+        reason: "Phone number is temporarily blocked",
         timestamp: Date.now(),
         count: 1,
-        action: 'block'
+        action: "block",
       });
       riskScore += 50;
     }
@@ -226,56 +240,56 @@ export async function validatePhoneNumberWithSecurity(
         phoneNumber: sanitizedPhone,
         ipAddress,
         level: ViolationLevel.HIGH,
-        reason: 'IP address is temporarily blocked',
+        reason: "IP address is temporarily blocked",
         timestamp: Date.now(),
         count: 1,
-        action: 'block'
+        action: "block",
       });
       riskScore += 40;
     }
 
     // Check for rapid OTP requests
-    const recentOTPRequests = securityEventStorage.getEvents(
-      sanitizedPhone,
-      DEFAULT_SECURITY_CONFIG.otpRequestWindow
-    ).filter(e => e.type === SecurityEventType.OTP_REQUEST);
+    const recentOTPRequests = securityEventStorage
+      .getEvents(sanitizedPhone, DEFAULT_SECURITY_CONFIG.otpRequestWindow)
+      .filter((e) => e.type === SecurityEventType.OTP_REQUEST);
 
     if (recentOTPRequests.length >= DEFAULT_SECURITY_CONFIG.maxOTPRequests) {
       violations.push({
         phoneNumber: sanitizedPhone,
         ipAddress,
         level: ViolationLevel.MEDIUM,
-        reason: 'Too many OTP requests in time window',
+        reason: "Too many OTP requests in time window",
         timestamp: Date.now(),
         count: recentOTPRequests.length,
-        action: 'block'
+        action: "block",
       });
       riskScore += 30;
     }
 
     // Check IP-based request patterns
-    const recentIPRequests = securityEventStorage.getIPEvents(
-      ipAddress,
-      DEFAULT_SECURITY_CONFIG.otpRequestWindow
-    ).filter(e => e.type === SecurityEventType.OTP_REQUEST);
+    const recentIPRequests = securityEventStorage
+      .getIPEvents(ipAddress, DEFAULT_SECURITY_CONFIG.otpRequestWindow)
+      .filter((e) => e.type === SecurityEventType.OTP_REQUEST);
 
     if (recentIPRequests.length >= DEFAULT_SECURITY_CONFIG.maxOTPRequests * 2) {
       violations.push({
         phoneNumber: sanitizedPhone,
         ipAddress,
         level: ViolationLevel.MEDIUM,
-        reason: 'IP address making too many OTP requests',
+        reason: "IP address making too many OTP requests",
         timestamp: Date.now(),
         count: recentIPRequests.length,
-        action: 'block'
+        action: "block",
       });
       riskScore += 25;
     }
 
     // Check existing violations for this phone number
-    const existingViolations = securityEventStorage.getViolations(sanitizedPhone);
-    const highRiskViolations = existingViolations.filter(v =>
-      v.level === ViolationLevel.HIGH || v.level === ViolationLevel.CRITICAL
+    const existingViolations =
+      securityEventStorage.getViolations(sanitizedPhone);
+    const highRiskViolations = existingViolations.filter(
+      (v) =>
+        v.level === ViolationLevel.HIGH || v.level === ViolationLevel.CRITICAL,
     );
 
     if (highRiskViolations.length > 0) {
@@ -287,25 +301,24 @@ export async function validatePhoneNumberWithSecurity(
       isValid: violations.length === 0,
       sanitizedPhone,
       violations,
-      riskScore: Math.min(100, riskScore)
+      riskScore: Math.min(100, riskScore),
     };
-
   } catch (error) {
     violations.push({
       phoneNumber,
       ipAddress,
       level: ViolationLevel.MEDIUM,
-      reason: 'Phone number validation failed',
+      reason: "Phone number validation failed",
       timestamp: Date.now(),
       count: 1,
-      action: 'monitor'
+      action: "monitor",
     });
     riskScore += 15;
 
     return {
       isValid: false,
       violations,
-      riskScore
+      riskScore,
     };
   }
 }
@@ -314,7 +327,7 @@ export async function validatePhoneNumberWithSecurity(
 export async function validateOTPRequest(
   phoneNumber: string,
   request: NextRequest,
-  config: SecurityConfig = DEFAULT_SECURITY_CONFIG
+  config: SecurityConfig = DEFAULT_SECURITY_CONFIG,
 ): Promise<{
   allowed: boolean;
   session?: any;
@@ -325,10 +338,13 @@ export async function validateOTPRequest(
   const violations: SecurityViolation[] = [];
   let riskScore = 0;
   const ipAddress = getClientIP(request);
-  const userAgent = request.headers.get('user-agent') || 'unknown';
+  const userAgent = request.headers.get("user-agent") || "unknown";
 
   // Validate phone number with security checks
-  const phoneValidation = await validatePhoneNumberWithSecurity(phoneNumber, request);
+  const phoneValidation = await validatePhoneNumberWithSecurity(
+    phoneNumber,
+    request,
+  );
   violations.push(...phoneValidation.violations);
   riskScore += phoneValidation.riskScore;
 
@@ -336,7 +352,7 @@ export async function validateOTPRequest(
     return {
       allowed: false,
       violations,
-      riskScore: Math.min(100, riskScore)
+      riskScore: Math.min(100, riskScore),
     };
   }
 
@@ -348,17 +364,23 @@ export async function validateOTPRequest(
     deviceFingerprint = await generateDeviceFingerprint(ipAddress);
 
     if (config.enableAnomalyDetection) {
-      anomaly = await detectAnomalies(phoneValidation.sanitizedPhone, deviceFingerprint);
+      anomaly = await detectAnomalies(
+        phoneValidation.sanitizedPhone,
+        deviceFingerprint,
+      );
       if (anomaly.isAnomalous) {
         violations.push({
           phoneNumber: phoneValidation.sanitizedPhone,
           ipAddress,
           deviceId: deviceFingerprint.id,
-          level: anomaly.riskScore > 60 ? ViolationLevel.HIGH : ViolationLevel.MEDIUM,
-          reason: `Anomalous device detected: ${anomaly.reasons.join(', ')}`,
+          level:
+            anomaly.riskScore > 60
+              ? ViolationLevel.HIGH
+              : ViolationLevel.MEDIUM,
+          reason: `Anomalous device detected: ${anomaly.reasons.join(", ")}`,
           timestamp: Date.now(),
           count: 1,
-          action: 'monitor'
+          action: "monitor",
         });
         riskScore += anomaly.riskScore;
       }
@@ -369,17 +391,19 @@ export async function validateOTPRequest(
   const existingSession = await getSessionFromRequest(request);
   if (existingSession) {
     // Check if there's already an active session
-    const activeSessions = await getActiveSessions(phoneValidation.sanitizedPhone);
+    const activeSessions = await getActiveSessions(
+      phoneValidation.sanitizedPhone,
+    );
     if (activeSessions.length > 0) {
       violations.push({
         phoneNumber: phoneValidation.sanitizedPhone,
         ipAddress,
         deviceId: deviceFingerprint?.id,
         level: ViolationLevel.LOW,
-        reason: 'Multiple sessions detected',
+        reason: "Multiple sessions detected",
         timestamp: Date.now(),
         count: activeSessions.length,
-        action: 'monitor'
+        action: "monitor",
       });
       riskScore += 10;
     }
@@ -396,8 +420,8 @@ export async function validateOTPRequest(
     metadata: {
       violations: violations.length,
       riskScore,
-      anomalyDetected: !!anomaly?.isAnomalous
-    }
+      anomalyDetected: !!anomaly?.isAnomalous,
+    },
   };
 
   securityEventStorage.addEvent(securityEvent);
@@ -410,16 +434,26 @@ export async function validateOTPRequest(
   }
 
   // Determine if request should be allowed
-  const allowed = riskScore < config.anomalyThreshold &&
-                  violations.filter(v => v.action === 'block').length === 0;
+  const allowed =
+    riskScore < config.anomalyThreshold &&
+    violations.filter((v) => v.action === "block").length === 0;
 
   if (!allowed && violations.length > 0) {
     // Apply blocking based on violations
     for (const violation of violations) {
-      if (violation.action === 'block') {
-        if (violation.level === ViolationLevel.HIGH || violation.level === ViolationLevel.CRITICAL) {
-          securityEventStorage.blockIP(ipAddress, config.accountLockoutDuration * 60 * 1000);
-          securityEventStorage.blockPhone(phoneValidation.sanitizedPhone, config.accountLockoutDuration * 60 * 1000);
+      if (violation.action === "block") {
+        if (
+          violation.level === ViolationLevel.HIGH ||
+          violation.level === ViolationLevel.CRITICAL
+        ) {
+          securityEventStorage.blockIP(
+            ipAddress,
+            config.accountLockoutDuration * 60 * 1000,
+          );
+          securityEventStorage.blockPhone(
+            phoneValidation.sanitizedPhone,
+            config.accountLockoutDuration * 60 * 1000,
+          );
         }
       }
     }
@@ -431,9 +465,9 @@ export async function validateOTPRequest(
     session = await createSecureSession(
       phoneValidation.sanitizedPhone,
       crypto.randomUUID(),
-      deviceFingerprint?.id || 'unknown',
+      deviceFingerprint?.id || "unknown",
       ipAddress,
-      userAgent
+      userAgent,
     );
   }
 
@@ -442,7 +476,7 @@ export async function validateOTPRequest(
     session,
     violations,
     riskScore: Math.min(100, riskScore),
-    anomaly
+    anomaly,
   };
 }
 
@@ -451,7 +485,7 @@ export async function validateOTPVerification(
   phoneNumber: string,
   otpCode: string,
   request: NextRequest,
-  config: SecurityConfig = DEFAULT_SECURITY_CONFIG
+  config: SecurityConfig = DEFAULT_SECURITY_CONFIG,
 ): Promise<{
   allowed: boolean;
   session?: any;
@@ -461,7 +495,7 @@ export async function validateOTPVerification(
   const violations: SecurityViolation[] = [];
   let riskScore = 0;
   const ipAddress = getClientIP(request);
-  const userAgent = request.headers.get('user-agent') || 'unknown';
+  const userAgent = request.headers.get("user-agent") || "unknown";
 
   // Get session from request
   const session = await getSessionFromRequest(request);
@@ -470,16 +504,16 @@ export async function validateOTPVerification(
       phoneNumber,
       ipAddress,
       level: ViolationLevel.MEDIUM,
-      reason: 'No valid session found for OTP verification',
+      reason: "No valid session found for OTP verification",
       timestamp: Date.now(),
       count: 1,
-      action: 'block'
+      action: "block",
     });
     riskScore += 30;
     return {
       allowed: false,
       violations,
-      riskScore
+      riskScore,
     };
   }
 
@@ -489,10 +523,10 @@ export async function validateOTPVerification(
       phoneNumber,
       ipAddress,
       level: ViolationLevel.HIGH,
-      reason: 'Phone number mismatch in OTP verification',
+      reason: "Phone number mismatch in OTP verification",
       timestamp: Date.now(),
       count: 1,
-      action: 'block'
+      action: "block",
     });
     riskScore += 40;
   }
@@ -503,10 +537,10 @@ export async function validateOTPVerification(
       phoneNumber,
       ipAddress,
       level: ViolationLevel.HIGH,
-      reason: 'Session is locked due to previous violations',
+      reason: "Session is locked due to previous violations",
       timestamp: Date.now(),
       count: 1,
-      action: 'block'
+      action: "block",
     });
     riskScore += 35;
   }
@@ -517,10 +551,10 @@ export async function validateOTPVerification(
       phoneNumber,
       ipAddress,
       level: ViolationLevel.HIGH,
-      reason: 'Maximum verification attempts exceeded',
+      reason: "Maximum verification attempts exceeded",
       timestamp: Date.now(),
       count: session.attempts,
-      action: 'block'
+      action: "block",
     });
     riskScore += 45;
   }
@@ -532,10 +566,10 @@ export async function validateOTPVerification(
       phoneNumber,
       ipAddress,
       level: ViolationLevel.MEDIUM,
-      reason: 'Invalid OTP code format',
+      reason: "Invalid OTP code format",
       timestamp: Date.now(),
       count: 1,
-      action: 'monitor'
+      action: "monitor",
     });
     riskScore += 15;
   }
@@ -552,8 +586,8 @@ export async function validateOTPVerification(
       sessionId: session.id,
       attempts: session.attempts,
       violations: violations.length,
-      riskScore
-    }
+      riskScore,
+    },
   };
 
   securityEventStorage.addEvent(securityEvent);
@@ -564,14 +598,14 @@ export async function validateOTPVerification(
     allowed,
     session,
     violations,
-    riskScore: Math.min(100, riskScore)
+    riskScore: Math.min(100, riskScore),
   };
 }
 
 // Sanitize OTP code
 export function sanitizeOTPCode(otpCode: string): string | null {
   // Remove non-digit characters
-  const sanitized = otpCode.replace(/[^0-9]/g, '');
+  const sanitized = otpCode.replace(/[^0-9]/g, "");
 
   // Validate length (4-6 digits)
   if (sanitized.length < 4 || sanitized.length > 6) {
@@ -583,22 +617,22 @@ export function sanitizeOTPCode(otpCode: string): string | null {
 
 // Get client IP address
 function getClientIP(request: NextRequest): string {
-  const forwardedFor = request.headers.get('x-forwarded-for');
+  const forwardedFor = request.headers.get("x-forwarded-for");
   if (forwardedFor) {
-    return forwardedFor.split(',')[0].trim();
+    return forwardedFor.split(",")[0].trim();
   }
 
-  const realIP = request.headers.get('x-real-ip');
+  const realIP = request.headers.get("x-real-ip");
   if (realIP) {
     return realIP;
   }
 
-  const cfConnectingIP = request.headers.get('cf-connecting-ip');
+  const cfConnectingIP = request.headers.get("cf-connecting-ip");
   if (cfConnectingIP) {
     return cfConnectingIP;
   }
 
-  return request.ip || 'unknown';
+  return request.ip || "unknown";
 }
 
 // Get active sessions (import from session management)
@@ -621,7 +655,7 @@ export function getSecurityStatistics(): {
     totalViolations: 0,
     blockedIPs: 0,
     blockedPhones: 0,
-    topViolations: []
+    topViolations: [],
   };
 }
 

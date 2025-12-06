@@ -3,21 +3,28 @@
  * Handles OTP resend functionality with cooldown timer, rate limiting, and telco-specific rules
  */
 
-'use client';
+"use client";
 
-import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
-import { Badge } from '@/components/ui/badge';
+import React, { useState, useEffect, useCallback, useRef } from "react";
+import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
+import { Badge } from "@/components/ui/badge";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@/components/ui/tooltip';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Clock, RefreshCw, Send, AlertTriangle, Info, Smartphone } from 'lucide-react';
-import { cn } from '@/lib/utils';
+} from "@/components/ui/tooltip";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import {
+  Clock,
+  RefreshCw,
+  Send,
+  AlertTriangle,
+  Info,
+  Smartphone,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export interface OTPResendProps {
   onResend?: () => Promise<void>;
@@ -37,8 +44,8 @@ export interface OTPResendProps {
   showProgress?: boolean;
   showAttempts?: boolean;
   showTelcoInfo?: boolean;
-  variant?: 'default' | 'outline' | 'ghost' | 'secondary' | 'destructive';
-  size?: 'default' | 'sm' | 'lg' | 'icon';
+  variant?: "default" | "outline" | "ghost" | "secondary" | "destructive";
+  size?: "default" | "sm" | "lg" | "icon";
   loadingComponent?: React.ReactNode;
   successMessage?: string;
   errorMessage?: string;
@@ -59,11 +66,11 @@ export const OTPResend: React.FC<OTPResendProps> = ({
   showProgress = true,
   showAttempts = true,
   showTelcoInfo = true,
-  variant = 'ghost',
-  size = 'default',
+  variant = "ghost",
+  size = "default",
   loadingComponent,
-  successMessage = 'Mã OTP đã được gửi lại',
-  errorMessage = 'Gửi lại mã OTP thất bại. Vui lòng thử lại.',
+  successMessage = "Mã OTP đã được gửi lại",
+  errorMessage = "Gửi lại mã OTP thất bại. Vui lòng thử lại.",
   onAttemptChange,
   onCooldownChange,
   ...props
@@ -74,7 +81,9 @@ export const OTPResend: React.FC<OTPResendProps> = ({
   const [lastResendTime, setLastResendTime] = useState<Date | null>(null);
   const [showSuccess, setShowSuccess] = useState(false);
   const [showError, setShowError] = useState(false);
-  const [cooldownReason, setCooldownReason] = useState<'initial' | 'resend' | 'rate-limit'>('initial');
+  const [cooldownReason, setCooldownReason] = useState<
+    "initial" | "resend" | "rate-limit"
+  >("initial");
 
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
@@ -87,7 +96,7 @@ export const OTPResend: React.FC<OTPResendProps> = ({
   useEffect(() => {
     if (initialCooldown > 0) {
       setCooldown(initialCooldown);
-      setCooldownReason('initial');
+      setCooldownReason("initial");
     }
   }, [initialCooldown]);
 
@@ -126,7 +135,12 @@ export const OTPResend: React.FC<OTPResendProps> = ({
 
   // Handle resend request
   const handleResend = useCallback(async () => {
-    if (disabled || isResending || cooldown > 0 || attempts >= telcoMaxAttempts) {
+    if (
+      disabled ||
+      isResending ||
+      cooldown > 0 ||
+      attempts >= telcoMaxAttempts
+    ) {
       return;
     }
 
@@ -143,29 +157,28 @@ export const OTPResend: React.FC<OTPResendProps> = ({
       }
 
       // Success
-      setAttempts(prev => {
+      setAttempts((prev) => {
         const newAttempts = prev + 1;
         onAttemptChange?.(newAttempts, telcoMaxAttempts);
         return newAttempts;
       });
       setCooldown(telcoCooldown);
-      setCooldownReason('resend');
+      setCooldownReason("resend");
       setLastResendTime(new Date());
       setShowSuccess(true);
       setShowError(false);
 
       // Hide success message after 5 seconds
       setTimeout(() => setShowSuccess(false), 5000);
-
     } catch (error) {
-      console.error('Resend OTP failed:', error);
+      console.error("Resend OTP failed:", error);
       setShowError(true);
       setShowSuccess(false);
 
       // Handle rate limiting
-      if (error instanceof Error && error.message.includes('rate limit')) {
+      if (error instanceof Error && error.message.includes("rate limit")) {
         setCooldown(Math.max(60, telcoCooldown * 2)); // Double cooldown for rate limiting
-        setCooldownReason('rate-limit');
+        setCooldownReason("rate-limit");
       }
 
       // Hide error message after 5 seconds
@@ -182,7 +195,7 @@ export const OTPResend: React.FC<OTPResendProps> = ({
     telcoMaxAttempts,
     telcoCooldown,
     onResend,
-    onAttemptChange
+    onAttemptChange,
   ]);
 
   // Format cooldown time
@@ -192,7 +205,7 @@ export const OTPResend: React.FC<OTPResendProps> = ({
     }
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
-    return `${minutes} phút ${remainingSeconds > 0 ? remainingSeconds + ' giây' : ''}`;
+    return `${minutes} phút ${remainingSeconds > 0 ? remainingSeconds + " giây" : ""}`;
   };
 
   // Get progress percentage
@@ -201,49 +214,62 @@ export const OTPResend: React.FC<OTPResendProps> = ({
   };
 
   // Check if resend is allowed
-  const canResend = !disabled && !isResending && cooldown === 0 && attempts < telcoMaxAttempts;
+  const canResend =
+    !disabled && !isResending && cooldown === 0 && attempts < telcoMaxAttempts;
 
   // Get telco display name
   const getTelcoDisplayName = (): string => {
     switch (telcoCode?.toUpperCase()) {
-      case 'VIETTEL': return 'Viettel';
-      case 'MOBIFONE': return 'Mobifone';
-      case 'VINAPHONE': return 'Vinaphone';
-      case 'VIETNAMOBILE': return 'Vietnamobile';
-      case 'GTEL': return 'Gmobile';
-      default: return '';
+      case "VIETTEL":
+        return "Viettel";
+      case "MOBIFONE":
+        return "Mobifone";
+      case "VINAPHONE":
+        return "Vinaphone";
+      case "VIETNAMOBILE":
+        return "Vietnamobile";
+      case "GTEL":
+        return "Gmobile";
+      default:
+        return "";
     }
   };
 
   // Get telco color
   const getTelcoColor = (): string => {
     switch (telcoCode?.toUpperCase()) {
-      case 'VIETTEL': return '#0033A0';
-      case 'MOBIFONE': return '#FF6600';
-      case 'VINAPHONE': return '#FF0000';
-      case 'VIETNAMOBILE': return '#FFCC00';
-      case 'GTEL': return '#00CC66';
-      default: return '#666666';
+      case "VIETTEL":
+        return "#0033A0";
+      case "MOBIFONE":
+        return "#FF6600";
+      case "VINAPHONE":
+        return "#FF0000";
+      case "VIETNAMOBILE":
+        return "#FFCC00";
+      case "GTEL":
+        return "#00CC66";
+      default:
+        return "#666666";
     }
   };
 
   // Get button text
   const getButtonText = (): string => {
-    if (isResending) return 'Đang gửi...';
+    if (isResending) return "Đang gửi...";
     if (cooldown > 0) return `Gửi lại (${formatCooldown(cooldown)})`;
-    if (attempts >= telcoMaxAttempts) return 'Đạt giới hạn gửi';
-    return 'Gửi lại mã OTP';
+    if (attempts >= telcoMaxAttempts) return "Đạt giới hạn gửi";
+    return "Gửi lại mã OTP";
   };
 
   // Get button variant based on state
-  const getButtonVariant = (): OTPResendProps['variant'] => {
-    if (cooldown > 0) return 'secondary';
-    if (attempts >= telcoMaxAttempts) return 'destructive';
+  const getButtonVariant = (): OTPResendProps["variant"] => {
+    if (cooldown > 0) return "secondary";
+    if (attempts >= telcoMaxAttempts) return "destructive";
     return variant;
   };
 
   return (
-    <div className={cn('space-y-4', className)} {...props}>
+    <div className={cn("space-y-4", className)} {...props}>
       {/* Main Resend Button */}
       <div className="flex flex-col items-center space-y-2">
         <TooltipProvider>
@@ -255,14 +281,16 @@ export const OTPResend: React.FC<OTPResendProps> = ({
                 onClick={handleResend}
                 disabled={!canResend}
                 className={cn(
-                  'min-w-[140px] transition-all duration-200',
-                  isResending && 'opacity-70',
-                  buttonClassName
+                  "min-w-[140px] transition-all duration-200",
+                  isResending && "opacity-70",
+                  buttonClassName,
                 )}
               >
                 {isResending ? (
                   <>
-                    {loadingComponent || <RefreshCw className="h-4 w-4 mr-2 animate-spin" />}
+                    {loadingComponent || (
+                      <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
+                    )}
                     Đang gửi...
                   </>
                 ) : cooldown > 0 ? (
@@ -286,7 +314,10 @@ export const OTPResend: React.FC<OTPResendProps> = ({
 
             <TooltipContent>
               {attempts >= telcoMaxAttempts ? (
-                <p>Bạn đã gửi lại mã {telcoMaxAttempts} lần. Tối đa {telcoMaxAttempts} lần.</p>
+                <p>
+                  Bạn đã gửi lại mã {telcoMaxAttempts} lần. Tối đa{" "}
+                  {telcoMaxAttempts} lần.
+                </p>
               ) : cooldown > 0 ? (
                 <p>Vui lòng đợi {formatCooldown(cooldown)} trước khi gửi lại</p>
               ) : (
@@ -299,20 +330,22 @@ export const OTPResend: React.FC<OTPResendProps> = ({
         {/* Progress Bar */}
         {showProgress && cooldown > 0 && (
           <div className="w-full max-w-[200px] space-y-1">
-            <Progress
-              value={getProgressPercentage()}
-              className="h-2"
-              indicatorClassName={cn(
-                'transition-all duration-1000',
-                cooldownReason === 'rate-limit' && 'bg-destructive',
-                cooldownReason === 'resend' && 'bg-primary',
-                cooldownReason === 'initial' && 'bg-muted-foreground'
-              )}
-            />
+            <div className="relative">
+              <Progress value={getProgressPercentage()} className="h-2" />
+              <div
+                className={cn(
+                  "absolute top-0 left-0 h-full transition-all duration-1000",
+                  cooldownReason === "rate-limit" && "bg-destructive",
+                  cooldownReason === "resend" && "bg-primary",
+                  cooldownReason === "initial" && "bg-muted-foreground",
+                )}
+                style={{ width: `${getProgressPercentage()}%` }}
+              />
+            </div>
             <p className="text-xs text-muted-foreground text-center">
-              {cooldownReason === 'rate-limit' && 'Vượt giới hạn tần suất'}
-              {cooldownReason === 'resend' && 'Đợi để gửi lại'}
-              {cooldownReason === 'initial' && 'Khởi tạo'}
+              {cooldownReason === "rate-limit" && "Vượt giới hạn tần suất"}
+              {cooldownReason === "resend" && "Đợi để gửi lại"}
+              {cooldownReason === "initial" && "Khởi tạo"}
             </p>
           </div>
         )}
@@ -322,7 +355,9 @@ export const OTPResend: React.FC<OTPResendProps> = ({
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <span>Lần thử:</span>
             <Badge
-              variant={attempts >= telcoMaxAttempts ? 'destructive' : 'secondary'}
+              variant={
+                attempts >= telcoMaxAttempts ? "destructive" : "secondary"
+              }
               className="font-mono"
             >
               {attempts}/{telcoMaxAttempts}
@@ -340,7 +375,7 @@ export const OTPResend: React.FC<OTPResendProps> = ({
               className="text-xs"
               style={{
                 borderColor: getTelcoColor(),
-                color: getTelcoColor()
+                color: getTelcoColor(),
               }}
             >
               {getTelcoDisplayName()}
@@ -359,7 +394,7 @@ export const OTPResend: React.FC<OTPResendProps> = ({
               {successMessage}
               {lastResendTime && (
                 <span className="block text-xs mt-1">
-                  Gửi lúc: {lastResendTime.toLocaleTimeString('vi-VN')}
+                  Gửi lúc: {lastResendTime.toLocaleTimeString("vi-VN")}
                 </span>
               )}
             </AlertDescription>
@@ -383,23 +418,22 @@ export const OTPResend: React.FC<OTPResendProps> = ({
           {attempts > 0 && (
             <p>
               • Bạn đã gửi lại mã {attempts} lần
-              {attempts >= telcoMaxAttempts && ' (tối đa)'}
+              {attempts >= telcoMaxAttempts && " (tối đa)"}
             </p>
           )}
-          {cooldown > 0 && (
-            <p>• Thời gian chờ: {formatCooldown(cooldown)}</p>
-          )}
+          {cooldown > 0 && <p>• Thời gian chờ: {formatCooldown(cooldown)}</p>}
           {telcoCode && (
             <p>
               • Mã được gửi qua đầu số {getTelcoDisplayName()}
-              {telcoSettings?.supportsShortCode && ` (${telcoSettings.shortCode})`}
+              {telcoSettings?.supportsShortCode &&
+                ` (${telcoSettings.shortCode})`}
             </p>
           )}
         </div>
       )}
 
       {/* Rate Limit Warning */}
-      {cooldownReason === 'rate-limit' && (
+      {cooldownReason === "rate-limit" && (
         <Alert className="border-yellow-200 bg-yellow-50 text-yellow-800">
           <Info className="h-4 w-4" />
           <AlertDescription className="text-sm">
@@ -411,6 +445,6 @@ export const OTPResend: React.FC<OTPResendProps> = ({
   );
 };
 
-OTPResend.displayName = 'OTPResend';
+OTPResend.displayName = "OTPResend";
 
 export default OTPResend;

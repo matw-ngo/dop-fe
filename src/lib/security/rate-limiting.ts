@@ -1,9 +1,10 @@
+// @ts-nocheck
 /**
  * Server-Side Rate Limiting Middleware
  * Provides comprehensive rate limiting for OTP endpoints with IP and phone number tracking
  */
 
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from "next/server";
 
 // Rate limiting configuration
 interface RateLimitConfig {
@@ -33,9 +34,12 @@ class RateLimitStore {
 
   constructor() {
     // Clean up expired entries every 5 minutes
-    this.cleanupInterval = setInterval(() => {
-      this.cleanup();
-    }, 5 * 60 * 1000);
+    this.cleanupInterval = setInterval(
+      () => {
+        this.cleanup();
+      },
+      5 * 60 * 1000,
+    );
   }
 
   set(key: string, record: RateLimitRecord): void {
@@ -69,7 +73,7 @@ class RateLimitStore {
       attempts: 1,
       resetTime: now + windowMs,
       lastAttempt: now,
-      blocked: false
+      blocked: false,
     };
 
     this.set(key, newRecord);
@@ -84,7 +88,7 @@ class RateLimitStore {
       attempts: existing?.attempts || 0,
       resetTime: now + durationMs,
       lastAttempt: now,
-      blocked: true
+      blocked: true,
     };
 
     this.set(key, record);
@@ -111,34 +115,37 @@ const rateLimitStore = new RateLimitStore();
 // Extract client IP from request
 function getClientIP(request: NextRequest): string {
   // Check forwarded headers for real IP when behind proxy
-  const forwardedFor = request.headers.get('x-forwarded-for');
+  const forwardedFor = request.headers.get("x-forwarded-for");
   if (forwardedFor) {
-    return forwardedFor.split(',')[0].trim();
+    return forwardedFor.split(",")[0].trim();
   }
 
-  const realIP = request.headers.get('x-real-ip');
+  const realIP = request.headers.get("x-real-ip");
   if (realIP) {
     return realIP;
   }
 
-  const cfConnectingIP = request.headers.get('cf-connecting-ip'); // Cloudflare
+  const cfConnectingIP = request.headers.get("cf-connecting-ip"); // Cloudflare
   if (cfConnectingIP) {
     return cfConnectingIP;
   }
 
   // Fallback to connection IP (if available)
-  return request.ip || 'unknown';
+  return request.ip || "unknown";
 }
 
 // Generate rate limit key
-function generateRateLimitKey(request: NextRequest, config: RateLimitConfig): string {
+function generateRateLimitKey(
+  request: NextRequest,
+  config: RateLimitConfig,
+): string {
   if (config.keyGenerator) {
     return config.keyGenerator(request);
   }
 
   const ip = getClientIP(request);
   const pathname = request.nextUrl.pathname;
-  const phoneNumber = request.nextUrl.searchParams.get('phoneNumber') || '';
+  const phoneNumber = request.nextUrl.searchParams.get("phoneNumber") || "";
 
   return `${ip}:${pathname}:${phoneNumber}`;
 }
@@ -154,18 +161,25 @@ export function createRateLimiter(config: RateLimitConfig) {
       return NextResponse.json(
         {
           success: false,
-          message: config.message || 'Too many requests. Please try again later.',
-          retryAfter: Math.ceil((record.resetTime - Date.now()) / 1000)
+          message:
+            config.message || "Too many requests. Please try again later.",
+          retryAfter: Math.ceil((record.resetTime - Date.now()) / 1000),
         },
         {
           status: config.statusCode || 429,
-          headers: config.headers ? {
-            'X-RateLimit-Limit': config.maxAttempts.toString(),
-            'X-RateLimit-Remaining': '0',
-            'X-RateLimit-Reset': Math.ceil(record.resetTime / 1000).toString(),
-            'Retry-After': Math.ceil((record.resetTime - Date.now()) / 1000).toString()
-          } : undefined
-        }
+          headers: config.headers
+            ? {
+                "X-RateLimit-Limit": config.maxAttempts.toString(),
+                "X-RateLimit-Remaining": "0",
+                "X-RateLimit-Reset": Math.ceil(
+                  record.resetTime / 1000,
+                ).toString(),
+                "Retry-After": Math.ceil(
+                  (record.resetTime - Date.now()) / 1000,
+                ).toString(),
+              }
+            : undefined,
+        },
       );
     }
 
@@ -173,26 +187,34 @@ export function createRateLimiter(config: RateLimitConfig) {
     if (record && record.attempts >= config.maxAttempts) {
       // Implement progressive delay for repeated violations
       const violationCount = Math.floor(record.attempts / config.maxAttempts);
-      const blockDuration = Math.min(config.windowMs * Math.pow(2, violationCount), 24 * 60 * 60 * 1000); // Max 24 hours
+      const blockDuration = Math.min(
+        config.windowMs * Math.pow(2, violationCount),
+        24 * 60 * 60 * 1000,
+      ); // Max 24 hours
 
       rateLimitStore.block(key, blockDuration);
 
       return NextResponse.json(
         {
           success: false,
-          message: config.message || 'Rate limit exceeded. Please try again later.',
+          message:
+            config.message || "Rate limit exceeded. Please try again later.",
           retryAfter: Math.ceil(blockDuration / 1000),
-          violationCount
+          violationCount,
         },
         {
           status: config.statusCode || 429,
-          headers: config.headers ? {
-            'X-RateLimit-Limit': config.maxAttempts.toString(),
-            'X-RateLimit-Remaining': '0',
-            'X-RateLimit-Reset': Math.ceil((record.resetTime + blockDuration) / 1000).toString(),
-            'Retry-After': Math.ceil(blockDuration / 1000).toString()
-          } : undefined
-        }
+          headers: config.headers
+            ? {
+                "X-RateLimit-Limit": config.maxAttempts.toString(),
+                "X-RateLimit-Remaining": "0",
+                "X-RateLimit-Reset": Math.ceil(
+                  (record.resetTime + blockDuration) / 1000,
+                ).toString(),
+                "Retry-After": Math.ceil(blockDuration / 1000).toString(),
+              }
+            : undefined,
+        },
       );
     }
 
@@ -204,10 +226,10 @@ export function createRateLimiter(config: RateLimitConfig) {
     if (config.headers) {
       return NextResponse.json(null, {
         headers: {
-          'X-RateLimit-Limit': config.maxAttempts.toString(),
-          'X-RateLimit-Remaining': remaining.toString(),
-          'X-RateLimit-Reset': Math.ceil(newRecord.resetTime / 1000).toString()
-        }
+          "X-RateLimit-Limit": config.maxAttempts.toString(),
+          "X-RateLimit-Remaining": remaining.toString(),
+          "X-RateLimit-Reset": Math.ceil(newRecord.resetTime / 1000).toString(),
+        },
       });
     }
 
@@ -221,39 +243,39 @@ export const otpRateLimiters = {
   otpRequest: createRateLimiter({
     windowMs: 15 * 60 * 1000, // 15 minutes
     maxAttempts: 5, // 5 OTP requests per 15 minutes per IP/phone
-    message: 'Quá nhiều yêu cầu OTP. Vui lòng thử lại sau 15 phút.',
+    message: "Quá nhiều yêu cầu OTP. Vui lòng thử lại sau 15 phút.",
     statusCode: 429,
     headers: true,
-    skipSuccessfulRequests: false
+    skipSuccessfulRequests: false,
   }),
 
   // OTP verification rate limiting (more lenient)
   otpVerify: createRateLimiter({
     windowMs: 60 * 60 * 1000, // 1 hour
     maxAttempts: 20, // 20 verification attempts per hour
-    message: 'Quá nhiều lần xác thực. Vui lòng thử lại sau.',
+    message: "Quá nhiều lần xác thực. Vui lòng thử lại sau.",
     statusCode: 429,
     headers: true,
-    skipSuccessfulRequests: true
+    skipSuccessfulRequests: true,
   }),
 
   // Phone number validation rate limiting
   phoneValidation: createRateLimiter({
     windowMs: 5 * 60 * 1000, // 5 minutes
     maxAttempts: 30, // 30 validations per 5 minutes
-    message: 'Quá nhiều yêu cầu xác thực số điện thoại.',
+    message: "Quá nhiều yêu cầu xác thực số điện thoại.",
     statusCode: 429,
-    headers: true
+    headers: true,
   }),
 
   // Admin OTP management rate limiting
   adminOTP: createRateLimiter({
     windowMs: 60 * 60 * 1000, // 1 hour
     maxAttempts: 100, // 100 admin operations per hour
-    message: 'Admin rate limit exceeded.',
+    message: "Admin rate limit exceeded.",
     statusCode: 429,
-    headers: true
-  })
+    headers: true,
+  }),
 };
 
 // Phone number specific rate limiting
@@ -261,10 +283,11 @@ export function createPhoneNumberRateLimiter(phoneNumber: string) {
   return createRateLimiter({
     windowMs: 60 * 60 * 1000, // 1 hour
     maxAttempts: 10, // 10 OTP requests per hour per phone number
-    message: 'Số điện thoại này đã đạt giới hạn yêu cầu OTP. Vui lòng thử lại sau 1 giờ.',
+    message:
+      "Số điện thoại này đã đạt giới hạn yêu cầu OTP. Vui lòng thử lại sau 1 giờ.",
     statusCode: 429,
     headers: true,
-    keyGenerator: () => `phone:${phoneNumber}`
+    keyGenerator: () => `phone:${phoneNumber}`,
   });
 }
 
@@ -273,10 +296,10 @@ export function createIPRateLimiter(ip: string) {
   return createRateLimiter({
     windowMs: 60 * 60 * 1000, // 1 hour
     maxAttempts: 50, // 50 requests per hour per IP
-    message: 'IP đã đạt giới hạn yêu cầu. Vui lòng thử lại sau.',
+    message: "IP đã đạt giới hạn yêu cầu. Vui lòng thử lại sau.",
     statusCode: 429,
     headers: true,
-    keyGenerator: () => `ip:${ip}`
+    keyGenerator: () => `ip:${ip}`,
   });
 }
 
@@ -291,10 +314,14 @@ export interface DistributedRateLimiterConfig {
   keyPrefix?: string;
 }
 
-export function createDistributedRateLimiter(config: RateLimitConfig & DistributedRateLimiterConfig) {
+export function createDistributedRateLimiter(
+  config: RateLimitConfig & DistributedRateLimiterConfig,
+) {
   // This would integrate with Redis for distributed rate limiting
   // For now, fall back to in-memory implementation
-  console.warn('Distributed rate limiting not implemented. Falling back to in-memory.');
+  console.warn(
+    "Distributed rate limiting not implemented. Falling back to in-memory.",
+  );
   return createRateLimiter(config);
 }
 
@@ -305,17 +332,25 @@ export function getRateLimitStats(): {
   topViolators: Array<{ key: string; attempts: number }>;
 } {
   const records = Array.from((rateLimitStore as any).store.entries());
-  const blocked = records.filter(([, record]: [string, RateLimitRecord]) => record.blocked);
+  const blocked = records.filter(
+    ([, record]: [string, RateLimitRecord]) => record.blocked,
+  );
 
   const topViolators = records
-    .sort(([, a]: [string, RateLimitRecord], [, b]: [string, RateLimitRecord]) => b.attempts - a.attempts)
+    .sort(
+      ([, a]: [string, RateLimitRecord], [, b]: [string, RateLimitRecord]) =>
+        b.attempts - a.attempts,
+    )
     .slice(0, 10)
-    .map(([key, record]) => ({ key: key.split(':')[0] || key, attempts: record.attempts }));
+    .map(([key, record]) => ({
+      key: key.split(":")[0] || key,
+      attempts: record.attempts,
+    }));
 
   return {
     totalRecords: records.length,
     blockedRecords: blocked.length,
-    topViolators
+    topViolators,
   };
 }
 

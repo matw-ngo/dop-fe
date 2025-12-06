@@ -210,15 +210,16 @@ const SavingsCalculator: React.FC = () => {
 
     // Get best rates for the selected term
     const rates = bankData
-      .filter((bank) => bank.savingsRates[formData.termInMonths])
-      .map((bank) => ({
-        id: bank.id,
-        name: bank.name,
-        rate: bank.savingsRates[formData.termInMonths].rate,
-        effectiveRate: calculateEffectiveRate(
-          bank.savingsRates[formData.termInMonths].rate,
-        ),
-      }))
+      .filter((bank) => (bank.savingsRates as any)[formData.termInMonths])
+      .map((bank) => {
+        const rateData = (bank.savingsRates as any)[formData.termInMonths];
+        return {
+          id: bank.id,
+          name: bank.name,
+          rate: rateData.rate,
+          effectiveRate: calculateEffectiveRate(rateData.rate),
+        };
+      })
       .sort((a, b) => b.effectiveRate - a.effectiveRate);
     setBestRates(rates);
   }, [formData.termInMonths]);

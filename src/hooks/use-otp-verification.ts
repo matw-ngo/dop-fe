@@ -3,18 +3,20 @@
  * Manages OTP verification flow with Vietnamese telco support
  */
 
-import { useState, useCallback, useRef, useEffect } from 'react';
-import { toast } from 'sonner';
+import { useState, useCallback, useRef, useEffect } from "react";
+import { toast } from "sonner";
 
-import { otpApi } from '@/lib/api/endpoints/otp';
-import { useAuthStore } from '@/store/use-auth-store';
+import { otpApi } from "@/lib/api/endpoints/otp";
+import { useAuthStore } from "@/store/use-auth-store";
 
 import {
   getOTPSettings,
+  TELCO_ERROR_MESSAGES,
+} from "@/lib/telcos/vietnamese-telcos";
+import {
   getPhoneMetadata,
-  TELCO_ERROR_MESSAGES
-} from '@/lib/telcos/vietnamese-telcos';
-import { validateVietnamesePhone } from '@/lib/telcos/phone-validation';
+  validateVietnamesePhone,
+} from "@/lib/telcos/phone-validation";
 
 export interface OTPVerificationState {
   phoneNumber: string;
@@ -50,7 +52,7 @@ export interface UseOTPVerificationOptions {
 
 export const useOTPVerification = (options: UseOTPVerificationOptions = {}) => {
   const {
-    phoneNumber: initialPhoneNumber = '',
+    phoneNumber: initialPhoneNumber = "",
     onSuccess,
     onError,
     onSessionExpiry,
@@ -58,13 +60,13 @@ export const useOTPVerification = (options: UseOTPVerificationOptions = {}) => {
     autoRefresh = true,
     refreshInterval = 30,
     enableRetry = true,
-    maxRetries = 3
+    maxRetries = 3,
   } = options;
 
   // Core state
   const [state, setState] = useState<OTPVerificationState>({
     phoneNumber: initialPhoneNumber,
-    requestId: '',
+    requestId: "",
     isRequesting: false,
     isVerifying: false,
     isResending: false,
@@ -79,7 +81,7 @@ export const useOTPVerification = (options: UseOTPVerificationOptions = {}) => {
     error: null,
     success: false,
     telcoInfo: null,
-    otpSettings: null
+    otpSettings: null,
   });
 
   // Refs for tracking
@@ -93,13 +95,13 @@ export const useOTPVerification = (options: UseOTPVerificationOptions = {}) => {
       const metadata = getPhoneMetadata(state.phoneNumber);
       const settings = getOTPSettings(state.phoneNumber);
 
-      setState(prev => ({
+      setState((prev) => ({
         ...prev,
         telcoInfo: metadata,
         otpSettings: settings,
         maxAttempts: settings.maxAttempts,
         resendCooldown: settings.resendCooldown,
-        sessionExpiry: settings.otpExpiry
+        sessionExpiry: settings.otpExpiry,
       }));
     }
   }, [state.phoneNumber]);
@@ -109,11 +111,12 @@ export const useOTPVerification = (options: UseOTPVerificationOptions = {}) => {
     if (state.sessionExpiry > 0 && state.requestId && !state.success) {
       const checkExpiry = () => {
         const now = Date.now();
-        const requestTime = parseInt(state.requestId.substring(0, 8), 36) * 1000;
+        const requestTime =
+          parseInt(state.requestId.substring(0, 8), 36) * 1000;
         const elapsed = (now - requestTime) / 1000;
 
         if (elapsed >= state.sessionExpiry) {
-          setState(prev => ({ ...prev, isExpired: true }));
+          setState((prev) => ({ ...prev, isExpired: true }));
           onSessionExpiry?.();
           if (refreshTimerRef.current) {
             clearInterval(refreshTimerRef.current);
@@ -122,7 +125,10 @@ export const useOTPVerification = (options: UseOTPVerificationOptions = {}) => {
       };
 
       if (autoRefresh) {
-        refreshTimerRef.current = setInterval(checkExpiry, refreshInterval * 1000);
+        refreshTimerRef.current = setInterval(
+          checkExpiry,
+          refreshInterval * 1000,
+        );
       }
 
       return () => {
@@ -131,226 +137,276 @@ export const useOTPVerification = (options: UseOTPVerificationOptions = {}) => {
         }
       };
     }
-  }, [state.sessionExpiry, state.requestId, state.success, autoRefresh, refreshInterval, onSessionExpiry]);
+  }, [
+    state.sessionExpiry,
+    state.requestId,
+    state.success,
+    autoRefresh,
+    refreshInterval,
+    onSessionExpiry,
+  ]);
 
   // Request OTP
-  const requestOTP = useCallback(async (phoneNumber: string) => {
-    // Validate phone number
-    const validation = validateVietnamesePhone(phoneNumber);
-    if (!validation.isValid) {
-      const error = new Error(validation.error || TELCO_ERROR_MESSAGES.INVALID_PHONE);
-      setState(prev => ({ ...prev, error: error.message }));
-      onError?.(error);
-      return null;
-    }
+  const requestOTP = useCallback(
+    async (phoneNumber: string) => {
+      // Validate phone number
+      const validation = validateVietnamesePhone(phoneNumber);
+      if (!validation.isValid) {
+        const error = new Error(
+          validation.error || TELCO_ERROR_MESSAGES.INVALID_PHONE,
+        );
+        setState((prev) => ({ ...prev, error: error.message }));
+        onError?.(error);
+        return null;
+      }
 
-    setState(prev => ({ ...prev, isRequesting: true, error: null }));
+      setState((prev) => ({ ...prev, isRequesting: true, error: null }));
 
-    try {
-      abortControllerRef.current = new AbortController();
+      try {
+        abortControllerRef.current = new AbortController();
 
-      const response = await otpApi.requestOTP(phoneNumber, undefined);
+        const response = await otpApi.requestOTP(phoneNumber, undefined);
 
-      if (response.success && response.data) {
-        const requestId = response.data.requestId || crypto.randomUUID();
-        const expiryTime = new Date();
-        expiryTime.setSeconds(expiryTime.getSeconds() + (response.data.expiry || 300));
+        if (response.success && response.data) {
+          const requestId = response.data.requestId || crypto.randomUUID();
+          const expiryTime = new Date();
+          expiryTime.setSeconds(
+            expiryTime.getSeconds() + (response.data.expiry || 300),
+          );
 
-        setState(prev => ({
+          setState((prev) => ({
+            ...prev,
+            phoneNumber,
+            requestId,
+            isRequesting: false,
+            attempts: 0,
+            canResend: false,
+            resendCooldown: prev.otpSettings?.resendCooldown || 60,
+            sessionExpiry: response.data?.expiry || 300,
+            isExpired: false,
+            isLocked: false,
+            lockoutEnd: null,
+            error: null,
+          }));
+
+          // Start resend cooldown timer
+          startResendCooldown();
+
+          toast.success("Mã OTP đã được gửi đến số điện thoại của bạn", {
+            description: `Mã có hiệu lực trong ${Math.floor((response.data.expiry || 300) / 60)} phút`,
+          });
+
+          return requestId;
+        } else {
+          throw new Error(response.message || "Failed to request OTP");
+        }
+      } catch (error) {
+        const err =
+          error instanceof Error ? error : new Error("OTP request failed");
+        setState((prev) => ({
           ...prev,
-          phoneNumber,
-          requestId,
           isRequesting: false,
-          attempts: 0,
-          canResend: false,
-          resendCooldown: prev.otpSettings?.resendCooldown || 60,
-          sessionExpiry: response.data.expiry || 300,
-          isExpired: false,
-          isLocked: false,
-          lockoutEnd: null,
-          error: null
+          error: err.message,
         }));
+        onError?.(err);
 
-        // Start resend cooldown timer
-        startResendCooldown();
-
-        toast.success('Mã OTP đã được gửi đến số điện thoại của bạn', {
-          description: `Mã có hiệu lực trong ${Math.floor((response.data.expiry || 300) / 60)} phút`
+        toast.error("Yêu cầu OTP thất bại", {
+          description: err.message,
         });
 
-        return requestId;
-      } else {
-        throw new Error(response.message || 'Failed to request OTP');
+        return null;
       }
-    } catch (error) {
-      const err = error instanceof Error ? error : new Error('OTP request failed');
-      setState(prev => ({ ...prev, isRequesting: false, error: err.message }));
-      onError?.(err);
-
-      toast.error('Yêu cầu OTP thất bại', {
-        description: err.message
-      });
-
-      return null;
-    }
-  }, [onError]);
+    },
+    [onError],
+  );
 
   // Verify OTP
-  const verifyOTP = useCallback(async (otpCode: string) => {
-    if (!state.phoneNumber || !state.requestId) {
-      const error = new Error('No active OTP session');
-      setState(prev => ({ ...prev, error: error.message }));
-      onError?.(error);
-      return false;
-    }
-
-    if (state.isLocked) {
-      const error = new Error(TELCO_ERROR_MESSAGES.MAX_ATTEMPTS_EXCEEDED);
-      setState(prev => ({ ...prev, error: error.message }));
-      onError?.(error);
-      return false;
-    }
-
-    if (state.isExpired) {
-      const error = new Error(TELCO_ERROR_MESSAGES.OTP_EXPIRED);
-      setState(prev => ({ ...prev, error: error.message }));
-      onError?.(error);
-      return false;
-    }
-
-    setState(prev => ({ ...prev, isVerifying: true, error: null }));
-
-    try {
-      abortControllerRef.current = new AbortController();
-
-      const response = await otpApi.verifyOTP(state.phoneNumber, otpCode, state.requestId);
-
-      if (response.success && response.data?.verified) {
-        setState(prev => ({
-          ...prev,
-          isVerifying: false,
-          success: true,
-          error: null
-        }));
-
-        toast.success('Xác thực OTP thành công');
-
-        // Update user state in auth store if available
-        const { user } = useAuthStore.getState();
-        if (user && state.phoneNumber) {
-          useAuthStore.setState({
-            user: { ...user, phone: state.phoneNumber }
-          });
-        }
-
-        onSuccess?.(state.phoneNumber);
-        return true;
-      } else {
-        throw new Error(response.message || TELCO_ERROR_MESSAGES.INVALID_OTP);
-      }
-    } catch (error) {
-      const err = error instanceof Error ? error : new Error('OTP verification failed');
-
-      setState(prev => {
-        const newAttempts = prev.attempts + 1;
-        const isLocked = newAttempts >= prev.maxAttempts;
-        const lockoutEnd = isLocked ? new Date(Date.now() + 15 * 60 * 1000) : null;
-
-        if (isLocked) {
-          onLockout?.(lockoutEnd!);
-        }
-
-        return {
-          ...prev,
-          isVerifying: false,
-          attempts: newAttempts,
-          isLocked,
-          lockoutEnd,
-          error: err.message
-        };
-      });
-
-      onError?.(err);
-
-      const errorType = state.attempts + 1 >= state.maxAttempts ? 'lockout' : 'invalid';
-      toast.error(errorType === 'lockout' ? 'Tài khoản bị khóa tạm thời' : 'Mã OTP không chính xác', {
-        description: err.message
-      });
-
-      // Retry if enabled and within limits
-      if (enableRetry && retryCountRef.current < maxRetries && !state.isLocked) {
-        retryCountRef.current++;
-        setTimeout(() => {
-          // Auto retry logic could be implemented here
-        }, 2000);
+  const verifyOTP = useCallback(
+    async (otpCode: string) => {
+      if (!state.phoneNumber || !state.requestId) {
+        const error = new Error("No active OTP session");
+        setState((prev) => ({ ...prev, error: error.message }));
+        onError?.(error);
+        return false;
       }
 
-      return false;
-    }
-  }, [state, onSuccess, onError, onLockout, enableRetry, maxRetries]);
+      if (state.isLocked) {
+        const error = new Error(TELCO_ERROR_MESSAGES.MAX_ATTEMPTS_EXCEEDED);
+        setState((prev) => ({ ...prev, error: error.message }));
+        onError?.(error);
+        return false;
+      }
+
+      if (state.isExpired) {
+        const error = new Error(TELCO_ERROR_MESSAGES.OTP_EXPIRED);
+        setState((prev) => ({ ...prev, error: error.message }));
+        onError?.(error);
+        return false;
+      }
+
+      setState((prev) => ({ ...prev, isVerifying: true, error: null }));
+
+      try {
+        abortControllerRef.current = new AbortController();
+
+        const response = await otpApi.verifyOTP(
+          state.phoneNumber,
+          otpCode,
+          state.requestId,
+        );
+
+        if (response.success && response.data?.metadata?.verified) {
+          setState((prev) => ({
+            ...prev,
+            isVerifying: false,
+            success: true,
+            error: null,
+          }));
+
+          toast.success("Xác thực OTP thành công");
+
+          // Update user state in auth store if available
+          const { user } = useAuthStore.getState();
+          if (user && state.phoneNumber) {
+            useAuthStore.setState({
+              user: { ...user, phone: state.phoneNumber },
+            });
+          }
+
+          onSuccess?.(state.phoneNumber);
+          return true;
+        } else {
+          throw new Error(response.message || TELCO_ERROR_MESSAGES.INVALID_OTP);
+        }
+      } catch (error) {
+        const err =
+          error instanceof Error ? error : new Error("OTP verification failed");
+
+        setState((prev) => {
+          const newAttempts = prev.attempts + 1;
+          const isLocked = newAttempts >= prev.maxAttempts;
+          const lockoutEnd = isLocked
+            ? new Date(Date.now() + 15 * 60 * 1000)
+            : null;
+
+          if (isLocked) {
+            onLockout?.(lockoutEnd!);
+          }
+
+          return {
+            ...prev,
+            isVerifying: false,
+            attempts: newAttempts,
+            isLocked,
+            lockoutEnd,
+            error: err.message,
+          };
+        });
+
+        onError?.(err);
+
+        const errorType =
+          state.attempts + 1 >= state.maxAttempts ? "lockout" : "invalid";
+        toast.error(
+          errorType === "lockout"
+            ? "Tài khoản bị khóa tạm thời"
+            : "Mã OTP không chính xác",
+          {
+            description: err.message,
+          },
+        );
+
+        // Retry if enabled and within limits
+        if (
+          enableRetry &&
+          retryCountRef.current < maxRetries &&
+          !state.isLocked
+        ) {
+          retryCountRef.current++;
+          setTimeout(() => {
+            // Auto retry logic could be implemented here
+          }, 2000);
+        }
+
+        return false;
+      }
+    },
+    [state, onSuccess, onError, onLockout, enableRetry, maxRetries],
+  );
 
   // Resend OTP
   const resendOTP = useCallback(async () => {
     if (!state.phoneNumber) {
-      const error = new Error('No phone number available');
-      setState(prev => ({ ...prev, error: error.message }));
+      const error = new Error("No phone number available");
+      setState((prev) => ({ ...prev, error: error.message }));
       onError?.(error);
       return;
     }
 
     if (!state.canResend || state.resendCooldown > 0) {
-      const error = new Error(TELCO_ERROR_MESSAGES.RESEND_COOLDOWN.replace('{{seconds}}', state.resendCooldown.toString()));
-      setState(prev => ({ ...prev, error: error.message }));
+      const error = new Error(
+        TELCO_ERROR_MESSAGES.RESEND_COOLDOWN.replace(
+          "{{seconds}}",
+          state.resendCooldown.toString(),
+        ),
+      );
+      setState((prev) => ({ ...prev, error: error.message }));
       onError?.(error);
       return;
     }
 
     if (state.isLocked) {
       const error = new Error(TELCO_ERROR_MESSAGES.MAX_ATTEMPTS_EXCEEDED);
-      setState(prev => ({ ...prev, error: error.message }));
+      setState((prev) => ({ ...prev, error: error.message }));
       onError?.(error);
       return;
     }
 
-    setState(prev => ({ ...prev, isResending: true, error: null }));
+    setState((prev) => ({ ...prev, isResending: true, error: null }));
 
     try {
       abortControllerRef.current = new AbortController();
 
-      const response = await otpApi.resendOTP(state.phoneNumber, state.requestId);
+      const response = await otpApi.resendOTP(
+        state.phoneNumber,
+        state.requestId,
+      );
 
       if (response.success && response.data) {
         const newRequestId = response.data.requestId || crypto.randomUUID();
         const expiryTime = new Date();
-        expiryTime.setSeconds(expiryTime.getSeconds() + (response.data.expiry || 300));
+        expiryTime.setSeconds(
+          expiryTime.getSeconds() + (response.data.expiry || 300),
+        );
 
-        setState(prev => ({
+        setState((prev) => ({
           ...prev,
           requestId: newRequestId,
           isResending: false,
           canResend: false,
           resendCooldown: prev.otpSettings?.resendCooldown || 90,
-          sessionExpiry: response.data.expiry || 300,
+          sessionExpiry: response.data?.expiry || 300,
           isExpired: false,
-          error: null
+          error: null,
         }));
 
         // Start resend cooldown timer
         startResendCooldown();
 
-        toast.success('Mã OTP đã được gửi lại', {
-          description: `Mã có hiệu lực trong ${Math.floor((response.data.expiry || 300) / 60)} phút`
+        toast.success("Mã OTP đã được gửi lại", {
+          description: `Mã có hiệu lực trong ${Math.floor((response.data.expiry || 300) / 60)} phút`,
         });
       } else {
-        throw new Error(response.message || 'Failed to resend OTP');
+        throw new Error(response.message || "Failed to resend OTP");
       }
     } catch (error) {
-      const err = error instanceof Error ? error : new Error('OTP resend failed');
-      setState(prev => ({ ...prev, isResending: false, error: err.message }));
+      const err =
+        error instanceof Error ? error : new Error("OTP resend failed");
+      setState((prev) => ({ ...prev, isResending: false, error: err.message }));
       onError?.(err);
 
-      toast.error('Gửi lại OTP thất bại', {
-        description: err.message
+      toast.error("Gửi lại OTP thất bại", {
+        description: err.message,
       });
     }
   }, [state, onError]);
@@ -362,11 +418,11 @@ export const useOTPVerification = (options: UseOTPVerificationOptions = {}) => {
 
     const cooldownTimer = setInterval(() => {
       remaining--;
-      setState(prev => ({ ...prev, resendCooldown: remaining }));
+      setState((prev) => ({ ...prev, resendCooldown: remaining }));
 
       if (remaining <= 0) {
         clearInterval(cooldownTimer);
-        setState(prev => ({ ...prev, canResend: true }));
+        setState((prev) => ({ ...prev, canResend: true }));
       }
     }, 1000);
 
@@ -383,16 +439,16 @@ export const useOTPVerification = (options: UseOTPVerificationOptions = {}) => {
       if (response.success && response.data) {
         const status = response.data.status;
 
-        setState(prev => ({
+        setState((prev) => ({
           ...prev,
-          isExpired: status === 'expired',
-          success: status === 'verified'
+          isExpired: status === "expired",
+          success: status === "verified",
         }));
 
         return response.data;
       }
     } catch (error) {
-      console.warn('Failed to check OTP status:', error);
+      console.warn("Failed to check OTP status:", error);
     }
 
     return null;
@@ -407,9 +463,9 @@ export const useOTPVerification = (options: UseOTPVerificationOptions = {}) => {
       clearInterval(refreshTimerRef.current);
     }
 
-    setState(prev => ({
+    setState((prev) => ({
       ...prev,
-      requestId: '',
+      requestId: "",
       isRequesting: false,
       isVerifying: false,
       isResending: false,
@@ -421,7 +477,7 @@ export const useOTPVerification = (options: UseOTPVerificationOptions = {}) => {
       isLocked: false,
       lockoutEnd: null,
       error: null,
-      success: false
+      success: false,
     }));
 
     retryCountRef.current = 0;
@@ -452,7 +508,11 @@ export const useOTPVerification = (options: UseOTPVerificationOptions = {}) => {
 
     // Computed values
     isActive: !!state.requestId && !state.success && !state.isExpired,
-    canVerify: !!state.phoneNumber && !!state.requestId && !state.isExpired && !state.isLocked,
+    canVerify:
+      !!state.phoneNumber &&
+      !!state.requestId &&
+      !state.isExpired &&
+      !state.isLocked,
     isLoading: state.isRequesting || state.isVerifying || state.isResending,
     hasError: !!state.error,
 
@@ -466,8 +526,11 @@ export const useOTPVerification = (options: UseOTPVerificationOptions = {}) => {
 
     getLockoutRemainingTime: () => {
       if (!state.lockoutEnd) return 0;
-      return Math.max(0, Math.floor((state.lockoutEnd.getTime() - Date.now()) / 1000));
-    }
+      return Math.max(
+        0,
+        Math.floor((state.lockoutEnd.getTime() - Date.now()) / 1000),
+      );
+    },
   };
 };
 

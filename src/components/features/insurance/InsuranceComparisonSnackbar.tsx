@@ -120,7 +120,7 @@ export default function InsuranceComparisonSnackbar({
               <DropdownMenuContent align="end" className="w-80">
                 <div className="p-2">
                   <div className="space-y-1">
-                    {getProductNames().map((name, index) => {
+                    {getProductNames().map((name: string, index: number) => {
                       const productId = comparisonProducts[index];
                       return (
                         <div
@@ -189,7 +189,7 @@ export default function InsuranceComparisonSnackbar({
             <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground">
               {getProductNames()
                 .slice(0, 3)
-                .map((name, index) => (
+                .map((name: string, index: number) => (
                   <span key={index} className="truncate max-w-[150px]">
                     {index > 0 && "• "}
                     {name}

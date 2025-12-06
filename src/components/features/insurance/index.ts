@@ -8,7 +8,7 @@ export { default as InsuranceSearchBar } from "./InsuranceSearchBar";
 export { default as InsurancePagination } from "./InsurancePagination";
 export { InsuranceDetails } from "./InsuranceDetails";
 export { default as RelatedProducts } from "./RelatedProducts";
-export type { SearchBarProps } from "./InsuranceSearchBar";
+export type { InsuranceSearchBarProps as SearchBarProps } from "./InsuranceSearchBar";
 
 // Sub-components
 export {

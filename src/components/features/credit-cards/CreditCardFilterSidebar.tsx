@@ -17,11 +17,12 @@ interface CreditCardFilterSidebarProps {
   filters: CreditCardFilters;
   onFiltersChange: (filters: Partial<CreditCardFilters>) => void;
   className?: string;
+  trigger?: React.ReactNode;
 }
 
 export const CreditCardFilterSidebar: React.FC<
   CreditCardFilterSidebarProps
-> = ({ filters, onFiltersChange, className }) => {
+> = ({ filters, onFiltersChange, className, trigger }) => {
   const t = useTranslations("pages.creditCard");
   const [isOpen, setIsOpen] = useState(false);
 
@@ -66,15 +67,17 @@ export const CreditCardFilterSidebar: React.FC<
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
-        <Button variant="outline" className={className}>
-          <Filter className="w-4 h-4 mr-2" />
-          {t("filters")}
-          {getActiveFiltersCount() > 0 && (
-            <span className="ml-2 px-2 py-0.5 text-xs bg-primary text-primary-foreground rounded-full">
-              {getActiveFiltersCount()}
-            </span>
-          )}
-        </Button>
+        {trigger || (
+          <Button variant="outline" className={className}>
+            <Filter className="w-4 h-4 mr-2" />
+            {t("filters")}
+            {getActiveFiltersCount() > 0 && (
+              <span className="ml-2 px-2 py-0.5 text-xs bg-primary text-primary-foreground rounded-full">
+                {getActiveFiltersCount()}
+              </span>
+            )}
+          </Button>
+        )}
       </SheetTrigger>
       <SheetContent side="left" className="w-full sm:w-96 overflow-y-auto">
         <SheetHeader>

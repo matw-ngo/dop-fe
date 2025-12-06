@@ -45,6 +45,7 @@ export const mockCreditCards: CreditCard[] = [
     bank: "Sacombank",
     annualFee: "1.500.000 VND",
     interestRate: "21.9%",
+    features: [],
   },
   {
     id: "5",
@@ -52,6 +53,7 @@ export const mockCreditCards: CreditCard[] = [
     bank: "MB Bank",
     annualFee: "Free",
     interestRate: "18.5%",
+    features: [],
   },
   {
     id: "6",
@@ -59,6 +61,7 @@ export const mockCreditCards: CreditCard[] = [
     bank: "Asia Commercial Bank",
     annualFee: "300.000 VND",
     interestRate: "17.6%",
+    features: [],
   },
 ];
 

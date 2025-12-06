@@ -301,8 +301,8 @@ export interface InsuranceProduct {
   // SEO & Analytics
   metaTitle?: string;
   metaDescription?: string;
-  lastUpdated: Date;
-  publishedAt: Date;
+  lastUpdated: Date | string;
+  publishedAt: Date | string;
 
   // Partner Information
   partner?: {

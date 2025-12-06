@@ -472,163 +472,175 @@ export default function RegulationContent() {
                           <CollapsibleContent>
                             <div className="px-4 pb-4">
                               {/* Content sections based on regulation type */}
-                              {item.content.highlights && (
-                                <div className="mb-6">
-                                  <h4 className="font-semibold text-base mb-3 flex items-center gap-2">
-                                    <Info className="h-4 w-4" />
-                                    {t("regulations.highlights")}
-                                  </h4>
-                                  <ul className="space-y-2">
-                                    {item.content.highlights.map(
-                                      (highlight: string, index: number) => (
-                                        <li
-                                          key={index}
-                                          className="flex items-start gap-3"
-                                        >
-                                          <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0" />
-                                          <span className="text-sm text-gray-700">
-                                            {highlight}
-                                          </span>
-                                        </li>
-                                      ),
-                                    )}
-                                  </ul>
-                                </div>
-                              )}
+                              {"highlights" in item.content &&
+                                item.content.highlights && (
+                                  <div className="mb-6">
+                                    <h4 className="font-semibold text-base mb-3 flex items-center gap-2">
+                                      <Info className="h-4 w-4" />
+                                      {t("regulations.highlights")}
+                                    </h4>
+                                    <ul className="space-y-2">
+                                      {(item.content as any).highlights.map(
+                                        (highlight: string, index: number) => (
+                                          <li
+                                            key={index}
+                                            className="flex items-start gap-3"
+                                          >
+                                            <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0" />
+                                            <span className="text-sm text-gray-700">
+                                              {highlight}
+                                            </span>
+                                          </li>
+                                        ),
+                                      )}
+                                    </ul>
+                                  </div>
+                                )}
 
-                              {item.content.feeTable && (
-                                <div className="mb-6">
-                                  <h4 className="font-semibold text-base mb-3">
-                                    {t("regulations.feeTable")}
-                                  </h4>
-                                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                                    <div>
-                                      <h5 className="font-medium text-sm mb-2">
-                                        Ô tô
-                                      </h5>
-                                      <Table>
-                                        <TableHeader>
-                                          <TableRow>
-                                            <TableHead className="w-[60%]">
-                                              Loại xe
-                                            </TableHead>
-                                            <TableHead>Phí</TableHead>
-                                          </TableRow>
-                                        </TableHeader>
-                                        <TableBody>
-                                          {item.content.feeTable.cars.map(
-                                            (fee: any, index: number) => (
-                                              <TableRow key={index}>
-                                                <TableCell className="text-sm">
-                                                  {fee.type}
-                                                </TableCell>
-                                                <TableCell className="text-sm font-medium">
-                                                  {fee.fee}
-                                                </TableCell>
-                                              </TableRow>
-                                            ),
-                                          )}
-                                        </TableBody>
-                                      </Table>
-                                    </div>
-                                    <div>
-                                      <h5 className="font-medium text-sm mb-2">
-                                        Xe máy
-                                      </h5>
-                                      <Table>
-                                        <TableHeader>
-                                          <TableRow>
-                                            <TableHead className="w-[60%]">
-                                              Loại xe
-                                            </TableHead>
-                                            <TableHead>Phí</TableHead>
-                                          </TableRow>
-                                        </TableHeader>
-                                        <TableBody>
-                                          {item.content.feeTable.motorcycles.map(
-                                            (fee: any, index: number) => (
-                                              <TableRow key={index}>
-                                                <TableCell className="text-sm">
-                                                  {fee.type}
-                                                </TableCell>
-                                                <TableCell className="text-sm font-medium">
-                                                  {fee.fee}
-                                                </TableCell>
-                                              </TableRow>
-                                            ),
-                                          )}
-                                        </TableBody>
-                                      </Table>
+                              {"feeTable" in item.content &&
+                                item.content.feeTable && (
+                                  <div className="mb-6">
+                                    <h4 className="font-semibold text-base mb-3">
+                                      {t("regulations.feeTable")}
+                                    </h4>
+                                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                                      <div>
+                                        <h5 className="font-medium text-sm mb-2">
+                                          Ô tô
+                                        </h5>
+                                        <Table>
+                                          <TableHeader>
+                                            <TableRow>
+                                              <TableHead className="w-[60%]">
+                                                Loại xe
+                                              </TableHead>
+                                              <TableHead>Phí</TableHead>
+                                            </TableRow>
+                                          </TableHeader>
+                                          <TableBody>
+                                            {(
+                                              item.content as any
+                                            ).feeTable.cars.map(
+                                              (fee: any, index: number) => (
+                                                <TableRow key={index}>
+                                                  <TableCell className="text-sm">
+                                                    {fee.type}
+                                                  </TableCell>
+                                                  <TableCell className="text-sm font-medium">
+                                                    {fee.fee}
+                                                  </TableCell>
+                                                </TableRow>
+                                              ),
+                                            )}
+                                          </TableBody>
+                                        </Table>
+                                      </div>
+                                      <div>
+                                        <h5 className="font-medium text-sm mb-2">
+                                          Xe máy
+                                        </h5>
+                                        <Table>
+                                          <TableHeader>
+                                            <TableRow>
+                                              <TableHead className="w-[60%]">
+                                                Loại xe
+                                              </TableHead>
+                                              <TableHead>Phí</TableHead>
+                                            </TableRow>
+                                          </TableHeader>
+                                          <TableBody>
+                                            {(
+                                              item.content as any
+                                            ).feeTable.motorcycles.map(
+                                              (fee: any, index: number) => (
+                                                <TableRow key={index}>
+                                                  <TableCell className="text-sm">
+                                                    {fee.type}
+                                                  </TableCell>
+                                                  <TableCell className="text-sm font-medium">
+                                                    {fee.fee}
+                                                  </TableCell>
+                                                </TableRow>
+                                              ),
+                                            )}
+                                          </TableBody>
+                                        </Table>
+                                      </div>
                                     </div>
                                   </div>
-                                </div>
-                              )}
+                                )}
 
-                              {item.content.process && (
-                                <div className="mb-6">
-                                  <h4 className="font-semibold text-base mb-3 flex items-center gap-2">
-                                    <FileText className="h-4 w-4" />
-                                    {t("regulations.process")}
-                                  </h4>
-                                  <div className="space-y-4">
-                                    {item.content.process.map(
-                                      (step: any, index: number) => (
-                                        <div key={index} className="flex gap-4">
-                                          <div className="flex-shrink-0 w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-semibold text-sm">
-                                            {step.step}
-                                          </div>
-                                          <div className="flex-1">
-                                            <h5 className="font-medium text-gray-900">
-                                              {step.title}
-                                            </h5>
-                                            <p className="text-sm text-gray-600 mt-1">
-                                              {step.description}
-                                            </p>
-                                            <div className="mt-2 flex items-center gap-4 text-xs text-gray-500">
-                                              <span>⏱️ {step.timeframe}</span>
-                                              {step.documents && (
-                                                <span>
-                                                  📄 {step.documents.join(", ")}
-                                                </span>
-                                              )}
+                              {"process" in item.content &&
+                                item.content.process && (
+                                  <div className="mb-6">
+                                    <h4 className="font-semibold text-base mb-3 flex items-center gap-2">
+                                      <FileText className="h-4 w-4" />
+                                      {t("regulations.process")}
+                                    </h4>
+                                    <div className="space-y-4">
+                                      {(item.content as any).process.map(
+                                        (step: any, index: number) => (
+                                          <div
+                                            key={index}
+                                            className="flex gap-4"
+                                          >
+                                            <div className="flex-shrink-0 w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-semibold text-sm">
+                                              {step.step}
+                                            </div>
+                                            <div className="flex-1">
+                                              <h5 className="font-medium text-gray-900">
+                                                {step.title}
+                                              </h5>
+                                              <p className="text-sm text-gray-600 mt-1">
+                                                {step.description}
+                                              </p>
+                                              <div className="mt-2 flex items-center gap-4 text-xs text-gray-500">
+                                                <span>⏱️ {step.timeframe}</span>
+                                                {step.documents && (
+                                                  <span>
+                                                    📄{" "}
+                                                    {step.documents.join(", ")}
+                                                  </span>
+                                                )}
+                                              </div>
                                             </div>
                                           </div>
-                                        </div>
-                                      ),
-                                    )}
+                                        ),
+                                      )}
+                                    </div>
                                   </div>
-                                </div>
-                              )}
+                                )}
 
-                              {item.content.violations && (
-                                <div className="mb-6">
-                                  <h4 className="font-semibold text-base mb-3">
-                                    {t("regulations.violations")}
-                                  </h4>
-                                  <div className="space-y-3">
-                                    {item.content.violations.map(
-                                      (violation: any, index: number) => (
-                                        <div
-                                          key={index}
-                                          className="border rounded-lg p-3"
-                                        >
-                                          <p className="text-sm font-medium text-gray-900 mb-1">
-                                            {violation.description}
-                                          </p>
-                                          <p className="text-sm text-red-600 font-medium">
-                                            {violation.penalty}
-                                          </p>
-                                          {violation.additional && (
-                                            <p className="text-xs text-gray-600 mt-1">
-                                              {violation.additional}
+                              {"violations" in item.content &&
+                                item.content.violations && (
+                                  <div className="mb-6">
+                                    <h4 className="font-semibold text-base mb-3">
+                                      {t("regulations.violations")}
+                                    </h4>
+                                    <div className="space-y-3">
+                                      {(item.content as any).violations.map(
+                                        (violation: any, index: number) => (
+                                          <div
+                                            key={index}
+                                            className="border rounded-lg p-3"
+                                          >
+                                            <p className="text-sm font-medium text-gray-900 mb-1">
+                                              {violation.description}
                                             </p>
-                                          )}
-                                        </div>
-                                      ),
-                                    )}
+                                            <p className="text-sm text-red-600 font-medium">
+                                              {violation.penalty}
+                                            </p>
+                                            {violation.additional && (
+                                              <p className="text-xs text-gray-600 mt-1">
+                                                {violation.additional}
+                                              </p>
+                                            )}
+                                          </div>
+                                        ),
+                                      )}
+                                    </div>
                                   </div>
-                                </div>
-                              )}
+                                )}
 
                               {/* Documents */}
                               {item.documents && item.documents.length > 0 && (

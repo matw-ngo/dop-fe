@@ -5,20 +5,39 @@
  * affordability analysis, and ROI calculations for the Vietnamese market.
  */
 
-import React, { useState, useEffect, useCallback } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Slider } from '@/components/ui/slider';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
-import { Progress } from '@/components/ui/progress';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Checkbox } from '@/components/ui/checkbox';
+import React, { useState, useEffect, useCallback } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Slider } from "@/components/ui/slider";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import { Progress } from "@/components/ui/progress";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Calculator,
   TrendingUp,
@@ -38,19 +57,25 @@ import {
   Briefcase,
   Scale,
   DollarSign,
-} from 'lucide-react';
+} from "lucide-react";
 
 // Import calculation functions
-import { calculateLoanDetails, analyzeAffordability } from '@/lib/financial/calculations';
-import { compareLoanOptions, assessLoanEligibility } from '@/lib/financial/loan-calculations';
-import { calculateFinancialHealthScore } from '@/lib/financial/calculations';
+import {
+  calculateLoanDetails,
+  analyzeAffordability,
+} from "@/lib/financial/calculations";
+import {
+  compareLoanOptions,
+  assessLoanEligibility,
+} from "@/lib/financial/loan-calculations";
+import { calculateFinancialHealthScore } from "@/lib/financial/calculations";
 import {
   getBestLoanRates,
   getBestSavingsRates,
-  VietnameseBank,
-} from '@/lib/financial-data/bank-rates';
-import { VIETNAMESE_LOAN_TYPES } from '@/lib/financial-data/vietnamese-financial-data';
-import { getMarketRiskAssessment } from '@/lib/financial-data/market-indicators';
+} from "@/lib/financial-data/bank-rates";
+import { VietnameseBank } from "@/lib/financial-data/vietnamese-financial-data";
+import { VIETNAMESE_LOAN_TYPES } from "@/lib/financial-data/vietnamese-financial-data";
+import { getMarketRiskAssessment } from "@/lib/financial-data/market-indicators";
 
 // Types
 interface LoanComparisonData {
@@ -93,53 +118,57 @@ interface ROIData {
   investmentAmount: number;
   expectedReturn: number;
   investmentPeriod: number;
-  riskLevel: 'low' | 'medium' | 'high';
+  riskLevel: "low" | "medium" | "high";
   inflationRate?: number;
 }
 
 const FinancialComparison: React.FC = () => {
-  const [activeTab, setActiveTab] = useState('loan-comparison');
+  const [activeTab, setActiveTab] = useState("loan-comparison");
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<string[]>([]);
 
   // Loan comparison state
-  const [loanComparisonData, setLoanComparisonData] = useState<LoanComparisonData>({
-    loan1: {
-      principal: 500000000,
-      annualRate: 9.5,
-      termInMonths: 120,
-      loanType: 'home',
-    },
-    loan2: {
-      principal: 500000000,
-      annualRate: 10.0,
-      termInMonths: 120,
-      loanType: 'home',
-    },
-  });
+  const [loanComparisonData, setLoanComparisonData] =
+    useState<LoanComparisonData>({
+      loan1: {
+        principal: 500000000,
+        annualRate: 9.5,
+        termInMonths: 120,
+        loanType: "home",
+      },
+      loan2: {
+        principal: 500000000,
+        annualRate: 10.0,
+        termInMonths: 120,
+        loanType: "home",
+      },
+    });
   const [loanComparisonResult, setLoanComparisonResult] = useState<any>(null);
 
   // Financial health state
-  const [financialHealthData, setFinancialHealthData] = useState<FinancialHealthData>({
-    monthlyIncome: 20000000,
-    monthlyExpenses: 12000000,
-    monthlyDebts: 3000000,
-    monthlySavings: 5000000,
-    creditScore: 700,
-    hasEmergencyFund: true,
-    hasInsurance: true,
-    investmentDiversity: 60,
-  });
+  const [financialHealthData, setFinancialHealthData] =
+    useState<FinancialHealthData>({
+      monthlyIncome: 20000000,
+      monthlyExpenses: 12000000,
+      monthlyDebts: 3000000,
+      monthlySavings: 5000000,
+      creditScore: 700,
+      hasEmergencyFund: true,
+      hasInsurance: true,
+      investmentDiversity: 60,
+    });
   const [healthScoreResult, setHealthScoreResult] = useState<any>(null);
 
   // Affordability state
-  const [affordabilityData, setAffordabilityData] = useState<AffordabilityData>({
-    loanAmount: 1000000000,
-    monthlyIncome: 25000000,
-    monthlyDebts: 5000000,
-    interestRate: 9.0,
-    termInMonths: 180,
-  });
+  const [affordabilityData, setAffordabilityData] = useState<AffordabilityData>(
+    {
+      loanAmount: 1000000000,
+      monthlyIncome: 25000000,
+      monthlyDebts: 5000000,
+      interestRate: 9.0,
+      termInMonths: 180,
+    },
+  );
   const [affordabilityResult, setAffordabilityResult] = useState<any>(null);
 
   // ROI state
@@ -147,7 +176,7 @@ const FinancialComparison: React.FC = () => {
     investmentAmount: 100000000,
     expectedReturn: 130000000,
     investmentPeriod: 12,
-    riskLevel: 'medium',
+    riskLevel: "medium",
     inflationRate: 3.89,
   });
   const [roiResult, setRoiResult] = useState<any>(null);
@@ -160,8 +189,8 @@ const FinancialComparison: React.FC = () => {
   useEffect(() => {
     const mockBanks = [
       {
-        id: 'vcb',
-        name: 'Vietcombank',
+        id: "vcb",
+        name: "Vietcombank",
         loanRates: {
           home: { minRate: 7.5, maxRate: 11.0 },
           auto: { minRate: 9.0, maxRate: 13.0 },
@@ -169,8 +198,8 @@ const FinancialComparison: React.FC = () => {
         },
       },
       {
-        id: 'tcb',
-        name: 'Techcombank',
+        id: "tcb",
+        name: "Techcombank",
         loanRates: {
           home: { minRate: 7.8, maxRate: 11.5 },
           auto: { minRate: 9.5, maxRate: 14.0 },
@@ -178,8 +207,8 @@ const FinancialComparison: React.FC = () => {
         },
       },
       {
-        id: 'acb',
-        name: 'ACB',
+        id: "acb",
+        name: "ACB",
         loanRates: {
           home: { minRate: 7.2, maxRate: 10.5 },
           auto: { minRate: 8.8, maxRate: 12.5 },
@@ -187,15 +216,18 @@ const FinancialComparison: React.FC = () => {
         },
       },
     ];
-    setBanks(mockBanks);
+    setBanks(mockBanks as any);
   }, []);
 
   // Format currency
   const formatCurrency = (amount: number | string): string => {
-    const num = typeof amount === 'string' ? parseFloat(amount.replace(/[^\d]/g, '')) : amount;
-    return new Intl.NumberFormat('vi-VN', {
-      style: 'currency',
-      currency: 'VND',
+    const num =
+      typeof amount === "string"
+        ? parseFloat(amount.replace(/[^\d]/g, ""))
+        : amount;
+    return new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(num);
@@ -212,7 +244,7 @@ const FinancialComparison: React.FC = () => {
         principal: loanComparisonData.loan1.principal,
         annualRate: loanComparisonData.loan1.annualRate,
         termInMonths: loanComparisonData.loan1.termInMonths,
-        rateType: 'reducing_balance',
+        rateType: "reducing_balance",
         hasInsurance: true,
         insuranceRate: 0.3,
         processingFee: 1.5,
@@ -223,7 +255,7 @@ const FinancialComparison: React.FC = () => {
         principal: loanComparisonData.loan2.principal,
         annualRate: loanComparisonData.loan2.annualRate,
         termInMonths: loanComparisonData.loan2.termInMonths,
-        rateType: 'reducing_balance',
+        rateType: "reducing_balance",
         hasInsurance: true,
         insuranceRate: 0.3,
         processingFee: 1.5,
@@ -232,11 +264,14 @@ const FinancialComparison: React.FC = () => {
 
       // Compare loans
       const comparison = compareLoanOptions(loan1Result, loan2Result);
-      setLoanComparisonResult({ loan1: loan1Result, loan2: loan2Result, comparison });
-
+      setLoanComparisonResult({
+        loan1: loan1Result,
+        loan2: loan2Result,
+        comparison,
+      });
     } catch (error) {
-      console.error('Comparison error:', error);
-      setErrors(['Đã xảy ra lỗi khi so sánh. Vui lòng thử lại.']);
+      console.error("Comparison error:", error);
+      setErrors(["Đã xảy ra lỗi khi so sánh. Vui lòng thử lại."]);
     } finally {
       setLoading(false);
     }
@@ -256,12 +291,12 @@ const FinancialComparison: React.FC = () => {
         financialHealthData.creditScore,
         financialHealthData.hasEmergencyFund,
         financialHealthData.hasInsurance,
-        financialHealthData.investmentDiversity
+        financialHealthData.investmentDiversity,
       );
       setHealthScoreResult(healthScore);
     } catch (error) {
-      console.error('Health score error:', error);
-      setErrors(['Đã xảy ra lỗi khi tính điểm sức khỏe tài chính.']);
+      console.error("Health score error:", error);
+      setErrors(["Đã xảy ra lỗi khi tính điểm sức khỏe tài chính."]);
     } finally {
       setLoading(false);
     }
@@ -278,12 +313,12 @@ const FinancialComparison: React.FC = () => {
         affordabilityData.monthlyDebts,
         affordabilityData.interestRate,
         affordabilityData.loanAmount,
-        affordabilityData.termInMonths
+        affordabilityData.termInMonths,
       );
       setAffordabilityResult(affordability);
     } catch (error) {
-      console.error('Affordability error:', error);
-      setErrors(['Đã xảy ra lỗi khi phân tích khả năng vay.']);
+      console.error("Affordability error:", error);
+      setErrors(["Đã xảy ra lỗi khi phân tích khả năng vay."]);
     } finally {
       setLoading(false);
     }
@@ -300,13 +335,18 @@ const FinancialComparison: React.FC = () => {
       const annualizedROI = roiPercentage * (12 / roiData.investmentPeriod);
 
       // Risk-adjusted ROI
-      const riskMultiplier = roiData.riskLevel === 'low' ? 1.0 :
-                           roiData.riskLevel === 'medium' ? 0.8 : 0.6;
+      const riskMultiplier =
+        roiData.riskLevel === "low"
+          ? 1.0
+          : roiData.riskLevel === "medium"
+            ? 0.8
+            : 0.6;
       const riskAdjustedROI = annualizedROI * riskMultiplier;
 
       // Inflation-adjusted ROI
       const realROI = roiData.inflationRate
-        ? ((1 + annualizedROI / 100) / (1 + roiData.inflationRate / 100) - 1) * 100
+        ? ((1 + annualizedROI / 100) / (1 + roiData.inflationRate / 100) - 1) *
+          100
         : annualizedROI;
 
       setRoiResult({
@@ -318,8 +358,8 @@ const FinancialComparison: React.FC = () => {
         riskMultiplier,
       });
     } catch (error) {
-      console.error('ROI calculation error:', error);
-      setErrors(['Đã xảy ra lỗi khi tính toán ROI.']);
+      console.error("ROI calculation error:", error);
+      setErrors(["Đã xảy ra lỗi khi tính toán ROI."]);
     } finally {
       setLoading(false);
     }
@@ -327,39 +367,61 @@ const FinancialComparison: React.FC = () => {
 
   // Auto-calculate when data changes
   useEffect(() => {
-    if (activeTab === 'loan-comparison') {
+    if (activeTab === "loan-comparison") {
       calculateLoanComparison();
-    } else if (activeTab === 'financial-health') {
+    } else if (activeTab === "financial-health") {
       calculateFinancialHealth();
-    } else if (activeTab === 'affordability') {
+    } else if (activeTab === "affordability") {
       calculateAffordability();
-    } else if (activeTab === 'roi-calculator') {
+    } else if (activeTab === "roi-calculator") {
       calculateROI();
     }
-  }, [activeTab, loanComparisonData, financialHealthData, affordabilityData, roiData]);
+  }, [
+    activeTab,
+    loanComparisonData,
+    financialHealthData,
+    affordabilityData,
+    roiData,
+  ]);
 
   return (
     <div className="max-w-7xl mx-auto p-6 space-y-6">
       <div className="text-center space-y-2">
-        <h1 className="text-3xl font-bold text-gray-900">Công cụ so sánh tài chính</h1>
-        <p className="text-gray-600">Phân tích và so sánh các sản phẩm tài chính cho thị trường Việt Nam</p>
+        <h1 className="text-3xl font-bold text-gray-900">
+          Công cụ so sánh tài chính
+        </h1>
+        <p className="text-gray-600">
+          Phân tích và so sánh các sản phẩm tài chính cho thị trường Việt Nam
+        </p>
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="loan-comparison" className="flex items-center gap-2">
+          <TabsTrigger
+            value="loan-comparison"
+            className="flex items-center gap-2"
+          >
             <BarChart3 className="w-4 h-4" />
             So sánh vay
           </TabsTrigger>
-          <TabsTrigger value="financial-health" className="flex items-center gap-2">
+          <TabsTrigger
+            value="financial-health"
+            className="flex items-center gap-2"
+          >
             <Heart className="w-4 h-4" />
             Sức khỏe tài chính
           </TabsTrigger>
-          <TabsTrigger value="affordability" className="flex items-center gap-2">
+          <TabsTrigger
+            value="affordability"
+            className="flex items-center gap-2"
+          >
             <Scale className="w-4 h-4" />
             Khả năng vay
           </TabsTrigger>
-          <TabsTrigger value="roi-calculator" className="flex items-center gap-2">
+          <TabsTrigger
+            value="roi-calculator"
+            className="flex items-center gap-2"
+          >
             <Target className="w-4 h-4" />
             ROI
           </TabsTrigger>
@@ -383,10 +445,11 @@ const FinancialComparison: React.FC = () => {
                     type="text"
                     value={formatCurrency(loanComparisonData.loan1.principal)}
                     onChange={(e) => {
-                      const value = parseFloat(e.target.value.replace(/[^\d]/g, '')) || 0;
-                      setLoanComparisonData(prev => ({
+                      const value =
+                        parseFloat(e.target.value.replace(/[^\d]/g, "")) || 0;
+                      setLoanComparisonData((prev) => ({
                         ...prev,
-                        loan1: { ...prev.loan1, principal: value }
+                        loan1: { ...prev.loan1, principal: value },
                       }));
                     }}
                   />
@@ -398,9 +461,12 @@ const FinancialComparison: React.FC = () => {
                     type="number"
                     value={loanComparisonData.loan1.annualRate}
                     onChange={(e) => {
-                      setLoanComparisonData(prev => ({
+                      setLoanComparisonData((prev) => ({
                         ...prev,
-                        loan1: { ...prev.loan1, annualRate: parseFloat(e.target.value) || 0 }
+                        loan1: {
+                          ...prev.loan1,
+                          annualRate: parseFloat(e.target.value) || 0,
+                        },
                       }));
                     }}
                   />
@@ -412,9 +478,12 @@ const FinancialComparison: React.FC = () => {
                     type="number"
                     value={loanComparisonData.loan1.termInMonths}
                     onChange={(e) => {
-                      setLoanComparisonData(prev => ({
+                      setLoanComparisonData((prev) => ({
                         ...prev,
-                        loan1: { ...prev.loan1, termInMonths: parseInt(e.target.value) || 0 }
+                        loan1: {
+                          ...prev.loan1,
+                          termInMonths: parseInt(e.target.value) || 0,
+                        },
                       }));
                     }}
                   />
@@ -425,9 +494,9 @@ const FinancialComparison: React.FC = () => {
                   <Select
                     value={loanComparisonData.loan1.loanType}
                     onValueChange={(value) => {
-                      setLoanComparisonData(prev => ({
+                      setLoanComparisonData((prev) => ({
                         ...prev,
-                        loan1: { ...prev.loan1, loanType: value }
+                        loan1: { ...prev.loan1, loanType: value },
                       }));
                     }}
                   >
@@ -460,10 +529,11 @@ const FinancialComparison: React.FC = () => {
                     type="text"
                     value={formatCurrency(loanComparisonData.loan2.principal)}
                     onChange={(e) => {
-                      const value = parseFloat(e.target.value.replace(/[^\d]/g, '')) || 0;
-                      setLoanComparisonData(prev => ({
+                      const value =
+                        parseFloat(e.target.value.replace(/[^\d]/g, "")) || 0;
+                      setLoanComparisonData((prev) => ({
                         ...prev,
-                        loan2: { ...prev.loan2, principal: value }
+                        loan2: { ...prev.loan2, principal: value },
                       }));
                     }}
                   />
@@ -475,9 +545,12 @@ const FinancialComparison: React.FC = () => {
                     type="number"
                     value={loanComparisonData.loan2.annualRate}
                     onChange={(e) => {
-                      setLoanComparisonData(prev => ({
+                      setLoanComparisonData((prev) => ({
                         ...prev,
-                        loan2: { ...prev.loan2, annualRate: parseFloat(e.target.value) || 0 }
+                        loan2: {
+                          ...prev.loan2,
+                          annualRate: parseFloat(e.target.value) || 0,
+                        },
                       }));
                     }}
                   />
@@ -489,9 +562,12 @@ const FinancialComparison: React.FC = () => {
                     type="number"
                     value={loanComparisonData.loan2.termInMonths}
                     onChange={(e) => {
-                      setLoanComparisonData(prev => ({
+                      setLoanComparisonData((prev) => ({
                         ...prev,
-                        loan2: { ...prev.loan2, termInMonths: parseInt(e.target.value) || 0 }
+                        loan2: {
+                          ...prev.loan2,
+                          termInMonths: parseInt(e.target.value) || 0,
+                        },
                       }));
                     }}
                   />
@@ -502,9 +578,9 @@ const FinancialComparison: React.FC = () => {
                   <Select
                     value={loanComparisonData.loan2.loanType}
                     onValueChange={(value) => {
-                      setLoanComparisonData(prev => ({
+                      setLoanComparisonData((prev) => ({
                         ...prev,
-                        loan2: { ...prev.loan2, loanType: value }
+                        loan2: { ...prev.loan2, loanType: value },
                       }));
                     }}
                   >
@@ -533,27 +609,43 @@ const FinancialComparison: React.FC = () => {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div className="text-center">
                     <div className="text-2xl font-bold text-blue-600">
-                      {formatCurrency(loanComparisonResult.loan1.monthlyPayment)}
+                      {formatCurrency(
+                        loanComparisonResult.loan1.monthlyPayment,
+                      )}
                     </div>
-                    <div className="text-sm text-gray-600">Khoản vay 1 - Trả hàng tháng</div>
+                    <div className="text-sm text-gray-600">
+                      Khoản vay 1 - Trả hàng tháng
+                    </div>
                   </div>
 
                   <div className="text-center">
                     <div className="text-2xl font-bold text-green-600">
-                      {formatCurrency(loanComparisonResult.loan2.monthlyPayment)}
+                      {formatCurrency(
+                        loanComparisonResult.loan2.monthlyPayment,
+                      )}
                     </div>
-                    <div className="text-sm text-gray-600">Khoản vay 2 - Trả hàng tháng</div>
+                    <div className="text-sm text-gray-600">
+                      Khoản vay 2 - Trả hàng tháng
+                    </div>
                   </div>
 
                   <div className="text-center">
-                    <div className={`text-2xl font-bold ${
-                      loanComparisonResult.comparison.cheaperMonthlyPayment === 'loan1'
-                        ? 'text-blue-600'
-                        : 'text-green-600'
-                    }`}>
-                      {formatCurrency(loanComparisonResult.comparison.savings.monthlyPaymentDifference)}
+                    <div
+                      className={`text-2xl font-bold ${
+                        loanComparisonResult.comparison
+                          .cheaperMonthlyPayment === "loan1"
+                          ? "text-blue-600"
+                          : "text-green-600"
+                      }`}
+                    >
+                      {formatCurrency(
+                        loanComparisonResult.comparison.savings
+                          .monthlyPaymentDifference,
+                      )}
                     </div>
-                    <div className="text-sm text-gray-600">Chênh lệch hàng tháng</div>
+                    <div className="text-sm text-gray-600">
+                      Chênh lệch hàng tháng
+                    </div>
                   </div>
                 </div>
 
@@ -562,19 +654,31 @@ const FinancialComparison: React.FC = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <Card className="bg-blue-50">
                     <CardContent className="p-4">
-                      <h3 className="font-medium mb-3">Khoản vay 1 - Chi tiết</h3>
+                      <h3 className="font-medium mb-3">
+                        Khoản vay 1 - Chi tiết
+                      </h3>
                       <div className="space-y-2 text-sm">
                         <div className="flex justify-between">
                           <span>Tổng thanh toán:</span>
-                          <span>{formatCurrency(loanComparisonResult.loan1.totalPayment)}</span>
+                          <span>
+                            {formatCurrency(
+                              loanComparisonResult.loan1.totalPayment,
+                            )}
+                          </span>
                         </div>
                         <div className="flex justify-between">
                           <span>Tổng lãi suất:</span>
-                          <span>{formatCurrency(loanComparisonResult.loan1.totalInterest)}</span>
+                          <span>
+                            {formatCurrency(
+                              loanComparisonResult.loan1.totalInterest,
+                            )}
+                          </span>
                         </div>
                         <div className="flex justify-between">
                           <span>APR:</span>
-                          <span>{loanComparisonResult.loan1.apr.toFixed(2)}%</span>
+                          <span>
+                            {loanComparisonResult.loan1.apr.toFixed(2)}%
+                          </span>
                         </div>
                       </div>
                     </CardContent>
@@ -582,19 +686,31 @@ const FinancialComparison: React.FC = () => {
 
                   <Card className="bg-green-50">
                     <CardContent className="p-4">
-                      <h3 className="font-medium mb-3">Khoản vay 2 - Chi tiết</h3>
+                      <h3 className="font-medium mb-3">
+                        Khoản vay 2 - Chi tiết
+                      </h3>
                       <div className="space-y-2 text-sm">
                         <div className="flex justify-between">
                           <span>Tổng thanh toán:</span>
-                          <span>{formatCurrency(loanComparisonResult.loan2.totalPayment)}</span>
+                          <span>
+                            {formatCurrency(
+                              loanComparisonResult.loan2.totalPayment,
+                            )}
+                          </span>
                         </div>
                         <div className="flex justify-between">
                           <span>Tổng lãi suất:</span>
-                          <span>{formatCurrency(loanComparisonResult.loan2.totalInterest)}</span>
+                          <span>
+                            {formatCurrency(
+                              loanComparisonResult.loan2.totalInterest,
+                            )}
+                          </span>
                         </div>
                         <div className="flex justify-between">
                           <span>APR:</span>
-                          <span>{loanComparisonResult.loan2.apr.toFixed(2)}%</span>
+                          <span>
+                            {loanComparisonResult.loan2.apr.toFixed(2)}%
+                          </span>
                         </div>
                       </div>
                     </CardContent>
@@ -603,10 +719,16 @@ const FinancialComparison: React.FC = () => {
 
                 <div className="mt-6 p-4 bg-gray-50 rounded-lg">
                   <h3 className="font-medium mb-2">Khuyến nghị</h3>
-                  <p className="text-sm text-gray-600">{loanComparisonResult.comparison.recommendation}</p>
-                  {loanComparisonResult.comparison.reasoning.map((reason: string, index: number) => (
-                    <div key={index} className="text-sm text-gray-600 mt-1">• {reason}</div>
-                  ))}
+                  <p className="text-sm text-gray-600">
+                    {loanComparisonResult.comparison.recommendation}
+                  </p>
+                  {loanComparisonResult.comparison.reasoning.map(
+                    (reason: string, index: number) => (
+                      <div key={index} className="text-sm text-gray-600 mt-1">
+                        • {reason}
+                      </div>
+                    ),
+                  )}
                 </div>
               </CardContent>
             </Card>
@@ -627,8 +749,12 @@ const FinancialComparison: React.FC = () => {
                     type="text"
                     value={formatCurrency(financialHealthData.monthlyIncome)}
                     onChange={(e) => {
-                      const value = parseFloat(e.target.value.replace(/[^\d]/g, '')) || 0;
-                      setFinancialHealthData(prev => ({ ...prev, monthlyIncome: value }));
+                      const value =
+                        parseFloat(e.target.value.replace(/[^\d]/g, "")) || 0;
+                      setFinancialHealthData((prev) => ({
+                        ...prev,
+                        monthlyIncome: value,
+                      }));
                     }}
                   />
                 </div>
@@ -639,8 +765,12 @@ const FinancialComparison: React.FC = () => {
                     type="text"
                     value={formatCurrency(financialHealthData.monthlyExpenses)}
                     onChange={(e) => {
-                      const value = parseFloat(e.target.value.replace(/[^\d]/g, '')) || 0;
-                      setFinancialHealthData(prev => ({ ...prev, monthlyExpenses: value }));
+                      const value =
+                        parseFloat(e.target.value.replace(/[^\d]/g, "")) || 0;
+                      setFinancialHealthData((prev) => ({
+                        ...prev,
+                        monthlyExpenses: value,
+                      }));
                     }}
                   />
                 </div>
@@ -651,8 +781,12 @@ const FinancialComparison: React.FC = () => {
                     type="text"
                     value={formatCurrency(financialHealthData.monthlyDebts)}
                     onChange={(e) => {
-                      const value = parseFloat(e.target.value.replace(/[^\d]/g, '')) || 0;
-                      setFinancialHealthData(prev => ({ ...prev, monthlyDebts: value }));
+                      const value =
+                        parseFloat(e.target.value.replace(/[^\d]/g, "")) || 0;
+                      setFinancialHealthData((prev) => ({
+                        ...prev,
+                        monthlyDebts: value,
+                      }));
                     }}
                   />
                 </div>
@@ -663,8 +797,12 @@ const FinancialComparison: React.FC = () => {
                     type="text"
                     value={formatCurrency(financialHealthData.monthlySavings)}
                     onChange={(e) => {
-                      const value = parseFloat(e.target.value.replace(/[^\d]/g, '')) || 0;
-                      setFinancialHealthData(prev => ({ ...prev, monthlySavings: value }));
+                      const value =
+                        parseFloat(e.target.value.replace(/[^\d]/g, "")) || 0;
+                      setFinancialHealthData((prev) => ({
+                        ...prev,
+                        monthlySavings: value,
+                      }));
                     }}
                   />
                 </div>
@@ -675,7 +813,10 @@ const FinancialComparison: React.FC = () => {
                     type="number"
                     value={financialHealthData.creditScore}
                     onChange={(e) => {
-                      setFinancialHealthData(prev => ({ ...prev, creditScore: parseInt(e.target.value) || 0 }));
+                      setFinancialHealthData((prev) => ({
+                        ...prev,
+                        creditScore: parseInt(e.target.value) || 0,
+                      }));
                     }}
                     min="300"
                     max="850"
@@ -686,7 +827,12 @@ const FinancialComparison: React.FC = () => {
                   <Label>Đa dạng hóa đầu tư (%)</Label>
                   <Slider
                     value={[financialHealthData.investmentDiversity]}
-                    onValueChange={([value]) => setFinancialHealthData(prev => ({ ...prev, investmentDiversity: value }))}
+                    onValueChange={([value]) =>
+                      setFinancialHealthData((prev) => ({
+                        ...prev,
+                        investmentDiversity: value,
+                      }))
+                    }
                     max={100}
                     min={0}
                     step={10}
@@ -699,7 +845,10 @@ const FinancialComparison: React.FC = () => {
                       id="emergency-fund"
                       checked={financialHealthData.hasEmergencyFund}
                       onCheckedChange={(checked) =>
-                        setFinancialHealthData(prev => ({ ...prev, hasEmergencyFund: checked as boolean }))
+                        setFinancialHealthData((prev) => ({
+                          ...prev,
+                          hasEmergencyFund: checked as boolean,
+                        }))
                       }
                     />
                     <Label htmlFor="emergency-fund">Có quỹ khẩn cấp</Label>
@@ -710,7 +859,10 @@ const FinancialComparison: React.FC = () => {
                       id="insurance"
                       checked={financialHealthData.hasInsurance}
                       onCheckedChange={(checked) =>
-                        setFinancialHealthData(prev => ({ ...prev, hasInsurance: checked as boolean }))
+                        setFinancialHealthData((prev) => ({
+                          ...prev,
+                          hasInsurance: checked as boolean,
+                        }))
                       }
                     />
                     <Label htmlFor="insurance">Có bảo hiểm</Label>
@@ -726,10 +878,15 @@ const FinancialComparison: React.FC = () => {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="text-center">
-                    <div className={`text-6xl font-bold ${
-                      healthScoreResult.overallScore >= 80 ? 'text-green-600' :
-                      healthScoreResult.overallScore >= 60 ? 'text-yellow-600' : 'text-red-600'
-                    }`}>
+                    <div
+                      className={`text-6xl font-bold ${
+                        healthScoreResult.overallScore >= 80
+                          ? "text-green-600"
+                          : healthScoreResult.overallScore >= 60
+                            ? "text-yellow-600"
+                            : "text-red-600"
+                      }`}
+                    >
                       {healthScoreResult.overallScore}
                     </div>
                     <div className="text-sm text-gray-600">/ 100 điểm</div>
@@ -741,7 +898,10 @@ const FinancialComparison: React.FC = () => {
                         <span>Điểm tín dụng</span>
                         <span>{healthScoreResult.creditScore}/850</span>
                       </div>
-                      <Progress value={(healthScoreResult.creditScore / 850) * 100} className="h-2" />
+                      <Progress
+                        value={(healthScoreResult.creditScore / 850) * 100}
+                        className="h-2"
+                      />
                     </div>
 
                     <div className="space-y-2">
@@ -749,7 +909,10 @@ const FinancialComparison: React.FC = () => {
                         <span>Ổn định thu nhập</span>
                         <span>{healthScoreResult.incomeStability}/100</span>
                       </div>
-                      <Progress value={healthScoreResult.incomeStability} className="h-2" />
+                      <Progress
+                        value={healthScoreResult.incomeStability}
+                        className="h-2"
+                      />
                     </div>
 
                     <div className="space-y-2">
@@ -757,7 +920,10 @@ const FinancialComparison: React.FC = () => {
                         <span>Quản lý nợ</span>
                         <span>{healthScoreResult.debtManagement}/100</span>
                       </div>
-                      <Progress value={healthScoreResult.debtManagement} className="h-2" />
+                      <Progress
+                        value={healthScoreResult.debtManagement}
+                        className="h-2"
+                      />
                     </div>
 
                     <div className="space-y-2">
@@ -765,7 +931,10 @@ const FinancialComparison: React.FC = () => {
                         <span>Tỷ lệ tiết kiệm</span>
                         <span>{healthScoreResult.savingsRate}/100</span>
                       </div>
-                      <Progress value={healthScoreResult.savingsRate} className="h-2" />
+                      <Progress
+                        value={healthScoreResult.savingsRate}
+                        className="h-2"
+                      />
                     </div>
 
                     <div className="space-y-2">
@@ -773,7 +942,10 @@ const FinancialComparison: React.FC = () => {
                         <span>Đa dạng đầu tư</span>
                         <span>{healthScoreResult.investmentDiversity}/100</span>
                       </div>
-                      <Progress value={healthScoreResult.investmentDiversity} className="h-2" />
+                      <Progress
+                        value={healthScoreResult.investmentDiversity}
+                        className="h-2"
+                      />
                     </div>
                   </div>
 
@@ -782,33 +954,51 @@ const FinancialComparison: React.FC = () => {
                   <div className="space-y-3">
                     {healthScoreResult.strengths.length > 0 && (
                       <div>
-                        <h4 className="font-medium text-green-600 mb-2">Điểm mạnh</h4>
+                        <h4 className="font-medium text-green-600 mb-2">
+                          Điểm mạnh
+                        </h4>
                         <ul className="text-sm space-y-1">
-                          {healthScoreResult.strengths.map((strength: string, index: number) => (
-                            <li key={index} className="text-green-600">✓ {strength}</li>
-                          ))}
+                          {healthScoreResult.strengths.map(
+                            (strength: string, index: number) => (
+                              <li key={index} className="text-green-600">
+                                ✓ {strength}
+                              </li>
+                            ),
+                          )}
                         </ul>
                       </div>
                     )}
 
                     {healthScoreResult.riskFactors.length > 0 && (
                       <div>
-                        <h4 className="font-medium text-red-600 mb-2">Yếu tố rủi ro</h4>
+                        <h4 className="font-medium text-red-600 mb-2">
+                          Yếu tố rủi ro
+                        </h4>
                         <ul className="text-sm space-y-1">
-                          {healthScoreResult.riskFactors.map((risk: string, index: number) => (
-                            <li key={index} className="text-red-600">⚠ {risk}</li>
-                          ))}
+                          {healthScoreResult.riskFactors.map(
+                            (risk: string, index: number) => (
+                              <li key={index} className="text-red-600">
+                                ⚠ {risk}
+                              </li>
+                            ),
+                          )}
                         </ul>
                       </div>
                     )}
 
                     {healthScoreResult.recommendations.length > 0 && (
                       <div>
-                        <h4 className="font-medium text-blue-600 mb-2">Khuyến nghị</h4>
+                        <h4 className="font-medium text-blue-600 mb-2">
+                          Khuyến nghị
+                        </h4>
                         <ul className="text-sm space-y-1">
-                          {healthScoreResult.recommendations.map((rec: string, index: number) => (
-                            <li key={index} className="text-blue-600">• {rec}</li>
-                          ))}
+                          {healthScoreResult.recommendations.map(
+                            (rec: string, index: number) => (
+                              <li key={index} className="text-blue-600">
+                                • {rec}
+                              </li>
+                            ),
+                          )}
                         </ul>
                       </div>
                     )}
@@ -833,8 +1023,12 @@ const FinancialComparison: React.FC = () => {
                     type="text"
                     value={formatCurrency(affordabilityData.loanAmount)}
                     onChange={(e) => {
-                      const value = parseFloat(e.target.value.replace(/[^\d]/g, '')) || 0;
-                      setAffordabilityData(prev => ({ ...prev, loanAmount: value }));
+                      const value =
+                        parseFloat(e.target.value.replace(/[^\d]/g, "")) || 0;
+                      setAffordabilityData((prev) => ({
+                        ...prev,
+                        loanAmount: value,
+                      }));
                     }}
                   />
                 </div>
@@ -845,8 +1039,12 @@ const FinancialComparison: React.FC = () => {
                     type="text"
                     value={formatCurrency(affordabilityData.monthlyIncome)}
                     onChange={(e) => {
-                      const value = parseFloat(e.target.value.replace(/[^\d]/g, '')) || 0;
-                      setAffordabilityData(prev => ({ ...prev, monthlyIncome: value }));
+                      const value =
+                        parseFloat(e.target.value.replace(/[^\d]/g, "")) || 0;
+                      setAffordabilityData((prev) => ({
+                        ...prev,
+                        monthlyIncome: value,
+                      }));
                     }}
                   />
                 </div>
@@ -857,8 +1055,12 @@ const FinancialComparison: React.FC = () => {
                     type="text"
                     value={formatCurrency(affordabilityData.monthlyDebts)}
                     onChange={(e) => {
-                      const value = parseFloat(e.target.value.replace(/[^\d]/g, '')) || 0;
-                      setAffordabilityData(prev => ({ ...prev, monthlyDebts: value }));
+                      const value =
+                        parseFloat(e.target.value.replace(/[^\d]/g, "")) || 0;
+                      setAffordabilityData((prev) => ({
+                        ...prev,
+                        monthlyDebts: value,
+                      }));
                     }}
                   />
                 </div>
@@ -869,7 +1071,10 @@ const FinancialComparison: React.FC = () => {
                     type="number"
                     value={affordabilityData.interestRate}
                     onChange={(e) => {
-                      setAffordabilityData(prev => ({ ...prev, interestRate: parseFloat(e.target.value) || 0 }));
+                      setAffordabilityData((prev) => ({
+                        ...prev,
+                        interestRate: parseFloat(e.target.value) || 0,
+                      }));
                     }}
                   />
                 </div>
@@ -880,7 +1085,10 @@ const FinancialComparison: React.FC = () => {
                     type="number"
                     value={affordabilityData.termInMonths}
                     onChange={(e) => {
-                      setAffordabilityData(prev => ({ ...prev, termInMonths: parseInt(e.target.value) || 0 }));
+                      setAffordabilityData((prev) => ({
+                        ...prev,
+                        termInMonths: parseInt(e.target.value) || 0,
+                      }));
                     }}
                   />
                 </div>
@@ -895,35 +1103,62 @@ const FinancialComparison: React.FC = () => {
                 <CardContent className="space-y-4">
                   <div className="text-center">
                     <Badge
-                      variant={affordabilityResult.riskLevel === 'low' ? 'default' :
-                               affordabilityResult.riskLevel === 'medium' ? 'secondary' : 'destructive'}
+                      variant={
+                        affordabilityResult.riskLevel === "low"
+                          ? "default"
+                          : affordabilityResult.riskLevel === "medium"
+                            ? "secondary"
+                            : "destructive"
+                      }
                       className="text-lg px-4 py-2"
                     >
-                      {affordabilityResult.riskLevel === 'low' ? 'An toàn' :
-                       affordabilityResult.riskLevel === 'medium' ? 'Cần cân nhắc' : 'Rủi ro cao'}
+                      {affordabilityResult.riskLevel === "low"
+                        ? "An toàn"
+                        : affordabilityResult.riskLevel === "medium"
+                          ? "Cần cân nhắc"
+                          : "Rủi ro cao"}
                     </Badge>
                   </div>
 
                   <div className="space-y-3">
                     <div className="flex justify-between">
                       <span className="text-gray-600">Điểm khả năng vay:</span>
-                      <span className="font-medium">{affordabilityResult.affordabilityScore}/100</span>
+                      <span className="font-medium">
+                        {affordabilityResult.affordabilityScore}/100
+                      </span>
                     </div>
-                    <Progress value={affordabilityResult.affordabilityScore} className="h-2" />
+                    <Progress
+                      value={affordabilityResult.affordabilityScore}
+                      className="h-2"
+                    />
                   </div>
 
                   <div className="space-y-3">
                     <div className="flex justify-between">
-                      <span className="text-gray-600">Khoản thanh toán hàng tháng:</span>
-                      <span className="font-medium">{formatCurrency(affordabilityResult.maxMonthlyPayment)}</span>
+                      <span className="text-gray-600">
+                        Khoản thanh toán hàng tháng:
+                      </span>
+                      <span className="font-medium">
+                        {formatCurrency(affordabilityResult.maxMonthlyPayment)}
+                      </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600">Tỷ lệ nợ trên thu nhập:</span>
-                      <span className="font-medium">{affordabilityResult.debtToIncomeRatio.toFixed(1)}%</span>
+                      <span className="text-gray-600">
+                        Tỷ lệ nợ trên thu nhập:
+                      </span>
+                      <span className="font-medium">
+                        {affordabilityResult.debtToIncomeRatio.toFixed(1)}%
+                      </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600">Số tiền vay đề nghị:</span>
-                      <span className="font-medium">{formatCurrency(affordabilityResult.recommendedLoanAmount)}</span>
+                      <span className="text-gray-600">
+                        Số tiền vay đề nghị:
+                      </span>
+                      <span className="font-medium">
+                        {formatCurrency(
+                          affordabilityResult.recommendedLoanAmount,
+                        )}
+                      </span>
                     </div>
                   </div>
 
@@ -932,9 +1167,13 @@ const FinancialComparison: React.FC = () => {
                   <div>
                     <h4 className="font-medium mb-2">Khuyến nghị</h4>
                     <ul className="text-sm space-y-1">
-                      {affordabilityResult.recommendations.map((rec: string, index: number) => (
-                        <li key={index} className="text-gray-600">• {rec}</li>
-                      ))}
+                      {affordabilityResult.recommendations.map(
+                        (rec: string, index: number) => (
+                          <li key={index} className="text-gray-600">
+                            • {rec}
+                          </li>
+                        ),
+                      )}
                     </ul>
                   </div>
                 </CardContent>
@@ -957,8 +1196,12 @@ const FinancialComparison: React.FC = () => {
                     type="text"
                     value={formatCurrency(roiData.investmentAmount)}
                     onChange={(e) => {
-                      const value = parseFloat(e.target.value.replace(/[^\d]/g, '')) || 0;
-                      setRoiData(prev => ({ ...prev, investmentAmount: value }));
+                      const value =
+                        parseFloat(e.target.value.replace(/[^\d]/g, "")) || 0;
+                      setRoiData((prev) => ({
+                        ...prev,
+                        investmentAmount: value,
+                      }));
                     }}
                   />
                 </div>
@@ -969,8 +1212,12 @@ const FinancialComparison: React.FC = () => {
                     type="text"
                     value={formatCurrency(roiData.expectedReturn)}
                     onChange={(e) => {
-                      const value = parseFloat(e.target.value.replace(/[^\d]/g, '')) || 0;
-                      setRoiData(prev => ({ ...prev, expectedReturn: value }));
+                      const value =
+                        parseFloat(e.target.value.replace(/[^\d]/g, "")) || 0;
+                      setRoiData((prev) => ({
+                        ...prev,
+                        expectedReturn: value,
+                      }));
                     }}
                   />
                 </div>
@@ -981,7 +1228,10 @@ const FinancialComparison: React.FC = () => {
                     type="number"
                     value={roiData.investmentPeriod}
                     onChange={(e) => {
-                      setRoiData(prev => ({ ...prev, investmentPeriod: parseInt(e.target.value) || 0 }));
+                      setRoiData((prev) => ({
+                        ...prev,
+                        investmentPeriod: parseInt(e.target.value) || 0,
+                      }));
                     }}
                   />
                 </div>
@@ -990,8 +1240,8 @@ const FinancialComparison: React.FC = () => {
                   <Label>Mức độ rủi ro</Label>
                   <Select
                     value={roiData.riskLevel}
-                    onValueChange={(value: 'low' | 'medium' | 'high') => {
-                      setRoiData(prev => ({ ...prev, riskLevel: value }));
+                    onValueChange={(value: "low" | "medium" | "high") => {
+                      setRoiData((prev) => ({ ...prev, riskLevel: value }));
                     }}
                   >
                     <SelectTrigger>
@@ -1011,7 +1261,10 @@ const FinancialComparison: React.FC = () => {
                     type="number"
                     value={roiData.inflationRate}
                     onChange={(e) => {
-                      setRoiData(prev => ({ ...prev, inflationRate: parseFloat(e.target.value) || 0 }));
+                      setRoiData((prev) => ({
+                        ...prev,
+                        inflationRate: parseFloat(e.target.value) || 0,
+                      }));
                     }}
                     step="0.1"
                   />
@@ -1026,10 +1279,15 @@ const FinancialComparison: React.FC = () => {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="text-center">
-                    <div className={`text-5xl font-bold ${
-                      roiResult.roiPercentage >= 20 ? 'text-green-600' :
-                      roiResult.roiPercentage >= 10 ? 'text-yellow-600' : 'text-red-600'
-                    }`}>
+                    <div
+                      className={`text-5xl font-bold ${
+                        roiResult.roiPercentage >= 20
+                          ? "text-green-600"
+                          : roiResult.roiPercentage >= 10
+                            ? "text-yellow-600"
+                            : "text-red-600"
+                      }`}
+                    >
                       {roiResult.roiPercentage.toFixed(1)}%
                     </div>
                     <div className="text-sm text-gray-600">ROI tổng thể</div>
@@ -1038,19 +1296,31 @@ const FinancialComparison: React.FC = () => {
                   <div className="space-y-3">
                     <div className="flex justify-between">
                       <span className="text-gray-600">Lợi nhuận:</span>
-                      <span className="font-medium">{formatCurrency(roiResult.profit)}</span>
+                      <span className="font-medium">
+                        {formatCurrency(roiResult.profit)}
+                      </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">ROI hàng năm:</span>
-                      <span className="font-medium">{roiResult.annualizedROI.toFixed(1)}%</span>
+                      <span className="font-medium">
+                        {roiResult.annualizedROI.toFixed(1)}%
+                      </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600">ROI điều chỉnh rủi ro:</span>
-                      <span className="font-medium">{roiResult.riskAdjustedROI.toFixed(1)}%</span>
+                      <span className="text-gray-600">
+                        ROI điều chỉnh rủi ro:
+                      </span>
+                      <span className="font-medium">
+                        {roiResult.riskAdjustedROI.toFixed(1)}%
+                      </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600">ROI thực (sau lạm phát):</span>
-                      <span className="font-medium">{roiResult.realROI.toFixed(1)}%</span>
+                      <span className="text-gray-600">
+                        ROI thực (sau lạm phát):
+                      </span>
+                      <span className="font-medium">
+                        {roiResult.realROI.toFixed(1)}%
+                      </span>
                     </div>
                   </div>
 
@@ -1060,10 +1330,15 @@ const FinancialComparison: React.FC = () => {
                     <Card className="bg-blue-50">
                       <CardContent className="p-3 text-center">
                         <div className="text-2xl font-bold text-blue-600">
-                          {roiData.riskLevel === 'low' ? 'Thấp' :
-                           roiData.riskLevel === 'medium' ? 'Trung bình' : 'Cao'}
+                          {roiData.riskLevel === "low"
+                            ? "Thấp"
+                            : roiData.riskLevel === "medium"
+                              ? "Trung bình"
+                              : "Cao"}
                         </div>
-                        <div className="text-xs text-gray-600">Mức độ rủi ro</div>
+                        <div className="text-xs text-gray-600">
+                          Mức độ rủi ro
+                        </div>
                       </CardContent>
                     </Card>
 
@@ -1072,7 +1347,9 @@ const FinancialComparison: React.FC = () => {
                         <div className="text-2xl font-bold text-green-600">
                           {(roiResult.riskMultiplier * 100).toFixed(0)}%
                         </div>
-                        <div className="text-xs text-gray-600">Hệ số rủi ro</div>
+                        <div className="text-xs text-gray-600">
+                          Hệ số rủi ro
+                        </div>
                       </CardContent>
                     </Card>
                   </div>

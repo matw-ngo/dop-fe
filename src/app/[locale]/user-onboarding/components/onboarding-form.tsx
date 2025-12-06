@@ -6,7 +6,7 @@ import { useOnboardingFormConfig } from "../hooks/use-onboarding-form-config";
 import type { MappedFlow } from "@/mappers/flowMapper";
 import { FormSkeleton } from "@/components/feedback/form-skeleton";
 import { ErrorState } from "@/components/feedback/error-state";
-import { LoanApplicationForm } from "@/components/features/loan/LoanApplicationForm";
+// import { LoanApplicationForm } from "@/components/features/loan/LoanApplicationForm"; // TODO: Implement LoanApplicationForm component
 
 interface OnboardingFormProps {
   flowData: MappedFlow | undefined;
@@ -49,19 +49,17 @@ export function OnboardingForm({
         <>
           {/* Check if this is a loan application flow */}
           {flowData?.name?.toLowerCase().includes("vay") ||
-          flowData?.name?.toLowerCase().includes("loan") ||
-          formConfig.title?.toLowerCase().includes("vay") ? (
-            <LoanApplicationForm
-              flowConfig={formConfig}
-              onComplete={(data) => {
-                console.log("Loan application completed:", data);
-                // Handle successful loan application
-              }}
-              onCancel={() => {
-                console.log("Loan application cancelled");
-                // Handle cancellation
-              }}
-            />
+          flowData?.name?.toLowerCase().includes("loan") ? (
+            // TODO: Implement LoanApplicationForm component
+            <div className="p-4 border border-yellow-200 bg-yellow-50 rounded-lg">
+              <p className="text-yellow-800">
+                Loan application form is not yet implemented.
+              </p>
+              <p className="text-sm text-yellow-600 mt-2">
+                Please use the general form for now.
+              </p>
+              <MultiStepFormRenderer config={formConfig} />
+            </div>
           ) : (
             <MultiStepFormRenderer config={formConfig} />
           )}

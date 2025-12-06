@@ -3,9 +3,9 @@
  * Comprehensive OTP verification dialog with Vietnamese telco support
  */
 
-'use client';
+"use client";
 
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import {
   Dialog,
   DialogContent,
@@ -13,15 +13,15 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Separator } from '@/components/ui/separator';
-import { Progress } from '@/components/ui/progress';
-import { PhoneInput } from './PhoneInput';
-import { OTPInput } from './OTPInput';
-import { OTPResend } from './OTPResend';
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Separator } from "@/components/ui/separator";
+import { Progress } from "@/components/ui/progress";
+import { PhoneInput } from "./PhoneInput";
+import { OTPInput } from "./OTPInput";
+import { OTPResend } from "./OTPResend";
 
 import {
   Shield,
@@ -35,20 +35,20 @@ import {
   ArrowRight,
   User,
   Lock,
-  Info
-} from 'lucide-react';
-import { cn } from '@/lib/utils';
+  Info,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
 
 import {
   getOTPSettings,
-  getPhoneMetadata,
   TELCO_ERROR_MESSAGES,
-  formatPhoneNumber
-} from '@/lib/telcos/vietnamese-telcos';
-import { detectTelco } from '@/lib/telcos/telco-detector';
-import { validateVietnamesePhone } from '@/lib/telcos/phone-validation';
+  formatPhoneNumber,
+} from "@/lib/telcos/vietnamese-telcos";
+import getPhoneMetadata from "@/lib/telcos/vietnamese-telcos";
+import { detectTelco } from "@/lib/telcos/telco-detector";
+import { validateVietnamesePhone } from "@/lib/telcos/phone-validation";
 
-export type VerificationStep = 'phone' | 'otp' | 'success' | 'error' | 'locked';
+export type VerificationStep = "phone" | "otp" | "success" | "error" | "locked";
 
 export interface OTPVerificationDialogProps {
   open: boolean;
@@ -75,7 +75,7 @@ export interface OTPVerificationDialogProps {
 export const OTPVerificationDialog: React.FC<OTPVerificationDialogProps> = ({
   open,
   onOpenChange,
-  phoneNumber: initialPhoneNumber = '',
+  phoneNumber: initialPhoneNumber = "",
   onPhoneSubmit,
   onOTPVerify,
   onOTPRequest,
@@ -86,8 +86,8 @@ export const OTPVerificationDialog: React.FC<OTPVerificationDialogProps> = ({
   autoRequestOTP = true,
   showPhoneNumber = true,
   telcoCode,
-  title = 'Xác thực OTP',
-  description = 'Nhập mã OTP đã được gửi đến số điện thoại của bạn',
+  title = "Xác thực OTP",
+  description = "Nhập mã OTP đã được gửi đến số điện thoại của bạn",
   className,
   maxAttempts = 3,
   lockoutDuration = 900, // 15 minutes
@@ -96,10 +96,10 @@ export const OTPVerificationDialog: React.FC<OTPVerificationDialogProps> = ({
 }) => {
   // State management
   const [currentStep, setCurrentStep] = useState<VerificationStep>(
-    initialPhoneNumber ? 'otp' : 'phone'
+    initialPhoneNumber ? "otp" : "phone",
   );
   const [phoneNumber, setPhoneNumber] = useState(initialPhoneNumber);
-  const [otpCode, setOtpCode] = useState('');
+  const [otpCode, setOtpCode] = useState("");
   const [isVerifying, setIsVerifying] = useState(false);
   const [attempts, setAttempts] = useState(0);
   const [lockoutEndTime, setLockoutEndTime] = useState<Date | null>(null);
@@ -118,13 +118,17 @@ export const OTPVerificationDialog: React.FC<OTPVerificationDialogProps> = ({
   // Initialize phone metadata when phone number changes
   useEffect(() => {
     if (phoneNumber) {
-      const metadata = getPhoneMetadata(phoneNumber);
+      const telcoDetection = detectTelco(phoneNumber);
+      const telcoCode = telcoDetection.telco?.code || "VIETTEL";
+      const metadata =
+        getPhoneMetadata[telcoCode] ||
+        getPhoneMetadata.default ||
+        getPhoneMetadata["viettel"];
       const settings = getOTPSettings(phoneNumber);
-      const telco = detectTelco(phoneNumber);
 
       setPhoneMetadata(metadata);
       setOtpSettings(settings);
-      setTelcoInfo(telco);
+      setTelcoInfo(telcoDetection);
 
       // Set session timeout
       const endTime = new Date();
@@ -141,7 +145,7 @@ export const OTPVerificationDialog: React.FC<OTPVerificationDialogProps> = ({
         if (new Date() >= lockoutEndTime) {
           setLockoutEndTime(null);
           setAttempts(0);
-          setCurrentStep('phone');
+          setCurrentStep("phone");
         }
       };
 
@@ -157,7 +161,7 @@ export const OTPVerificationDialog: React.FC<OTPVerificationDialogProps> = ({
 
   // Check session timeout
   useEffect(() => {
-    if (sessionEndTime && currentStep === 'otp') {
+    if (sessionEndTime && currentStep === "otp") {
       const checkSession = () => {
         if (new Date() >= sessionEndTime) {
           handleSessionTimeout();
@@ -175,77 +179,94 @@ export const OTPVerificationDialog: React.FC<OTPVerificationDialogProps> = ({
   }, [sessionEndTime, currentStep]);
 
   // Handle phone number submission
-  const handlePhoneSubmit = useCallback(async (phone: string, isValid: boolean, metadata?: any) => {
-    if (!isValid) {
-      setError(TELCO_ERROR_MESSAGES.INVALID_PHONE);
-      return;
-    }
-
-    setIsVerifying(true);
-    setError(null);
-
-    try {
-      if (onPhoneSubmit) {
-        await onPhoneSubmit(phone, metadata);
+  const handlePhoneSubmit = useCallback(
+    async (phone: string, isValid: boolean, metadata?: any) => {
+      if (!isValid) {
+        setError(TELCO_ERROR_MESSAGES.INVALID_PHONE);
+        return;
       }
 
-      setPhoneNumber(phone);
-      setPhoneMetadata(metadata);
+      setIsVerifying(true);
+      setError(null);
 
-      // Auto-request OTP if enabled
-      if (autoRequestOTP && onOTPRequest) {
-        await onOTPRequest(phone);
+      try {
+        if (onPhoneSubmit) {
+          await onPhoneSubmit(phone, metadata);
+        }
+
+        setPhoneNumber(phone);
+        setPhoneMetadata(metadata);
+
+        // Auto-request OTP if enabled
+        if (autoRequestOTP && onOTPRequest) {
+          await onOTPRequest(phone);
+        }
+
+        setCurrentStep("otp");
+      } catch (err) {
+        const error =
+          err instanceof Error ? err : new Error("Phone submission failed");
+        setError(error.message);
+        onError?.(error);
+      } finally {
+        setIsVerifying(false);
       }
-
-      setCurrentStep('otp');
-    } catch (err) {
-      const error = err instanceof Error ? err : new Error('Phone submission failed');
-      setError(error.message);
-      onError?.(error);
-    } finally {
-      setIsVerifying(false);
-    }
-  }, [onPhoneSubmit, autoRequestOTP, onOTPRequest, onError]);
+    },
+    [onPhoneSubmit, autoRequestOTP, onOTPRequest, onError],
+  );
 
   // Handle OTP verification
-  const handleOTPVerify = useCallback(async (code: string) => {
-    if (!code || code.length !== otpSettings?.otpLength) {
-      setError(TELCO_ERROR_MESSAGES.INVALID_OTP_LENGTH);
-      return;
-    }
-
-    setIsVerifying(true);
-    setError(null);
-
-    try {
-      const isValid = await onOTPVerify?.(code);
-
-      if (isValid) {
-        setSuccessMessage('Xác thực OTP thành công!');
-        setCurrentStep('success');
-        onSuccess?.(phoneNumber);
-      } else {
-        throw new Error(TELCO_ERROR_MESSAGES.INVALID_OTP);
-      }
-    } catch (err) {
-      const error = err instanceof Error ? err : new Error('OTP verification failed');
-
-      setAttempts(prev => prev + 1);
-      setError(error.message);
-
-      // Check if max attempts reached
-      if (attempts + 1 >= maxAttempts) {
-        const lockoutEnd = new Date();
-        lockoutEnd.setSeconds(lockoutEnd.getSeconds() + lockoutDuration);
-        setLockoutEndTime(lockoutEnd);
-        setCurrentStep('locked');
+  const handleOTPVerify = useCallback(
+    async (code: string) => {
+      if (!code || code.length !== otpSettings?.otpLength) {
+        setError(TELCO_ERROR_MESSAGES.INVALID_OTP_LENGTH);
+        return;
       }
 
-      onError?.(error);
-    } finally {
-      setIsVerifying(false);
-    }
-  }, [onOTPVerify, otpSettings?.otpLength, phoneNumber, attempts, maxAttempts, lockoutDuration, onSuccess, onError]);
+      setIsVerifying(true);
+      setError(null);
+
+      try {
+        const isValid = await onOTPVerify?.(code);
+
+        if (isValid) {
+          setSuccessMessage("Xác thực OTP thành công!");
+          setCurrentStep("success");
+          onSuccess?.(phoneNumber);
+        } else {
+          throw new Error(TELCO_ERROR_MESSAGES.INVALID_OTP);
+        }
+      } catch (err) {
+        const error =
+          err instanceof Error ? err : new Error("OTP verification failed");
+
+        setAttempts((prev) => prev + 1);
+        setError(error.message);
+
+        // Check if max attempts reached
+        if (attempts + 1 >= maxAttempts) {
+          const lockoutEnd = new Date();
+          lockoutEnd.setSeconds(lockoutEnd.getSeconds() + lockoutDuration);
+          setLockoutEndTime(lockoutEnd);
+          setCurrentStep("locked");
+        }
+
+        onError?.(error);
+      } finally {
+        setIsVerifying(false);
+      }
+    },
+    [
+      onOTPVerify,
+      otpSettings?.otpLength,
+      phoneNumber,
+      attempts,
+      maxAttempts,
+      lockoutDuration,
+      onSuccess,
+      onError,
+    ],
+  );
 
   // Handle OTP resend
   const handleOTPResend = useCallback(async () => {
@@ -262,9 +283,9 @@ export const OTPVerificationDialog: React.FC<OTPVerificationDialogProps> = ({
       setSessionEndTime(endTime);
       setSessionStartTime(new Date());
 
-      setSuccessMessage('Mã OTP đã được gửi lại');
+      setSuccessMessage("Mã OTP đã được gửi lại");
     } catch (err) {
-      const error = err instanceof Error ? err : new Error('OTP resend failed');
+      const error = err instanceof Error ? err : new Error("OTP resend failed");
       setError(error.message);
       onError?.(error);
     }
@@ -272,7 +293,7 @@ export const OTPVerificationDialog: React.FC<OTPVerificationDialogProps> = ({
 
   // Handle session timeout
   const handleSessionTimeout = useCallback(() => {
-    setCurrentStep('error');
+    setCurrentStep("error");
     setError(TELCO_ERROR_MESSAGES.OTP_EXPIRED);
   }, []);
 
@@ -286,8 +307,8 @@ export const OTPVerificationDialog: React.FC<OTPVerificationDialogProps> = ({
     }
 
     // Reset state
-    setCurrentStep(initialPhoneNumber ? 'otp' : 'phone');
-    setOtpCode('');
+    setCurrentStep(initialPhoneNumber ? "otp" : "phone");
+    setOtpCode("");
     setAttempts(0);
     setError(null);
     setSuccessMessage(null);
@@ -299,7 +320,10 @@ export const OTPVerificationDialog: React.FC<OTPVerificationDialogProps> = ({
   // Get remaining time for timers
   const getRemainingTime = (endTime: Date | null): number => {
     if (!endTime) return 0;
-    return Math.max(0, Math.floor((endTime.getTime() - new Date().getTime()) / 1000));
+    return Math.max(
+      0,
+      Math.floor((endTime.getTime() - new Date().getTime()) / 1000),
+    );
   };
 
   const lockoutRemaining = getRemainingTime(lockoutEndTime);
@@ -307,56 +331,70 @@ export const OTPVerificationDialog: React.FC<OTPVerificationDialogProps> = ({
 
   // Get telco color for styling
   const getTelcoColor = (): string => {
-    return telcoInfo?.telco?.color || '#666666';
+    return telcoInfo?.telco?.color || "#666666";
   };
 
   return (
     <Dialog open={open} onOpenChange={handleDialogClose}>
-      <DialogContent className={cn('sm:max-w-md', className)} {...props}>
+      <DialogContent className={cn("sm:max-w-md", className)} {...props}>
         <DialogHeader className="text-center">
           <div className="mx-auto mb-4">
             <div
               className="w-16 h-16 rounded-full flex items-center justify-center mx-auto"
               style={{ backgroundColor: `${getTelcoColor()}20` }}
             >
-              {currentStep === 'phone' && <User className="h-8 w-8" style={{ color: getTelcoColor() }} />}
-              {currentStep === 'otp' && <Lock className="h-8 w-8" style={{ color: getTelcoColor() }} />}
-              {currentStep === 'success' && <CheckCircle className="h-8 w-8 text-green-500" />}
-              {currentStep === 'error' && <XCircle className="h-8 w-8 text-red-500" />}
-              {currentStep === 'locked' && <AlertCircle className="h-8 w-8 text-orange-500" />}
+              {currentStep === "phone" && (
+                <User className="h-8 w-8" style={{ color: getTelcoColor() }} />
+              )}
+              {currentStep === "otp" && (
+                <Lock className="h-8 w-8" style={{ color: getTelcoColor() }} />
+              )}
+              {currentStep === "success" && (
+                <CheckCircle className="h-8 w-8 text-green-500" />
+              )}
+              {currentStep === "error" && (
+                <XCircle className="h-8 w-8 text-red-500" />
+              )}
+              {currentStep === "locked" && (
+                <AlertCircle className="h-8 w-8 text-orange-500" />
+              )}
             </div>
           </div>
 
           <DialogTitle className="text-xl font-semibold">
-            {currentStep === 'phone' && 'Xác thực số điện thoại'}
-            {currentStep === 'otp' && 'Nhập mã OTP'}
-            {currentStep === 'success' && 'Xác thực thành công'}
-            {currentStep === 'error' && 'Lỗi xác thực'}
-            {currentStep === 'locked' && 'Tạm khóa'}
+            {currentStep === "phone" && "Xác thực số điện thoại"}
+            {currentStep === "otp" && "Nhập mã OTP"}
+            {currentStep === "success" && "Xác thực thành công"}
+            {currentStep === "error" && "Lỗi xác thực"}
+            {currentStep === "locked" && "Tạm khóa"}
           </DialogTitle>
 
           <DialogDescription className="text-sm text-muted-foreground">
-            {currentStep === 'phone' && 'Nhập số điện thoại Việt Nam để nhận mã OTP'}
-            {currentStep === 'otp' && (
-              phoneMetadata && (
-                <>Mã OTP đã được gửi đến {formatPhoneNumber(phoneMetadata.phoneNumber)}</>
-              )
+            {currentStep === "phone" &&
+              "Nhập số điện thoại Việt Nam để nhận mã OTP"}
+            {currentStep === "otp" && phoneMetadata && (
+              <>
+                Mã OTP đã được gửi đến{" "}
+                {formatPhoneNumber(phoneMetadata.phoneNumber)}
+              </>
             )}
-            {currentStep === 'success' && 'Số điện thoại của bạn đã được xác thực thành công'}
-            {currentStep === 'error' && 'Đã xảy ra lỗi trong quá trình xác thực'}
-            {currentStep === 'locked' && 'Tài khoản của bạn đã bị tạm khóa do nhập sai quá nhiều lần'}
+            {currentStep === "success" &&
+              "Số điện thoại của bạn đã được xác thực thành công"}
+            {currentStep === "error" &&
+              "Đã xảy ra lỗi trong quá trình xác thực"}
+            {currentStep === "locked" &&
+              "Tài khoản của bạn đã bị tạm khóa do nhập sai quá nhiều lần"}
           </DialogDescription>
         </DialogHeader>
 
         {/* Phone Input Step */}
-        {currentStep === 'phone' && (
+        {currentStep === "phone" && (
           <div className="space-y-4">
             <PhoneInput
               value={phoneNumber}
               onChange={handlePhoneSubmit}
               showTelcoBadge={true}
               showValidation={true}
-              autoFocus={true}
               label="Số điện thoại"
               placeholder="Nhập số điện thoại (ví dụ: 0912345678)"
             />
@@ -382,7 +420,7 @@ export const OTPVerificationDialog: React.FC<OTPVerificationDialogProps> = ({
         )}
 
         {/* OTP Input Step */}
-        {currentStep === 'otp' && (
+        {currentStep === "otp" && (
           <div className="space-y-4">
             {/* Telco Info */}
             {telcoInfo?.telco && showPhoneNumber && (
@@ -393,7 +431,7 @@ export const OTPVerificationDialog: React.FC<OTPVerificationDialogProps> = ({
                   style={{
                     backgroundColor: `${getTelcoColor()}20`,
                     borderColor: getTelcoColor(),
-                    color: getTelcoColor()
+                    color: getTelcoColor(),
                   }}
                 >
                   <Smartphone className="h-3 w-3" />
@@ -418,11 +456,14 @@ export const OTPVerificationDialog: React.FC<OTPVerificationDialogProps> = ({
                     <span>Thời gian còn lại</span>
                   </div>
                   <span className="font-mono">
-                    {Math.floor(sessionRemaining / 60)}:{(sessionRemaining % 60).toString().padStart(2, '0')}
+                    {Math.floor(sessionRemaining / 60)}:
+                    {(sessionRemaining % 60).toString().padStart(2, "0")}
                   </span>
                 </div>
                 <Progress
-                  value={(sessionRemaining / (otpSettings?.otpExpiry || 600)) * 100}
+                  value={
+                    (sessionRemaining / (otpSettings?.otpExpiry || 600)) * 100
+                  }
                   className="h-2"
                 />
               </div>
@@ -435,12 +476,11 @@ export const OTPVerificationDialog: React.FC<OTPVerificationDialogProps> = ({
               onChange={setOtpCode}
               onComplete={handleOTPVerify}
               disabled={isVerifying}
-              error={error}
+              error={error || undefined}
               showTimer={true}
               timerRemaining={sessionRemaining}
               timerDuration={otpSettings?.otpExpiry || 600}
               onTimerExpire={handleSessionTimeout}
-              autoFocus={true}
               allowAutoSubmit={true}
             />
 
@@ -475,7 +515,7 @@ export const OTPVerificationDialog: React.FC<OTPVerificationDialogProps> = ({
               <Button
                 type="button"
                 variant="outline"
-                onClick={() => setCurrentStep('phone')}
+                onClick={() => setCurrentStep("phone")}
                 disabled={isVerifying}
               >
                 <ArrowLeft className="h-4 w-4 mr-2" />
@@ -486,7 +526,7 @@ export const OTPVerificationDialog: React.FC<OTPVerificationDialogProps> = ({
         )}
 
         {/* Success Step */}
-        {currentStep === 'success' && (
+        {currentStep === "success" && (
           <div className="space-y-4 text-center">
             <div className="text-green-600 space-y-2">
               <CheckCircle className="h-16 w-16 mx-auto" />
@@ -505,13 +545,13 @@ export const OTPVerificationDialog: React.FC<OTPVerificationDialogProps> = ({
         )}
 
         {/* Error Step */}
-        {currentStep === 'error' && (
+        {currentStep === "error" && (
           <div className="space-y-4 text-center">
             <div className="text-red-600 space-y-2">
               <XCircle className="h-16 w-16 mx-auto" />
               <p className="font-semibold">Xác thực thất bại</p>
               <p className="text-sm text-muted-foreground">
-                {error || 'Đã xảy ra lỗi trong quá trình xác thực'}
+                {error || "Đã xảy ra lỗi trong quá trình xác thực"}
               </p>
             </div>
 
@@ -519,20 +559,18 @@ export const OTPVerificationDialog: React.FC<OTPVerificationDialogProps> = ({
               <Button
                 type="button"
                 variant="outline"
-                onClick={() => setCurrentStep('phone')}
+                onClick={() => setCurrentStep("phone")}
               >
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 Thử lại
               </Button>
-              <Button onClick={handleDialogClose}>
-                Đóng
-              </Button>
+              <Button onClick={handleDialogClose}>Đóng</Button>
             </DialogFooter>
           </div>
         )}
 
         {/* Locked Step */}
-        {currentStep === 'locked' && (
+        {currentStep === "locked" && (
           <div className="space-y-4 text-center">
             <div className="text-orange-600 space-y-2">
               <AlertCircle className="h-16 w-16 mx-auto" />
@@ -548,7 +586,8 @@ export const OTPVerificationDialog: React.FC<OTPVerificationDialogProps> = ({
                   <Clock className="h-4 w-4" />
                   <span>Mở khóa sau:</span>
                   <span className="font-mono font-semibold">
-                    {Math.floor(lockoutRemaining / 60)}:{(lockoutRemaining % 60).toString().padStart(2, '0')}
+                    {Math.floor(lockoutRemaining / 60)}:
+                    {(lockoutRemaining % 60).toString().padStart(2, "0")}
                   </span>
                 </div>
                 <Progress
@@ -561,7 +600,8 @@ export const OTPVerificationDialog: React.FC<OTPVerificationDialogProps> = ({
             <Alert className="border-blue-200 bg-blue-50 text-blue-800">
               <Info className="h-4 w-4" />
               <AlertDescription>
-                Để bảo vệ tài khoản của bạn, vui lòng đợi hết thời gian khóa hoặc liên hệ hỗ trợ.
+                Để bảo vệ tài khoản của bạn, vui lòng đợi hết thời gian khóa
+                hoặc liên hệ hỗ trợ.
               </AlertDescription>
             </Alert>
 
@@ -577,6 +617,6 @@ export const OTPVerificationDialog: React.FC<OTPVerificationDialogProps> = ({
   );
 };
 
-OTPVerificationDialog.displayName = 'OTPVerificationDialog';
+OTPVerificationDialog.displayName = "OTPVerificationDialog";
 
 export default OTPVerificationDialog;

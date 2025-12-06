@@ -3,22 +3,35 @@
  * Contains all constant values used throughout the credit cards module
  */
 
+import type {
+  CardCategory,
+  CardNetwork,
+  AnnualFeeType,
+  CreditCardFilters,
+} from "@/types/credit-card";
+
 // ============================================================================
 // Filter Defaults
 // ============================================================================
 
 /** Default filter values when no filters are applied */
-export const DEFAULT_FILTERS = {
-  categories: [] as string[],
-  networks: [] as string[],
+export const DEFAULT_FILTERS: CreditCardFilters = {
+  categories: [] as CardCategory[],
+  networks: [] as CardNetwork[],
   issuers: [] as string[],
-  annualFeeType: [] as string[],
+  annualFeeType: [] as AnnualFeeType[],
   annualFeeRange: { min: 0, max: 10000000 }, // 0 - 10M VND
   creditLimitRange: { min: 0, max: 2000000000 }, // 0 - 2B VND
   hasAnnualFeeWaiver: false,
   ageRange: { min: 18, max: 80 },
   incomeRange: { min: 0, max: 100000000 }, // 0 - 100M VND
-  employmentTypes: [] as string[],
+  employmentTypes: [] as (
+    | "full_time"
+    | "part_time"
+    | "business_owner"
+    | "freelancer"
+    | "retired"
+  )[],
   provinces: [] as string[],
   rewardsTypes: [] as string[],
   hasWelcomeOffer: false,
@@ -29,7 +42,7 @@ export const DEFAULT_FILTERS = {
   isRecommended: false,
   isExclusive: false,
   minRating: 0,
-} as const;
+};
 
 /** Default sorting option */
 export const DEFAULT_SORT_OPTION = "featured" as const;

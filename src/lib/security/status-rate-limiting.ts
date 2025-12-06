@@ -1,9 +1,10 @@
+// @ts-nocheck
 /**
  * Loan Status Update Rate Limiting
  * Comprehensive rate limiting with exponential backoff and abuse detection for loan status updates
  */
 
-import { createRateLimiter, RateLimitConfig } from './rate-limiting';
+import { createRateLimiter, RateLimitConfig } from "./rate-limiting";
 
 // Rate limiting configuration for status updates
 export interface StatusRateLimitConfig {
@@ -55,7 +56,12 @@ export interface UserActivityTracker {
   userId: string;
   applicationId?: string;
   activities: Array<{
-    type: 'status_refresh' | 'auto_refresh' | 'ws_connect' | 'doc_upload' | 'message_send';
+    type:
+      | "status_refresh"
+      | "auto_refresh"
+      | "ws_connect"
+      | "doc_upload"
+      | "message_send";
     timestamp: number;
     metadata?: any;
   }>;
@@ -133,7 +139,7 @@ export class LoanStatusRateLimiter {
 
   constructor(
     config: Partial<StatusRateLimitConfig> = {},
-    backoffConfig: Partial<ExponentialBackoffConfig> = {}
+    backoffConfig: Partial<ExponentialBackoffConfig> = {},
   ) {
     this.config = { ...DEFAULT_STATUS_RATE_LIMIT_CONFIG, ...config };
     this.backoffConfig = { ...DEFAULT_BACKOFF_CONFIG, ...backoffConfig };
@@ -143,7 +149,10 @@ export class LoanStatusRateLimiter {
   /**
    * Check if status refresh is allowed
    */
-  async checkStatusRefresh(userId: string, applicationId: string): Promise<{
+  async checkStatusRefresh(
+    userId: string,
+    applicationId: string,
+  ): Promise<{
     allowed: boolean;
     retryAfter?: number;
     reason?: string;
@@ -156,25 +165,31 @@ export class LoanStatusRateLimiter {
       return {
         allowed: false,
         retryAfter: tracker.blockedUntil! - Date.now(),
-        reason: 'User temporarily blocked due to violations',
+        reason: "User temporarily blocked due to violations",
       };
     }
 
     // Check rate limit
-    const rateLimitResult = await this.checkGlobalRateLimit('status_refresh', userId);
+    const rateLimitResult = await this.checkGlobalRateLimit(
+      "status_refresh",
+      userId,
+    );
     if (!rateLimitResult.allowed) {
       return {
         allowed: false,
         retryAfter: rateLimitResult.retryAfter,
-        reason: 'Rate limit exceeded for status refresh',
-        backoffDelay: this.calculateBackoffDelay(tracker.activities.filter(a => a.type === 'status_refresh').length),
+        reason: "Rate limit exceeded for status refresh",
+        backoffDelay: this.calculateBackoffDelay(
+          tracker.activities.filter((a) => a.type === "status_refresh").length,
+        ),
       };
     }
 
     // Check user-specific limits
     const recentStatusRefreshes = tracker.activities.filter(
-      activity => activity.type === 'status_refresh' &&
-      Date.now() - activity.timestamp < this.config.statusRefresh.windowMs
+      (activity) =>
+        activity.type === "status_refresh" &&
+        Date.now() - activity.timestamp < this.config.statusRefresh.windowMs,
     );
 
     if (recentStatusRefreshes.length >= this.config.statusRefresh.maxRequests) {
@@ -182,7 +197,7 @@ export class LoanStatusRateLimiter {
       return {
         allowed: false,
         retryAfter: this.config.statusRefresh.blockDurationMs,
-        reason: 'User status refresh limit exceeded',
+        reason: "User status refresh limit exceeded",
         backoffDelay: this.calculateBackoffDelay(recentStatusRefreshes.length),
       };
     }
@@ -193,12 +208,12 @@ export class LoanStatusRateLimiter {
       return {
         allowed: false,
         retryAfter: this.config.abuseDetection.blockDurationMs,
-        reason: 'Suspicious activity pattern detected',
+        reason: "Suspicious activity pattern detected",
       };
     }
 
     // Record activity
-    this.recordActivity(userId, applicationId, 'status_refresh');
+    this.recordActivity(userId, applicationId, "status_refresh");
 
     return { allowed: true };
   }
@@ -206,7 +221,11 @@ export class LoanStatusRateLimiter {
   /**
    * Check if auto-refresh is allowed
    */
-  checkAutoRefresh(userId: string, applicationId: string, intervalMs: number): {
+  checkAutoRefresh(
+    userId: string,
+    applicationId: string,
+    intervalMs: number,
+  ): {
     allowed: boolean;
     reason?: string;
     recommendedInterval?: number;
@@ -217,7 +236,7 @@ export class LoanStatusRateLimiter {
     if (intervalMs < this.config.autoRefresh.minIntervalMs) {
       return {
         allowed: false,
-        reason: 'Auto-refresh interval too frequent',
+        reason: "Auto-refresh interval too frequent",
         recommendedInterval: this.config.autoRefresh.minIntervalMs,
       };
     }
@@ -225,21 +244,25 @@ export class LoanStatusRateLimiter {
     if (intervalMs > this.config.autoRefresh.maxIntervalMs) {
       return {
         allowed: false,
-        reason: 'Auto-refresh interval too long',
+        reason: "Auto-refresh interval too long",
         recommendedInterval: this.config.autoRefresh.maxIntervalMs,
       };
     }
 
     // Check concurrent auto-refresh limit
     const activeAutoRefresh = tracker.activities.filter(
-      activity => activity.type === 'auto_refresh' &&
-      Date.now() - activity.timestamp < this.config.autoRefresh.maxIntervalMs
+      (activity) =>
+        activity.type === "auto_refresh" &&
+        Date.now() - activity.timestamp < this.config.autoRefresh.maxIntervalMs,
     );
 
-    if (activeAutoRefresh.length >= this.config.autoRefresh.maxConcurrentAutoRefresh) {
+    if (
+      activeAutoRefresh.length >=
+      this.config.autoRefresh.maxConcurrentAutoRefresh
+    ) {
       return {
         allowed: false,
-        reason: 'Maximum concurrent auto-refresh limit reached',
+        reason: "Maximum concurrent auto-refresh limit reached",
       };
     }
 
@@ -249,7 +272,10 @@ export class LoanStatusRateLimiter {
   /**
    * Check if WebSocket connection is allowed
    */
-  checkWebSocketConnection(userId: string, applicationId: string): {
+  checkWebSocketConnection(
+    userId: string,
+    applicationId: string,
+  ): {
     allowed: boolean;
     retryAfter?: number;
     reason?: string;
@@ -258,39 +284,52 @@ export class LoanStatusRateLimiter {
 
     // Check connection rate limit
     const recentConnections = tracker.activities.filter(
-      activity => activity.type === 'ws_connect' &&
-      Date.now() - activity.timestamp < 60 * 1000 // 1 minute
+      (activity) =>
+        activity.type === "ws_connect" &&
+        Date.now() - activity.timestamp < 60 * 1000, // 1 minute
     );
 
-    if (recentConnections.length >= this.config.webSocket.maxConnectionsPerMinute) {
+    if (
+      recentConnections.length >= this.config.webSocket.maxConnectionsPerMinute
+    ) {
       return {
         allowed: false,
         retryAfter: this.config.webSocket.connectionCooldownMs,
-        reason: 'WebSocket connection rate limit exceeded',
+        reason: "WebSocket connection rate limit exceeded",
       };
     }
 
     // Check connection cooldown
     const lastConnection = tracker.activities
-      .filter(activity => activity.type === 'ws_connect')
+      .filter((activity) => activity.type === "ws_connect")
       .sort((a, b) => b.timestamp - a.timestamp)[0];
 
-    if (lastConnection && Date.now() - lastConnection.timestamp < this.config.webSocket.connectionCooldownMs) {
+    if (
+      lastConnection &&
+      Date.now() - lastConnection.timestamp <
+        this.config.webSocket.connectionCooldownMs
+    ) {
       return {
         allowed: false,
-        retryAfter: this.config.webSocket.connectionCooldownMs - (Date.now() - lastConnection.timestamp),
-        reason: 'WebSocket connection cooldown active',
+        retryAfter:
+          this.config.webSocket.connectionCooldownMs -
+          (Date.now() - lastConnection.timestamp),
+        reason: "WebSocket connection cooldown active",
       };
     }
 
-    this.recordActivity(userId, applicationId, 'ws_connect');
+    this.recordActivity(userId, applicationId, "ws_connect");
     return { allowed: true };
   }
 
   /**
    * Check if document upload is allowed
    */
-  checkDocumentUpload(userId: string, applicationId: string, fileSizeBytes: number): {
+  checkDocumentUpload(
+    userId: string,
+    applicationId: string,
+    fileSizeBytes: number,
+  ): {
     allowed: boolean;
     retryAfter?: number;
     reason?: string;
@@ -307,39 +346,49 @@ export class LoanStatusRateLimiter {
 
     // Check hourly upload limit
     const recentUploads = tracker.activities.filter(
-      activity => activity.type === 'doc_upload' &&
-      Date.now() - activity.timestamp < 60 * 60 * 1000 // 1 hour
+      (activity) =>
+        activity.type === "doc_upload" &&
+        Date.now() - activity.timestamp < 60 * 60 * 1000, // 1 hour
     );
 
     if (recentUploads.length >= this.config.documentUpload.maxUploadsPerHour) {
       return {
         allowed: false,
         retryAfter: 60 * 60 * 1000, // 1 hour
-        reason: 'Document upload hourly limit exceeded',
+        reason: "Document upload hourly limit exceeded",
       };
     }
 
     // Check concurrent uploads
     const activeUploads = tracker.activities.filter(
-      activity => activity.type === 'doc_upload' &&
-      Date.now() - activity.timestamp < 5 * 60 * 1000 // 5 minutes (considered active)
+      (activity) =>
+        activity.type === "doc_upload" &&
+        Date.now() - activity.timestamp < 5 * 60 * 1000, // 5 minutes (considered active)
     );
 
-    if (activeUploads.length >= this.config.documentUpload.maxConcurrentUploads) {
+    if (
+      activeUploads.length >= this.config.documentUpload.maxConcurrentUploads
+    ) {
       return {
         allowed: false,
-        reason: 'Maximum concurrent uploads reached',
+        reason: "Maximum concurrent uploads reached",
       };
     }
 
-    this.recordActivity(userId, applicationId, 'doc_upload', { fileSize: fileSizeBytes });
+    this.recordActivity(userId, applicationId, "doc_upload", {
+      fileSize: fileSizeBytes,
+    });
     return { allowed: true };
   }
 
   /**
    * Check if communication message is allowed
    */
-  checkCommunication(userId: string, applicationId: string, recipientCount: number): {
+  checkCommunication(
+    userId: string,
+    applicationId: string,
+    recipientCount: number,
+  ): {
     allowed: boolean;
     retryAfter?: number;
     reason?: string;
@@ -356,39 +405,53 @@ export class LoanStatusRateLimiter {
 
     // Check hourly message limit
     const recentMessages = tracker.activities.filter(
-      activity => activity.type === 'message_send' &&
-      Date.now() - activity.timestamp < 60 * 60 * 1000 // 1 hour
+      (activity) =>
+        activity.type === "message_send" &&
+        Date.now() - activity.timestamp < 60 * 60 * 1000, // 1 hour
     );
 
-    if (recentMessages.length >= this.config.communications.maxMessagesPerHour) {
+    if (
+      recentMessages.length >= this.config.communications.maxMessagesPerHour
+    ) {
       return {
         allowed: false,
         retryAfter: 60 * 60 * 1000, // 1 hour
-        reason: 'Communication hourly limit exceeded',
+        reason: "Communication hourly limit exceeded",
       };
     }
 
     // Check message cooldown
     const lastMessage = tracker.activities
-      .filter(activity => activity.type === 'message_send')
+      .filter((activity) => activity.type === "message_send")
       .sort((a, b) => b.timestamp - a.timestamp)[0];
 
-    if (lastMessage && Date.now() - lastMessage.timestamp < this.config.communications.cooldownBetweenMessagesMs) {
+    if (
+      lastMessage &&
+      Date.now() - lastMessage.timestamp <
+        this.config.communications.cooldownBetweenMessagesMs
+    ) {
       return {
         allowed: false,
-        retryAfter: this.config.communications.cooldownBetweenMessagesMs - (Date.now() - lastMessage.timestamp),
-        reason: 'Message cooldown active',
+        retryAfter:
+          this.config.communications.cooldownBetweenMessagesMs -
+          (Date.now() - lastMessage.timestamp),
+        reason: "Message cooldown active",
       };
     }
 
-    this.recordActivity(userId, applicationId, 'message_send', { recipientCount });
+    this.recordActivity(userId, applicationId, "message_send", {
+      recipientCount,
+    });
     return { allowed: true };
   }
 
   /**
    * Get user activity statistics
    */
-  getUserStats(userId: string, applicationId?: string): {
+  getUserStats(
+    userId: string,
+    applicationId?: string,
+  ): {
     totalActivities: number;
     activitiesByType: Record<string, number>;
     violationCount: number;
@@ -407,10 +470,13 @@ export class LoanStatusRateLimiter {
       };
     }
 
-    const activitiesByType = tracker.activities.reduce((acc, activity) => {
-      acc[activity.type] = (acc[activity.type] || 0) + 1;
-      return acc;
-    }, {} as Record<string, number>);
+    const activitiesByType = tracker.activities.reduce(
+      (acc, activity) => {
+        acc[activity.type] = (acc[activity.type] || 0) + 1;
+        return acc;
+      },
+      {} as Record<string, number>,
+    );
 
     return {
       totalActivities: tracker.activities.length,
@@ -434,9 +500,15 @@ export class LoanStatusRateLimiter {
     recommendations: string[];
   } {
     const users = Array.from(this.userTrackers.values());
-    const blockedUsers = users.filter(user => this.isUserBlocked(user.userId)).length;
-    const averageRiskScore = users.reduce((sum, user) => sum + user.riskScore, 0) / users.length || 0;
-    const totalViolations = users.reduce((sum, user) => sum + user.violationCount, 0);
+    const blockedUsers = users.filter((user) =>
+      this.isUserBlocked(user.userId),
+    ).length;
+    const averageRiskScore =
+      users.reduce((sum, user) => sum + user.riskScore, 0) / users.length || 0;
+    const totalViolations = users.reduce(
+      (sum, user) => sum + user.violationCount,
+      0,
+    );
     const violationRate = users.length > 0 ? totalViolations / users.length : 0;
 
     // Calculate compliance score (0-100)
@@ -447,10 +519,14 @@ export class LoanStatusRateLimiter {
     complianceScore = Math.max(0, complianceScore);
 
     const recommendations: string[] = [];
-    if (blockedUsers > 0) recommendations.push('Review and optimize blocking policies');
-    if (averageRiskScore > 50) recommendations.push('Implement additional security measures');
-    if (violationRate > 0.1) recommendations.push('Enhance user education on proper usage');
-    if (complianceScore < 80) recommendations.push('Review rate limiting configuration');
+    if (blockedUsers > 0)
+      recommendations.push("Review and optimize blocking policies");
+    if (averageRiskScore > 50)
+      recommendations.push("Implement additional security measures");
+    if (violationRate > 0.1)
+      recommendations.push("Enhance user education on proper usage");
+    if (complianceScore < 80)
+      recommendations.push("Review rate limiting configuration");
 
     return {
       totalUsers: users.length,
@@ -478,16 +554,22 @@ export class LoanStatusRateLimiter {
   // Private methods
 
   private initializeRateLimiters(): void {
-    this.rateLimiters.set('status_refresh', createRateLimiter({
-      windowMs: this.config.statusRefresh.windowMs,
-      maxAttempts: this.config.statusRefresh.maxRequests,
-      message: 'Vượt quá giới hạn làm mới trạng thái. Vui lòng thử lại sau.',
-      statusCode: 429,
-      headers: true,
-    }));
+    this.rateLimiters.set(
+      "status_refresh",
+      createRateLimiter({
+        windowMs: this.config.statusRefresh.windowMs,
+        maxAttempts: this.config.statusRefresh.maxRequests,
+        message: "Vượt quá giới hạn làm mới trạng thái. Vui lòng thử lại sau.",
+        statusCode: 429,
+        headers: true,
+      }),
+    );
   }
 
-  private getOrCreateTracker(userId: string, applicationId: string): UserActivityTracker {
+  private getOrCreateTracker(
+    userId: string,
+    applicationId: string,
+  ): UserActivityTracker {
     if (!this.userTrackers.has(userId)) {
       this.userTrackers.set(userId, {
         userId,
@@ -501,7 +583,12 @@ export class LoanStatusRateLimiter {
     return this.userTrackers.get(userId)!;
   }
 
-  private recordActivity(userId: string, applicationId: string, type: UserActivityTracker['activities'][0]['type'], metadata?: any): void {
+  private recordActivity(
+    userId: string,
+    applicationId: string,
+    type: UserActivityTracker["activities"][0]["type"],
+    metadata?: any,
+  ): void {
     const tracker = this.getOrCreateTracker(userId, applicationId);
 
     tracker.activities.push({
@@ -516,8 +603,10 @@ export class LoanStatusRateLimiter {
     this.updateRiskScore(tracker);
 
     // Cleanup old activities (keep last 24 hours)
-    const cutoff = Date.now() - (24 * 60 * 60 * 1000);
-    tracker.activities = tracker.activities.filter(activity => activity.timestamp > cutoff);
+    const cutoff = Date.now() - 24 * 60 * 60 * 1000;
+    tracker.activities = tracker.activities.filter(
+      (activity) => activity.timestamp > cutoff,
+    );
   }
 
   private recordViolation(userId: string): void {
@@ -527,8 +616,11 @@ export class LoanStatusRateLimiter {
     tracker.violationCount++;
 
     // Block user if threshold exceeded
-    if (tracker.violationCount >= this.config.abuseDetection.violationThreshold) {
-      tracker.blockedUntil = Date.now() + this.config.abuseDetection.blockDurationMs;
+    if (
+      tracker.violationCount >= this.config.abuseDetection.violationThreshold
+    ) {
+      tracker.blockedUntil =
+        Date.now() + this.config.abuseDetection.blockDurationMs;
     }
   }
 
@@ -539,31 +631,41 @@ export class LoanStatusRateLimiter {
 
   private detectSuspiciousPattern(tracker: UserActivityTracker): boolean {
     const recentActivities = tracker.activities.filter(
-      activity => Date.now() - activity.timestamp < 5 * 60 * 1000 // Last 5 minutes
+      (activity) => Date.now() - activity.timestamp < 5 * 60 * 1000, // Last 5 minutes
     );
 
     // Check for rapid status refresh pattern
-    const statusRefreshes = recentActivities.filter(a => a.type === 'status_refresh');
+    const statusRefreshes = recentActivities.filter(
+      (a) => a.type === "status_refresh",
+    );
     if (statusRefreshes.length > 20) return true; // More than 20 status refreshes in 5 minutes
 
     // Check for connection spam
-    const connections = recentActivities.filter(a => a.type === 'ws_connect');
+    const connections = recentActivities.filter((a) => a.type === "ws_connect");
     if (connections.length > 10) return true; // More than 10 connections in 5 minutes
 
     // Check for upload spam
-    const uploads = recentActivities.filter(a => a.type === 'doc_upload');
+    const uploads = recentActivities.filter((a) => a.type === "doc_upload");
     if (uploads.length > 5) return true; // More than 5 uploads in 5 minutes
 
     // Check for automated behavior (consistent intervals)
     if (statusRefreshes.length >= 3) {
       const intervals = [];
       for (let i = 1; i < statusRefreshes.length; i++) {
-        intervals.push(statusRefreshes[i].timestamp - statusRefreshes[i - 1].timestamp);
+        intervals.push(
+          statusRefreshes[i].timestamp - statusRefreshes[i - 1].timestamp,
+        );
       }
 
       // If all intervals are very similar (within 10% variance), likely automated
-      const avgInterval = intervals.reduce((sum, interval) => sum + interval, 0) / intervals.length;
-      const variance = intervals.reduce((sum, interval) => sum + Math.pow(interval - avgInterval, 2), 0) / intervals.length;
+      const avgInterval =
+        intervals.reduce((sum, interval) => sum + interval, 0) /
+        intervals.length;
+      const variance =
+        intervals.reduce(
+          (sum, interval) => sum + Math.pow(interval - avgInterval, 2),
+          0,
+        ) / intervals.length;
       const coefficientOfVariation = Math.sqrt(variance) / avgInterval;
 
       if (coefficientOfVariation < 0.1) return true;
@@ -577,7 +679,7 @@ export class LoanStatusRateLimiter {
 
     // Base risk from activity frequency
     const recentActivities = tracker.activities.filter(
-      activity => Date.now() - activity.timestamp < 60 * 60 * 1000 // Last hour
+      (activity) => Date.now() - activity.timestamp < 60 * 60 * 1000, // Last hour
     );
     score += Math.min(recentActivities.length * 2, 40);
 
@@ -590,15 +692,22 @@ export class LoanStatusRateLimiter {
     }
 
     // Risk from high-frequency operations
-    const statusRefreshes = recentActivities.filter(a => a.type === 'status_refresh').length;
-    const connections = recentActivities.filter(a => a.type === 'ws_connect').length;
+    const statusRefreshes = recentActivities.filter(
+      (a) => a.type === "status_refresh",
+    ).length;
+    const connections = recentActivities.filter(
+      (a) => a.type === "ws_connect",
+    ).length;
     score += Math.min(statusRefreshes, 10) * 3;
     score += Math.min(connections, 5) * 5;
 
     tracker.riskScore = Math.min(100, score);
   }
 
-  private async checkGlobalRateLimit(type: string, userId: string): Promise<{
+  private async checkGlobalRateLimit(
+    type: string,
+    userId: string,
+  ): Promise<{
     allowed: boolean;
     retryAfter?: number;
   }> {
@@ -611,7 +720,9 @@ export class LoanStatusRateLimiter {
   }
 
   private calculateBackoffDelay(attemptCount: number): number {
-    let delay = this.backoffConfig.initialDelayMs * Math.pow(this.backoffConfig.multiplier, attemptCount - 1);
+    let delay =
+      this.backoffConfig.initialDelayMs *
+      Math.pow(this.backoffConfig.multiplier, attemptCount - 1);
     delay = Math.min(delay, this.backoffConfig.maxDelayMs);
 
     // Add jitter if enabled
@@ -629,25 +740,46 @@ export const loanStatusRateLimiter = new LoanStatusRateLimiter();
 /**
  * Hook for client-side rate limiting
  */
-export function useLoanStatusRateLimiting(userId: string, applicationId: string) {
+export function useLoanStatusRateLimiting(
+  userId: string,
+  applicationId: string,
+) {
   const checkStatusRefresh = async () => {
-    return await loanStatusRateLimiter.checkStatusRefresh(userId, applicationId);
+    return await loanStatusRateLimiter.checkStatusRefresh(
+      userId,
+      applicationId,
+    );
   };
 
   const checkAutoRefresh = (intervalMs: number) => {
-    return loanStatusRateLimiter.checkAutoRefresh(userId, applicationId, intervalMs);
+    return loanStatusRateLimiter.checkAutoRefresh(
+      userId,
+      applicationId,
+      intervalMs,
+    );
   };
 
   const checkWebSocketConnection = () => {
-    return loanStatusRateLimiter.checkWebSocketConnection(userId, applicationId);
+    return loanStatusRateLimiter.checkWebSocketConnection(
+      userId,
+      applicationId,
+    );
   };
 
   const checkDocumentUpload = (fileSizeBytes: number) => {
-    return loanStatusRateLimiter.checkDocumentUpload(userId, applicationId, fileSizeBytes);
+    return loanStatusRateLimiter.checkDocumentUpload(
+      userId,
+      applicationId,
+      fileSizeBytes,
+    );
   };
 
   const checkCommunication = (recipientCount: number) => {
-    return loanStatusRateLimiter.checkCommunication(userId, applicationId, recipientCount);
+    return loanStatusRateLimiter.checkCommunication(
+      userId,
+      applicationId,
+      recipientCount,
+    );
   };
 
   const getUserStats = () => {

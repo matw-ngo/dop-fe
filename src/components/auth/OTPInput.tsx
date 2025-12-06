@@ -3,22 +3,29 @@
  * Handles 4-digit and 6-digit OTP input with auto-focus, paste support, and validation
  */
 
-'use client';
+"use client";
 
-import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
+import React, { useState, useRef, useEffect, useCallback } from "react";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@/components/ui/tooltip';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Shield, Clock, AlertCircle, RefreshCw, Eye, EyeOff } from 'lucide-react';
-import { cn } from '@/lib/utils';
+} from "@/components/ui/tooltip";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import {
+  Shield,
+  Clock,
+  AlertCircle,
+  RefreshCw,
+  Eye,
+  EyeOff,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export interface OTPInputProps {
   length?: 4 | 6;
@@ -48,40 +55,43 @@ export interface OTPInputProps {
 }
 
 export const OTPInput = React.forwardRef<HTMLDivElement, OTPInputProps>(
-  ({
-    length = 6,
-    value = '',
-    onChange,
-    onComplete,
-    onPaste,
-    disabled = false,
-    error,
-    label = 'Mã OTP',
-    placeholder = '•',
-    autoFocus = true,
-    showTimer = false,
-    timerDuration = 300,
-    timerRemaining = timerDuration,
-    onTimerExpire,
-    showSecureToggle = true,
-    secureMode = false,
-    allowAutoSubmit = true,
-    className,
-    inputClassName,
-    containerClassName,
-    description,
-    helpText,
-    maxLength,
-    pattern,
-    ...props
-  }, ref) => {
+  (
+    {
+      length = 6,
+      value = "",
+      onChange,
+      onComplete,
+      onPaste,
+      disabled = false,
+      error,
+      label = "Mã OTP",
+      placeholder = "•",
+      autoFocus = true,
+      showTimer = false,
+      timerDuration = 300,
+      timerRemaining = timerDuration,
+      onTimerExpire,
+      showSecureToggle = true,
+      secureMode = false,
+      allowAutoSubmit = true,
+      className,
+      inputClassName,
+      containerClassName,
+      description,
+      helpText,
+      maxLength,
+      pattern,
+      ...props
+    },
+    ref,
+  ) => {
     const [otpValues, setOtpValues] = useState<string[]>(
-      Array(length).fill('')
+      Array(length).fill(""),
     );
     const [isSecure, setIsSecure] = useState(secureMode);
     const [isFocused, setIsFocused] = useState(false);
     const [showError, setShowError] = useState(false);
-    const [pastedValue, setPastedValue] = useState('');
+    const [pastedValue, setPastedValue] = useState("");
     const [timerProgress, setTimerProgress] = useState(100);
 
     const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
@@ -89,10 +99,10 @@ export const OTPInput = React.forwardRef<HTMLDivElement, OTPInputProps>(
 
     // Initialize OTP values from prop
     useEffect(() => {
-      if (value && value !== otpValues.join('')) {
-        const newValue = value.split('').slice(0, length);
+      if (value && value !== otpValues.join("")) {
+        const newValue = value.split("").slice(0, length);
         while (newValue.length < length) {
-          newValue.push('');
+          newValue.push("");
         }
         setOtpValues(newValue);
       }
@@ -116,89 +126,104 @@ export const OTPInput = React.forwardRef<HTMLDivElement, OTPInputProps>(
     }, [autoFocus, disabled]);
 
     // Handle input change
-    const handleInputChange = useCallback((index: number, inputValue: string) => {
-      // Only allow digits
-      const digit = inputValue.replace(/\D/g, '').slice(-1);
+    const handleInputChange = useCallback(
+      (index: number, inputValue: string) => {
+        // Only allow digits
+        const digit = inputValue.replace(/\D/g, "").slice(-1);
 
-      const newOtpValues = [...otpValues];
-      newOtpValues[index] = digit;
-      setOtpValues(newOtpValues);
+        const newOtpValues = [...otpValues];
+        newOtpValues[index] = digit;
+        setOtpValues(newOtpValues);
 
-      const newOtpString = newOtpValues.join('');
-      onChange?.(newOtpString, newOtpString.length === length);
+        const newOtpString = newOtpValues.join("");
+        onChange?.(newOtpString, newOtpString.length === length);
 
-      // Auto-focus next input
-      if (digit && index < length - 1) {
-        inputRefs.current[index + 1]?.focus();
-      }
+        // Auto-focus next input
+        if (digit && index < length - 1) {
+          inputRefs.current[index + 1]?.focus();
+        }
 
-      // Auto-submit if complete
-      if (digit && newOtpString.length === length && allowAutoSubmit && onComplete) {
-        setTimeout(() => onComplete(newOtpString), 100);
-      }
+        // Auto-submit if complete
+        if (
+          digit &&
+          newOtpString.length === length &&
+          allowAutoSubmit &&
+          onComplete
+        ) {
+          setTimeout(() => onComplete(newOtpString), 100);
+        }
 
-      // Clear error when user starts typing
-      if (error) {
-        setShowError(false);
-      }
-    }, [otpValues, length, onChange, onComplete, allowAutoSubmit, error]);
+        // Clear error when user starts typing
+        if (error) {
+          setShowError(false);
+        }
+      },
+      [otpValues, length, onChange, onComplete, allowAutoSubmit, error],
+    );
 
     // Handle key press
-    const handleKeyDown = useCallback((index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
-      // Handle backspace
-      if (e.key === 'Backspace') {
-        if (otpValues[index] === '' && index > 0) {
-          // Move to previous input if current is empty
-          inputRefs.current[index - 1]?.focus();
-        } else {
-          // Clear current input
-          const newOtpValues = [...otpValues];
-          newOtpValues[index] = '';
-          setOtpValues(newOtpValues);
-          onChange?.(newOtpValues.join(''), false);
+    const handleKeyDown = useCallback(
+      (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
+        // Handle backspace
+        if (e.key === "Backspace") {
+          if (otpValues[index] === "" && index > 0) {
+            // Move to previous input if current is empty
+            inputRefs.current[index - 1]?.focus();
+          } else {
+            // Clear current input
+            const newOtpValues = [...otpValues];
+            newOtpValues[index] = "";
+            setOtpValues(newOtpValues);
+            onChange?.(newOtpValues.join(""), false);
+          }
         }
-      }
 
-      // Handle arrow keys
-      if (e.key === 'ArrowLeft' && index > 0) {
-        e.preventDefault();
-        inputRefs.current[index - 1]?.focus();
-      }
-      if (e.key === 'ArrowRight' && index < length - 1) {
-        e.preventDefault();
-        inputRefs.current[index + 1]?.focus();
-      }
+        // Handle arrow keys
+        if (e.key === "ArrowLeft" && index > 0) {
+          e.preventDefault();
+          inputRefs.current[index - 1]?.focus();
+        }
+        if (e.key === "ArrowRight" && index < length - 1) {
+          e.preventDefault();
+          inputRefs.current[index + 1]?.focus();
+        }
 
-      // Handle paste
-      if ((e.ctrlKey || e.metaKey) && e.key === 'v') {
-        e.preventDefault();
-        handlePaste();
-      }
+        // Handle paste
+        if ((e.ctrlKey || e.metaKey) && e.key === "v") {
+          e.preventDefault();
+          handlePaste();
+        }
 
-      // Handle Enter
-      if (e.key === 'Enter' && otpValues.join('').length === length && onComplete) {
-        onComplete(otpValues.join(''));
-      }
-    }, [otpValues, length, onChange, onComplete]);
+        // Handle Enter
+        if (
+          e.key === "Enter" &&
+          otpValues.join("").length === length &&
+          onComplete
+        ) {
+          onComplete(otpValues.join(""));
+        }
+      },
+      [otpValues, length, onChange, onComplete],
+    );
 
     // Handle paste
     const handlePaste = useCallback(async () => {
       try {
         const clipboardText = await navigator.clipboard.readText();
-        const digits = clipboardText.replace(/\D/g, '').slice(0, length);
+        const digits = clipboardText.replace(/\D/g, "").slice(0, length);
 
         if (digits.length > 0) {
           setPastedValue(digits);
           onPaste?.(digits);
 
           // Distribute digits across inputs
-          const newOtpValues = Array(length).fill('');
+          const newOtpValues = Array(length).fill("");
           for (let i = 0; i < Math.min(digits.length, length); i++) {
             newOtpValues[i] = digits[i];
           }
           setOtpValues(newOtpValues);
 
-          const newOtpString = newOtpValues.join('');
+          const newOtpString = newOtpValues.join("");
           onChange?.(newOtpString, newOtpString.length === length);
 
           // Focus appropriate input
@@ -211,7 +236,7 @@ export const OTPInput = React.forwardRef<HTMLDivElement, OTPInputProps>(
           }
         }
       } catch (err) {
-        console.warn('Failed to read clipboard:', err);
+        console.warn("Failed to read clipboard:", err);
       }
     }, [length, onPaste, onChange, allowAutoSubmit, onComplete]);
 
@@ -221,35 +246,40 @@ export const OTPInput = React.forwardRef<HTMLDivElement, OTPInputProps>(
     }, []);
 
     // Handle blur
-    const handleBlur = useCallback((index: number) => {
-      // Check if any input is still focused
-      const anyFocused = inputRefs.current.some(ref => ref === document.activeElement);
-      if (!anyFocused) {
-        setIsFocused(false);
-      }
-
-      // Validate on blur if complete
-      const otpString = otpValues.join('');
-      if (otpString.length === length) {
-        if (maxLength && otpString.length > maxLength) {
-          setShowError(true);
-        } else if (pattern && !pattern.test(otpString)) {
-          setShowError(true);
+    const handleBlur = useCallback(
+      (index: number) => {
+        // Check if any input is still focused
+        const anyFocused = inputRefs.current.some(
+          (ref) => ref === document.activeElement,
+        );
+        if (!anyFocused) {
+          setIsFocused(false);
         }
-      }
-    }, [otpValues, length, maxLength, pattern]);
+
+        // Validate on blur if complete
+        const otpString = otpValues.join("");
+        if (otpString.length === length) {
+          if (maxLength && otpString.length > maxLength) {
+            setShowError(true);
+          } else if (pattern && !pattern.test(otpString)) {
+            setShowError(true);
+          }
+        }
+      },
+      [otpValues, length, maxLength, pattern],
+    );
 
     // Handle container click (focus first empty input)
     const handleContainerClick = useCallback(() => {
-      const firstEmptyIndex = otpValues.findIndex(val => val === '');
+      const firstEmptyIndex = otpValues.findIndex((val) => val === "");
       const targetIndex = firstEmptyIndex === -1 ? length - 1 : firstEmptyIndex;
       inputRefs.current[targetIndex]?.focus();
     }, [otpValues, length]);
 
     // Clear all inputs
     const clearAll = useCallback(() => {
-      setOtpValues(Array(length).fill(''));
-      onChange?.('', false);
+      setOtpValues(Array(length).fill(""));
+      onChange?.("", false);
       inputRefs.current[0]?.focus();
       setShowError(false);
     }, [length, onChange]);
@@ -262,18 +292,18 @@ export const OTPInput = React.forwardRef<HTMLDivElement, OTPInputProps>(
     // Get display value
     const getDisplayValue = (value: string) => {
       if (isSecure && value) {
-        return '•';
+        return "•";
       }
       return value;
     };
 
     // Validate current OTP
-    const isComplete = otpValues.every(val => val !== '');
+    const isComplete = otpValues.every((val) => val !== "");
     const isValid = isComplete && !showError && !error;
     const hasError = error || showError;
 
     return (
-      <div ref={containerRef} className={cn('space-y-4', className)} {...props}>
+      <div ref={containerRef} className={cn("space-y-4", className)} {...props}>
         {/* Label and Actions */}
         <div className="flex items-center justify-between">
           <Label className="text-sm font-medium flex items-center gap-2">
@@ -316,11 +346,15 @@ export const OTPInput = React.forwardRef<HTMLDivElement, OTPInputProps>(
                       onClick={toggleSecureMode}
                       disabled={disabled}
                     >
-                      {isSecure ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                      {isSecure ? (
+                        <EyeOff className="h-4 w-4" />
+                      ) : (
+                        <Eye className="h-4 w-4" />
+                      )}
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent>
-                    <p className="text-xs">{isSecure ? 'Hiện mã' : 'Ẩn mã'}</p>
+                    <p className="text-xs">{isSecure ? "Hiện mã" : "Ẩn mã"}</p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
@@ -332,16 +366,18 @@ export const OTPInput = React.forwardRef<HTMLDivElement, OTPInputProps>(
         <div
           ref={ref}
           className={cn(
-            'flex items-center gap-2 justify-center',
-            'w-full max-w-sm mx-auto',
-            containerClassName
+            "flex items-center gap-2 justify-center",
+            "w-full max-w-sm mx-auto",
+            containerClassName,
           )}
           onClick={handleContainerClick}
         >
           {otpValues.map((value, index) => (
             <div key={index} className="relative">
               <Input
-                ref={(el) => (inputRefs.current[index] = el)}
+                ref={(el: HTMLInputElement | null) => {
+                  inputRefs.current[index] = el;
+                }}
                 type="text"
                 inputMode="numeric"
                 pattern="[0-9]*"
@@ -357,23 +393,24 @@ export const OTPInput = React.forwardRef<HTMLDivElement, OTPInputProps>(
                 }}
                 placeholder={placeholder}
                 disabled={disabled}
-                autoComplete={index === 0 ? 'one-time-code' : 'off'}
+                autoComplete={index === 0 ? "one-time-code" : "off"}
                 className={cn(
-                  'w-12 h-12 text-center text-lg font-semibold',
-                  'transition-all duration-200',
-                  'focus:ring-2 focus:ring-primary focus:ring-offset-2',
-                  isFocused && value && 'border-primary',
-                  hasError && 'border-destructive focus:ring-destructive',
-                  isValid && !disabled && 'border-green-500',
-                  disabled && 'opacity-50 cursor-not-allowed',
-                  inputClassName
+                  "w-12 h-12 text-center text-lg font-semibold",
+                  "transition-all duration-200",
+                  "focus:ring-2 focus:ring-primary focus:ring-offset-2",
+                  isFocused && value && "border-primary",
+                  hasError && "border-destructive focus:ring-destructive",
+                  isValid && !disabled && "border-green-500",
+                  disabled && "opacity-50 cursor-not-allowed",
+                  inputClassName,
                 )}
               />
 
               {/* Focus indicator */}
-              {isFocused && document.activeElement === inputRefs.current[index] && (
-                <div className="absolute inset-0 rounded-md ring-2 ring-primary ring-offset-2 pointer-events-none" />
-              )}
+              {isFocused &&
+                document.activeElement === inputRefs.current[index] && (
+                  <div className="absolute inset-0 rounded-md ring-2 ring-primary ring-offset-2 pointer-events-none" />
+                )}
 
               {/* Success indicator */}
               {isValid && value && (
@@ -394,24 +431,30 @@ export const OTPInput = React.forwardRef<HTMLDivElement, OTPInputProps>(
                 <span>Thời gian còn lại</span>
               </div>
               <span className="font-mono">
-                {Math.floor(timerRemaining / 60)}:{(timerRemaining % 60).toString().padStart(2, '0')}
+                {Math.floor(timerRemaining / 60)}:
+                {(timerRemaining % 60).toString().padStart(2, "0")}
               </span>
             </div>
-            <Progress
-              value={timerProgress}
-              className="h-2"
-              indicatorClassName={cn(
-                timerProgress < 20 && 'bg-destructive',
-                timerProgress < 50 && timerProgress >= 20 && 'bg-yellow-500',
-                timerProgress >= 50 && 'bg-primary'
-              )}
-            />
+            <div className="relative">
+              <Progress value={timerProgress} className="h-2" />
+              <div
+                className={cn(
+                  "absolute top-0 left-0 h-full transition-all",
+                  timerProgress < 20 && "bg-destructive",
+                  timerProgress < 50 && timerProgress >= 20 && "bg-yellow-500",
+                  timerProgress >= 50 && "bg-primary",
+                )}
+                style={{ width: `${timerProgress}%` }}
+              />
+            </div>
           </div>
         )}
 
         {/* Description */}
         {description && (
-          <p className="text-sm text-muted-foreground text-center">{description}</p>
+          <p className="text-sm text-muted-foreground text-center">
+            {description}
+          </p>
         )}
 
         {/* Help Text */}
@@ -428,7 +471,7 @@ export const OTPInput = React.forwardRef<HTMLDivElement, OTPInputProps>(
           <Alert variant="destructive" className="text-sm">
             <AlertCircle className="h-4 w-4" />
             <AlertDescription>
-              {error || 'Mã OTP không hợp lệ. Vui lòng kiểm tra lại.'}
+              {error || "Mã OTP không hợp lệ. Vui lòng kiểm tra lại."}
             </AlertDescription>
           </Alert>
         )}
@@ -449,9 +492,9 @@ export const OTPInput = React.forwardRef<HTMLDivElement, OTPInputProps>(
         )}
       </div>
     );
-  }
+  },
 );
 
-OTPInput.displayName = 'OTPInput';
+OTPInput.displayName = "OTPInput";
 
 export default OTPInput;

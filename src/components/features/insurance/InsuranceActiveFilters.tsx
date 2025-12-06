@@ -101,9 +101,9 @@ const InsuranceActiveFilters: React.FC<ActiveFiltersProps> = React.memo(
 
     // Format range label
     const formatRangeLabel = useCallback(
-      (min: number, max: number, ranges: typeof PREMIUM_RANGES) => {
+      (min: number, max: number, ranges: any) => {
         const range = ranges.find(
-          (r) => r.value.min === min && r.value.max === max,
+          (r: any) => r.value.min === min && r.value.max === max,
         );
         return range
           ? range.label
@@ -229,7 +229,7 @@ const InsuranceActiveFilters: React.FC<ActiveFiltersProps> = React.memo(
           label: `TN cá nhân: ${formatRangeLabel(
             filters.coverageRange.personalAccident.min,
             filters.coverageRange.personalAccident.max,
-            PERSONAL_ACCIDENT_COVERAGE_RANGES,
+            PERSONAL_ACCIDENT_COVERAGE_RANGES as any,
           )}`,
           value: filters.coverageRange.personalAccident,
           onRemove: () => {
@@ -256,7 +256,7 @@ const InsuranceActiveFilters: React.FC<ActiveFiltersProps> = React.memo(
           label: `Tài sản: ${formatRangeLabel(
             filters.coverageRange.propertyDamage.min,
             filters.coverageRange.propertyDamage.max,
-            PROPERTY_DAMAGE_COVERAGE_RANGES,
+            PROPERTY_DAMAGE_COVERAGE_RANGES as any,
           )}`,
           value: filters.coverageRange.propertyDamage,
           onRemove: () => {
@@ -343,7 +343,7 @@ const InsuranceActiveFilters: React.FC<ActiveFiltersProps> = React.memo(
           provinceFilters.push({
             key: "provinces-more",
             label: `+${filters.provinces.length - 3} tỉnh/thành khác`,
-            value: null,
+            value: "more" as string,
             onRemove: () => {
               onFiltersChange({ provinces: [] });
             },

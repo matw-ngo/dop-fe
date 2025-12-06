@@ -1,6 +1,7 @@
 import React from "react";
 import { Progress } from "@/components/ui/progress";
 import { formatCurrency } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import type { CoverageItemProps } from "../types";
 import {
   getCoverageProgress,
@@ -36,8 +37,7 @@ export const CoverageItem = React.memo(function CoverageItem({
         </div>
         <Progress
           value={progress}
-          className="h-2"
-          indicatorClassName={getProgressColorClass(color)}
+          className={cn("h-2", getProgressColorClass(color))}
         />
       </div>
     </div>

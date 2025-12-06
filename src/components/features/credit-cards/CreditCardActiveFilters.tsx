@@ -59,7 +59,7 @@ export const CreditCardActiveFilters: React.FC<
       case "networks":
         return CARD_NETWORKS[value as keyof typeof CARD_NETWORKS]?.name;
       case "rewardsTypes":
-        return REWARDS_TYPES[value]?.name;
+        return REWARDS_TYPES[value as keyof typeof REWARDS_TYPES]?.name;
       case "creditLimitRange":
         const tier = CREDIT_LIMIT_TIERS.find(
           (t) =>

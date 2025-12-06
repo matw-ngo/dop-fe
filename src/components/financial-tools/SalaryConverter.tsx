@@ -47,8 +47,11 @@ import {
 } from "lucide-react";
 
 // Import calculation functions
-import { calculateComprehensivePersonalTax } from "@/lib/financial/tax-calculations";
-import { analyzeCompensationTax } from "@/lib/financial/tax-calculations";
+import {
+  calculateComprehensivePersonalTax,
+  analyzeCompensationTax,
+} from "@/lib/financial/tax-calculations";
+import { TaxCalculationResult } from "@/lib/financial-data/tax-brackets";
 import {
   SOCIAL_INSURANCE_RATES,
   FAMILY_DEDUCTIONS,
@@ -98,10 +101,10 @@ interface TaxCalculationResults {
 }
 
 interface CompensationAnalysis {
-  baseSalaryTax: TaxCalculationResults;
-  withBonusTax: TaxCalculationResults;
-  withAllowancesTax: TaxCalculationResults;
-  totalCompensationTax: TaxCalculationResults;
+  baseSalaryTax: TaxCalculationResult;
+  withBonusTax: TaxCalculationResult;
+  withAllowancesTax: TaxCalculationResult;
+  totalCompensationTax: TaxCalculationResult;
   taxEfficiency: {
     mostEfficientStructure: string;
     taxSavingsOpportunity: number;

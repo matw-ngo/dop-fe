@@ -3,21 +3,46 @@
  * Comprehensive admin dashboard for lead management
  */
 
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Separator } from '@/components/ui/separator';
+import React, { useState, useEffect } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Separator } from "@/components/ui/separator";
 import {
   BarChart,
   Bar,
@@ -32,7 +57,7 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
-} from 'recharts';
+} from "recharts";
 import {
   Users,
   TrendingUp,
@@ -52,13 +77,17 @@ import {
   DollarSign,
   Calendar,
   Activity,
-} from 'lucide-react';
+} from "lucide-react";
 
-import type { LeadStatus, LeadAnalytics, BulkLeadOperation } from '@/lib/api/endpoints/lead-generation';
-import { leadGenerationApi } from '@/lib/api/endpoints/lead-generation';
+import type {
+  LeadStatus,
+  LeadAnalytics,
+  BulkLeadOperation,
+} from "@/lib/api/endpoints/lead-generation";
+import { leadGenerationApi } from "@/lib/api/endpoints/lead-generation";
 
 interface LeadManagementInterfaceProps {
-  language?: 'vi' | 'en';
+  language?: "vi" | "en";
 }
 
 interface Lead {
@@ -74,125 +103,129 @@ interface Lead {
   assignedPartners: number;
   createdAt: string;
   lastUpdated: string;
-  urgency: 'urgent' | 'normal' | 'flexible';
+  urgency: "urgent" | "normal" | "flexible";
   source: string;
 }
 
-const LeadManagementInterface: React.FC<LeadManagementInterfaceProps> = ({ language = 'vi' }) => {
+const LeadManagementInterface: React.FC<LeadManagementInterfaceProps> = ({
+  language = "vi",
+}) => {
   const [leads, setLeads] = useState<Lead[]>([]);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState<string>('');
-  const [dateFilter, setDateFilter] = useState('week');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState<string>("");
+  const [dateFilter, setDateFilter] = useState("week");
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
   const [analytics, setAnalytics] = useState<any>(null);
-  const [bulkOperation, setBulkOperation] = useState<BulkLeadOperation | null>(null);
+  const [bulkOperation, setBulkOperation] = useState<BulkLeadOperation | null>(
+    null,
+  );
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [selectedLeads, setSelectedLeads] = useState<string[]>([]);
 
   const translations = {
     vi: {
-      title: 'Quản lý Khách hàng Tiềm năng',
-      description: 'Hệ thống quản lý khách hàng tiềm năng toàn diện',
-      overview: 'Tổng quan',
-      leadsList: 'Danh sách khách hàng',
-      analytics: 'Phân tích',
-      partnerPerformance: 'Hiệu suất đối tác',
-      searchPlaceholder: 'Tìm kiếm theo tên, email, SĐT...',
-      status: 'Trạng thái',
-      loanType: 'Loại vay',
-      loanAmount: 'Số tiền',
-      score: 'Điểm',
-      partners: 'Đối tác',
-      actions: 'Thao tác',
-      view: 'Xem',
-      edit: 'Sửa',
-      delete: 'Xóa',
-      forward: 'Chuyển tiếp',
-      export: 'Xuất file',
-      refresh: 'Làm mới',
-      totalLeads: 'Tổng khách hàng',
-      qualifiedLeads: 'Đủ điều kiện',
-      forwardedLeads: 'Đã chuyển tiếp',
-      acceptedLeads: 'Được chấp nhận',
-      conversionRate: 'Tỷ lệ chuyển đổi',
-      averageResponse: 'Thời gian phản ứng TB',
-      new: 'Mới',
-      inReview: 'Đang xem xét',
-      assigned: 'Đã phân công',
-      accepted: 'Đã chấp nhận',
-      rejected: 'Đã từ chối',
-      completed: 'Hoàn thành',
-      cancelled: 'Hủy',
-      urgent: 'Khẩn cấp',
-      normal: 'Bình thường',
-      flexible: 'Linh hoạt',
-      last30Days: '30 ngày qua',
-      last7Days: '7 ngày qua',
-      today: 'Hôm nay',
-      custom: 'Tùy chỉnh',
-      selectLeads: 'Chọn khách hàng',
-      bulkForward: 'Chuyển tiếp hàng loạt',
-      bulkExport: 'Xuất hàng loạt',
-      bulkDelete: 'Xóa hàng loạt',
-      confirmAction: 'Xác nhận hành động',
-      areYouSure: 'Bạn có chắc chắn?',
-      success: 'Thành công',
-      error: 'Lỗi',
-      processing: 'Đang xử lý...',
-      noLeadsFound: 'Không tìm thấy khách hàng',
+      title: "Quản lý Khách hàng Tiềm năng",
+      description: "Hệ thống quản lý khách hàng tiềm năng toàn diện",
+      overview: "Tổng quan",
+      leadsList: "Danh sách khách hàng",
+      analytics: "Phân tích",
+      partnerPerformance: "Hiệu suất đối tác",
+      searchPlaceholder: "Tìm kiếm theo tên, email, SĐT...",
+      status: "Trạng thái",
+      loanType: "Loại vay",
+      loanAmount: "Số tiền",
+      score: "Điểm",
+      partners: "Đối tác",
+      actions: "Thao tác",
+      view: "Xem",
+      edit: "Sửa",
+      delete: "Xóa",
+      forward: "Chuyển tiếp",
+      export: "Xuất file",
+      refresh: "Làm mới",
+      totalLeads: "Tổng khách hàng",
+      qualifiedLeads: "Đủ điều kiện",
+      forwardedLeads: "Đã chuyển tiếp",
+      acceptedLeads: "Được chấp nhận",
+      conversionRate: "Tỷ lệ chuyển đổi",
+      averageResponse: "Thời gian phản ứng TB",
+      new: "Mới",
+      inReview: "Đang xem xét",
+      assigned: "Đã phân công",
+      accepted: "Đã chấp nhận",
+      rejected: "Đã từ chối",
+      completed: "Hoàn thành",
+      cancelled: "Hủy",
+      urgent: "Khẩn cấp",
+      normal: "Bình thường",
+      flexible: "Linh hoạt",
+      last30Days: "30 ngày qua",
+      last7Days: "7 ngày qua",
+      today: "Hôm nay",
+      custom: "Tùy chỉnh",
+      selectLeads: "Chọn khách hàng",
+      bulkForward: "Chuyển tiếp hàng loạt",
+      bulkExport: "Xuất hàng loạt",
+      bulkDelete: "Xóa hàng loạt",
+      confirmAction: "Xác nhận hành động",
+      areYouSure: "Bạn có chắc chắn?",
+      success: "Thành công",
+      error: "Lỗi",
+      processing: "Đang xử lý...",
+      noLeadsFound: "Không tìm thấy khách hàng",
     },
     en: {
-      title: 'Lead Management Dashboard',
-      description: 'Comprehensive lead management system',
-      overview: 'Overview',
-      leadsList: 'Leads List',
-      analytics: 'Analytics',
-      partnerPerformance: 'Partner Performance',
-      searchPlaceholder: 'Search by name, email, phone...',
-      status: 'Status',
-      loanType: 'Loan Type',
-      loanAmount: 'Amount',
-      score: 'Score',
-      partners: 'Partners',
-      actions: 'Actions',
-      view: 'View',
-      edit: 'Edit',
-      delete: 'Delete',
-      forward: 'Forward',
-      export: 'Export',
-      refresh: 'Refresh',
-      totalLeads: 'Total Leads',
-      qualifiedLeads: 'Qualified Leads',
-      forwardedLeads: 'Forwarded Leads',
-      acceptedLeads: 'Accepted Leads',
-      conversionRate: 'Conversion Rate',
-      averageResponse: 'Avg Response Time',
-      new: 'New',
-      inReview: 'In Review',
-      assigned: 'Assigned',
-      accepted: 'Accepted',
-      rejected: 'Rejected',
-      completed: 'Completed',
-      cancelled: 'Cancelled',
-      urgent: 'Urgent',
-      normal: 'Normal',
-      flexible: 'Flexible',
-      last30Days: 'Last 30 Days',
-      last7Days: 'Last 7 Days',
-      today: 'Today',
-      custom: 'Custom',
-      selectLeads: 'Select Leads',
-      bulkForward: 'Bulk Forward',
-      bulkExport: 'Bulk Export',
-      bulkDelete: 'Bulk Delete',
-      confirmAction: 'Confirm Action',
-      areYouSure: 'Are you sure?',
-      success: 'Success',
-      error: 'Error',
-      processing: 'Processing...',
-      noLeadsFound: 'No leads found',
+      title: "Lead Management Dashboard",
+      description: "Comprehensive lead management system",
+      overview: "Overview",
+      leadsList: "Leads List",
+      analytics: "Analytics",
+      partnerPerformance: "Partner Performance",
+      searchPlaceholder: "Search by name, email, phone...",
+      status: "Status",
+      loanType: "Loan Type",
+      loanAmount: "Amount",
+      score: "Score",
+      partners: "Partners",
+      actions: "Actions",
+      view: "View",
+      edit: "Edit",
+      delete: "Delete",
+      forward: "Forward",
+      export: "Export",
+      refresh: "Refresh",
+      totalLeads: "Total Leads",
+      qualifiedLeads: "Qualified Leads",
+      forwardedLeads: "Forwarded Leads",
+      acceptedLeads: "Accepted Leads",
+      conversionRate: "Conversion Rate",
+      averageResponse: "Avg Response Time",
+      new: "New",
+      inReview: "In Review",
+      assigned: "Assigned",
+      accepted: "Accepted",
+      rejected: "Rejected",
+      completed: "Completed",
+      cancelled: "Cancelled",
+      urgent: "Urgent",
+      normal: "Normal",
+      flexible: "Flexible",
+      last30Days: "Last 30 Days",
+      last7Days: "Last 7 Days",
+      today: "Today",
+      custom: "Custom",
+      selectLeads: "Select Leads",
+      bulkForward: "Bulk Forward",
+      bulkExport: "Bulk Export",
+      bulkDelete: "Bulk Delete",
+      confirmAction: "Confirm Action",
+      areYouSure: "Are you sure?",
+      success: "Success",
+      error: "Error",
+      processing: "Processing...",
+      noLeadsFound: "No leads found",
     },
   };
 
@@ -211,14 +244,24 @@ const LeadManagementInterface: React.FC<LeadManagementInterfaceProps> = ({ langu
         limit: 20,
         status: statusFilter ? [statusFilter] : undefined,
         searchTerm: searchTerm || undefined,
-        sortBy: 'created_at',
-        sortOrder: 'desc',
+        sortBy: "created_at",
+        sortOrder: "desc",
       });
 
-      setLeads(response.leads);
+      setLeads(
+        response.leads.map(
+          (lead) =>
+            ({
+              ...lead,
+              province: (lead as any).province || "Unknown",
+              urgency: (lead as any).urgency || ("normal" as const),
+              source: (lead as any).source || "Website",
+            }) as Lead,
+        ),
+      );
       setTotalPages(response.pagination.totalPages);
     } catch (error) {
-      console.error('Failed to fetch leads:', error);
+      console.error("Failed to fetch leads:", error);
     } finally {
       setLoading(false);
     }
@@ -226,14 +269,16 @@ const LeadManagementInterface: React.FC<LeadManagementInterfaceProps> = ({ langu
 
   const fetchAnalytics = async () => {
     try {
-      const stats = await leadGenerationApi.getLeadStatistics(dateFilter as any);
+      const stats = await leadGenerationApi.getLeadStatistics(
+        dateFilter as any,
+      );
       setAnalytics(stats);
     } catch (error) {
-      console.error('Failed to fetch analytics:', error);
+      console.error("Failed to fetch analytics:", error);
     }
   };
 
-  const handleBulkOperation = async (type: 'forward' | 'export' | 'delete') => {
+  const handleBulkOperation = async (type: "forward" | "export" | "delete") => {
     if (selectedLeads.length === 0) return;
 
     try {
@@ -246,40 +291,48 @@ const LeadManagementInterface: React.FC<LeadManagementInterfaceProps> = ({ langu
       setSelectedLeads([]);
       fetchLeads();
     } catch (error) {
-      console.error('Bulk operation failed:', error);
+      console.error("Bulk operation failed:", error);
     }
   };
 
   const getStatusColor = (status: string) => {
     const colors: Record<string, string> = {
-      new: 'bg-blue-100 text-blue-800',
-      in_review: 'bg-yellow-100 text-yellow-800',
-      assigned: 'bg-purple-100 text-purple-800',
-      accepted: 'bg-green-100 text-green-800',
-      rejected: 'bg-red-100 text-red-800',
-      completed: 'bg-gray-100 text-gray-800',
-      cancelled: 'bg-gray-100 text-gray-800',
+      new: "bg-blue-100 text-blue-800",
+      in_review: "bg-yellow-100 text-yellow-800",
+      assigned: "bg-purple-100 text-purple-800",
+      accepted: "bg-green-100 text-green-800",
+      rejected: "bg-red-100 text-red-800",
+      completed: "bg-gray-100 text-gray-800",
+      cancelled: "bg-gray-100 text-gray-800",
     };
-    return colors[status] || 'bg-gray-100 text-gray-800';
+    return colors[status] || "bg-gray-100 text-gray-800";
   };
 
   const getUrgencyColor = (urgency: string) => {
     const colors: Record<string, string> = {
-      urgent: 'bg-red-100 text-red-800',
-      normal: 'bg-yellow-100 text-yellow-800',
-      flexible: 'bg-green-100 text-green-800',
+      urgent: "bg-red-100 text-red-800",
+      normal: "bg-yellow-100 text-yellow-800",
+      flexible: "bg-green-100 text-green-800",
     };
-    return colors[urgency] || 'bg-gray-100 text-gray-800';
+    return colors[urgency] || "bg-gray-100 text-gray-800";
   };
 
-  const statusChartData = analytics ? [
-    { name: t.new, value: analytics.totalLeads - analytics.qualifiedLeads },
-    { name: t.qualifiedLeads, value: analytics.qualifiedLeads - analytics.forwardedLeads },
-    { name: t.forwardedLeads, value: analytics.forwardedLeads - analytics.acceptedLeads },
-    { name: t.acceptedLeads, value: analytics.acceptedLeads },
-  ] : [];
+  const statusChartData = analytics
+    ? [
+        { name: t.new, value: analytics.totalLeads - analytics.qualifiedLeads },
+        {
+          name: t.qualifiedLeads,
+          value: analytics.qualifiedLeads - analytics.forwardedLeads,
+        },
+        {
+          name: t.forwardedLeads,
+          value: analytics.forwardedLeads - analytics.acceptedLeads,
+        },
+        { name: t.acceptedLeads, value: analytics.acceptedLeads },
+      ]
+    : [];
 
-  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+  const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
   return (
     <div className="w-full max-w-7xl mx-auto p-4 space-y-6">
@@ -306,52 +359,74 @@ const LeadManagementInterface: React.FC<LeadManagementInterfaceProps> = ({ langu
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{t.totalLeads}</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                {t.totalLeads}
+              </CardTitle>
               <Users className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{analytics.totalLeads.toLocaleString()}</div>
+              <div className="text-2xl font-bold">
+                {analytics.totalLeads.toLocaleString()}
+              </div>
               <p className="text-xs text-muted-foreground">
-                +{Math.round((analytics.totalLeads / 100) * 12)}% {language === 'vi' ? 'so với tháng trước' : 'from last month'}
+                +{Math.round((analytics.totalLeads / 100) * 12)}%{" "}
+                {language === "vi" ? "so với tháng trước" : "from last month"}
               </p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{t.qualifiedLeads}</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                {t.qualifiedLeads}
+              </CardTitle>
               <CheckCircle className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{analytics.qualifiedLeads.toLocaleString()}</div>
+              <div className="text-2xl font-bold">
+                {analytics.qualifiedLeads.toLocaleString()}
+              </div>
               <p className="text-xs text-muted-foreground">
-                {Math.round((analytics.qualifiedLeads / analytics.totalLeads) * 100)}% {language === 'vi' ? 'đủ điều kiện' : 'qualified'}
+                {Math.round(
+                  (analytics.qualifiedLeads / analytics.totalLeads) * 100,
+                )}
+                % {language === "vi" ? "đủ điều kiện" : "qualified"}
               </p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{t.acceptedLeads}</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                {t.acceptedLeads}
+              </CardTitle>
               <TrendingUp className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{analytics.acceptedLeads.toLocaleString()}</div>
+              <div className="text-2xl font-bold">
+                {analytics.acceptedLeads.toLocaleString()}
+              </div>
               <p className="text-xs text-muted-foreground">
-                {analytics.conversionRate}% {language === 'vi' ? 'tỷ lệ chuyển đổi' : 'conversion rate'}
+                {analytics.conversionRate}%{" "}
+                {language === "vi" ? "tỷ lệ chuyển đổi" : "conversion rate"}
               </p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{t.averageResponse}</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                {t.averageResponse}
+              </CardTitle>
               <Clock className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{analytics.averageResponseTime}h</div>
+              <div className="text-2xl font-bold">
+                {analytics.averageResponseTime}h
+              </div>
               <p className="text-xs text-muted-foreground">
-                -{Math.round((analytics.averageResponseTime / 24) * 100)}% {language === 'vi' ? 'nhanh hơn' : 'faster than average'}
+                -{Math.round((analytics.averageResponseTime / 24) * 100)}%{" "}
+                {language === "vi" ? "nhanh hơn" : "faster than average"}
               </p>
             </CardContent>
           </Card>
@@ -388,7 +463,9 @@ const LeadManagementInterface: React.FC<LeadManagementInterfaceProps> = ({ langu
                     <SelectValue placeholder={t.status} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">{language === 'vi' ? 'Tất cả' : 'All'}</SelectItem>
+                    <SelectItem value="">
+                      {language === "vi" ? "Tất cả" : "All"}
+                    </SelectItem>
                     <SelectItem value="new">{t.new}</SelectItem>
                     <SelectItem value="in_review">{t.inReview}</SelectItem>
                     <SelectItem value="assigned">{t.assigned}</SelectItem>
@@ -411,10 +488,18 @@ const LeadManagementInterface: React.FC<LeadManagementInterfaceProps> = ({ langu
                 <div className="flex space-x-2">
                   {selectedLeads.length > 0 && (
                     <>
-                      <Button variant="outline" size="sm" onClick={() => handleBulkOperation('forward')}>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleBulkOperation("forward")}
+                      >
                         {t.bulkForward} ({selectedLeads.length})
                       </Button>
-                      <Button variant="outline" size="sm" onClick={() => handleBulkOperation('export')}>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleBulkOperation("export")}
+                      >
                         {t.bulkExport} ({selectedLeads.length})
                       </Button>
                     </>
@@ -444,20 +529,26 @@ const LeadManagementInterface: React.FC<LeadManagementInterfaceProps> = ({ langu
                           type="checkbox"
                           onChange={(e) => {
                             if (e.target.checked) {
-                              setSelectedLeads(leads.map(lead => lead.id));
+                              setSelectedLeads(leads.map((lead) => lead.id));
                             } else {
                               setSelectedLeads([]);
                             }
                           }}
                         />
                       </TableHead>
-                      <TableHead>{language === 'vi' ? 'Họ tên' : 'Name'}</TableHead>
-                      <TableHead>{language === 'vi' ? 'Liên hệ' : 'Contact'}</TableHead>
+                      <TableHead>
+                        {language === "vi" ? "Họ tên" : "Name"}
+                      </TableHead>
+                      <TableHead>
+                        {language === "vi" ? "Liên hệ" : "Contact"}
+                      </TableHead>
                       <TableHead>{t.status}</TableHead>
                       <TableHead>{t.loanType}</TableHead>
                       <TableHead>{t.loanAmount}</TableHead>
                       <TableHead>{t.score}</TableHead>
-                      <TableHead>{language === 'vi' ? 'Khẩn cấp' : 'Urgency'}</TableHead>
+                      <TableHead>
+                        {language === "vi" ? "Khẩn cấp" : "Urgency"}
+                      </TableHead>
                       <TableHead>{t.partners}</TableHead>
                       <TableHead>{t.actions}</TableHead>
                     </TableRow>
@@ -473,16 +564,22 @@ const LeadManagementInterface: React.FC<LeadManagementInterfaceProps> = ({ langu
                               if (e.target.checked) {
                                 setSelectedLeads([...selectedLeads, lead.id]);
                               } else {
-                                setSelectedLeads(selectedLeads.filter(id => id !== lead.id));
+                                setSelectedLeads(
+                                  selectedLeads.filter((id) => id !== lead.id),
+                                );
                               }
                             }}
                           />
                         </TableCell>
-                        <TableCell className="font-medium">{lead.fullName}</TableCell>
+                        <TableCell className="font-medium">
+                          {lead.fullName}
+                        </TableCell>
                         <TableCell>
                           <div className="text-sm">
                             <div>{lead.phoneNumber}</div>
-                            {lead.email && <div className="text-gray-500">{lead.email}</div>}
+                            {lead.email && (
+                              <div className="text-gray-500">{lead.email}</div>
+                            )}
                           </div>
                         </TableCell>
                         <TableCell>
@@ -492,16 +589,22 @@ const LeadManagementInterface: React.FC<LeadManagementInterfaceProps> = ({ langu
                         </TableCell>
                         <TableCell>{lead.loanType}</TableCell>
                         <TableCell>
-                          {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(lead.loanAmount)}
+                          {new Intl.NumberFormat("vi-VN", {
+                            style: "currency",
+                            currency: "VND",
+                          }).format(lead.loanAmount)}
                         </TableCell>
                         <TableCell>
                           {lead.score ? (
                             <div className="flex items-center space-x-2">
                               <span className="font-medium">{lead.score}</span>
-                              <Progress value={lead.score} className="w-16 h-2" />
+                              <Progress
+                                value={lead.score}
+                                className="w-16 h-2"
+                              />
                             </div>
                           ) : (
-                            '-'
+                            "-"
                           )}
                         </TableCell>
                         <TableCell>
@@ -512,7 +615,11 @@ const LeadManagementInterface: React.FC<LeadManagementInterfaceProps> = ({ langu
                         <TableCell>{lead.assignedPartners}</TableCell>
                         <TableCell>
                           <div className="flex space-x-1">
-                            <Button variant="ghost" size="sm" onClick={() => setSelectedLead(lead)}>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => setSelectedLead(lead)}
+                            >
                               <Eye className="w-4 h-4" />
                             </Button>
                             <Button variant="ghost" size="sm">
@@ -531,7 +638,9 @@ const LeadManagementInterface: React.FC<LeadManagementInterfaceProps> = ({ langu
           {/* Pagination */}
           <div className="flex justify-between items-center">
             <div className="text-sm text-gray-500">
-              {language === 'vi' ? `Trang ${currentPage} / ${totalPages}` : `Page ${currentPage} of ${totalPages}`}
+              {language === "vi"
+                ? `Trang ${currentPage} / ${totalPages}`
+                : `Page ${currentPage} of ${totalPages}`}
             </div>
             <div className="flex space-x-2">
               <Button
@@ -540,15 +649,17 @@ const LeadManagementInterface: React.FC<LeadManagementInterfaceProps> = ({ langu
                 onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
                 disabled={currentPage === 1}
               >
-                {language === 'vi' ? 'Trước' : 'Previous'}
+                {language === "vi" ? "Trước" : "Previous"}
               </Button>
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                onClick={() =>
+                  setCurrentPage(Math.min(totalPages, currentPage + 1))
+                }
                 disabled={currentPage === totalPages}
               >
-                {language === 'vi' ? 'Tiếp' : 'Next'}
+                {language === "vi" ? "Tiếp" : "Next"}
               </Button>
             </div>
           </div>
@@ -560,7 +671,11 @@ const LeadManagementInterface: React.FC<LeadManagementInterfaceProps> = ({ langu
             {/* Status Distribution */}
             <Card>
               <CardHeader>
-                <CardTitle>{language === 'vi' ? 'Phân bố trạng thái' : 'Status Distribution'}</CardTitle>
+                <CardTitle>
+                  {language === "vi"
+                    ? "Phân bố trạng thái"
+                    : "Status Distribution"}
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <ResponsiveContainer width="100%" height={300}>
@@ -570,13 +685,18 @@ const LeadManagementInterface: React.FC<LeadManagementInterfaceProps> = ({ langu
                       cx="50%"
                       cy="50%"
                       labelLine={false}
-                      label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                      label={({ name, percent }) =>
+                        `${name}: ${(percent * 100).toFixed(0)}%`
+                      }
                       outerRadius={80}
                       fill="#8884d8"
                       dataKey="value"
                     >
                       {statusChartData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                        <Cell
+                          key={`cell-${index}`}
+                          fill={COLORS[index % COLORS.length]}
+                        />
                       ))}
                     </Pie>
                     <Tooltip />
@@ -588,7 +708,11 @@ const LeadManagementInterface: React.FC<LeadManagementInterfaceProps> = ({ langu
             {/* Trends */}
             <Card>
               <CardHeader>
-                <CardTitle>{language === 'vi' ? 'Xu hướng theo thời gian' : 'Trends Over Time'}</CardTitle>
+                <CardTitle>
+                  {language === "vi"
+                    ? "Xu hướng theo thời gian"
+                    : "Trends Over Time"}
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <ResponsiveContainer width="100%" height={300}>
@@ -598,8 +722,18 @@ const LeadManagementInterface: React.FC<LeadManagementInterfaceProps> = ({ langu
                     <YAxis />
                     <Tooltip />
                     <Legend />
-                    <Line type="monotone" dataKey="applications" stroke="#8884d8" name={language === 'vi' ? 'Hồ sơ' : 'Applications'} />
-                    <Line type="monotone" dataKey="approvals" stroke="#82ca9d" name={language === 'vi' ? 'Duyệt' : 'Approvals'} />
+                    <Line
+                      type="monotone"
+                      dataKey="applications"
+                      stroke="#8884d8"
+                      name={language === "vi" ? "Hồ sơ" : "Applications"}
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="approvals"
+                      stroke="#82ca9d"
+                      name={language === "vi" ? "Duyệt" : "Approvals"}
+                    />
                   </LineChart>
                 </ResponsiveContainer>
               </CardContent>
@@ -609,7 +743,11 @@ const LeadManagementInterface: React.FC<LeadManagementInterfaceProps> = ({ langu
           {/* Geographic Distribution */}
           <Card>
             <CardHeader>
-              <CardTitle>{language === 'vi' ? 'Phân bố địa lý' : 'Geographic Distribution'}</CardTitle>
+              <CardTitle>
+                {language === "vi"
+                  ? "Phân bố địa lý"
+                  : "Geographic Distribution"}
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <ResponsiveContainer width="100%" height={400}>
@@ -618,7 +756,11 @@ const LeadManagementInterface: React.FC<LeadManagementInterfaceProps> = ({ langu
                   <XAxis dataKey="province" />
                   <YAxis />
                   <Tooltip />
-                  <Bar dataKey="count" fill="#8884d8" name={language === 'vi' ? 'Số lượng' : 'Count'} />
+                  <Bar
+                    dataKey="count"
+                    fill="#8884d8"
+                    name={language === "vi" ? "Số lượng" : "Count"}
+                  />
                 </BarChart>
               </ResponsiveContainer>
             </CardContent>
@@ -635,28 +777,49 @@ const LeadManagementInterface: React.FC<LeadManagementInterfaceProps> = ({ langu
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>{language === 'vi' ? 'Đối tác' : 'Partner'}</TableHead>
-                    <TableHead>{language === 'vi' ? 'Hồ sơ được phân công' : 'Leads Assigned'}</TableHead>
-                    <TableHead>{language === 'vi' ? 'Tỷ lệ chuyển đổi' : 'Conversion Rate'}</TableHead>
-                    <TableHead>{language === 'vi' ? 'Thời gian phản ứng' : 'Response Time'}</TableHead>
-                    <TableHead>{language === 'vi' ? 'Đánh giá' : 'Rating'}</TableHead>
+                    <TableHead>
+                      {language === "vi" ? "Đối tác" : "Partner"}
+                    </TableHead>
+                    <TableHead>
+                      {language === "vi"
+                        ? "Hồ sơ được phân công"
+                        : "Leads Assigned"}
+                    </TableHead>
+                    <TableHead>
+                      {language === "vi"
+                        ? "Tỷ lệ chuyển đổi"
+                        : "Conversion Rate"}
+                    </TableHead>
+                    <TableHead>
+                      {language === "vi"
+                        ? "Thời gian phản ứng"
+                        : "Response Time"}
+                    </TableHead>
+                    <TableHead>
+                      {language === "vi" ? "Đánh giá" : "Rating"}
+                    </TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {analytics?.topPartners?.map((partner: any) => (
                     <TableRow key={partner.partnerId}>
-                      <TableCell className="font-medium">{partner.partnerName}</TableCell>
+                      <TableCell className="font-medium">
+                        {partner.partnerName}
+                      </TableCell>
                       <TableCell>{partner.leadsAssigned}</TableCell>
                       <TableCell>
                         <div className="flex items-center space-x-2">
                           <span>{partner.conversionRate}%</span>
-                          <Progress value={partner.conversionRate} className="w-16 h-2" />
+                          <Progress
+                            value={partner.conversionRate}
+                            className="w-16 h-2"
+                          />
                         </div>
                       </TableCell>
                       <TableCell>{partner.averageResponseTime}h</TableCell>
                       <TableCell>
                         <div className="flex items-center">
-                          {'⭐'.repeat(Math.round(partner.rating || 4))}
+                          {"⭐".repeat(Math.round(partner.rating || 4))}
                         </div>
                       </TableCell>
                     </TableRow>
@@ -675,16 +838,25 @@ const LeadManagementInterface: React.FC<LeadManagementInterfaceProps> = ({ langu
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2">
                   <Activity className="w-5 h-5" />
-                  <span>{language === 'vi' ? 'Hoạt động gần đây' : 'Recent Activity'}</span>
+                  <span>
+                    {language === "vi"
+                      ? "Hoạt động gần đây"
+                      : "Recent Activity"}
+                  </span>
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   {leads.slice(0, 5).map((lead) => (
-                    <div key={lead.id} className="flex items-center justify-between">
+                    <div
+                      key={lead.id}
+                      className="flex items-center justify-between"
+                    >
                       <div>
                         <p className="font-medium">{lead.fullName}</p>
-                        <p className="text-sm text-gray-500">{new Date(lead.createdAt).toLocaleDateString()}</p>
+                        <p className="text-sm text-gray-500">
+                          {new Date(lead.createdAt).toLocaleDateString()}
+                        </p>
                       </div>
                       <Badge className={getStatusColor(lead.status)}>
                         {t[lead.status as keyof typeof t] || lead.status}
@@ -701,20 +873,34 @@ const LeadManagementInterface: React.FC<LeadManagementInterfaceProps> = ({ langu
                 <CardHeader>
                   <CardTitle className="flex items-center space-x-2">
                     <RefreshCw className="w-5 h-5" />
-                    <span>{language === 'vi' ? 'Thao tác hàng loạt' : 'Bulk Operations'}</span>
+                    <span>
+                      {language === "vi"
+                        ? "Thao tác hàng loạt"
+                        : "Bulk Operations"}
+                    </span>
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-2">
                     <div className="flex justify-between">
-                      <span>{language === 'vi' ? 'Trạng thái:' : 'Status:'}</span>
-                      <Badge>{t[bulkOperation.status as keyof typeof t] || bulkOperation.status}</Badge>
+                      <span>
+                        {language === "vi" ? "Trạng thái:" : "Status:"}
+                      </span>
+                      <Badge>
+                        {t[bulkOperation.status as keyof typeof t] ||
+                          bulkOperation.status}
+                      </Badge>
                     </div>
                     <div className="flex justify-between">
-                      <span>{language === 'vi' ? 'Tiến độ:' : 'Progress:'}</span>
+                      <span>
+                        {language === "vi" ? "Tiến độ:" : "Progress:"}
+                      </span>
                       <span>{bulkOperation.progress}%</span>
                     </div>
-                    <Progress value={bulkOperation.progress} className="w-full h-2" />
+                    <Progress
+                      value={bulkOperation.progress}
+                      className="w-full h-2"
+                    />
                   </div>
                 </CardContent>
               </Card>
@@ -725,29 +911,35 @@ const LeadManagementInterface: React.FC<LeadManagementInterfaceProps> = ({ langu
 
       {/* Lead Details Dialog */}
       {selectedLead && (
-        <Dialog open={!!selectedLead} onOpenChange={() => setSelectedLead(null)}>
+        <Dialog
+          open={!!selectedLead}
+          onOpenChange={() => setSelectedLead(null)}
+        >
           <DialogContent className="max-w-2xl">
             <DialogHeader>
-              <DialogTitle>{language === 'vi' ? 'Chi tiết khách hàng' : 'Lead Details'}</DialogTitle>
+              <DialogTitle>
+                {language === "vi" ? "Chi tiết khách hàng" : "Lead Details"}
+              </DialogTitle>
             </DialogHeader>
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label>{language === 'vi' ? 'Họ tên' : 'Full Name'}</Label>
+                  <Label>{language === "vi" ? "Họ tên" : "Full Name"}</Label>
                   <p className="font-medium">{selectedLead.fullName}</p>
                 </div>
                 <div>
-                  <Label>{language === 'vi' ? 'Số điện thoại' : 'Phone'}</Label>
+                  <Label>{language === "vi" ? "Số điện thoại" : "Phone"}</Label>
                   <p className="font-medium">{selectedLead.phoneNumber}</p>
                 </div>
                 <div>
-                  <Label>{language === 'vi' ? 'Email' : 'Email'}</Label>
-                  <p className="font-medium">{selectedLead.email || '-'}</p>
+                  <Label>{language === "vi" ? "Email" : "Email"}</Label>
+                  <p className="font-medium">{selectedLead.email || "-"}</p>
                 </div>
                 <div>
                   <Label>{t.status}</Label>
                   <Badge className={getStatusColor(selectedLead.status)}>
-                    {t[selectedLead.status as keyof typeof t] || selectedLead.status}
+                    {t[selectedLead.status as keyof typeof t] ||
+                      selectedLead.status}
                   </Badge>
                 </div>
               </div>
@@ -760,7 +952,10 @@ const LeadManagementInterface: React.FC<LeadManagementInterfaceProps> = ({ langu
                 <div>
                   <Label>{t.loanAmount}</Label>
                   <p className="font-medium">
-                    {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(selectedLead.loanAmount)}
+                    {new Intl.NumberFormat("vi-VN", {
+                      style: "currency",
+                      currency: "VND",
+                    }).format(selectedLead.loanAmount)}
                   </p>
                 </div>
                 {selectedLead.score && (
@@ -768,7 +963,10 @@ const LeadManagementInterface: React.FC<LeadManagementInterfaceProps> = ({ langu
                     <Label>{t.score}</Label>
                     <div className="flex items-center space-x-2">
                       <span className="font-medium">{selectedLead.score}</span>
-                      <Progress value={selectedLead.score} className="w-16 h-2" />
+                      <Progress
+                        value={selectedLead.score}
+                        className="w-16 h-2"
+                      />
                     </div>
                   </div>
                 )}

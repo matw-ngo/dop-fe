@@ -16,36 +16,48 @@ import { useConflictResolution } from "@/lib/security/conflict-resolution";
 import { createSecureLoanStatusWebSocket } from "@/lib/security/websocket-security";
 
 import type {
-  LoanApplicationStatus,
-  DocumentVerificationStatus,
   TimelineMilestone,
   DocumentStatus,
   CommunicationEntry,
   ApplicationStatusData,
-  NotificationPreferences
+  NotificationPreferences,
 } from "@/store/use-loan-status-store";
 
 import type {
   NotificationMessage,
   NotificationChannel,
-  NotificationPriority
+  NotificationPriority,
 } from "@/lib/notifications/loan-notifications";
+import {
+  DocumentVerificationStatus,
+  LoanApplicationStatus,
+} from "@/lib/loan-status/vietnamese-status-config";
 
 /**
  * Hook for SECURE loan application status tracking
  */
-export function useLoanStatus(applicationId: string, options?: {
-  autoRefresh?: boolean;
-  refreshInterval?: number;
-  realTime?: boolean;
-  securityEnabled?: boolean;
-}) {
+export function useLoanStatus(
+  applicationId: string,
+  options?: {
+    autoRefresh?: boolean;
+    refreshInterval?: number;
+    realTime?: boolean;
+    securityEnabled?: boolean;
+  },
+) {
   const securityEnabled = options?.securityEnabled ?? true;
 
   // Security hooks
-  const { initializeSecurityContext, secureStatusUpdate, createSecureWebSocket } = useIntegratedSecurity();
+  const {
+    initializeSecurityContext,
+    secureStatusUpdate,
+    createSecureWebSocket,
+  } = useIntegratedSecurity();
   const { logApplicationEvent, logSecurityEvent } = useAuditLogging();
-  const { checkStatusRefresh, checkAutoRefresh } = useLoanStatusRateLimiting(applicationId, 'user');
+  const { checkStatusRefresh, checkAutoRefresh } = useLoanStatusRateLimiting(
+    applicationId,
+    "user",
+  );
   const { getCurrentVersion } = useConflictResolution();
 
   // Store hooks
@@ -65,7 +77,6 @@ export function useLoanStatus(applicationId: string, options?: {
     disconnectRealTime,
     setAutoRefresh,
     setError,
-    secureDataCleanup,
 
     // Utilities
     getStatusConfig,
@@ -73,21 +84,21 @@ export function useLoanStatus(applicationId: string, options?: {
     getNextAllowedStatuses,
   } = useLoanStatusTrackingStore();
 
-  const refreshIntervalRef = useRef<NodeJS.Timeout>();
+  const refreshIntervalRef = useRef<NodeJS.Timeout>(null);
   const securityContextRef = useRef<any>(null);
   const wsConnectionRef = useRef<any>(null);
 
   // Initialize security context
   useEffect(() => {
     if (securityEnabled && applicationId) {
-      initializeSecurityContext().then(context => {
+      initializeSecurityContext().then((context) => {
         securityContextRef.current = context;
         logApplicationEvent(
-          'APPLICATION_VIEWED' as any,
+          "APPLICATION_VIEWED" as any,
           applicationId,
-          context.userId || 'anonymous',
-          'success',
-          { securityLevel: context.securityLevel }
+          context.userId || "anonymous",
+          "success",
+          { securityLevel: context.securityLevel },
         );
       });
     }
@@ -102,7 +113,7 @@ export function useLoanStatus(applicationId: string, options?: {
           const rateLimitResult = await checkStatusRefresh();
           if (!rateLimitResult.allowed) {
             setError(`Rate limit exceeded: ${rateLimitResult.reason}`);
-            logSecurityEvent('RATE_LIMIT_EXCEEDED' as any, 'MEDIUM' as any, {
+            logSecurityEvent("RATE_LIMIT_EXCEEDED" as any, "MEDIUM" as any, {
               reason: rateLimitResult.reason,
               applicationId,
             });
@@ -120,8 +131,12 @@ export function useLoanStatus(applicationId: string, options?: {
             // Validate auto-refresh settings
             const autoRefreshCheck = checkAutoRefresh(interval * 1000);
             if (!autoRefreshCheck.allowed) {
-              console.warn('Auto-refresh settings adjusted for security:', autoRefreshCheck.reason);
-              const recommendedInterval = autoRefreshCheck.recommendedInterval || 30000;
+              console.warn(
+                "Auto-refresh settings adjusted for security:",
+                autoRefreshCheck.reason,
+              );
+              const recommendedInterval =
+                autoRefreshCheck.recommendedInterval || 30000;
               refreshIntervalRef.current = setInterval(() => {
                 secureAutoRefresh();
               }, recommendedInterval);
@@ -134,22 +149,27 @@ export function useLoanStatus(applicationId: string, options?: {
 
           // Set up SECURE real-time connection if enabled
           if (options?.realTime ?? true) {
-            wsConnectionRef.current = createSecureWebSocket(applicationId, securityContextRef.current);
+            wsConnectionRef.current = createSecureWebSocket(
+              applicationId,
+              securityContextRef.current,
+            );
 
             // Set up message handlers
             if (wsConnectionRef.current) {
-              wsConnectionRef.current.onMessage('status_update', (message) => {
-                handleSecureStatusUpdate(message);
-              });
+              wsConnectionRef.current.onMessage(
+                "status_update",
+                (message: any) => {
+                  handleSecureStatusUpdate(message);
+                },
+              );
             }
           }
-
         } catch (error) {
-          logSecurityEvent('SYSTEM_ERROR' as any, 'HIGH' as any, {
-            error: error instanceof Error ? error.message : 'Unknown error',
+          logSecurityEvent("SYSTEM_ERROR" as any, "HIGH" as any, {
+            error: error instanceof Error ? error.message : "Unknown error",
             applicationId,
           });
-          setError('Security initialization failed');
+          setError("Security initialization failed");
         }
       };
 
@@ -165,10 +185,16 @@ export function useLoanStatus(applicationId: string, options?: {
       }
       disconnectRealTime();
       if (securityEnabled) {
-        secureDataCleanup();
+        // secureDataCleanup();
       }
     };
-  }, [applicationId, options?.autoRefresh, options?.refreshInterval, options?.realTime, securityEnabled]);
+  }, [
+    applicationId,
+    options?.autoRefresh,
+    options?.refreshInterval,
+    options?.realTime,
+    securityEnabled,
+  ]);
 
   // Secure auto-refresh function
   const secureAutoRefresh = useCallback(async () => {
@@ -181,7 +207,7 @@ export function useLoanStatus(applicationId: string, options?: {
       // Check rate limiting
       const rateLimitResult = await checkStatusRefresh();
       if (!rateLimitResult.allowed) {
-        logSecurityEvent('RATE_LIMIT_EXCEEDED' as any, 'MEDIUM' as any, {
+        logSecurityEvent("RATE_LIMIT_EXCEEDED" as any, "MEDIUM" as any, {
           reason: rateLimitResult.reason,
           applicationId,
         });
@@ -196,60 +222,72 @@ export function useLoanStatus(applicationId: string, options?: {
         securityContextRef.current,
         applicationId,
         { lastRefresh: new Date().toISOString() },
-        currentVersion
+        currentVersion,
       );
 
       if (updateResult.success) {
         refreshApplicationStatus(applicationId);
         logApplicationEvent(
-          'STATUS_REFRESH' as any,
+          "STATUS_REFRESH" as any,
           applicationId,
-          securityContextRef.current.userId || 'system',
-          'success',
-          { securityScore: updateResult.metadata?.riskScore }
+          securityContextRef.current.userId || "system",
+          "success",
+          { securityScore: updateResult.metadata?.riskScore },
         );
       } else {
-        logSecurityEvent('SECURITY_VIOLATION' as any, 'HIGH' as any, {
+        logSecurityEvent("SECURITY_VIOLATION" as any, "HIGH" as any, {
           violations: updateResult.securityViolations,
           applicationId,
         });
       }
     } catch (error) {
-      logSecurityEvent('SYSTEM_ERROR' as any, 'HIGH' as any, {
-        error: error instanceof Error ? error.message : 'Unknown error',
+      logSecurityEvent("SYSTEM_ERROR" as any, "HIGH" as any, {
+        error: error instanceof Error ? error.message : "Unknown error",
         applicationId,
       });
     }
-  }, [applicationId, securityEnabled, checkStatusRefresh, getCurrentVersion, secureStatusUpdate]);
+  }, [
+    applicationId,
+    securityEnabled,
+    checkStatusRefresh,
+    getCurrentVersion,
+    secureStatusUpdate,
+  ]);
 
   // Handle secure status updates from WebSocket
-  const handleSecureStatusUpdate = useCallback((message: any) => {
-    if (!securityContextRef.current || !securityEnabled) {
-      // Fallback to non-secure handling
-      setApplicationStatus(message.payload);
-      return;
-    }
+  const handleSecureStatusUpdate = useCallback(
+    (message: any) => {
+      if (!securityContextRef.current || !securityEnabled) {
+        // Fallback to non-secure handling
+        setApplicationStatus(message.payload);
+        return;
+      }
 
-    // Validate message integrity and security
-    try {
-      // Log real-time update
-      logApplicationEvent(
-        'WEBSOCKET_MESSAGE_RECEIVED' as any,
-        applicationId,
-        securityContextRef.current.userId || 'system',
-        'success',
-        { messageType: 'status_update' }
-      );
+      // Validate message integrity and security
+      try {
+        // Log real-time update
+        logApplicationEvent(
+          "WEBSOCKET_MESSAGE_RECEIVED" as any,
+          applicationId,
+          securityContextRef.current.userId || "system",
+          "success",
+          { messageType: "status_update" },
+        );
 
-      // Apply update with security validation
-      setApplicationStatus(message.payload);
-    } catch (error) {
-      logSecurityEvent('SECURITY_VIOLATION' as any, 'MEDIUM' as any, {
-        error: error instanceof Error ? error.message : 'Invalid WebSocket message',
-        applicationId,
-      });
-    }
-  }, [applicationId, securityEnabled]);
+        // Apply update with security validation
+        setApplicationStatus(message.payload);
+      } catch (error) {
+        logSecurityEvent("SECURITY_VIOLATION" as any, "MEDIUM" as any, {
+          error:
+            error instanceof Error
+              ? error.message
+              : "Invalid WebSocket message",
+          applicationId,
+        });
+      }
+    },
+    [applicationId, securityEnabled],
+  );
 
   // Manual refresh function
   const refresh = useCallback(() => {
@@ -259,23 +297,33 @@ export function useLoanStatus(applicationId: string, options?: {
   }, [applicationId, refreshApplicationStatus]);
 
   // Toggle auto-refresh
-  const toggleAutoRefresh = useCallback((enabled?: boolean) => {
-    const newAutoRefresh = enabled ?? !storeAutoRefresh;
-    setAutoRefresh(newAutoRefresh);
+  const toggleAutoRefresh = useCallback(
+    (enabled?: boolean) => {
+      const newAutoRefresh = enabled ?? !storeAutoRefresh;
+      setAutoRefresh(newAutoRefresh);
 
-    if (refreshIntervalRef.current) {
-      clearInterval(refreshIntervalRef.current);
-    }
-
-    if (newAutoRefresh && applicationId) {
-      const interval = options?.refreshInterval ?? storeRefreshInterval;
-      if (interval > 0) {
-        refreshIntervalRef.current = setInterval(() => {
-          refreshApplicationStatus(applicationId);
-        }, interval * 1000);
+      if (refreshIntervalRef.current) {
+        clearInterval(refreshIntervalRef.current);
       }
-    }
-  }, [applicationId, storeAutoRefresh, storeRefreshInterval, options?.refreshInterval, setAutoRefresh, refreshApplicationStatus]);
+
+      if (newAutoRefresh && applicationId) {
+        const interval = options?.refreshInterval ?? storeRefreshInterval;
+        if (interval > 0) {
+          refreshIntervalRef.current = setInterval(() => {
+            refreshApplicationStatus(applicationId);
+          }, interval * 1000);
+        }
+      }
+    },
+    [
+      applicationId,
+      storeAutoRefresh,
+      storeRefreshInterval,
+      options?.refreshInterval,
+      setAutoRefresh,
+      refreshApplicationStatus,
+    ],
+  );
 
   return {
     // State
@@ -306,10 +354,13 @@ export function useLoanStatus(applicationId: string, options?: {
 /**
  * Hook for loan application timeline management
  */
-export function useLoanTimeline(applicationId: string, options?: {
-  autoLoad?: boolean;
-  realTime?: boolean;
-}) {
+export function useLoanTimeline(
+  applicationId: string,
+  options?: {
+    autoLoad?: boolean;
+    realTime?: boolean;
+  },
+) {
   const {
     milestones,
     isLoadingTimeline,
@@ -332,28 +383,35 @@ export function useLoanTimeline(applicationId: string, options?: {
   // Get timeline statistics
   const getTimelineStats = useCallback(() => {
     const total = milestones.length;
-    const completed = milestones.filter(m => m.completed).length;
-    const current = milestones.find(m => m.current);
+    const completed = milestones.filter((m) => m.completed).length;
+    const current = milestones.find((m) => m.current);
 
     return {
       total,
       completed,
       percentage: total > 0 ? Math.round((completed / total) * 100) : 0,
       currentMilestone: current,
-      nextMilestone: current ? milestones.find(m => !m.completed && m.timestamp > current.timestamp) : null,
+      nextMilestone: current
+        ? milestones.find(
+            (m) => !m.completed && m.timestamp > current.timestamp,
+          )
+        : null,
     };
   }, [milestones]);
 
   // Get milestones by category
   const getMilestonesByCategory = useCallback(() => {
-    const categories = milestones.reduce((acc, milestone) => {
-      const category = milestone.status.split('_')[0]; // Simple categorization
-      if (!acc[category]) {
-        acc[category] = [];
-      }
-      acc[category].push(milestone);
-      return acc;
-    }, {} as Record<string, TimelineMilestone[]>);
+    const categories = milestones.reduce(
+      (acc, milestone) => {
+        const category = milestone.status.split("_")[0]; // Simple categorization
+        if (!acc[category]) {
+          acc[category] = [];
+        }
+        acc[category].push(milestone);
+        return acc;
+      },
+      {} as Record<string, TimelineMilestone[]>,
+    );
 
     return categories;
   }, [milestones]);
@@ -367,7 +425,10 @@ export function useLoanTimeline(applicationId: string, options?: {
     // Actions
     refresh: () => refreshTimeline(applicationId),
     addMilestone: (milestone: TimelineMilestone) => addMilestone(milestone),
-    updateMilestone: (milestoneId: string, updates: Partial<TimelineMilestone>) => updateMilestone(milestoneId, updates),
+    updateMilestone: (
+      milestoneId: string,
+      updates: Partial<TimelineMilestone>,
+    ) => updateMilestone(milestoneId, updates),
 
     // Computed values
     stats: getTimelineStats(),
@@ -378,9 +439,12 @@ export function useLoanTimeline(applicationId: string, options?: {
 /**
  * Hook for document status tracking
  */
-export function useLoanDocuments(applicationId: string, options?: {
-  autoLoad?: boolean;
-}) {
+export function useLoanDocuments(
+  applicationId: string,
+  options?: {
+    autoLoad?: boolean;
+  },
+) {
   const {
     documents,
     isLoadingDocuments,
@@ -404,10 +468,14 @@ export function useLoanDocuments(applicationId: string, options?: {
   // Get document statistics
   const getDocumentStats = useCallback(() => {
     const total = documents.length;
-    const verified = documents.filter(d => d.status === "da_xac_nhan").length;
-    const pending = documents.filter(d => ["cho_tai_len", "dang_tai_len", "da_tai_len", "dang_kiem_tra"].includes(d.status)).length;
-    const rejected = documents.filter(d => d.status === "bi_tu_choi").length;
-    const expired = documents.filter(d => d.status === "het_han").length;
+    const verified = documents.filter((d) => d.status === "da_xac_nhan").length;
+    const pending = documents.filter((d) =>
+      ["cho_tai_len", "dang_tai_len", "da_tai_len", "dang_kiem_tra"].includes(
+        d.status,
+      ),
+    ).length;
+    const rejected = documents.filter((d) => d.status === "bi_tu_choi").length;
+    const expired = documents.filter((d) => d.status === "het_han").length;
 
     return {
       total,
@@ -421,36 +489,42 @@ export function useLoanDocuments(applicationId: string, options?: {
 
   // Get documents requiring action
   const getDocumentsRequiringAction = useCallback(() => {
-    return documents.filter(doc =>
-      ["cho_tai_len", "bi_tu_choi", "het_han"].includes(doc.status)
+    return documents.filter((doc) =>
+      ["cho_tai_len", "bi_tu_choi", "het_han"].includes(doc.status),
     );
   }, [documents]);
 
   // Get documents by status
-  const getDocumentsByStatus = useCallback((status: DocumentVerificationStatus) => {
-    return documents.filter(doc => doc.status === status);
-  }, [documents]);
+  const getDocumentsByStatus = useCallback(
+    (status: DocumentVerificationStatus) => {
+      return documents.filter((doc) => doc.status === status);
+    },
+    [documents],
+  );
 
   // Get documents by type
   const getDocumentsByType = useCallback(() => {
-    return documents.reduce((acc, doc) => {
-      if (!acc[doc.type]) {
-        acc[doc.type] = [];
-      }
-      acc[doc.type].push(doc);
-      return acc;
-    }, {} as Record<string, DocumentStatus[]>);
+    return documents.reduce(
+      (acc, doc) => {
+        if (!acc[doc.type]) {
+          acc[doc.type] = [];
+        }
+        acc[doc.type].push(doc);
+        return acc;
+      },
+      {} as Record<string, DocumentStatus[]>,
+    );
   }, [documents]);
 
   // Check if all required documents are uploaded
   const areRequiredDocumentsUploaded = useCallback(() => {
-    const requiredDocuments = documents.filter(doc => {
+    const requiredDocuments = documents.filter((doc) => {
       // This would need to be implemented based on document type requirements
       // For now, assume all documents are required
       return true;
     });
 
-    return requiredDocuments.every(doc => doc.status !== "cho_tai_len");
+    return requiredDocuments.every((doc) => doc.status !== "cho_tai_len");
   }, [documents]);
 
   return {
@@ -461,8 +535,11 @@ export function useLoanDocuments(applicationId: string, options?: {
 
     // Actions
     refresh: () => refreshDocuments(applicationId),
-    updateStatus: (documentId: string, status: DocumentVerificationStatus, metadata?: Record<string, any>) =>
-      updateDocumentStatus(documentId, status, metadata),
+    updateStatus: (
+      documentId: string,
+      status: DocumentVerificationStatus,
+      metadata?: Record<string, any>,
+    ) => updateDocumentStatus(documentId, status, metadata),
     add: (document: DocumentStatus) => addDocument(document),
     remove: (documentId: string) => removeDocument(documentId),
 
@@ -478,9 +555,12 @@ export function useLoanDocuments(applicationId: string, options?: {
 /**
  * Hook for communication management
  */
-export function useLoanCommunications(applicationId: string, options?: {
-  autoLoad?: boolean;
-}) {
+export function useLoanCommunications(
+  applicationId: string,
+  options?: {
+    autoLoad?: boolean;
+  },
+) {
   const {
     communications,
     isLoadingCommunications,
@@ -503,44 +583,56 @@ export function useLoanCommunications(applicationId: string, options?: {
 
   // Get unread count
   const getUnreadCount = useCallback(() => {
-    return communications.filter(comm => !comm.readAt).length;
+    return communications.filter((comm) => !comm.readAt).length;
   }, [communications]);
 
   // Get communications by type
-  const getCommunicationsByType = useCallback((type: CommunicationEntry["type"]) => {
-    return communications.filter(comm => comm.type === type);
-  }, [communications]);
+  const getCommunicationsByType = useCallback(
+    (type: CommunicationEntry["type"]) => {
+      return communications.filter((comm) => comm.type === type);
+    },
+    [communications],
+  );
 
   // Get communications by priority
-  const getCommunicationsByPriority = useCallback((priority: CommunicationEntry["priority"]) => {
-    return communications.filter(comm => comm.priority === priority);
-  }, [communications]);
+  const getCommunicationsByPriority = useCallback(
+    (priority: CommunicationEntry["priority"]) => {
+      return communications.filter((comm) => comm.priority === priority);
+    },
+    [communications],
+  );
 
   // Send message helper
-  const sendMessageWithType = useCallback((
-    type: CommunicationEntry["type"],
-    title: string,
-    content: string,
-    priority?: NotificationPriority
-  ) => {
-    return sendMessage(applicationId, {
-      type,
-      title,
-      content,
-      priority: priority || "normal",
-    });
-  }, [applicationId, sendMessage]);
+  const sendMessageWithType = useCallback(
+    (
+      type: CommunicationEntry["type"],
+      title: string,
+      content: string,
+      priority?: NotificationPriority,
+    ) => {
+      return sendMessage(applicationId, {
+        type,
+        title,
+        content,
+        priority: priority || "normal",
+      });
+    },
+    [applicationId, sendMessage],
+  );
 
   // Mark multiple as read
-  const markMultipleAsRead = useCallback((communicationIds: string[]) => {
-    communicationIds.forEach(id => markCommunicationAsRead(id));
-  }, [markCommunicationAsRead]);
+  const markMultipleAsRead = useCallback(
+    (communicationIds: string[]) => {
+      communicationIds.forEach((id) => markCommunicationAsRead(id));
+    },
+    [markCommunicationAsRead],
+  );
 
   // Mark all as read
   const markAllAsRead = useCallback(() => {
     const unreadIds = communications
-      .filter(comm => !comm.readAt)
-      .map(comm => comm.id);
+      .filter((comm) => !comm.readAt)
+      .map((comm) => comm.id);
     markMultipleAsRead(unreadIds);
   }, [communications, markMultipleAsRead]);
 
@@ -577,64 +669,80 @@ export function useLoanNotifications(applicationId?: string) {
   } = useLoanStatusTrackingStore();
 
   // Send notification helper
-  const sendNotification = useCallback(async (
-    templateId: string,
-    channel: NotificationChannel,
-    recipient: {
-      name: string;
-      phone?: string;
-      email?: string;
-      zaloId?: string;
-    },
-    variables: Record<string, any>,
-    options?: {
-      priority?: NotificationPriority;
-      scheduledAt?: string;
-    }
-  ) => {
-    if (!applicationId) {
-      throw new Error("Application ID is required for sending notifications");
-    }
-
-    const message = loanNotificationManager.scheduleNotification(
-      applicationId,
-      templateId,
-      channel,
-      recipient,
-      variables,
-      options
-    );
-
-    // Validate message
-    const validation = loanNotificationManager.validateMessage(message);
-    if (!validation.isValid) {
-      throw new Error(`Invalid notification: ${validation.errors.join(", ")}`);
-    }
-
-    // Check preferences if available
-    if (notificationPreferences) {
-      const shouldSend = loanNotificationManager.shouldSendNotification(message, notificationPreferences);
-      if (!shouldSend) {
-        return { message: "Notification skipped based on preferences", skipped: true };
+  const sendNotification = useCallback(
+    async (
+      templateId: string,
+      channel: NotificationChannel,
+      recipient: {
+        name: string;
+        phone?: string;
+        email?: string;
+        zaloId?: string;
+      },
+      variables: Record<string, any>,
+      options?: {
+        priority?: NotificationPriority;
+        scheduledAt?: string;
+      },
+    ) => {
+      if (!applicationId) {
+        throw new Error("Application ID is required for sending notifications");
       }
-    }
 
-    // Send the notification (this would integrate with the actual notification service)
-    try {
-      // const result = await loanApi.sendNotification(message);
-      return { message: "Notification sent successfully", result: message };
-    } catch (error) {
-      throw new Error(`Failed to send notification: ${error instanceof Error ? error.message : "Unknown error"}`);
-    }
-  }, [applicationId, notificationPreferences]);
+      const message = loanNotificationManager.scheduleNotification(
+        applicationId,
+        templateId,
+        channel,
+        recipient,
+        variables,
+        options,
+      );
+
+      // Validate message
+      const validation = loanNotificationManager.validateMessage(message);
+      if (!validation.isValid) {
+        throw new Error(
+          `Invalid notification: ${validation.errors.join(", ")}`,
+        );
+      }
+
+      // Check preferences if available
+      if (notificationPreferences) {
+        const shouldSend = loanNotificationManager.shouldSendNotification(
+          message,
+          notificationPreferences,
+        );
+        if (!shouldSend) {
+          return {
+            message: "Notification skipped based on preferences",
+            skipped: true,
+          };
+        }
+      }
+
+      // Send the notification (this would integrate with the actual notification service)
+      try {
+        // const result = await loanApi.sendNotification(message);
+        return { message: "Notification sent successfully", result: message };
+      } catch (error) {
+        throw new Error(
+          `Failed to send notification: ${error instanceof Error ? error.message : "Unknown error"}`,
+        );
+      }
+    },
+    [applicationId, notificationPreferences],
+  );
 
   // Update notification preferences
-  const updatePreferences = useCallback(async (updates: Partial<NotificationPreferences>) => {
-    if (applicationId) {
-      updates.applicationId = applicationId;
-    }
-    return updateNotificationPreferences(updates);
-  }, [applicationId, updateNotificationPreferences]);
+  const updatePreferences = useCallback(
+    async (updates: Partial<NotificationPreferences>) => {
+      if (applicationId) {
+        updates.applicationId = applicationId;
+      }
+      return updateNotificationPreferences(updates);
+    },
+    [applicationId, updateNotificationPreferences],
+  );
 
   return {
     // State
@@ -653,11 +761,14 @@ export function useLoanNotifications(applicationId?: string) {
 /**
  * Hook for real-time connection management
  */
-export function useRealTimeConnection(applicationId: string, options?: {
-  autoConnect?: boolean;
-  reconnectInterval?: number;
-  maxReconnectAttempts?: number;
-}) {
+export function useRealTimeConnection(
+  applicationId: string,
+  options?: {
+    autoConnect?: boolean;
+    reconnectInterval?: number;
+    maxReconnectAttempts?: number;
+  },
+) {
   const {
     connectionStatus,
     wsConnection,
@@ -670,7 +781,7 @@ export function useRealTimeConnection(applicationId: string, options?: {
   } = useLoanStatusTrackingStore();
 
   const reconnectAttemptsRef = useRef(0);
-  const reconnectTimeoutRef = useRef<NodeJS.Timeout>();
+  const reconnectTimeoutRef = useRef<NodeJS.Timeout>(null);
 
   // Connect with reconnection logic
   const connectWithRetry = useCallback(() => {
@@ -695,7 +806,14 @@ export function useRealTimeConnection(applicationId: string, options?: {
         attemptConnection();
       }
     }, interval);
-  }, [applicationId, connectionStatus, connectRealTime, setConnectionStatus, options?.maxReconnectAttempts, options?.reconnectInterval]);
+  }, [
+    applicationId,
+    connectionStatus,
+    connectRealTime,
+    setConnectionStatus,
+    options?.maxReconnectAttempts,
+    options?.reconnectInterval,
+  ]);
 
   // Initialize connection
   useEffect(() => {
@@ -709,7 +827,12 @@ export function useRealTimeConnection(applicationId: string, options?: {
       }
       disconnectRealTime();
     };
-  }, [applicationId, options?.autoConnect, connectWithRetry, disconnectRealTime]);
+  }, [
+    applicationId,
+    options?.autoConnect,
+    connectWithRetry,
+    disconnectRealTime,
+  ]);
 
   // Manual reconnect
   const reconnect = useCallback(() => {
@@ -761,9 +884,12 @@ export function useOfflineMode() {
   }, [setOfflineMode, processOfflineQueue]);
 
   // Add action to queue
-  const queueAction = useCallback((type: string, data: any) => {
-    addToOfflineQueue(type, data);
-  }, [addToOfflineQueue]);
+  const queueAction = useCallback(
+    (type: string, data: any) => {
+      addToOfflineQueue(type, data);
+    },
+    [addToOfflineQueue],
+  );
 
   // Get queue size
   const getQueueSize = useCallback(() => {
@@ -788,14 +914,17 @@ export function useOfflineMode() {
  * Hook for comprehensive loan status tracking
  * Combines all status tracking functionality into a single hook
  */
-export function useLoanStatusTracking(applicationId: string, options?: {
-  autoRefresh?: boolean;
-  refreshInterval?: number;
-  realTime?: boolean;
-  autoLoadTimeline?: boolean;
-  autoLoadDocuments?: boolean;
-  autoLoadCommunications?: boolean;
-}) {
+export function useLoanStatusTracking(
+  applicationId: string,
+  options?: {
+    autoRefresh?: boolean;
+    refreshInterval?: number;
+    realTime?: boolean;
+    autoLoadTimeline?: boolean;
+    autoLoadDocuments?: boolean;
+    autoLoadCommunications?: boolean;
+  },
+) {
   const status = useLoanStatus(applicationId, options);
   const timeline = useLoanTimeline(applicationId, {
     autoLoad: options?.autoLoadTimeline,
@@ -823,9 +952,19 @@ export function useLoanStatusTracking(applicationId: string, options?: {
 
   // Get overall status
   const getOverallStatus = useCallback(() => {
-    const hasErrors = !!(status.error || timeline.error || documents.error || communications.error);
-    const isLoading = status.isLoading || timeline.isLoading || documents.isLoading || communications.isLoading;
-    const isActionRequired = documents.requiringAction.length > 0 || communications.unreadCount > 0;
+    const hasErrors = !!(
+      status.error ||
+      timeline.error ||
+      documents.error ||
+      communications.error
+    );
+    const isLoading =
+      status.isLoading ||
+      timeline.isLoading ||
+      documents.isLoading ||
+      communications.isLoading;
+    const isActionRequired =
+      documents.requiringAction.length > 0 || communications.unreadCount > 0;
 
     return {
       hasErrors,
@@ -851,9 +990,18 @@ export function useLoanStatusTracking(applicationId: string, options?: {
     getOverallStatus,
 
     // Combined computed values
-    hasError: !!status.error || !!timeline.error || !!documents.error || !!communications.error,
-    isLoading: status.isLoading || timeline.isLoading || documents.isLoading || communications.isLoading,
-    needsAction: documents.requiringAction.length > 0 || communications.unreadCount > 0,
+    hasError:
+      !!status.error ||
+      !!timeline.error ||
+      !!documents.error ||
+      !!communications.error,
+    isLoading:
+      status.isLoading ||
+      timeline.isLoading ||
+      documents.isLoading ||
+      communications.isLoading,
+    needsAction:
+      documents.requiringAction.length > 0 || communications.unreadCount > 0,
   };
 }
 
@@ -861,45 +1009,49 @@ export function useLoanStatusTracking(applicationId: string, options?: {
  * Hook for status transition management
  */
 export function useStatusTransitions(currentStatus?: LoanApplicationStatus) {
-  const {
-    applicationStatus,
-    updateApplicationStatus,
-  } = useLoanStatusTrackingStore();
+  const { applicationStatus, updateApplicationStatus } =
+    useLoanStatusTrackingStore();
 
   const status = currentStatus || applicationStatus?.status;
 
   // Check if transition is allowed
-  const canTransitionTo = useCallback((targetStatus: LoanApplicationStatus): boolean => {
-    if (!status) return false;
+  const canTransitionTo = useCallback(
+    (targetStatus: LoanApplicationStatus): boolean => {
+      if (!status) return false;
 
-    // This would integrate with the status transition rules
-    // For now, allow any transition as a placeholder
-    return true;
-  }, [status]);
+      // This would integrate with the status transition rules
+      // For now, allow any transition as a placeholder
+      return true;
+    },
+    [status],
+  );
 
   // Execute status transition
-  const transitionTo = useCallback(async (
-    targetStatus: LoanApplicationStatus,
-    metadata?: Record<string, any>
-  ) => {
-    if (!status || !canTransitionTo(targetStatus)) {
-      throw new Error("Invalid status transition");
-    }
+  const transitionTo = useCallback(
+    async (
+      targetStatus: LoanApplicationStatus,
+      metadata?: Record<string, any>,
+    ) => {
+      if (!status || !canTransitionTo(targetStatus)) {
+        throw new Error("Invalid status transition");
+      }
 
-    try {
-      // Update local state optimistically
-      updateApplicationStatus(targetStatus, metadata);
+      try {
+        // Update local state optimistically
+        updateApplicationStatus(targetStatus, metadata);
 
-      // Call API to update status on server
-      // await loanApi.updateApplicationStatus(applicationId, targetStatus, metadata);
+        // Call API to update status on server
+        // await loanApi.updateApplicationStatus(applicationId, targetStatus, metadata);
 
-      return { success: true, newStatus: targetStatus };
-    } catch (error) {
-      // Revert local state if API call fails
-      updateApplicationStatus(status);
-      throw error;
-    }
-  }, [status, canTransitionTo, updateApplicationStatus]);
+        return { success: true, newStatus: targetStatus };
+      } catch (error) {
+        // Revert local state if API call fails
+        updateApplicationStatus(status);
+        throw error;
+      }
+    },
+    [status, canTransitionTo, updateApplicationStatus],
+  );
 
   return {
     currentStatus: status,

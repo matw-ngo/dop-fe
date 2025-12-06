@@ -34,7 +34,7 @@ export function hasAnyRole(user: User | null, roles: string[]): boolean {
  */
 export function hasAllRoles(user: User | null, roles: string[]): boolean {
   if (!user) return false;
-  return roles.every(role => user.role === role);
+  return roles.every((role) => user.role === role);
 }
 
 /**
@@ -92,7 +92,7 @@ export function canAccessRoute(user: User | null, route: string): boolean {
   if (!user) return false;
 
   // Define route permissions
-  const routePermissions: Record<string, string[]> = [
+  const routePermissions = [
     { pattern: /^\/admin$/, permissions: ["read:all"] },
     { pattern: /^\/admin\/flows$/, permissions: ["manage:flows"] },
     { pattern: /^\/admin\/leads$/, permissions: ["manage:leads"] },
@@ -104,7 +104,7 @@ export function canAccessRoute(user: User | null, route: string): boolean {
 
   // Find matching route permissions
   const matchingRoute = routePermissions.find(({ pattern }) =>
-    pattern.test(route)
+    pattern.test(route),
   );
 
   if (!matchingRoute) {
@@ -113,8 +113,8 @@ export function canAccessRoute(user: User | null, route: string): boolean {
   }
 
   // Check if user has any of the required permissions
-  return matchingRoute.permissions.some(permission =>
-    hasPermission(user, permission)
+  return matchingRoute.permissions.some((permission) =>
+    hasPermission(user, permission),
   );
 }
 
@@ -143,7 +143,7 @@ export function canPerformAction(
   user: User | null,
   action: string,
   resource: string,
-  resourceOwnerId?: string
+  resourceOwnerId?: string,
 ): boolean {
   if (!user) return false;
 

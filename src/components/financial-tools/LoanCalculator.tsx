@@ -264,9 +264,9 @@ const LoanCalculator: React.FC = () => {
         }));
 
       setResults({
-        monthlyPayment: formattedResults.monthlyPaymentFormatted,
-        totalPayment: formattedResults.totalPaymentFormatted,
-        totalInterest: formattedResults.totalInterestFormatted,
+        monthlyPayment: calculationResult.monthlyPayment,
+        totalPayment: calculationResult.totalPayment,
+        totalInterest: calculationResult.totalInterest,
         effectiveRate: calculationResult.effectiveInterestRate,
         apr: calculationResult.apr,
         schedule,

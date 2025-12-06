@@ -3,16 +3,32 @@
 
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
-import type { LoanApplicationData, PersonalInfoData, FinancialInfoData, EmploymentInfoData, DocumentUploadData, LoanDetailsData } from "@/types/forms/loan-form";
-import type { VietnameseLoanProduct, VietnameseLoanType } from "@/lib/loan-products/vietnamese-loan-products";
-import type { ApplicantProfile, EligibilityResult } from "@/lib/loan-products/eligibility-rules";
-import type { LoanCalculationResult, LoanCalculationParams } from "@/lib/loan-products/interest-calculations";
+import type {
+  LoanApplicationData,
+  PersonalInfoData,
+  FinancialInfoData,
+  EmploymentInfoData,
+  DocumentUploadData,
+  LoanDetailsData,
+} from "@/types/forms/loan-form";
+import type {
+  VietnameseLoanProduct,
+  VietnameseLoanType,
+} from "@/lib/loan-products/vietnamese-loan-products";
+import type {
+  ApplicantProfile,
+  EligibilityResult,
+} from "@/lib/loan-products/eligibility-rules";
+import type {
+  LoanCalculationResult,
+  LoanCalculationParams,
+} from "@/lib/loan-products/interest-calculations";
 
 import type {
   LoanApplicationStatus,
   DocumentVerificationStatus,
   StatusConfig,
-  DocumentTypeConfig
+  DocumentTypeConfig,
 } from "@/lib/loan-status/vietnamese-status-config";
 
 /**
@@ -161,7 +177,10 @@ interface LoanApplicationStoreActions {
 
   // Document upload actions
   /** Set document upload status */
-  setDocumentUploadStatus: (documentKey: string, status: "pending" | "uploading" | "completed" | "failed") => void;
+  setDocumentUploadStatus: (
+    documentKey: string,
+    status: "pending" | "uploading" | "completed" | "failed",
+  ) => void;
 
   /** Check if all documents are uploaded */
   areAllDocumentsUploaded: () => boolean;
@@ -212,7 +231,8 @@ interface LoanApplicationStoreActions {
 /**
  * Combined Loan Application Store Type
  */
-type LoanApplicationStore = LoanApplicationStoreState & LoanApplicationStoreActions;
+type LoanApplicationStore = LoanApplicationStoreState &
+  LoanApplicationStoreActions;
 
 /**
  * Loan Application Store Implementation
@@ -395,6 +415,7 @@ export const useLoanApplicationStore = create<LoanApplicationStore>()(
         updateMetadata: (data: Partial<LoanApplicationData["metadata"]>) => {
           set(
             (state) => ({
+              ...state,
               applicationData: {
                 ...state.applicationData,
                 metadata: {
@@ -411,6 +432,7 @@ export const useLoanApplicationStore = create<LoanApplicationStore>()(
         updateApplicationData: (data: Partial<LoanApplicationData>) => {
           set(
             (state) => ({
+              ...state,
               applicationData: {
                 ...state.applicationData,
                 ...data,
@@ -428,7 +450,7 @@ export const useLoanApplicationStore = create<LoanApplicationStore>()(
           let value: unknown = applicationData;
 
           for (const path of fieldPath) {
-            if (value && typeof value === 'object' && path in value) {
+            if (value && typeof value === "object" && path in value) {
               value = (value as Record<string, unknown>)[path];
             } else {
               return undefined;
@@ -447,7 +469,7 @@ export const useLoanApplicationStore = create<LoanApplicationStore>()(
           let current: Record<string, unknown> = newData;
           for (let i = 0; i < fieldPath.length - 1; i++) {
             const path = fieldPath[i];
-            if (!current[path] || typeof current[path] !== 'object') {
+            if (!current[path] || typeof current[path] !== "object") {
               current[path] = {};
             }
             current = current[path] as Record<string, unknown>;
@@ -502,7 +524,10 @@ export const useLoanApplicationStore = create<LoanApplicationStore>()(
         },
 
         // Document upload actions
-        setDocumentUploadStatus: (documentKey: string, status: "pending" | "uploading" | "completed" | "failed") => {
+        setDocumentUploadStatus: (
+          documentKey: string,
+          status: "pending" | "uploading" | "completed" | "failed",
+        ) => {
           set(
             (state) => ({
               documentUploadStatus: {
@@ -517,7 +542,9 @@ export const useLoanApplicationStore = create<LoanApplicationStore>()(
 
         areAllDocumentsUploaded: () => {
           const { documentUploadStatus } = get();
-          return Object.values(documentUploadStatus).every(status => status === "completed");
+          return Object.values(documentUploadStatus).every(
+            (status) => status === "completed",
+          );
         },
 
         // Submission actions
@@ -681,17 +708,28 @@ export const useLoanApplicationStore = create<LoanApplicationStore>()(
 /**
  * Selectors for common use cases
  */
-export const useCurrentStep = () => useLoanApplicationStore((state) => state.currentStep);
-export const useApplicationData = () => useLoanApplicationStore((state) => state.applicationData);
-export const usePersonalInfo = () => useLoanApplicationStore((state) => state.applicationData.personalInfo);
-export const useFinancialInfo = () => useLoanApplicationStore((state) => state.applicationData.financialInfo);
-export const useEmploymentInfo = () => useLoanApplicationStore((state) => state.applicationData.employmentInfo);
-export const useLoanDetails = () => useLoanApplicationStore((state) => state.applicationData.loanDetails);
-export const useDocuments = () => useLoanApplicationStore((state) => state.applicationData.documents);
-export const useSubmissionStatus = () => useLoanApplicationStore((state) => state.submissionStatus);
-export const useIsSubmitting = () => useLoanApplicationStore((state) => state.isSubmitting);
-export const useFieldErrors = () => useLoanApplicationStore((state) => state.fieldErrors);
-export const useDocumentUploadStatus = () => useLoanApplicationStore((state) => state.documentUploadStatus);
+export const useCurrentStep = () =>
+  useLoanApplicationStore((state) => state.currentStep);
+export const useApplicationData = () =>
+  useLoanApplicationStore((state) => state.applicationData);
+export const usePersonalInfo = () =>
+  useLoanApplicationStore((state) => state.applicationData.personalInfo);
+export const useFinancialInfo = () =>
+  useLoanApplicationStore((state) => state.applicationData.financialInfo);
+export const useEmploymentInfo = () =>
+  useLoanApplicationStore((state) => state.applicationData.employmentInfo);
+export const useLoanDetails = () =>
+  useLoanApplicationStore((state) => state.applicationData.loanDetails);
+export const useDocuments = () =>
+  useLoanApplicationStore((state) => state.applicationData.documents);
+export const useSubmissionStatus = () =>
+  useLoanApplicationStore((state) => state.submissionStatus);
+export const useIsSubmitting = () =>
+  useLoanApplicationStore((state) => state.isSubmitting);
+export const useFieldErrors = () =>
+  useLoanApplicationStore((state) => state.fieldErrors);
+export const useDocumentUploadStatus = () =>
+  useLoanApplicationStore((state) => state.documentUploadStatus);
 
 /**
  * Hook for loan application form hydration

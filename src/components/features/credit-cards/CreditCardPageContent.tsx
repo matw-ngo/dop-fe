@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useMemo } from "react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
-import { CreditCardFilters, CreditCard } from "@/types/credit-card";
+import { CreditCardFilters, CreditCard, SortOption } from "@/types/credit-card";
 import CreditCardGrid from "../credit-card/CreditCardGrid";
 import CreditCardFilterPanel from "./CreditCardFilterPanel";
 import CreditCardResultsHeader from "./CreditCardResultsHeader";
@@ -25,7 +25,7 @@ interface CreditCardPageContentProps {
   className?: string;
   initialFilters?: Partial<CreditCardFilters>;
   initialSearch?: string;
-  initialSort?: string;
+  initialSort?: SortOption;
   initialViewMode?: ViewMode;
   itemsPerPage?: number;
   showBreadcrumb?: boolean;
@@ -35,7 +35,7 @@ interface CreditCardPageContentProps {
   }>;
   onFilterChange?: (filters: CreditCardFilters) => void;
   onSearchChange?: (query: string) => void;
-  onSortChange?: (sort: string) => void;
+  onSortChange?: (sort: SortOption) => void;
   onViewModeChange?: (mode: ViewMode) => void;
   onCardClick?: (card: CreditCard) => void;
 }
@@ -44,7 +44,7 @@ export const CreditCardPageContent: React.FC<CreditCardPageContentProps> = ({
   className,
   initialFilters,
   initialSearch = "",
-  initialSort = "featured",
+  initialSort = "featured" as SortOption,
   initialViewMode = "grid",
   itemsPerPage = 12,
   showBreadcrumb = true,
@@ -264,16 +264,21 @@ export const CreditCardPageContent: React.FC<CreditCardPageContentProps> = ({
     (filterType: string, value?: string) => {
       const newFilters = { ...filters };
 
+      // Handle array filters with proper type casting
       if (
-        value &&
-        Array.isArray(newFilters[filterType as keyof CreditCardFilters])
+        filterType === "categories" ||
+        filterType === "networks" ||
+        filterType === "issuers" ||
+        filterType === "annualFeeType" ||
+        filterType === "rewardsTypes" ||
+        filterType === "provinces" ||
+        filterType === "employmentTypes" ||
+        filterType === "digitalFeatures"
       ) {
-        const filterArray = newFilters[
-          filterType as keyof CreditCardFilters
-        ] as string[];
-        newFilters[filterType as keyof CreditCardFilters] = filterArray.filter(
-          (v: string) => v !== value,
-        ) as any;
+        // These are all array types
+        (newFilters as any)[filterType] = (newFilters as any)[
+          filterType
+        ]?.filter((v: any) => v !== value);
       } else {
         // Reset filter to default
         switch (filterType) {
@@ -314,7 +319,7 @@ export const CreditCardPageContent: React.FC<CreditCardPageContentProps> = ({
   );
 
   const handleSort = useCallback(
-    (sort: string) => {
+    (sort: SortOption) => {
       setIsLoading(true);
       setSortOption(sort);
       onSortChange?.(sort);

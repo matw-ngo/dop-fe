@@ -73,8 +73,10 @@ export interface CreditCard {
   slug: string;
   name: string;
   issuer: string;
+  bank?: string; // Bank name (optional for backward compatibility)
   cardType: CardNetwork;
   category: CardCategory;
+  description?: string; // Card description (optional)
 
   // Financial Details
   annualFee: number;
@@ -164,6 +166,48 @@ export interface CreditCard {
     cardControl: boolean; // freeze/unfreeze card
     expenseTracking: boolean;
   };
+
+  // Additional Payment Support (optional for backward compatibility)
+  walletSupported?: boolean; // Supports e-wallets like MoMo, ZaloPay
+  mobilePaymentSupported?: boolean; // Supports mobile payments
+
+  // Approval and Income (optional for backward compatibility)
+  approvalRate?: string; // Approval rate percentage
+  minIncome?: string; // Minimum income requirement formatted string
+
+  // Pros and Cons (optional for backward compatibility)
+  pros?: string[]; // List of advantages
+  cons?: string[]; // List of disadvantages
+
+  // Additional Features (optional for backward compatibility)
+  fraudProtection?: boolean; // Override insurance.fraudProtection if needed
+  emergencySupport?: boolean; // 24/7 emergency support
+  globalAcceptance?: boolean; // Global acceptance
+  customerSupport247?: boolean; // 24/7 customer support
+  welcomeOffers?: any[]; // Welcome offers (extended)
+  travelBenefits?: any[]; // Travel benefits (extended)
+  lifestyleBenefits?: any[]; // Lifestyle benefits (extended)
+  specialPromotions?: any[]; // Special promotions (extended)
+
+  // Feature Categories (optional for backward compatibility)
+  cardFeatures?: string[]; // Card-specific features
+  securityFeatures?: string[]; // Security and protection features
+  globalFeatures?: string[]; // Global/international features
+  requirements?: string[]; // Application requirements
+  additionalInfo?: Array<{ label: string; value: string }>; // Additional information with label-value structure
+
+  // Fee Details (optional for backward compatibility)
+  supplementaryFee?: number; // Fee for supplementary cards
+  replacementFee?: number; // Card replacement fee
+  cashAdvanceRate?: number; // Cash advance interest rate
+  overdueRate?: number; // Overdue payment interest rate
+  transactionFees?: Array<{
+    type: string;
+    fee: number;
+    description?: string;
+    isWaived?: boolean;
+    amount?: number;
+  }>; // Transaction fee details
 
   // Application Process
   applicationMethods: ("online" | "branch" | "phone" | "mobile_app")[];
@@ -291,6 +335,7 @@ export interface SortOptionUI {
   labelKey: string;
   description: string;
   direction?: "asc" | "desc";
+  icon?: React.ComponentType<any>; // Icon component from lucide-react
 }
 
 /**
@@ -309,6 +354,8 @@ export type SortOption =
   | "income-asc" // Lowest income requirement first
   | "income-desc" // Highest income requirement first
   | "reviews-desc" // Most reviews first
+  | "rewards-desc" // Best rewards first
+  | "bonus-desc" // Best bonus first
   | "newest" // Newest cards first
   | "name-asc" // Alphabetical A-Z
   | "name-desc"; // Alphabetical Z-A

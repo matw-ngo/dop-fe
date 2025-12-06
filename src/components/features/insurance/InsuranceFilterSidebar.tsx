@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import { Filter, X, RotateCcw, SlidersHorizontal } from "lucide-react";
-import { InsuranceFilters } from "@/types/insurance";
+import { InsuranceFilters, VehicleType } from "@/types/insurance";
 import InsuranceFilterPanel from "./InsuranceFilterPanel";
 
 interface InsuranceFilterSidebarProps {
@@ -22,7 +22,7 @@ interface InsuranceFilterSidebarProps {
   onClearFilters: () => void;
   availableOptions?: {
     issuers?: string[];
-    vehicleTypes?: string[];
+    vehicleTypes?: VehicleType[];
     features?: string[];
   };
   className?: string;

@@ -4,6 +4,12 @@ import type React from "react";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import {
+  useCreditCardsStore,
+  useCreditCardComparison,
+} from "@/store/use-credit-cards-store";
+import { useShallow } from "zustand/shallow";
+import type { CreditCard } from "@/types/credit-card";
+import {
   CreditCard as CreditCardIcon,
   X,
   Plus,
@@ -39,8 +45,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import type { CreditCard } from "@/types/credit-card";
-import { useCreditCardsStore } from "@/store/use-credit-cards-store";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/ui/use-toast";
 
@@ -74,19 +78,23 @@ export const CreditCardComparisonPanel: React.FC<
   const t = useTranslations("pages.creditCard");
   const { toast } = useToast();
 
-  // Use props if provided, otherwise use store
-  const {
-    comparisonCards: storeCards,
-    removeFromComparison: storeRemove,
-    clearComparison: storeClear,
-    canAddToComparison,
-    maxComparisonCards,
-  } = useCreditCardsStore();
+  // Get comparison data from hook
+  const { comparisonCards, canAddMore } = useCreditCardComparison();
 
-  const comparisonCards = cards || storeCards;
+  // Get store actions
+  const { removeFromComparison: storeRemove, clearComparison: storeClear } =
+    useCreditCardsStore(
+      useShallow((state) => ({
+        removeFromComparison: state.removeFromComparison,
+        clearComparison: state.clearComparison,
+      })),
+    );
+
+  // Use props if provided, otherwise use store/hook
+  const displayCards = cards || comparisonCards;
   const handleRemove = onRemove || storeRemove;
   const handleClear = onClear || storeClear;
-  const maxComparison = maxCards || maxComparisonCards;
+  const maxComparison = maxCards || 4; // Default max 4 cards
 
   const [isExporting, setIsExporting] = useState(false);
   const [isSharing, setIsSharing] = useState(false);
@@ -103,9 +111,9 @@ export const CreditCardComparisonPanel: React.FC<
   };
 
   // Calculate progress
-  const progressPercentage = (comparisonCards.length / maxComparison) * 100;
-  const canAddMore = comparisonCards.length < maxComparison;
-  const isFull = comparisonCards.length >= maxComparison;
+  const progressPercentage = (displayCards.length / maxComparison) * 100;
+  const canAddMoreLocal = displayCards.length < maxComparison;
+  const isFull = displayCards.length >= maxComparison;
 
   // Format currency
   const formatCurrency = (amount: number, currency: string = "VND") => {

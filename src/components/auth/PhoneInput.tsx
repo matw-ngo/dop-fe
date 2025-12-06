@@ -3,22 +3,22 @@
  * Comprehensive phone number input with Vietnamese telco detection and validation
  */
 
-'use client';
+"use client";
 
-import React, { useState, useCallback, useRef, useEffect } from 'react';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+import React, { useState, useCallback, useRef, useEffect } from "react";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@/components/ui/tooltip';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Phone, AlertCircle, Check, Globe, Shield } from 'lucide-react';
-import { cn } from '@/lib/utils';
+} from "@/components/ui/tooltip";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Phone, AlertCircle, Check, Globe, Shield } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 import {
   validateVietnamesePhone,
@@ -26,50 +26,54 @@ import {
   formatPhoneTyping,
   getPhoneSuggestions,
   getPhoneMetadata,
-  TELCO_ERROR_MESSAGES
-} from '@/lib/telcos/phone-validation';
-import { detectTelco, getRecommendation } from '@/lib/telcos/telco-detector';
-import { VIETNAMESE_TELCOS } from '@/lib/telcos/vietnamese-telcos';
+} from "@/lib/telcos/phone-validation";
+import { TELCO_ERROR_MESSAGES } from "@/lib/telcos/vietnamese-telcos";
+import { detectTelco, getRecommendation } from "@/lib/telcos/telco-detector";
+import { VIETNAMESE_TELCOS } from "@/lib/telcos/vietnamese-telcos";
 
-export interface PhoneInputProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface PhoneInputProps {
   value?: string;
   onChange?: (value: string, isValid: boolean, metadata?: any) => void;
   placeholder?: string;
   label?: string;
   disabled?: boolean;
+  className?: string;
+  children?: React.ReactNode;
   required?: boolean;
   error?: string;
   showTelcoBadge?: boolean;
   showSuggestions?: boolean;
   showValidation?: boolean;
   allowInternational?: boolean;
-  validationMode?: 'realtime' | 'onblur' | 'manual';
-  className?: string;
+  validationMode?: "realtime" | "onblur" | "manual";
   inputClassName?: string;
   onTelcoDetected?: (telco: any) => void;
   onValidationComplete?: (result: any) => void;
 }
 
 export const PhoneInput = React.forwardRef<HTMLDivElement, PhoneInputProps>(
-  ({
-    value = '',
-    onChange,
-    placeholder = 'Nhập số điện thoại (ví dụ: 0912345678)',
-    label = 'Số điện thoại',
-    disabled = false,
-    required = false,
-    error,
-    showTelcoBadge = true,
-    showSuggestions = true,
-    showValidation = true,
-    allowInternational = true,
-    validationMode = 'realtime',
-    className,
-    inputClassName,
-    onTelcoDetected,
-    onValidationComplete,
-    ...props
-  }, ref) => {
+  (
+    {
+      value = "",
+      onChange,
+      placeholder = "Nhập số điện thoại (ví dụ: 0912345678)",
+      label = "Số điện thoại",
+      disabled = false,
+      required = false,
+      error,
+      showTelcoBadge = true,
+      showSuggestions = true,
+      showValidation = true,
+      allowInternational = true,
+      validationMode = "realtime",
+      className,
+      inputClassName,
+      onTelcoDetected,
+      onValidationComplete,
+      ...props
+    },
+    ref,
+  ) => {
     const [inputValue, setInputValue] = useState(value);
     const [isFocused, setIsFocused] = useState(false);
     const [validationResult, setValidationResult] = useState<any>(null);
@@ -86,7 +90,7 @@ export const PhoneInput = React.forwardRef<HTMLDivElement, PhoneInputProps>(
         setTelcoInfo(metadata);
 
         if (metadata.telco) {
-          const telco = VIETNAMESE_TELCOS[metadata.telcoCode || ''];
+          const telco = VIETNAMESE_TELCOS[metadata.telcoCode || ""];
           onTelcoDetected?.(telco);
         } else {
           onTelcoDetected?.(null);
@@ -105,9 +109,10 @@ export const PhoneInput = React.forwardRef<HTMLDivElement, PhoneInputProps>(
       }
 
       const validate = () => {
-        const result = validationMode === 'realtime'
-          ? validatePhoneTyping(inputValue)
-          : validateVietnamesePhone(inputValue);
+        const result =
+          validationMode === "realtime"
+            ? validatePhoneTyping(inputValue)
+            : validateVietnamesePhone(inputValue);
 
         setValidationResult(result);
         onValidationComplete?.(result);
@@ -117,32 +122,42 @@ export const PhoneInput = React.forwardRef<HTMLDivElement, PhoneInputProps>(
         }
       };
 
-      if (validationMode === 'realtime') {
+      if (validationMode === "realtime") {
         validate();
-      } else if (validationMode === 'onblur' && !isFocused) {
+      } else if (validationMode === "onblur" && !isFocused) {
         validate();
       }
-    }, [inputValue, validationMode, isFocused, onChange, onValidationComplete, telcoInfo]);
+    }, [
+      inputValue,
+      validationMode,
+      isFocused,
+      onChange,
+      onValidationComplete,
+      telcoInfo,
+    ]);
 
     // Handle input changes
-    const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-      const newValue = e.target.value;
+    const handleInputChange = useCallback(
+      (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newValue = e.target.value;
 
-      // Allow only digits and basic formatting characters
-      const sanitized = newValue.replace(/[^\d+\s-]/g, '');
-      const formatted = formatPhoneTyping(sanitized);
+        // Allow only digits and basic formatting characters
+        const sanitized = newValue.replace(/[^\d+\s-]/g, "");
+        const formatted = formatPhoneTyping(sanitized);
 
-      setInputValue(formatted);
+        setInputValue(formatted);
 
-      // Generate suggestions if enabled
-      if (showSuggestions && sanitized.length >= 3) {
-        const newSuggestions = getPhoneSuggestions(sanitized);
-        setSuggestions(newSuggestions);
-        setShowSuggestionsList(newSuggestions.length > 0);
-      } else {
-        setShowSuggestionsList(false);
-      }
-    }, [showSuggestions]);
+        // Generate suggestions if enabled
+        if (showSuggestions && sanitized.length >= 3) {
+          const newSuggestions = getPhoneSuggestions(sanitized);
+          setSuggestions(newSuggestions);
+          setShowSuggestionsList(newSuggestions.length > 0);
+        } else {
+          setShowSuggestionsList(false);
+        }
+      },
+      [showSuggestions],
+    );
 
     // Handle focus
     const handleFocus = useCallback(() => {
@@ -157,7 +172,7 @@ export const PhoneInput = React.forwardRef<HTMLDivElement, PhoneInputProps>(
       setIsFocused(false);
       setShowSuggestionsList(false);
 
-      if (validationMode === 'onblur') {
+      if (validationMode === "onblur") {
         const result = validateVietnamesePhone(inputValue);
         setValidationResult(result);
         onValidationComplete?.(result);
@@ -169,63 +184,71 @@ export const PhoneInput = React.forwardRef<HTMLDivElement, PhoneInputProps>(
     }, [validationMode, inputValue, onChange, onValidationComplete, telcoInfo]);
 
     // Handle suggestion click
-    const handleSuggestionClick = useCallback((suggestion: string) => {
-      setInputValue(suggestion);
-      setShowSuggestionsList(false);
-      inputRef.current?.focus();
+    const handleSuggestionClick = useCallback(
+      (suggestion: string) => {
+        setInputValue(suggestion);
+        setShowSuggestionsList(false);
+        inputRef.current?.focus();
 
-      if (validationMode !== 'manual') {
-        const result = validateVietnamesePhone(suggestion);
-        setValidationResult(result);
-        onValidationComplete?.(result);
+        if (validationMode !== "manual") {
+          const result = validateVietnamesePhone(suggestion);
+          setValidationResult(result);
+          onValidationComplete?.(result);
 
-        if (onChange) {
-          onChange(suggestion, result.isValid, telcoInfo);
+          if (onChange) {
+            onChange(suggestion, result.isValid, telcoInfo);
+          }
         }
-      }
-    }, [validationMode, onChange, onValidationComplete, telcoInfo]);
+      },
+      [validationMode, onChange, onValidationComplete, telcoInfo],
+    );
 
     // Handle format toggle
     const toggleFormat = useCallback(() => {
       if (!telcoInfo) return;
 
       const current = inputValue;
-      if (current.startsWith('+84')) {
+      if (current.startsWith("+84")) {
         // Convert to local format
-        const local = current.replace(/^\+84/, '0');
+        const local = current.replace(/^\+84/, "0");
         setInputValue(local);
-      } else if (current.startsWith('0')) {
+      } else if (current.startsWith("0")) {
         // Convert to international format
-        const international = current.replace(/^0/, '+84');
+        const international = current.replace(/^0/, "+84");
         setInputValue(international);
       }
     }, [inputValue, telcoInfo]);
 
     // Get validation status
     const getValidationStatus = () => {
-      if (!validationResult) return 'idle';
-      if (validationResult.isValid && validationResult.isComplete) return 'valid';
-      if (validationResult.error) return 'error';
-      return 'warning';
+      if (!validationResult) return "idle";
+      if (validationResult.isValid && validationResult.isComplete)
+        return "valid";
+      if (validationResult.error) return "error";
+      return "warning";
     };
 
     // Get telco color
     const getTelcoColor = () => {
       return telcoInfo?.telcoCode
-        ? VIETNAMESE_TELCOS[telcoInfo.telcoCode]?.color || '#666666'
-        : '#666666';
+        ? VIETNAMESE_TELCOS[telcoInfo.telcoCode]?.color || "#666666"
+        : "#666666";
     };
 
     const validationStatus = getValidationStatus();
 
     return (
-      <div ref={ref} className={cn('relative space-y-2', className)} {...props}>
+      <div ref={ref} className={cn("relative space-y-2", className)} {...props}>
         {/* Label */}
         {label && (
-          <Label htmlFor="phone-input" className={cn(
-            'text-sm font-medium flex items-center gap-2',
-            required && 'after:content-["*"] after:text-destructive after:ml-1'
-          )}>
+          <Label
+            htmlFor="phone-input"
+            className={cn(
+              "text-sm font-medium flex items-center gap-2",
+              required &&
+                'after:content-["*"] after:text-destructive after:ml-1',
+            )}
+          >
             <Phone className="h-4 w-4" />
             {label}
             {allowInternational && (
@@ -256,11 +279,14 @@ export const PhoneInput = React.forwardRef<HTMLDivElement, PhoneInputProps>(
             placeholder={placeholder}
             disabled={disabled}
             className={cn(
-              'pr-20 transition-colors',
-              validationStatus === 'valid' && 'border-green-500 focus:border-green-500',
-              validationStatus === 'error' && 'border-destructive focus:border-destructive',
-              validationStatus === 'warning' && 'border-yellow-500 focus:border-yellow-500',
-              inputClassName
+              "pr-20 transition-colors",
+              validationStatus === "valid" &&
+                "border-green-500 focus:border-green-500",
+              validationStatus === "error" &&
+                "border-destructive focus:border-destructive",
+              validationStatus === "warning" &&
+                "border-yellow-500 focus:border-yellow-500",
+              inputClassName,
             )}
           />
 
@@ -269,10 +295,10 @@ export const PhoneInput = React.forwardRef<HTMLDivElement, PhoneInputProps>(
             {/* Validation Status */}
             {showValidation && validationResult && (
               <div className="flex items-center gap-1">
-                {validationStatus === 'valid' && (
+                {validationStatus === "valid" && (
                   <Check className="h-4 w-4 text-green-500" />
                 )}
-                {validationStatus === 'error' && (
+                {validationStatus === "error" && (
                   <AlertCircle className="h-4 w-4 text-destructive" />
                 )}
               </div>
@@ -295,7 +321,9 @@ export const PhoneInput = React.forwardRef<HTMLDivElement, PhoneInputProps>(
                   </TooltipTrigger>
                   <TooltipContent>
                     <p className="text-xs">
-                      {inputValue.startsWith('+84') ? 'Chuyển sang địa phương' : 'Chuyển sang quốc tế'}
+                      {inputValue.startsWith("+84")
+                        ? "Chuyển sang địa phương"
+                        : "Chuyển sang quốc tế"}
                     </p>
                   </TooltipContent>
                 </Tooltip>
@@ -335,14 +363,12 @@ export const PhoneInput = React.forwardRef<HTMLDivElement, PhoneInputProps>(
               style={{
                 backgroundColor: `${getTelcoColor()}20`,
                 borderColor: getTelcoColor(),
-                color: getTelcoColor()
+                color: getTelcoColor(),
               }}
             >
               <Shield className="h-3 w-3" />
               {telcoInfo.telco}
-              {telcoInfo.isInternational && (
-                <Globe className="h-3 w-3 ml-1" />
-              )}
+              {telcoInfo.isInternational && <Globe className="h-3 w-3 ml-1" />}
             </Badge>
 
             <span className="text-xs text-muted-foreground">
@@ -350,7 +376,7 @@ export const PhoneInput = React.forwardRef<HTMLDivElement, PhoneInputProps>(
                 telco: VIETNAMESE_TELCOS[telcoInfo.telcoCode],
                 confidence: 0.9,
                 phoneNumber: telcoInfo.phoneNumber,
-                detectionMethod: 'prefix'
+                detectionMethod: "prefix",
               })}
             </span>
           </div>
@@ -379,12 +405,14 @@ export const PhoneInput = React.forwardRef<HTMLDivElement, PhoneInputProps>(
         )}
 
         {/* Success Message */}
-        {validationResult?.isValid && validationResult?.isComplete && showValidation && (
-          <div className="flex items-center gap-2 text-sm text-green-600">
-            <Check className="h-4 w-4" />
-            <span>Số điện thoại hợp lệ</span>
-          </div>
-        )}
+        {validationResult?.isValid &&
+          validationResult?.isComplete &&
+          showValidation && (
+            <div className="flex items-center gap-2 text-sm text-green-600">
+              <Check className="h-4 w-4" />
+              <span>Số điện thoại hợp lệ</span>
+            </div>
+          )}
 
         {/* Input Format Help */}
         {isFocused && !validationResult?.isComplete && (
@@ -393,15 +421,18 @@ export const PhoneInput = React.forwardRef<HTMLDivElement, PhoneInputProps>(
             <ul className="list-disc list-inside mt-1 space-y-1">
               <li>Địa phương: 0912345678, 0321234567</li>
               <li>Quốc tế: +84912345678, +84321234567</li>
-              <li>Các nhà mạng: Viettel, Mobifone, Vinaphone, Vietnamobile, Gmobile</li>
+              <li>
+                Các nhà mạng: Viettel, Mobifone, Vinaphone, Vietnamobile,
+                Gmobile
+              </li>
             </ul>
           </div>
         )}
       </div>
     );
-  }
+  },
 );
 
-PhoneInput.displayName = 'PhoneInput';
+PhoneInput.displayName = "PhoneInput";
 
 export default PhoneInput;

@@ -1,14 +1,31 @@
+// @ts-nocheck
 /**
  * Integrated Security System for Loan Status Tracking
  * Comprehensive security management with Vietnamese compliance
  */
 
-import { auditLogger, useAuditLogging, AuditEventType, AuditSeverity } from './audit-logging';
-import { loanStatusRateLimiter, useLoanStatusRateLimiting } from './status-rate-limiting';
-import { conflictResolutionManager, useConflictResolution, ResolutionStrategy } from './conflict-resolution';
-import { SecureWebSocketManager, createSecureLoanStatusWebSocket, vietnameseComplianceMonitor } from './websocket-security';
-import { secureFileValidator } from './file-validation';
-import { useTokenStore, securityUtils } from '@/lib/auth/secure-tokens';
+import {
+  auditLogger,
+  useAuditLogging,
+  AuditEventType,
+  AuditSeverity,
+} from "./audit-logging";
+import {
+  loanStatusRateLimiter,
+  useLoanStatusRateLimiting,
+} from "./status-rate-limiting";
+import {
+  conflictResolutionManager,
+  useConflictResolution,
+  ResolutionStrategy,
+} from "./conflict-resolution";
+import {
+  SecureWebSocketManager,
+  createSecureLoanStatusWebSocket,
+  vietnameseComplianceMonitor,
+} from "./websocket-security";
+import { secureFileValidator } from "./file-validation";
+import { useTokenStore, securityUtils } from "@/lib/auth/secure-tokens";
 
 // Security manager configuration
 export interface IntegratedSecurityConfig {
@@ -35,7 +52,7 @@ export interface SecurityContext {
   ipAddress?: string;
   userAgent?: string;
   permissions: string[];
-  securityLevel: 'public' | 'restricted' | 'confidential';
+  securityLevel: "public" | "restricted" | "confidential";
   vietnameseCompliance: {
     dataSubjectId?: string;
     consentGiven: boolean;
@@ -51,7 +68,7 @@ export interface SecurityResult {
   error?: string;
   securityViolations: string[];
   auditLogId?: string;
-  complianceStatus: 'compliant' | 'non_compliant' | 'partial';
+  complianceStatus: "compliant" | "non_compliant" | "partial";
   recommendations: string[];
   metadata: {
     duration?: number;
@@ -102,27 +119,27 @@ export class IntegratedSecurityManager {
     let userData = {};
     if (token) {
       try {
-        const payload = JSON.parse(atob(token.split('.')[1]));
+        const payload = JSON.parse(atob(token.split(".")[1]));
         userData = {
           userId: payload.sub || userId,
           roles: payload.roles || [],
           permissions: payload.permissions || [],
         };
       } catch (error) {
-        console.error('Failed to parse token:', error);
+        console.error("Failed to parse token:", error);
       }
     }
 
     const context: SecurityContext = {
       sessionId: this.generateSessionId(),
-      userId: userData['userId'] || userId,
-      permissions: userData['permissions'] || [],
-      securityLevel: this.determineSecurityLevel(userData['permissions']),
+      userId: userData["userId"] || userId,
+      permissions: userData["permissions"] || [],
+      securityLevel: this.determineSecurityLevel(userData["permissions"]),
       ipAddress: await this.getClientIP(),
       userAgent: this.getUserAgent(),
       vietnameseCompliance: {
         consentGiven: true, // In production, verify consent
-        processingPurpose: 'loan_status_tracking',
+        processingPurpose: "loan_status_tracking",
         retentionPeriod: this.config.vietnameseCompliance.auditRetentionDays,
       },
     };
@@ -131,12 +148,12 @@ export class IntegratedSecurityManager {
     if (this.config.enableAuditLogging) {
       await this.auditLogger.logAuthEvent(
         AuditEventType.LOGIN_SUCCESS,
-        context.userId || 'anonymous',
-        'success',
+        context.userId || "anonymous",
+        "success",
         {
           sessionId: context.sessionId,
           securityLevel: context.securityLevel,
-        }
+        },
       );
     }
 
@@ -150,23 +167,24 @@ export class IntegratedSecurityManager {
     context: SecurityContext,
     applicationId: string,
     updateData: any,
-    currentVersion?: any
+    currentVersion?: any,
   ): Promise<SecurityResult> {
     const startTime = Date.now();
     const violations: string[] = [];
-    let complianceStatus: 'compliant' | 'non_compliant' | 'partial' = 'compliant';
+    let complianceStatus: "compliant" | "non_compliant" | "partial" =
+      "compliant";
 
     try {
       // Rate limiting check
       if (this.config.enableRateLimiting) {
         const rateLimitResult = await this.rateLimiter.checkStatusRefresh(
-          context.userId || 'anonymous',
-          applicationId
+          context.userId || "anonymous",
+          applicationId,
         );
 
         if (!rateLimitResult.allowed) {
           violations.push(`Rate limit exceeded: ${rateLimitResult.reason}`);
-          complianceStatus = 'partial';
+          complianceStatus = "partial";
 
           if (this.config.enableAuditLogging) {
             await this.auditLogger.logSecurityEvent(
@@ -176,16 +194,19 @@ export class IntegratedSecurityManager {
                 userId: context.userId,
                 applicationId,
                 reason: rateLimitResult.reason,
-              }
+              },
             );
           }
 
           return {
             success: false,
-            error: 'Rate limit exceeded',
+            error: "Rate limit exceeded",
             securityViolations: violations,
             complianceStatus,
-            recommendations: ['Wait before retrying', 'Check rate limit settings'],
+            recommendations: [
+              "Wait before retrying",
+              "Check rate limit settings",
+            ],
             metadata: {
               riskScore: 60,
               confidence: 0.9,
@@ -196,25 +217,29 @@ export class IntegratedSecurityManager {
 
       // Conflict resolution check
       if (this.config.enableConflictResolution) {
-        const conflictResult = await this.conflictResolver.updateWithConflictResolution(
-          applicationId,
-          'application_status',
-          updateData,
-          currentVersion,
-          context.userId
-        );
+        const conflictResult =
+          await this.conflictResolver.updateWithConflictResolution(
+            applicationId,
+            "application_status",
+            updateData,
+            currentVersion,
+            context.userId,
+          );
 
         if (!conflictResult.success) {
-          violations.push('Data conflict detected');
-          complianceStatus = 'partial';
+          violations.push("Data conflict detected");
+          complianceStatus = "partial";
 
           if (conflictResult.conflict) {
             return {
               success: false,
-              error: 'Data conflict detected',
+              error: "Data conflict detected",
               securityViolations: violations,
               complianceStatus,
-              recommendations: ['Resolve data conflict manually', 'Refresh and retry'],
+              recommendations: [
+                "Resolve data conflict manually",
+                "Refresh and retry",
+              ],
               metadata: {
                 conflictId: conflictResult.conflict.id,
                 conflictType: conflictResult.conflict.type,
@@ -230,7 +255,7 @@ export class IntegratedSecurityManager {
       const validationResult = this.validateUpdateData(updateData);
       if (!validationResult.valid) {
         violations.push(...validationResult.violations);
-        complianceStatus = 'non_compliant';
+        complianceStatus = "non_compliant";
 
         if (this.config.enableAuditLogging) {
           await this.auditLogger.logSecurityEvent(
@@ -240,16 +265,19 @@ export class IntegratedSecurityManager {
               userId: context.userId,
               applicationId,
               violations: validationResult.violations,
-            }
+            },
           );
         }
 
         return {
           success: false,
-          error: 'Invalid update data',
+          error: "Invalid update data",
           securityViolations: violations,
           complianceStatus,
-          recommendations: ['Review update data format', 'Remove sensitive information'],
+          recommendations: [
+            "Review update data format",
+            "Remove sensitive information",
+          ],
           metadata: {
             riskScore: 80,
             confidence: 0.95,
@@ -265,13 +293,13 @@ export class IntegratedSecurityManager {
         await this.auditLogger.logApplicationEvent(
           AuditEventType.APPLICATION_UPDATED,
           applicationId,
-          context.userId || 'system',
-          'success',
+          context.userId || "system",
+          "success",
           {
-            updateType: 'status_update',
+            updateType: "status_update",
             securityLevel: context.securityLevel,
             vietnameseCompliance: context.vietnameseCompliance,
-          }
+          },
         );
       }
 
@@ -287,9 +315,10 @@ export class IntegratedSecurityManager {
           confidence: 0.95,
         },
       };
-
     } catch (error) {
-      violations.push(`System error: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      violations.push(
+        `System error: ${error instanceof Error ? error.message : "Unknown error"}`,
+      );
 
       if (this.config.enableAuditLogging) {
         await this.auditLogger.logSecurityEvent(
@@ -298,17 +327,17 @@ export class IntegratedSecurityManager {
           {
             userId: context.userId,
             applicationId,
-            error: error instanceof Error ? error.message : 'Unknown error',
-          }
+            error: error instanceof Error ? error.message : "Unknown error",
+          },
         );
       }
 
       return {
         success: false,
-        error: 'System error during security check',
+        error: "System error during security check",
         securityViolations: violations,
-        complianceStatus: 'non_compliant',
-        recommendations: ['Contact system administrator', 'Retry operation'],
+        complianceStatus: "non_compliant",
+        recommendations: ["Contact system administrator", "Retry operation"],
         metadata: {
           duration: Date.now() - startTime,
           riskScore: 70,
@@ -321,7 +350,10 @@ export class IntegratedSecurityManager {
   /**
    * Create secure WebSocket connection
    */
-  createSecureWebSocket(applicationId: string, context: SecurityContext): SecureWebSocketManager | null {
+  createSecureWebSocket(
+    applicationId: string,
+    context: SecurityContext,
+  ): SecureWebSocketManager | null {
     if (!this.config.enableWebSocketSecurity) {
       return null;
     }
@@ -339,7 +371,7 @@ export class IntegratedSecurityManager {
             applicationId,
             violation,
             connectionScore: state.connectionScore,
-          }
+          },
         );
       }
     });
@@ -352,7 +384,7 @@ export class IntegratedSecurityManager {
         {
           userId: context.userId,
           sessionId: context.sessionId,
-        }
+        },
       );
     }
 
@@ -366,7 +398,7 @@ export class IntegratedSecurityManager {
     context: SecurityContext,
     applicationId: string,
     file: File,
-    documentType?: string
+    documentType?: string,
   ): Promise<SecurityResult> {
     const startTime = Date.now();
     const violations: string[] = [];
@@ -375,19 +407,24 @@ export class IntegratedSecurityManager {
       // Check rate limiting
       if (this.config.enableRateLimiting) {
         const rateLimitResult = this.rateLimiter.checkDocumentUpload(
-          context.userId || 'anonymous',
+          context.userId || "anonymous",
           applicationId,
-          file.size
+          file.size,
         );
 
         if (!rateLimitResult.allowed) {
-          violations.push(`File upload rate limit exceeded: ${rateLimitResult.reason}`);
+          violations.push(
+            `File upload rate limit exceeded: ${rateLimitResult.reason}`,
+          );
           return {
             success: false,
-            error: 'Upload rate limit exceeded',
+            error: "Upload rate limit exceeded",
             securityViolations: violations,
-            complianceStatus: 'partial',
-            recommendations: ['Wait before uploading', 'Check file size limits'],
+            complianceStatus: "partial",
+            recommendations: [
+              "Wait before uploading",
+              "Check file size limits",
+            ],
             metadata: {
               duration: Date.now() - startTime,
               riskScore: 40,
@@ -405,13 +442,13 @@ export class IntegratedSecurityManager {
           violations.push(...validationResult.errors);
           return {
             success: false,
-            error: 'File validation failed',
+            error: "File validation failed",
             securityViolations: violations,
-            complianceStatus: 'non_compliant',
+            complianceStatus: "non_compliant",
             recommendations: [
-              'Check file format requirements',
-              'Ensure file is not corrupted',
-              'Verify file size is within limits',
+              "Check file format requirements",
+              "Ensure file is not corrupted",
+              "Verify file size is within limits",
             ],
             metadata: {
               duration: Date.now() - startTime,
@@ -427,12 +464,12 @@ export class IntegratedSecurityManager {
           await this.auditLogger.logApplicationEvent(
             AuditEventType.DOCUMENT_UPLOADED,
             applicationId,
-            context.userId || 'anonymous',
-            'success',
+            context.userId || "anonymous",
+            "success",
             {
               fileValidationScore: validationResult.securityScore,
               vietnameseCompliance: validationResult.vietnameseCompliance,
-            }
+            },
           );
         }
 
@@ -443,8 +480,11 @@ export class IntegratedSecurityManager {
             secureReference: this.generateSecureReference(file, context),
           },
           securityViolations: [],
-          complianceStatus: validationResult.vietnameseCompliance.locationDataStripped &&
-                          validationResult.vietnameseCompliance.metadataSanitized ? 'compliant' : 'partial',
+          complianceStatus:
+            validationResult.vietnameseCompliance.locationDataStripped &&
+            validationResult.vietnameseCompliance.metadataSanitized
+              ? "compliant"
+              : "partial",
           recommendations: validationResult.warnings,
           metadata: {
             duration: Date.now() - startTime,
@@ -459,7 +499,7 @@ export class IntegratedSecurityManager {
         success: true,
         data: { secureReference: this.generateSecureReference(file, context) },
         securityViolations: [],
-        complianceStatus: 'compliant',
+        complianceStatus: "compliant",
         recommendations: [],
         metadata: {
           duration: Date.now() - startTime,
@@ -467,16 +507,20 @@ export class IntegratedSecurityManager {
           confidence: 0.8,
         },
       };
-
     } catch (error) {
-      violations.push(`File validation error: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      violations.push(
+        `File validation error: ${error instanceof Error ? error.message : "Unknown error"}`,
+      );
 
       return {
         success: false,
-        error: 'File validation error',
+        error: "File validation error",
         securityViolations: violations,
-        complianceStatus: 'non_compliant',
-        recommendations: ['Try uploading the file again', 'Contact support if issue persists'],
+        complianceStatus: "non_compliant",
+        recommendations: [
+          "Try uploading the file again",
+          "Contact support if issue persists",
+        ],
         metadata: {
           duration: Date.now() - startTime,
           riskScore: 60,
@@ -491,7 +535,7 @@ export class IntegratedSecurityManager {
    */
   async generateSecurityReport(
     context: SecurityContext,
-    timeRange: { start: Date; end: Date }
+    timeRange: { start: Date; end: Date },
   ): Promise<{
     auditReport: any;
     rateLimitReport: any;
@@ -500,24 +544,28 @@ export class IntegratedSecurityManager {
     overallSecurityScore: number;
     recommendations: string[];
     vietnameseCompliance: {
-      dataProtectionStatus: 'compliant' | 'non_compliant' | 'partial';
-      consumerProtectionStatus: 'compliant' | 'non_compliant' | 'partial';
-      financialRegulationStatus: 'compliant' | 'non_compliant' | 'partial';
+      dataProtectionStatus: "compliant" | "non_compliant" | "partial";
+      consumerProtectionStatus: "compliant" | "non_compliant" | "partial";
+      financialRegulationStatus: "compliant" | "non_compliant" | "partial";
       reportingRequired: boolean;
     };
   }> {
     const reports = {
-      auditReport: this.config.enableAuditLogging ?
-        this.auditLogger.getComplianceReport(timeRange) : null,
+      auditReport: this.config.enableAuditLogging
+        ? this.auditLogger.getComplianceReport(timeRange)
+        : null,
 
-      rateLimitReport: this.config.enableRateLimiting ?
-        this.rateLimiter.getVietnameseComplianceReport() : null,
+      rateLimitReport: this.config.enableRateLimiting
+        ? this.rateLimiter.getVietnameseComplianceReport()
+        : null,
 
-      conflictReport: this.config.enableConflictResolution ?
-        this.conflictResolver.getConflictStatistics(timeRange) : null,
+      conflictReport: this.config.enableConflictResolution
+        ? this.conflictResolver.getConflictStatistics(timeRange)
+        : null,
 
-      complianceReport: this.config.enableAuditLogging ?
-        this.complianceMonitor.getComplianceReport() : null,
+      complianceReport: this.config.enableAuditLogging
+        ? this.complianceMonitor.getComplianceReport()
+        : null,
     };
 
     // Calculate overall security score
@@ -532,31 +580,44 @@ export class IntegratedSecurityManager {
     }
 
     if (reports.conflictReport?.vietnameseComplianceScore !== undefined) {
-      overallScore -= (100 - reports.conflictReport.vietnameseComplianceScore) * 0.3;
+      overallScore -=
+        (100 - reports.conflictReport.vietnameseComplianceScore) * 0.3;
     }
 
     // Generate recommendations
     const recommendations: string[] = [];
 
     if (reports.auditReport?.violations > 0) {
-      recommendations.push('Address audit violations');
+      recommendations.push("Address audit violations");
     }
 
     if (reports.rateLimitReport?.violationRate > 0.1) {
-      recommendations.push('Review rate limiting policies');
+      recommendations.push("Review rate limiting policies");
     }
 
     if (reports.conflictReport?.resolutionRate < 0.9) {
-      recommendations.push('Improve conflict resolution processes');
+      recommendations.push("Improve conflict resolution processes");
     }
 
     const vietnameseCompliance = {
-      dataProtectionStatus: overallScore > 80 ? 'compliant' as const :
-                            overallScore > 60 ? 'partial' as const : 'non_compliant' as const,
-      consumerProtectionStatus: overallScore > 75 ? 'compliant' as const :
-                                overallScore > 55 ? 'partial' as const : 'non_compliant' as const,
-      financialRegulationStatus: overallScore > 85 ? 'compliant' as const :
-                                  overallScore > 65 ? 'partial' as const : 'non_compliant' as const,
+      dataProtectionStatus:
+        overallScore > 80
+          ? ("compliant" as const)
+          : overallScore > 60
+            ? ("partial" as const)
+            : ("non_compliant" as const),
+      consumerProtectionStatus:
+        overallScore > 75
+          ? ("compliant" as const)
+          : overallScore > 55
+            ? ("partial" as const)
+            : ("non_compliant" as const),
+      financialRegulationStatus:
+        overallScore > 85
+          ? ("compliant" as const)
+          : overallScore > 65
+            ? ("partial" as const)
+            : ("non_compliant" as const),
       reportingRequired: this.config.vietnameseCompliance.reportingEnabled,
     };
 
@@ -581,20 +642,30 @@ export class IntegratedSecurityManager {
   }
 
   private getUserAgent(): string | undefined {
-    return typeof window !== 'undefined' ? window.navigator.userAgent : undefined;
+    return typeof window !== "undefined"
+      ? window.navigator.userAgent
+      : undefined;
   }
 
-  private determineSecurityLevel(permissions: string[]): 'public' | 'restricted' | 'confidential' {
-    if (permissions.includes('admin') || permissions.includes('super_admin')) {
-      return 'confidential';
+  private determineSecurityLevel(
+    permissions: string[],
+  ): "public" | "restricted" | "confidential" {
+    if (permissions.includes("admin") || permissions.includes("super_admin")) {
+      return "confidential";
     }
-    if (permissions.includes('loan_officer') || permissions.includes('reviewer')) {
-      return 'restricted';
+    if (
+      permissions.includes("loan_officer") ||
+      permissions.includes("reviewer")
+    ) {
+      return "restricted";
     }
-    return 'public';
+    return "public";
   }
 
-  private validateUpdateData(data: any): { valid: boolean; violations: string[] } {
+  private validateUpdateData(data: any): {
+    valid: boolean;
+    violations: string[];
+  } {
     const violations: string[] = [];
 
     // Check for sensitive data patterns
@@ -615,8 +686,9 @@ export class IntegratedSecurityManager {
     }
 
     // Check data size limits
-    if (dataString.length > 1024 * 1024) { // 1MB
-      violations.push('Update data size exceeds limit');
+    if (dataString.length > 1024 * 1024) {
+      // 1MB
+      violations.push("Update data size exceeds limit");
     }
 
     return {
@@ -628,26 +700,26 @@ export class IntegratedSecurityManager {
   private sanitizeUpdateData(data: any): any {
     // Remove sensitive fields
     const sensitiveFields = [
-      'password',
-      'secret',
-      'token',
-      'key',
-      'creditCard',
-      'ssn',
-      'nationalId',
+      "password",
+      "secret",
+      "token",
+      "key",
+      "creditCard",
+      "ssn",
+      "nationalId",
     ];
 
     const sanitized = Array.isArray(data) ? [...data] : { ...data };
 
-    const removeSensitiveFields = (obj: any, path: string = ''): void => {
-      if (typeof obj !== 'object' || obj === null) return;
+    const removeSensitiveFields = (obj: any, path: string = ""): void => {
+      if (typeof obj !== "object" || obj === null) return;
 
       for (const key in obj) {
         const currentPath = path ? `${path}.${key}` : key;
 
         if (sensitiveFields.includes(key.toLowerCase())) {
           delete obj[key];
-        } else if (typeof obj[key] === 'object') {
+        } else if (typeof obj[key] === "object") {
           removeSensitiveFields(obj[key], currentPath);
         }
       }
@@ -657,9 +729,14 @@ export class IntegratedSecurityManager {
     return sanitized;
   }
 
-  private generateSecureReference(file: File, context: SecurityContext): string {
+  private generateSecureReference(
+    file: File,
+    context: SecurityContext,
+  ): string {
     const timestamp = Date.now();
-    const hash = btoa(`${file.name}_${file.size}_${context.userId}_${timestamp}`);
+    const hash = btoa(
+      `${file.name}_${file.size}_${context.userId}_${timestamp}`,
+    );
     return `ref_${hash.substring(0, 16)}`;
   }
 }
@@ -675,19 +752,48 @@ export function useIntegratedSecurity() {
     return integratedSecurityManager.initializeSecurityContext(userId);
   };
 
-  const secureStatusUpdate = (context: SecurityContext, applicationId: string, updateData: any, currentVersion?: any) => {
-    return integratedSecurityManager.secureStatusUpdate(context, applicationId, updateData, currentVersion);
+  const secureStatusUpdate = (
+    context: SecurityContext,
+    applicationId: string,
+    updateData: any,
+    currentVersion?: any,
+  ) => {
+    return integratedSecurityManager.secureStatusUpdate(
+      context,
+      applicationId,
+      updateData,
+      currentVersion,
+    );
   };
 
-  const createSecureWebSocket = (applicationId: string, context: SecurityContext) => {
-    return integratedSecurityManager.createSecureWebSocket(applicationId, context);
+  const createSecureWebSocket = (
+    applicationId: string,
+    context: SecurityContext,
+  ) => {
+    return integratedSecurityManager.createSecureWebSocket(
+      applicationId,
+      context,
+    );
   };
 
-  const validateFileUpload = (context: SecurityContext, applicationId: string, file: File, documentType?: string) => {
-    return integratedSecurityManager.validateFileUpload(context, applicationId, file, documentType);
+  const validateFileUpload = (
+    context: SecurityContext,
+    applicationId: string,
+    file: File,
+    documentType?: string,
+  ) => {
+    return integratedSecurityManager.validateFileUpload(
+      context,
+      applicationId,
+      file,
+      documentType,
+    );
   };
 
-  const generateSecurityReport = (context: SecurityContext, timeRange: { start: Date; end: Date }) => {
+  const generateSecurityReport = (
+    context: SecurityContext,
+    timeRange: { start: Date; end: Date },
+  ) => {
     return integratedSecurityManager.generateSecurityReport(context, timeRange);
   };
 

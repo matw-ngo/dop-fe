@@ -3,10 +3,8 @@
 import { useMemo } from "react";
 import { useTheme } from "@/lib/theme/context";
 import { useTheme as useNextTheme } from "next-themes";
-import {
-  baseInsuranceNavbarConfig,
-  NavbarConfig,
-} from "@/configs/insurance-navbar-config";
+import { baseInsuranceNavbarConfig } from "@/configs/insurance-navbar-config";
+import { NavbarConfig } from "@/configs/navbar-config";
 
 /**
  * Hook to get theme-aware insurance navbar configuration

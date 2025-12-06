@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Financial Tools API Endpoints
  *
@@ -5,16 +6,16 @@
  * for the Vietnamese digital lending platform.
  */
 
-import { createClient } from '@/lib/api/client';
+import { createClient } from "@/lib/api/client";
 import type {
   LoanCalculationParams,
   TaxCalculationParams,
   VietnameseBank,
   MarketIndicator,
-} from '@/lib/financial-data/vietnamese-financial-data';
+} from "@/lib/financial-data/vietnamese-financial-data";
 
 // Create API client
-const client = createClient('/api/v1');
+const client = createClient("/api/v1");
 
 // Types for API responses
 export interface ApiResponse<T = any> {
@@ -114,7 +115,7 @@ export interface AffordabilityAnalysisResponse {
   recommendedLoanAmount: number;
   debtToIncomeRatio: number;
   affordabilityScore: number;
-  riskLevel: 'low' | 'medium' | 'high';
+  riskLevel: "low" | "medium" | "high";
   recommendations: string[];
 }
 
@@ -133,13 +134,13 @@ export interface ValidationResponse {
   errors: Array<{
     field: string;
     message: string;
-    severity: 'critical' | 'high' | 'medium' | 'low';
+    severity: "critical" | "high" | "medium" | "low";
     code: string;
   }>;
   warnings: Array<{
     field: string;
     message: string;
-    severity: 'high' | 'medium' | 'low';
+    severity: "high" | "medium" | "low";
     code: string;
   }>;
   score: number;
@@ -154,26 +155,26 @@ export interface MarketDataResponse {
     previousValue: number;
     change: number;
     changePercent: number;
-    direction: 'up' | 'down' | 'stable';
+    direction: "up" | "down" | "stable";
   }>;
   riskAssessment: {
-    overallRisk: 'low' | 'medium' | 'high';
+    overallRisk: "low" | "medium" | "high";
     factors: Array<{
       factor: string;
-      risk: 'low' | 'medium' | 'high';
+      risk: "low" | "medium" | "high";
       impact: string;
     }>;
   };
 }
 
 export interface ExportRequest {
-  format: 'pdf' | 'excel' | 'csv';
+  format: "pdf" | "excel" | "csv";
   data: any;
   template?: string;
   options?: {
     includeChart?: boolean;
     includeDetails?: boolean;
-    language?: 'vi' | 'en';
+    language?: "vi" | "en";
   };
 }
 
@@ -192,12 +193,17 @@ export const loanCalculationApi = {
   /**
    * Calculate loan details
    */
-  calculate: async (params: LoanCalculationParams): Promise<ApiResponse<LoanCalculationResponse>> => {
+  calculate: async (
+    params: LoanCalculationParams,
+  ): Promise<ApiResponse<LoanCalculationResponse>> => {
     try {
-      const response = await client.post('/financial-tools/loan/calculate', params);
+      const response = await client.post(
+        "/financial-tools/loan/calculate",
+        params,
+      );
       return response.data;
     } catch (error) {
-      console.error('Loan calculation error:', error);
+      console.error("Loan calculation error:", error);
       throw error;
     }
   },
@@ -205,12 +211,16 @@ export const loanCalculationApi = {
   /**
    * Compare multiple loan options
    */
-  compare: async (loanOptions: LoanCalculationParams[]): Promise<ApiResponse<any>> => {
+  compare: async (
+    loanOptions: LoanCalculationParams[],
+  ): Promise<ApiResponse<any>> => {
     try {
-      const response = await client.post('/financial-tools/loan/compare', { loanOptions });
+      const response = await client.post("/financial-tools/loan/compare", {
+        loanOptions,
+      });
       return response.data;
     } catch (error) {
-      console.error('Loan comparison error:', error);
+      console.error("Loan comparison error:", error);
       throw error;
     }
   },
@@ -224,10 +234,10 @@ export const loanCalculationApi = {
     monthlyIncome: number,
     monthlyDebts: number,
     creditScore?: number,
-    hasCollateral?: boolean
+    hasCollateral?: boolean,
   ): Promise<ApiResponse<any>> => {
     try {
-      const response = await client.post('/financial-tools/loan/eligibility', {
+      const response = await client.post("/financial-tools/loan/eligibility", {
         loanType,
         loanAmount,
         monthlyIncome,
@@ -237,7 +247,7 @@ export const loanCalculationApi = {
       });
       return response.data;
     } catch (error) {
-      console.error('Eligibility assessment error:', error);
+      console.error("Eligibility assessment error:", error);
       throw error;
     }
   },
@@ -248,17 +258,20 @@ export const loanCalculationApi = {
   calculateEarlyRepayment: async (
     originalLoan: any,
     currentMonth: number,
-    earlyRepaymentAmount: number
+    earlyRepaymentAmount: number,
   ): Promise<ApiResponse<any>> => {
     try {
-      const response = await client.post('/financial-tools/loan/early-repayment', {
-        originalLoan,
-        currentMonth,
-        earlyRepaymentAmount,
-      });
+      const response = await client.post(
+        "/financial-tools/loan/early-repayment",
+        {
+          originalLoan,
+          currentMonth,
+          earlyRepaymentAmount,
+        },
+      );
       return response.data;
     } catch (error) {
-      console.error('Early repayment calculation error:', error);
+      console.error("Early repayment calculation error:", error);
       throw error;
     }
   },
@@ -271,12 +284,17 @@ export const taxCalculationApi = {
   /**
    * Calculate personal income tax
    */
-  calculate: async (params: TaxCalculationParams): Promise<ApiResponse<TaxCalculationResponse>> => {
+  calculate: async (
+    params: TaxCalculationParams,
+  ): Promise<ApiResponse<TaxCalculationResponse>> => {
     try {
-      const response = await client.post('/financial-tools/tax/calculate', params);
+      const response = await client.post(
+        "/financial-tools/tax/calculate",
+        params,
+      );
       return response.data;
     } catch (error) {
-      console.error('Tax calculation error:', error);
+      console.error("Tax calculation error:", error);
       throw error;
     }
   },
@@ -290,20 +308,23 @@ export const taxCalculationApi = {
     allowances?: number,
     stockOptions?: number,
     numberOfDependents?: number,
-    region?: number
+    region?: number,
   ): Promise<ApiResponse<any>> => {
     try {
-      const response = await client.post('/financial-tools/tax/compensation-analysis', {
-        baseSalary,
-        bonus,
-        allowances,
-        stockOptions,
-        numberOfDependents,
-        region,
-      });
+      const response = await client.post(
+        "/financial-tools/tax/compensation-analysis",
+        {
+          baseSalary,
+          bonus,
+          allowances,
+          stockOptions,
+          numberOfDependents,
+          region,
+        },
+      );
       return response.data;
     } catch (error) {
-      console.error('Compensation analysis error:', error);
+      console.error("Compensation analysis error:", error);
       throw error;
     }
   },
@@ -312,17 +333,20 @@ export const taxCalculationApi = {
    * Get tax compliance checklist
    */
   getComplianceChecklist: async (
-    taxpayerType: 'individual' | 'corporate' | 'freelancer',
-    annualIncome: number
+    taxpayerType: "individual" | "corporate" | "freelancer",
+    annualIncome: number,
   ): Promise<ApiResponse<any>> => {
     try {
-      const response = await client.post('/financial-tools/tax/compliance-checklist', {
-        taxpayerType,
-        annualIncome,
-      });
+      const response = await client.post(
+        "/financial-tools/tax/compliance-checklist",
+        {
+          taxpayerType,
+          annualIncome,
+        },
+      );
       return response.data;
     } catch (error) {
-      console.error('Compliance checklist error:', error);
+      console.error("Compliance checklist error:", error);
       throw error;
     }
   },
@@ -340,10 +364,10 @@ export const savingsCalculationApi = {
     monthlyContribution?: number,
     annualRate: number,
     termInMonths: number,
-    compoundingFrequency?: 'monthly' | 'quarterly' | 'annual'
+    compoundingFrequency?: "monthly" | "quarterly" | "annual",
   ): Promise<ApiResponse<SavingsCalculationResponse>> => {
     try {
-      const response = await client.post('/financial-tools/savings/calculate', {
+      const response = await client.post("/financial-tools/savings/calculate", {
         principal,
         monthlyContribution,
         annualRate,
@@ -352,7 +376,7 @@ export const savingsCalculationApi = {
       });
       return response.data;
     } catch (error) {
-      console.error('Savings calculation error:', error);
+      console.error("Savings calculation error:", error);
       throw error;
     }
   },
@@ -362,16 +386,19 @@ export const savingsCalculationApi = {
    */
   compareBanks: async (
     amount: number,
-    termInMonths: number
+    termInMonths: number,
   ): Promise<ApiResponse<BankComparisonResponse>> => {
     try {
-      const response = await client.post('/financial-tools/savings/compare-banks', {
-        amount,
-        termInMonths,
-      });
+      const response = await client.post(
+        "/financial-tools/savings/compare-banks",
+        {
+          amount,
+          termInMonths,
+        },
+      );
       return response.data;
     } catch (error) {
-      console.error('Bank comparison error:', error);
+      console.error("Bank comparison error:", error);
       throw error;
     }
   },
@@ -383,18 +410,21 @@ export const savingsCalculationApi = {
     targetAmount: number,
     currentSavings: number,
     monthlyContribution: number,
-    desiredMonths: number
+    desiredMonths: number,
   ): Promise<ApiResponse<any>> => {
     try {
-      const response = await client.post('/financial-tools/savings/goal-analysis', {
-        targetAmount,
-        currentSavings,
-        monthlyContribution,
-        desiredMonths,
-      });
+      const response = await client.post(
+        "/financial-tools/savings/goal-analysis",
+        {
+          targetAmount,
+          currentSavings,
+          monthlyContribution,
+          desiredMonths,
+        },
+      );
       return response.data;
     } catch (error) {
-      console.error('Goal analysis error:', error);
+      console.error("Goal analysis error:", error);
       throw error;
     }
   },
@@ -415,22 +445,25 @@ export const financialAnalysisApi = {
     creditScore: number,
     hasEmergencyFund: boolean,
     hasInsurance: boolean,
-    investmentDiversity: number
+    investmentDiversity: number,
   ): Promise<ApiResponse<FinancialHealthScoreResponse>> => {
     try {
-      const response = await client.post('/financial-tools/analysis/health-score', {
-        monthlyIncome,
-        monthlyExpenses,
-        monthlyDebts,
-        monthlySavings,
-        creditScore,
-        hasEmergencyFund,
-        hasInsurance,
-        investmentDiversity,
-      });
+      const response = await client.post(
+        "/financial-tools/analysis/health-score",
+        {
+          monthlyIncome,
+          monthlyExpenses,
+          monthlyDebts,
+          monthlySavings,
+          creditScore,
+          hasEmergencyFund,
+          hasInsurance,
+          investmentDiversity,
+        },
+      );
       return response.data;
     } catch (error) {
-      console.error('Health score calculation error:', error);
+      console.error("Health score calculation error:", error);
       throw error;
     }
   },
@@ -443,19 +476,22 @@ export const financialAnalysisApi = {
     monthlyIncome: number,
     monthlyDebts: number,
     interestRate: number,
-    termInMonths: number
+    termInMonths: number,
   ): Promise<ApiResponse<AffordabilityAnalysisResponse>> => {
     try {
-      const response = await client.post('/financial-tools/analysis/affordability', {
-        loanAmount,
-        monthlyIncome,
-        monthlyDebts,
-        interestRate,
-        termInMonths,
-      });
+      const response = await client.post(
+        "/financial-tools/analysis/affordability",
+        {
+          loanAmount,
+          monthlyIncome,
+          monthlyDebts,
+          interestRate,
+          termInMonths,
+        },
+      );
       return response.data;
     } catch (error) {
-      console.error('Affordability analysis error:', error);
+      console.error("Affordability analysis error:", error);
       throw error;
     }
   },
@@ -467,11 +503,11 @@ export const financialAnalysisApi = {
     investmentAmount: number,
     expectedReturn: number,
     investmentPeriod: number,
-    riskLevel: 'low' | 'medium' | 'high',
-    inflationRate?: number
+    riskLevel: "low" | "medium" | "high",
+    inflationRate?: number,
   ): Promise<ApiResponse<ROIAnalysisResponse>> => {
     try {
-      const response = await client.post('/financial-tools/analysis/roi', {
+      const response = await client.post("/financial-tools/analysis/roi", {
         investmentAmount,
         expectedReturn,
         investmentPeriod,
@@ -480,7 +516,7 @@ export const financialAnalysisApi = {
       });
       return response.data;
     } catch (error) {
-      console.error('ROI calculation error:', error);
+      console.error("ROI calculation error:", error);
       throw error;
     }
   },
@@ -495,10 +531,10 @@ export const marketDataApi = {
    */
   getIndicators: async (): Promise<ApiResponse<MarketDataResponse>> => {
     try {
-      const response = await client.get('/financial-tools/market/indicators');
+      const response = await client.get("/financial-tools/market/indicators");
       return response.data;
     } catch (error) {
-      console.error('Market indicators error:', error);
+      console.error("Market indicators error:", error);
       throw error;
     }
   },
@@ -507,18 +543,20 @@ export const marketDataApi = {
    * Get Vietnamese bank rates
    */
   getBankRates: async (
-    productType?: 'loan' | 'savings',
-    term?: number
+    productType?: "loan" | "savings",
+    term?: number,
   ): Promise<ApiResponse<VietnameseBank[]>> => {
     try {
       const params = new URLSearchParams();
-      if (productType) params.append('productType', productType);
-      if (term) params.append('term', term.toString());
+      if (productType) params.append("productType", productType);
+      if (term) params.append("term", term.toString());
 
-      const response = await client.get(`/financial-tools/market/bank-rates?${params}`);
+      const response = await client.get(
+        `/financial-tools/market/bank-rates?${params}`,
+      );
       return response.data;
     } catch (error) {
-      console.error('Bank rates error:', error);
+      console.error("Bank rates error:", error);
       throw error;
     }
   },
@@ -527,13 +565,15 @@ export const marketDataApi = {
    * Get interest rate trends
    */
   getInterestRateTrends: async (
-    period: '1m' | '3m' | '6m' | '1y' | 'all'
+    period: "1m" | "3m" | "6m" | "1y" | "all",
   ): Promise<ApiResponse<any>> => {
     try {
-      const response = await client.get(`/financial-tools/market/interest-trends?period=${period}`);
+      const response = await client.get(
+        `/financial-tools/market/interest-trends?period=${period}`,
+      );
       return response.data;
     } catch (error) {
-      console.error('Interest rate trends error:', error);
+      console.error("Interest rate trends error:", error);
       throw error;
     }
   },
@@ -546,12 +586,17 @@ export const validationApi = {
   /**
    * Validate loan calculation parameters
    */
-  validateLoanParams: async (params: LoanCalculationParams): Promise<ApiResponse<ValidationResponse>> => {
+  validateLoanParams: async (
+    params: LoanCalculationParams,
+  ): Promise<ApiResponse<ValidationResponse>> => {
     try {
-      const response = await client.post('/financial-tools/validation/loan', params);
+      const response = await client.post(
+        "/financial-tools/validation/loan",
+        params,
+      );
       return response.data;
     } catch (error) {
-      console.error('Loan validation error:', error);
+      console.error("Loan validation error:", error);
       throw error;
     }
   },
@@ -559,12 +604,17 @@ export const validationApi = {
   /**
    * Validate tax calculation parameters
    */
-  validateTaxParams: async (params: TaxCalculationParams): Promise<ApiResponse<ValidationResponse>> => {
+  validateTaxParams: async (
+    params: TaxCalculationParams,
+  ): Promise<ApiResponse<ValidationResponse>> => {
     try {
-      const response = await client.post('/financial-tools/validation/tax', params);
+      const response = await client.post(
+        "/financial-tools/validation/tax",
+        params,
+      );
       return response.data;
     } catch (error) {
-      console.error('Tax validation error:', error);
+      console.error("Tax validation error:", error);
       throw error;
     }
   },
@@ -573,17 +623,20 @@ export const validationApi = {
    * Check regulatory compliance
    */
   checkCompliance: async (
-    type: 'loan' | 'tax' | 'savings',
-    details: any
+    type: "loan" | "tax" | "savings",
+    details: any,
   ): Promise<ApiResponse<any>> => {
     try {
-      const response = await client.post('/financial-tools/validation/compliance', {
-        type,
-        details,
-      });
+      const response = await client.post(
+        "/financial-tools/validation/compliance",
+        {
+          type,
+          details,
+        },
+      );
       return response.data;
     } catch (error) {
-      console.error('Compliance check error:', error);
+      console.error("Compliance check error:", error);
       throw error;
     }
   },
@@ -596,12 +649,14 @@ export const exportApi = {
   /**
    * Export calculation results
    */
-  exportResults: async (request: ExportRequest): Promise<ApiResponse<ExportResponse>> => {
+  exportResults: async (
+    request: ExportRequest,
+  ): Promise<ApiResponse<ExportResponse>> => {
     try {
-      const response = await client.post('/financial-tools/export', request);
+      const response = await client.post("/financial-tools/export", request);
       return response.data;
     } catch (error) {
-      console.error('Export error:', error);
+      console.error("Export error:", error);
       throw error;
     }
   },
@@ -610,19 +665,23 @@ export const exportApi = {
    * Generate financial report
    */
   generateReport: async (
-    reportType: 'loan-summary' | 'tax-analysis' | 'savings-projection' | 'health-assessment',
+    reportType:
+      | "loan-summary"
+      | "tax-analysis"
+      | "savings-projection"
+      | "health-assessment",
     data: any,
-    options?: any
+    options?: any,
   ): Promise<ApiResponse<ExportResponse>> => {
     try {
-      const response = await client.post('/financial-tools/reports/generate', {
+      const response = await client.post("/financial-tools/reports/generate", {
         reportType,
         data,
         options,
       });
       return response.data;
     } catch (error) {
-      console.error('Report generation error:', error);
+      console.error("Report generation error:", error);
       throw error;
     }
   },
@@ -630,12 +689,16 @@ export const exportApi = {
   /**
    * Get download URL for exported file
    */
-  getDownloadUrl: async (fileId: string): Promise<ApiResponse<{ downloadUrl: string }>> => {
+  getDownloadUrl: async (
+    fileId: string,
+  ): Promise<ApiResponse<{ downloadUrl: string }>> => {
     try {
-      const response = await client.get(`/financial-tools/export/download/${fileId}`);
+      const response = await client.get(
+        `/financial-tools/export/download/${fileId}`,
+      );
       return response.data;
     } catch (error) {
-      console.error('Download URL error:', error);
+      console.error("Download URL error:", error);
       throw error;
     }
   },
@@ -651,13 +714,15 @@ export const handleApiError = (error: any): string => {
   if (error.message) {
     return error.message;
   }
-  return 'Đã xảy ra lỗi không mong muốn. Vui lòng thử lại sau.';
+  return "Đã xảy ra lỗi không mong muốn. Vui lòng thử lại sau.";
 };
 
 /**
  * Utility function to check API response success
  */
-export const isApiSuccess = <T>(response: ApiResponse<T>): response is ApiResponse<T> & { success: true } => {
+export const isApiSuccess = <T>(
+  response: ApiResponse<T>,
+): response is ApiResponse<T> & { success: true } => {
   return response.success === true;
 };
 

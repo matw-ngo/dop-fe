@@ -3,50 +3,63 @@
  * Demonstrates complete Vietnamese OTP verification flow
  */
 
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Separator } from '@/components/ui/separator';
+import React, { useState } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Separator } from "@/components/ui/separator";
 
-import { OTPVerificationDialog } from './OTPVerificationDialog';
-import { PhoneInput } from './PhoneInput';
-import { OTPInput } from './OTPInput';
-import { OTPResend } from './OTPResend';
+import { OTPVerificationDialog } from "./OTPVerificationDialog";
+import { PhoneInput } from "./PhoneInput";
+import { OTPInput } from "./OTPInput";
+import { OTPResend } from "./OTPResend";
 
-import { useOTPVerification } from '@/hooks/use-otp-verification';
-import { usePhoneValidation } from '@/hooks/use-phone-validation';
+import { useOTPVerification } from "@/hooks/use-otp-verification";
+import { usePhoneValidation } from "@/hooks/use-phone-validation";
 
-import { Smartphone, Shield, CheckCircle, AlertCircle, Info, Settings } from 'lucide-react';
+import {
+  Smartphone,
+  Shield,
+  CheckCircle,
+  AlertCircle,
+  Info,
+  Settings,
+} from "lucide-react";
 
 export const OTPVerificationExample: React.FC = () => {
   // Dialog state
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   // Individual component states
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [otpCode, setOtpCode] = useState('');
-  const [selectedTelco, setSelectedTelco] = useState<string>('auto');
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [otpCode, setOtpCode] = useState("");
+  const [selectedTelco, setSelectedTelco] = useState<string>("auto");
 
   // Hooks
   const otpVerification = useOTPVerification({
     onSuccess: (phone) => {
-      console.log('OTP verification successful for:', phone);
+      console.log("OTP verification successful for:", phone);
     },
     onError: (error) => {
-      console.error('OTP verification error:', error);
-    }
+      console.error("OTP verification error:", error);
+    },
   });
 
   const phoneValidation = usePhoneValidation({
-    preset: 'STANDARD',
+    preset: "STANDARD",
     onTelcoChange: (telco) => {
-      console.log('Detected telco:', telco);
-    }
+      console.log("Detected telco:", telco);
+    },
   });
 
   // Handle phone submission for individual components
@@ -57,7 +70,16 @@ export const OTPVerificationExample: React.FC = () => {
         setPhoneNumber(phone);
       }
     } catch (error) {
-      console.error('Phone submission error:', error);
+      console.error("Phone submission error:", error);
+    }
+  };
+
+  // Handle OTP resend for dialog
+  const handleOTPResendDialog = async (phone: string) => {
+    try {
+      await otpVerification.requestOTP(phone);
+    } catch (error) {
+      console.error("OTP resend error:", error);
     }
   };
 
@@ -70,7 +92,7 @@ export const OTPVerificationExample: React.FC = () => {
       }
       return success;
     } catch (error) {
-      console.error('OTP verification error:', error);
+      console.error("OTP verification error:", error);
       return false;
     }
   };
@@ -78,20 +100,24 @@ export const OTPVerificationExample: React.FC = () => {
   // Handle OTP resend
   const handleOTPResend = async () => {
     try {
-      return await otpVerification.resendOTP();
+      await otpVerification.resendOTP();
     } catch (error) {
-      console.error('OTP resend error:', error);
-      return false;
+      console.error("OTP resend error:", error);
     }
   };
 
   // Example telco data for demonstration
   const vietnameseTelcos = [
-    { code: 'VIETTEL', name: 'Viettel', color: '#0033A0', otpLength: 4 },
-    { code: 'MOBIFONE', name: 'Mobifone', color: '#FF6600', otpLength: 6 },
-    { code: 'VINAPHONE', name: 'Vinaphone', color: '#FF0000', otpLength: 6 },
-    { code: 'VIETNAMOBILE', name: 'Vietnamobile', color: '#FFCC00', otpLength: 4 },
-    { code: 'GTEL', name: 'Gmobile', color: '#00CC66', otpLength: 4 }
+    { code: "VIETTEL", name: "Viettel", color: "#0033A0", otpLength: 4 },
+    { code: "MOBIFONE", name: "Mobifone", color: "#FF6600", otpLength: 6 },
+    { code: "VINAPHONE", name: "Vinaphone", color: "#FF0000", otpLength: 6 },
+    {
+      code: "VIETNAMOBILE",
+      name: "Vietnamobile",
+      color: "#FFCC00",
+      otpLength: 4,
+    },
+    { code: "GTEL", name: "Gmobile", color: "#00CC66", otpLength: 4 },
   ];
 
   return (
@@ -102,7 +128,8 @@ export const OTPVerificationExample: React.FC = () => {
           Vietnamese OTP Verification System
         </h1>
         <p className="text-muted-foreground">
-          Comprehensive OTP verification with Vietnamese telecommunications carrier support
+          Comprehensive OTP verification with Vietnamese telecommunications
+          carrier support
         </p>
       </div>
 
@@ -120,7 +147,8 @@ export const OTPVerificationExample: React.FC = () => {
             <CardHeader>
               <CardTitle>Complete OTP Verification Dialog</CardTitle>
               <CardDescription>
-                All-in-one dialog component with phone input, OTP verification, and Vietnamese telco support
+                All-in-one dialog component with phone input, OTP verification,
+                and Vietnamese telco support
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -128,9 +156,10 @@ export const OTPVerificationExample: React.FC = () => {
                 <Alert>
                   <Info className="h-4 w-4" />
                   <AlertDescription>
-                    This dialog provides a complete OTP verification flow with automatic Vietnamese telco detection,
-                    appropriate OTP length handling (4 digits for Viettel/Gmobile, 6 digits for others),
-                    and comprehensive error handling.
+                    This dialog provides a complete OTP verification flow with
+                    automatic Vietnamese telco detection, appropriate OTP length
+                    handling (4 digits for Viettel/Gmobile, 6 digits for
+                    others), and comprehensive error handling.
                   </AlertDescription>
                 </Alert>
 
@@ -148,7 +177,7 @@ export const OTPVerificationExample: React.FC = () => {
                   onOpenChange={setIsDialogOpen}
                   onPhoneSubmit={handlePhoneSubmit}
                   onOTPVerify={handleOTPVerify}
-                  onOTPResend={handleOTPResend}
+                  onOTPResend={handleOTPResendDialog}
                   autoRequestOTP={true}
                 />
               </div>
@@ -163,7 +192,8 @@ export const OTPVerificationExample: React.FC = () => {
             <CardHeader>
               <CardTitle>Phone Input Component</CardTitle>
               <CardDescription>
-                Vietnamese phone number input with real-time validation and telco detection
+                Vietnamese phone number input with real-time validation and
+                telco detection
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -171,16 +201,19 @@ export const OTPVerificationExample: React.FC = () => {
                 value={phoneNumber}
                 onChange={(phone, isValid, metadata) => {
                   setPhoneNumber(phone);
-                  console.log('Phone input change:', { phone, isValid, metadata });
+                  console.log("Phone input change:", {
+                    phone,
+                    isValid,
+                    metadata,
+                  });
                 }}
                 showTelcoBadge={true}
                 showSuggestions={true}
                 showValidation={true}
-                autoFocus={true}
                 label="Số điện thoại Việt Nam"
                 placeholder="Nhập số điện thoại (ví dụ: 0912345678)"
                 onTelcoDetected={(telco) => {
-                  console.log('Telco detected:', telco);
+                  console.log("Telco detected:", telco);
                 }}
               />
 
@@ -188,7 +221,8 @@ export const OTPVerificationExample: React.FC = () => {
                 <Alert className="border-green-200 bg-green-50 text-green-800">
                   <CheckCircle className="h-4 w-4" />
                   <AlertDescription>
-                    Valid Vietnamese phone number detected: {phoneValidation.metadata?.formattedNumber}
+                    Valid Vietnamese phone number detected:{" "}
+                    {phoneValidation.metadata?.formattedNumber}
                   </AlertDescription>
                 </Alert>
               )}
@@ -200,19 +234,22 @@ export const OTPVerificationExample: React.FC = () => {
             <CardHeader>
               <CardTitle>OTP Input Component</CardTitle>
               <CardDescription>
-                OTP input with auto-focus management, paste support, and Vietnamese telco-specific length handling
+                OTP input with auto-focus management, paste support, and
+                Vietnamese telco-specific length handling
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-4">
                 <div className="flex items-center gap-4">
-                  <span className="text-sm font-medium">4-digit OTP (Viettel/Gmobile):</span>
+                  <span className="text-sm font-medium">
+                    4-digit OTP (Viettel/Gmobile):
+                  </span>
                   <OTPInput
                     length={4}
                     value={otpCode}
                     onChange={(code, isComplete) => {
                       setOtpCode(code);
-                      console.log('OTP 4-digit change:', { code, isComplete });
+                      console.log("OTP 4-digit change:", { code, isComplete });
                     }}
                     onComplete={handleOTPVerify}
                     showTimer={true}
@@ -224,13 +261,15 @@ export const OTPVerificationExample: React.FC = () => {
                 <Separator />
 
                 <div className="flex items-center gap-4">
-                  <span className="text-sm font-medium">6-digit OTP (Other telcos):</span>
+                  <span className="text-sm font-medium">
+                    6-digit OTP (Other telcos):
+                  </span>
                   <OTPInput
                     length={6}
                     value={otpCode}
                     onChange={(code, isComplete) => {
                       setOtpCode(code);
-                      console.log('OTP 6-digit change:', { code, isComplete });
+                      console.log("OTP 6-digit change:", { code, isComplete });
                     }}
                     onComplete={handleOTPVerify}
                     showTimer={true}
@@ -247,7 +286,8 @@ export const OTPVerificationExample: React.FC = () => {
             <CardHeader>
               <CardTitle>OTP Resend Component</CardTitle>
               <CardDescription>
-                Resend OTP functionality with cooldown timer and telco-specific retry rules
+                Resend OTP functionality with cooldown timer and telco-specific
+                retry rules
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -258,7 +298,7 @@ export const OTPVerificationExample: React.FC = () => {
                   resendCooldown: 60,
                   maxAttempts: 3,
                   supportsShortCode: true,
-                  shortCode: '1221'
+                  shortCode: "1221",
                 }}
                 showProgress={true}
                 showAttempts={true}
@@ -280,39 +320,48 @@ export const OTPVerificationExample: React.FC = () => {
             <CardContent className="space-y-4">
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div>
-                  <strong>Phone Number:</strong> {otpVerification.phoneNumber || 'Not set'}
+                  <strong>Phone Number:</strong>{" "}
+                  {otpVerification.phoneNumber || "Not set"}
                 </div>
                 <div>
-                  <strong>Session ID:</strong> {otpVerification.requestId || 'No active session'}
+                  <strong>Session ID:</strong>{" "}
+                  {otpVerification.requestId || "No active session"}
                 </div>
                 <div>
-                  <strong>Attempts:</strong> {otpVerification.attempts}/{otpVerification.maxAttempts}
+                  <strong>Attempts:</strong> {otpVerification.attempts}/
+                  {otpVerification.maxAttempts}
                 </div>
                 <div>
-                  <strong>Status:</strong> {
-                    otpVerification.success ? 'Verified' :
-                    otpVerification.isLocked ? 'Locked' :
-                    otpVerification.isExpired ? 'Expired' :
-                    otpVerification.isActive ? 'Active' : 'Inactive'
-                  }
+                  <strong>Status:</strong>{" "}
+                  {otpVerification.success
+                    ? "Verified"
+                    : otpVerification.isLocked
+                      ? "Locked"
+                      : otpVerification.isExpired
+                        ? "Expired"
+                        : otpVerification.isActive
+                          ? "Active"
+                          : "Inactive"}
                 </div>
                 <div>
-                  <strong>Can Verify:</strong> {otpVerification.canVerify ? 'Yes' : 'No'}
+                  <strong>Can Verify:</strong>{" "}
+                  {otpVerification.canVerify ? "Yes" : "No"}
                 </div>
                 <div>
-                  <strong>Can Resend:</strong> {otpVerification.canResend ? 'Yes' : 'No'}
+                  <strong>Can Resend:</strong>{" "}
+                  {otpVerification.canResend ? "Yes" : "No"}
                 </div>
               </div>
 
               <div className="flex gap-2">
                 <Button
-                  onClick={() => otpVerification.requestOTP('0961234567')}
+                  onClick={() => otpVerification.requestOTP("0961234567")}
                   disabled={otpVerification.isRequesting}
                 >
                   Request OTP
                 </Button>
                 <Button
-                  onClick={() => otpVerification.verifyOTP('1234')}
+                  onClick={() => otpVerification.verifyOTP("1234")}
                   disabled={!otpVerification.canVerify}
                   variant="outline"
                 >
@@ -339,28 +388,36 @@ export const OTPVerificationExample: React.FC = () => {
             <CardHeader>
               <CardTitle>usePhoneValidation Hook</CardTitle>
               <CardDescription>
-                Custom hook for Vietnamese phone number validation with telco detection
+                Custom hook for Vietnamese phone number validation with telco
+                detection
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div>
-                  <strong>Validation Status:</strong> {phoneValidation.getValidationStatus()}
+                  <strong>Validation Status:</strong>{" "}
+                  {phoneValidation.getValidationStatus()}
                 </div>
                 <div>
-                  <strong>Phone:</strong> {phoneValidation.phoneNumber || 'Not set'}
+                  <strong>Phone:</strong>{" "}
+                  {phoneValidation.phoneNumber || "Not set"}
                 </div>
                 <div>
-                  <strong>Valid:</strong> {phoneValidation.isValid ? 'Yes' : 'No'}
+                  <strong>Valid:</strong>{" "}
+                  {phoneValidation.isValid ? "Yes" : "No"}
                 </div>
                 <div>
-                  <strong>Complete:</strong> {phoneValidation.isComplete ? 'Yes' : 'No'}
+                  <strong>Complete:</strong>{" "}
+                  {phoneValidation.isComplete ? "Yes" : "No"}
                 </div>
                 <div>
-                  <strong>Telco:</strong> {phoneValidation.telcoInfo?.name || 'Unknown'}
+                  <strong>Telco:</strong>{" "}
+                  {phoneValidation.getTelcoInfo(phoneValidation.phoneNumber)
+                    ?.name || "Unknown"}
                 </div>
                 <div>
-                  <strong>Suggestions:</strong> {phoneValidation.suggestions.length} found
+                  <strong>Suggestions:</strong>{" "}
+                  {phoneValidation.suggestions.length} found
                 </div>
               </div>
 
@@ -380,7 +437,8 @@ export const OTPVerificationExample: React.FC = () => {
             <CardHeader>
               <CardTitle>Vietnamese Telecommunications Carriers</CardTitle>
               <CardDescription>
-                Supported Vietnamese telcos with their specific OTP configurations
+                Supported Vietnamese telcos with their specific OTP
+                configurations
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -403,11 +461,13 @@ export const OTPVerificationExample: React.FC = () => {
                       </div>
                       <div className="flex justify-between text-sm">
                         <span>OTP Length:</span>
-                        <Badge variant="outline">{telco.otpLength} digits</Badge>
+                        <Badge variant="outline">
+                          {telco.otpLength} digits
+                        </Badge>
                       </div>
                       <div className="text-xs text-muted-foreground">
-                        {telco.name} uses {telco.otpLength}-digit OTP codes with carrier-specific
-                        delivery times and retry policies.
+                        {telco.name} uses {telco.otpLength}-digit OTP codes with
+                        carrier-specific delivery times and retry policies.
                       </div>
                     </CardContent>
                   </Card>
@@ -420,7 +480,8 @@ export const OTPVerificationExample: React.FC = () => {
             <CardHeader>
               <CardTitle>Features</CardTitle>
               <CardDescription>
-                Comprehensive Vietnamese telco-specific OTP verification features
+                Comprehensive Vietnamese telco-specific OTP verification
+                features
               </CardDescription>
             </CardHeader>
             <CardContent>

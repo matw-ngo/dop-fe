@@ -5,6 +5,33 @@ import { Badge } from "@/components/ui/badge";
 import { Check, CreditCard, Shield, Smartphone, Globe } from "lucide-react";
 import { DetailedCreditCardInfo } from "@/types/credit-card";
 
+// Type for digital features object
+type DigitalFeatures = {
+  mobileBanking: boolean;
+  nfcPayment: boolean;
+  qrPayment: boolean;
+  onlineBanking: boolean;
+  cardControl: boolean;
+  expenseTracking: boolean;
+};
+
+// Helper function to convert digital features object to array
+const digitalFeaturesToArray = (
+  digitalFeatures?: DigitalFeatures,
+): string[] => {
+  if (!digitalFeatures || typeof digitalFeatures !== "object") return [];
+
+  const features: string[] = [];
+  if (digitalFeatures.mobileBanking) features.push("Mobile Banking");
+  if (digitalFeatures.nfcPayment) features.push("NFC Payment");
+  if (digitalFeatures.qrPayment) features.push("QR Payment");
+  if (digitalFeatures.onlineBanking) features.push("Online Banking");
+  if (digitalFeatures.cardControl) features.push("Card Control");
+  if (digitalFeatures.expenseTracking) features.push("Expense Tracking");
+
+  return features;
+};
+
 interface FeaturesTabProps {
   card: DetailedCreditCardInfo;
 }
@@ -26,7 +53,7 @@ export const FeaturesTab: React.FC<FeaturesTabProps> = ({ card }) => {
     {
       icon: Smartphone,
       title: t("features.digital"),
-      items: card.digitalFeatures || [],
+      items: digitalFeaturesToArray(card.digitalFeatures),
     },
     {
       icon: Globe,
@@ -44,7 +71,7 @@ export const FeaturesTab: React.FC<FeaturesTabProps> = ({ card }) => {
         </CardHeader>
         <CardContent>
           <div className="grid md:grid-cols-2 gap-4">
-            {card.features.map((feature, index) => (
+            {card.features.map((feature: string, index: number) => (
               <div key={index} className="flex items-start gap-2">
                 <Check className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
                 <span className="text-sm">{feature}</span>
@@ -67,7 +94,7 @@ export const FeaturesTab: React.FC<FeaturesTabProps> = ({ card }) => {
             </CardHeader>
             <CardContent>
               <div className="grid md:grid-cols-2 gap-4">
-                {category.items.map((feature, idx) => (
+                {category.items.map((feature: string, idx: number) => (
                   <div key={idx} className="flex items-start gap-2">
                     <Check className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
                     <span className="text-sm">{feature}</span>

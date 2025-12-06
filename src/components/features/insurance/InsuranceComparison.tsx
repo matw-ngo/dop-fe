@@ -16,7 +16,7 @@ import {
   Home,
   Plane,
   Users,
-  Trash2
+  Trash2,
 } from "lucide-react";
 import { InsuranceProduct, CoveragePeriod, FeeType } from "@/types/insurance";
 
@@ -97,7 +97,7 @@ export const InsuranceComparison: React.FC<InsuranceComparisonProps> = ({
   };
 
   // Find best value for each metric
-  const findBestValue = (metric: keyof InsuranceProduct) => {
+  const findBestValue = (metric: string) => {
     if (products.length === 0) return null;
 
     let bestProduct = products[0];
@@ -105,20 +105,20 @@ export const InsuranceComparison: React.FC<InsuranceComparisonProps> = ({
 
     switch (metric) {
       case "rating":
-        bestValue = Math.max(...products.map(p => p.rating));
-        return products.find(p => p.rating === bestValue)?.id;
+        bestValue = Math.max(...products.map((p) => p.rating));
+        return products.find((p) => p.rating === bestValue)?.id;
 
       case "pricing.totalPremium":
-        bestValue = Math.min(...products.map(p => p.pricing.totalPremium));
-        return products.find(p => p.pricing.totalPremium === bestValue)?.id;
+        bestValue = Math.min(...products.map((p) => p.pricing.totalPremium));
+        return products.find((p) => p.pricing.totalPremium === bestValue)?.id;
 
       case "claims.approvalRate":
-        bestValue = Math.max(...products.map(p => p.claims.approvalRate));
-        return products.find(p => p.claims.approvalRate === bestValue)?.id;
+        bestValue = Math.max(...products.map((p) => p.claims.approvalRate));
+        return products.find((p) => p.claims.approvalRate === bestValue)?.id;
 
       case "claims.processingTime":
-        bestValue = Math.min(...products.map(p => p.claims.processingTime));
-        return products.find(p => p.claims.processingTime === bestValue)?.id;
+        bestValue = Math.min(...products.map((p) => p.claims.processingTime));
+        return products.find((p) => p.claims.processingTime === bestValue)?.id;
 
       default:
         return null;
@@ -135,7 +135,9 @@ export const InsuranceComparison: React.FC<InsuranceComparisonProps> = ({
   const bestProcessingTimeId = findBestValue("claims.processingTime");
 
   return (
-    <div className={`bg-card rounded-lg border shadow-sm overflow-hidden ${className}`}>
+    <div
+      className={`bg-card rounded-lg border shadow-sm overflow-hidden ${className}`}
+    >
       {/* Header */}
       <div className="p-4 border-b bg-muted/30 flex items-center justify-between">
         <h3 className="text-lg font-semibold">
@@ -156,7 +158,10 @@ export const InsuranceComparison: React.FC<InsuranceComparisonProps> = ({
                 Tiêu chí
               </th>
               {products.map((product, index) => (
-                <th key={product.id} className="text-center p-4 border-b min-w-[200px]">
+                <th
+                  key={product.id}
+                  className="text-center p-4 border-b min-w-[200px]"
+                >
                   <div className="space-y-2">
                     {/* Product Avatar */}
                     <div className="w-16 h-16 bg-primary/10 rounded-lg mx-auto flex items-center justify-center relative">
@@ -171,7 +176,9 @@ export const InsuranceComparison: React.FC<InsuranceComparisonProps> = ({
                     {/* Product Info */}
                     <div>
                       <p className="font-semibold text-sm">{product.name}</p>
-                      <p className="text-xs text-muted-foreground">{product.issuer}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {product.issuer}
+                      </p>
                       <div className="flex items-center justify-center gap-1 mt-1">
                         <Star className="w-3 h-3 fill-yellow-500 text-yellow-500" />
                         <span className="text-xs">{product.rating}</span>
@@ -199,7 +206,10 @@ export const InsuranceComparison: React.FC<InsuranceComparisonProps> = ({
           <tbody>
             {/* Coverage Section */}
             <tr className="bg-muted/20">
-              <td colSpan={products.length + 1} className="p-3 border-b font-semibold text-sm">
+              <td
+                colSpan={products.length + 1}
+                className="p-3 border-b font-semibold text-sm"
+              >
                 <Shield className="w-4 h-4 inline mr-2" />
                 Mức bảo hiểm
               </td>
@@ -267,16 +277,17 @@ export const InsuranceComparison: React.FC<InsuranceComparisonProps> = ({
 
             {/* Pricing Section */}
             <tr className="bg-muted/20">
-              <td colSpan={products.length + 1} className="p-3 border-b font-semibold text-sm">
+              <td
+                colSpan={products.length + 1}
+                className="p-3 border-b font-semibold text-sm"
+              >
                 <DollarSign className="w-4 h-4 inline mr-2" />
                 Phí bảo hiểm
               </td>
             </tr>
 
             <tr>
-              <td className="p-4 border-b font-medium">
-                Phí cơ bản
-              </td>
+              <td className="p-4 border-b font-medium">Phí cơ bản</td>
               {products.map((product) => (
                 <td key={product.id} className="text-center p-4 border-b">
                   {formatCurrency(product.pricing.basePremium)}
@@ -285,16 +296,14 @@ export const InsuranceComparison: React.FC<InsuranceComparisonProps> = ({
             </tr>
 
             <tr className="bg-muted/30">
-              <td className="p-4 border-b font-medium">
-                Tổng phí (含VAT)
-              </td>
+              <td className="p-4 border-b font-medium">Tổng phí (含VAT)</td>
               {products.map((product) => (
                 <td
                   key={product.id}
                   className={`text-center p-4 border-b font-semibold ${
                     product.id === bestPremiumId
-                      ? 'bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400'
-                      : ''
+                      ? "bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400"
+                      : ""
                   }`}
                 >
                   {formatCurrency(product.pricing.totalPremium)}
@@ -306,9 +315,7 @@ export const InsuranceComparison: React.FC<InsuranceComparisonProps> = ({
             </tr>
 
             <tr>
-              <td className="p-4 border-b font-medium">
-                Thời gian bảo hiểm
-              </td>
+              <td className="p-4 border-b font-medium">Thời gian bảo hiểm</td>
               {products.map((product) => (
                 <td key={product.id} className="text-center p-4 border-b">
                   <span className="inline-flex items-center px-2 py-1 bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 rounded text-sm">
@@ -319,35 +326,36 @@ export const InsuranceComparison: React.FC<InsuranceComparisonProps> = ({
             </tr>
 
             <tr className="bg-muted/30">
-              <td className="p-4 border-b font-medium">
-                Loại phí
-              </td>
+              <td className="p-4 border-b font-medium">Loại phí</td>
               {products.map((product) => (
                 <td key={product.id} className="text-center p-4 border-b">
-                  <span className="text-sm">{getFeeTypeLabel(product.pricing.feeType)}</span>
+                  <span className="text-sm">
+                    {getFeeTypeLabel(product.pricing.feeType)}
+                  </span>
                 </td>
               ))}
             </tr>
 
             {/* Claims Metrics */}
             <tr className="bg-muted/20">
-              <td colSpan={products.length + 1} className="p-3 border-b font-semibold text-sm">
+              <td
+                colSpan={products.length + 1}
+                className="p-3 border-b font-semibold text-sm"
+              >
                 <AlertCircle className="w-4 h-4 inline mr-2" />
                 Dịch vụ bồi thường
               </td>
             </tr>
 
             <tr>
-              <td className="p-4 border-b font-medium">
-                Tỷ lệ duyệt yêu cầu
-              </td>
+              <td className="p-4 border-b font-medium">Tỷ lệ duyệt yêu cầu</td>
               {products.map((product) => (
                 <td
                   key={product.id}
                   className={`text-center p-4 border-b font-semibold ${
                     product.id === bestApprovalRateId
-                      ? 'bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400'
-                      : ''
+                      ? "bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400"
+                      : ""
                   }`}
                 >
                   {product.claims.approvalRate}%
@@ -370,8 +378,8 @@ export const InsuranceComparison: React.FC<InsuranceComparisonProps> = ({
                   key={product.id}
                   className={`text-center p-4 border-b ${
                     product.id === bestProcessingTimeId
-                      ? 'bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400'
-                      : ''
+                      ? "bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400"
+                      : ""
                   }`}
                 >
                   {product.claims.processingTime} ngày
@@ -384,7 +392,10 @@ export const InsuranceComparison: React.FC<InsuranceComparisonProps> = ({
 
             {/* Special Features */}
             <tr className="bg-muted/20">
-              <td colSpan={products.length + 1} className="p-3 border-b font-semibold text-sm">
+              <td
+                colSpan={products.length + 1}
+                className="p-3 border-b font-semibold text-sm"
+              >
                 <Check className="w-4 h-4 inline mr-2" />
                 Tính năng đặc biệt
               </td>
@@ -426,7 +437,11 @@ export const InsuranceComparison: React.FC<InsuranceComparisonProps> = ({
               ))}
             </tr>
 
-            {products.some(p => p.category === "vehicle" && p.additionalServices?.roadsideAssistance) && (
+            {products.some(
+              (p) =>
+                p.category === "vehicle" &&
+                p.additionalServices?.roadsideAssistance,
+            ) && (
               <tr>
                 <td className="p-4 border-b font-medium">
                   <div className="flex items-center gap-2">
@@ -448,23 +463,24 @@ export const InsuranceComparison: React.FC<InsuranceComparisonProps> = ({
 
             {/* Rating & Reviews */}
             <tr className="bg-muted/20">
-              <td colSpan={products.length + 1} className="p-3 border-b font-semibold text-sm">
+              <td
+                colSpan={products.length + 1}
+                className="p-3 border-b font-semibold text-sm"
+              >
                 <Star className="w-4 h-4 inline mr-2" />
                 Đánh giá
               </td>
             </tr>
 
             <tr>
-              <td className="p-4 border-b font-medium">
-                Xếp hạng sao
-              </td>
+              <td className="p-4 border-b font-medium">Xếp hạng sao</td>
               {products.map((product) => (
                 <td
                   key={product.id}
                   className={`text-center p-4 border-b ${
                     product.id === bestRatingId
-                      ? 'bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400'
-                      : ''
+                      ? "bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400"
+                      : ""
                   }`}
                 >
                   <div className="flex items-center justify-center gap-1">
@@ -490,9 +506,7 @@ export const InsuranceComparison: React.FC<InsuranceComparisonProps> = ({
           <Button className="bg-green-600 hover:bg-green-700 text-white">
             Đăng ký sản phẩm tốt nhất
           </Button>
-          <Button variant="outline">
-            Tìm hiểu thêm
-          </Button>
+          <Button variant="outline">Tìm hiểu thêm</Button>
         </div>
       </div>
     </div>

@@ -29,24 +29,7 @@ import {
 import { cn } from "@/lib/utils";
 import { SortOption, SortOptionUI } from "@/types/credit-card";
 
-export type CreditCardSortOption =
-  | "featured"
-  | "rating-desc"
-  | "rating-asc"
-  | "fee-asc"
-  | "fee-desc"
-  | "rate-asc"
-  | "rate-desc"
-  | "limit-asc"
-  | "limit-desc"
-  | "income-asc"
-  | "income-desc"
-  | "rewards-desc"
-  | "bonus-desc"
-  | "reviews-desc"
-  | "newest"
-  | "name-asc"
-  | "name-desc";
+export type CreditCardSortOption = SortOption;
 
 interface CreditCardSortDropdownProps {
   value?: CreditCardSortOption;

@@ -2,70 +2,96 @@
  * Contact Information Form Component
  */
 
-'use client';
+"use client";
 
-import React from 'react';
-import { useFormContext } from 'react-hook-form';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Checkbox } from '@/components/ui/checkbox';
-import { MapPin, Clock, Globe, Home, Building } from 'lucide-react';
+import React from "react";
+import { useFormContext } from "react-hook-form";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Checkbox } from "@/components/ui/checkbox";
+import { MapPin, Clock, Globe, Home, Building } from "lucide-react";
 
 interface ContactInformationFormProps {
   form: any;
-  language: 'vi' | 'en';
+  language: "vi" | "en";
 }
 
 const PROVINCES = [
-  '01', '79', '30', '48', '92', // Major cities
-  '02', '03', '04', '05', '06', '07', '08', '09', '10', // Add all Vietnamese provinces
+  "01",
+  "79",
+  "30",
+  "48",
+  "92", // Major cities
+  "02",
+  "03",
+  "04",
+  "05",
+  "06",
+  "07",
+  "08",
+  "09",
+  "10", // Add all Vietnamese provinces
 ];
 
-const ContactInformationForm: React.FC<ContactInformationFormProps> = ({ form, language }) => {
-  const { register, formState: { errors }, setValue, watch } = useFormContext();
+const ContactInformationForm: React.FC<ContactInformationFormProps> = ({
+  form,
+  language,
+}) => {
+  const {
+    register,
+    formState: { errors },
+    setValue,
+    watch,
+  } = useFormContext();
 
   const translations = {
     vi: {
-      currentAddress: 'Địa chỉ hiện tại',
-      permanentAddress: 'Địa chỉ thường trú',
-      province: 'Tỉnh/Thành phố',
-      district: 'Quận/Huyện',
-      ward: 'Phường/Xã',
-      street: 'Số nhà, tên đường',
-      contactPreferences: 'Thông tin liên hệ',
-      preferredMethod: 'Phương thức liên hệ ưu tiên',
-      phone: 'Điện thoại',
-      email: 'Email',
-      sms: 'SMS',
-      whatsapp: 'WhatsApp',
-      contactTime: 'Thời gian liên hệ',
-      morning: 'Buổi sáng',
-      afternoon: 'Buổi chiều',
-      evening: 'Buổi tối',
-      timezone: 'Múi giờ',
-      sameAsPermanent: 'Giống địa chỉ thường trú',
+      currentAddress: "Địa chỉ hiện tại",
+      permanentAddress: "Địa chỉ thường trú",
+      province: "Tỉnh/Thành phố",
+      district: "Quận/Huyện",
+      ward: "Phường/Xã",
+      street: "Số nhà, tên đường",
+      contactPreferences: "Thông tin liên hệ",
+      preferredMethod: "Phương thức liên hệ ưu tiên",
+      phone: "Điện thoại",
+      email: "Email",
+      sms: "SMS",
+      whatsapp: "WhatsApp",
+      contactTime: "Thời gian liên hệ",
+      morning: "Buổi sáng",
+      afternoon: "Buổi chiều",
+      evening: "Buổi tối",
+      timezone: "Múi giờ",
+      sameAsPermanent: "Giống địa chỉ thường trú",
     },
     en: {
-      currentAddress: 'Current Address',
-      permanentAddress: 'Permanent Address',
-      province: 'Province/City',
-      district: 'District',
-      ward: 'Ward',
-      street: 'Street Address',
-      contactPreferences: 'Contact Preferences',
-      preferredMethod: 'Preferred Contact Method',
-      phone: 'Phone',
-      email: 'Email',
-      sms: 'SMS',
-      whatsapp: 'WhatsApp',
-      contactTime: 'Preferred Contact Time',
-      morning: 'Morning',
-      afternoon: 'Afternoon',
-      evening: 'Evening',
-      timezone: 'Timezone',
-      sameAsPermanent: 'Same as permanent address',
+      currentAddress: "Current Address",
+      permanentAddress: "Permanent Address",
+      province: "Province/City",
+      district: "District",
+      ward: "Ward",
+      street: "Street Address",
+      contactPreferences: "Contact Preferences",
+      preferredMethod: "Preferred Contact Method",
+      phone: "Phone",
+      email: "Email",
+      sms: "SMS",
+      whatsapp: "WhatsApp",
+      contactTime: "Preferred Contact Time",
+      morning: "Morning",
+      afternoon: "Afternoon",
+      evening: "Evening",
+      timezone: "Timezone",
+      sameAsPermanent: "Same as permanent address",
     },
   };
 
@@ -83,25 +109,49 @@ const ContactInformationForm: React.FC<ContactInformationFormProps> = ({ form, l
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label>{t.province} *</Label>
-            <Select onValueChange={(value) => setValue('currentAddress.provinceCode', value)}>
-              <SelectTrigger className={errors.currentAddress?.provinceCode ? 'border-red-500' : ''}>
+            <Select
+              onValueChange={(value) =>
+                setValue("currentAddress.provinceCode", value)
+              }
+            >
+              <SelectTrigger
+                className={
+                  (errors.currentAddress as any)?.provinceCode
+                    ? "border-red-500"
+                    : ""
+                }
+              >
                 <SelectValue placeholder={t.province} />
               </SelectTrigger>
               <SelectContent>
-                {PROVINCES.map(code => (
-                  <SelectItem key={code} value={code}>{code}</SelectItem>
+                {PROVINCES.map((code) => (
+                  <SelectItem key={code} value={code}>
+                    {code}
+                  </SelectItem>
                 ))}
               </SelectContent>
             </Select>
-            {errors.currentAddress?.provinceCode && (
-              <p className="text-sm text-red-600">{errors.currentAddress.provinceCode.message as string}</p>
+            {(errors.currentAddress as any)?.provinceCode && (
+              <p className="text-sm text-red-600">
+                {(errors.currentAddress as any).provinceCode.message as string}
+              </p>
             )}
           </div>
 
           <div className="space-y-2">
             <Label>{t.district} *</Label>
-            <Select onValueChange={(value) => setValue('currentAddress.districtCode', value)}>
-              <SelectTrigger className={errors.currentAddress?.districtCode ? 'border-red-500' : ''}>
+            <Select
+              onValueChange={(value) =>
+                setValue("currentAddress.districtCode", value)
+              }
+            >
+              <SelectTrigger
+                className={
+                  (errors.currentAddress as any)?.districtCode
+                    ? "border-red-500"
+                    : ""
+                }
+              >
                 <SelectValue placeholder={t.district} />
               </SelectTrigger>
               <SelectContent>
@@ -110,15 +160,27 @@ const ContactInformationForm: React.FC<ContactInformationFormProps> = ({ form, l
                 <SelectItem value="002">Quận 2</SelectItem>
               </SelectContent>
             </Select>
-            {errors.currentAddress?.districtCode && (
-              <p className="text-sm text-red-600">{errors.currentAddress.districtCode.message as string}</p>
+            {(errors.currentAddress as any)?.districtCode && (
+              <p className="text-sm text-red-600">
+                {(errors.currentAddress as any).districtCode.message as string}
+              </p>
             )}
           </div>
 
           <div className="space-y-2">
             <Label>{t.ward} *</Label>
-            <Select onValueChange={(value) => setValue('currentAddress.wardCode', value)}>
-              <SelectTrigger className={errors.currentAddress?.wardCode ? 'border-red-500' : ''}>
+            <Select
+              onValueChange={(value) =>
+                setValue("currentAddress.wardCode", value)
+              }
+            >
+              <SelectTrigger
+                className={
+                  (errors.currentAddress as any)?.wardCode
+                    ? "border-red-500"
+                    : ""
+                }
+              >
                 <SelectValue placeholder={t.ward} />
               </SelectTrigger>
               <SelectContent>
@@ -127,8 +189,10 @@ const ContactInformationForm: React.FC<ContactInformationFormProps> = ({ form, l
                 <SelectItem value="0002">Phường 2</SelectItem>
               </SelectContent>
             </Select>
-            {errors.currentAddress?.wardCode && (
-              <p className="text-sm text-red-600">{errors.currentAddress.wardCode.message as string}</p>
+            {(errors.currentAddress as any)?.wardCode && (
+              <p className="text-sm text-red-600">
+                {(errors.currentAddress as any).wardCode.message as string}
+              </p>
             )}
           </div>
 
@@ -137,11 +201,15 @@ const ContactInformationForm: React.FC<ContactInformationFormProps> = ({ form, l
             <Input
               type="text"
               placeholder="123 Nguyễn Huệ"
-              {...register('currentAddress.street')}
-              className={errors.currentAddress?.street ? 'border-red-500' : ''}
+              {...register("currentAddress.street")}
+              className={
+                (errors.currentAddress as any)?.street ? "border-red-500" : ""
+              }
             />
-            {errors.currentAddress?.street && (
-              <p className="text-sm text-red-600">{errors.currentAddress.street.message as string}</p>
+            {(errors.currentAddress as any)?.street && (
+              <p className="text-sm text-red-600">
+                {(errors.currentAddress as any).street.message as string}
+              </p>
             )}
           </div>
         </div>
@@ -159,8 +227,8 @@ const ContactInformationForm: React.FC<ContactInformationFormProps> = ({ form, l
             id="sameAsPermanent"
             onCheckedChange={(checked) => {
               if (checked) {
-                const current = watch('currentAddress');
-                setValue('permanentAddress', current);
+                const current = watch("currentAddress");
+                setValue("permanentAddress", current);
               }
             }}
           />
@@ -170,13 +238,19 @@ const ContactInformationForm: React.FC<ContactInformationFormProps> = ({ form, l
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label>{t.province}</Label>
-            <Select onValueChange={(value) => setValue('permanentAddress.provinceCode', value)}>
+            <Select
+              onValueChange={(value) =>
+                setValue("permanentAddress.provinceCode", value)
+              }
+            >
               <SelectTrigger>
                 <SelectValue placeholder={t.province} />
               </SelectTrigger>
               <SelectContent>
-                {PROVINCES.map(code => (
-                  <SelectItem key={code} value={code}>{code}</SelectItem>
+                {PROVINCES.map((code) => (
+                  <SelectItem key={code} value={code}>
+                    {code}
+                  </SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -196,7 +270,9 @@ const ContactInformationForm: React.FC<ContactInformationFormProps> = ({ form, l
           <Label>{t.preferredMethod} *</Label>
           <RadioGroup
             defaultValue="phone"
-            onValueChange={(value) => setValue('contactPreferences.preferredContactMethod', value)}
+            onValueChange={(value) =>
+              setValue("contactPreferences.preferredContactMethod", value)
+            }
             className="flex space-x-4"
           >
             <div className="flex items-center space-x-2">
@@ -221,7 +297,11 @@ const ContactInformationForm: React.FC<ContactInformationFormProps> = ({ form, l
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label>{t.contactTime}</Label>
-            <Select onValueChange={(value) => setValue('contactPreferences.contactTime', value)}>
+            <Select
+              onValueChange={(value) =>
+                setValue("contactPreferences.contactTime", value)
+              }
+            >
               <SelectTrigger>
                 <SelectValue placeholder={t.contactTime} />
               </SelectTrigger>
@@ -235,12 +315,19 @@ const ContactInformationForm: React.FC<ContactInformationFormProps> = ({ form, l
 
           <div className="space-y-2">
             <Label>{t.timezone}</Label>
-            <Select defaultValue="Asia/Ho_Chi_Minh" onValueChange={(value) => setValue('contactPreferences.timezone', value)}>
+            <Select
+              defaultValue="Asia/Ho_Chi_Minh"
+              onValueChange={(value) =>
+                setValue("contactPreferences.timezone", value)
+              }
+            >
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="Asia/Ho_Chi_Minh">Asia/Ho_Chi_Minh (UTC+7)</SelectItem>
+                <SelectItem value="Asia/Ho_Chi_Minh">
+                  Asia/Ho_Chi_Minh (UTC+7)
+                </SelectItem>
                 <SelectItem value="UTC">UTC (UTC+0)</SelectItem>
               </SelectContent>
             </Select>

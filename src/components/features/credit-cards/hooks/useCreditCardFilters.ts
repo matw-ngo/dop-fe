@@ -1,5 +1,6 @@
 import { useState, useCallback, useMemo } from "react";
-import { CreditCardFilters, DEFAULT_FILTERS } from "@/types/credit-card";
+import { CreditCardFilters } from "@/types/credit-card";
+import { DEFAULT_FILTERS } from "@/constants/credit-cards";
 
 interface UseCreditCardFiltersOptions {
   initialFilters?: Partial<CreditCardFilters>;
@@ -14,6 +15,21 @@ interface UseCreditCardFiltersReturn {
   hasActiveFilters: boolean;
   activeFiltersCount: number;
   resetToDefaults: () => void;
+  toggleArrayFilter: (
+    filterType: keyof CreditCardFilters,
+    value: string,
+  ) => void;
+  toggleBooleanFilter: (filterType: keyof CreditCardFilters) => void;
+  updateRangeFilter: (
+    filterType: keyof CreditCardFilters,
+    min?: number,
+    max?: number,
+  ) => void;
+  activeFiltersList: Array<{
+    type: keyof CreditCardFilters;
+    label: string;
+    value?: string;
+  }>;
 }
 
 /**

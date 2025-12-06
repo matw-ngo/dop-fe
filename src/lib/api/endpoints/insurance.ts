@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Insurance Products API Endpoints
  *

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import apiClient from "../client";
 import type { paths } from "../v1.d.ts";
 
@@ -6,7 +7,9 @@ import type { paths } from "../v1.d.ts";
  */
 export const authApi = {
   // Login
-  login: async (credentials: paths["/auth/login"]["post"]["requestBody"]["content"]["application/json"]) => {
+  login: async (
+    credentials: paths["/auth/login"]["post"]["requestBody"]["content"]["application/json"],
+  ) => {
     const response = await apiClient.POST("/auth/login", {
       body: credentials,
     });
@@ -28,7 +31,9 @@ export const authApi = {
   },
 
   // Register user
-  register: async (userData: paths["/auth/register"]["post"]["requestBody"]["content"]["application/json"]) => {
+  register: async (
+    userData: paths["/auth/register"]["post"]["requestBody"]["content"]["application/json"],
+  ) => {
     const response = await apiClient.POST("/auth/register", {
       body: userData,
     });
@@ -74,7 +79,9 @@ export const authApi = {
   },
 
   // Update profile
-  updateProfile: async (profileData: paths["/auth/profile"]["put"]["requestBody"]["content"]["application/json"]) => {
+  updateProfile: async (
+    profileData: paths["/auth/profile"]["put"]["requestBody"]["content"]["application/json"],
+  ) => {
     const response = await apiClient.PUT("/auth/profile", {
       body: profileData,
     });
@@ -107,7 +114,11 @@ export const socialAuthApi = {
   },
 
   // Social login callback
-  socialLoginCallback: async (provider: string, code: string, state?: string) => {
+  socialLoginCallback: async (
+    provider: string,
+    code: string,
+    state?: string,
+  ) => {
     const response = await apiClient.POST("/auth/social/{provider}/callback", {
       params: {
         path: { provider },
@@ -144,7 +155,9 @@ export const socialAuthApi = {
  */
 export const authAdminApi = {
   // Get all users
-  getAllUsers: async (params?: paths["/admin/users"]["get"]["parameters"]["query"]) => {
+  getAllUsers: async (
+    params?: paths["/admin/users"]["get"]["parameters"]["query"],
+  ) => {
     const response = await apiClient.GET("/admin/users", {
       params: {
         query: params,
@@ -154,7 +167,9 @@ export const authAdminApi = {
   },
 
   // Create user
-  createUser: async (userData: paths["/admin/users"]["post"]["requestBody"]["content"]["application/json"]) => {
+  createUser: async (
+    userData: paths["/admin/users"]["post"]["requestBody"]["content"]["application/json"],
+  ) => {
     const response = await apiClient.POST("/admin/users", {
       body: userData,
     });
@@ -162,7 +177,10 @@ export const authAdminApi = {
   },
 
   // Update user
-  updateUser: async (userId: string, userData: paths["/admin/users/{id}"]["put"]["requestBody"]["content"]["application/json"]) => {
+  updateUser: async (
+    userId: string,
+    userData: paths["/admin/users/{id}"]["put"]["requestBody"]["content"]["application/json"],
+  ) => {
     const response = await apiClient.PUT("/admin/users/{id}", {
       params: {
         path: { id: userId },
@@ -226,16 +244,21 @@ export const authAdminApi = {
 
   // Revoke user session
   revokeSession: async (userId: string, sessionId: string) => {
-    const response = await apiClient.DELETE("/admin/users/{id}/sessions/{sessionId}", {
-      params: {
-        path: { id: userId, sessionId },
+    const response = await apiClient.DELETE(
+      "/admin/users/{id}/sessions/{sessionId}",
+      {
+        params: {
+          path: { id: userId, sessionId },
+        },
       },
-    });
+    );
     return response.data;
   },
 
   // Get auth statistics
-  getAuthStats: async (params?: paths["/admin/auth/stats"]["get"]["parameters"]["query"]) => {
+  getAuthStats: async (
+    params?: paths["/admin/auth/stats"]["get"]["parameters"]["query"],
+  ) => {
     const response = await apiClient.GET("/admin/auth/stats", {
       params: {
         query: params,

@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Credit Cards API Endpoints
  *

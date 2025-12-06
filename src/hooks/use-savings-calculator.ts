@@ -5,18 +5,14 @@
  * bank comparisons, and goal planning.
  */
 
-import { useState, useCallback, useEffect } from 'react';
-import { useFinancialToolsStore } from '@/store/use-financial-tools-store';
-import {
-  calculateCompoundInterest,
-  calculateSimpleInterest,
-} from '@/lib/financial-data/vietnamese-financial-data';
+import { useState, useCallback, useEffect } from "react";
+import { useFinancialToolsStore } from "@/store/use-financial-tools-store";
 import {
   getBestSavingsRates,
   compareSavingsProducts,
-} from '@/lib/financial-data/bank-rates';
-import { calculateRealReturns } from '@/lib/financial-data/market-indicators';
-import { savingsApi } from '@/lib/api/endpoints/financial-tools';
+  calculateCompoundInterest,
+} from "@/lib/financial-data/bank-rates";
+import { calculateRealReturns } from "@/lib/financial-data/market-indicators";
 
 // Types
 export interface UseSavingsCalculatorOptions {
@@ -34,7 +30,7 @@ export interface SavingsCalculatorState {
     monthlyContribution?: number;
     annualRate: number;
     termInMonths: number;
-    compoundingFrequency?: 'monthly' | 'quarterly' | 'annual';
+    compoundingFrequency?: "monthly" | "quarterly" | "annual";
   };
   result?: {
     finalAmount: number;
@@ -54,18 +50,23 @@ export interface SavingsCalculatorActions {
   reset: () => void;
   validate: () => boolean;
   compareBanks: (amount: number, termInMonths: number) => Promise<any>;
-  calculateGoal: (targetAmount: number, monthlyContribution: number, desiredMonths: number) => Promise<any>;
-  exportResults: (format: 'pdf' | 'excel') => Promise<void>;
+  calculateGoal: (
+    targetAmount: number,
+    monthlyContribution: number,
+    desiredMonths: number,
+  ) => Promise<any>;
+  exportResults: (format: "pdf" | "excel") => Promise<void>;
 }
 
-export type UseSavingsCalculatorReturn = SavingsCalculatorState & SavingsCalculatorActions;
+export type UseSavingsCalculatorReturn = SavingsCalculatorState &
+  SavingsCalculatorActions;
 
 /**
  * Custom hook for savings calculation functionality
  */
 export const useSavingsCalculator = (
   initialParams?: any,
-  options: UseSavingsCalculatorOptions = {}
+  options: UseSavingsCalculatorOptions = {},
 ): UseSavingsCalculatorReturn => {
   const {
     enableCache = true,
@@ -112,23 +113,23 @@ export const useSavingsCalculator = (
     if (!localParams) return false;
 
     if (localParams.principal <= 0) {
-      const errorMessage = 'Số tiền gửi phải lớn hơn 0';
+      const errorMessage = "Số tiền gửi phải lớn hơn 0";
       setErrorLocal(errorMessage);
-      setError('calculation', errorMessage);
+      setError("calculation", errorMessage);
       onError?.(errorMessage);
       return false;
     }
 
     if (localParams.annualRate < 0 || localParams.annualRate > 50) {
-      const errorMessage = 'Lãi suất không hợp lệ (0-50%)';
+      const errorMessage = "Lãi suất không hợp lệ (0-50%)";
       setErrorLocal(errorMessage);
-      setError('calculation', errorMessage);
+      setError("calculation", errorMessage);
       onError?.(errorMessage);
       return false;
     }
 
     setErrorLocal(undefined);
-    setError('calculation', undefined);
+    setError("calculation", undefined);
     return true;
   }, [localParams, setError, onError]);
 
@@ -140,7 +141,7 @@ export const useSavingsCalculator = (
     if (!validate()) return;
 
     setLoadingLocal(true);
-    setLoading('calculations', true);
+    setLoading("calculations", true);
 
     try {
       // Check cache first
@@ -151,15 +152,19 @@ export const useSavingsCalculator = (
         calculationResult = cache.get(cacheKey);
       } else {
         // Perform calculation
-        const frequency = localParams.compoundingFrequency === 'monthly' ? 12 :
-                         localParams.compoundingFrequency === 'quarterly' ? 4 : 1;
+        const frequency =
+          localParams.compoundingFrequency === "monthly"
+            ? 12
+            : localParams.compoundingFrequency === "quarterly"
+              ? 4
+              : 1;
 
         // Calculate base interest
         const baseCalculation = calculateCompoundInterest(
           localParams.principal,
           localParams.annualRate,
           localParams.termInMonths,
-          frequency
+          frequency,
         );
 
         let finalAmount = baseCalculation.finalAmount;
@@ -167,7 +172,10 @@ export const useSavingsCalculator = (
         let totalContributions = localParams.principal;
 
         // Calculate with monthly contributions if specified
-        if (localParams.monthlyContribution && localParams.monthlyContribution > 0) {
+        if (
+          localParams.monthlyContribution &&
+          localParams.monthlyContribution > 0
+        ) {
           let currentBalance = localParams.principal;
           const monthlyRate = localParams.annualRate / 100 / 12;
 
@@ -182,7 +190,10 @@ export const useSavingsCalculator = (
         }
 
         // Calculate effective rate
-        const effectiveRate = ((finalAmount - totalContributions) / totalContributions) * (12 / localParams.termInMonths) * 100;
+        const effectiveRate =
+          ((finalAmount - totalContributions) / totalContributions) *
+          (12 / localParams.termInMonths) *
+          100;
 
         calculationResult = {
           finalAmount,
@@ -207,14 +218,14 @@ export const useSavingsCalculator = (
       setResult(calculationResult);
       setSavingsResults(localParams, calculationResult);
       setErrorLocal(undefined);
-      setError('calculation', undefined);
+      setError("calculation", undefined);
 
       // Add to history
-      addToHistory('savings', localParams, calculationResult);
+      addToHistory("savings", localParams, calculationResult);
 
       // Analytics
       if (enableAnalytics) {
-        console.log('Savings calculation completed', {
+        console.log("Savings calculation completed", {
           principal: localParams.principal,
           annualRate: localParams.annualRate,
           termInMonths: localParams.termInMonths,
@@ -223,15 +234,15 @@ export const useSavingsCalculator = (
       }
 
       onSuccess?.(calculationResult);
-
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Calculation failed';
+      const errorMessage =
+        error instanceof Error ? error.message : "Calculation failed";
       setErrorLocal(errorMessage);
-      setError('calculation', errorMessage);
+      setError("calculation", errorMessage);
       onError?.(errorMessage);
     } finally {
       setLoadingLocal(false);
-      setLoading('calculations', false);
+      setLoading("calculations", false);
     }
   }, [
     localParams,
@@ -253,18 +264,18 @@ export const useSavingsCalculator = (
   const compareBanks = useCallback(
     async (amount: number, termInMonths: number): Promise<any> => {
       try {
-        setLoading('calculations', true);
+        setLoading("calculations", true);
 
         const comparison = compareSavingsProducts(amount, termInMonths);
         return comparison;
       } catch (error) {
-        console.error('Bank comparison error:', error);
+        console.error("Bank comparison error:", error);
         throw error;
       } finally {
-        setLoading('calculations', false);
+        setLoading("calculations", false);
       }
     },
-    [setLoading]
+    [setLoading],
   );
 
   // Calculate savings goal
@@ -272,34 +283,44 @@ export const useSavingsCalculator = (
     async (
       targetAmount: number,
       monthlyContribution: number,
-      desiredMonths: number
+      desiredMonths: number,
     ): Promise<any> => {
       try {
-        setLoading('calculations', true);
+        setLoading("calculations", true);
 
         const remainingAmount = targetAmount;
         const monthlyRate = 0.006; // Assume 7.2% annual rate
 
         // Time calculation with compound interest
-        const timeWithInterest = Math.log((remainingAmount * monthlyRate / monthlyContribution) + 1) / Math.log(1 + monthlyRate);
+        const timeWithInterest =
+          Math.log((remainingAmount * monthlyRate) / monthlyContribution + 1) /
+          Math.log(1 + monthlyRate);
         const timeToGoal = Math.ceil(timeWithInterest);
 
         // Feasibility assessment
-        let feasibility: 'easy' | 'moderate' | 'challenging' | 'impossible';
+        let feasibility: "easy" | "moderate" | "challenging" | "impossible";
         let recommendations: string[] = [];
 
         if (timeToGoal <= desiredMonths) {
-          feasibility = 'easy';
-          recommendations.push('Mục tiêu khả quan - có thể đạt được sớm hơn dự kiến');
+          feasibility = "easy";
+          recommendations.push(
+            "Mục tiêu khả quan - có thể đạt được sớm hơn dự kiến",
+          );
         } else if (timeToGoal <= desiredMonths * 1.5) {
-          feasibility = 'moderate';
-          recommendations.push('Mục tiêu có thể đạt được - cần tăng tiết kiệm hoặc thời gian');
+          feasibility = "moderate";
+          recommendations.push(
+            "Mục tiêu có thể đạt được - cần tăng tiết kiệm hoặc thời gian",
+          );
         } else if (timeToGoal <= desiredMonths * 2) {
-          feasibility = 'challenging';
-          recommendations.push('Mục tiêu thử thách - cần tăng đáng kể tiết kiệm');
+          feasibility = "challenging";
+          recommendations.push(
+            "Mục tiêu thử thách - cần tăng đáng kể tiết kiệm",
+          );
         } else {
-          feasibility = 'impossible';
-          recommendations.push('Mục tiêu hiện không khả thi với điều kiện hiện tại');
+          feasibility = "impossible";
+          recommendations.push(
+            "Mục tiêu hiện không khả thi với điều kiện hiện tại",
+          );
         }
 
         return {
@@ -309,25 +330,32 @@ export const useSavingsCalculator = (
           timeToGoal,
           feasibility,
           recommendations,
-          requiredRate: (Math.pow(targetAmount / (monthlyContribution * desiredMonths), 1 / desiredMonths) - 1) * 12 * 100,
+          requiredRate:
+            (Math.pow(
+              targetAmount / (monthlyContribution * desiredMonths),
+              1 / desiredMonths,
+            ) -
+              1) *
+            12 *
+            100,
         };
       } catch (error) {
-        console.error('Goal calculation error:', error);
+        console.error("Goal calculation error:", error);
         throw error;
       } finally {
-        setLoading('calculations', false);
+        setLoading("calculations", false);
       }
     },
-    [setLoading]
+    [setLoading],
   );
 
   // Export results
   const exportResults = useCallback(
-    async (format: 'pdf' | 'excel'): Promise<void> => {
+    async (format: "pdf" | "excel"): Promise<void> => {
       if (!result || !localParams) return;
 
       try {
-        setLoading('export', true);
+        setLoading("export", true);
 
         const exportData = {
           format,
@@ -339,42 +367,47 @@ export const useSavingsCalculator = (
           options: {
             includeChart: true,
             includeDetails: true,
-            language: 'vi',
+            language: "vi",
           },
         };
 
-        const response = await savingsApi.exportResults(exportData);
+        console.log("EXPORT");
+        // const response = await savingsApi.exportResults(exportData);
 
-        if (response.success && response.data) {
-          // Trigger download
-          const link = document.createElement('a');
-          link.href = response.data.downloadUrl;
-          link.download = `savings-calculation-${Date.now()}.${format}`;
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-        }
+        // if (response.success && response.data) {
+        //   // Trigger download
+        //   const link = document.createElement('a');
+        //   link.href = response.data.downloadUrl;
+        //   link.download = `savings-calculation-${Date.now()}.${format}`;
+        //   document.body.appendChild(link);
+        //   link.click();
+        //   document.body.removeChild(link);
+        // }
       } catch (error) {
-        console.error('Export error:', error);
-        const errorMessage = error instanceof Error ? error.message : 'Export failed';
-        setError('export', errorMessage);
+        console.error("Export error:", error);
+        const errorMessage =
+          error instanceof Error ? error.message : "Export failed";
+        setError("export", errorMessage);
       } finally {
-        setLoading('export', false);
+        setLoading("export", false);
       }
     },
-    [result, localParams, setLoading, setError]
+    [result, localParams, setLoading, setError],
   );
 
   // Set parameters
-  const setParams = useCallback((params: any) => {
-    setLocalParams(params);
-    setSavingsParams(params);
+  const setParams = useCallback(
+    (params: any) => {
+      setLocalParams(params);
+      setSavingsParams(params);
 
-    // Auto calculate if enabled
-    if (autoCalculate) {
-      setTimeout(() => calculate(), 0);
-    }
-  }, [setSavingsParams, autoCalculate, calculate]);
+      // Auto calculate if enabled
+      if (autoCalculate) {
+        setTimeout(() => calculate(), 0);
+      }
+    },
+    [setSavingsParams, autoCalculate, calculate],
+  );
 
   // Reset calculator
   const reset = useCallback(() => {

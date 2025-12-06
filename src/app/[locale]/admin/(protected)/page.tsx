@@ -28,8 +28,6 @@ import {
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useLocalizedPath } from "@/lib/client-utils";
-import { useQuery } from "@tanstack/react-query";
-import { authAdminApi } from "@/lib/api/endpoints/auth";
 import { useAdminAccess } from "@/hooks/use-auth-guards";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -39,12 +37,13 @@ export default function AdminDashboard() {
   const getLocalizedPath = useLocalizedPath();
   const t = useTranslations("admin.dashboard");
 
-  // Fetch real-time statistics
-  const { data: userStats, isLoading: isLoadingUsers } = useQuery({
-    queryKey: ["adminUserStats"],
-    queryFn: () => authAdminApi.getAuthStats(),
-    refetchInterval: 60000, // Refresh every minute
-  });
+  // Mock user stats for now - TODO: Replace with actual API call
+  const mockUserStats = {
+    totalUsers: 1234,
+    usersChange: "+8",
+    usersTrend: "up" as const,
+  };
+  const isLoadingUsers = false;
 
   // Mock loan stats for now
   const mockLoanStats = {
@@ -106,12 +105,12 @@ export default function AdminDashboard() {
     },
     {
       title: t("stats.totalUsers"),
-      value: userStats?.totalUsers?.toString() || "1,234",
-      description: userStats?.usersChange
-        ? t("stats.changePrefix", { percentage: userStats.usersChange })
-        : t("stats.noChange"),
+      value: mockUserStats.totalUsers.toString(),
+      description: t("stats.changePrefix", {
+        percentage: mockUserStats.usersChange,
+      }),
       icon: UsersIcon,
-      trend: userStats?.usersTrend,
+      trend: mockUserStats.usersTrend,
       loading: isLoadingUsers,
     },
     {

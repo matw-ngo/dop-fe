@@ -144,16 +144,12 @@ export const RequirementsTab: React.FC<RequirementsTabProps> = ({ card }) => {
           </CardHeader>
           <CardContent>
             <div className="flex flex-wrap gap-2">
-              {card.employmentType.map((type, index) => (
-                <Badge
-                  key={index}
-                  variant="secondary"
-                  className="flex items-center gap-1"
-                >
-                  {getEmploymentTypeIcon(type)}
-                  {t(`requirements.employment.types.${type}`)}
+              {card.employmentType && (
+                <Badge variant="secondary" className="flex items-center gap-1">
+                  {getEmploymentTypeIcon(card.employmentType)}
+                  {t(`requirements.employment.types.${card.employmentType}`)}
                 </Badge>
-              ))}
+              )}
             </div>
           </CardContent>
         </Card>

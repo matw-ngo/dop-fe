@@ -5,25 +5,25 @@
  * caching, error handling, and analytics.
  */
 
-import { useState, useCallback, useEffect } from 'react';
-import { useFinancialToolsStore } from '@/store/use-financial-tools-store';
+import { useState, useCallback, useEffect } from "react";
+import { useFinancialToolsStore } from "@/store/use-financial-tools-store";
 import {
   calculateLoanDetails,
-  validateLoanCalculationParams,
   LoanCalculationParams,
   LoanCalculationResult,
-} from '@/lib/financial/calculations';
+} from "@/lib/financial/calculations";
 import {
   calculateHomeLoan,
   calculateAutoLoan,
   calculateConsumerLoan,
   calculateBusinessLoan,
-} from '@/lib/financial/loan-calculations';
+} from "@/lib/financial/loan-calculations";
 import {
   assessLoanEligibility,
   compareLoanOptions,
-} from '@/lib/financial/loan-calculations';
-import { loanApi } from '@/lib/api/endpoints/financial-tools';
+} from "@/lib/financial/loan-calculations";
+import { loanApi } from "@/lib/api/endpoints/financial-tools";
+import { validateLoanCalculationParams } from "@/lib/financial/validation";
 
 // Types
 export interface UseLoanCalculatorOptions {
@@ -53,19 +53,24 @@ export interface LoanCalculatorActions {
   calculate: () => Promise<void>;
   reset: () => void;
   validate: () => boolean;
-  assessEligibility: (monthlyIncome: number, monthlyDebts: number, creditScore?: number) => Promise<void>;
+  assessEligibility: (
+    monthlyIncome: number,
+    monthlyDebts: number,
+    creditScore?: number,
+  ) => Promise<void>;
   compareWith: (otherLoanParams: LoanCalculationParams) => Promise<any>;
-  exportResults: (format: 'pdf' | 'excel') => Promise<void>;
+  exportResults: (format: "pdf" | "excel") => Promise<void>;
 }
 
-export type UseLoanCalculatorReturn = LoanCalculatorState & LoanCalculatorActions;
+export type UseLoanCalculatorReturn = LoanCalculatorState &
+  LoanCalculatorActions;
 
 /**
  * Custom hook for loan calculation functionality
  */
 export const useLoanCalculator = (
   initialParams?: LoanCalculationParams,
-  options: UseLoanCalculatorOptions = {}
+  options: UseLoanCalculatorOptions = {},
 ): UseLoanCalculatorReturn => {
   const {
     enableCache = true,
@@ -87,7 +92,9 @@ export const useLoanCalculator = (
   } = useFinancialToolsStore();
 
   // Local state
-  const [localParams, setLocalParams] = useState<LoanCalculationParams | undefined>(initialParams);
+  const [localParams, setLocalParams] = useState<
+    LoanCalculationParams | undefined
+  >(initialParams);
   const [result, setResult] = useState<LoanCalculationResult | undefined>();
   const [loading, setLoadingLocal] = useState(false);
   const [error, setErrorLocal] = useState<string | undefined>();
@@ -95,7 +102,8 @@ export const useLoanCalculator = (
 
   // Combined state
   const combinedLoading = loading || setLoadingLocal;
-  const combinedError = error || (useFinancialToolsStore.getState().errors.calculation);
+  const combinedError =
+    error || useFinancialToolsStore.getState().errors.calculation;
 
   // Cache for results
   const cache = new Map<string, LoanCalculationResult>();
@@ -119,15 +127,15 @@ export const useLoanCalculator = (
     const validation = validateLoanCalculationParams(localParams);
 
     if (!validation.isValid) {
-      const errorMessage = validation.errors.map(e => e.message).join(', ');
+      const errorMessage = validation.errors.map((e) => e.message).join(", ");
       setErrorLocal(errorMessage);
-      setError('calculation', errorMessage);
+      setError("calculation", errorMessage);
       onError?.(errorMessage);
       return false;
     }
 
     setErrorLocal(undefined);
-    setError('calculation', undefined);
+    setError("calculation", undefined);
     return true;
   }, [localParams, setError, onError]);
 
@@ -141,7 +149,7 @@ export const useLoanCalculator = (
     }
 
     setLoadingLocal(true);
-    setLoading('calculations', true);
+    setLoading("calculations", true);
 
     try {
       // Check cache first
@@ -153,72 +161,72 @@ export const useLoanCalculator = (
       } else {
         // Perform calculation based on loan type
         switch (localParams.loanType) {
-          case 'home':
+          case "home":
             calculationResult = calculateHomeLoan(
               localParams.principal,
               localParams.annualRate,
               localParams.termInMonths,
               {
                 loanType: localParams.rateType,
-                collateralType: 'real_estate',
-                propertyType: 'apartment',
-                propertyLocation: 'other',
+                collateralType: "real_estate",
+                propertyType: "apartment",
+                propertyLocation: "other",
                 isPrimaryResidence: true,
-                disbursementMethod: 'lump_sum',
-                interestPaymentMethod: 'monthly',
-              }
+                disbursementMethod: "lump_sum",
+                interestPaymentMethod: "monthly",
+              },
             );
             break;
 
-          case 'auto':
+          case "auto":
             calculationResult = calculateAutoLoan(
               localParams.principal,
               localParams.annualRate,
               localParams.termInMonths,
               {
                 loanType: localParams.rateType,
-                collateralType: 'vehicle',
-                vehicleType: 'new_car',
+                collateralType: "vehicle",
+                vehicleType: "new_car",
                 vehicleValue: localParams.principal * 1.2,
                 isNewCar: true,
-                disbursementMethod: 'lump_sum',
-                interestPaymentMethod: 'monthly',
-              }
+                disbursementMethod: "lump_sum",
+                interestPaymentMethod: "monthly",
+              },
             );
             break;
 
-          case 'consumer':
+          case "consumer":
             calculationResult = calculateConsumerLoan(
               localParams.principal,
               localParams.annualRate,
               localParams.termInMonths,
               {
                 loanType: localParams.rateType,
-                collateralType: 'none',
-                purpose: 'home_improvement',
-                employmentType: 'permanent',
+                collateralType: "none",
+                purpose: "home_improvement",
+                employmentType: "permanent",
                 monthlyIncome: 15000000,
-                disbursementMethod: 'lump_sum',
-                interestPaymentMethod: 'monthly',
-              }
+                disbursementMethod: "lump_sum",
+                interestPaymentMethod: "monthly",
+              },
             );
             break;
 
-          case 'business':
+          case "business":
             calculationResult = calculateBusinessLoan(
               localParams.principal,
               localParams.annualRate,
               localParams.termInMonths,
               {
                 loanType: localParams.rateType,
-                collateralType: 'real_estate',
-                businessType: 'llc',
+                collateralType: "real_estate",
+                businessType: "llc",
                 businessAge: 3,
                 annualRevenue: 180000000,
                 profitability: 15,
-                disbursementMethod: 'installment',
-                interestPaymentMethod: 'monthly',
-              }
+                disbursementMethod: "installment",
+                interestPaymentMethod: "monthly",
+              },
             );
             break;
 
@@ -237,15 +245,15 @@ export const useLoanCalculator = (
       setResult(calculationResult);
       setLoanResults(localParams, calculationResult);
       setErrorLocal(undefined);
-      setError('calculation', undefined);
+      setError("calculation", undefined);
 
       // Add to history
-      addToHistory('loan', localParams, calculationResult);
+      addToHistory("loan", localParams, calculationResult);
 
       // Analytics
       if (enableAnalytics) {
         // Send analytics event
-        console.log('Loan calculation completed', {
+        console.log("Loan calculation completed", {
           loanType: localParams.loanType,
           principal: localParams.principal,
           termInMonths: localParams.termInMonths,
@@ -254,15 +262,15 @@ export const useLoanCalculator = (
       }
 
       onSuccess?.(calculationResult);
-
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Calculation failed';
+      const errorMessage =
+        error instanceof Error ? error.message : "Calculation failed";
       setErrorLocal(errorMessage);
-      setError('calculation', errorMessage);
+      setError("calculation", errorMessage);
       onError?.(errorMessage);
     } finally {
       setLoadingLocal(false);
-      setLoading('calculations', false);
+      setLoading("calculations", false);
     }
   }, [
     localParams,
@@ -285,7 +293,7 @@ export const useLoanCalculator = (
     async (
       monthlyIncome: number,
       monthlyDebts: number,
-      creditScore?: number
+      creditScore?: number,
     ): Promise<void> => {
       if (!localParams) return;
 
@@ -296,15 +304,15 @@ export const useLoanCalculator = (
           monthlyIncome,
           monthlyDebts,
           creditScore,
-          true // Assume collateral for most loans
+          true, // Assume collateral for most loans
         );
 
         setEligibility(eligibilityResult);
       } catch (error) {
-        console.error('Eligibility assessment error:', error);
+        console.error("Eligibility assessment error:", error);
       }
     },
-    [localParams]
+    [localParams],
   );
 
   // Compare with another loan
@@ -321,20 +329,20 @@ export const useLoanCalculator = (
 
         return comparison;
       } catch (error) {
-        console.error('Loan comparison error:', error);
+        console.error("Loan comparison error:", error);
         return null;
       }
     },
-    [result]
+    [result],
   );
 
   // Export results
   const exportResults = useCallback(
-    async (format: 'pdf' | 'excel'): Promise<void> => {
+    async (format: "pdf" | "excel"): Promise<void> => {
       if (!result || !localParams) return;
 
       try {
-        setLoading('export', true);
+        setLoading("export", true);
 
         const exportData = {
           format,
@@ -347,7 +355,7 @@ export const useLoanCalculator = (
           options: {
             includeChart: true,
             includeDetails: true,
-            language: 'vi',
+            language: "vi",
           },
         };
 
@@ -355,7 +363,7 @@ export const useLoanCalculator = (
 
         if (response.success && response.data) {
           // Trigger download
-          const link = document.createElement('a');
+          const link = document.createElement("a");
           link.href = response.data.downloadUrl;
           link.download = `loan-calculation-${Date.now()}.${format}`;
           document.body.appendChild(link);
@@ -363,27 +371,31 @@ export const useLoanCalculator = (
           document.body.removeChild(link);
         }
       } catch (error) {
-        console.error('Export error:', error);
-        const errorMessage = error instanceof Error ? error.message : 'Export failed';
-        setError('export', errorMessage);
+        console.error("Export error:", error);
+        const errorMessage =
+          error instanceof Error ? error.message : "Export failed";
+        setError("export", errorMessage);
       } finally {
-        setLoading('export', false);
+        setLoading("export", false);
       }
     },
-    [result, localParams, eligibility, setLoading, setError]
+    [result, localParams, eligibility, setLoading, setError],
   );
 
   // Set parameters
-  const setParams = useCallback((params: LoanCalculationParams) => {
-    setLocalParams(params);
-    setLoanParams(params);
+  const setParams = useCallback(
+    (params: LoanCalculationParams) => {
+      setLocalParams(params);
+      setLoanParams(params);
 
-    // Auto calculate if enabled
-    if (autoCalculate) {
-      // Use setTimeout to avoid immediate calculation during param updates
-      setTimeout(() => calculate(), 0);
-    }
-  }, [setLoanParams, autoCalculate, calculate]);
+      // Auto calculate if enabled
+      if (autoCalculate) {
+        // Use setTimeout to avoid immediate calculation during param updates
+        setTimeout(() => calculate(), 0);
+      }
+    },
+    [setLoanParams, autoCalculate, calculate],
+  );
 
   // Reset calculator
   const reset = useCallback(() => {
@@ -437,7 +449,10 @@ export const useLoanComparison = () => {
   const [loading, setLoading] = useState(false);
 
   const addComparison = useCallback(
-    async (loan1Params: LoanCalculationParams, loan2Params: LoanCalculationParams) => {
+    async (
+      loan1Params: LoanCalculationParams,
+      loan2Params: LoanCalculationParams,
+    ) => {
       setLoading(true);
 
       try {
@@ -456,20 +471,20 @@ export const useLoanComparison = () => {
           createdAt: new Date().toISOString(),
         };
 
-        setComparisons(prev => [comparisonData, ...prev].slice(0, 5)); // Keep last 5
+        setComparisons((prev) => [comparisonData, ...prev].slice(0, 5)); // Keep last 5
         return comparisonData;
       } catch (error) {
-        console.error('Comparison error:', error);
+        console.error("Comparison error:", error);
         throw error;
       } finally {
         setLoading(false);
       }
     },
-    []
+    [],
   );
 
   const removeComparison = useCallback((id: string) => {
-    setComparisons(prev => prev.filter(c => c.id !== id));
+    setComparisons((prev) => prev.filter((c) => c.id !== id));
   }, []);
 
   const clearComparisons = useCallback(() => {
@@ -499,7 +514,7 @@ export const useLoanEligibility = () => {
       monthlyIncome: number,
       monthlyDebts: number,
       creditScore?: number,
-      hasCollateral?: boolean
+      hasCollateral?: boolean,
     ) => {
       setLoading(true);
 
@@ -510,7 +525,7 @@ export const useLoanEligibility = () => {
           monthlyIncome,
           monthlyDebts,
           creditScore,
-          hasCollateral
+          hasCollateral,
         );
 
         const assessmentData = {
@@ -525,16 +540,16 @@ export const useLoanEligibility = () => {
           createdAt: new Date().toISOString(),
         };
 
-        setAssessments(prev => [assessmentData, ...prev].slice(0, 10)); // Keep last 10
+        setAssessments((prev) => [assessmentData, ...prev].slice(0, 10)); // Keep last 10
         return assessment;
       } catch (error) {
-        console.error('Eligibility assessment error:', error);
+        console.error("Eligibility assessment error:", error);
         throw error;
       } finally {
         setLoading(false);
       }
     },
-    []
+    [],
   );
 
   const clearAssessments = useCallback(() => {

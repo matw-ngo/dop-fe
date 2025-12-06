@@ -186,7 +186,9 @@ export const ReviewsTab: React.FC<ReviewsTabProps> = ({ card }) => {
                 variant={filterBy === rating ? "default" : "outline"}
                 size="sm"
                 onClick={() =>
-                  setFilterBy(filterBy === rating ? "all" : rating)
+                  setFilterBy(
+                    filterBy === rating ? "all" : (rating as 1 | 2 | 3 | 4 | 5),
+                  )
                 }
                 className="min-w-[40px]"
               >

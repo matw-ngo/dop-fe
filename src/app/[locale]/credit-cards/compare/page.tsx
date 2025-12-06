@@ -8,7 +8,12 @@ import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
 import { CreditCardComparison } from "@/components/features/credit-card/CreditCardComparison";
 import { CreditCardComparisonPanel } from "@/components/features/credit-cards/compare";
-import { useCreditCardsStore } from "@/store/use-credit-cards-store";
+import {
+  useCreditCardsStore,
+  useCreditCardComparison,
+} from "@/store/use-credit-cards-store";
+import { useShallow } from "zustand/shallow";
+import type { CreditCard } from "@/types/credit-card";
 import { CreditCardsThemeProvider } from "@/components/features/credit-card/CreditCardsThemeProvider";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
@@ -20,13 +25,18 @@ export default function ComparePage() {
   const searchParams = useSearchParams();
 
   // Get comparison state from store
-  const {
-    comparisonCards,
-    removeFromComparison,
-    clearComparison,
-    canAddToComparison,
-    addToComparison,
-  } = useCreditCardsStore();
+  const { comparisonCards, canAddMore } = useCreditCardComparison() as {
+    comparisonCards: CreditCard[];
+    canAddMore: boolean;
+  };
+  const { removeFromComparison, clearComparison, addToComparison } =
+    useCreditCardsStore(
+      useShallow((state) => ({
+        removeFromComparison: state.removeFromComparison,
+        clearComparison: state.clearComparison,
+        addToComparison: state.addToComparison,
+      })),
+    );
 
   // Configuration - use theme-aware navbar config
   const creditCardsNavbarConfig = useCreditCardsNavbarTheme();
@@ -86,7 +96,7 @@ export default function ComparePage() {
                   cards={comparisonCards}
                   onRemove={removeFromComparison}
                   onClear={clearComparison}
-                  onAdd={canAddToComparison() ? handleAddMore : undefined}
+                  onAdd={canAddMore ? handleAddMore : undefined}
                   isSticky={false}
                   className="mb-8"
                 />

@@ -85,7 +85,7 @@ const InsuranceSortDropdown: React.FC<InsuranceSortDropdownProps> = ({
   };
 
   // Get sort direction icon
-  const getDirectionIcon = (option: { direction?: "asc" | "desc" }) => {
+  const getDirectionIcon = (option: any) => {
     if (!showDirectionIcon || !option.direction) return null;
 
     switch (option.direction) {

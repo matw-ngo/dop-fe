@@ -5,18 +5,14 @@
  * user preferences, and offline support for the Vietnamese digital lending platform.
  */
 
-import { create } from 'zustand';
-import { devtools, persist } from 'zustand/middleware';
+import { create } from "zustand";
+import { devtools, persist } from "zustand/middleware";
 import type {
   LoanCalculationParams,
   LoanCalculationResult,
-  TaxCalculationParams,
-  TaxCalculationResult,
-  SavingsCalculationParams,
-  SavingsCalculationResult,
   FinancialHealthScore,
   AffordabilityAnalysis,
-} from '@/lib/financial/calculations';
+} from "@/lib/financial/calculations";
 
 // Types
 export interface CalculatorState {
@@ -37,7 +33,7 @@ export interface CalculatorState {
   /** Comparison data */
   comparisons: Array<{
     id: string;
-    type: 'loan' | 'savings' | 'investment';
+    type: "loan" | "savings" | "investment";
     name: string;
     options: any[];
     result: any;
@@ -47,9 +43,9 @@ export interface CalculatorState {
   /** User preferences */
   preferences: {
     defaultRegion: number;
-    currency: 'VND';
-    language: 'vi' | 'en';
-    theme: 'light' | 'dark' | 'auto';
+    currency: "VND";
+    language: "vi" | "en";
+    theme: "light" | "dark" | "auto";
     notifications: {
       calculationComplete: boolean;
       rateChanges: boolean;
@@ -84,7 +80,7 @@ export interface CalculatorState {
   /** Calculation history */
   history: Array<{
     id: string;
-    type: 'loan' | 'tax' | 'savings' | 'comparison' | 'health';
+    type: "loan" | "tax" | "savings" | "comparison" | "health";
     timestamp: string;
     params: any;
     results?: any;
@@ -134,42 +130,64 @@ export interface CalculatorActions {
   setAffordabilityAnalysis: (analysis: AffordabilityAnalysis) => void;
 
   // Comparison actions
-  addComparison: (type: 'loan' | 'savings' | 'investment', name: string, options: any[], result: any) => void;
+  addComparison: (
+    type: "loan" | "savings" | "investment",
+    name: string,
+    options: any[],
+    result: any,
+  ) => void;
   removeComparison: (id: string) => void;
   clearComparisons: () => void;
 
   // Preferences actions
-  updatePreferences: (preferences: Partial<CalculatorState['preferences']>) => void;
+  updatePreferences: (
+    preferences: Partial<CalculatorState["preferences"]>,
+  ) => void;
   setDefaultRegion: (region: number) => void;
-  setTheme: (theme: 'light' | 'dark' | 'auto') => void;
-  toggleNotifications: (type: keyof CalculatorState['preferences']['notifications']) => void;
+  setTheme: (theme: "light" | "dark" | "auto") => void;
+  toggleNotifications: (
+    type: keyof CalculatorState["preferences"]["notifications"],
+  ) => void;
 
   // Favorites actions
-  addFavoriteCalculation: (type: string, name: string, params: any, result?: any) => void;
+  addFavoriteCalculation: (
+    type: string,
+    name: string,
+    params: any,
+    result?: any,
+  ) => void;
   removeFavoriteCalculation: (id: string) => void;
   addFavoriteBankProduct: (bankProduct: any) => void;
   removeFavoriteBankProduct: (bankId: string, productId: string) => void;
 
   // History actions
-  addToHistory: (type: 'loan' | 'tax' | 'savings' | 'comparison' | 'health', params: any, results?: any, duration?: number) => void;
+  addToHistory: (
+    type: "loan" | "tax" | "savings" | "comparison" | "health",
+    params: any,
+    results?: any,
+    duration?: number,
+  ) => void;
   clearHistory: () => void;
   removeFromHistory: (id: string) => void;
 
   // Offline data actions
-  setOfflineData: (data: Partial<CalculatorState['offlineData']>) => void;
+  setOfflineData: (data: Partial<CalculatorState["offlineData"]>) => void;
   syncOfflineData: () => Promise<void>;
   clearOfflineData: () => void;
 
   // Loading and error actions
-  setLoading: (type: keyof CalculatorState['loading'], loading: boolean) => void;
-  setError: (type: keyof CalculatorState['errors'], error?: string) => void;
+  setLoading: (
+    type: keyof CalculatorState["loading"],
+    loading: boolean,
+  ) => void;
+  setError: (type: keyof CalculatorState["errors"], error?: string) => void;
   clearErrors: () => void;
 
   // Utility actions
   resetStore: () => void;
   exportData: () => string;
   importData: (data: string) => boolean;
-  generateReport: (type: 'summary' | 'detailed' | 'comparison') => any;
+  generateReport: (type: "summary" | "detailed" | "comparison") => any;
 }
 
 /**
@@ -188,9 +206,9 @@ export const useFinancialToolsStore = create<CalculatorStore>()(
         comparisons: [],
         preferences: {
           defaultRegion: 1,
-          currency: 'VND',
-          language: 'vi',
-          theme: 'auto',
+          currency: "VND",
+          language: "vi",
+          theme: "auto",
           notifications: {
             calculationComplete: true,
             rateChanges: true,
@@ -222,68 +240,84 @@ export const useFinancialToolsStore = create<CalculatorStore>()(
 
         // Loan calculator actions
         setLoanParams: (params) => {
-          set({ loanParams: params }, false, 'setLoanParams');
+          set({ loanParams: params }, false, "setLoanParams");
         },
 
         setLoanResults: (results) => {
           const state = get();
-          set({ loanResults: results }, false, 'setLoanResults');
+          set({ loanResults: results }, false, "setLoanResults");
 
           // Add to history
           if (state.loanParams) {
-            get().addToHistory('loan', state.loanParams, results);
+            get().addToHistory("loan", state.loanParams, results);
           }
         },
 
         clearLoanCalculation: () => {
-          set({ loanParams: undefined, loanResults: undefined }, false, 'clearLoanCalculation');
+          set(
+            { loanParams: undefined, loanResults: undefined },
+            false,
+            "clearLoanCalculation",
+          );
         },
 
         // Tax calculator actions
         setTaxParams: (params) => {
-          set({ taxParams: params }, false, 'setTaxParams');
+          set({ taxParams: params }, false, "setTaxParams");
         },
 
         setTaxResults: (results) => {
           const state = get();
-          set({ taxResults: results }, false, 'setTaxResults');
+          set({ taxResults: results }, false, "setTaxResults");
 
           // Add to history
           if (state.taxParams) {
-            get().addToHistory('tax', state.taxParams, results);
+            get().addToHistory("tax", state.taxParams, results);
           }
         },
 
         clearTaxCalculation: () => {
-          set({ taxParams: undefined, taxResults: undefined }, false, 'clearTaxCalculation');
+          set(
+            { taxParams: undefined, taxResults: undefined },
+            false,
+            "clearTaxCalculation",
+          );
         },
 
         // Savings calculator actions
         setSavingsParams: (params) => {
-          set({ savingsParams: params }, false, 'setSavingsParams');
+          set({ savingsParams: params }, false, "setSavingsParams");
         },
 
         setSavingsResults: (results) => {
           const state = get();
-          set({ savingsResults: results }, false, 'setSavingsResults');
+          set({ savingsResults: results }, false, "setSavingsResults");
 
           // Add to history
           if (state.savingsParams) {
-            get().addToHistory('savings', state.savingsParams, results);
+            get().addToHistory("savings", state.savingsParams, results);
           }
         },
 
         clearSavingsCalculation: () => {
-          set({ savingsParams: undefined, savingsResults: undefined }, false, 'clearSavingsCalculation');
+          set(
+            { savingsParams: undefined, savingsResults: undefined },
+            false,
+            "clearSavingsCalculation",
+          );
         },
 
         // Financial analysis actions
         setHealthScore: (score) => {
-          set({ healthScore: score }, false, 'setHealthScore');
+          set({ healthScore: score }, false, "setHealthScore");
         },
 
         setAffordabilityAnalysis: (analysis) => {
-          set({ affordabilityAnalysis: analysis }, false, 'setAffordabilityAnalysis');
+          set(
+            { affordabilityAnalysis: analysis },
+            false,
+            "setAffordabilityAnalysis",
+          );
         },
 
         // Comparison actions
@@ -301,7 +335,7 @@ export const useFinancialToolsStore = create<CalculatorStore>()(
               comparisons: [...state.comparisons, comparison].slice(-10), // Keep last 10
             }),
             false,
-            'addComparison'
+            "addComparison",
           );
         },
 
@@ -311,12 +345,12 @@ export const useFinancialToolsStore = create<CalculatorStore>()(
               comparisons: state.comparisons.filter((c) => c.id !== id),
             }),
             false,
-            'removeComparison'
+            "removeComparison",
           );
         },
 
         clearComparisons: () => {
-          set({ comparisons: [] }, false, 'clearComparisons');
+          set({ comparisons: [] }, false, "clearComparisons");
         },
 
         // Preferences actions
@@ -326,7 +360,7 @@ export const useFinancialToolsStore = create<CalculatorStore>()(
               preferences: { ...state.preferences, ...preferences },
             }),
             false,
-            'updatePreferences'
+            "updatePreferences",
           );
         },
 
@@ -336,7 +370,7 @@ export const useFinancialToolsStore = create<CalculatorStore>()(
               preferences: { ...state.preferences, defaultRegion: region },
             }),
             false,
-            'setDefaultRegion'
+            "setDefaultRegion",
           );
         },
 
@@ -346,7 +380,7 @@ export const useFinancialToolsStore = create<CalculatorStore>()(
               preferences: { ...state.preferences, theme },
             }),
             false,
-            'setTheme'
+            "setTheme",
           );
         },
 
@@ -362,7 +396,7 @@ export const useFinancialToolsStore = create<CalculatorStore>()(
               },
             }),
             false,
-            'toggleNotifications'
+            "toggleNotifications",
           );
         },
 
@@ -384,7 +418,7 @@ export const useFinancialToolsStore = create<CalculatorStore>()(
               },
             }),
             false,
-            'addFavoriteCalculation'
+            "addFavoriteCalculation",
           );
         },
 
@@ -393,17 +427,21 @@ export const useFinancialToolsStore = create<CalculatorStore>()(
             (state) => ({
               favorites: {
                 ...state.favorites,
-                calculations: state.favorites.calculations.filter((c) => c.id !== id),
+                calculations: state.favorites.calculations.filter(
+                  (c) => c.id !== id,
+                ),
               },
             }),
             false,
-            'removeFavoriteCalculation'
+            "removeFavoriteCalculation",
           );
         },
 
         addFavoriteBankProduct: (bankProduct) => {
           const exists = get().favorites.bankProducts.some(
-            (p) => p.bankId === bankProduct.bankId && p.productId === bankProduct.productId
+            (p) =>
+              p.bankId === bankProduct.bankId &&
+              p.productId === bankProduct.productId,
           );
 
           if (!exists) {
@@ -415,7 +453,7 @@ export const useFinancialToolsStore = create<CalculatorStore>()(
                 },
               }),
               false,
-              'addFavoriteBankProduct'
+              "addFavoriteBankProduct",
             );
           }
         },
@@ -426,12 +464,12 @@ export const useFinancialToolsStore = create<CalculatorStore>()(
               favorites: {
                 ...state.favorites,
                 bankProducts: state.favorites.bankProducts.filter(
-                  (p) => !(p.bankId === bankId && p.productId === productId)
+                  (p) => !(p.bankId === bankId && p.productId === productId),
                 ),
               },
             }),
             false,
-            'removeFavoriteBankProduct'
+            "removeFavoriteBankProduct",
           );
         },
 
@@ -450,12 +488,12 @@ export const useFinancialToolsStore = create<CalculatorStore>()(
               history: [historyItem, ...state.history].slice(0, 100), // Keep last 100
             }),
             false,
-            'addToHistory'
+            "addToHistory",
           );
         },
 
         clearHistory: () => {
-          set({ history: [] }, false, 'clearHistory');
+          set({ history: [] }, false, "clearHistory");
         },
 
         removeFromHistory: (id) => {
@@ -464,7 +502,7 @@ export const useFinancialToolsStore = create<CalculatorStore>()(
               history: state.history.filter((h) => h.id !== id),
             }),
             false,
-            'removeFromHistory'
+            "removeFromHistory",
           );
         },
 
@@ -475,33 +513,43 @@ export const useFinancialToolsStore = create<CalculatorStore>()(
               offlineData: { ...state.offlineData, ...data },
             }),
             false,
-            'setOfflineData'
+            "setOfflineData",
           );
         },
 
         syncOfflineData: async () => {
           const state = get();
-          set({ loading: { ...state.loading, marketData: true } }, false, 'syncOfflineData-start');
+          set(
+            { loading: { ...state.loading, marketData: true } },
+            false,
+            "syncOfflineData-start",
+          );
 
           try {
             // This would make API calls to sync data
             // For now, just update the sync timestamp
             set(
               (state) => ({
-                offlineData: { ...state.offlineData, lastSync: new Date().toISOString() },
+                offlineData: {
+                  ...state.offlineData,
+                  lastSync: new Date().toISOString(),
+                },
                 loading: { ...state.loading, marketData: false },
               }),
               false,
-              'syncOfflineData-success'
+              "syncOfflineData-success",
             );
           } catch (error) {
             set(
               (state) => ({
-                errors: { ...state.errors, marketData: 'Failed to sync offline data' },
+                errors: {
+                  ...state.errors,
+                  marketData: "Failed to sync offline data",
+                },
                 loading: { ...state.loading, marketData: false },
               }),
               false,
-              'syncOfflineData-error'
+              "syncOfflineData-error",
             );
           }
         },
@@ -517,7 +565,7 @@ export const useFinancialToolsStore = create<CalculatorStore>()(
               },
             },
             false,
-            'clearOfflineData'
+            "clearOfflineData",
           );
         },
 
@@ -528,7 +576,7 @@ export const useFinancialToolsStore = create<CalculatorStore>()(
               loading: { ...state.loading, [type]: loading },
             }),
             false,
-            'setLoading'
+            "setLoading",
           );
         },
 
@@ -538,12 +586,12 @@ export const useFinancialToolsStore = create<CalculatorStore>()(
               errors: { ...state.errors, [type]: error },
             }),
             false,
-            'setError'
+            "setError",
           );
         },
 
         clearErrors: () => {
-          set({ errors: {} }, false, 'clearErrors');
+          set({ errors: {} }, false, "clearErrors");
         },
 
         // Utility actions
@@ -568,7 +616,7 @@ export const useFinancialToolsStore = create<CalculatorStore>()(
               errors: {},
             },
             false,
-            'resetStore'
+            "resetStore",
           );
         },
 
@@ -582,8 +630,10 @@ export const useFinancialToolsStore = create<CalculatorStore>()(
             offlineData: {
               ...state.offlineData,
               // Exclude large data objects
-              bankRates: state.offlineData.bankRates ? 'cached' : null,
-              marketIndicators: state.offlineData.marketIndicators ? 'cached' : null,
+              bankRates: state.offlineData.bankRates ? "cached" : null,
+              marketIndicators: state.offlineData.marketIndicators
+                ? "cached"
+                : null,
             },
             exportDate: new Date().toISOString(),
           };
@@ -608,12 +658,12 @@ export const useFinancialToolsStore = create<CalculatorStore>()(
                 comparisons: data.comparisons || [],
               },
               false,
-              'importData'
+              "importData",
             );
 
             return true;
           } catch (error) {
-            console.error('Import data error:', error);
+            console.error("Import data error:", error);
             return false;
           }
         },
@@ -633,7 +683,7 @@ export const useFinancialToolsStore = create<CalculatorStore>()(
             preferences: state.preferences,
           };
 
-          if (type === 'detailed') {
+          if (type === "detailed") {
             return {
               ...reportData,
               fullHistory: state.history,
@@ -646,7 +696,7 @@ export const useFinancialToolsStore = create<CalculatorStore>()(
         },
       }),
       {
-        name: 'financial-tools-storage',
+        name: "financial-tools-storage",
         // Only persist specific fields to avoid bloating storage
         partialize: (state) => ({
           preferences: state.preferences,
@@ -658,7 +708,7 @@ export const useFinancialToolsStore = create<CalculatorStore>()(
       },
     ),
     {
-      name: 'FinancialToolsStore',
+      name: "FinancialToolsStore",
     },
   ),
 );
@@ -666,45 +716,55 @@ export const useFinancialToolsStore = create<CalculatorStore>()(
 /**
  * Selectors for commonly used state
  */
-export const useLoanCalculation = () => useFinancialToolsStore((state) => ({
-  params: state.loanParams,
-  results: state.loanResults,
-  loading: state.loading.calculations,
-  error: state.errors.calculation,
-}));
+export const useLoanCalculation = () =>
+  useFinancialToolsStore((state) => ({
+    params: state.loanParams,
+    results: state.loanResults,
+    loading: state.loading.calculations,
+    error: state.errors.calculation,
+  }));
 
-export const useTaxCalculation = () => useFinancialToolsStore((state) => ({
-  params: state.taxParams,
-  results: state.taxResults,
-  loading: state.loading.calculations,
-  error: state.errors.calculation,
-}));
+export const useTaxCalculation = () =>
+  useFinancialToolsStore((state) => ({
+    params: state.taxParams,
+    results: state.taxResults,
+    loading: state.loading.calculations,
+    error: state.errors.calculation,
+  }));
 
-export const useSavingsCalculation = () => useFinancialToolsStore((state) => ({
-  params: state.savingsParams,
-  results: state.savingsResults,
-  loading: state.loading.calculations,
-  error: state.errors.calculation,
-}));
+export const useSavingsCalculation = () =>
+  useFinancialToolsStore((state) => ({
+    params: state.savingsParams,
+    results: state.savingsResults,
+    loading: state.loading.calculations,
+    error: state.errors.calculation,
+  }));
 
-export const useFinancialAnalysis = () => useFinancialToolsStore((state) => ({
-  healthScore: state.healthScore,
-  affordabilityAnalysis: state.affordabilityAnalysis,
-  loading: state.loading.calculations,
-  error: state.errors.calculation,
-}));
+export const useFinancialAnalysis = () =>
+  useFinancialToolsStore((state) => ({
+    healthScore: state.healthScore,
+    affordabilityAnalysis: state.affordabilityAnalysis,
+    loading: state.loading.calculations,
+    error: state.errors.calculation,
+  }));
 
-export const useUserPreferences = () => useFinancialToolsStore((state) => state.preferences);
+export const useUserPreferences = () =>
+  useFinancialToolsStore((state) => state.preferences);
 
-export const useFavorites = () => useFinancialToolsStore((state) => state.favorites);
+export const useFavorites = () =>
+  useFinancialToolsStore((state) => state.favorites);
 
-export const useHistory = () => useFinancialToolsStore((state) => state.history);
+export const useHistory = () =>
+  useFinancialToolsStore((state) => state.history);
 
-export const useComparisons = () => useFinancialToolsStore((state) => state.comparisons);
+export const useComparisons = () =>
+  useFinancialToolsStore((state) => state.comparisons);
 
-export const useOfflineData = () => useFinancialToolsStore((state) => state.offlineData);
+export const useOfflineData = () =>
+  useFinancialToolsStore((state) => state.offlineData);
 
-export const useLoadingState = () => useFinancialToolsStore((state) => state.loading);
+export const useLoadingState = () =>
+  useFinancialToolsStore((state) => state.loading);
 
 export const useErrors = () => useFinancialToolsStore((state) => state.errors);
 
@@ -724,4 +784,8 @@ export const useFinancialToolsHydrated = () => {
 };
 
 // Import React for the hook
-import React from 'react';
+import React from "react";
+import {
+  TaxCalculationParams,
+  TaxCalculationResult,
+} from "@/lib/financial-data/tax-brackets";
