@@ -22,8 +22,26 @@ import {
   assessLoanEligibility,
   compareLoanOptions,
 } from "@/lib/financial/loan-calculations";
-import { loanApi } from "@/lib/api/endpoints/financial-tools";
+import {
+  loanCalculationApi,
+  exportApi,
+} from "@/lib/api/endpoints/financial-tools";
 import { validateLoanCalculationParams } from "@/lib/financial/validation";
+import type { ILoanParams, ILoanResult } from "@/types/tools";
+
+// Type adapter functions for backward compatibility
+const adaptLoanResult = (result: LoanCalculationResult): ILoanResult => ({
+  monthlyPayment: result.monthlyPayment,
+  totalPayment: result.totalPayment,
+  totalInterest: result.totalInterest,
+  amortization:
+    result.paymentSchedule?.map((entry: any, index: number) => ({
+      month: entry.period || index + 1,
+      principal: entry.principalPayment,
+      interest: entry.interestPayment,
+      balance: entry.endingBalance,
+    })) || [],
+});
 
 // Types
 export interface UseLoanCalculatorOptions {
@@ -101,7 +119,7 @@ export const useLoanCalculator = (
   const [eligibility, setEligibility] = useState<any>();
 
   // Combined state
-  const combinedLoading = loading || setLoadingLocal;
+  const combinedLoading = loading;
   const combinedError =
     error || useFinancialToolsStore.getState().errors.calculation;
 
@@ -149,7 +167,7 @@ export const useLoanCalculator = (
     }
 
     setLoadingLocal(true);
-    setLoading("calculations", true);
+    setLoadingLocal(true);
 
     try {
       // Check cache first
@@ -243,7 +261,11 @@ export const useLoanCalculator = (
 
       // Update state
       setResult(calculationResult);
-      setLoanResults(localParams, calculationResult);
+
+      // Convert to ILoanResult for store compatibility
+      const loanResultForStore = adaptLoanResult(calculationResult);
+      setLoanResults(loanResultForStore);
+
       setErrorLocal(undefined);
       setError("calculation", undefined);
 
@@ -299,7 +321,7 @@ export const useLoanCalculator = (
 
       try {
         const eligibilityResult = assessLoanEligibility(
-          localParams.loanType,
+          localParams.loanType || "consumer",
           localParams.principal,
           monthlyIncome,
           monthlyDebts,
@@ -355,11 +377,11 @@ export const useLoanCalculator = (
           options: {
             includeChart: true,
             includeDetails: true,
-            language: "vi",
+            language: "vi" as const,
           },
         };
 
-        const response = await loanApi.exportResults(exportData);
+        const response = await exportApi.exportResults(exportData);
 
         if (response.success && response.data) {
           // Trigger download
@@ -386,7 +408,14 @@ export const useLoanCalculator = (
   const setParams = useCallback(
     (params: LoanCalculationParams) => {
       setLocalParams(params);
-      setLoanParams(params);
+
+      // Convert to ILoanParams for store compatibility
+      const loanParamsForStore: ILoanParams = {
+        amount: params.principal,
+        term: params.termInMonths,
+        rate: params.annualRate,
+      };
+      setLoanParams(loanParamsForStore);
 
       // Auto calculate if enabled
       if (autoCalculate) {

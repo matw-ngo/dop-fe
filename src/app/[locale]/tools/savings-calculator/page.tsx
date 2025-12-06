@@ -1,84 +1,89 @@
-"use client";
+/**
+ * Savings Calculator Page
+ *
+ * Page for comparing savings interest rates across Vietnamese banks
+ */
 
-import SavingsCalculator from "@/components/financial-tools/SavingsCalculator";
-import { Button } from "@/components/ui/button";
-import { ArrowLeft, TrendingUp } from "lucide-react";
-import Link from "next/link";
+import { SavingsCalculator } from "@/components/tools";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 
 export default function SavingsCalculatorPage() {
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-white border-b">
-        <div className="container mx-auto px-4 py-6">
-          <div className="flex items-center gap-4">
-            <Link href="/vi">
-              <Button variant="outline" size="sm">
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Quay lại trang chủ
-              </Button>
-            </Link>
-            <div className="flex items-center gap-3">
-              <TrendingUp className="w-8 h-8 text-green-600" />
-              <div>
-                <h1 className="text-3xl font-bold text-gray-900">
-                  Công cụ tiết kiệm
-                </h1>
-                <p className="text-gray-600 mt-1">
-                  Tính toán lãi suất tiết kiệm và so sánh gói gửi tiền
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
+    <div className="container mx-auto py-6 space-y-6">
+      {/* Breadcrumb */}
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/vi">Trang chủ</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/vi/tools">Công cụ tài chính</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>Tính lãi tiền gửi</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+
+      {/* Page Header */}
+      <div className="text-center space-y-4">
+        <h1 className="text-3xl font-bold tracking-tight">Tính Lãi Tiền Gửi</h1>
+        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          So sánh lãi suất tiền gửi tiết kiệm tại các ngân hàng Việt Nam. Tìm
+          kiếm khoản tiết kiệm phù hợp với nhu cầu của bạn với lãi suất tốt
+          nhất.
+        </p>
       </div>
 
-      {/* Main Content */}
-      <div className="container mx-auto px-4 py-8">
-        <div className="max-w-4xl mx-auto">
-          <SavingsCalculator />
-        </div>
-      </div>
+      {/* Calculator Component */}
+      <SavingsCalculator />
 
-      {/* Features Section */}
-      <div className="bg-white border-t">
-        <div className="container mx-auto px-4 py-12">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-2xl font-bold text-center text-gray-900 mb-8">
-              Tính năng nổi bật
-            </h2>
-            <div className="grid md:grid-cols-3 gap-8">
-              <div className="text-center">
-                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <TrendingUp className="w-8 h-8 text-green-600" />
-                </div>
-                <h3 className="font-semibold text-lg mb-2">So sánh lãi suất</h3>
-                <p className="text-gray-600">
-                  So sánh lãi suất từ nhiều ngân hàng Việt Nam
-                </p>
-              </div>
-              <div className="text-center">
-                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <TrendingUp className="w-8 h-8 text-blue-600" />
-                </div>
-                <h3 className="font-semibold text-lg mb-2">Tính lãi kép</h3>
-                <p className="text-gray-600">
-                  Tính toán chính xác lãi suất kép và lãi đơn
-                </p>
-              </div>
-              <div className="text-center">
-                <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <TrendingUp className="w-8 h-8 text-purple-600" />
-                </div>
-                <h3 className="font-semibold text-lg mb-2">
-                  Lập mục tiêu tiết kiệm
-                </h3>
-                <p className="text-gray-600">
-                  Tính toán số tiền cần tiết kiệm để đạt mục tiêu
-                </p>
-              </div>
-            </div>
-          </div>
+      {/* Additional Information */}
+      <div className="grid md:grid-cols-2 gap-6 mt-12">
+        <div className="space-y-4">
+          <h2 className="text-xl font-semibold">Lưu ý quan trọng</h2>
+          <ul className="space-y-2 text-sm text-muted-foreground">
+            <li>
+              • Lãi suất có thể thay đổi tùy thuộc chính sách của từng ngân hàng
+            </li>
+            <li>
+              • Lãi suất hiển thị là lãi suất niêm yết, thực tế có thể khác
+            </li>
+            <li>• Gửi tiền online thường có lãi suất cao hơn tại quầy</li>
+            <li>• Kiểm tra điều kiện rút tiền trước hạn trước khi gửi</li>
+            <li>• Cân nhắc gửi tiết kiệm có kỳ hạn để có lãi suất tốt hơn</li>
+          </ul>
+        </div>
+
+        <div className="space-y-4">
+          <h2 className="text-xl font-semibold">Các loại tiết kiệm phổ biến</h2>
+          <ul className="space-y-2 text-sm text-muted-foreground">
+            <li>
+              • <strong>Tiết kiệm không kỳ hạn:</strong> Linh hoạt rút tiền
+              nhưng lãi suất thấp
+            </li>
+            <li>
+              • <strong>Tiết kiệm có kỳ hạn:</strong> Lãi suất cao hơn, không
+              thể rút trước hạn
+            </li>
+            <li>
+              • <strong>Tiết kiệm tích lũy:</strong> Góp thêm hàng tháng với lãi
+              suất ưu đãi
+            </li>
+            <li>
+              • <strong>Tiết kiệm siêu ưu đãi:</strong> Số tiền lớn, kỳ hạn dài
+              với lãi suất cao nhất
+            </li>
+          </ul>
         </div>
       </div>
     </div>

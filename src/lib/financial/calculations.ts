@@ -6,19 +6,34 @@
  * financial analysis tools.
  */
 
-import { formatVND } from '../financial-data/vietnamese-financial-data';
-import { calculatePersonalIncomeTax } from '../financial-data/tax-brackets';
+import { formatVND } from "../financial-data/vietnamese-financial-data";
+import { calculatePersonalIncomeTax } from "../financial-data/tax-brackets";
 
 // Type definitions
-export type InterestRateType = 'reducing_balance' | 'flat_rate' | 'fixed' | 'floating' | 'promotional';
-export type LoanType = 'home' | 'auto' | 'consumer' | 'business' | 'credit_card';
-export type PaymentFrequency = 'monthly' | 'quarterly' | 'semi_annual' | 'annual';
+export type InterestRateType =
+  | "reducing_balance"
+  | "flat_rate"
+  | "fixed"
+  | "floating"
+  | "promotional";
+export type LoanType =
+  | "home"
+  | "auto"
+  | "consumer"
+  | "business"
+  | "credit_card";
+export type PaymentFrequency =
+  | "monthly"
+  | "quarterly"
+  | "semi_annual"
+  | "annual";
 
 export interface LoanCalculationParams {
   principal: number;
   annualRate: number;
   termInMonths: number;
   rateType: InterestRateType;
+  loanType?: LoanType;
   paymentFrequency?: PaymentFrequency;
   promotionalPeriod?: number; // in months
   promotionalRate?: number;
@@ -77,7 +92,7 @@ export interface AffordabilityAnalysis {
   debtToIncomeRatio: number;
   affordabilityScore: number;
   recommendations: string[];
-  riskLevel: 'low' | 'medium' | 'high';
+  riskLevel: "low" | "medium" | "high";
 }
 
 export interface FinancialHealthScore {
@@ -99,7 +114,7 @@ export const calculateReducingBalancePayment = (
   principal: number,
   annualRate: number,
   termInMonths: number,
-  paymentFrequency: PaymentFrequency = 'monthly'
+  paymentFrequency: PaymentFrequency = "monthly",
 ): number => {
   const frequencyMultiplier = getFrequencyMultiplier(paymentFrequency);
   const adjustedRate = annualRate / 100 / frequencyMultiplier;
@@ -107,8 +122,10 @@ export const calculateReducingBalancePayment = (
 
   if (adjustedRate === 0) return principal / adjustedTerm;
 
-  return principal * (adjustedRate * Math.pow(1 + adjustedRate, adjustedTerm)) /
-         (Math.pow(1 + adjustedRate, adjustedTerm) - 1);
+  return (
+    (principal * (adjustedRate * Math.pow(1 + adjustedRate, adjustedTerm))) /
+    (Math.pow(1 + adjustedRate, adjustedTerm) - 1)
+  );
 };
 
 /**
@@ -117,7 +134,7 @@ export const calculateReducingBalancePayment = (
 export const calculateFlatRatePayment = (
   principal: number,
   annualRate: number,
-  termInMonths: number
+  termInMonths: number,
 ): number => {
   const totalInterest = principal * (annualRate / 100) * (termInMonths / 12);
   const totalPayment = principal + totalInterest;
@@ -129,11 +146,16 @@ export const calculateFlatRatePayment = (
  */
 function getFrequencyMultiplier(frequency: PaymentFrequency): number {
   switch (frequency) {
-    case 'monthly': return 12;
-    case 'quarterly': return 4;
-    case 'semi_annual': return 2;
-    case 'annual': return 1;
-    default: return 12;
+    case "monthly":
+      return 12;
+    case "quarterly":
+      return 4;
+    case "semi_annual":
+      return 2;
+    case "annual":
+      return 1;
+    default:
+      return 12;
   }
 }
 
@@ -141,7 +163,7 @@ function getFrequencyMultiplier(frequency: PaymentFrequency): number {
  * Generate complete loan payment schedule
  */
 export const generatePaymentSchedule = (
-  params: LoanCalculationParams
+  params: LoanCalculationParams,
 ): LoanPaymentSchedule[] => {
   const schedule: LoanPaymentSchedule[] = [];
   let beginningBalance = params.principal;
@@ -149,23 +171,33 @@ export const generatePaymentSchedule = (
   let totalPaymentsMade = 0;
 
   for (let period = 1; period <= params.termInMonths; period++) {
-    const isPromotional = params.promotionalPeriod && period <= params.promotionalPeriod;
-    const currentRate = isPromotional && params.promotionalRate
-      ? params.promotionalRate
-      : params.annualRate;
+    const isPromotional =
+      params.promotionalPeriod && period <= params.promotionalPeriod;
+    const currentRate =
+      isPromotional && params.promotionalRate
+        ? params.promotionalRate
+        : params.annualRate;
 
     let payment: number;
     let principalPayment: number;
     let interestPayment: number;
 
-    if (params.rateType === 'flat_rate') {
-      payment = calculateFlatRatePayment(beginningBalance, currentRate, params.termInMonths - period + 1);
-      interestPayment = beginningBalance * (currentRate / 100) / 12;
+    if (params.rateType === "flat_rate") {
+      payment = calculateFlatRatePayment(
+        beginningBalance,
+        currentRate,
+        params.termInMonths - period + 1,
+      );
+      interestPayment = (beginningBalance * (currentRate / 100)) / 12;
       principalPayment = payment - interestPayment;
     } else {
       // Reducing balance calculation
-      payment = calculateReducingBalancePayment(beginningBalance, currentRate, params.termInMonths - period + 1);
-      interestPayment = beginningBalance * (currentRate / 100) / 12;
+      payment = calculateReducingBalancePayment(
+        beginningBalance,
+        currentRate,
+        params.termInMonths - period + 1,
+      );
+      interestPayment = (beginningBalance * (currentRate / 100)) / 12;
       principalPayment = payment - interestPayment;
     }
 
@@ -179,7 +211,7 @@ export const generatePaymentSchedule = (
 
     schedule.push({
       period,
-      paymentDate: paymentDate.toISOString().split('T')[0],
+      paymentDate: paymentDate.toISOString().split("T")[0],
       beginningBalance,
       scheduledPayment: payment,
       principalPayment,
@@ -198,17 +230,23 @@ export const generatePaymentSchedule = (
 /**
  * Calculate comprehensive loan details
  */
-export const calculateLoanDetails = (params: LoanCalculationParams): LoanCalculationResult => {
+export const calculateLoanDetails = (
+  params: LoanCalculationParams,
+): LoanCalculationResult => {
   // Calculate monthly payment
   let monthlyPayment: number;
-  if (params.rateType === 'flat_rate') {
-    monthlyPayment = calculateFlatRatePayment(params.principal, params.annualRate, params.termInMonths);
+  if (params.rateType === "flat_rate") {
+    monthlyPayment = calculateFlatRatePayment(
+      params.principal,
+      params.annualRate,
+      params.termInMonths,
+    );
   } else {
     monthlyPayment = calculateReducingBalancePayment(
       params.principal,
       params.annualRate,
       params.termInMonths,
-      params.paymentFrequency
+      params.paymentFrequency,
     );
   }
 
@@ -216,14 +254,23 @@ export const calculateLoanDetails = (params: LoanCalculationParams): LoanCalcula
   const paymentSchedule = generatePaymentSchedule(params);
 
   // Calculate totals
-  const totalPayment = paymentSchedule.reduce((sum, payment) => sum + payment.scheduledPayment, 0);
-  const totalInterest = paymentSchedule.reduce((sum, payment) => sum + payment.interestPayment, 0);
+  const totalPayment = paymentSchedule.reduce(
+    (sum, payment) => sum + payment.scheduledPayment,
+    0,
+  );
+  const totalInterest = paymentSchedule.reduce(
+    (sum, payment) => sum + payment.interestPayment,
+    0,
+  );
 
   // Calculate additional costs
-  const processingFees = params.processingFee ? params.principal * (params.processingFee / 100) : 0;
-  const insuranceFees = params.hasInsurance && params.insuranceRate
-    ? params.principal * (params.insuranceRate / 100)
+  const processingFees = params.processingFee
+    ? params.principal * (params.processingFee / 100)
     : 0;
+  const insuranceFees =
+    params.hasInsurance && params.insuranceRate
+      ? params.principal * (params.insuranceRate / 100)
+      : 0;
 
   // Calculate early repayment penalty (if applicable)
   const earlyRepaymentPenalty = params.earlyRepaymentPenalty
@@ -232,10 +279,16 @@ export const calculateLoanDetails = (params: LoanCalculationParams): LoanCalcula
 
   // Calculate effective interest rate
   const totalCosts = totalInterest + processingFees + insuranceFees;
-  const effectiveInterestRate = (totalCosts / params.principal) * (12 / params.termInMonths) * 100;
+  const effectiveInterestRate =
+    (totalCosts / params.principal) * (12 / params.termInMonths) * 100;
 
   // Calculate APR (includes fees)
-  const apr = calculateAPR(params.principal, monthlyPayment, params.termInMonths, processingFees);
+  const apr = calculateAPR(
+    params.principal,
+    monthlyPayment,
+    params.termInMonths,
+    processingFees,
+  );
 
   // Calculate affordability score (placeholder - would need more data)
   const affordabilityScore = calculateAffordabilityScore(params);
@@ -263,10 +316,10 @@ export const calculateAPR = (
   principal: number,
   monthlyPayment: number,
   termInMonths: number,
-  fees: number = 0
+  fees: number = 0,
 ): number => {
   const financedAmount = principal - fees;
-  const monthlyRate = (monthlyPayment / financedAmount) - (1 / termInMonths);
+  const monthlyRate = monthlyPayment / financedAmount - 1 / termInMonths;
 
   // Iterative solution for APR
   let apr = monthlyRate * 12 * 100;
@@ -275,9 +328,11 @@ export const calculateAPR = (
   let iteration = 0;
 
   while (iteration < maxIterations) {
-    const testPayment = financedAmount * (apr / 100 / 12) *
-                       Math.pow(1 + (apr / 100 / 12), termInMonths) /
-                       (Math.pow(1 + (apr / 100 / 12), termInMonths) - 1);
+    const testPayment =
+      (financedAmount *
+        (apr / 100 / 12) *
+        Math.pow(1 + apr / 100 / 12, termInMonths)) /
+      (Math.pow(1 + apr / 100 / 12, termInMonths) - 1);
 
     if (Math.abs(testPayment - monthlyPayment) < tolerance) {
       break;
@@ -301,10 +356,10 @@ export const calculateAPR = (
 export const calculateEarlyRepayment = (
   loan: LoanCalculationResult,
   currentMonth: number,
-  earlyRepaymentAmount: number
+  earlyRepaymentAmount: number,
 ): EarlyRepaymentCalculation => {
   if (currentMonth < 1 || currentMonth > loan.paymentSchedule.length) {
-    throw new Error('Invalid current month');
+    throw new Error("Invalid current month");
   }
 
   const currentPayment = loan.paymentSchedule[currentMonth - 1];
@@ -320,17 +375,20 @@ export const calculateEarlyRepayment = (
     .slice(currentMonth)
     .reduce((sum, payment) => sum + payment.interestPayment, 0);
 
-  const interestSaved = remainingInterest * (earlyRepaymentAmount / outstandingBalance);
+  const interestSaved =
+    remainingInterest * (earlyRepaymentAmount / outstandingBalance);
   const netSavings = interestSaved - penaltyAmount;
 
   // Generate new payment schedule (simplified)
   const newPrincipal = outstandingBalance - earlyRepaymentAmount;
-  const newPaymentSchedule = newPrincipal > 0 ?
-    generatePaymentSchedule({
-      ...loan.loanParams,
-      principal: newPrincipal,
-      termInMonths: remainingMonths,
-    }) : [];
+  const newPaymentSchedule =
+    newPrincipal > 0
+      ? generatePaymentSchedule({
+          ...loan.loanParams,
+          principal: newPrincipal,
+          termInMonths: remainingMonths,
+        })
+      : [];
 
   return {
     originalLoan: loan,
@@ -352,10 +410,14 @@ export const analyzeAffordability = (
   monthlyDebts: number,
   interestRate: number,
   targetLoanAmount: number,
-  termInMonths: number
+  termInMonths: number,
 ): AffordabilityAnalysis => {
   // Calculate monthly payment for target loan
-  const monthlyPayment = calculateReducingBalancePayment(targetLoanAmount, interestRate, termInMonths);
+  const monthlyPayment = calculateReducingBalancePayment(
+    targetLoanAmount,
+    interestRate,
+    termInMonths,
+  );
 
   // Calculate debt-to-income ratio
   const totalMonthlyDebts = monthlyDebts + monthlyPayment;
@@ -365,7 +427,9 @@ export const analyzeAffordability = (
   const maxMonthlyPayment = monthlyIncome * 0.3;
 
   // Maximum recommended loan amount
-  const recommendedLoanAmount = maxMonthlyPayment * termInMonths * 12 / (1 + (interestRate / 100) * (termInMonths / 24));
+  const recommendedLoanAmount =
+    (maxMonthlyPayment * termInMonths * 12) /
+    (1 + (interestRate / 100) * (termInMonths / 24));
 
   // Calculate affordability score
   let score = 100;
@@ -375,27 +439,27 @@ export const analyzeAffordability = (
   else if (debtToIncomeRatio > 30) score = 80;
 
   const recommendations: string[] = [];
-  let riskLevel: 'low' | 'medium' | 'high' = 'low';
+  let riskLevel: "low" | "medium" | "high" = "low";
 
   if (debtToIncomeRatio > 50) {
-    riskLevel = 'high';
+    riskLevel = "high";
     recommendations.push(
-      'Tỷ lệ nợ quá cao - không nên vay số tiền này',
-      'Cần giảm số tiền vay hoặc tăng thu nhập',
-      'Xem xét các lựa chọn tài chính khác'
+      "Tỷ lệ nợ quá cao - không nên vay số tiền này",
+      "Cần giảm số tiền vay hoặc tăng thu nhập",
+      "Xem xét các lựa chọn tài chính khác",
     );
   } else if (debtToIncomeRatio > 40) {
-    riskLevel = 'medium';
+    riskLevel = "medium";
     recommendations.push(
-      'Tỷ lệ nợ khá cao - cần cân nhắc kỹ',
-      'Nên có khoản tiết kiệm dự phòng',
-      'Xem xét kéo dài thời gian vay'
+      "Tỷ lệ nợ khá cao - cần cân nhắc kỹ",
+      "Nên có khoản tiết kiệm dự phòng",
+      "Xem xét kéo dài thời gian vay",
     );
   } else {
     recommendations.push(
-      'Tỷ lệ nợ trong giới hạn an toàn',
-      'Có thể xem xét tăng số tiền vay nếu cần',
-      'Duy trì thói quen tiết kiệm tốt'
+      "Tỷ lệ nợ trong giới hạn an toàn",
+      "Có thể xem xét tăng số tiền vay nếu cần",
+      "Duy trì thói quen tiết kiệm tốt",
     );
   }
 
@@ -427,8 +491,8 @@ function calculateAffordabilityScore(params: LoanCalculationParams): number {
   else if (params.termInMonths > 240) score -= 10;
 
   // Adjust based on rate type
-  if (params.rateType === 'reducing_balance') score += 10;
-  else if (params.rateType === 'flat_rate') score -= 10;
+  if (params.rateType === "reducing_balance") score += 10;
+  else if (params.rateType === "flat_rate") score -= 10;
 
   // Adjust based on insurance
   if (params.hasInsurance) score += 5;
@@ -447,7 +511,7 @@ export const calculateFinancialHealthScore = (
   creditScore: number,
   hasEmergencyFund: boolean,
   hasInsurance: boolean,
-  investmentDiversity: number = 0
+  investmentDiversity: number = 0,
 ): FinancialHealthScore => {
   // Income stability (based on savings rate)
   const savingsRate = (monthlySavings / monthlyIncome) * 100;
@@ -464,13 +528,12 @@ export const calculateFinancialHealthScore = (
   const investmentDiversityScore = investmentDiversity;
 
   // Overall score calculation
-  const overallScore = (
-    (creditScore * 0.25) +
-    (incomeStability * 0.20) +
-    (debtManagement * 0.20) +
-    (savingsRateScore * 0.20) +
-    (investmentDiversityScore * 0.15)
-  );
+  const overallScore =
+    creditScore * 0.25 +
+    incomeStability * 0.2 +
+    debtManagement * 0.2 +
+    savingsRateScore * 0.2 +
+    investmentDiversityScore * 0.15;
 
   // Generate recommendations
   const recommendations: string[] = [];
@@ -478,45 +541,45 @@ export const calculateFinancialHealthScore = (
   const strengths: string[] = [];
 
   if (savingsRate < 10) {
-    recommendations.push('Tăng tỷ lệ tiết kiệm lên ít nhất 10% thu nhập');
-    riskFactors.push('Tỷ lệ tiết kiệm thấp');
+    recommendations.push("Tăng tỷ lệ tiết kiệm lên ít nhất 10% thu nhập");
+    riskFactors.push("Tỷ lệ tiết kiệm thấp");
   } else {
-    strengths.push('Tỷ lệ tiết kiệm tốt');
+    strengths.push("Tỷ lệ tiết kiệm tốt");
   }
 
   if (debtToIncomeRatio > 35) {
-    recommendations.push('Giảm nợ hiện tại xuống dưới 35% thu nhập');
-    riskFactors.push('Tỷ lệ nợ cao');
+    recommendations.push("Giảm nợ hiện tại xuống dưới 35% thu nhập");
+    riskFactors.push("Tỷ lệ nợ cao");
   } else {
-    strengths.push('Quản lý nợ tốt');
+    strengths.push("Quản lý nợ tốt");
   }
 
   if (!hasEmergencyFund) {
-    recommendations.push('Thiết lập quỹ khẩn cấp 3-6 tháng chi phí');
-    riskFactors.push('Không có quỹ khẩn cấp');
+    recommendations.push("Thiết lập quỹ khẩn cấp 3-6 tháng chi phí");
+    riskFactors.push("Không có quỹ khẩn cấp");
   } else {
-    strengths.push('Có quỹ khẩn cấp');
+    strengths.push("Có quỹ khẩn cấp");
   }
 
   if (!hasInsurance) {
-    recommendations.push('Cân nhắc mua bảo hiểm nhân thọ và sức khỏe');
-    riskFactors.push('Thiếu bảo hiểm');
+    recommendations.push("Cân nhắc mua bảo hiểm nhân thọ và sức khỏe");
+    riskFactors.push("Thiếu bảo hiểm");
   } else {
-    strengths.push('Có bảo hiểm');
+    strengths.push("Có bảo hiểm");
   }
 
   if (creditScore < 700) {
-    recommendations.push('Cải thiện điểm tín dụng');
-    riskFactors.push('Điểm tín dụng thấp');
+    recommendations.push("Cải thiện điểm tín dụng");
+    riskFactors.push("Điểm tín dụng thấp");
   } else {
-    strengths.push('Điểm tín dụng tốt');
+    strengths.push("Điểm tín dụng tốt");
   }
 
   if (investmentDiversity < 50) {
-    recommendations.push('Đa dạng hóa danh mục đầu tư');
-    riskFactors.push('Đầu tư thiếu đa dạng');
+    recommendations.push("Đa dạng hóa danh mục đầu tư");
+    riskFactors.push("Đầu tư thiếu đa dạng");
   } else {
-    strengths.push('Danh mục đầu tư đa dạng');
+    strengths.push("Danh mục đầu tư đa dạng");
   }
 
   return {
@@ -539,35 +602,45 @@ export const validateLoanParams = (params: LoanCalculationParams): string[] => {
   const errors: string[] = [];
 
   if (params.principal <= 0) {
-    errors.push('Số tiền vay phải lớn hơn 0');
+    errors.push("Số tiền vay phải lớn hơn 0");
   }
 
-  if (params.principal > 10000000000) { // 10 billion VND
-    errors.push('Số tiền vay vượt quá giới hạn cho phép');
+  if (params.principal > 10000000000) {
+    // 10 billion VND
+    errors.push("Số tiền vay vượt quá giới hạn cho phép");
   }
 
   if (params.annualRate < 0 || params.annualRate > 50) {
-    errors.push('Lãi suất không hợp lệ');
+    errors.push("Lãi suất không hợp lệ");
   }
 
   if (params.termInMonths < 1 || params.termInMonths > 360) {
-    errors.push('Kỳ hạn vay không hợp lệ (1-360 tháng)');
+    errors.push("Kỳ hạn vay không hợp lệ (1-360 tháng)");
   }
 
   if (params.promotionalRate && params.promotionalRate < 0) {
-    errors.push('Lãi suất ưu đãi không được âm');
+    errors.push("Lãi suất ưu đãi không được âm");
   }
 
-  if (params.promotionalPeriod && params.promotionalPeriod > params.termInMonths) {
-    errors.push('Thời gian ưu đãi không thể lớn hơn thời gian vay');
+  if (
+    params.promotionalPeriod &&
+    params.promotionalPeriod > params.termInMonths
+  ) {
+    errors.push("Thời gian ưu đãi không thể lớn hơn thời gian vay");
   }
 
-  if (params.processingFee && (params.processingFee < 0 || params.processingFee > 10)) {
-    errors.push('Phí xử lý không hợp lệ (0-10%)');
+  if (
+    params.processingFee &&
+    (params.processingFee < 0 || params.processingFee > 10)
+  ) {
+    errors.push("Phí xử lý không hợp lệ (0-10%)");
   }
 
-  if (params.insuranceRate && (params.insuranceRate < 0 || params.insuranceRate > 5)) {
-    errors.push('Tỷ lệ bảo hiểm không hợp lệ (0-5%)');
+  if (
+    params.insuranceRate &&
+    (params.insuranceRate < 0 || params.insuranceRate > 5)
+  ) {
+    errors.push("Tỷ lệ bảo hiểm không hợp lệ (0-5%)");
   }
 
   return errors;
@@ -576,7 +649,9 @@ export const validateLoanParams = (params: LoanCalculationParams): string[] => {
 /**
  * Format loan results for display
  */
-export const formatLoanResults = (result: LoanCalculationResult): {
+export const formatLoanResults = (
+  result: LoanCalculationResult,
+): {
   monthlyPaymentFormatted: string;
   totalPaymentFormatted: string;
   totalInterestFormatted: string;

@@ -960,131 +960,137 @@ const SalaryConverter: React.FC = () => {
               </CardContent>
             </Card>
 
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">
-                  Tác động của người phụ thuộc
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  {[0, 1, 2, 3].map((dependents) => {
-                    const familyDeduction =
-                      FAMILY_DEDUCTIONS.taxpayerDeduction +
-                      dependents * FAMILY_DEDUCTIONS.dependentDeduction;
-                    const newTaxableIncome = Math.max(
-                      0,
-                      formData.grossMonthlyIncome -
-                        taxResults!.totalInsurance -
-                        familyDeduction,
-                    );
-
-                    // Simple tax calculation for comparison
-                    let newTax = 0;
-                    if (newTaxableIncome > 5000000) newTax = 250000;
-                    if (newTaxableIncome > 10000000) newTax += 750000;
-                    if (newTaxableIncome > 18000000) newTax += 1950000;
-
-                    const newNetIncome =
-                      formData.grossMonthlyIncome -
-                      taxResults!.totalInsurance -
-                      newTax;
-                    const taxDifference = taxResults!.incomeTax - newTax;
-
-                    return (
-                      <div
-                        key={dependents}
-                        className={`p-3 rounded ${dependents === formData.numberOfDependents ? "bg-green-50 ring-2 ring-green-500" : "bg-gray-50"}`}
-                      >
-                        <div className="flex justify-between items-center">
-                          <span className="font-medium">
-                            {dependents} người phụ thuộc
-                          </span>
-                          {dependents === formData.numberOfDependents && (
-                            <Badge variant="default">Hiện tại</Badge>
-                          )}
-                        </div>
-                        <div className="text-sm text-gray-600 mt-1">
-                          Giảm trừ: {formatCurrency(familyDeduction)}
-                        </div>
-                        <div className="text-sm text-gray-600">
-                          Thu nhập NET: {formatCurrency(newNetIncome)}
-                        </div>
-                        {taxDifference > 0 && (
-                          <div className="text-sm text-green-600 font-medium">
-                            Tiết kiệm thuế: {formatCurrency(taxDifference)}
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Xu hướng thuế</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="space-y-2">
-                    <div className="flex justify-between">
-                      <span className="text-sm text-gray-600">
-                        Thuế suất hiệu quả:
-                      </span>
-                      <span className="font-medium">
-                        {taxResults?.effectiveTaxRate.toFixed(2)}%
-                      </span>
-                    </div>
-                    <Progress
-                      value={taxResults?.effectiveTaxRate || 0}
-                      className="h-2"
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <div className="flex justify-between">
-                      <span className="text-sm text-gray-600">
-                        Xếp hạng thuế vùng:
-                      </span>
-                      <span className="font-medium">
-                        {taxResults?.regionalComparison.percentileRank.toFixed(
+            {taxResults && (
+              <>
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-lg">
+                      Tác động của người phụ thuộc
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      {[0, 1, 2, 3].map((dependents) => {
+                        const familyDeduction =
+                          FAMILY_DEDUCTIONS.taxpayerDeduction +
+                          dependents * FAMILY_DEDUCTIONS.dependentDeduction;
+                        const newTaxableIncome = Math.max(
                           0,
-                        )}
-                        %
-                      </span>
-                    </div>
-                    <Progress
-                      value={taxResults?.regionalComparison.percentileRank || 0}
-                      className="h-2"
-                    />
-                  </div>
+                          formData.grossMonthlyIncome -
+                            taxResults.totalInsurance -
+                            familyDeduction,
+                        );
 
-                  <div className="space-y-2">
-                    <Label className="text-sm">Phân loại thu nhập</Label>
-                    <div
-                      className={`p-3 rounded ${
-                        taxResults?.additionalInsights.isHighIncomeEarner
-                          ? "bg-red-50"
-                          : "bg-green-50"
-                      }`}
-                    >
-                      <div className="font-medium">
-                        {taxResults?.additionalInsights.isHighIncomeEarner
-                          ? "Thu nhập cao"
-                          : "Thu nhập trung bình"}
+                        // Simple tax calculation for comparison
+                        let newTax = 0;
+                        if (newTaxableIncome > 5000000) newTax = 250000;
+                        if (newTaxableIncome > 10000000) newTax += 750000;
+                        if (newTaxableIncome > 18000000) newTax += 1950000;
+
+                        const newNetIncome =
+                          formData.grossMonthlyIncome -
+                          taxResults.totalInsurance -
+                          newTax;
+                        const taxDifference = taxResults.incomeTax - newTax;
+
+                        return (
+                          <div
+                            key={dependents}
+                            className={`p-3 rounded ${dependents === formData.numberOfDependents ? "bg-green-50 ring-2 ring-green-500" : "bg-gray-50"}`}
+                          >
+                            <div className="flex justify-between items-center">
+                              <span className="font-medium">
+                                {dependents} người phụ thuộc
+                              </span>
+                              {dependents === formData.numberOfDependents && (
+                                <Badge variant="default">Hiện tại</Badge>
+                              )}
+                            </div>
+                            <div className="text-sm text-gray-600 mt-1">
+                              Giảm trừ: {formatCurrency(familyDeduction)}
+                            </div>
+                            <div className="text-sm text-gray-600">
+                              Thu nhập NET: {formatCurrency(newNetIncome)}
+                            </div>
+                            {taxDifference > 0 && (
+                              <div className="text-sm text-green-600 font-medium">
+                                Tiết kiệm thuế: {formatCurrency(taxDifference)}
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-lg">Xu hướng thuế</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <div className="space-y-2">
+                        <div className="flex justify-between">
+                          <span className="text-sm text-gray-600">
+                            Thuế suất hiệu quả:
+                          </span>
+                          <span className="font-medium">
+                            {taxResults?.effectiveTaxRate.toFixed(2)}%
+                          </span>
+                        </div>
+                        <Progress
+                          value={taxResults?.effectiveTaxRate || 0}
+                          className="h-2"
+                        />
                       </div>
-                      <div className="text-sm text-gray-600">
-                        {taxResults?.additionalInsights.isHighIncomeEarner
-                          ? "Cần kê khai thuế định kỳ"
-                          : "Kê khai thuế năm nếu có thay đổi"}
+
+                      <div className="space-y-2">
+                        <div className="flex justify-between">
+                          <span className="text-sm text-gray-600">
+                            Xếp hạng thuế vùng:
+                          </span>
+                          <span className="font-medium">
+                            {taxResults?.regionalComparison.percentileRank.toFixed(
+                              0,
+                            )}
+                            %
+                          </span>
+                        </div>
+                        <Progress
+                          value={
+                            taxResults?.regionalComparison.percentileRank || 0
+                          }
+                          className="h-2"
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label className="text-sm">Phân loại thu nhập</Label>
+                        <div
+                          className={`p-3 rounded ${
+                            taxResults?.additionalInsights.isHighIncomeEarner
+                              ? "bg-red-50"
+                              : "bg-green-50"
+                          }`}
+                        >
+                          <div className="font-medium">
+                            {taxResults?.additionalInsights.isHighIncomeEarner
+                              ? "Thu nhập cao"
+                              : "Thu nhập trung bình"}
+                          </div>
+                          <div className="text-sm text-gray-600">
+                            {taxResults?.additionalInsights.isHighIncomeEarner
+                              ? "Cần kê khai thuế định kỳ"
+                              : "Kê khai thuế năm nếu có thay đổi"}
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                  </CardContent>
+                </Card>
+              </>
+            )}
           </div>
         </TabsContent>
 

@@ -1,88 +1,111 @@
-"use client";
+/**
+ * Loan Calculator Page
+ *
+ * Page for calculating loan payments, interest, and amortization schedule
+ */
 
-import LoanCalculator from "@/components/financial-tools/LoanCalculator";
-import { Button } from "@/components/ui/button";
-import { ArrowLeft, Calculator } from "lucide-react";
-import Link from "next/link";
+import { LoanCalculator } from "@/components/tools";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Tính toán khoản vay | Công cụ tính toán vay vốn",
+  description:
+    "Công cụ tính toán khoản vay miễn phí và dễ sử dụng. Tính toán các khoản thanh toán hàng tháng, tổng lãi suất và lịch trình trả nợ cho khoản vay của bạn.",
+  keywords: [
+    "tính toán khoản vay",
+    "tính khoản vay",
+    "lịch trả nợ",
+    "lãi suất vay",
+  ],
+};
 
 export default function LoanCalculatorPage() {
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-white border-b">
-        <div className="container mx-auto px-4 py-6">
-          <div className="flex items-center gap-4">
-            <Link href="/vi">
-              <Button variant="outline" size="sm">
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Quay lại trang chủ
-              </Button>
-            </Link>
-            <div className="flex items-center gap-3">
-              <Calculator className="w-8 h-8 text-blue-600" />
-              <div>
-                <h1 className="text-3xl font-bold text-gray-900">
-                  Công cụ tính toán vay vốn
-                </h1>
-                <p className="text-gray-600 mt-1">
-                  Tính toán khoản vay, lãi suất và trả góp
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
+    <div className="container mx-auto py-6 space-y-6">
+      {/* Breadcrumb */}
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/vi">Trang chủ</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/vi/tools">Công cụ tài chính</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>Tính toán khoản vay</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+
+      {/* Page Header */}
+      <div className="text-center space-y-4">
+        <h1 className="text-3xl font-bold tracking-tight">
+          Tính Toán Khoản Vay
+        </h1>
+        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          Công cụ tính toán khoản vay miễn phí và dễ sử dụng. Tính toán các
+          khoản thanh toán hàng tháng, tổng lãi suất và lịch trình trả nợ cho
+          khoản vay của bạn.
+        </p>
       </div>
 
-      {/* Main Content */}
-      <div className="container mx-auto px-4 py-8">
-        <div className="max-w-4xl mx-auto">
-          <LoanCalculator />
-        </div>
-      </div>
+      {/* Calculator Component */}
+      <LoanCalculator />
 
-      {/* Features Section */}
-      <div className="bg-white border-t">
-        <div className="container mx-auto px-4 py-12">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-2xl font-bold text-center text-gray-900 mb-8">
-              Tính năng nổi bật
-            </h2>
-            <div className="grid md:grid-cols-3 gap-8">
-              <div className="text-center">
-                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Calculator className="w-8 h-8 text-blue-600" />
-                </div>
-                <h3 className="font-semibold text-lg mb-2">
-                  Tính toán chính xác
-                </h3>
-                <p className="text-gray-600">
-                  Phương pháp tính lãi suất Việt Nam chính xác
-                </p>
-              </div>
-              <div className="text-center">
-                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Calculator className="w-8 h-8 text-green-600" />
-                </div>
-                <h3 className="font-semibold text-lg mb-2">
-                  So sánh nhiều gói vay
-                </h3>
-                <p className="text-gray-600">
-                  So sánh chi tiết các gói vay từ nhiều ngân hàng
-                </p>
-              </div>
-              <div className="text-center">
-                <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Calculator className="w-8 h-8 text-purple-600" />
-                </div>
-                <h3 className="font-semibold text-lg mb-2">
-                  Lịch trả góp chi tiết
-                </h3>
-                <p className="text-gray-600">
-                  Lịch trả góp hàng tháng với chi tiết rõ ràng
-                </p>
-              </div>
-            </div>
-          </div>
+      {/* Additional Information */}
+      <div className="grid md:grid-cols-2 gap-6 mt-12">
+        <div className="space-y-4">
+          <h2 className="text-xl font-semibold">Lưu ý quan trọng</h2>
+          <ul className="space-y-2 text-sm text-muted-foreground">
+            <li>
+              • Lãi suất có thể thay đổi tùy thuộc vào chính sách của ngân hàng
+            </li>
+            <li>
+              • Lãi suất hiển thị là lãi suất danh nghĩa, lãi suất thực tế có
+              thể khác
+            </li>
+            <li>
+              • Khoản thanh toán chỉ bao gồm gốc và lãi, không bao gồm các loại
+              phí khác
+            </li>
+            <li>
+              • Các loại khoản vay khác nhau có thể có lãi suất và điều kiện
+              khác nhau
+            </li>
+            <li>• Nên kiểm tra kỹ các điều khoản và điều kiện trước khi vay</li>
+          </ul>
+        </div>
+
+        <div className="space-y-4">
+          <h2 className="text-xl font-semibold">Các loại vay phổ biến</h2>
+          <ul className="space-y-2 text-sm text-muted-foreground">
+            <li>
+              • <strong>Vay mua nhà:</strong> Lãi suất thấp, kỳ hạn dài, thế
+              chấp bất động sản
+            </li>
+            <li>
+              • <strong>Vay mua xe:</strong> Lãi suất trung bình, kỳ hạn 5-8
+              năm, thế chấp xe
+            </li>
+            <li>
+              • <strong>Vay tiêu dùng:</strong> Lãi suất cao hơn, không cần thế
+              chấp, thủ tục nhanh
+            </li>
+            <li>
+              • <strong>Vay kinh doanh:</strong> Lãi suất tùy thuộc vào phương
+              án kinh doanh, cần bảo lãnh
+            </li>
+          </ul>
         </div>
       </div>
     </div>

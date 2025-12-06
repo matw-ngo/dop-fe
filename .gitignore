@@ -47,3 +47,5 @@ storybook-static
 docs/migration/old-project/code/**
 
 .claude
+test-results/
+playwright-report/

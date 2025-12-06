@@ -5,26 +5,59 @@
  * user preferences, and offline support for the Vietnamese digital lending platform.
  */
 
+import React from "react";
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 import type {
-  LoanCalculationParams,
-  LoanCalculationResult,
   FinancialHealthScore,
   AffordabilityAnalysis,
+  LoanCalculationParams,
+  LoanCalculationResult,
 } from "@/lib/financial/calculations";
+import type {
+  ISalary,
+  ILoanParams,
+  ILoanResult,
+  ISavingsParams,
+  ISavingsResult,
+} from "@/types/tools";
+import type {
+  TaxCalculationParams,
+  TaxCalculationResult,
+} from "@/lib/financial-data/tax-brackets";
+
+// Type adapter functions for backward compatibility
+const adaptLoanParams = (params: ILoanParams): LoanCalculationParams => ({
+  principal: params.amount,
+  annualRate: params.rate,
+  termInMonths: params.term,
+  rateType: "reducing_balance" as const,
+});
+
+const adaptLoanResult = (result: LoanCalculationResult): ILoanResult => ({
+  monthlyPayment: result.monthlyPayment,
+  totalPayment: result.totalPayment,
+  totalInterest: result.totalInterest,
+  amortization:
+    result.paymentSchedule?.map((entry: any, index: number) => ({
+      month: entry.period || index + 1,
+      principal: entry.principalPayment,
+      interest: entry.interestPayment,
+      balance: entry.endingBalance,
+    })) || [],
+});
 
 // Types
 export interface CalculatorState {
   /** Current calculation parameters */
-  loanParams?: LoanCalculationParams;
+  loanParams?: ILoanParams;
   taxParams?: TaxCalculationParams;
-  savingsParams?: SavingsCalculationParams;
+  savingsParams?: ISavingsParams;
 
   /** Calculation results */
-  loanResults?: LoanCalculationResult;
-  taxResults?: TaxCalculationResult;
-  savingsResults?: SavingsCalculationResult;
+  loanResults?: ILoanResult;
+  taxResults?: TaxCalculationResult | ISalary;
+  savingsResults?: ISavingsResult;
 
   /** Financial analysis results */
   healthScore?: FinancialHealthScore;
@@ -111,18 +144,18 @@ export interface CalculatorState {
 
 export interface CalculatorActions {
   // Loan calculator actions
-  setLoanParams: (params: LoanCalculationParams) => void;
-  setLoanResults: (results: LoanCalculationResult) => void;
+  setLoanParams: (params: ILoanParams) => void;
+  setLoanResults: (results: ILoanResult) => void;
   clearLoanCalculation: () => void;
 
   // Tax calculator actions
   setTaxParams: (params: TaxCalculationParams) => void;
-  setTaxResults: (results: TaxCalculationResult) => void;
+  setTaxResults: (results: TaxCalculationResult | ISalary) => void;
   clearTaxCalculation: () => void;
 
   // Savings calculator actions
-  setSavingsParams: (params: SavingsCalculationParams) => void;
-  setSavingsResults: (results: SavingsCalculationResult) => void;
+  setSavingsParams: (params: ISavingsParams) => void;
+  setSavingsResults: (results: ISavingsResult) => void;
   clearSavingsCalculation: () => void;
 
   // Financial analysis actions
@@ -782,10 +815,3 @@ export const useFinancialToolsHydrated = () => {
 
   return hydrated;
 };
-
-// Import React for the hook
-import React from "react";
-import {
-  TaxCalculationParams,
-  TaxCalculationResult,
-} from "@/lib/financial-data/tax-brackets";

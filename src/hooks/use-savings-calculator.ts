@@ -216,7 +216,16 @@ export const useSavingsCalculator = (
 
       // Update state
       setResult(calculationResult);
-      setSavingsResults(localParams, calculationResult);
+
+      // Convert to ISavingsResult for store compatibility
+      const savingsResultForStore = {
+        savings: [], // TODO: Convert calculationResult to ISavings format
+        minRate: localParams.annualRate,
+        maxRate: localParams.annualRate,
+        totalCount: 0,
+      };
+      setSavingsResults(savingsResultForStore);
+
       setErrorLocal(undefined);
       setError("calculation", undefined);
 
@@ -429,7 +438,7 @@ export const useSavingsCalculator = (
     // State
     params: localParams,
     result,
-    loading: loading || setLoadingLocal,
+    loading: loading,
     error: error || useFinancialToolsStore.getState().errors.calculation,
     isValid: !error && !useFinancialToolsStore.getState().errors.calculation,
 

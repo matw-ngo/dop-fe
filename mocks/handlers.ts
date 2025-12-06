@@ -12,7 +12,7 @@ export const handlers = [
 
   // Example: Mock POST /api/users
   http.post("/api/users", async ({ request }) => {
-    const newUser = await request.json();
+    const newUser = (await request.json()) as Record<string, any>;
     return HttpResponse.json({ id: "3", ...newUser }, { status: 201 });
   }),
 
