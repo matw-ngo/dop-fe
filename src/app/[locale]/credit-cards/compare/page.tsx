@@ -18,11 +18,13 @@ import { CreditCardsThemeProvider } from "@/components/features/credit-card/Cred
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 import { useCreditCardsNavbarTheme } from "@/hooks/features/credit-card/useCreditCardsNavbarTheme";
+import { useCurrentLocale } from "@/lib/client-utils";
 
 export default function ComparePage() {
   const t = useTranslations("pages.creditCard");
   const locale = useTranslations("common");
   const searchParams = useSearchParams();
+  const currentLocale = useCurrentLocale();
 
   // Get comparison state from store
   const { comparisonCards, canAddMore } = useCreditCardComparison() as {
@@ -55,8 +57,7 @@ export default function ComparePage() {
 
   // Handle add more cards - redirect to main page
   const handleAddMore = () => {
-    // This will be replaced with proper locale handling
-    window.location.href = `/credit-cards`;
+    window.location.href = `/${currentLocale}/credit-cards`;
   };
 
   return (
@@ -68,7 +69,7 @@ export default function ComparePage() {
         <div className="border-b bg-card">
           <div className="container mx-auto px-4 py-6">
             <div className="flex items-center gap-4">
-              <Link href="/vi/credit-cards">
+              <Link href={`/${currentLocale}/credit-cards`}>
                 <Button variant="outline" size="sm">
                   <ArrowLeft className="w-4 h-4 mr-2" />
                   {locale("back")}
@@ -115,7 +116,7 @@ export default function ComparePage() {
                   {t("selectAtLeastTwo") ||
                     "Vui lòng chọn ít nhất 2 thẻ để so sánh"}
                 </p>
-                <Link href="/vi/credit-cards">
+                <Link href={`/${currentLocale}/credit-cards`}>
                   <Button>
                     {t("selectCardsToCompare") || "Chọn thẻ để so sánh"}
                   </Button>

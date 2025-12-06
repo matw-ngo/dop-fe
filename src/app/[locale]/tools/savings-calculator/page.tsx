@@ -13,34 +13,39 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { useTranslations, useLocale } from "next-intl";
 
 export default function SavingsCalculatorPage() {
+  const t = useTranslations("pages.savingsCalculator");
+  const locale = useLocale();
   return (
     <div className="container mx-auto py-6 space-y-6">
       {/* Breadcrumb */}
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink href="/vi">Trang chủ</BreadcrumbLink>
+            <BreadcrumbLink href={`/${locale}`}>
+              {t("breadcrumb.home")}
+            </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbLink href="/vi/tools">Công cụ tài chính</BreadcrumbLink>
+            <BreadcrumbLink href={`/${locale}/tools`}>
+              {t("breadcrumb.tools")}
+            </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbPage>Tính lãi tiền gửi</BreadcrumbPage>
+            <BreadcrumbPage>{t("breadcrumb.current")}</BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
 
       {/* Page Header */}
       <div className="text-center space-y-4">
-        <h1 className="text-3xl font-bold tracking-tight">Tính Lãi Tiền Gửi</h1>
+        <h1 className="text-3xl font-bold tracking-tight">{t("title")}</h1>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-          So sánh lãi suất tiền gửi tiết kiệm tại các ngân hàng Việt Nam. Tìm
-          kiếm khoản tiết kiệm phù hợp với nhu cầu của bạn với lãi suất tốt
-          nhất.
+          {t("description")}
         </p>
       </div>
 
@@ -50,38 +55,34 @@ export default function SavingsCalculatorPage() {
       {/* Additional Information */}
       <div className="grid md:grid-cols-2 gap-6 mt-12">
         <div className="space-y-4">
-          <h2 className="text-xl font-semibold">Lưu ý quan trọng</h2>
+          <h2 className="text-xl font-semibold">{t("importantNotes.title")}</h2>
           <ul className="space-y-2 text-sm text-muted-foreground">
-            <li>
-              • Lãi suất có thể thay đổi tùy thuộc chính sách của từng ngân hàng
-            </li>
-            <li>
-              • Lãi suất hiển thị là lãi suất niêm yết, thực tế có thể khác
-            </li>
-            <li>• Gửi tiền online thường có lãi suất cao hơn tại quầy</li>
-            <li>• Kiểm tra điều kiện rút tiền trước hạn trước khi gửi</li>
-            <li>• Cân nhắc gửi tiết kiệm có kỳ hạn để có lãi suất tốt hơn</li>
+            <li>{t("importantNotes.note1")}</li>
+            <li>{t("importantNotes.note2")}</li>
+            <li>{t("importantNotes.note3")}</li>
+            <li>{t("importantNotes.note4")}</li>
+            <li>{t("importantNotes.note5")}</li>
           </ul>
         </div>
 
         <div className="space-y-4">
-          <h2 className="text-xl font-semibold">Các loại tiết kiệm phổ biến</h2>
+          <h2 className="text-xl font-semibold">{t("savingsTypes.title")}</h2>
           <ul className="space-y-2 text-sm text-muted-foreground">
             <li>
-              • <strong>Tiết kiệm không kỳ hạn:</strong> Linh hoạt rút tiền
-              nhưng lãi suất thấp
+              • <strong>{t("savingsTypes.noTerm.name")}:</strong>{" "}
+              {t("savingsTypes.noTerm.description")}
             </li>
             <li>
-              • <strong>Tiết kiệm có kỳ hạn:</strong> Lãi suất cao hơn, không
-              thể rút trước hạn
+              • <strong>{t("savingsTypes.term.name")}:</strong>{" "}
+              {t("savingsTypes.term.description")}
             </li>
             <li>
-              • <strong>Tiết kiệm tích lũy:</strong> Góp thêm hàng tháng với lãi
-              suất ưu đãi
+              • <strong>{t("savingsTypes.accumulation.name")}:</strong>{" "}
+              {t("savingsTypes.accumulation.description")}
             </li>
             <li>
-              • <strong>Tiết kiệm siêu ưu đãi:</strong> Số tiền lớn, kỳ hạn dài
-              với lãi suất cao nhất
+              • <strong>{t("savingsTypes.super.name")}:</strong>{" "}
+              {t("savingsTypes.super.description")}
             </li>
           </ul>
         </div>

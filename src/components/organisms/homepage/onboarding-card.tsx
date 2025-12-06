@@ -13,6 +13,7 @@ import { ArrowRight, Sparkles, Zap, Rocket, Check, Star } from "lucide-react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
+import { useLocalizedPath } from "@/lib/client-utils";
 
 const onboardingCardVariants = cva(
   "overflow-hidden transition-all duration-500 ease-out relative group",
@@ -70,6 +71,7 @@ export default function OnboardingCard({
   className,
 }: OnboardingCardProps) {
   const t = useTranslations("components.onboardingCard");
+  const getLocalizedPath = useLocalizedPath();
 
   const cardStyle =
     (variant === "creative" || variant === "glassmorphism") && backgroundImage
@@ -163,7 +165,7 @@ export default function OnboardingCard({
                 </CardHeader>
 
                 <CardContent className="p-0">
-                  <Link href="/vi/user-onboarding" passHref>
+                  <Link href={getLocalizedPath("/user-onboarding")} passHref>
                     <Button size="lg" className="group/button w-full sm:w-auto">
                       {t("buttonText")}
                       <ArrowRight className="ml-2 h-5 w-5 group-hover/button:translate-x-1 transition-transform" />
@@ -268,7 +270,7 @@ export default function OnboardingCard({
                   "pt-6": isDetail || isHero,
                 })}
               >
-                <Link href="/user-onboarding" passHref>
+                <Link href={getLocalizedPath("/user-onboarding")} passHref>
                   <Button
                     size={isCompact ? "default" : "lg"}
                     variant={variant === "creative" ? "secondary" : "default"}

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useMemo, useCallback } from "react";
+import { useTranslations } from "next-intl";
 import {
   Card,
   CardContent,
@@ -36,6 +37,7 @@ import {
   TrendingDown,
   ExternalLink,
   RefreshCw,
+  DollarSign,
 } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useFinancialToolsStore } from "@/store/use-financial-tools-store";
@@ -69,6 +71,8 @@ interface SavingsCalculatorProps {
 const SavingsCalculatorInner: React.FC<SavingsCalculatorProps> = ({
   className,
 }) => {
+  const t = useTranslations("tools.savingsCalculator");
+
   // Error handling
   const {
     error: asyncError,
@@ -259,7 +263,7 @@ const SavingsCalculatorInner: React.FC<SavingsCalculatorProps> = ({
   };
 
   return (
-    <div className={`space-y-6 ${className}`}>
+    <div className={`space-y-8 ${className}`}>
       {/* Async Error Handler */}
       <CalculatorAsyncErrorHandler
         error={asyncError}
@@ -267,124 +271,213 @@ const SavingsCalculatorInner: React.FC<SavingsCalculatorProps> = ({
         onDismiss={clearError}
         calculatorName="Savings Calculator"
       />
-      {/* Filter Controls */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Savings Calculator</CardTitle>
-          <CardDescription>
-            Compare savings rates from different banks and find the best option
-            for your money
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          {/* Amount Slider */}
-          <div className="space-y-3">
-            <Label htmlFor="amount" className="text-sm font-medium">
-              Savings Amount: {formatAmountDisplay(amount)}
-            </Label>
-            <div className="px-2">
-              <Slider
-                id="amount"
-                min={SAVINGS_DEFAULTS.MIN_AMOUNT}
-                max={SAVINGS_DEFAULTS.MAX_AMOUNT}
-                step={SAVINGS_DEFAULTS.AMOUNT_STEP}
-                value={[amount]}
-                onValueChange={handleAmountChange}
-                className="w-full"
-              />
-              <div className="flex justify-between mt-2 text-xs text-muted-foreground">
-                <span>{formatAmountDisplay(SAVINGS_DEFAULTS.MIN_AMOUNT)}</span>
-                <span>{formatAmountDisplay(SAVINGS_DEFAULTS.MAX_AMOUNT)}</span>
+
+      {/* Filter Controls with Modern Design */}
+      <Card className="border-0 bg-gradient-to-br from-white/95 to-green-50/30 backdrop-blur-xl shadow-[0_20px_50px_-10px_rgba(0,0,0,0.1)] dark:from-gray-900/95 dark:to-green-950/30 overflow-hidden">
+        {/* Header with Gradient Background */}
+        <div className="relative bg-gradient-to-r from-green-600 to-emerald-600 p-8 pb-12">
+          <CardHeader className="text-white p-0">
+            <CardTitle className="flex items-center gap-3 text-2xl">
+              <div className="p-2 bg-white/20 rounded-xl backdrop-blur-sm">
+                <TrendingUp className="h-6 w-6" />
+              </div>
+              {t("title")}
+            </CardTitle>
+            <CardDescription className="text-green-100 text-base mt-2">
+              {t("subtitle")}
+            </CardDescription>
+          </CardHeader>
+        </div>
+
+        <CardContent className="p-8 -mt-4 space-y-8">
+          {/* Amount Slider with Enhanced Design */}
+          <Card className="border-2 border-gray-200 bg-gradient-to-br from-white/80 to-green-50/50 backdrop-blur-sm shadow-lg rounded-2xl p-6">
+            <div className="space-y-4">
+              <Label
+                htmlFor="amount"
+                className="text-lg font-semibold text-gray-700 flex items-center gap-2"
+              >
+                <span className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center text-green-600 text-xs font-bold">
+                  1
+                </span>
+                {t("form.savingsAmount")}:
+                <span className="text-green-600 font-bold">
+                  {formatAmountDisplay(amount)}
+                </span>
+              </Label>
+              <div className="space-y-3">
+                <div className="relative">
+                  <Input
+                    type="text"
+                    value={formatCurrency(amount)}
+                    onChange={(e) => handleAmountInputChange(e.target.value)}
+                    className="h-12 text-lg font-semibold border-2 border-gray-200 focus:border-green-500 focus:ring-4 focus:ring-green-100 rounded-xl transition-all duration-200 pr-16"
+                    placeholder={t("form.enterAmount")}
+                  />
+                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-gray-500 font-medium">
+                    VND
+                  </span>
+                </div>
+                <div className="px-2">
+                  <Slider
+                    id="amount"
+                    min={SAVINGS_DEFAULTS.MIN_AMOUNT}
+                    max={SAVINGS_DEFAULTS.MAX_AMOUNT}
+                    step={SAVINGS_DEFAULTS.AMOUNT_STEP}
+                    value={[amount]}
+                    onValueChange={handleAmountChange}
+                    className="w-full h-2"
+                  />
+                  <div className="flex justify-between mt-3 text-xs text-muted-foreground font-medium">
+                    <span className="bg-gray-100 px-2 py-1 rounded">
+                      {formatAmountDisplay(SAVINGS_DEFAULTS.MIN_AMOUNT)}
+                    </span>
+                    <span className="bg-gray-100 px-2 py-1 rounded">
+                      {formatAmountDisplay(SAVINGS_DEFAULTS.MAX_AMOUNT)}
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
-            <Input
-              type="text"
-              value={formatCurrency(amount)}
-              onChange={(e) => handleAmountInputChange(e.target.value)}
-              className="max-w-xs"
-              placeholder="Enter amount"
-            />
-          </div>
+          </Card>
 
-          {/* Period and Type Controls */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {/* Period and Type Controls with Enhanced Design */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {/* Period Dropdown */}
-            <div className="space-y-2">
-              <Label htmlFor="period" className="text-sm font-medium">
-                Savings Period
-              </Label>
-              <Select
-                value={period.toString()}
-                onValueChange={(value) => setPeriod(parseInt(value))}
-              >
-                <SelectTrigger id="period">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {SAVINGS_DEFAULTS.PERIOD_OPTIONS.map((p) => (
-                    <SelectItem key={p} value={p.toString()}>
-                      {p} {p === 1 ? "month" : "months"}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+            <Card className="border-2 border-gray-200 bg-gradient-to-br from-white/80 to-green-50/50 backdrop-blur-sm shadow-md rounded-2xl p-5">
+              <div className="space-y-3">
+                <Label
+                  htmlFor="period"
+                  className="text-sm font-semibold text-gray-700 flex items-center gap-2"
+                >
+                  <span className="w-6 h-6 bg-green-100 rounded-lg flex items-center justify-center text-green-600 text-xs font-bold">
+                    2
+                  </span>
+                  {t("form.savingsPeriod")}
+                </Label>
+                <Select
+                  value={period.toString()}
+                  onValueChange={(value) => setPeriod(parseInt(value))}
+                >
+                  <SelectTrigger
+                    id="period"
+                    className="h-11 border-2 border-gray-200 focus:border-green-500 focus:ring-4 focus:ring-green-100 rounded-xl transition-all duration-200"
+                  >
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="rounded-xl border-2">
+                    {SAVINGS_DEFAULTS.PERIOD_OPTIONS.map((p) => (
+                      <SelectItem
+                        key={p}
+                        value={p.toString()}
+                        className="rounded-lg"
+                      >
+                        {p} {p === 1 ? "tháng" : "tháng"}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </Card>
 
             {/* Type Toggle */}
-            <div className="space-y-2">
-              <Label className="text-sm font-medium">Savings Type</Label>
-              <div className="flex items-center space-x-2">
-                <Switch
-                  id="type"
-                  checked={type === "online"}
-                  onCheckedChange={(checked) =>
-                    setType(checked ? "online" : "counter")
-                  }
-                />
-                <Label htmlFor="type" className="text-sm">
-                  {type === "online" ? "Online Savings" : "Counter Savings"}
+            <Card className="border-2 border-gray-200 bg-gradient-to-br from-white/80 to-green-50/50 backdrop-blur-sm shadow-md rounded-2xl p-5">
+              <div className="space-y-3">
+                <Label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                  <span className="w-6 h-6 bg-green-100 rounded-lg flex items-center justify-center text-green-600 text-xs font-bold">
+                    3
+                  </span>
+                  {t("form.savingsType")}
                 </Label>
+                <div className="flex items-center space-x-3 p-2">
+                  <Switch
+                    id="type"
+                    checked={type === "online"}
+                    onCheckedChange={(checked) =>
+                      setType(checked ? "online" : "counter")
+                    }
+                    className="scale-110"
+                  />
+                  <Label
+                    htmlFor="type"
+                    className="text-sm font-medium cursor-pointer"
+                  >
+                    <span
+                      className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${
+                        type === "online"
+                          ? "bg-green-100 text-green-700"
+                          : "bg-gray-100 text-gray-700"
+                      }`}
+                    >
+                      {type === "online"
+                        ? t("form.onlineSavings")
+                        : t("form.counterSavings")}
+                    </span>
+                  </Label>
+                </div>
               </div>
-            </div>
+            </Card>
 
             {/* Sort Options */}
-            <div className="space-y-2">
-              <Label htmlFor="sort" className="text-sm font-medium">
-                Sort By
-              </Label>
-              <Select
-                value={sortOrder}
-                onValueChange={(value: "rate_asc" | "rate_desc") =>
-                  setSortOrder(value)
-                }
-              >
-                <SelectTrigger id="sort">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="rate_desc">
-                    Highest Interest Rate
-                  </SelectItem>
-                  <SelectItem value="rate_asc">Lowest Interest Rate</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+            <Card className="border-2 border-gray-200 bg-gradient-to-br from-white/80 to-green-50/50 backdrop-blur-sm shadow-md rounded-2xl p-5">
+              <div className="space-y-3">
+                <Label
+                  htmlFor="sort"
+                  className="text-sm font-semibold text-gray-700 flex items-center gap-2"
+                >
+                  <span className="w-6 h-6 bg-green-100 rounded-lg flex items-center justify-center text-green-600 text-xs font-bold">
+                    4
+                  </span>
+                  {t("form.sortBy")}
+                </Label>
+                <Select
+                  value={sortOrder}
+                  onValueChange={(value: "rate_asc" | "rate_desc") =>
+                    setSortOrder(value)
+                  }
+                >
+                  <SelectTrigger
+                    id="sort"
+                    className="h-11 border-2 border-gray-200 focus:border-green-500 focus:ring-4 focus:ring-green-100 rounded-xl transition-all duration-200"
+                  >
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="rounded-xl border-2">
+                    <SelectItem value="rate_desc" className="rounded-lg">
+                      <div className="flex items-center gap-2">
+                        <TrendingUp className="h-4 w-4 text-green-600" />
+                        {t("form.highestInterestRate")}
+                      </div>
+                    </SelectItem>
+                    <SelectItem value="rate_asc" className="rounded-lg">
+                      <div className="flex items-center gap-2">
+                        <TrendingDown className="h-4 w-4 text-orange-600" />
+                        {t("form.lowestInterestRate")}
+                      </div>
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </Card>
           </div>
 
-          {/* Apply Filters Button */}
+          {/* Apply Filters Button with Enhanced Design */}
           <div className="flex justify-end">
             <Button
               onClick={handleApplyFilters}
               disabled={loading.calculations}
-              className="min-w-[120px]"
+              className="min-w-[160px] h-12 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-200 rounded-xl border-0"
             >
               {loading.calculations ? (
                 <>
                   <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
-                  Calculating...
+                  {t("form.calculating")}
                 </>
               ) : (
-                "Apply Filters"
+                <>
+                  <TrendingUp className="mr-2 h-4 w-4" />
+                  {t("form.applyFilters")}
+                </>
               )}
             </Button>
           </div>
@@ -399,103 +492,179 @@ const SavingsCalculatorInner: React.FC<SavingsCalculatorProps> = ({
             <span>{errors.calculation}</span>
             <Button variant="outline" size="sm" onClick={handleRetry}>
               <RefreshCw className="mr-2 h-4 w-4" />
-              Retry
+              {t("form.retry")}
             </Button>
           </AlertDescription>
         </Alert>
       )}
 
-      {/* Results Table */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center justify-between">
-            <span>Bank Comparison Results</span>
-            {savingsResults?.savings && savingsResults.savings.length > 0 && (
-              <Badge variant="secondary">
-                {savingsResults.savings.length} banks found
-              </Badge>
-            )}
-          </CardTitle>
-          {savingsResults && (
-            <CardDescription>
-              Based on {formatCurrency(amount)} for {period} months
-            </CardDescription>
-          )}
-        </CardHeader>
-        <CardContent>
-          {loading.calculations ? (
-            // Loading skeleton
-            <div className="space-y-3">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <div key={i} className="flex items-center space-x-4">
-                  <Skeleton className="h-4 w-[200px]" />
-                  <Skeleton className="h-4 w-[100px]" />
-                  <Skeleton className="h-4 w-[120px]" />
-                  <Skeleton className="h-4 w-[120px]" />
-                  <Skeleton className="h-8 w-[100px]" />
+      {/* Results Table with Enhanced Design */}
+      <Card className="border-0 bg-gradient-to-br from-white/95 to-green-50/30 backdrop-blur-xl shadow-[0_20px_50px_-10px_rgba(0,0,0,0.1)] overflow-hidden">
+        {/* Header with Gradient Background */}
+        <div className="relative bg-gradient-to-r from-green-600 to-emerald-600 p-6">
+          <CardHeader className="text-white p-0">
+            <CardTitle className="flex items-center justify-between text-xl">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-white/20 rounded-xl backdrop-blur-sm">
+                  <TrendingUp className="h-5 w-5" />
                 </div>
+                {t("results.bankComparisonResults")}
+              </div>
+              {savingsResults?.savings && savingsResults.savings.length > 0 && (
+                <Badge className="bg-white/20 text-white border-white/30 hover:bg-white/30 transition-colors duration-200">
+                  {t("results.banksFound", {
+                    count: savingsResults.savings.length,
+                  })}
+                </Badge>
+              )}
+            </CardTitle>
+            {savingsResults && (
+              <CardDescription className="text-green-100 text-sm mt-2">
+                {t("results.basedOn", {
+                  amount: formatCurrency(amount),
+                  period,
+                })}
+              </CardDescription>
+            )}
+          </CardHeader>
+        </div>
+        <CardContent className="p-6">
+          {loading.calculations ? (
+            // Enhanced Loading skeleton
+            <div className="space-y-4">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <Card
+                  key={i}
+                  className="border border-gray-200 rounded-xl overflow-hidden"
+                >
+                  <div className="flex items-center justify-between p-4 space-x-4">
+                    <Skeleton className="h-5 w-[200px] rounded-lg" />
+                    <Skeleton className="h-5 w-[80px] rounded-lg" />
+                    <Skeleton className="h-5 w-[120px] rounded-lg" />
+                    <Skeleton className="h-5 w-[120px] rounded-lg" />
+                    <Skeleton className="h-9 w-[100px] rounded-xl" />
+                  </div>
+                </Card>
               ))}
             </div>
           ) : savingsResults?.savings && savingsResults.savings.length > 0 ? (
             <>
-              <div className="rounded-md border">
+              <div className="rounded-xl border-2 border-gray-200 overflow-hidden bg-white shadow-sm">
                 <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Bank Name</TableHead>
-                      <TableHead className="text-right">
-                        Interest Rate
+                  <TableHeader className="bg-gradient-to-r from-gray-50 to-gray-100">
+                    <TableRow className="border-b border-gray-200">
+                      <TableHead className="px-6 py-4 font-semibold text-gray-700">
+                        {t("results.table.bankName")}
                       </TableHead>
-                      <TableHead className="text-right">
-                        Interest Amount
+                      <TableHead className="text-right px-6 py-4 font-semibold text-gray-700">
+                        {t("results.table.interestRate")}
                       </TableHead>
-                      <TableHead className="text-right">Total Amount</TableHead>
-                      <TableHead className="text-center">Action</TableHead>
+                      <TableHead className="text-right px-6 py-4 font-semibold text-gray-700">
+                        {t("results.table.interestAmount")}
+                      </TableHead>
+                      <TableHead className="text-right px-6 py-4 font-semibold text-gray-700">
+                        {t("results.table.totalAmount")}
+                      </TableHead>
+                      <TableHead className="text-center px-6 py-4 font-semibold text-gray-700">
+                        {t("results.table.action")}
+                      </TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {paginatedResults.map((result) => {
+                    {paginatedResults.map((result, index) => {
                       const isMaxRate = result.ir === rateStats.max;
                       const isMinRate = result.ir === rateStats.min;
 
                       return (
-                        <TableRow key={result.name}>
-                          <TableCell className="font-medium">
-                            {result.full_name}
-                          </TableCell>
-                          <TableCell className="text-right">
-                            <div className="flex items-center justify-end space-x-1">
-                              <span className="font-mono">{result.ir}%</span>
-                              {isMaxRate && (
-                                <Badge variant="default" className="ml-1">
-                                  <TrendingUp className="mr-1 h-3 w-3" />
-                                  Best
-                                </Badge>
-                              )}
-                              {isMinRate && !isMaxRate && (
-                                <Badge variant="outline" className="ml-1">
-                                  <TrendingDown className="mr-1 h-3 w-3" />
-                                  Low
+                        <TableRow
+                          key={result.name}
+                          className={`border-b border-gray-100 hover:bg-green-50/30 transition-colors duration-200 ${
+                            index === 0 ? "bg-green-50/20" : ""
+                          }`}
+                        >
+                          <TableCell className="px-6 py-4">
+                            <div className="flex items-center gap-3">
+                              <div className="w-10 h-10 bg-gradient-to-br from-green-100 to-emerald-100 rounded-lg flex items-center justify-center">
+                                <span className="text-xs font-bold text-green-700">
+                                  {result.full_name.charAt(0)}
+                                </span>
+                              </div>
+                              <span className="font-semibold text-gray-900">
+                                {result.full_name}
+                              </span>
+                              {index === 0 && (
+                                <Badge className="bg-green-100 text-green-700 border-green-200 text-xs">
+                                  Tốt nhất
                                 </Badge>
                               )}
                             </div>
                           </TableCell>
-                          <TableCell className="text-right font-mono">
-                            {formatCurrency(result.interest)}
+                          <TableCell className="text-right px-6 py-4">
+                            <div className="flex items-center justify-end space-x-2">
+                              <span className="font-mono font-bold text-lg text-gray-900">
+                                {result.ir}%
+                              </span>
+                              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-green-100 to-emerald-100 flex items-center justify-center">
+                                <div
+                                  className="w-10 h-10 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center"
+                                  style={{
+                                    background: `conic-gradient(from 0deg, rgb(34 197 94) 0%, rgb(34 197 94) ${(result.ir / 10) * 100}%, rgb(229 231 235) ${(result.ir / 10) * 100}%)`,
+                                  }}
+                                >
+                                  <span className="text-white text-xs font-bold">
+                                    {result.ir}
+                                  </span>
+                                </div>
+                              </div>
+                              {isMaxRate && (
+                                <Badge className="ml-2 bg-gradient-to-r from-green-500 to-emerald-500 text-white border-0">
+                                  <TrendingUp className="mr-1 h-3 w-3" />
+                                  {t("results.bestRate")}
+                                </Badge>
+                              )}
+                              {isMinRate && !isMaxRate && (
+                                <Badge
+                                  variant="outline"
+                                  className="ml-2 border-orange-200 text-orange-700"
+                                >
+                                  <TrendingDown className="mr-1 h-3 w-3" />
+                                  {t("results.lowRate")}
+                                </Badge>
+                              )}
+                            </div>
                           </TableCell>
-                          <TableCell className="text-right font-mono font-semibold">
-                            {formatCurrency(result.total)}
+                          <TableCell className="text-right px-6 py-4">
+                            <div className="text-right">
+                              <span className="font-mono text-lg font-semibold text-green-600">
+                                {formatCurrency(result.interest)}
+                              </span>
+                            </div>
                           </TableCell>
-                          <TableCell className="text-center">
-                            <Button variant="outline" size="sm" asChild>
+                          <TableCell className="text-right px-6 py-4">
+                            <div className="flex flex-col items-end gap-1">
+                              <span className="font-mono text-xl font-bold text-gray-900">
+                                {formatCurrency(result.total)}
+                              </span>
+                              <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
+                                +{formatCurrency(result.interest)}
+                              </span>
+                            </div>
+                          </TableCell>
+                          <TableCell className="text-center px-6 py-4">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              asChild
+                              className="h-10 px-4 bg-gradient-to-r from-green-50 to-emerald-50 border-green-300 hover:bg-green-100 hover:border-green-400 hover:shadow-md transition-all duration-200 rounded-xl"
+                            >
                               <a
                                 href={result.link}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="flex items-center"
+                                className="flex items-center font-semibold text-green-700"
                               >
-                                <ExternalLink className="mr-1 h-3 w-3" />
-                                Open
+                                <ExternalLink className="mr-2 h-4 w-4" />
+                                {t("results.open")}
                               </a>
                             </Button>
                           </TableCell>
@@ -506,16 +675,18 @@ const SavingsCalculatorInner: React.FC<SavingsCalculatorProps> = ({
                 </Table>
               </div>
 
-              {/* Pagination */}
+              {/* Enhanced Pagination */}
               {savingsResults.savings.length > itemsPerPage && (
-                <div className="flex items-center justify-between mt-4">
-                  <div className="text-sm text-muted-foreground">
-                    Showing {(currentPage - 1) * itemsPerPage + 1} to{" "}
-                    {Math.min(
-                      currentPage * itemsPerPage,
-                      savingsResults.savings.length,
-                    )}{" "}
-                    of {savingsResults.savings.length} results
+                <div className="flex items-center justify-between mt-6 p-4 bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl border border-gray-200">
+                  <div className="text-sm text-gray-600 font-medium">
+                    {t("results.showing", {
+                      start: (currentPage - 1) * itemsPerPage + 1,
+                      end: Math.min(
+                        currentPage * itemsPerPage,
+                        savingsResults.savings.length,
+                      ),
+                      total: savingsResults.savings.length,
+                    })}
                   </div>
                   <div className="flex items-center space-x-2">
                     <Button
@@ -525,13 +696,42 @@ const SavingsCalculatorInner: React.FC<SavingsCalculatorProps> = ({
                         setCurrentPage((prev) => Math.max(1, prev - 1))
                       }
                       disabled={currentPage === 1}
+                      className="h-10 px-4 bg-white border-gray-300 hover:bg-gray-50 hover:border-gray-400 transition-all duration-200 rounded-lg"
                     >
-                      Previous
+                      ← {t("results.previous")}
                     </Button>
-                    <span className="text-sm">
-                      Page {currentPage} of{" "}
-                      {Math.ceil(savingsResults.savings.length / itemsPerPage)}
-                    </span>
+                    <div className="flex items-center space-x-1">
+                      {Array.from(
+                        {
+                          length: Math.min(
+                            5,
+                            Math.ceil(
+                              savingsResults.savings.length / itemsPerPage,
+                            ),
+                          ),
+                        },
+                        (_, i) => {
+                          const pageNum = i + 1;
+                          const isActive = currentPage === pageNum;
+
+                          return (
+                            <Button
+                              key={pageNum}
+                              variant={isActive ? "default" : "outline"}
+                              size="sm"
+                              onClick={() => setCurrentPage(pageNum)}
+                              className={`h-9 w-9 p-0 transition-all duration-200 rounded-lg ${
+                                isActive
+                                  ? "bg-gradient-to-r from-green-500 to-emerald-500 text-white border-0"
+                                  : "bg-white border-gray-300 hover:bg-gray-50 hover:border-gray-400"
+                              }`}
+                            >
+                              {pageNum}
+                            </Button>
+                          );
+                        },
+                      )}
+                    </div>
                     <Button
                       variant="outline"
                       size="sm"
@@ -549,75 +749,122 @@ const SavingsCalculatorInner: React.FC<SavingsCalculatorProps> = ({
                         currentPage ===
                         Math.ceil(savingsResults.savings.length / itemsPerPage)
                       }
+                      className="h-10 px-4 bg-white border-gray-300 hover:bg-gray-50 hover:border-gray-400 transition-all duration-200 rounded-lg"
                     >
-                      Next
+                      {t("results.next")} →
                     </Button>
                   </div>
                 </div>
               )}
 
-              {/* Summary Stats */}
-              <div className="mt-6 p-4 bg-muted/50 rounded-lg">
-                <h4 className="text-sm font-medium mb-2">Summary</h4>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                  <div>
-                    <span className="text-muted-foreground">
-                      Average Rate:{" "}
-                    </span>
-                    <span className="font-medium">
-                      {(
-                        savingsResults.savings.reduce(
-                          (sum, r) => sum + r.ir,
-                          0,
-                        ) / savingsResults.savings.length
-                      ).toFixed(2)}
-                      %
-                    </span>
+              {/* Enhanced Summary Stats */}
+              <div className="mt-8 p-6 bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl border-2 border-green-200">
+                <h4 className="text-lg font-semibold text-gray-800 mb-5 flex items-center gap-2">
+                  <div className="p-2 bg-green-100 rounded-lg">
+                    <TrendingUp className="h-4 w-4 text-green-600" />
                   </div>
-                  <div>
-                    <span className="text-muted-foreground">
-                      Total Interest Range:{" "}
-                    </span>
-                    <span className="font-medium">
-                      {formatCurrency(
-                        savingsResults.savings.reduce(
-                          (min, r) => Math.min(min, r.interest),
-                          Infinity,
-                        ),
-                      )}{" "}
-                      -{" "}
-                      {formatCurrency(
-                        savingsResults.savings.reduce(
-                          (max, r) => Math.max(max, r.interest),
-                          0,
-                        ),
-                      )}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="text-muted-foreground">
-                      Best Total Return:{" "}
-                    </span>
-                    <span className="font-medium text-green-600">
-                      {formatCurrency(
-                        savingsResults.savings.reduce(
-                          (max, r) => Math.max(max, r.total),
-                          0,
-                        ),
-                      )}
-                    </span>
-                  </div>
+                  {t("results.summary")}
+                </h4>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <Card className="border-0 bg-white/80 backdrop-blur-sm shadow-md rounded-xl p-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <div className="text-gray-600 text-sm mb-1">
+                          {t("results.averageRate")}
+                        </div>
+                        <div className="text-2xl font-bold text-gray-900">
+                          {(
+                            savingsResults.savings.reduce(
+                              (sum, r) => sum + r.ir,
+                              0,
+                            ) / savingsResults.savings.length
+                          ).toFixed(2)}
+                          <span className="text-lg font-normal text-gray-600 ml-1">
+                            %
+                          </span>
+                        </div>
+                      </div>
+                      <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
+                        <TrendingUp className="h-6 w-6 text-blue-600" />
+                      </div>
+                    </div>
+                  </Card>
+
+                  <Card className="border-0 bg-white/80 backdrop-blur-sm shadow-md rounded-xl p-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <div className="text-gray-600 text-sm mb-1">
+                          {t("results.totalInterestRange")}
+                        </div>
+                        <div className="text-lg font-bold text-gray-900">
+                          {formatCurrency(
+                            savingsResults.savings.reduce(
+                              (min, r) => Math.min(min, r.interest),
+                              Infinity,
+                            ),
+                          )}
+                        </div>
+                        <div className="text-xs text-gray-500 mt-1">đến</div>
+                        <div className="text-lg font-bold text-green-600">
+                          {formatCurrency(
+                            savingsResults.savings.reduce(
+                              (max, r) => Math.max(max, r.interest),
+                              0,
+                            ),
+                          )}
+                        </div>
+                      </div>
+                      <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center">
+                        <TrendingDown className="h-6 w-6 text-orange-600" />
+                      </div>
+                    </div>
+                  </Card>
+
+                  <Card className="border-0 bg-white/80 backdrop-blur-sm shadow-md rounded-xl p-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <div className="text-gray-600 text-sm mb-1">
+                          {t("results.bestTotalReturn")}
+                        </div>
+                        <div className="text-2xl font-bold text-green-600">
+                          {formatCurrency(
+                            savingsResults.savings.reduce(
+                              (max, r) => Math.max(max, r.total),
+                              0,
+                            ),
+                          )}
+                        </div>
+                        <div className="text-xs text-green-500 mt-1 bg-green-100 px-2 py-1 rounded-full inline-block">
+                          Cao nhất
+                        </div>
+                      </div>
+                      <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
+                        <DollarSign className="h-6 w-6 text-green-600" />
+                      </div>
+                    </div>
+                  </Card>
                 </div>
               </div>
             </>
           ) : !loading.calculations && !errors.calculation ? (
-            // Empty state
-            <div className="text-center py-8 text-muted-foreground">
-              <AlertCircle className="mx-auto h-12 w-12 mb-4 opacity-50" />
-              <p>No savings products found matching your criteria.</p>
-              <p className="text-sm mt-1">
-                Try adjusting your filters to see more results.
+            // Enhanced Empty state
+            <div className="text-center py-12">
+              <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <AlertCircle className="h-10 w-10 text-gray-400" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-700 mb-2">
+                {t("results.noSavingsFound")}
+              </h3>
+              <p className="text-gray-500 max-w-md mx-auto">
+                {t("results.tryAdjustingFilters")}
               </p>
+              <Button
+                onClick={handleRetry}
+                className="mt-4 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white rounded-xl"
+              >
+                <RefreshCw className="mr-2 h-4 w-4" />
+                Thử lại
+              </Button>
             </div>
           ) : null}
         </CardContent>

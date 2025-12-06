@@ -1,37 +1,58 @@
 import { test, expect } from "@playwright/test";
 
+// Helper function to create localized paths
+function getLocalizedPath(path: string, locale: string = "vi"): string {
+  return `/${locale}${path.startsWith("/") ? path : `/${path}`}`;
+}
+
 test.describe("Financial Tools - Basic Verification", () => {
   test("All tools pages are accessible", async ({ page }) => {
-    // Test all tools pages are accessible
+    // Test all tools pages are accessible - test both Vietnamese and English
+    const locales = ["vi", "en"];
     const tools = [
-      { path: "/vi/tools/savings-calculator", title: "Tính Lãi Tiền Gửi" },
-      { path: "/vi/tools/loan-calculator", title: "Tính Toán Khoản Vay" },
       {
-        path: "/vi/tools/gross-to-net-calculator",
-        title: "Tính Lương Gross sang Net",
+        path: "tools/savings-calculator",
+        titleVi: "Tính Lãi Tiền Gửi",
+        titleEn: "Savings Calculator",
       },
       {
-        path: "/vi/tools/net-to-gross-calculator",
-        title: "Tính Lương Net sang Gross",
+        path: "tools/loan-calculator",
+        titleVi: "Tính Toán Khoản Vay",
+        titleEn: "Loan Calculator",
+      },
+      {
+        path: "tools/gross-to-net-calculator",
+        titleVi: "Tính Lương Gross sang Net",
+        titleEn: "Gross to Net Salary Calculator",
+      },
+      {
+        path: "tools/net-to-gross-calculator",
+        titleVi: "Tính Lương Net sang Gross",
+        titleEn: "Net to Gross Salary Calculator",
       },
     ];
 
-    for (const tool of tools) {
-      await page.goto(tool.path);
+    for (const locale of locales) {
+      for (const tool of tools) {
+        const fullPath = `/${locale}/${tool.path}`;
+        await page.goto(fullPath);
 
-      // Check page loads (no 404)
-      await expect(page.locator("body")).not.toContainText("404");
+        // Check page loads (no 404)
+        await expect(page.locator("body")).not.toContainText("404");
 
-      // Check main heading exists
-      const h1 = page.locator("h1");
-      if (await h1.isVisible()) {
-        await expect(h1).toContainText(tool.title);
+        // Check main heading exists
+        const h1 = page.locator("h1");
+        if (await h1.isVisible()) {
+          const expectedTitle = locale === "vi" ? tool.titleVi : tool.titleEn;
+          await expect(h1).toContainText(expectedTitle);
+        }
       }
     }
   });
 
   test("Savings Calculator - Basic functionality", async ({ page }) => {
-    await page.goto("/vi/tools/savings-calculator");
+    // Test Vietnamese locale
+    await page.goto(getLocalizedPath("/tools/savings-calculator"));
 
     // Check calculator elements exist
     await expect(page.locator("h1")).toBeVisible();
@@ -47,7 +68,7 @@ test.describe("Financial Tools - Basic Verification", () => {
   });
 
   test("Loan Calculator - Basic functionality", async ({ page }) => {
-    await page.goto("/vi/tools/loan-calculator");
+    await page.goto(getLocalizedPath("/tools/loan-calculator"));
 
     // Check calculator elements exist
     await expect(page.locator("h1")).toBeVisible();
@@ -62,7 +83,7 @@ test.describe("Financial Tools - Basic Verification", () => {
   });
 
   test("Gross to Net Calculator - Basic functionality", async ({ page }) => {
-    await page.goto("/vi/tools/gross-to-net-calculator");
+    await page.goto(getLocalizedPath("/tools/gross-to-net-calculator"));
 
     // Check calculator elements exist
     await expect(page.locator("h1")).toBeVisible();
@@ -78,7 +99,7 @@ test.describe("Financial Tools - Basic Verification", () => {
   });
 
   test("Net to Gross Calculator - Basic functionality", async ({ page }) => {
-    await page.goto("/vi/tools/net-to-gross-calculator");
+    await page.goto(getLocalizedPath("/tools/net-to-gross-calculator"));
 
     // Check calculator elements exist
     await expect(page.locator("h1")).toBeVisible();
@@ -90,7 +111,7 @@ test.describe("Financial Tools - Basic Verification", () => {
   });
 
   test("Interactive elements work", async ({ page }) => {
-    await page.goto("/vi/tools/savings-calculator");
+    await page.goto(getLocalizedPath("/tools/savings-calculator"));
 
     // Wait for page to load
     await page.waitForSelector('input[placeholder*="Enter amount"]');

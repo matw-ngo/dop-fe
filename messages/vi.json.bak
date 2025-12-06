@@ -80,7 +80,7 @@
         "creditStatus": {
           "label": "Tình trạng tín dụng"
         }
-      }
+      },
     },
     "notFoundPage": {
       "title": "Không Tìm Thấy Trang",
@@ -2151,277 +2151,249 @@
           "tip3": "Xem xét các khoản chiết khấu hợp lệ (hiếu thương, từ thiện)"
         }
       },
-      "results": {
-        "title": "Kết quả tính toán",
-        "finalAmount": "Tổng số tiền nhận được",
-        "totalDeposits": "Tổng số tiền gửi",
-        "totalInterest": "Tổng lãi nhận được",
-        "effectiveRate": "Lãi suất hiệu quả",
-        "projection": "Biểu đồ tăng trưởng",
-        "year": "Năm",
-        "deposits": "Tiền gửi",
-        "interest": "Lãi suất",
-        "balance": "Số dư"
-      },
-      "comparison": {
-        "title": "So sánh lãi suất các ngân hàng",
-        "bank": "Ngân hàng",
-        "term": "Kỳ hạn",
-        "rate": "Lãi suất",
-        "minAmount": "Số tiền tối thiểu",
-        "notes": "Ghi chú",
-        "lastUpdated": "Cập nhật lần cuối",
-        "onlineHigher": "Online cao hơn"
-      }
-    },
-    "grossToNetCalculator": {
-      "title": "Tính Lương Gross sang Net",
-      "subtitle": "Công cụ tính lương từ Gross sang Net chính xác theo quy định pháp luật Việt Nam. Tính toán thuế thu nhập cá nhân, bảo hiểm xã hội, bảo hiểm y tế, bảo hiểm thất nghiệp.",
-      "deductionsExplained": "Giải thích các khoản trích",
-      "deductions": [
-        {
-          "name": "BHXH (8%)",
-          "description": "Bảo hiểm xã hội, tính trên mức lương tối đa 20倍地区平均工资"
+        "results": {
+          "title": "Kết quả tính toán",
+          "finalAmount": "Tổng số tiền nhận được",
+          "totalDeposits": "Tổng số tiền gửi",
+          "totalInterest": "Tổng lãi nhận được",
+          "effectiveRate": "Lãi suất hiệu quả",
+          "projection": "Biểu đồ tăng trưởng",
+          "year": "Năm",
+          "deposits": "Tiền gửi",
+          "interest": "Lãi suất",
+          "balance": "Số dư"
         },
-        {
-          "name": "BHYT (1.5%)",
-          "description": "Bảo hiểm y tế, tính trên toàn bộ lương"
-        },
-        {
-          "name": "BHTN (1%)",
-          "description": "Bảo hiểm thất nghiệp, tính trên mức lương tối đa 20倍地区平均工资"
-        },
-        {
-          "name": "TNCN",
-          "description": "Thuế thu nhập cá nhân, áp dụng biểu thuế lũy tiến"
-        },
-        {
-          "name": "Giảm trừ gia cảnh",
-          "description": "11 triệu/người (bản thân) + 4.4 triệu/người phụ thuộc"
+        "comparison": {
+          "title": "So sánh lãi suất các ngân hàng",
+          "bank": "Ngân hàng",
+          "term": "Kỳ hạn",
+          "rate": "Lãi suất",
+          "minAmount": "Số tiền tối thiểu",
+          "notes": "Ghi chú",
+          "lastUpdated": "Cập nhật lần cuối",
+          "onlineHigher": "Online cao hơn"
         }
-      ],
-      "presets": {
-        "minimum": "Lương tối thiểu",
-        "employee": "Lương nhân viên",
-        "specialist": "Lương chuyên viên",
-        "manager": "Lương quản lý",
-        "director": "Lương giám đốc"
       },
-      "regions": {
-        "1": "I - Hà Nội, TP.HCM",
-        "2": "II - Đà Nẵng, Hải Phòng, Cần Thơ",
-        "3": "III - Các đô thị loại I",
-        "4": "IV - Tỉnh lẻ khác"
-      },
-      "form": {
-        "grossSalary": "Lương GROSS",
-        "region": "Vùng Lương",
-        "dependents": "Số người phụ thuộc",
-        "placeholder": {
-          "gross": "Nhập lương gộp",
-          "region": "Chọn vùng"
-        },
-        "minWageWarning": "Lương tối thiểu vùng {region}: {amount}",
-        "dependentReduction": "Giảm trừ: {amount}/người"
-      },
-      "results": {
-        "grossSalary": "Tổng lương GROSS",
-        "netSalary": "Lương NET",
-        "actualMonthly": "Thực nhận hàng tháng",
-        "deductionBreakdown": "Chi Tiết Khấu Trừ",
-        "insurance": "Bảo hiểm (10.5%)",
-        "socialInsurance": "BHXH (8%)",
-        "healthInsurance": "BHYT (1.5%)",
-        "unemploymentInsurance": "BHTN (1%)",
-        "totalInsurance": "Tổng bảo hiểm",
-        "familyDeduction": "Giảm trừ gia cảnh",
-        "self": "Bản thân",
-        "dependents": "Phụ thuộc ({count} người)",
-        "totalReduction": "Tổng giảm trừ",
-        "pit": "Thuế TNCN",
-        "taxableIncome": "Thu nhập chịu thuế",
-        "viewTaxDetails": "Xem chi tiết thuế suất",
-        "totalDeduction": "Tổng khấu trừ",
-        "employerCost": "Tổng chi phí của công ty",
-        "employerCostDesc": "GROSS + Bảo hiểm công ty (21.5%)"
-      },
-      "importantNotes": "Lưu ý quan trọng",
-      "notes": [
-        "Lương Gross là tổng thu nhập trước khi trừ các khoản bảo hiểm và thuế",
-        "Lương Net là số tiền thực nhận sau khi đã trừ tất cả các khoản bắt buộc",
-        "Mức lương đóng bảo hiểm xã hội có giới hạn tối đa",
-        "Biểu thuế TNCN áp dụng theo bậc thuế lũy tiến từng phần",
-        "Công cụ tính toán đã cập nhật theo quy định mới nhất"
-      ],
-      "taxTable": {
-        "title": "Biểu thuế thu nhập cá nhân (áp dụng từ 2020)",
-        "bracket": "Bậc",
-        "taxableIncome": "Thu nhập chịu thuế/tháng",
-        "rate": "Thuế suất",
-        "brackets": [
+      "grossToNetCalculator": {
+        "title": "Tính Lương Gross sang Net",
+        "subtitle": "Công cụ tính lương từ Gross sang Net chính xác theo quy định pháp luật Việt Nam. Tính toán thuế thu nhập cá nhân, bảo hiểm xã hội, bảo hiểm y tế, bảo hiểm thất nghiệp.",
+        "deductionsExplained": "Giải thích các khoản trích",
+        "deductions": [
           {
-            "bracket": "1",
-            "range": "Đến 5 triệu",
-            "rate": "5%"
+            "name": "BHXH (8%)",
+            "description": "Bảo hiểm xã hội, tính trên mức lương tối đa 20倍地区平均工资"
           },
           {
-            "bracket": "2",
-            "range": "Trên 5 đến 10 triệu",
-            "rate": "10%"
+            "name": "BHYT (1.5%)",
+            "description": "Bảo hiểm y tế, tính trên toàn bộ lương"
           },
           {
-            "bracket": "3",
-            "range": "Trên 10 đến 18 triệu",
-            "rate": "15%"
+            "name": "BHTN (1%)",
+            "description": "Bảo hiểm thất nghiệp, tính trên mức lương tối đa 20倍地区平均工资"
           },
           {
-            "bracket": "4",
-            "range": "Trên 18 đến 32 triệu",
-            "rate": "20%"
+            "name": "TNCN",
+            "description": "Thuế thu nhập cá nhân, áp dụng biểu thuế lũy tiến"
           },
           {
-            "bracket": "5",
-            "range": "Trên 32 đến 52 triệu",
-            "rate": "25%"
-          },
-          {
-            "bracket": "6",
-            "range": "Trên 52 đến 80 triệu",
-            "rate": "30%"
-          },
-          {
-            "bracket": "7",
-            "range": "Trên 80 triệu",
-            "rate": "35%"
+            "name": "Giảm trừ gia cảnh",
+            "description": "11 triệu/người (bản thân) + 4.4 triệu/người phụ thuộc"
           }
-        ]
-      },
-      "form": {
-        "grossSalary": "Lương GROSS",
-        "region": "Vùng Lương",
-        "dependents": "Số người phụ thuộc",
-        "placeholder": {
-          "gross": "Nhập lương gộp",
-          "region": "Chọn vùng"
-        },
-        "minWageWarning": "Lương tối thiểu vùng {region}: {amount}",
-        "dependentReduction": "Giảm trừ: {amount}/người",
-        "calculate": "Tính toán",
-        "reset": "Làm lại",
-        "detailedBreakdown": "Xem chi tiết"
-      },
-      "results": {
-        "grossSalary": "Tổng lương GROSS",
-        "netSalary": "Lương NET",
-        "actualMonthly": "Thực nhận hàng tháng",
-        "deductionBreakdown": "Chi Tiết Khấu Trừ",
-        "insurance": "Bảo hiểm (10.5%)",
-        "socialInsurance": "BHXH (8%)",
-        "healthInsurance": "BHYT (1.5%)",
-        "unemploymentInsurance": "BHTN (1%)",
-        "totalInsurance": "Tổng bảo hiểm",
-        "familyDeduction": "Giảm trừ gia cảnh",
-        "self": "Bản thân",
-        "dependents": "Phụ thuộc ({count} người)",
-        "totalReduction": "Tổng giảm trừ",
-        "pit": "Thuế TNCN",
-        "taxableIncome": "Thu nhập chịu thuế",
-        "viewTaxDetails": "Xem chi tiết thuế suất",
-        "totalDeduction": "Tổng khấu trừ",
-        "employerCost": "Tổng chi phí của công ty",
-        "employerCostDesc": "GROSS + Bảo hiểm công ty (21.5%)",
-        "title": "Kết quả tính toán",
-        "deductions": "Các khoản khấu trừ",
-        "personalDeduction": "Giảm trừ bản thân",
-        "dependentDeduction": "Giảm trừ người phụ thuộc",
-        "totalDeductions": "Tổng các khoản khấu trừ",
-        "actualIncome": "Thu nhập thực tế",
-        "exportDetails": "Xuất chi tiết"
-      }
-    },
-    "netToGrossCalculator": {
-      "title": "Tính Lương Net sang Gross",
-      "subtitle": "Công cụ tính lương từ Net sang Gross chính xác. Xác định mức lương Gross cần đề nghị để đạt được mức lương Net mong muốn sau khi đã trừ các khoản thuế và bảo hiểm.",
-      "userGuide": "Hướng dẫn sử dụng",
-      "guideSteps": [
-        "Nhập mức lương Net mong muốn (số tiền thực nhận)",
-        "Nhập số người phụ thuộc (nếu có)",
-        "Chọn khu vực (mức lương tối đa để đóng BHXH)",
-        "Công cụ sẽ tự động tính mức lương Gross cần đề nghị",
-        "Kiểm tra chi tiết các khoản trừ để hiểu rõ cấu trúc lương"
-      ],
-      "negotiationTips": "Lưu ý khi đàm phán lương",
-      "tips": [
-        "Luôn rõ ràng về lương Gross hay Net khi đàm phán",
-        "Lương Gross cao hơn 20-30% so với lương Net",
-        "Cân nhắc các khoản phụ cấp và thưởng khi đàm phán",
-        "Kiểm tra chính sách BHXH của công ty (đủ tối đa hay không)",
-        "Yêu cầu bảng tính lương chi tiết khi nhận offer"
-      ],
-      "exampleCalculations": "Ví dụ tham khảo",
-      "exampleTable": {
-        "desiredNet": "Lương Net mong muốn",
-        "requiredGross": "Lương Gross cần đề nghị",
-        "totalDeductions": "Tổng các khoản trừ",
-        "notes": "Ghi chú",
-        "noDependents": "Chưa có người phụ thuộc",
-        "higherTaxBracket": "Bắt đầu áp dụng thuế suất cao hơn"
-      },
-      "disclaimer": "Số liệu trên chỉ mang tính chất tham khảo, con số thực tế có thể thay đổi tùy thuộc vào các yếu tố cụ thể.",
-      "usageTips": {
-        "title": "Mẹo khi sử dụng công cụ",
-        "tips": [
-          "Sử dụng công cụ này khi bạn nhận được offer lương Net và muốn biết Gross tương ứng",
-          "Khi đàm phán lương, hãy đề nghị mức lương Gross để tránh nhầm lẫn",
-          "Đừng quên tính toán các khoản thưởng và phụ cấp khi đàm phán tổng thu nhập",
-          "Kiểm tra xem công ty có đóng BHXH trên toàn bộ lương hay không",
-          "Một số công ty có chính sách lương \"flexible\" với nhiều khoản phụ cấp khác nhau"
-        ]
-      },
-      "presets": {
-        "minimum": "Lương tối thiểu",
-        "student": "Lương sinh viên",
-        "fresher": "Lương fresher",
-        "experience2": "Lương 2 năm kinh nghiệm",
-        "senior": "Lương senior"
-      },
-      "form": {
-        "netSalary": "Lương NET mong muốn",
-        "region": "Vùng Lương",
-        "dependents": "Số người phụ thuộc",
-        "placeholder": {
-          "net": "Nhập lương ròng mong muốn",
-          "region": "Chọn vùng"
-        },
-        "dependentReduction": "Giảm trừ: {amount}/người",
-        "calculate": "Tính toán",
-        "reset": "Làm lại"
-      },
-      "results": {
-        "desiredNet": "Lương NET mong muốn",
-        "requiredGross": "Lương GROSS cần",
-        "iterations": "{count} vòng lặp",
-        "convergenceError": "Không tìm thấy chính xác lương gross. Kết quả gần nhất với sai số: {amount}",
-        "analysis": "Phân Tích Lương GROSS",
-        "totalDeductions": "Tổng khấu trừ",
-        "deductionPercentage": "({percentage})",
-        "deductionBreakdown": "Chi tiết khấu trừ",
-        "insurance": "Bảo hiểm (10.5%)",
-        "pit": "Thuế TNCN",
-        "formula": "Lương NET = Lương GROSS - Bảo hiểm (10.5%) - Thuế TNCN\nThuế TNCN được tính theo biểu thuế lũy tiến từng phần",
-        "taxOptimization": "Mẹo tối ưu thuế:",
-        "taxTips": [
-          "Khai báo đầy đủ người phụ thuộc để tối đa hóa giảm trừ",
-          "Góp quỹ hưu trí tự nguyện để giảm thuế TNCN",
-          "Xem xét các khoản chiết khấu hợp lệ (hiếu thương, từ thiện)"
         ],
-        "title": "Kết quả tính toán",
-        "deductionDetails": "Chi tiết các khoản khấu trừ",
-        "monthlyBreakdown": "Chi tiết hàng tháng",
-        "annualBreakdown": "Chi tiết năm",
-        "exportCalculation": "Xuất tính toán"
-      }
-    },
+        "presets": {
+          "minimum": "Lương tối thiểu",
+          "employee": "Lương nhân viên",
+          "specialist": "Lương chuyên viên",
+          "manager": "Lương quản lý",
+          "director": "Lương giám đốc"
+        },
+        "regions": {
+          "1": "I - Hà Nội, TP.HCM",
+          "2": "II - Đà Nẵng, Hải Phòng, Cần Thơ",
+          "3": "III - Các đô thị loại I",
+          "4": "IV - Tỉnh lẻ khác"
+        },
+        "form": {
+          "grossSalary": "Lương GROSS",
+          "region": "Vùng Lương",
+          "dependents": "Số người phụ thuộc",
+          "placeholder": {
+            "gross": "Nhập lương gộp",
+            "region": "Chọn vùng"
+          },
+          "minWageWarning": "Lương tối thiểu vùng {region}: {amount}",
+          "dependentReduction": "Giảm trừ: {amount}/người"
+        },
+        "results": {
+          "grossSalary": "Tổng lương GROSS",
+          "netSalary": "Lương NET",
+          "actualMonthly": "Thực nhận hàng tháng",
+          "deductionBreakdown": "Chi Tiết Khấu Trừ",
+          "insurance": "Bảo hiểm (10.5%)",
+          "socialInsurance": "BHXH (8%)",
+          "healthInsurance": "BHYT (1.5%)",
+          "unemploymentInsurance": "BHTN (1%)",
+          "totalInsurance": "Tổng bảo hiểm",
+          "familyDeduction": "Giảm trừ gia cảnh",
+          "self": "Bản thân",
+          "dependents": "Phụ thuộc ({count} người)",
+          "totalReduction": "Tổng giảm trừ",
+          "pit": "Thuế TNCN",
+          "taxableIncome": "Thu nhập chịu thuế",
+          "viewTaxDetails": "Xem chi tiết thuế suất",
+          "totalDeduction": "Tổng khấu trừ",
+          "employerCost": "Tổng chi phí của công ty",
+          "employerCostDesc": "GROSS + Bảo hiểm công ty (21.5%)"
+        },
+        "importantNotes": "Lưu ý quan trọng",
+        "notes": [
+          "Lương Gross là tổng thu nhập trước khi trừ các khoản bảo hiểm và thuế",
+          "Lương Net là số tiền thực nhận sau khi đã trừ tất cả các khoản bắt buộc",
+          "Mức lương đóng bảo hiểm xã hội có giới hạn tối đa",
+          "Biểu thuế TNCN áp dụng theo bậc thuế lũy tiến từng phần",
+          "Công cụ tính toán đã cập nhật theo quy định mới nhất"
+        ],
+        "taxTable": {
+          "title": "Biểu thuế thu nhập cá nhân (áp dụng từ 2020)",
+          "bracket": "Bậc",
+          "taxableIncome": "Thu nhập chịu thuế/tháng",
+          "rate": "Thuế suất",
+          "brackets": [
+            { "bracket": "1", "range": "Đến 5 triệu", "rate": "5%" },
+            { "bracket": "2", "range": "Trên 5 đến 10 triệu", "rate": "10%" },
+            { "bracket": "3", "range": "Trên 10 đến 18 triệu", "rate": "15%" },
+            { "bracket": "4", "range": "Trên 18 đến 32 triệu", "rate": "20%" },
+            { "bracket": "5", "range": "Trên 32 đến 52 triệu", "rate": "25%" },
+            { "bracket": "6", "range": "Trên 52 đến 80 triệu", "rate": "30%" },
+            { "bracket": "7", "range": "Trên 80 triệu", "rate": "35%" }
+          ]
+        },
+        "form": {
+          "grossSalary": "Lương GROSS",
+          "region": "Vùng Lương",
+          "dependents": "Số người phụ thuộc",
+          "placeholder": {
+            "gross": "Nhập lương gộp",
+            "region": "Chọn vùng"
+          },
+          "minWageWarning": "Lương tối thiểu vùng {region}: {amount}",
+          "dependentReduction": "Giảm trừ: {amount}/người",
+          "calculate": "Tính toán",
+          "reset": "Làm lại",
+          "detailedBreakdown": "Xem chi tiết"
+        },
+        "results": {
+          "grossSalary": "Tổng lương GROSS",
+          "netSalary": "Lương NET",
+          "actualMonthly": "Thực nhận hàng tháng",
+          "deductionBreakdown": "Chi Tiết Khấu Trừ",
+          "insurance": "Bảo hiểm (10.5%)",
+          "socialInsurance": "BHXH (8%)",
+          "healthInsurance": "BHYT (1.5%)",
+          "unemploymentInsurance": "BHTN (1%)",
+          "totalInsurance": "Tổng bảo hiểm",
+          "familyDeduction": "Giảm trừ gia cảnh",
+          "self": "Bản thân",
+          "dependents": "Phụ thuộc ({count} người)",
+          "totalReduction": "Tổng giảm trừ",
+          "pit": "Thuế TNCN",
+          "taxableIncome": "Thu nhập chịu thuế",
+          "viewTaxDetails": "Xem chi tiết thuế suất",
+          "totalDeduction": "Tổng khấu trừ",
+          "employerCost": "Tổng chi phí của công ty",
+          "employerCostDesc": "GROSS + Bảo hiểm công ty (21.5%)",
+          "title": "Kết quả tính toán",
+          "deductions": "Các khoản khấu trừ",
+          "personalDeduction": "Giảm trừ bản thân",
+          "dependentDeduction": "Giảm trừ người phụ thuộc",
+          "totalDeductions": "Tổng các khoản khấu trừ",
+          "actualIncome": "Thu nhập thực tế",
+          "exportDetails": "Xuất chi tiết"
+        }
+      },
+      "netToGrossCalculator": {
+        "title": "Tính Lương Net sang Gross",
+        "subtitle": "Công cụ tính lương từ Net sang Gross chính xác. Xác định mức lương Gross cần đề nghị để đạt được mức lương Net mong muốn sau khi đã trừ các khoản thuế và bảo hiểm.",
+        "userGuide": "Hướng dẫn sử dụng",
+        "guideSteps": [
+          "Nhập mức lương Net mong muốn (số tiền thực nhận)",
+          "Nhập số người phụ thuộc (nếu có)",
+          "Chọn khu vực (mức lương tối đa để đóng BHXH)",
+          "Công cụ sẽ tự động tính mức lương Gross cần đề nghị",
+          "Kiểm tra chi tiết các khoản trừ để hiểu rõ cấu trúc lương"
+        ],
+        "negotiationTips": "Lưu ý khi đàm phán lương",
+        "tips": [
+          "Luôn rõ ràng về lương Gross hay Net khi đàm phán",
+          "Lương Gross cao hơn 20-30% so với lương Net",
+          "Cân nhắc các khoản phụ cấp và thưởng khi đàm phán",
+          "Kiểm tra chính sách BHXH của công ty (đủ tối đa hay không)",
+          "Yêu cầu bảng tính lương chi tiết khi nhận offer"
+        ],
+        "exampleCalculations": "Ví dụ tham khảo",
+        "exampleTable": {
+          "desiredNet": "Lương Net mong muốn",
+          "requiredGross": "Lương Gross cần đề nghị",
+          "totalDeductions": "Tổng các khoản trừ",
+          "notes": "Ghi chú",
+          "noDependents": "Chưa có người phụ thuộc",
+          "higherTaxBracket": "Bắt đầu áp dụng thuế suất cao hơn"
+        },
+        "disclaimer": "Số liệu trên chỉ mang tính chất tham khảo, con số thực tế có thể thay đổi tùy thuộc vào các yếu tố cụ thể.",
+        "usageTips": {
+          "title": "Mẹo khi sử dụng công cụ",
+          "tips": [
+            "Sử dụng công cụ này khi bạn nhận được offer lương Net và muốn biết Gross tương ứng",
+            "Khi đàm phán lương, hãy đề nghị mức lương Gross để tránh nhầm lẫn",
+            "Đừng quên tính toán các khoản thưởng và phụ cấp khi đàm phán tổng thu nhập",
+            "Kiểm tra xem công ty có đóng BHXH trên toàn bộ lương hay không",
+            "Một số công ty có chính sách lương \"flexible\" với nhiều khoản phụ cấp khác nhau"
+          ]
+        },
+        "presets": {
+          "minimum": "Lương tối thiểu",
+          "student": "Lương sinh viên",
+          "fresher": "Lương fresher",
+          "experience2": "Lương 2 năm kinh nghiệm",
+          "senior": "Lương senior"
+        },
+        "form": {
+          "netSalary": "Lương NET mong muốn",
+          "region": "Vùng Lương",
+          "dependents": "Số người phụ thuộc",
+          "placeholder": {
+            "net": "Nhập lương ròng mong muốn",
+            "region": "Chọn vùng"
+          },
+          "dependentReduction": "Giảm trừ: {amount}/người",
+          "calculate": "Tính toán",
+          "reset": "Làm lại"
+        },
+        "results": {
+          "desiredNet": "Lương NET mong muốn",
+          "requiredGross": "Lương GROSS cần",
+          "iterations": "{count} vòng lặp",
+          "convergenceError": "Không tìm thấy chính xác lương gross. Kết quả gần nhất với sai số: {amount}",
+          "analysis": "Phân Tích Lương GROSS",
+          "totalDeductions": "Tổng khấu trừ",
+          "deductionPercentage": "({percentage})",
+          "deductionBreakdown": "Chi tiết khấu trừ",
+          "insurance": "Bảo hiểm (10.5%)",
+          "pit": "Thuế TNCN",
+          "formula": "Lương NET = Lương GROSS - Bảo hiểm (10.5%) - Thuế TNCN\nThuế TNCN được tính theo biểu thuế lũy tiến từng phần",
+          "taxOptimization": "Mẹo tối ưu thuế:",
+          "taxTips": [
+            "Khai báo đầy đủ người phụ thuộc để tối đa hóa giảm trừ",
+            "Góp quỹ hưu trí tự nguyện để giảm thuế TNCN",
+            "Xem xét các khoản chiết khấu hợp lệ (hiếu thương, từ thiện)"
+          ],
+          "title": "Kết quả tính toán",
+          "deductionDetails": "Chi tiết các khoản khấu trừ",
+          "monthlyBreakdown": "Chi tiết hàng tháng",
+          "annualBreakdown": "Chi tiết năm",
+          "exportCalculation": "Xuất tính toán"
+        }
+      },
     "loanCalculator": {
       "title": "Tính Toán Khoản Vay",
       "description": "Công cụ tính toán khoản vay miễn phí và dễ sử dụng. Tính toán các khoản thanh toán hàng tháng, tổng lãi suất và lịch trình trả nợ cho khoản vay của bạn.",
@@ -2607,70 +2579,70 @@
           "description": "Số tiền lớn, kỳ hạn dài với lãi suất cao nhất"
         }
       }
-    },
-    "common": {
-      "home": "Trang chủ",
-      "loading": "Đang tải...",
-      "error": "Đã xảy ra lỗi",
-      "success": "Thành công!",
-      "submit": "Gửi",
-      "cancel": "Hủy",
-      "save": "Lưu",
-      "reset": "Đặt lại",
-      "retry": "Thử lại",
-      "back": "Quay lại",
-      "close": "Đóng",
-      "yes": "Có",
-      "no": "Không",
-      "currency": "VNĐ",
-      "million": "triệu",
-      "billion": "tỷ",
-      "percent": "%",
-      "perYear": "/năm",
-      "perMonth": "/tháng",
-      "invalidInput": "Vui lòng nhập giá trị hợp lệ",
-      "required": "Trường này là bắt buộc",
-      "calculating": "Đang tính toán...",
-      "calculationComplete": "Tính toán hoàn tất",
-      "exportSuccess": "Xuất file thành công",
-      "exportFailed": "Xuất file thất công",
-      "copySuccess": "Đã sao chép",
-      "copyFailed": "Sao chép thất bại",
-      "confirm": "Xác nhận",
-      "edit": "Chỉnh sửa",
-      "delete": "Xóa",
-      "add": "Thêm",
-      "remove": "Xóa",
-      "select": "Chọn",
-      "clear": "Xóa",
-      "search": "Tìm kiếm",
-      "filter": "Lọc",
-      "sort": "Sắp xếp",
-      "asc": "Tăng dần",
-      "desc": "Giảm dần",
-      "date": "Ngày",
-      "amount": "Số tiền",
-      "rate": "Lãi suất",
-      "term": "Kỳ hạn",
-      "total": "Tổng",
-      "subtotal": "Tạm tính",
-      "details": "Chi tiết",
-      "summary": "Tóm tắt",
-      "expand": "Mở rộng",
-      "collapse": "Thu gọn",
-      "noData": "Không có dữ liệu",
-      "warning": "Cảnh báo",
-      "info": "Thông tin",
-      "previous": "Trước",
-      "next": "Tiếp theo",
-      "first": "Đầu",
-      "last": "Cuối",
-      "page": "Trang",
-      "of": "của",
-      "itemsPerPage": "mục/trang",
-      "showing": "Hiển thị",
-      "to": "đến",
-      "ofTotal": "của tổng số"
     }
-  }
+  ,
+  "common": {
+  "home": "Trang chủ",
+  "loading": "Đang tải...",
+  "error": "Đã xảy ra lỗi",
+  "success": "Thành công!",
+  "submit": "Gửi",
+  "cancel": "Hủy",
+  "save": "Lưu",
+  "reset": "Đặt lại",
+  "retry": "Thử lại",
+  "back": "Quay lại",
+  "close": "Đóng",
+  "yes": "Có",
+  "no": "Không",
+  "currency": "VNĐ",
+  "million": "triệu",
+  "billion": "tỷ",
+  "percent": "%",
+  "perYear": "/năm",
+  "perMonth": "/tháng",
+  "invalidInput": "Vui lòng nhập giá trị hợp lệ",
+  "required": "Trường này là bắt buộc",
+  "calculating": "Đang tính toán...",
+  "calculationComplete": "Tính toán hoàn tất",
+  "exportSuccess": "Xuất file thành công",
+  "exportFailed": "Xuất file thất công",
+  "copySuccess": "Đã sao chép",
+  "copyFailed": "Sao chép thất bại",
+  "confirm": "Xác nhận",
+  "edit": "Chỉnh sửa",
+  "delete": "Xóa",
+  "add": "Thêm",
+  "remove": "Xóa",
+  "select": "Chọn",
+  "clear": "Xóa",
+  "search": "Tìm kiếm",
+  "filter": "Lọc",
+  "sort": "Sắp xếp",
+  "asc": "Tăng dần",
+  "desc": "Giảm dần",
+  "date": "Ngày",
+  "amount": "Số tiền",
+  "rate": "Lãi suất",
+  "term": "Kỳ hạn",
+  "total": "Tổng",
+  "subtotal": "Tạm tính",
+  "details": "Chi tiết",
+  "summary": "Tóm tắt",
+  "expand": "Mở rộng",
+  "collapse": "Thu gọn",
+  "noData": "Không có dữ liệu",
+  "warning": "Cảnh báo",
+  "info": "Thông tin",
+  "previous": "Trước",
+  "next": "Tiếp theo",
+  "first": "Đầu",
+  "last": "Cuối",
+  "page": "Trang",
+  "of": "của",
+  "itemsPerPage": "mục/trang",
+  "showing": "Hiển thị",
+  "to": "đến",
+  "ofTotal": "của tổng số"
 }
+},

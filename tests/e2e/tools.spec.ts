@@ -1,9 +1,14 @@
 import { test, expect } from "@playwright/test";
 
+// Helper function to create localized paths
+function getLocalizedPath(path: string, locale: string = "vi"): string {
+  return `/${locale}${path.startsWith("/") ? path : `/${path}`}`;
+}
+
 test.describe("Financial Tools Pages", () => {
   test.beforeEach(async ({ page }) => {
     // Navigate to the tools section
-    await page.goto("/vi/tools/savings-calculator");
+    await page.goto(getLocalizedPath("/tools/savings-calculator"));
   });
 
   test("Savings Calculator page loads correctly", async ({ page }) => {
@@ -37,7 +42,7 @@ test.describe("Financial Tools Pages", () => {
 
   test("Loan Calculator page loads correctly", async ({ page }) => {
     // Navigate to loan calculator
-    await page.goto("/vi/tools/loan-calculator");
+    await page.goto(getLocalizedPath("/tools/loan-calculator"));
 
     // Check main heading
     await expect(page.locator("h1")).toContainText("Tính Toán Khoản Vay");
@@ -71,7 +76,7 @@ test.describe("Financial Tools Pages", () => {
 
   test("Gross to Net Calculator page loads correctly", async ({ page }) => {
     // Navigate to gross to net calculator
-    await page.goto("/vi/tools/gross-to-net-calculator");
+    await page.goto(getLocalizedPath("/tools/gross-to-net-calculator"));
 
     // Check main heading
     await expect(page.locator("h1")).toContainText("Tính Lương Gross sang Net");
@@ -114,7 +119,7 @@ test.describe("Financial Tools Pages", () => {
 
   test("Net to Gross Calculator page loads correctly", async ({ page }) => {
     // Navigate to net to gross calculator
-    await page.goto("/vi/tools/net-to-gross-calculator");
+    await page.goto(getLocalizedPath("/tools/net-to-gross-calculator"));
 
     // Check main heading
     await expect(page.locator("h1")).toContainText("Tính Lương Net sang Gross");
@@ -168,7 +173,7 @@ test.describe("Financial Tools Pages", () => {
   });
 
   test("Savings Calculator interactions work", async ({ page }) => {
-    await page.goto("/vi/tools/savings-calculator");
+    await page.goto(getLocalizedPath("/tools/savings-calculator"));
 
     // Wait for calculator to load
     await page.waitForSelector('input[placeholder*="Enter amount"]');
@@ -188,7 +193,7 @@ test.describe("Financial Tools Pages", () => {
   });
 
   test("Loan Calculator form submission", async ({ page }) => {
-    await page.goto("/vi/tools/loan-calculator");
+    await page.goto(getLocalizedPath("/tools/loan-calculator"));
 
     // Fill out the form using actual input fields
     await page.fill('input[id="amount"]', "100000000");
@@ -211,7 +216,7 @@ test.describe("Financial Tools Pages", () => {
   });
 
   test("Salary Calculator calculations", async ({ page }) => {
-    await page.goto("/vi/tools/gross-to-net-calculator");
+    await page.goto(getLocalizedPath("/tools/gross-to-net-calculator"));
 
     // Fill out the form
     await page.fill("#gross", "15000000");
@@ -239,7 +244,7 @@ test.describe("Financial Tools Pages", () => {
   test("Responsive design on mobile", async ({ page }) => {
     // Set mobile viewport
     await page.setViewportSize({ width: 375, height: 667 });
-    await page.goto("/vi/tools/savings-calculator");
+    await page.goto(getLocalizedPath("/tools/savings-calculator"));
 
     // Check page is responsive - main content is visible
     await expect(page.locator("h1")).toBeVisible();
@@ -266,7 +271,7 @@ test.describe("Financial Tools Pages", () => {
       });
     });
 
-    await page.goto("/vi/tools/savings-calculator");
+    await page.goto(getLocalizedPath("/tools/savings-calculator"));
 
     // Trigger API call by changing amount
     await page.locator("#amount").fill("100000000");
@@ -282,7 +287,7 @@ test.describe("Financial Tools Pages", () => {
   });
 
   test("Accessibility checks", async ({ page }) => {
-    await page.goto("/vi/tools/savings-calculator");
+    await page.goto(getLocalizedPath("/tools/savings-calculator"));
 
     // Check for keyboard navigation
     await page.keyboard.press("Tab");

@@ -1159,6 +1159,850 @@
         "loginSuccess": "Login successful for {username}",
         "logoutSuccess": "Logout successful"
       }
+    },
+    "tools": {
+      "title": "Financial Tools",
+      "subtitle": "Professional financial calculation and analysis tools",
+      "backToHome": "Back to Home",
+      "availableTools": "Available Tools",
+      "comingSoon": "Coming Soon",
+      "comingSoonBadge": "Coming Soon",
+      "whyChooseUs": "Why Choose Our Tools?",
+      "features": {
+        "accurate": {
+          "title": "Accurate according to Vietnamese regulations",
+          "description": "All calculations comply with Vietnamese regulations and circulars"
+        },
+        "realtime": {
+          "title": "Real-time data",
+          "description": "Always updated with interest rates and data from leading Vietnamese banks"
+        },
+        "free": {
+          "title": "Free and easy to use",
+          "description": "Completely free with user-friendly interface for everyone"
+        }
+      },
+      "list": {
+        "loanCalculator": {
+          "title": "Loan Calculator",
+          "description": "Calculate loan payments, interest rates and detailed repayment schedule"
+        },
+        "savingsCalculator": {
+          "title": "Savings Calculator",
+          "description": "Compare savings interest rates and calculate financial goals"
+        },
+        "salaryConverter": {
+          "title": "Gross - Net Salary Converter",
+          "description": "Calculate net salary after taxes and insurance"
+        },
+        "roiCalculator": {
+          "title": "ROI Calculator",
+          "description": "Calculate return on investment for various investments"
+        },
+        "taxCalculator": {
+          "title": "Tax Calculator",
+          "description": "Calculate various taxes according to Vietnamese regulations"
+        }
+      },
+      "breadcrumbs": {
+        "home": "Home",
+        "tools": "Financial Tools",
+        "loanCalculator": "Loan Calculator",
+        "savingsCalculator": "Savings Calculator",
+        "grossToNet": "Gross to Net Calculator",
+        "netToGross": "Net to Gross Calculator"
+      },
+      "loanCalculator": {
+        "title": "Loan Calculator",
+        "subtitle": "Free and easy-to-use loan calculator. Calculate monthly payments, total interest and repayment schedule for your loan.",
+        "importantNotes": "Important Notes",
+        "notes": [
+          "Interest rates may vary depending on bank policies",
+          "Displayed interest rate is nominal, actual rate may differ",
+          "Payment includes only principal and interest, excludes other fees",
+          "Different loan types may have different interest rates and conditions",
+          "Should carefully check terms and conditions before borrowing"
+        ],
+        "loanTypes": "Common Loan Types",
+        "loanTypesList": [
+          {
+            "name": "Home Loan",
+            "description": "Low interest rate, long term, property collateral"
+          },
+          {
+            "name": "Car Loan",
+            "description": "Average interest rate, 5-8 year term, vehicle collateral"
+          },
+          {
+            "name": "Personal Loan",
+            "description": "Higher interest rate, no collateral required, fast process"
+          },
+          {
+            "name": "Business Loan",
+            "description": "Interest rate depends on business plan, guarantee required"
+          }
+        ],
+        "presets": {
+          "motorcycle": "Motorcycle Loan",
+          "car": "Car Loan",
+          "homeRenovation": "Home Renovation Loan",
+          "personal": "Personal Loan"
+        },
+        "terms": {
+          "3": "3 months",
+          "6": "6 months",
+          "12": "12 months",
+          "18": "18 months",
+          "24": "24 months",
+          "36": "36 months",
+          "48": "48 months",
+          "60": "60 months",
+          "120": "120 months",
+          "180": "180 months",
+          "240": "240 months",
+          "360": "360 months"
+        },
+        "csvExport": {
+          "headers": {
+            "period": "Period",
+            "beginningBalance": "Beginning Balance",
+            "principal": "Principal",
+            "interest": "Interest",
+            "total": "Total Payment",
+            "endingBalance": "Ending Balance"
+          },
+          "filename": "loan-schedule"
+        },
+        "form": {
+          "loanAmount": "Loan Amount",
+          "interestRate": "Annual Interest Rate",
+          "loanTerm": "Loan Term",
+          "months": "months",
+          "years": "years",
+          "paymentType": "Payment Type",
+          "equalInstallment": "Equal principal and interest monthly",
+          "equalPrincipal": "Equal principal, decreasing interest",
+          "startFees": "Initial Fees",
+          "startFeesNote": "Fees incurred upon disbursement (if any)",
+          "calculate": "Calculate",
+          "reset": "Reset",
+          "exportResults": "Export Results"
+        },
+        "results": {
+          "title": "Calculation Results",
+          "monthlyPayment": "Monthly Payment",
+          "totalInterest": "Total Interest to Pay",
+          "totalPayment": "Total Amount to Pay",
+          "effectiveRate": "Effective Interest Rate",
+          "schedule": "Detailed Repayment Schedule",
+          "month": "Period",
+          "beginningBalance": "Beginning Balance",
+          "payment": "Payment",
+          "principal": "Principal",
+          "interest": "Interest",
+          "endingBalance": "Ending Balance",
+          "total": "Total",
+          "exportSchedule": "Export Schedule",
+          "printSchedule": "Print Schedule",
+          "hideSchedule": "Hide",
+          "showSchedule": "View Repayment Schedule",
+          "exportCsv": "Export CSV"
+        },
+        "errors": {
+          "invalidAmount": "Please enter a valid loan amount",
+          "invalidRate": "Please enter a valid interest rate",
+          "invalidTerm": "Please enter a valid loan term",
+          "calculationError": "An error occurred while calculating. Please try again."
+        },
+        "component": {
+          "title": "Loan Calculator",
+          "subtitle": "Calculate monthly payments and interest rates for your loan",
+          "form": {
+            "selectTerm": "Select term"
+          }
+        }
+      },
+      "savingsCalculator": {
+        "title": "Savings Calculator",
+        "subtitle": "Compare savings interest rates at Vietnamese banks. Find the savings account that suits your needs with the best interest rate.",
+        "importantNotes": "Important Notes",
+        "notes": [
+          "Interest rates may vary depending on each bank's policies",
+          "Displayed rates are published rates, actual rates may differ",
+          "Online deposits often have higher rates than counter deposits",
+          "Check early withdrawal conditions before depositing",
+          "Consider term deposits for better interest rates"
+        ],
+        "savingsTypes": "Common Savings Types",
+        "savingsTypesList": [
+          {
+            "name": "Demand Deposit",
+            "description": "Flexible withdrawal but low interest rate"
+          },
+          {
+            "name": "Term Deposit",
+            "description": "Higher interest rate, cannot withdraw before maturity"
+          },
+          {
+            "name": "Accumulation Savings",
+            "description": "Add monthly with preferential interest rate"
+          },
+          {
+            "name": "Super Preferential Savings",
+            "description": "Large amount, long term with highest interest rate"
+          }
+        ],
+        "form": {
+          "initialDeposit": "Initial Deposit",
+          "monthlyDeposit": "Monthly Addition",
+          "interestRate": "Annual Interest Rate",
+          "term": "Deposit Term",
+          "compoundFrequency": "Compound Interest",
+          "monthly": "Monthly",
+          "quarterly": "Quarterly",
+          "annually": "Annually",
+          "bank": "Bank",
+          "selectBank": "Select Bank",
+          "savingsType": "Savings Type",
+          "calculate": "Calculate",
+          "reset": "Reset",
+          "compareRates": "Compare Rates"
+        },
+        "results": {
+          "title": "Calculation Results",
+          "finalAmount": "Total Amount Received",
+          "totalDeposits": "Total Deposits",
+          "totalInterest": "Total Interest Earned",
+          "effectiveRate": "Effective Rate",
+          "projection": "Growth Chart",
+          "year": "Year",
+          "deposits": "Deposits",
+          "interest": "Interest",
+          "balance": "Balance"
+        },
+        "comparison": {
+          "title": "Compare Bank Interest Rates",
+          "bank": "Bank",
+          "term": "Term",
+          "rate": "Interest Rate",
+          "minAmount": "Minimum Amount",
+          "notes": "Notes",
+          "lastUpdated": "Last Updated",
+          "onlineHigher": "Online Higher"
+        }
+      },
+      "grossToNetCalculator": {
+        "title": "Gross to Net Salary Calculator",
+        "subtitle": "Accurate gross to net salary calculator according to Vietnamese law. Calculate personal income tax, social insurance, health insurance, unemployment insurance.",
+        "deductionsExplained": "Deduction Explanations",
+        "deductions": [
+          {
+            "name": "Social Insurance (8%)",
+            "description": "Social insurance, calculated on maximum salary of 20x regional average wage"
+          },
+          {
+            "name": "Health Insurance (1.5%)",
+            "description": "Health insurance, calculated on full salary"
+          },
+          {
+            "name": "Unemployment Insurance (1%)",
+            "description": "Unemployment insurance, calculated on maximum salary of 20x regional average wage"
+          },
+          {
+            "name": "PIT",
+            "description": "Personal income tax, progressive tax schedule applies"
+          },
+          {
+            "name": "Family Deduction",
+            "description": "11 million/person (self) + 4.4 million/dependent"
+          }
+        ],
+        "presets": {
+          "minimum": "Minimum Wage",
+          "employee": "Employee Salary",
+          "specialist": "Specialist Salary",
+          "manager": "Manager Salary",
+          "director": "Director Salary"
+        },
+        "regions": {
+          "1": "I - Hanoi, Ho Chi Minh City",
+          "2": "II - Da Nang, Hai Phong, Can Tho",
+          "3": "III - Type I Urban Areas",
+          "4": "IV - Other Provinces"
+        },
+        "form": {
+          "grossSalary": "Gross Salary",
+          "region": "Region",
+          "dependents": "Number of Dependents",
+          "placeholder": {
+            "gross": "Enter gross salary",
+            "region": "Select region"
+          },
+          "minWageWarning": "Minimum wage for region {region}: {amount}",
+          "dependentReduction": "Reduction: {amount}/person"
+        },
+        "results": {
+          "grossSalary": "Total Gross Salary",
+          "netSalary": "Net Salary",
+          "actualMonthly": "Actual Monthly",
+          "deductionBreakdown": "Deduction Breakdown",
+          "insurance": "Insurance (10.5%)",
+          "socialInsurance": "Social Insurance (8%)",
+          "healthInsurance": "Health Insurance (1.5%)",
+          "unemploymentInsurance": "Unemployment Insurance (1%)",
+          "totalInsurance": "Total Insurance",
+          "familyDeduction": "Family Deduction",
+          "self": "Self",
+          "dependents": "Dependents ({count} persons)",
+          "totalReduction": "Total Reduction",
+          "pit": "Personal Income Tax",
+          "taxableIncome": "Taxable Income",
+          "viewTaxDetails": "View Tax Details",
+          "totalDeduction": "Total Deduction",
+          "employerCost": "Total Employer Cost",
+          "employerCostDesc": "GROSS + Employer Insurance (21.5%)",
+          "title": "Calculation Results",
+          "deductions": "Deductions",
+          "personalDeduction": "Self Deduction",
+          "dependentDeduction": "Dependent Deduction",
+          "totalDeductions": "Total Deductions",
+          "actualIncome": "Actual Income",
+          "exportDetails": "Export Details"
+        },
+        "importantNotes": "Important Notes",
+        "notes": [
+          "Gross salary is total income before deducting insurance and taxes",
+          "Net salary is actual amount received after deducting all mandatory amounts",
+          "Social insurance contribution has maximum limit",
+          "PIT applies progressive tax schedule by brackets",
+          "Calculator updated with latest regulations"
+        ],
+        "taxTable": {
+          "title": "Personal Income Tax Table (effective from 2020)",
+          "bracket": "Bracket",
+          "taxableIncome": "Taxable Income/Month",
+          "rate": "Tax Rate",
+          "brackets": [
+            { "bracket": "1", "range": "Up to 5 million", "rate": "5%" },
+            { "bracket": "2", "range": "5 to 10 million", "rate": "10%" },
+            { "bracket": "3", "range": "10 to 18 million", "rate": "15%" },
+            { "bracket": "4", "range": "18 to 32 million", "rate": "20%" },
+            { "bracket": "5", "range": "32 to 52 million", "rate": "25%" },
+            { "bracket": "6", "range": "52 to 80 million", "rate": "30%" },
+            { "bracket": "7", "range": "Over 80 million", "rate": "35%" }
+          ]
+        },
+        "form": {
+          "grossSalary": "Gross Salary",
+          "dependents": "Number of Dependents",
+          "region": "Region",
+          "region1": "Region I",
+          "region2": "Region II",
+          "region3": "Region III",
+          "region4": "Region IV",
+          "allowances": "Allowances",
+          "lunchAllowance": "Lunch Allowance",
+          "transportAllowance": "Transport Allowance",
+          "phoneAllowance": "Phone Allowance",
+          "housingAllowance": "Housing Allowance",
+          "otherAllowance": "Other Allowance",
+          "calculate": "Calculate",
+          "reset": "Reset",
+          "detailedBreakdown": "View Details"
+        },
+        "results": {
+          "title": "Calculation Results",
+          "grossSalary": "Total Gross Salary",
+          "deductions": "Deductions",
+          "socialInsurance": "Social Insurance (8%)",
+          "healthInsurance": "Health Insurance (1.5%)",
+          "unemploymentInsurance": "Unemployment Insurance (1%)",
+          "taxableIncome": "Taxable Income",
+          "personalDeduction": "Self Deduction",
+          "dependentDeduction": "Dependent Deduction",
+          "pit": "Personal Income Tax",
+          "totalDeductions": "Total Deductions",
+          "netSalary": "Net Salary Received",
+          "actualIncome": "Actual Income",
+          "exportDetails": "Export Details"
+        }
+      },
+      "netToGrossCalculator": {
+        "title": "Net to Gross Salary Calculator",
+        "subtitle": "Accurate net to gross salary calculator. Determine the gross salary needed to achieve desired net salary after taxes and insurance deductions.",
+        "userGuide": "User Guide",
+        "guideSteps": [
+          "Enter desired net salary (actual amount received)",
+          "Enter number of dependents (if any)",
+          "Select region (maximum salary for social insurance)",
+          "Tool will automatically calculate required gross salary",
+          "Check deduction details to understand salary structure"
+        ],
+        "negotiationTips": "Salary Negotiation Tips",
+        "tips": [
+          "Always be clear about gross or net salary when negotiating",
+          "Gross salary is 20-30% higher than net salary",
+          "Consider allowances and bonuses when negotiating",
+          "Check company's social insurance policy (full or not)",
+          "Request detailed salary breakdown when receiving offer"
+        ],
+        "exampleCalculations": "Example Calculations",
+        "exampleTable": {
+          "desiredNet": "Desired Net Salary",
+          "requiredGross": "Required Gross Salary",
+          "totalDeductions": "Total Deductions",
+          "notes": "Notes",
+          "noDependents": "No dependents",
+          "higherTaxBracket": "Higher tax bracket applies"
+        },
+        "disclaimer": "The above figures are for reference only, actual figures may vary depending on specific factors.",
+        "usageTips": {
+          "title": "Usage Tips",
+          "tips": [
+            "Use this tool when you receive a net salary offer and want to know the corresponding gross",
+            "When negotiating salary, propose gross salary to avoid confusion",
+            "Don't forget to calculate bonuses and allowances when negotiating total income",
+            "Check if company pays social insurance on full salary",
+            "Some companies have 'flexible' salary policies with various allowances"
+          ]
+        },
+        "presets": {
+          "minimum": "Minimum Wage",
+          "student": "Student Salary",
+          "fresher": "Fresher Salary",
+          "experience2": "2 Years Experience Salary",
+          "senior": "Senior Salary"
+        },
+        "form": {
+          "netSalary": "Desired Net Salary",
+          "region": "Region",
+          "dependents": "Number of Dependents",
+          "placeholder": {
+            "net": "Enter desired net salary",
+            "region": "Select region"
+          },
+          "dependentReduction": "Reduction: {amount}/person",
+          "calculate": "Calculate",
+          "reset": "Reset"
+        },
+        "results": {
+          "desiredNet": "Desired Net Salary",
+          "requiredGross": "Required Gross Salary",
+          "iterations": "{count} iterations",
+          "convergenceError": "Could not find exact gross. Closest result with error: {amount}",
+          "analysis": "Gross Salary Analysis",
+          "totalDeductions": "Total Deductions",
+          "deductionPercentage": "({percentage})",
+          "deductionBreakdown": "Deduction Details",
+          "insurance": "Insurance (10.5%)",
+          "pit": "Personal Income Tax",
+          "formula": "Net Salary = Gross Salary - Insurance (10.5%) - PIT\nPIT applies progressive tax schedule",
+          "taxOptimization": "Tax Optimization Tips:",
+          "taxTips": [
+            "Declare all dependents to maximize deductions",
+            "Contribute to voluntary pension fund to reduce PIT",
+            "Consider valid deductions (charity, humanitarian)"
+          ],
+          "title": "Calculation Results",
+          "deductionDetails": "Deduction Details",
+          "monthlyBreakdown": "Monthly Breakdown",
+          "annualBreakdown": "Annual Breakdown",
+          "exportCalculation": "Export Calculation"
+        }
+      },
+      "common": {
+        "currency": "VND",
+        "million": "million",
+        "billion": "billion",
+        "percent": "%",
+        "perYear": "/year",
+        "perMonth": "/month",
+        "invalidInput": "Please enter a valid value",
+        "required": "This field is required",
+        "calculating": "Calculating...",
+        "calculationComplete": "Calculation Complete",
+        "exportSuccess": "File exported successfully",
+        "exportFailed": "File export failed",
+        "copySuccess": "Copied",
+        "copyFailed": "Copy failed",
+        "close": "Close",
+        "save": "Save",
+        "cancel": "Cancel",
+        "confirm": "Confirm",
+        "edit": "Edit",
+        "delete": "Delete",
+        "add": "Add",
+        "remove": "Remove",
+        "select": "Select",
+        "clear": "Clear",
+        "search": "Search",
+        "filter": "Filter",
+        "sort": "Sort",
+        "asc": "Ascending",
+        "desc": "Descending",
+        "date": "Date",
+        "amount": "Amount",
+        "rate": "Interest Rate",
+        "term": "Term",
+        "total": "Total",
+        "subtotal": "Subtotal",
+        "details": "Details",
+        "summary": "Summary",
+        "expand": "Expand",
+        "collapse": "Collapse",
+        "loading": "Loading...",
+        "noData": "No Data",
+        "error": "Error",
+        "success": "Success",
+        "warning": "Warning",
+        "info": "Information",
+        "previous": "Previous",
+        "next": "Next",
+        "first": "First",
+        "last": "Last",
+        "page": "Page",
+        "of": "of",
+        "itemsPerPage": "items/page",
+        "showing": "Showing",
+        "to": "to",
+        "ofTotal": "of total"
+      }
+    },
+    "loanCalculator": {
+      "title": "Loan Calculator",
+      "description": "Free and easy-to-use loan calculator tool. Calculate monthly payments, total interest, and amortization schedule for your loan.",
+      "breadcrumb": {
+        "home": "Home",
+        "tools": "Financial Tools",
+        "current": "Loan Calculator"
+      },
+      "importantNotes": {
+        "title": "Important Notes",
+        "note1": "Interest rates may vary depending on bank policies",
+        "note2": "Displayed rates are nominal, actual rates may differ",
+        "note3": "Payments include principal and interest only, excluding other fees",
+        "note4": "Different loan types may have different rates and conditions",
+        "note5": "Always review terms and conditions carefully before borrowing"
+      },
+      "loanTypes": {
+        "title": "Common Loan Types",
+        "homeLoan": {
+          "name": "Home Loan",
+          "description": "Low interest rate, long term, real estate collateral"
+        },
+        "carLoan": {
+          "name": "Car Loan",
+          "description": "Average interest rate, 5-8 year term, vehicle collateral"
+        },
+        "personalLoan": {
+          "name": "Personal Loan",
+          "description": "Higher interest rate, no collateral required, fast processing"
+        },
+        "businessLoan": {
+          "name": "Business Loan",
+          "description": "Rate depends on business plan, guarantee required"
+        }
+      }
+    },
+    "grossToNetCalculator": {
+      "title": "Gross to Net Salary Calculator",
+      "description": "Accurate gross to net salary calculator according to Vietnamese regulations. Calculate personal income tax, social insurance, health insurance, and unemployment insurance.",
+      "breadcrumb": {
+        "home": "Home",
+        "tools": "Financial Tools",
+        "current": "Gross to Net Calculator"
+      },
+      "deductions": {
+        "title": "Deduction Explanations",
+        "socialInsurance": {
+          "name": "SI",
+          "description": "Social Insurance, calculated on salary up to 20x regional average salary"
+        },
+        "healthInsurance": {
+          "name": "HI",
+          "description": "Health Insurance, calculated on full salary"
+        },
+        "unemploymentInsurance": {
+          "name": "UI",
+          "description": "Unemployment Insurance, calculated on salary up to 20x regional average salary"
+        },
+        "personalIncomeTax": {
+          "name": "PIT",
+          "description": "Personal Income Tax, applies progressive tax rates"
+        },
+        "deduction": {
+          "name": "Personal Deduction",
+          "description": "11M VND/person (self) + 4.4M VND/dependent"
+        }
+      },
+      "importantNotes": {
+        "title": "Important Notes",
+        "note1": "Gross salary is total income before deducting insurance and taxes",
+        "note2": "Net salary is actual take-home pay after all mandatory deductions",
+        "note3": "Social insurance contributions have a maximum limit",
+        "note4": "PIT applies with progressive tax brackets",
+        "note5": "Calculator updated according to latest regulations"
+      },
+      "taxRates": {
+        "title": "Personal Income Tax Table (effective from 2020)",
+        "table": {
+          "bracket": "Bracket",
+          "income": "Taxable Income/Month",
+          "rate": "Tax Rate",
+          "brackets": {
+            "bracket1": "Up to 5 million",
+            "bracket2": "Over 5 to 10 million",
+            "bracket3": "Over 10 to 18 million",
+            "bracket4": "Over 18 to 32 million",
+            "bracket5": "Over 32 to 52 million",
+            "bracket6": "Over 52 to 80 million",
+            "bracket7": "Over 80 million"
+          }
+        }
+      }
+    },
+    "netToGrossCalculator": {
+      "title": "Net to Gross Salary Calculator",
+      "description": "Accurate net to gross salary calculator. Determine the gross salary needed to achieve your desired net salary after taxes and deductions.",
+      "breadcrumb": {
+        "home": "Home",
+        "tools": "Financial Tools",
+        "current": "Net to Gross Calculator"
+      },
+      "usageGuide": {
+        "title": "Usage Guide",
+        "step1": "Enter desired net salary (take-home amount)",
+        "step2": "Enter number of dependents (if any)",
+        "step3": "Select region (maximum salary for SI contribution)",
+        "step4": "Tool will automatically calculate required gross salary",
+        "step5": "Check detailed deductions to understand salary structure"
+      },
+      "negotiationTips": {
+        "title": "Salary Negotiation Tips",
+        "tip1": "Always clarify whether discussing gross or net salary",
+        "tip2": "Gross salary is 20-30% higher than net salary",
+        "tip3": "Consider allowances and bonuses when negotiating",
+        "tip4": "Check company's SI policy (maximum contribution or not)",
+        "tip5": "Request detailed salary breakdown when receiving offer"
+      },
+      "examples": {
+        "title": "Reference Examples",
+        "table": {
+          "netWanted": "Desired Net Salary",
+          "grossNeeded": "Required Gross Salary",
+          "totalDeductions": "Total Deductions",
+          "notes": "Notes",
+          "rows": {
+            "row1": {
+              "note": "No dependents"
+            },
+            "row2": {
+              "note": "No dependents"
+            },
+            "row3": {
+              "note": "No dependents"
+            },
+            "row4": {
+              "note": "Higher tax rates apply"
+            }
+          }
+        },
+        "disclaimer": "Above figures are for reference only, actual amounts may vary based on specific factors."
+      },
+      "tips": {
+        "title": "Tool Usage Tips",
+        "tip1": "Use this tool when you receive a net salary offer and want to know the gross equivalent",
+        "tip2": "When negotiating salary, request gross amount to avoid confusion",
+        "tip3": "Don't forget to calculate bonuses and allowances when negotiating total compensation",
+        "tip4": "Check if company contributes SI on full salary",
+        "tip5": "Some companies have 'flexible' salary policies with various allowances"
+      },
+      "component": {
+        "title": "Loan Calculator",
+        "subtitle": "Calculate monthly payments and interest rates for your loan"
+      }
+    },
+    "savingsCalculator": {
+      "title": "Savings Interest Calculator",
+      "description": "Compare savings interest rates across Vietnamese banks. Find the savings account that suits your needs with the best interest rates.",
+      "breadcrumb": {
+        "home": "Home",
+        "tools": "Financial Tools",
+        "current": "Savings Calculator"
+      },
+      "importantNotes": {
+        "title": "Important Notes",
+        "note1": "Interest rates may change depending on each bank's policies",
+        "note2": "Displayed rates are advertised rates, actual rates may differ",
+        "note3": "Online deposits often have higher rates than counter deposits",
+        "note4": "Check early withdrawal conditions before depositing",
+        "note5": "Consider term deposits for better interest rates"
+      },
+      "savingsTypes": {
+        "title": "Common Savings Types",
+        "noTerm": {
+          "name": "No-Term Savings",
+          "description": "Flexible withdrawals but lower interest rates"
+        },
+        "term": {
+          "name": "Term Savings",
+          "description": "Higher rates, no early withdrawals allowed"
+        },
+        "accumulation": {
+          "name": "Accumulation Savings",
+          "description": "Monthly contributions with preferential rates"
+        },
+        "super": {
+          "name": "Super Preferential Savings",
+          "description": "Large amounts, long terms with highest rates"
+        }
+      },
+      "component": {
+        "title": "Savings Calculator",
+        "subtitle": "Compare savings rates from different banks and find the best option for your money",
+        "form": {
+          "savingsAmount": "Savings Amount",
+          "enterAmount": "Enter amount",
+          "savingsPeriod": "Savings Period",
+          "savingsType": "Savings Type",
+          "onlineSavings": "Online Savings",
+          "counterSavings": "Counter Savings",
+          "sortBy": "Sort By",
+          "highestInterestRate": "Highest Interest Rate",
+          "lowestInterestRate": "Lowest Interest Rate",
+          "calculating": "Calculating...",
+          "applyFilters": "Apply Filters",
+          "retry": "Retry"
+        },
+        "results": {
+          "bankComparisonResults": "Bank Comparison Results",
+          "banksFound": "{count} banks found",
+          "basedOn": "Based on {amount} for {period} months",
+          "table": {
+            "bankName": "Bank Name",
+            "interestRate": "Interest Rate",
+            "interestAmount": "Interest Amount",
+            "totalAmount": "Total Amount",
+            "action": "Action"
+          },
+          "bestRate": "Best",
+          "lowRate": "Low",
+          "open": "Open",
+          "showing": "Showing {start} to {end} of {total} results",
+          "pageOf": "Page {current} of {total}",
+          "previous": "Previous",
+          "next": "Next",
+          "summary": "Summary",
+          "averageRate": "Average Rate",
+          "totalInterestRange": "Total Interest Range",
+          "bestTotalReturn": "Best Total Return",
+          "noSavingsFound": "No savings products found matching your criteria.",
+          "tryAdjustingFilters": "Try adjusting your filters to see more results."
+        }
+      }
+    },
+    "grossToNetCalculator": {
+      "title": "Gross to Net Salary Calculator",
+      "subtitle": "Calculate net salary from gross salary with detailed tax and insurance breakdowns",
+      "component": {
+        "title": "Gross to Net Calculator",
+        "subtitle": "Calculate take-home pay from gross salary with full deduction details",
+        "presets": {
+          "minimum": "Minimum Wage",
+          "employee": "Employee Salary",
+          "professional": "Professional Salary",
+          "manager": "Manager Salary",
+          "director": "Director Salary"
+        },
+        "regions": {
+          "1": "I - Hanoi, Ho Chi Minh City",
+          "2": "II - Da Nang, Hai Phong, Can Tho",
+          "3": "III - Type I Urban Areas",
+          "4": "IV - Other Provinces"
+        },
+        "form": {
+          "grossSalary": "GROSS Salary",
+          "enterGrossSalary": "Enter gross salary",
+          "minimumWage": "Region {region} minimum wage",
+          "minimumWageLabel": "Minimum wage",
+          "salaryRegion": "Salary Region",
+          "selectRegion": "Select region",
+          "numberOfDependents": "Number of dependents",
+          "deductionPerPerson": "Deduction",
+          "reset": "Reset"
+        },
+        "results": {
+          "grossSalary": "GROSS Salary",
+          "netSalary": "NET Salary",
+          "monthlyTakeHome": "Monthly take-home",
+          "deductionBreakdown": "Deduction Breakdown",
+          "insurance": "Insurance",
+          "socialInsurance": "Social Insurance",
+          "healthInsurance": "Health Insurance",
+          "unemploymentInsurance": "Unemployment Insurance",
+          "totalInsurance": "Total Insurance",
+          "taxDeductions": "Tax Deductions",
+          "self": "Self",
+          "dependents": "Dependents ({count} person)",
+          "totalDeductions": "Total Deductions",
+          "pit": "Personal Income Tax",
+          "taxableIncome": "Taxable Income",
+          "viewTaxDetails": "View tax rate details",
+          "totalPit": "Total PIT",
+          "totalDeductionsAmount": "Total Deductions",
+          "totalEmployerCost": "Total Employer Cost",
+          "employerCostDescription": "GROSS + Company Insurance (21.5%)"
+        }
+      }
+    },
+    "netToGrossCalculator": {
+      "title": "Net to Gross Salary Calculator",
+      "subtitle": "Determine the gross salary needed to achieve a desired net salary",
+      "component": {
+        "title": "Net to Gross Calculator",
+        "subtitle": "Determine the gross salary needed for your desired take-home pay",
+        "presets": {
+          "minimum": "Minimum Wage",
+          "student": "Student Salary",
+          "fresher": "Fresher Salary",
+          "twoYearsExperience": "2 Years Experience Salary",
+          "senior": "Senior Salary"
+        },
+        "regions": {
+          "1": "I - Hanoi, Ho Chi Minh City",
+          "2": "II - Da Nang, Hai Phòng, Can Tho",
+          "3": "III - Type I Urban Areas",
+          "4": "IV - Other Provinces"
+        },
+        "form": {
+          "desiredNetSalary": "Desired NET Salary",
+          "enterDesiredNetSalary": "Enter desired net salary",
+          "salaryRegion": "Salary Region",
+          "selectRegion": "Select region",
+          "minimumWageLabel": "Minimum wage",
+          "numberOfDependents": "Number of dependents",
+          "deductionPerPerson": "Deduction",
+          "reset": "Reset"
+        },
+        "results": {
+          "desiredNetSalary": "Desired NET Salary",
+          "requiredGross": "Required GROSS",
+          "iterations": "iterations",
+          "convergenceWarning": "Could not find exact gross salary. Closest result with error: {error}",
+          "grossAnalysis": "Gross Salary Analysis",
+          "grossSalary": "GROSS Salary",
+          "totalDeductions": "Total Deductions",
+          "deductionDetails": "Deduction Details",
+          "insurance": "Insurance",
+          "pit": "Personal Income Tax",
+          "netFormula": "NET Salary = GROSS Salary - Insurance (10.5%) - Personal Income Tax",
+          "pitFormula": "Personal Income Tax is calculated using progressive tax brackets",
+          "taxOptimizationTips": "Tax Optimization Tips:",
+          "tip1": "Declare all dependents to maximize deductions",
+          "tip2": "Contribute to voluntary pension funds to reduce PIT",
+          "tip3": "Consider legitimate deductions (charitable contributions, etc.)"
+        }
+      }
     }
   }
 }
