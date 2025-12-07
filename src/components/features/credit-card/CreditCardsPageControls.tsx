@@ -52,7 +52,7 @@ export function CreditCardsPageControls({
   mobileFiltersOpen,
   onMobileFiltersChange,
 }: CreditCardsPageControlsProps) {
-  const t = useTranslations("pages.creditCard");
+  const t = useTranslations("features.credit-cards.listing");
   const { themeConfig } = useTheme();
 
   const isCorporateTheme = themeConfig?.id === "corporate";

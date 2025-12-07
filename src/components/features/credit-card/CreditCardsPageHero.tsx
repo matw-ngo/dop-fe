@@ -18,7 +18,8 @@ export default function CreditCardsPageHero({
   comparisonCards,
   locale,
 }: CreditCardsPageHeroProps) {
-  const t = useTranslations("pages.creditCard");
+  const t = useTranslations("features.credit-cards.listing");
+  const tMain = useTranslations("features.credit-cards.main");
   const { themeConfig } = useTheme();
 
   const isCorporateTheme = themeConfig?.id === "corporate";
@@ -54,10 +55,10 @@ export default function CreditCardsPageHero({
             </div>
           </div>
           <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-6 leading-tight">
-            {t(titleKey)}
+            {tMain(titleKey)}
           </h1>
           <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed mb-8">
-            {t(descriptionKey)}
+            {tMain(descriptionKey)}
           </p>
           <div className="flex items-center justify-center space-x-2">
             {comparisonCards.length > 0 && (

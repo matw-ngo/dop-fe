@@ -49,7 +49,7 @@ const CreditCard: React.FC<CreditCardProps> = ({
   isInComparison = false,
   className,
 }) => {
-  const t = useTranslations("pages.creditCard");
+  const t = useTranslations("features.credit-cards.listing");
 
   // Format currency to VND
   const formatCurrency = (amount: number): string => {

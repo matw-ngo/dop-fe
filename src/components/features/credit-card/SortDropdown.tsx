@@ -38,7 +38,7 @@ const SortDropdown: React.FC<SortDropdownProps> = ({
   className,
   showDirectionIcon = true,
 }) => {
-  const t = useTranslations("pages.creditCard");
+  const t = useTranslations("features.credit-cards.listing");
 
   // Find the current sort option
   const currentSort = SORT_OPTIONS.find((option) => option.value === value);

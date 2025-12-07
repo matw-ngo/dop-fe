@@ -11,7 +11,7 @@ interface PaymentMethodCardProps {
 export const PaymentMethodCard: React.FC<PaymentMethodCardProps> = ({
   card,
 }) => {
-  const t = useTranslations("pages.creditCard");
+  const t = useTranslations("features.credit-cards.detail");
 
   const paymentMethods = [
     { icon: CreditCard, label: t("paymentMethods.card"), available: true },

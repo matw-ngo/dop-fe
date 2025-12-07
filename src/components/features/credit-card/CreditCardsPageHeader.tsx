@@ -18,7 +18,7 @@ export function CreditCardsPageHeader({
   comparisonCards,
   locale,
 }: CreditCardsPageHeaderProps) {
-  const t = useTranslations("pages.creditCard");
+  const t = useTranslations("features.credit-cards.listing");
 
   return (
     <div className="border-b bg-card">

@@ -11,7 +11,7 @@ interface CreditCardDetailsProps {
 export const CreditCardDetails: React.FC<CreditCardDetailsProps> = ({
   cardSlug,
 }) => {
-  const t = useTranslations("pages.creditCard");
+  const t = useTranslations("features.credit-cards.detail");
   const card = getDetailedCardInfo(cardSlug);
 
   return (
@@ -34,9 +34,7 @@ export const CreditCardDetails: React.FC<CreditCardDetailsProps> = ({
 
           <div className="grid md:grid-cols-2 gap-4 mb-6">
             <div className="bg-muted/30 p-4 rounded-lg">
-              <p className="text-sm text-muted-foreground">
-                {t("annualFee")}
-              </p>
+              <p className="text-sm text-muted-foreground">{t("annualFee")}</p>
               <p className="text-xl font-semibold">{card.annualFee}</p>
             </div>
             <div className="bg-muted/30 p-4 rounded-lg">
@@ -50,9 +48,7 @@ export const CreditCardDetails: React.FC<CreditCardDetailsProps> = ({
 
         {/* Features */}
         <div className="bg-card rounded-lg shadow-md p-6">
-          <h3 className="text-xl font-semibold mb-4">
-            {t("features")}
-          </h3>
+          <h3 className="text-xl font-semibold mb-4">{t("features")}</h3>
           <ul className="space-y-2">
             {card.features.map((feature: string, index: number) => (
               <li key={index} className="flex items-start gap-2">
@@ -66,9 +62,7 @@ export const CreditCardDetails: React.FC<CreditCardDetailsProps> = ({
         {/* Requirements */}
         {card.requirements && card.requirements.length > 0 && (
           <div className="bg-card rounded-lg shadow-md p-6">
-            <h3 className="text-xl font-semibold mb-4">
-              {t("requirements")}
-            </h3>
+            <h3 className="text-xl font-semibold mb-4">{t("requirements")}</h3>
             <ul className="space-y-2">
               {card.requirements.map((req: string, index: number) => (
                 <li key={index} className="flex items-start gap-2">
@@ -87,9 +81,7 @@ export const CreditCardDetails: React.FC<CreditCardDetailsProps> = ({
         {card.pros && card.cons && (
           <div className="bg-card rounded-lg shadow-md p-6">
             <div className="mb-4">
-              <h4 className="font-semibold text-green-600 mb-2">
-                {t("pros")}
-              </h4>
+              <h4 className="font-semibold text-green-600 mb-2">{t("pros")}</h4>
               <ul className="space-y-1">
                 {card.pros.map((pro: string, index: number) => (
                   <li key={index} className="flex items-start gap-2 text-sm">

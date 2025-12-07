@@ -37,7 +37,7 @@ interface Review {
 }
 
 export const ReviewsTab: React.FC<ReviewsTabProps> = ({ card }) => {
-  const t = useTranslations("pages.creditCard");
+  const t = useTranslations("features.credit-cards.detail");
   const [sortBy, setSortBy] = useState<"recent" | "helpful" | "rating">(
     "recent",
   );

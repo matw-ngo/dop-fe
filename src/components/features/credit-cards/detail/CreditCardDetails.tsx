@@ -40,7 +40,7 @@ export const CreditCardDetails: React.FC<CreditCardDetailsProps> = ({
   cardSlug,
   onBack,
 }) => {
-  const t = useTranslations("pages.creditCard");
+  const t = useTranslations("features.credit-cards.detail");
   const [isLoading, setIsLoading] = useState(false);
 
   // Find card from the main credit cards data

@@ -144,7 +144,7 @@ const CreditCardFilterPanel: React.FC<FilterPanelProps> = React.memo(
     className,
     isMobile = false,
   }) => {
-    const t = useTranslations("pages.creditCard");
+    const t = useTranslations("features.credit-cards.listing");
 
     // Calculate active filters count
     const activeFiltersCount = useMemo(() => {

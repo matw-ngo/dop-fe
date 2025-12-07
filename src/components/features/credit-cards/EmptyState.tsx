@@ -16,7 +16,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
   onAction,
   className,
 }) => {
-  const t = useTranslations("pages.creditCard.emptyState");
+  const t = useTranslations("features.credit-cards.listing");
 
   const getEmptyStateContent = () => {
     switch (type) {

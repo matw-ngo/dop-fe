@@ -34,7 +34,7 @@ const CreditCardGrid: React.FC<CreditCardGridProps> = ({
   className,
   emptyStateMessage,
 }) => {
-  const t = useTranslations("pages.creditCard");
+  const t = useTranslations("features.credit-cards.listing");
 
   // Calculate paginated cards
   const paginatedCards = useMemo(() => {

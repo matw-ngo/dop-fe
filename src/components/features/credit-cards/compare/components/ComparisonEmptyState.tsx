@@ -3,7 +3,7 @@ import { useTranslations } from "next-intl";
 import { CreditCard as CreditCardIcon } from "lucide-react";
 
 export const ComparisonEmptyState: React.FC = () => {
-  const t = useTranslations("pages.creditCard");
+  const t = useTranslations("features.credit-cards.comparison");
 
   return (
     <div className="flex flex-col items-center justify-center py-12 text-center">

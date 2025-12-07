@@ -65,7 +65,7 @@ export const CreditCardResultsHeader: React.FC<
   breadcrumbItems,
   className,
 }) => {
-  const t = useTranslations("creditCard");
+  const t = useTranslations("features.credit-cards.listing");
 
   const startItem = (currentPage - 1) * itemsPerPage + 1;
   const endItem = Math.min(currentPage * itemsPerPage, totalResults);

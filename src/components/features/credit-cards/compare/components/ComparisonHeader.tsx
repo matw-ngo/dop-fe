@@ -14,7 +14,7 @@ export const ComparisonHeader: React.FC<ComparisonHeaderProps> = ({
   onClose,
   onExport,
 }) => {
-  const t = useTranslations("pages.creditCard");
+  const t = useTranslations("features.credit-cards.comparison");
 
   return (
     <div className="flex items-center justify-between p-4 border-b bg-muted/30">

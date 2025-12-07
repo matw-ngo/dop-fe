@@ -11,7 +11,7 @@ interface CreditCardComparisonProps {
 export const CreditCardComparison: React.FC<CreditCardComparisonProps> = ({
   cardIds,
 }) => {
-  const t = useTranslations("pages.creditCard");
+  const t = useTranslations("features.credit-cards.comparison");
   const cardsToCompare = cardIds
     .map((id) => vietnameseCreditCards.find((card) => card.id === id))
     .filter(Boolean);
@@ -48,9 +48,7 @@ export const CreditCardComparison: React.FC<CreditCardComparisonProps> = ({
           </thead>
           <tbody>
             <tr>
-              <td className="p-4 border-b font-medium">
-                {t("annualFee")}
-              </td>
+              <td className="p-4 border-b font-medium">{t("annualFee")}</td>
               {cardsToCompare.map((card, index) => (
                 <td key={index} className="text-center p-4 border-b">
                   {card!.annualFee}
@@ -58,9 +56,7 @@ export const CreditCardComparison: React.FC<CreditCardComparisonProps> = ({
               ))}
             </tr>
             <tr className="bg-muted/30">
-              <td className="p-4 border-b font-medium">
-                {t("interestRate")}
-              </td>
+              <td className="p-4 border-b font-medium">{t("interestRate")}</td>
               {cardsToCompare.map((card, index) => (
                 <td key={index} className="text-center p-4 border-b">
                   {card!.interestRate}
@@ -70,23 +66,19 @@ export const CreditCardComparison: React.FC<CreditCardComparisonProps> = ({
             {cardsToCompare.some(
               (card) => card!.rewardsProgram?.type === "cashback",
             ) && (
-                <tr>
-                  <td className="p-4 border-b font-medium">
-                    {t("cashback")}
+              <tr>
+                <td className="p-4 border-b font-medium">{t("cashback")}</td>
+                {cardsToCompare.map((card, index) => (
+                  <td key={index} className="text-center p-4 border-b">
+                    {card!.rewardsProgram?.type === "cashback"
+                      ? `${card!.rewardsProgram.earnRate}/1000 VND`
+                      : "N/A"}
                   </td>
-                  {cardsToCompare.map((card, index) => (
-                    <td key={index} className="text-center p-4 border-b">
-                      {card!.rewardsProgram?.type === "cashback"
-                        ? `${card!.rewardsProgram.earnRate}/1000 VND`
-                        : "N/A"}
-                    </td>
-                  ))}
-                </tr>
-              )}
+                ))}
+              </tr>
+            )}
             <tr className="bg-muted/30">
-              <td className="p-4 border-b font-medium">
-                {t("keyFeatures")}
-              </td>
+              <td className="p-4 border-b font-medium">{t("keyFeatures")}</td>
               {cardsToCompare.map((card, index) => (
                 <td key={index} className="text-center p-4 border-b">
                   <ul className="text-sm space-y-1">

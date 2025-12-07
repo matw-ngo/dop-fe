@@ -23,7 +23,7 @@ interface CreditCardFilterSidebarProps {
 export const CreditCardFilterSidebar: React.FC<
   CreditCardFilterSidebarProps
 > = ({ filters, onFiltersChange, className, trigger }) => {
-  const t = useTranslations("pages.creditCard");
+  const t = useTranslations("features.credit-cards.listing");
   const [isOpen, setIsOpen] = useState(false);
 
   const handleClearFilters = () => {

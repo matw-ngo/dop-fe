@@ -42,7 +42,7 @@ export function CreditCardsPageResults({
   onItemsPerPageChange,
   onCompareToggle,
 }: CreditCardsPageResultsProps) {
-  const t = useTranslations("pages.creditCard");
+  const t = useTranslations("features.credit-cards.listing");
 
   return (
     <div className="space-y-6">

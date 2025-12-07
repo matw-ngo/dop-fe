@@ -10,7 +10,7 @@ interface BenefitsTabProps {
 }
 
 export const BenefitsTab: React.FC<BenefitsTabProps> = ({ card }) => {
-  const t = useTranslations("pages.creditCard");
+  const t = useTranslations("features.credit-cards.detail");
 
   const benefitCategories = [
     {

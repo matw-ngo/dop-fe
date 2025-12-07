@@ -37,7 +37,7 @@ export const CreditCardPageControls: React.FC<CreditCardPageControlsProps> = ({
   onMobileFiltersToggle,
   className,
 }) => {
-  const t = useTranslations("creditCard");
+  const t = useTranslations("features.credit-cards.listing");
 
   return (
     <div className={cn("space-y-4", className)}>

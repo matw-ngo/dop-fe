@@ -163,7 +163,7 @@ export const CreditCardSortDropdown: React.FC<CreditCardSortDropdownProps> = ({
   showDirectionIcon = true,
   showLabels = true,
 }) => {
-  const t = useTranslations("creditCard");
+  const t = useTranslations("features.credit-cards.listing");
 
   // Find the current sort option
   const currentSort = SORT_OPTIONS.find((option) => option.value === value);

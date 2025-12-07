@@ -26,7 +26,7 @@ export const ComparisonContent: React.FC<ComparisonContentProps> = ({
   cardIds,
   onRemoveCard,
 }) => {
-  const t = useTranslations("pages.creditCard");
+  const t = useTranslations("features.credit-cards.comparison");
 
   // Use the comparison data hook
   const {

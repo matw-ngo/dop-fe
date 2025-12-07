@@ -17,7 +17,7 @@ export const ProductHeader: React.FC<ProductHeaderProps> = ({
   card,
   onBack,
 }) => {
-  const t = useTranslations("pages.creditCard");
+  const t = useTranslations("features.credit-cards.detail");
   const { comparisonCards } = useCreditCardComparison();
   const { addToComparison, removeFromComparison } = useCreditCardsStore();
 

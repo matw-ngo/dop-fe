@@ -37,7 +37,7 @@ interface FeaturesTabProps {
 }
 
 export const FeaturesTab: React.FC<FeaturesTabProps> = ({ card }) => {
-  const t = useTranslations("pages.creditCard");
+  const t = useTranslations("features.credit-cards.detail");
 
   const featureCategories = [
     {

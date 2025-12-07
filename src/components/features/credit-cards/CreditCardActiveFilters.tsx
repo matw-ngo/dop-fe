@@ -22,7 +22,7 @@ interface CreditCardActiveFiltersProps {
 export const CreditCardActiveFilters: React.FC<
   CreditCardActiveFiltersProps
 > = ({ filters, onClearFilter, onClearAll, className }) => {
-  const t = useTranslations("pages.creditCard");
+  const t = useTranslations("features.credit-cards.listing");
 
   const hasActiveFilters =
     filters.categories.length > 0 ||

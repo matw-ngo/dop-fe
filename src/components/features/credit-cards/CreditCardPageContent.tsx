@@ -55,7 +55,7 @@ export const CreditCardPageContent: React.FC<CreditCardPageContentProps> = ({
   onViewModeChange,
   onCardClick,
 }) => {
-  const t = useTranslations("creditCard");
+  const t = useTranslations("features.credit-cards.listing");
 
   // State management
   const [searchQuery, setSearchQuery] = useState(initialSearch);

@@ -19,7 +19,7 @@ interface RequirementsTabProps {
 }
 
 export const RequirementsTab: React.FC<RequirementsTabProps> = ({ card }) => {
-  const t = useTranslations("pages.creditCard");
+  const t = useTranslations("features.credit-cards.detail");
 
   const getEmploymentTypeIcon = (type: string) => {
     switch (type) {

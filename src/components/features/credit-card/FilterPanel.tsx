@@ -98,7 +98,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
   onClearFilters,
   className,
 }) => {
-  const t = useTranslations("pages.creditCard");
+  const t = useTranslations("features.credit-cards.listing");
 
   // Calculate active filters count
   const activeFiltersCount = useMemo(() => {

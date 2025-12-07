@@ -12,7 +12,7 @@ interface ProductSidebarProps {
 }
 
 export const ProductSidebar: React.FC<ProductSidebarProps> = ({ card }) => {
-  const t = useTranslations("pages.creditCard");
+  const t = useTranslations("features.credit-cards.detail");
 
   return (
     <div className="space-y-6">

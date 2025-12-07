@@ -32,7 +32,7 @@ export const CreditCardPagination: React.FC<CreditCardPaginationProps> = ({
   itemsPerPageOptions = [12, 24, 48, 96],
   className,
 }) => {
-  const t = useTranslations("pages.creditCard");
+  const t = useTranslations("features.credit-cards.listing");
 
   const startItem = (currentPage - 1) * itemsPerPage + 1;
   const endItem = Math.min(currentPage * itemsPerPage, totalItems);

@@ -10,7 +10,7 @@ interface FeesTabProps {
 }
 
 export const FeesTab: React.FC<FeesTabProps> = ({ card }) => {
-  const t = useTranslations("pages.creditCard");
+  const t = useTranslations("features.credit-cards.detail");
 
   return (
     <div className="space-y-6">

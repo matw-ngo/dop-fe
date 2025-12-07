@@ -75,7 +75,7 @@ export const CreditCardComparisonPanel: React.FC<
   className,
   isLoading = false,
 }) => {
-  const t = useTranslations("pages.creditCard");
+  const t = useTranslations("features.credit-cards.comparison");
   const { toast } = useToast();
 
   // Get comparison data from hook

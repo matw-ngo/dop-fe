@@ -11,7 +11,7 @@ interface ProductOverviewCardProps {
 export const ProductOverviewCard: React.FC<ProductOverviewCardProps> = ({
   card,
 }) => {
-  const t = useTranslations("pages.creditCard");
+  const t = useTranslations("features.credit-cards.detail");
 
   return (
     <Card className="shadow-md">

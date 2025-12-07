@@ -41,7 +41,7 @@ const Pagination: React.FC<PaginationProps> = ({
   className,
   variant = "default",
 }) => {
-  const t = useTranslations("pages.creditCard");
+  const t = useTranslations("features.credit-cards.listing");
 
   // Calculate the range of items being displayed
   const startItem = (currentPage - 1) * itemsPerPage + 1;

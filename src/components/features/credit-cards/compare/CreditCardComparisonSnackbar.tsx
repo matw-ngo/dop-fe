@@ -32,7 +32,7 @@ interface CreditCardComparisonSnackbarProps {
 export default function CreditCardComparisonSnackbar({
   onClose,
 }: CreditCardComparisonSnackbarProps) {
-  const t = useTranslations("pages.creditCard");
+  const t = useTranslations("features.credit-cards.comparison");
   const locale = useLocale();
   const [isVisible, setIsVisible] = useState(true);
   const [isExpanded, setIsExpanded] = useState(false);
