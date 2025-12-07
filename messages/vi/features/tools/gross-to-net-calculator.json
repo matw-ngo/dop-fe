@@ -1,0 +1,50 @@
+{
+  "title": "Tính Lương Gross → Net",
+  "subtitle": "Tính lương thực nhận từ lương gộp với đầy đủ các khoản khấu trừ",
+  "presets": {
+    "minimum": "Lương tối thiểu",
+    "employee": "Lương nhân viên",
+    "professional": "Lương chuyên viên",
+    "manager": "Lương quản lý",
+    "director": "Lương giám đốc"
+  },
+  "regions": {
+    "1": "I - Hà Nội, TP.HCM",
+    "2": "II - Đà Nẵng, Hải Phòng, Cần Thơ",
+    "3": "III - Các đô thị loại I",
+    "4": "IV - Tỉnh lẻ khác"
+  },
+  "form": {
+    "grossSalary": "Lương GROSS",
+    "enterGrossSalary": "Nhập lương gộp",
+    "minimumWage": "Lương tối thiểu vùng {region}",
+    "minimumWageLabel": "Lương tối thiểu",
+    "salaryRegion": "Vùng lương",
+    "selectRegion": "Chọn vùng",
+    "numberOfDependents": "Số người phụ thuộc",
+    "deductionPerPerson": "Giảm trừ",
+    "reset": "Làm lại"
+  },
+  "results": {
+    "grossSalary": "Lương GROSS",
+    "netSalary": "Lương NET",
+    "monthlyTakeHome": "Thực nhận hàng tháng",
+    "deductionBreakdown": "Chi Tiết Khấu Trừ",
+    "insurance": "Bảo hiểm",
+    "socialInsurance": "BHXH",
+    "healthInsurance": "BHYT",
+    "unemploymentInsurance": "BHTN",
+    "totalInsurance": "Tổng bảo hiểm",
+    "taxDeductions": "Giảm trừ gia cảnh",
+    "self": "Bản thân",
+    "dependents": "Phụ thuộc ({count} người)",
+    "totalDeductions": "Tổng giảm trừ",
+    "pit": "Thuế TNCN",
+    "taxableIncome": "Thu nhập chịu thuế",
+    "viewTaxDetails": "Xem chi tiết thuế suất",
+    "totalPit": "Tổng thuế TNCN",
+    "totalDeductionsAmount": "Tổng khấu trừ",
+    "totalEmployerCost": "Tổng chi phí của công ty",
+    "employerCostDescription": "GROSS + Bảo hiểm công ty (21.5%)"
+  }
+}

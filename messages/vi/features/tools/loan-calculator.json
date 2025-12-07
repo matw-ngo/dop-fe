@@ -1,0 +1,108 @@
+{
+  "title": "Tính Toán Khoản Vay",
+  "subtitle": "Công cụ tính toán khoản vay miễn phí và dễ sử dụng. Tính toán các khoản thanh toán hàng tháng, tổng lãi suất và lịch trình trả nợ cho khoản vay của bạn.",
+  "importantNotes": "Lưu ý quan trọng",
+  "notes": [
+    "Lãi suất có thể thay đổi tùy thuộc vào chính sách của ngân hàng",
+    "Lãi suất hiển thị là lãi suất danh nghĩa, lãi suất thực tế có thể khác",
+    "Khoản thanh toán chỉ bao gồm gốc và lãi, không bao gồm các loại phí khác",
+    "Các loại khoản vay khác nhau có thể có lãi suất và điều kiện khác nhau",
+    "Nên kiểm tra kỹ các điều khoản và điều kiện trước khi vay"
+  ],
+  "loanTypes": "Các loại vay phổ biến",
+  "loanTypesList": [
+    {
+      "name": "Vay mua nhà",
+      "description": "Lãi suất thấp, kỳ hạn dài, thế chấp bất động sản"
+    },
+    {
+      "name": "Vay mua xe",
+      "description": "Lãi suất trung bình, kỳ hạn 5-8 năm, thế chấp xe"
+    },
+    {
+      "name": "Vay tiêu dùng",
+      "description": "Lãi suất cao hơn, không cần thế chấp, thủ tục nhanh"
+    },
+    {
+      "name": "Vay kinh doanh",
+      "description": "Lãi suất tùy thuộc vào phương án kinh doanh, cần bảo lãnh"
+    }
+  ],
+  "presets": {
+    "motorcycle": "Vay mua xe máy",
+    "car": "Vay mua ô tô",
+    "homeRenovation": "Vay sửa nhà",
+    "personal": "Vay tiêu dùng"
+  },
+  "terms": {
+    "3": "3 tháng",
+    "6": "6 tháng",
+    "12": "12 tháng",
+    "18": "18 tháng",
+    "24": "24 tháng",
+    "36": "36 tháng",
+    "48": "48 tháng",
+    "60": "60 tháng",
+    "120": "120 tháng",
+    "180": "180 tháng",
+    "240": "240 tháng",
+    "360": "360 tháng"
+  },
+  "csvExport": {
+    "headers": {
+      "period": "Kỳ",
+      "beginningBalance": "Dư nợ đầu kỳ",
+      "principal": "Góp gốc",
+      "interest": "Lãi suất",
+      "total": "Tổng thanh toán",
+      "endingBalance": "Dư nợ cuối kỳ"
+    },
+    "filename": "lich-tra-no"
+  },
+  "form": {
+    "loanAmount": "Số tiền vay",
+    "interestRate": "Lãi suất năm",
+    "loanTerm": "Kỳ hạn vay",
+    "months": "tháng",
+    "years": "năm",
+    "paymentType": "Loại trả nợ",
+    "equalInstallment": "Trả gốc và lãi đều hàng tháng",
+    "equalPrincipal": "Trả gốc đều, lãi giảm dần",
+    "startFees": "Phí ban đầu",
+    "startFeesNote": "Phí phát sinh khi giải ngân (nếu có)",
+    "calculate": "Tính toán",
+    "reset": "Làm lại",
+    "exportResults": "Xuất kết quả",
+    "selectTerm": "Chọn kỳ hạn"
+  },
+  "results": {
+    "title": "Kết quả tính toán",
+    "monthlyPayment": "Góp hàng tháng",
+    "totalInterest": "Tổng lãi phải trả",
+    "totalPayment": "Tổng số tiền phải trả",
+    "effectiveRate": "Lãi suất thực tế",
+    "schedule": "Lịch Trả Nợ Chi Tiết",
+    "month": "Kỳ",
+    "beginningBalance": "Dư nợ đầu kỳ",
+    "payment": "Khoản thanh toán",
+    "principal": "Gốc",
+    "interest": "Lãi",
+    "endingBalance": "Dư nợ cuối kỳ",
+    "total": "Tổng cộng",
+    "exportSchedule": "Xuất lịch trình",
+    "printSchedule": "In lịch trình",
+    "hideSchedule": "Ẩn",
+    "showSchedule": "Xem Lịch trả nợ",
+    "exportCsv": "Xuất CSV"
+  },
+  "errors": {
+    "invalidAmount": "Vui lòng nhập số tiền vay hợp lệ",
+    "invalidRate": "Vui lòng nhập lãi suất hợp lệ",
+    "invalidTerm": "Vui lòng nhập kỳ hạn vay hợp lệ",
+    "calculationError": "Đã xảy ra lỗi khi tính toán. Vui lòng thử lại."
+  },
+  "component": {
+    "title": "Tính Toán Khoản Vay",
+    "subtitle": "Tính toán số tiền thanh toán hàng tháng và lãi suất cho khoản vay của bạn"
+  }
+}

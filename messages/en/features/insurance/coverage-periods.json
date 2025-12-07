@@ -1,0 +1,7 @@
+{
+  "monthly": "month",
+  "quarterly": "quarter",
+  "semiAnnually": "6 months",
+  "annually": "year",
+  "custom": "cycle"
+}

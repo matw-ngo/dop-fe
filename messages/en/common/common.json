@@ -1,0 +1,12 @@
+{
+  "loading": "Loading...",
+  "error": "An error occurred",
+  "success": "Success!",
+  "submit": "Submit",
+  "cancel": "Cancel",
+  "save": "Save",
+  "reset": "Reset",
+  "retry": "Retry",
+  "back": "Back",
+  "close": "Close"
+}

@@ -1,0 +1,69 @@
+{
+  "title": "Savings Calculator",
+  "subtitle": "Compare savings interest rates at Vietnamese banks. Find the savings account that suits your needs with the best interest rate.",
+  "importantNotes": "Important Notes",
+  "notes": [
+    "Interest rates may vary depending on each bank's policies",
+    "Displayed rates are published rates, actual rates may differ",
+    "Online deposits often have higher rates than counter deposits",
+    "Check early withdrawal conditions before depositing",
+    "Consider term deposits for better interest rates"
+  ],
+  "savingsTypes": "Common Savings Types",
+  "savingsTypesList": [
+    {
+      "name": "Demand Deposit",
+      "description": "Flexible withdrawal but low interest rate"
+    },
+    {
+      "name": "Term Deposit",
+      "description": "Higher interest rate, cannot withdraw before maturity"
+    },
+    {
+      "name": "Accumulation Savings",
+      "description": "Add monthly with preferential interest rate"
+    },
+    {
+      "name": "Super Preferential Savings",
+      "description": "Large amount, long term with highest interest rate"
+    }
+  ],
+  "form": {
+    "initialDeposit": "Initial Deposit",
+    "monthlyDeposit": "Monthly Addition",
+    "interestRate": "Annual Interest Rate",
+    "term": "Deposit Term",
+    "compoundFrequency": "Compound Interest",
+    "monthly": "Monthly",
+    "quarterly": "Quarterly",
+    "annually": "Annually",
+    "bank": "Bank",
+    "selectBank": "Select Bank",
+    "savingsType": "Savings Type",
+    "calculate": "Calculate",
+    "reset": "Reset",
+    "compareRates": "Compare Rates"
+  },
+  "results": {
+    "title": "Calculation Results",
+    "finalAmount": "Total Amount Received",
+    "totalDeposits": "Total Deposits",
+    "totalInterest": "Total Interest Earned",
+    "effectiveRate": "Effective Rate",
+    "projection": "Growth Chart",
+    "year": "Year",
+    "deposits": "Deposits",
+    "interest": "Interest",
+    "balance": "Balance"
+  },
+  "comparison": {
+    "title": "Compare Bank Interest Rates",
+    "bank": "Bank",
+    "term": "Term",
+    "rate": "Interest Rate",
+    "minAmount": "Minimum Amount",
+    "notes": "Notes",
+    "lastUpdated": "Last Updated",
+    "onlineHigher": "Online Higher"
+  }
+}

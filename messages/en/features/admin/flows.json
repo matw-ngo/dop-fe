@@ -1,0 +1,79 @@
+{
+  "title": "Flow Management",
+  "subtitle": "Manage and configure your application flows",
+  "newFlow": "New Flow",
+  "table": {
+    "headers": {
+      "name": "Flow Name",
+      "status": "Status",
+      "steps": "Steps",
+      "created": "Created",
+      "updated": "Updated",
+      "actions": "Actions"
+    },
+    "searchPlaceholder": "Search flows...",
+    "emptyState": "No flows found",
+    "emptyStateWithFilters": "No flows match your filters. Try adjusting your search or filter criteria.",
+    "results": "Showing {filtered} of {total} flows"
+  },
+  "filters": {
+    "searchPlaceholder": "Search flows by name...",
+    "status": "Status",
+    "statusOptions": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "draft": "Draft",
+      "archived": "Archived"
+    },
+    "activeFilters": {
+      "search": "Search: \"{value}\"",
+      "clearAll": "Clear all"
+    }
+  },
+  "actions": {
+    "manageSteps": "Manage Steps",
+    "viewDetails": "View Details",
+    "edit": "Edit",
+    "activate": "Activate",
+    "deactivate": "Deactivate",
+    "duplicate": "Duplicate",
+    "delete": "Delete",
+    "openMenu": "Open menu"
+  },
+  "dialogs": {
+    "delete": {
+      "title": "Delete Flow",
+      "description": "Are you sure you want to delete \"{name}\"? This action cannot be undone and will permanently remove the flow and all its associated data.",
+      "cancel": "Cancel",
+      "confirm": "Delete Flow"
+    },
+    "activate": {
+      "title": "Activate Flow",
+      "description": "Are you sure you want to activate \"{name}\"? This will make the flow available to users.",
+      "cancel": "Cancel",
+      "confirm": "Activate"
+    },
+    "deactivate": {
+      "title": "Deactivate Flow",
+      "description": "Are you sure you want to deactivate \"{name}\"? This will make the flow unavailable to users.",
+      "cancel": "Cancel",
+      "confirm": "Deactivate"
+    }
+  },
+  "bulkActions": {
+    "selected": "{count} flow{plural} selected",
+    "activate": "Activate",
+    "deactivate": "Deactivate",
+    "delete": "Delete",
+    "clearSelection": "Clear selection"
+  },
+  "emptyState": {
+    "title": "No flows found",
+    "message": "Get started by creating your first flow.",
+    "action": "Create Flow"
+  },
+  "errorState": {
+    "title": "Failed to load flows",
+    "message": "An error occurred while loading flows"
+  }
+}

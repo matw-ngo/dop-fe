@@ -1,0 +1,36 @@
+{
+  "title": "Loan Calculator",
+  "description": "Free and easy-to-use loan calculator tool. Calculate monthly payments, total interest, and amortization schedule for your loan.",
+  "breadcrumb": {
+    "home": "Home",
+    "tools": "Financial Tools",
+    "current": "Loan Calculator"
+  },
+  "importantNotes": {
+    "title": "Important Notes",
+    "note1": "Interest rates may vary depending on bank policies",
+    "note2": "Displayed rates are nominal, actual rates may differ",
+    "note3": "Payments include principal and interest only, excluding other fees",
+    "note4": "Different loan types may have different rates and conditions",
+    "note5": "Always review terms and conditions carefully before borrowing"
+  },
+  "loanTypes": {
+    "title": "Common Loan Types",
+    "homeLoan": {
+      "name": "Home Loan",
+      "description": "Low interest rate, long term, real estate collateral"
+    },
+    "carLoan": {
+      "name": "Car Loan",
+      "description": "Average interest rate, 5-8 year term, vehicle collateral"
+    },
+    "personalLoan": {
+      "name": "Personal Loan",
+      "description": "Higher interest rate, no collateral required, fast processing"
+    },
+    "businessLoan": {
+      "name": "Business Loan",
+      "description": "Rate depends on business plan, guarantee required"
+    }
+  }
+}

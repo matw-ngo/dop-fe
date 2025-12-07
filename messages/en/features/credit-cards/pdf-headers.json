@@ -1,0 +1,9 @@
+{
+  "cardName": "Card Name",
+  "bank": "Bank",
+  "annualFee": "Annual Fee",
+  "interestRate": "Interest Rate",
+  "maxCreditLimit": "Max Credit Limit",
+  "rating": "Rating",
+  "rewardsProgram": "Rewards Program"
+}

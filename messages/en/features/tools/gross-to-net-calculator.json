@@ -1,0 +1,125 @@
+{
+  "title": "Gross to Net Salary Calculator",
+  "subtitle": "Accurate gross to net salary calculator according to Vietnamese law. Calculate personal income tax, social insurance, health insurance, unemployment insurance.",
+  "deductionsExplained": "Deduction Explanations",
+  "deductions": [
+    {
+      "name": "Social Insurance (8%)",
+      "description": "Social insurance, calculated on maximum salary of 20x regional average wage"
+    },
+    {
+      "name": "Health Insurance (1.5%)",
+      "description": "Health insurance, calculated on full salary"
+    },
+    {
+      "name": "Unemployment Insurance (1%)",
+      "description": "Unemployment insurance, calculated on maximum salary of 20x regional average wage"
+    },
+    {
+      "name": "PIT",
+      "description": "Personal income tax, progressive tax schedule applies"
+    },
+    {
+      "name": "Family Deduction",
+      "description": "11 million/person (self) + 4.4 million/dependent"
+    }
+  ],
+  "presets": {
+    "minimum": "Minimum Wage",
+    "employee": "Employee Salary",
+    "specialist": "Specialist Salary",
+    "manager": "Manager Salary",
+    "director": "Director Salary"
+  },
+  "regions": {
+    "1": "I - Hanoi, Ho Chi Minh City",
+    "2": "II - Da Nang, Hai Phong, Can Tho",
+    "3": "III - Type I Urban Areas",
+    "4": "IV - Other Provinces"
+  },
+  "form": {
+    "grossSalary": "Gross Salary",
+    "dependents": "Number of Dependents",
+    "region": "Region",
+    "region1": "Region I",
+    "region2": "Region II",
+    "region3": "Region III",
+    "region4": "Region IV",
+    "allowances": "Allowances",
+    "lunchAllowance": "Lunch Allowance",
+    "transportAllowance": "Transport Allowance",
+    "phoneAllowance": "Phone Allowance",
+    "housingAllowance": "Housing Allowance",
+    "otherAllowance": "Other Allowance",
+    "calculate": "Calculate",
+    "reset": "Reset",
+    "detailedBreakdown": "View Details"
+  },
+  "results": {
+    "title": "Calculation Results",
+    "grossSalary": "Total Gross Salary",
+    "deductions": "Deductions",
+    "socialInsurance": "Social Insurance (8%)",
+    "healthInsurance": "Health Insurance (1.5%)",
+    "unemploymentInsurance": "Unemployment Insurance (1%)",
+    "taxableIncome": "Taxable Income",
+    "personalDeduction": "Self Deduction",
+    "dependentDeduction": "Dependent Deduction",
+    "pit": "Personal Income Tax",
+    "totalDeductions": "Total Deductions",
+    "netSalary": "Net Salary Received",
+    "actualIncome": "Actual Income",
+    "exportDetails": "Export Details"
+  },
+  "importantNotes": "Important Notes",
+  "notes": [
+    "Gross salary is total income before deducting insurance and taxes",
+    "Net salary is actual amount received after deducting all mandatory amounts",
+    "Social insurance contribution has maximum limit",
+    "PIT applies progressive tax schedule by brackets",
+    "Calculator updated with latest regulations"
+  ],
+  "taxTable": {
+    "title": "Personal Income Tax Table (effective from 2020)",
+    "bracket": "Bracket",
+    "taxableIncome": "Taxable Income/Month",
+    "rate": "Tax Rate",
+    "brackets": [
+      {
+        "bracket": "1",
+        "range": "Up to 5 million",
+        "rate": "5%"
+      },
+      {
+        "bracket": "2",
+        "range": "5 to 10 million",
+        "rate": "10%"
+      },
+      {
+        "bracket": "3",
+        "range": "10 to 18 million",
+        "rate": "15%"
+      },
+      {
+        "bracket": "4",
+        "range": "18 to 32 million",
+        "rate": "20%"
+      },
+      {
+        "bracket": "5",
+        "range": "32 to 52 million",
+        "rate": "25%"
+      },
+      {
+        "bracket": "6",
+        "range": "52 to 80 million",
+        "rate": "30%"
+      },
+      {
+        "bracket": "7",
+        "range": "Over 80 million",
+        "rate": "35%"
+      }
+    ]
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "sidebar": {
+    "title": "Admin Panel",
+    "navigation": "Navigation",
+    "logout": "Logout"
+  },
+  "header": {
+    "welcome": "Hello, {username}"
+  }
+}

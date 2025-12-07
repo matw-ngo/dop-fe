@@ -1,0 +1,12 @@
+{
+  "title": "Kết quả tính toán",
+  "finalAmount": "Tổng số tiền nhận được",
+  "totalDeposits": "Tổng số tiền gửi",
+  "totalInterest": "Tổng lãi nhận được",
+  "effectiveRate": "Lãi suất hiệu quả",
+  "projection": "Biểu đồ tăng trưởng",
+  "year": "Năm",
+  "deposits": "Tiền gửi",
+  "interest": "Lãi suất",
+  "balance": "Số dư"
+}

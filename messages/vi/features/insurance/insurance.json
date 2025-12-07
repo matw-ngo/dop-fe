@@ -1,0 +1,476 @@
+{
+  "removeProduct": "Xóa sản phẩm",
+  "comparisonProgress": "Tiến trình so sánh",
+  "canAddMore": "Có thể chọn thêm sản phẩm",
+  "maxProductsReached": "Số lượng sản phẩm đã đạt tối đa",
+  "comparisonPanel": "Bảng so sánh",
+  "shareComparison": "Chia sẻ",
+  "exportComparison": "Xuất",
+  "comparisonLimit": "Giới hạn so sánh",
+  "youMightAlsoLike": "Bạn cũng có thể thích",
+  "noMoreSuggestions": "Không có gợi ý nào",
+  "noProductsFound": "Không tìm thấy sản phẩm bảo hiểm nào",
+  "tryAdjustingFilters": "Thử điều chỉnh bộ lọc của bạn",
+  "showingResults": "Hiển thị {count} của {total} sản phẩm",
+  "loadingProducts": "Đang tải sản phẩm bảo hiểm...",
+  "loadingProductItem": "Đang tải sản phẩm bảo hiểm",
+  "insuranceProductsList": "Danh sách {count} sản phẩm bảo hiểm",
+  "viewDetails": "Xem chi tiết",
+  "compare": "So sánh",
+  "inComparison": "Đang so sánh",
+  "addToComparison": "Thêm vào so sánh",
+  "removeFromComparison": "Xóa khỏi so sánh",
+  "addedToComparison": "Đã thêm vào danh sách so sánh",
+  "removedFromComparison": "Đã xóa khỏi danh sách so sánh",
+  "comparisonLimitReached": "Chỉ có thể so sánh tối đa {max} sản phẩm",
+  "comparisonStatus": "Trạng thái so sánh",
+  "products": "sản phẩm",
+  "comparisonCountMessage": "Đang có {count} sản phẩm trong danh sách so sánh",
+  "viewComparison": "Xem so sánh",
+  "comparisonLimitMessage": "Đã đạt giới hạn {max} sản phẩm. Vui lòng xóa sản phẩm khỏi danh sách để thêm sản phẩm mới.",
+  "ctaNote": "Thêm sản phẩm vào danh sách so sánh để dễ dàng đưa ra quyết định tốt nhất",
+  "recommended": "Đề xuất",
+  "new": "Mới",
+  "coverage": "Mức bảo hiểm",
+  "claimsApproval": "Tỷ lệ duyệt bồi thường",
+  "keyCoverages": "Quyền lợi chính",
+  "roadsideAssistance": "Cứu hộ đường bộ",
+  "personalAccident": "Tai nạn cá nhân",
+  "propertyDamage": "Thiệt hại tài sản",
+  "medicalExpenses": "Chi phí y tế",
+  "thirdPartyLiability": "Trách nhiệm bên thứ ba",
+  "more": "thêm",
+  "outOf": "trên",
+  "insuranceProducts": "Sản phẩm bảo hiểm",
+  "insuranceProductsDescription": "So sánh và tìm gói bảo hiểm phù hợp",
+  "searchInsurance": "Tìm sản phẩm bảo hiểm...",
+  "searchPlaceholder": "Tìm kiếm sản phẩm bảo hiểm...",
+  "results": "Kết quả",
+  "show": "Hiển thị",
+  "searchSuggestions": "Tìm kiếm gợi ý...",
+  "suggestions": "Gợi ý",
+  "noSuggestions": "Không có gợi ý nào",
+  "trySearchingFor": "Thử tìm với",
+  "searching": "Đang tìm kiếm",
+  "sortBy": "Sắp xếp theo",
+  "sortFeatured": "Nổi bật",
+  "sortRatingDesc": "Đánh giá cao nhất",
+  "sortRatingAsc": "Đánh giá thấp nhất",
+  "sortPremiumAsc": "Phí bảo hiểm thấp nhất",
+  "sortPremiumDesc": "Phí bảo hiểm cao nhất",
+  "sortCoverageAsc": "Mức bảo hiểm thấp nhất",
+  "sortCoverageDesc": "Mức bảo hiểm cao nhất",
+  "sortClaimsApprovedDesc": "Tỷ lệ duyệt cao nhất",
+  "sortClaimsTimeAsc": "Thời gian xử lý nhanh nhất",
+  "sortNewest": "Mới nhất",
+  "sortNameAsc": "Tên A-Z",
+  "sortNameDesc": "Tên Z-A",
+  "showingItems": "Hiển thị {start}-{end} của {total} kết quả",
+  "itemsPerPage": "Số mục mỗi trang",
+  "items": "sản phẩm",
+  "previous": "Trước",
+  "next": "Tiếp theo",
+  "pageOf": "Trang {current} của {total}",
+  "compareProducts": "So sánh sản phẩm bảo hiểm",
+  "compareDescription": "So sánh chi tiết các sản phẩm bảo hiểm đã chọn",
+  "criteria": "Tiêu chí",
+  "keyFeatures": "Tính năng nổi bật",
+  "applyForBest": "Đăng ký sản phẩm tốt nhất",
+  "learnMore": "Tìm hiểu thêm",
+  "noProductsToCompare": "Chưa có sản phẩm nào để so sánh",
+  "selectAtLeastTwo": "Vui lòng chọn ít nhất 2 sản phẩm để so sánh",
+  "selectProductsToCompare": "Chọn sản phẩm để so sánh",
+  "productDetailsDescription": "Thông tin chi tiết và điều kiện bảo hiểm",
+  "features": "Tính năng nổi bật",
+  "requirements": "Điều kiện bảo hiểm",
+  "pros": "Ưu điểm",
+  "cons": "Nhược điểm",
+  "applyNow": "Đăng ký ngay",
+  "recentSearches": "Tìm kiếm gần đây",
+  "clearRecentSearches": "Xóa lịch sử",
+  "clearFilters": "Xóa bộ lọc",
+  "searchResultsFor": "Kết quả tìm kiếm cho '{query}'",
+  "productsSelected": "sản phẩm đã chọn",
+  "insuranceGrid": "{count, plural, one {# sản phẩm} other {# sản phẩm}}",
+  "filter": "Lọc",
+  "sort": "Sắp xếp",
+  "search": "Tìm kiếm",
+  "clear": "Xóa",
+  "apply": "Áp dụng",
+  "reset": "Đặt lại",
+  "loading": "Đang tải...",
+  "error": "Lỗi",
+  "retry": "Thử lại",
+  "filters": "Bộ lọc",
+  "clearAll": "Xóa tất cả",
+  "category": "Loại bảo hiểm",
+  "type": "Loại hình",
+  "insurer": "Nhà cung cấp",
+  "compulsoryOnly": "Chỉ bảo hiểm bắt buộc",
+  "voluntaryOnly": "Chỉ bảo hiểm tự nguyện",
+  "hasRoadsideAssistance": "Có cứu hộ đường bộ",
+  "hasWorldwideCoverage": "Bảo hiểm toàn cầu",
+  "hasMedicalHotline": "Có tổng đài y tế",
+  "hasLegalSupport": "Có hỗ trợ pháp lý",
+  "hasAutoRenewal": "Tự động gia hạn",
+  "hasInstallments": "Hỗ trợ trả góp",
+  "includePreExistingConditions": "Bao gồm bệnh sẵn có",
+  "minApprovalRate": "Tỷ lệ duyệt tối thiểu",
+  "maxProcessingTime": "Thời gian xử lý tối đa",
+  "coverageRange": "Mức bảo hiểm",
+  "premiumRange": "Phạm vi phí",
+  "feeType": "Kiểu phí",
+  "coveragePeriod": "Kỳ hạn bảo hiểm",
+  "ageRange": "Độ tuổi",
+  "provinces": "Tỉnh/Thành phố",
+  "allProvinces": "Toàn quốc",
+  "northRegion": "Miền Bắc",
+  "centralRegion": "Miền Trung",
+  "southRegion": "Miền Nam",
+  "vehicleType": "Loại xe",
+  "specificCoverages": "Quyền lợi cụ thể",
+  "quickFilters": "Bộ lọc nhanh",
+  "newProducts": "Sản phẩm mới",
+  "exclusive": "Độc quyền",
+  "personalAccidentCoverage": "Bảo hiểm tai nạn cá nhân",
+  "propertyDamageCoverage": "Bảo hiểm thiệt hại tài sản",
+  "medicalExpensesCoverage": "Bảo hiểm chi phí yête",
+  "fixedFee": "Phí cố định",
+  "percentageFee": "Phí theo phần trăm",
+  "tieredFee": "Phí theo bậc",
+  "calculatedFee": "Phí tính toán",
+  "monthly": "Hàng tháng",
+  "quarterly": "Hàng quý",
+  "semiAnnually": "6 tháng",
+  "annually": "Hàng năm",
+  "customPeriod": "Tùy chỉnh",
+  "minRating": "Đánh giá tối thiểu",
+  "applyFilters": "Áp dụng bộ lọc",
+  "first": "Đầu",
+  "last": "Cuối",
+  "firstPage": "Trang đầu tiên",
+  "lastPage": "Trang cuối cùng",
+  "previousPage": "Trang trước",
+  "nextPage": "Trang tiếp theo",
+  "paginationNavigation": "Điều hướng phân trang",
+  "pageTitle": "Bảo hiểm",
+  "pageDescription": "So sánh và tìm sản phẩm bảo hiểm phù hợp với nhu cầu của bạn",
+  "clearSearch": "Xóa tìm kiếm",
+  "noSearchResults": "Không tìm thấy sản phẩm nào khớp với tìm kiếm của bạn",
+  "noFilterResults": "Không tìm thấy sản phẩm nào khớp với bộ lọc của bạn",
+  "tryDifferentSearch": "Thử tìm kiếm với từ khóa khác",
+  "searchAndFilterResults": "Tìm thấy {count} sản phẩm cho '{query}' với bộ lọc",
+  "filterResults": "Tìm thấy {count} sản phẩm với bộ lọc",
+  "footerText": "© 2024 Nền tảng so sánh bảo hiểm. Tất cả quyền được bảo lưu.",
+  "keyHighlights": "Điểm nổi bật",
+  "premium": "Phí bảo hiểm",
+  "maxCoverage": "Mức bồi thường cao nhất",
+  "premiumInfo": "Thông tin phí bảo hiểm",
+  "basePremium": "Phí cơ bản",
+  "vatTax": "Thuế VAT ({rate}%):",
+  "totalPremium": "Tổng phí",
+  "installmentSupported": "Hỗ trợ trả góp",
+  "contactInfo": "Thông tin liên hệ",
+  "claimsInfo": "Thông tin bồi thường",
+  "approvalRate": "Tỷ lệ duyệt",
+  "processingTime": "Thời gian xử lý",
+  "workingDays": "ngày làm việc",
+  "averageClaimTime": "Thời gian chi trả trung bình",
+  "days": "ngày",
+  "productCode": "Mã sản phẩm",
+  "rating": "Đánh giá",
+  "reviews": "đánh giá",
+  "compareProduct": "So sánh sản phẩm",
+  "addToComparisonAria": "Thêm sản phẩm vào so sánh",
+  "removeFromComparisonAria": "Xóa sản phẩm khỏi so sánh",
+  "coverageLevel": "Mức bảo vệ",
+  "tabs": {
+    "coverage": {
+      "title": "Đối tượng và Phạm vi",
+      "shortTitle": "Phạm vi",
+      "insuredObjects": {
+        "title": "Đối tượng bảo hiểm",
+        "ageRangeTitle": "Độ tuổi được bảo hiểm",
+        "ageRangeText": "Từ {min} đến {max} tuổi",
+        "occupationTitle": "Nghề nghiệp áp dụng",
+        "geographicScope": "Phạm vi địa lý",
+        "nationwide": "Toàn quốc",
+        "provincesCount": "{count} tỉnh/thành",
+        "vehicleType": "Loại xe được bảo hiểm"
+      },
+      "coverageScope": {
+        "title": "Phạm vi bảo hiểm",
+        "personalCoverage": "Bảo vệ con người",
+        "propertyLiability": "Tài sản & Trách nhiệm"
+      },
+      "specialNotes": {
+        "title": "Lưu ý đặc biệt về phạm vi bảo hiểm",
+        "note1": "• Mức bồi thường thực tế có thể thay đổi tùy thuộc vào điều khoản cụ thể của hợp đồng",
+        "note2": "• Một số quyền lợi có thể yêu cầu điều kiện bổ sung",
+        "vehicleValue": "• Giá trị xe được bảo hiểm: {min} - {max}"
+      },
+      "deductibles": {
+        "title": "Mức miễn thường",
+        "standardAmount": "Mức miễn thường chuẩn: {amount}",
+        "voluntaryOptions": " (Tùy chọn: {options})",
+        "explanation": "Mức miễn thường là số tiền bạn phải tự chi trả cho mỗi sự cố bảo hiểm"
+      }
+    },
+    "benefits": {
+      "title": "Quyền lợi",
+      "shortTitle": "Quyền lợi",
+      "mainBenefits": {
+        "title": "Quyền lợi bảo hiểm chính"
+      },
+      "features": {
+        "title": "Tính năng nổi bật"
+      },
+      "services": {
+        "title": "Dịch vụ bổ sung & Hỗ trợ 24/7"
+      },
+      "emergencySupport": {
+        "title": "Thông tin hỗ trợ khẩn cấp",
+        "hotline247": "Hotline 24/7",
+        "email": "Email hỗ trợ",
+        "website": "Website"
+      },
+      "offers": {
+        "title": "Ưu đãi đặc biệt",
+        "discount": "Giảm {value}",
+        "noClaimBonus": "Không tổn thất",
+        "noClaimBonusDesc": "Giảm đến {maxDiscount}% sau {maxYears} năm"
+      }
+    },
+    "exclusions": {
+      "title": "Điểm loại trừ",
+      "shortTitle": "Loại trừ",
+      "list": {
+        "title": "Điều khoản loại trừ",
+        "description": "Các trường hợp sau đây không được bảo hiểm theo điều khoản hợp đồng:"
+      },
+      "waitingPeriods": {
+        "title": "Thời gian chờ",
+        "description": "Thời gian chờ là khoảng thời gian từ ngày hợp đồng có hiệu lực đến ngày quyền lợi bảo hiểm được chi trả",
+        "general": "Thời gian chờ chung",
+        "specific": "Thời gian chờ theo từng quyền lợi"
+      },
+      "preExistingConditions": {
+        "title": "Bệnh sẵn có",
+        "allowed": "Bệnh sẵn có được chấp nhận:",
+        "notAllowed": "Bệnh sẵn có không được chấp nhận:",
+        "loading": "Phụ thu theo bệnh sẵn có:"
+      },
+      "specialTerms": {
+        "title": "Điều khoản đặc biệt",
+        "term1": "Thông tin khai báo phải đầy đủ và trung thực",
+        "term2": "Thay đổi thông tin phải được thông báo cho công ty bảo hiểm",
+        "term3": "Yêu cầu bồi thường phải được gửi trong thời hạn quy định",
+        "term4": "Vi phạm điều khoản có thể dẫn đến từ chối bồi thường"
+      }
+    },
+    "claims": {
+      "title": "Quy trình bồi thường",
+      "shortTitle": "Bồi thường",
+      "process": {
+        "title": "Quy trình bồi thường 5 bước",
+        "steps": {
+          "report": {
+            "title": "Báo cáo sự cố",
+            "description": "Ngay khi xảy ra sự cố"
+          },
+          "documents": {
+            "title": "Nộp hồ sơ",
+            "description": "Trong vòng 7 ngày"
+          },
+          "assessment": {
+            "title": "Thẩm định",
+            "description": "3-5 ngày làm việc"
+          },
+          "approval": {
+            "title": "Phê duyệt",
+            "description": "1-2 ngày làm việc"
+          },
+          "payment": {
+            "title": "Chi trả",
+            "description": "Trong 24h sau duyệt"
+          }
+        }
+      },
+      "documents": {
+        "title": "Hồ sơ cần chuẩn bị"
+      },
+      "methods": {
+        "title": "Phương thức yêu cầu bồi thường"
+      },
+      "metrics": {
+        "processingTime": {
+          "title": "Thời gian xử lý",
+          "average": "Thời gian xử lý trung bình",
+          "commitment": "Cam kết xử lý",
+          "workingDays": "ngày làm việc"
+        },
+        "approvalRate": {
+          "title": "Tỷ lệ duyệt hồ sơ",
+          "veryHigh": "Tỷ lệ rất cao",
+          "high": "Tỷ lệ cao",
+          "good": "Tỷ lệ tốt",
+          "average": "Tỷ lệ trung bình"
+        }
+      },
+      "emergency": {
+        "title": "Liên hệ khẩn cấp",
+        "hotline": "Hotline khẩn cấp",
+        "emergency115": "Cấp cứu 115",
+        "free": "Miễn phí",
+        "zaloSupport": "Zalo Support",
+        "hours": "8:00 - 22:00"
+      }
+    },
+    "payment": {
+      "title": "Thanh toán & Gia hạn",
+      "shortTitle": "Thanh toán",
+      "methods": {
+        "title": "Phương thức thanh toán"
+      },
+      "installment": {
+        "title": "Lựa chọn trả góp",
+        "zeroInterest": "0% lãi suất",
+        "interestRate": "Lãi suất: {rate}% năm",
+        "interestFree": "Miễn lãi suất",
+        "monthlyPayment": "Thanh toán: {amount}/tháng"
+      },
+      "autoRenewal": {
+        "title": "Tự động gia hạn",
+        "enabled": "Tự động gia hạn",
+        "enabledDesc": "Hợp đồng sẽ được gia hạn tự động",
+        "reminder": "Nhắc nhở gia hạn",
+        "reminderDesc": "Trước {days} ngày",
+        "notSupported": "Không hỗ trợ gia hạn tự động",
+        "notSupportedDesc": "Vui lòng liên hệ để gia hạn hợp đồng trước khi hết hạn",
+        "benefits": {
+          "title": "Lợi ích gia hạn tự động:",
+          "benefit1": "Không gián đoạn bảo hiểm",
+          "benefit2": "Tiết kiệm thời gian và công sức",
+          "benefit3": "Duy trì quyền lợi không tổn thất",
+          "benefit4": "Nhận ưu đãi đặc biệt khi gia hạn"
+        }
+      },
+      "noClaimBonus": {
+        "title": "Ưu đãi không tổn thất",
+        "accumulationRules": "Quy tắc tích lũy",
+        "importantNotes": "Lưu ý quan trọng",
+        "yearsWithoutClaim": "{years} năm không tổn thất",
+        "note1": "Ưu đãi áp dụng khi gia hạn đúng hạn",
+        "note2": "Một tổn thất sẽ làm giảm mức ưu đãi",
+        "note3": "Mức giảm tối đa: {maxDiscount}%"
+      },
+      "cancellation": {
+        "title": "Chính sách hủy hợp đồng",
+        "considerationPeriod": "Thời gian cân nhắc",
+        "considerationPeriodDesc": "Trong vòng {days} ngày kể từ ngày hiệu lực hợp đồng, bạn có quyền hủy hợp đồng và được hoàn lại 100% phí bảo hiểm.",
+        "afterConsideration": "Sau thời gian cân nhắc",
+        "beforeExpiry": "Hủy hợp đồng trước hạn: Hoàn lại phí bảo hiểm tương ứng với thời gian còn hiệu lực",
+        "cancellationFee": "Phí hủy hợp đồng: Tối đa 10% phí bảo hiểm đã đóng",
+        "procedure": "Thủ tục: Gửi yêu cầu bằng văn bản kèm giấy chứng minh nhân dân",
+        "note": "Lưu ý",
+        "termination": "Hợp đồng sẽ tự động terminate nếu phí bảo hiểm không được thanh toán sau thời gian gia hạn {days} ngày."
+      }
+    }
+  },
+  "feeTables": {
+    "title": "Biểu phí bảo hiểm",
+    "description": "Biểu phí chi tiết các loại bảo hiểm theo quy định hiện hành",
+    "searchPlaceholder": "Tìm kiếm biểu phí...",
+    "exportPDF": "Xuất PDF",
+    "compulsory": {
+      "title": "Bảo hiểm bắt buộc",
+      "description": "Biểu phí bảo hiểm TNDS bắt buộc theo Thông tư 04/2021/TT-BTC",
+      "cars": "Ô tô con",
+      "trucks": "Xe tải",
+      "motorcycles": "Xe máy",
+      "specialized": "Xe chuyên dụng",
+      "table": {
+        "vehicleType": "Loại xe",
+        "baseFee": "Phí cơ bản",
+        "unit": "Đơn vị tính",
+        "description": "Ghi chú"
+      },
+      "noteTitle": "Lưu ý quan trọng",
+      "note1": "Biểu phí áp dụng theo Thông tư 04/2021/TT-BTC",
+      "note2": "Phí bảo hiểm đã bao gồm thuế VAT",
+      "note3": "Thời hạn bảo hiểm là 1 năm kể từ ngày hiệu lực"
+    },
+    "voluntary": {
+      "title": "Bảo hiểm tự nguyện",
+      "description": "Biểu phí tham khảo cho các loại bảo hiểm tự nguyện",
+      "material": "Thiệt hại vật chất",
+      "personal": "Tai nạn cá nhân",
+      "thirdParty": "Trách nhiệm bên thứ ba",
+      "table": {
+        "coverage": "Quyền lợi bảo hiểm",
+        "coverageLimit": "Mức bảo hiểm",
+        "rate": "Tỷ lệ phí",
+        "basePremium": "Phí tối thiểu",
+        "description": "Mô tả"
+      },
+      "noteTitle": "Lưu ý",
+      "note1": "Biểu phí chỉ mang tính chất tham khảo",
+      "note2": "Phí thực tế có thể thay đổi tùy công ty bảo hiểm",
+      "note3": "Liên hệ trực tiếp để có báo giá chính xác"
+    },
+    "regulations": {
+      "title": "Văn bản pháp quy",
+      "description": "Các văn bản pháp luật quy định về biểu phí bảo hiểm",
+      "issued": "Ban hành",
+      "effective": "Hiệu lực"
+    },
+    "export": {
+      "success": "Đã xuất file {format} thành công"
+    }
+  },
+  "regulations": {
+    "title": "Quy định pháp luật về bảo hiểm",
+    "description": "Tổng hợp các văn bản pháp quy, thông tư, nghị định về bảo hiểm tại Việt Nam",
+    "searchPlaceholder": "Tìm kiếm quy định...",
+    "importantNotice": "Thông báo quan trọng",
+    "importantNoticeDesc": "Các quy định được cập nhật đến tháng 12/2024. Vui lòng kiểm tra các văn bản mới nhất có hiệu lực.",
+    "noResults": "Không tìm thấy quy định nào",
+    "noResultsDesc": "Thử thay đổi từ khóa tìm kiếm",
+    "highlights": "Điểm chính",
+    "feeTable": "Biểu phí",
+    "process": "Quy trình",
+    "violations": "Vi phạm và xử phạt",
+    "documents": "Tài liệu liên quan",
+    "download": {
+      "started": "Đang tải xuống {document}..."
+    }
+  },
+  "tutorial": {
+    "back": "Quay lại",
+    "share": {
+      "label": "Chia sẻ",
+      "copied": "Đã sao chép liên kết"
+    },
+    "bookmark": {
+      "removed": "Đã xóa khỏi danh sách lưu",
+      "added": "Đã thêm vào danh sách lưu"
+    },
+    "tableOfContents": "Mục lục",
+    "relatedArticles": "Bài viết liên quan",
+    "actions": {
+      "calculate": "Tính phí bảo hiểm",
+      "calculateDesc": "Sử dụng công cụ tính phí",
+      "browse": "Xem sản phẩm",
+      "browseDesc": "So sánh các sản phẩm"
+    },
+    "feedback": {
+      "title": "Bài viết này có hữu ích không?",
+      "helpful": "Hữu ích",
+      "comment": "Góp ý",
+      "thanks": "Cảm ơn phản hồi của bạn!"
+    }
+  },
+  "nav": {
+    "insurance": "Bảo hiểm"
+  }
+}

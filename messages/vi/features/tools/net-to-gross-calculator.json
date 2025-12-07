@@ -1,0 +1,45 @@
+{
+  "title": "Tính Lương Net → Gross",
+  "subtitle": "Xác định lương gộp cần thiết để nhận được mức lương ròng mong muốn",
+  "presets": {
+    "minimum": "Lương tối thiểu",
+    "student": "Lương sinh viên",
+    "fresher": "Lương fresher",
+    "twoYearsExperience": "Lương 2 năm kinh nghiệm",
+    "senior": "Lương senior"
+  },
+  "regions": {
+    "1": "I - Hà Nội, TP.HCM",
+    "2": "II - Đà Nẵng, Hải Phòng, Cần Thơ",
+    "3": "III - Các đô thị loại I",
+    "4": "IV - Tỉnh lẻ khác"
+  },
+  "form": {
+    "desiredNetSalary": "Lương NET mong muốn",
+    "enterDesiredNetSalary": "Nhập lương ròng mong muốn",
+    "salaryRegion": "Vùng lương",
+    "selectRegion": "Chọn vùng",
+    "minimumWageLabel": "Lương tối thiểu",
+    "numberOfDependents": "Số người phụ thuộc",
+    "deductionPerPerson": "Giảm trừ",
+    "reset": "Làm lại"
+  },
+  "results": {
+    "desiredNetSalary": "Lương NET mong muốn",
+    "requiredGross": "Lương GROSS cần",
+    "iterations": "vòng lặp",
+    "convergenceWarning": "Không tìm thấy chính xác lương gross. Kết quả gần nhất với sai số: {error}",
+    "grossAnalysis": "Phân Tích Lương GROSS",
+    "grossSalary": "Lương GROSS",
+    "totalDeductions": "Tổng khấu trừ",
+    "deductionDetails": "Chi tiết khấu trừ",
+    "insurance": "Bảo hiểm",
+    "pit": "Thuế TNCN",
+    "netFormula": "Lương NET = Lương GROSS - Bảo hiểm (10.5%) - Thuế TNCN",
+    "pitFormula": "Thuế TNCN được tính theo biểu thuế lũy tiến từng phần",
+    "taxOptimizationTips": "Mẹo tối ưu thuế:",
+    "tip1": "Khai báo đầy đủ người phụ thuộc để tối đa hóa giảm trừ",
+    "tip2": "Góp quỹ hưu trí tự nguyện để giảm thuế TNCN",
+    "tip3": "Xem xét các khoản chiết khấu hợp lệ (hiếu thương, từ thiện)"
+  }
+}

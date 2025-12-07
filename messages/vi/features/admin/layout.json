@@ -1,0 +1,10 @@
+{
+  "sidebar": {
+    "title": "Panel quản trị",
+    "navigation": "Điều hướng",
+    "logout": "Đăng xuất"
+  },
+  "header": {
+    "welcome": "Xin chào, {username}"
+  }
+}

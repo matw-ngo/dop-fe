@@ -1,0 +1,12 @@
+{
+  "personal": "Personal",
+  "business": "Business",
+  "premium": "Premium",
+  "student": "Student",
+  "cashback": "Cashback",
+  "travel": "Travel",
+  "shopping": "Shopping",
+  "fuel": "Fuel",
+  "dining": "Dining",
+  "entertainment": "Entertainment"
+}

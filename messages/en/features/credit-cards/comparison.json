@@ -1,0 +1,17 @@
+{
+  "compare": "Compare",
+  "comparisonPanel": "Credit Card Comparison Panel",
+  "comparisonProgress": "Comparison Progress",
+  "shareComparison": "Share Comparison",
+  "exportComparison": "Export Comparison",
+  "comparisonLimit": "Comparison Limit",
+  "comparisonLimitMessage": "You can only compare up to {max} cards at a time",
+  "criteria": "Criteria",
+  "compareDescription": "Detailed comparison of selected credit cards",
+  "selectCardsToCompare": "Select cards to compare",
+  "comparisonSnackbar": {
+    "selected": "{count} card(s) selected for comparison",
+    "viewComparison": "View Comparison",
+    "clearAll": "Clear All"
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "title": "Quản lý Flow",
+  "subtitle": "Quản lý và cấu hình các luồng ứng dụng của bạn",
+  "newFlow": "Flow mới",
+  "table": {
+    "headers": {
+      "name": "Tên Flow",
+      "status": "Trạng thái",
+      "steps": "Các bước",
+      "created": "Ngày tạo",
+      "updated": "Cập nhật",
+      "actions": "Hành động"
+    },
+    "searchPlaceholder": "Tìm kiếm flows...",
+    "emptyState": "Không tìm thấy flow nào",
+    "emptyStateWithFilters": "Không có flow nào khớp với bộ lọc của bạn. Hãy thử điều chỉnh tiêu chí tìm kiếm hoặc lọc.",
+    "results": "Hiển thị {filtered} của {total} flow"
+  },
+  "filters": {
+    "searchPlaceholder": "Tìm kiếm flows theo tên...",
+    "status": "Trạng thái",
+    "statusOptions": {
+      "active": "Hoạt động",
+      "inactive": "Không hoạt động",
+      "draft": "Bản nháp",
+      "archived": "Đã lưu trữ"
+    },
+    "activeFilters": {
+      "search": "Tìm kiếm: \"{value}\"",
+      "clearAll": "Xóa tất cả"
+    }
+  },
+  "actions": {
+    "manageSteps": "Quản lý các bước",
+    "viewDetails": "Xem chi tiết",
+    "edit": "Chỉnh sửa",
+    "activate": "Kích hoạt",
+    "deactivate": "Vô hiệu hóa",
+    "duplicate": "Nhân bản",
+    "delete": "Xóa",
+    "openMenu": "Mở menu"
+  },
+  "dialogs": {
+    "delete": {
+      "title": "Xóa Flow",
+      "description": "Bạn có chắc chắn muốn xóa \"{name}\"? Hành động này không thể hoàn tác và sẽ xóa vĩnh viễn flow và tất cả dữ liệu liên quan.",
+      "cancel": "Hủy",
+      "confirm": "Xóa Flow"
+    },
+    "activate": {
+      "title": "Kích hoạt Flow",
+      "description": "Bạn có chắc chắn muốn kích hoạt \"{name}\"? Điều này sẽ làm cho flow có sẵn cho người dùng.",
+      "cancel": "Hủy",
+      "confirm": "Kích hoạt"
+    },
+    "deactivate": {
+      "title": "Vô hiệu hóa Flow",
+      "description": "Bạn có chắc chắn muốn vô hiệu hóa \"{name}\"? Điều này sẽ làm cho flow không còn sẵn có cho người dùng.",
+      "cancel": "Hủy",
+      "confirm": "Vô hiệu hóa"
+    }
+  },
+  "bulkActions": {
+    "selected": "{count} flow đã chọn",
+    "activate": "Kích hoạt",
+    "deactivate": "Vô hiệu hóa",
+    "delete": "Xóa",
+    "clearSelection": "Xóa lựa chọn"
+  },
+  "emptyState": {
+    "title": "Không tìm thấy flow nào",
+    "message": "Bắt đầu bằng cách tạo flow đầu tiên của bạn.",
+    "action": "Tạo Flow"
+  },
+  "errorState": {
+    "title": "Không thể tải flows",
+    "message": "Đã xảy ra lỗi khi tải flows"
+  }
+}

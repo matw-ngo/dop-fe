@@ -1,0 +1,14 @@
+{
+  "errorState": {
+    "defaultTitle": "An Unexpected Error Occurred",
+    "description": "Please try again. If the problem persists, contact support.",
+    "showDetails": "Show Details",
+    "hideDetails": "Hide Details",
+    "retryButton": "Retry"
+  },
+  "onboardingCard": {
+    "title": "Start Your Onboarding Journey",
+    "description": "Click the button below to start the user onboarding process.",
+    "buttonText": "Start Onboarding"
+  }
+}

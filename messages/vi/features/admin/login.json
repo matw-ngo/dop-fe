@@ -1,0 +1,29 @@
+{
+  "title": "Đăng nhập Admin",
+  "subtitle": "Nhập thông tin đăng nhập để truy cập trang quản trị",
+  "username": "Tên đăng nhập",
+  "password": "Mật khẩu",
+  "usernamePlaceholder": "admin",
+  "passwordPlaceholder": "admin123",
+  "loginButton": "Đăng nhập",
+  "loggingIn": "Đang đăng nhập...",
+  "demoAccount": "Tài khoản demo: admin / admin123",
+  "errors": {
+    "invalidCredentials": {
+      "title": "Đăng nhập thất bại",
+      "description": "Tên đăng nhập hoặc mật khẩu không chính xác"
+    },
+    "systemError": {
+      "title": "Lỗi hệ thống",
+      "description": "Đã xảy ra lỗi, vui lòng thử lại sau"
+    },
+    "missingFields": {
+      "title": "Lỗi",
+      "description": "Vui lòng nhập tên đăng nhập và mật khẩu"
+    }
+  },
+  "success": {
+    "title": "Đăng nhập thành công",
+    "description": "Chào mừng trở lại!"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "loadingStates": {
+    "loading": "Đang tải..."
+  },
+  "errorStates": {
+    "default": {
+      "title": "Đã xảy ra lỗi",
+      "message": "Đã xảy ra lỗi khi tải dữ liệu. Vui lòng thử lại.",
+      "retry": "Thử lại"
+    },
+    "empty": {
+      "title": "Không tìm thấy dữ liệu",
+      "message": "Không có mục nào để hiển thị."
+    },
+    "notFound": {
+      "title": "Không tìm thấy",
+      "message": "Không thể tìm thấy mục được yêu cầu.",
+      "goBack": "Quay lại"
+    },
+    "networkError": {
+      "title": "Lỗi mạng",
+      "message": "Không thể kết nối với máy chủ. Vui lòng kiểm tra kết nối internet và thử lại."
+    },
+    "permissionError": {
+      "title": "Truy cập bị từ chối",
+      "message": "Bạn không có quyền truy cập tài nguyên này. Vui lòng liên hệ với quản trị viên của bạn.",
+      "goBack": "Quay lại"
+    }
+  }
+}

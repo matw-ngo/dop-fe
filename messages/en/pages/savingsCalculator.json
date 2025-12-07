@@ -1,0 +1,79 @@
+{
+  "title": "Savings Interest Calculator",
+  "description": "Compare savings interest rates across Vietnamese banks. Find the savings account that suits your needs with the best interest rates.",
+  "breadcrumb": {
+    "home": "Home",
+    "tools": "Financial Tools",
+    "current": "Savings Calculator"
+  },
+  "importantNotes": {
+    "title": "Important Notes",
+    "note1": "Interest rates may change depending on each bank's policies",
+    "note2": "Displayed rates are advertised rates, actual rates may differ",
+    "note3": "Online deposits often have higher rates than counter deposits",
+    "note4": "Check early withdrawal conditions before depositing",
+    "note5": "Consider term deposits for better interest rates"
+  },
+  "savingsTypes": {
+    "title": "Common Savings Types",
+    "noTerm": {
+      "name": "No-Term Savings",
+      "description": "Flexible withdrawals but lower interest rates"
+    },
+    "term": {
+      "name": "Term Savings",
+      "description": "Higher rates, no early withdrawals allowed"
+    },
+    "accumulation": {
+      "name": "Accumulation Savings",
+      "description": "Monthly contributions with preferential rates"
+    },
+    "super": {
+      "name": "Super Preferential Savings",
+      "description": "Large amounts, long terms with highest rates"
+    }
+  },
+  "component": {
+    "title": "Savings Calculator",
+    "subtitle": "Compare savings rates from different banks and find the best option for your money",
+    "form": {
+      "savingsAmount": "Savings Amount",
+      "enterAmount": "Enter amount",
+      "savingsPeriod": "Savings Period",
+      "savingsType": "Savings Type",
+      "onlineSavings": "Online Savings",
+      "counterSavings": "Counter Savings",
+      "sortBy": "Sort By",
+      "highestInterestRate": "Highest Interest Rate",
+      "lowestInterestRate": "Lowest Interest Rate",
+      "calculating": "Calculating...",
+      "applyFilters": "Apply Filters",
+      "retry": "Retry"
+    },
+    "results": {
+      "bankComparisonResults": "Bank Comparison Results",
+      "banksFound": "{count} banks found",
+      "basedOn": "Based on {amount} for {period} months",
+      "table": {
+        "bankName": "Bank Name",
+        "interestRate": "Interest Rate",
+        "interestAmount": "Interest Amount",
+        "totalAmount": "Total Amount",
+        "action": "Action"
+      },
+      "bestRate": "Best",
+      "lowRate": "Low",
+      "open": "Open",
+      "showing": "Showing {start} to {end} of {total} results",
+      "pageOf": "Page {current} of {total}",
+      "previous": "Previous",
+      "next": "Next",
+      "summary": "Summary",
+      "averageRate": "Average Rate",
+      "totalInterestRange": "Total Interest Range",
+      "bestTotalReturn": "Best Total Return",
+      "noSavingsFound": "No savings products found matching your criteria.",
+      "tryAdjustingFilters": "Try adjusting your filters to see more results."
+    }
+  }
+}

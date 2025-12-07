@@ -1,0 +1,29 @@
+{
+  "title": "Admin Login",
+  "subtitle": "Enter your login credentials to access the admin panel",
+  "username": "Username",
+  "password": "Password",
+  "usernamePlaceholder": "admin",
+  "passwordPlaceholder": "admin123",
+  "loginButton": "Login",
+  "loggingIn": "Logging in...",
+  "demoAccount": "Demo account: admin / admin123",
+  "errors": {
+    "invalidCredentials": {
+      "title": "Login Failed",
+      "description": "Invalid username or password"
+    },
+    "systemError": {
+      "title": "System Error",
+      "description": "An error occurred, please try again later"
+    },
+    "missingFields": {
+      "title": "Error",
+      "description": "Please enter username and password"
+    }
+  },
+  "success": {
+    "title": "Login Successful",
+    "description": "Welcome back!"
+  }
+}

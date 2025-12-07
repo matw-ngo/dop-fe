@@ -1,0 +1,13 @@
+{
+  "title": "Tổng quan sản phẩm",
+  "basicInfo": "Thông tin cơ bản",
+  "provider": "Nhà cung cấp",
+  "insuranceType": "Loại bảo hiểm",
+  "compulsory": "Bắt buộc",
+  "voluntary": "Tự nguyện",
+  "coveragePeriod": "Thời hạn bảo hiểm",
+  "productCode": "Mã sản phẩm",
+  "insuredObjects": "Đối tượng bảo hiểm",
+  "ageRange": "Độ tuổi",
+  "occupation": "Nghề nghiệp"
+}

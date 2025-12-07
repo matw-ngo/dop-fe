@@ -1,0 +1,133 @@
+{
+  "cardNetwork": "Mạng lưới",
+  "annualFee": "Phí thường niên",
+  "interestRate": "Lãi suất",
+  "feeTypes": {
+    "free": "Miễn phí",
+    "waivable": "Có thể miễn",
+    "tiered": "Theo cấp độ",
+    "fixed": "Cố định"
+  },
+  "cardDetails": "Chi tiết thẻ tín dụng",
+  "cardDetailsDescription": "Thông tin chi tiết và điều kiện thẻ",
+  "features": "Tính năng nổi bật",
+  "feesAndCharges": "Phí & Phí dịch vụ",
+  "requirementsAndApplication": "Yêu cầu & Hồ sơ",
+  "minimumIncome": "Thu nhập tối thiểu",
+  "fees": {
+    "primary": "Thẻ chính",
+    "supplementary": "Thẻ phụ",
+    "replacement": "Thẻ thay thế",
+    "interestRates": "Lãi suất"
+  },
+  "requirements": {
+    "employment": {
+      "types": {
+        "full_time": "Nhân viên chính thức",
+        "part_time": "Nhân viên bán thời gian",
+        "business_owner": "Chủ doanh nghiệp",
+        "freelancer": "Freelancer",
+        "retired": "Đã nghỉ hưu"
+      }
+    },
+    "documents": {
+      "types": {
+        "payroll": "Bảng lương",
+        "bank_statement": "Sao kê ngân hàng",
+        "tax_return": "Tờ khai thuế",
+        "business_license": "Giấy phép kinh doanh"
+      }
+    },
+    "breadcrumb": {
+      "home": "Trang chủ",
+      "creditCards": "Thẻ tín dụng"
+    },
+    "details": {
+      "notFound": "Không tìm thấy thẻ",
+      "notFoundDesc": "Thẻ tín dụng bạn đang tìm kiếm không tồn tại hoặc đã bị gỡ bỏ.",
+      "noDescription": "Không có mô tả cho thẻ này.",
+      "welcomeOffer": "Ưu đãi chào mừng",
+      "offerExpiry": "Hết hạn: {date}",
+      "tabs": {
+        "overview": "Tổng quan",
+        "overviewContent": "Thông tin thẻ",
+        "benefits": "Quyền lợi",
+        "fees": "Phí",
+        "features": "Tính năng",
+        "requirements": "Yêu cầu"
+      },
+      "relatedCards": "Thẻ liên quan",
+      "viewAllCards": "Xem tất cả thẻ"
+    },
+    "requirements": {
+      "age": {
+        "title": "Yêu cầu độ tuổi",
+        "minAge": "Tuổi tối thiểu",
+        "maxAge": "Tuổi tối đa",
+        "description": "Ứng viên phải đáp ứng yêu cầu độ tuổi"
+      },
+      "income": {
+        "title": "Yêu cầu thu nhập",
+        "description": "Thu nhập hàng tháng tối thiểu"
+      },
+      "employment": {
+        "title": "Loại hình việc làm",
+        "description": "Các loại hình việc làm được chấp nhận"
+      },
+      "documents": {
+        "title": "Giấy tờ cần thiết",
+        "incomeProof": "Chứng minh thu nhập",
+        "additional": "Giấy tờ bổ sung"
+      },
+      "location": {
+        "title": "Phạm vi áp dụng",
+        "nationwide": "Áp dụng toàn quốc",
+        "specific": "Áp dụng tại một số tỉnh thành"
+      }
+    },
+    "reviews": {
+      "title": "Đánh giá khách hàng",
+      "totalReviews": "đánh giá",
+      "filterBy": "Lọc theo:",
+      "sortBy": "Sắp xếp theo:",
+      "verified": "Đã xác minh",
+      "pros": "Ưu điểm",
+      "cons": "Nhược điểm",
+      "helpful": "Hữu ích",
+      "notHelpful": "Không hữu ích",
+      "reply": "Trả lời",
+      "loadMore": "Xem thêm đánh giá",
+      "writeReview": {
+        "title": "Viết đánh giá",
+        "description": "Chia sẻ trải nghiệm của bạn với thẻ này",
+        "button": "Viết đánh giá"
+      }
+    },
+    "emptyState": {
+      "noResults": {
+        "title": "Không tìm thấy thẻ tín dụng",
+        "description": "Chúng tôi không tìm thấy thẻ tín dụng nào phù hợp với tiêu chí của bạn. Vui lòng điều chỉnh bộ lọc hoặc từ khóa tìm kiếm.",
+        "action": "Xóa bộ lọc"
+      },
+      "noComparison": {
+        "title": "Chưa có thẻ để so sánh",
+        "description": "Thêm thẻ tín dụng để so sánh tính năng, phí và quyền lợi cạnh nhau.",
+        "action": "Xem thẻ tín dụng"
+      },
+      "noFilters": {
+        "title": "Chưa áp dụng bộ lọc",
+        "description": "Sử dụng bộ lọc để thu hẹp tìm kiếm và tìm thẻ tín dụng phù hợp nhất với nhu cầu của bạn.",
+        "action": "Xem tất cả thẻ"
+      },
+      "error": {
+        "title": "Đã xảy ra lỗi",
+        "description": "Chúng tôi gặp lỗi khi tải thẻ tín dụng. Vui lòng thử lại sau.",
+        "action": "Thử lại"
+      },
+      "generic": {
+        "title": "Không có dữ liệu",
+        "description": "Hiện không có thông tin nào."
+      }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "accurate": {
+    "title": "Chính xác theo quy định Việt Nam",
+    "description": "Tất cả tính toán đều tuân thủ các quy định và thông tư của Việt Nam"
+  },
+  "realtime": {
+    "title": "Dữ liệu thời gian thực",
+    "description": "Luôn cập nhật lãi suất và các thông số từ các ngân hàng hàng đầu Việt Nam"
+  },
+  "free": {
+    "title": "Miễn phí và dễ sử dụng",
+    "description": "Hoàn toàn miễn phí và giao diện thân thiện, dễ sử dụng cho mọi người"
+  }
+}

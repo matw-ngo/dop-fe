@@ -1,0 +1,52 @@
+{
+  "backToFlow": "Quay lại flow",
+  "saveChanges": "Lưu thay đổi",
+  "modified": "Đã sửa đổi",
+  "cards": {
+    "status": "Trạng thái",
+    "stepOrder": "Thứ tự bước",
+    "ekyc": "eKYC",
+    "otp": "OTP"
+  },
+  "fields": {
+    "title": "Các trường",
+    "subtitle": "Cấu hình các trường trong bước này",
+    "table": {
+      "headers": {
+        "name": "Tên trường",
+        "type": "Loại",
+        "visible": "Hiển thị",
+        "required": "Bắt buộc",
+        "actions": "Hành động"
+      },
+      "searchPlaceholder": "Tìm kiếm các trường...",
+      "emptyState": "Không tìm thấy trường nào. Thêm trường đầu tiên của bạn để bắt đầu.",
+      "emptyStateWithFilters": "Không tìm thấy trường nào"
+    },
+    "actions": {
+      "editField": "Chỉnh sửa trường",
+      "deleteField": "Xóa trường"
+    },
+    "toggle": {
+      "visible": "Hiển thị",
+      "required": "Bắt buộc",
+      "modified": "Đã sửa đổi"
+    }
+  },
+  "dialogs": {
+    "saveChanges": {
+      "title": "Lưu thay đổi",
+      "description": "Bạn có chắc chắn muốn lưu tất cả thay đổi cho bước này và các trường của nó? Điều này sẽ cập nhật cấu hình ngay lập tức.",
+      "cancel": "Hủy",
+      "confirm": "Lưu thay đổi"
+    },
+    "unsavedChanges": {
+      "title": "Thay đổi chưa lưu",
+      "description": "Bạn có các thay đổi chưa lưu. Bạn có chắc chắn muốn rời đi?"
+    }
+  },
+  "errorState": {
+    "title": "Không thể tải bước",
+    "message": "Không thể tải chi tiết bước"
+  }
+}

@@ -1,0 +1,110 @@
+{
+  "title": "Loan Calculator",
+  "subtitle": "Free and easy-to-use loan calculator. Calculate monthly payments, total interest and repayment schedule for your loan.",
+  "importantNotes": "Important Notes",
+  "notes": [
+    "Interest rates may vary depending on bank policies",
+    "Displayed interest rate is nominal, actual rate may differ",
+    "Payment includes only principal and interest, excludes other fees",
+    "Different loan types may have different interest rates and conditions",
+    "Should carefully check terms and conditions before borrowing"
+  ],
+  "loanTypes": "Common Loan Types",
+  "loanTypesList": [
+    {
+      "name": "Home Loan",
+      "description": "Low interest rate, long term, property collateral"
+    },
+    {
+      "name": "Car Loan",
+      "description": "Average interest rate, 5-8 year term, vehicle collateral"
+    },
+    {
+      "name": "Personal Loan",
+      "description": "Higher interest rate, no collateral required, fast process"
+    },
+    {
+      "name": "Business Loan",
+      "description": "Interest rate depends on business plan, guarantee required"
+    }
+  ],
+  "presets": {
+    "motorcycle": "Motorcycle Loan",
+    "car": "Car Loan",
+    "homeRenovation": "Home Renovation Loan",
+    "personal": "Personal Loan"
+  },
+  "terms": {
+    "3": "3 months",
+    "6": "6 months",
+    "12": "12 months",
+    "18": "18 months",
+    "24": "24 months",
+    "36": "36 months",
+    "48": "48 months",
+    "60": "60 months",
+    "120": "120 months",
+    "180": "180 months",
+    "240": "240 months",
+    "360": "360 months"
+  },
+  "csvExport": {
+    "headers": {
+      "period": "Period",
+      "beginningBalance": "Beginning Balance",
+      "principal": "Principal",
+      "interest": "Interest",
+      "total": "Total Payment",
+      "endingBalance": "Ending Balance"
+    },
+    "filename": "loan-schedule"
+  },
+  "form": {
+    "loanAmount": "Loan Amount",
+    "interestRate": "Annual Interest Rate",
+    "loanTerm": "Loan Term",
+    "months": "months",
+    "years": "years",
+    "paymentType": "Payment Type",
+    "equalInstallment": "Equal principal and interest monthly",
+    "equalPrincipal": "Equal principal, decreasing interest",
+    "startFees": "Initial Fees",
+    "startFeesNote": "Fees incurred upon disbursement (if any)",
+    "calculate": "Calculate",
+    "reset": "Reset",
+    "exportResults": "Export Results"
+  },
+  "results": {
+    "title": "Calculation Results",
+    "monthlyPayment": "Monthly Payment",
+    "totalInterest": "Total Interest to Pay",
+    "totalPayment": "Total Amount to Pay",
+    "effectiveRate": "Effective Interest Rate",
+    "schedule": "Detailed Repayment Schedule",
+    "month": "Period",
+    "beginningBalance": "Beginning Balance",
+    "payment": "Payment",
+    "principal": "Principal",
+    "interest": "Interest",
+    "endingBalance": "Ending Balance",
+    "total": "Total",
+    "exportSchedule": "Export Schedule",
+    "printSchedule": "Print Schedule",
+    "hideSchedule": "Hide",
+    "showSchedule": "View Repayment Schedule",
+    "exportCsv": "Export CSV"
+  },
+  "errors": {
+    "invalidAmount": "Please enter a valid loan amount",
+    "invalidRate": "Please enter a valid interest rate",
+    "invalidTerm": "Please enter a valid loan term",
+    "calculationError": "An error occurred while calculating. Please try again."
+  },
+  "component": {
+    "title": "Loan Calculator",
+    "subtitle": "Calculate monthly payments and interest rates for your loan",
+    "form": {
+      "selectTerm": "Select term"
+    }
+  }
+}

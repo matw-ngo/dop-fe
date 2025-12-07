@@ -1,0 +1,62 @@
+{
+  "backToFlow": "Quay lại flow",
+  "editFlow": "Chỉnh sửa Flow",
+  "cards": {
+    "status": "Trạng thái",
+    "totalSteps": "Tổng số bước",
+    "created": "Ngày tạo",
+    "lastUpdated": "Cập nhật lần cuối"
+  },
+  "steps": {
+    "title": "Các bước",
+    "subtitle": "Cấu hình các bước trong flow này",
+    "addStep": "Thêm bước",
+    "table": {
+      "headers": {
+        "order": "Thứ tự",
+        "name": "Tên bước",
+        "ekyc": "eKYC",
+        "otp": "OTP",
+        "fields": "Trường",
+        "status": "Trạng thái",
+        "actions": "Hành động"
+      },
+      "searchPlaceholder": "Tìm kiếm các bước...",
+      "emptyState": "Không tìm thấy bước nào. Thêm bước đầu tiên của bạn để bắt đầu.",
+      "emptyStateWithFilters": "Không tìm thấy bước nào"
+    },
+    "actions": {
+      "view": "Xem",
+      "edit": "Chỉnh sửa",
+      "enable": "Kích hoạt",
+      "disable": "Vô hiệu hóa",
+      "duplicate": "Nhân bản",
+      "delete": "Xóa",
+      "openMenu": "Mở menu"
+    },
+    "dialogs": {
+      "delete": {
+        "title": "Xóa bước",
+        "description": "Bạn có chắc chắn muốn xóa \"{name}\"? Hành động này không thể hoàn tác và sẽ xóa vĩnh viễn bước và tất cả các trường liên quan.",
+        "cancel": "Hủy",
+        "confirm": "Xóa bước"
+      },
+      "enable": {
+        "title": "Kích hoạt bước",
+        "description": "Bạn có chắc chắn muốn kích hoạt \"{name}\"?",
+        "cancel": "Hủy",
+        "confirm": "Kích hoạt"
+      },
+      "disable": {
+        "title": "Vô hiệu hóa bước",
+        "description": "Bạn có chắc chắn muốn vô hiệu hóa \"{name}\"?",
+        "cancel": "Hủy",
+        "confirm": "Vô hiệu hóa"
+      }
+    }
+  },
+  "errorState": {
+    "title": "Không thể tải flow",
+    "message": "Không thể tải chi tiết flow"
+  }
+}

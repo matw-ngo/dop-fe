@@ -1,0 +1,62 @@
+{
+  "backToFlow": "Back to flow",
+  "editFlow": "Edit Flow",
+  "cards": {
+    "status": "Status",
+    "totalSteps": "Total Steps",
+    "created": "Created",
+    "lastUpdated": "Last Updated"
+  },
+  "steps": {
+    "title": "Steps",
+    "subtitle": "Configure steps in this flow",
+    "addStep": "Add Step",
+    "table": {
+      "headers": {
+        "order": "Order",
+        "name": "Step Name",
+        "ekyc": "eKYC",
+        "otp": "OTP",
+        "fields": "Fields",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "searchPlaceholder": "Search steps...",
+      "emptyState": "No steps found. Add your first step to get started.",
+      "emptyStateWithFilters": "No steps found"
+    },
+    "actions": {
+      "view": "View",
+      "edit": "Edit",
+      "enable": "Enable",
+      "disable": "Disable",
+      "duplicate": "Duplicate",
+      "delete": "Delete",
+      "openMenu": "Open menu"
+    },
+    "dialogs": {
+      "delete": {
+        "title": "Delete Step",
+        "description": "Are you sure you want to delete \"{name}\"? This action cannot be undone and will permanently remove the step and all its associated fields.",
+        "cancel": "Cancel",
+        "confirm": "Delete Step"
+      },
+      "enable": {
+        "title": "Enable Step",
+        "description": "Are you sure you want to enable \"{name}\"?",
+        "cancel": "Cancel",
+        "confirm": "Enable"
+      },
+      "disable": {
+        "title": "Disable Step",
+        "description": "Are you sure you want to disable \"{name}\"?",
+        "cancel": "Cancel",
+        "confirm": "Disable"
+      }
+    }
+  },
+  "errorState": {
+    "title": "Failed to load flow",
+    "message": "Failed to load flow details"
+  }
+}

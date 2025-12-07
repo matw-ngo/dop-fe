@@ -1,0 +1,361 @@
+{
+  "title": "Công cụ tài chính",
+  "subtitle": "Các công cụ tính toán và phân tích tài chính chuyên nghiệp",
+  "backToHome": "Quay lại trang chủ",
+  "availableTools": "Công cụ sẵn có",
+  "comingSoon": "Sắp ra mắt",
+  "comingSoonBadge": "Sắp ra mắt",
+  "whyChooseUs": "Tại sao chọn công cụ của chúng tôi?",
+  "features": {
+    "accurate": {
+      "title": "Chính xác theo quy định Việt Nam",
+      "description": "Tất cả tính toán đều tuân thủ các quy định và thông tư của Việt Nam"
+    },
+    "realtime": {
+      "title": "Dữ liệu thời gian thực",
+      "description": "Luôn cập nhật lãi suất và các thông số từ các ngân hàng hàng đầu Việt Nam"
+    },
+    "free": {
+      "title": "Miễn phí và dễ sử dụng",
+      "description": "Hoàn toàn miễn phí và giao diện thân thiện, dễ sử dụng cho mọi người"
+    }
+  },
+  "list": {
+    "loanCalculator": {
+      "title": "Công cụ tính toán vay vốn",
+      "description": "Tính toán khoản vay, lãi suất và lịch trả góp chi tiết"
+    },
+    "savingsCalculator": {
+      "title": "Công cụ tiết kiệm",
+      "description": "So sánh lãi suất tiết kiệm và tính toán mục tiêu tài chính"
+    },
+    "salaryConverter": {
+      "title": "Chuyển đổi lương Gross - Net",
+      "description": "Tính toán lương thực nhận sau thuế và bảo hiểm"
+    },
+    "roiCalculator": {
+      "title": "Công cụ ROI",
+      "description": "Tính toán tỷ suất hoàn vốn cho các khoản đầu tư"
+    },
+    "taxCalculator": {
+      "title": "Công cụ tính thuế",
+      "description": "Tính toán các loại thuế theo quy định Việt Nam"
+    }
+  },
+  "breadcrumbs": {
+    "home": "Trang chủ",
+    "tools": "Công cụ tài chính",
+    "loanCalculator": "Tính toán khoản vay",
+    "savingsCalculator": "Tính lãi tiền gửi",
+    "grossToNet": "Tính lương Gross sang Net",
+    "netToGross": "Tính lương Net sang Gross"
+  },
+  "loanCalculator": {
+    "title": "Tính Toán Khoản Vay",
+    "subtitle": "Công cụ tính toán khoản vay miễn phí và dễ sử dụng. Tính toán các khoản thanh toán hàng tháng, tổng lãi suất và lịch trình trả nợ cho khoản vay của bạn.",
+    "importantNotes": "Lưu ý quan trọng",
+    "notes": [
+      "Lãi suất có thể thay đổi tùy thuộc vào chính sách của ngân hàng",
+      "Lãi suất hiển thị là lãi suất danh nghĩa, lãi suất thực tế có thể khác",
+      "Khoản thanh toán chỉ bao gồm gốc và lãi, không bao gồm các loại phí khác",
+      "Các loại khoản vay khác nhau có thể có lãi suất và điều kiện khác nhau",
+      "Nên kiểm tra kỹ các điều khoản và điều kiện trước khi vay"
+    ],
+    "loanTypes": "Các loại vay phổ biến",
+    "loanTypesList": [
+      {
+        "name": "Vay mua nhà",
+        "description": "Lãi suất thấp, kỳ hạn dài, thế chấp bất động sản"
+      },
+      {
+        "name": "Vay mua xe",
+        "description": "Lãi suất trung bình, kỳ hạn 5-8 năm, thế chấp xe"
+      },
+      {
+        "name": "Vay tiêu dùng",
+        "description": "Lãi suất cao hơn, không cần thế chấp, thủ tục nhanh"
+      },
+      {
+        "name": "Vay kinh doanh",
+        "description": "Lãi suất tùy thuộc vào phương án kinh doanh, cần bảo lãnh"
+      }
+    ],
+    "presets": {
+      "motorcycle": "Vay mua xe máy",
+      "car": "Vay mua ô tô",
+      "homeRenovation": "Vay sửa nhà",
+      "personal": "Vay tiêu dùng"
+    },
+    "terms": {
+      "3": "3 tháng",
+      "6": "6 tháng",
+      "12": "12 tháng",
+      "18": "18 tháng",
+      "24": "24 tháng",
+      "36": "36 tháng",
+      "48": "48 tháng",
+      "60": "60 tháng",
+      "120": "120 tháng",
+      "180": "180 tháng",
+      "240": "240 tháng",
+      "360": "360 tháng"
+    },
+    "csvExport": {
+      "headers": {
+        "period": "Kỳ",
+        "beginningBalance": "Dư nợ đầu kỳ",
+        "principal": "Góp gốc",
+        "interest": "Lãi suất",
+        "total": "Tổng thanh toán",
+        "endingBalance": "Dư nợ cuối kỳ"
+      },
+      "filename": "lich-tra-no"
+    },
+    "form": {
+      "loanAmount": "Số tiền vay",
+      "interestRate": "Lãi suất năm",
+      "loanTerm": "Kỳ hạn vay",
+      "months": "tháng",
+      "years": "năm",
+      "paymentType": "Loại trả nợ",
+      "equalInstallment": "Trả gốc và lãi đều hàng tháng",
+      "equalPrincipal": "Trả gốc đều, lãi giảm dần",
+      "startFees": "Phí ban đầu",
+      "startFeesNote": "Phí phát sinh khi giải ngân (nếu có)",
+      "calculate": "Tính toán",
+      "reset": "Làm lại",
+      "exportResults": "Xuất kết quả",
+      "selectTerm": "Chọn kỳ hạn"
+    },
+    "results": {
+      "title": "Kết quả tính toán",
+      "monthlyPayment": "Góp hàng tháng",
+      "totalInterest": "Tổng lãi phải trả",
+      "totalPayment": "Tổng số tiền phải trả",
+      "effectiveRate": "Lãi suất thực tế",
+      "schedule": "Lịch Trả Nợ Chi Tiết",
+      "month": "Kỳ",
+      "beginningBalance": "Dư nợ đầu kỳ",
+      "payment": "Khoản thanh toán",
+      "principal": "Gốc",
+      "interest": "Lãi",
+      "endingBalance": "Dư nợ cuối kỳ",
+      "total": "Tổng cộng",
+      "exportSchedule": "Xuất lịch trình",
+      "printSchedule": "In lịch trình",
+      "hideSchedule": "Ẩn",
+      "showSchedule": "Xem Lịch trả nợ",
+      "exportCsv": "Xuất CSV"
+    },
+    "errors": {
+      "invalidAmount": "Vui lòng nhập số tiền vay hợp lệ",
+      "invalidRate": "Vui lòng nhập lãi suất hợp lệ",
+      "invalidTerm": "Vui lòng nhập kỳ hạn vay hợp lệ",
+      "calculationError": "Đã xảy ra lỗi khi tính toán. Vui lòng thử lại."
+    },
+    "component": {
+      "title": "Tính Toán Khoản Vay",
+      "subtitle": "Tính toán số tiền thanh toán hàng tháng và lãi suất cho khoản vay của bạn"
+    }
+  },
+  "savingsCalculator": {
+    "title": "Tính Lãi Tiền Gửi",
+    "subtitle": "So sánh lãi suất tiền gửi tiết kiệm tại các ngân hàng Việt Nam. Tìm kiếm khoản tiết kiệm phù hợp với nhu cầu của bạn với lãi suất tốt nhất.",
+    "importantNotes": "Lưu ý quan trọng",
+    "notes": [
+      "Lãi suất có thể thay đổi tùy thuộc chính sách của từng ngân hàng",
+      "Lãi suất hiển thị là lãi suất niêm yết, thực tế có thể khác",
+      "Gửi tiền online thường có lãi suất cao hơn tại quầy",
+      "Kiểm tra điều kiện rút tiền trước hạn trước khi gửi",
+      "Cân nhắc gửi tiết kiệm có kỳ hạn để có lãi suất tốt hơn"
+    ],
+    "savingsTypes": "Các loại tiết kiệm phổ biến",
+    "savingsTypesList": [
+      {
+        "name": "Tiết kiệm không kỳ hạn",
+        "description": "Linh hoạt rút tiền nhưng lãi suất thấp"
+      },
+      {
+        "name": "Tiết kiệm có kỳ hạn",
+        "description": "Lãi suất cao hơn, không thể rút trước hạn"
+      },
+      {
+        "name": "Tiết kiệm tích lũy",
+        "description": "Góp thêm hàng tháng với lãi suất ưu đãi"
+      },
+      {
+        "name": "Tiết kiệm siêu ưu đãi",
+        "description": "Số tiền lớn, kỳ hạn dài với lãi suất cao nhất"
+      }
+    ],
+    "form": {
+      "initialDeposit": "Số tiền gửi ban đầu",
+      "monthlyDeposit": "Gửi thêm hàng tháng",
+      "interestRate": "Lãi suất năm",
+      "term": "Kỳ hạn gửi",
+      "compoundFrequency": "Tính lãi",
+      "monthly": "Hàng tháng",
+      "quarterly": "Hàng quý",
+      "annually": "Hàng năm",
+      "bank": "Ngân hàng",
+      "selectBank": "Chọn ngân hàng",
+      "savingsType": "Loại tiết kiệm",
+      "calculate": "Tính toán",
+      "reset": "Làm lại",
+      "compareRates": "So sánh lãi suất",
+      "savingsAmount": "Số tiền tiết kiệm",
+      "enterAmount": "Nhập số tiền",
+      "savingsPeriod": "Kỳ hạn gửi",
+      "onlineSavings": "Tiết kiệm online",
+      "counterSavings": "Tiết kiệm tại quầy",
+      "sortBy": "Sắp xếp theo",
+      "highestInterestRate": "Lãi suất cao nhất",
+      "lowestInterestRate": "Lãi suất thấp nhất",
+      "calculating": "Đang tính toán...",
+      "applyFilters": "Áp dụng bộ lọc",
+      "retry": "Thử lại"
+    },
+    "results": {
+      "bankComparisonResults": "Kết quả so sánh ngân hàng",
+      "banksFound": "{count} ngân hàng được tìm thấy",
+      "basedOn": "Dựa trên {amount} trong {period} tháng",
+      "table": {
+        "bankName": "Tên ngân hàng",
+        "interestRate": "Lãi suất",
+        "interestAmount": "Số tiền lãi",
+        "totalAmount": "Tổng số tiền",
+        "action": "Hành động"
+      },
+      "bestRate": "Tốt nhất",
+      "lowRate": "Thấp",
+      "open": "Mở",
+      "showing": "Hiển thị từ {start} đến {end} của {total} kết quả",
+      "pageOf": "Trang {current} của {total}",
+      "previous": "Trước",
+      "next": "Tiếp",
+      "summary": "Tóm tắt",
+      "averageRate": "Lãi suất trung bình",
+      "totalInterestRange": "Khoảng lãi suất tổng",
+      "bestTotalReturn": "Tổng lợi nhuận tốt nhất",
+      "noSavingsFound": "Không tìm thấy sản phẩm tiết kiệm nào phù hợp với tiêu chí của bạn.",
+      "tryAdjustingFilters": "Thử điều chỉnh bộ lọc để xem thêm kết quả."
+    }
+  },
+  "grossToNetCalculator": {
+    "title": "Tính Lương Gross → Net",
+    "subtitle": "Tính lương thực nhận từ lương gộp với đầy đủ các khoản khấu trừ",
+    "presets": {
+      "minimum": "Lương tối thiểu",
+      "employee": "Lương nhân viên",
+      "professional": "Lương chuyên viên",
+      "manager": "Lương quản lý",
+      "director": "Lương giám đốc"
+    },
+    "regions": {
+      "1": "I - Hà Nội, TP.HCM",
+      "2": "II - Đà Nẵng, Hải Phòng, Cần Thơ",
+      "3": "III - Các đô thị loại I",
+      "4": "IV - Tỉnh lẻ khác"
+    },
+    "form": {
+      "grossSalary": "Lương GROSS",
+      "enterGrossSalary": "Nhập lương gộp",
+      "minimumWage": "Lương tối thiểu vùng {region}",
+      "minimumWageLabel": "Lương tối thiểu",
+      "salaryRegion": "Vùng lương",
+      "selectRegion": "Chọn vùng",
+      "numberOfDependents": "Số người phụ thuộc",
+      "deductionPerPerson": "Giảm trừ",
+      "reset": "Làm lại"
+    },
+    "results": {
+      "grossSalary": "Lương GROSS",
+      "netSalary": "Lương NET",
+      "monthlyTakeHome": "Thực nhận hàng tháng",
+      "deductionBreakdown": "Chi Tiết Khấu Trừ",
+      "insurance": "Bảo hiểm",
+      "socialInsurance": "BHXH",
+      "healthInsurance": "BHYT",
+      "unemploymentInsurance": "BHTN",
+      "totalInsurance": "Tổng bảo hiểm",
+      "taxDeductions": "Giảm trừ gia cảnh",
+      "self": "Bản thân",
+      "dependents": "Phụ thuộc ({count} người)",
+      "totalDeductions": "Tổng giảm trừ",
+      "pit": "Thuế TNCN",
+      "taxableIncome": "Thu nhập chịu thuế",
+      "viewTaxDetails": "Xem chi tiết thuế suất",
+      "totalPit": "Tổng thuế TNCN",
+      "totalDeductionsAmount": "Tổng khấu trừ",
+      "totalEmployerCost": "Tổng chi phí của công ty",
+      "employerCostDescription": "GROSS + Bảo hiểm công ty (21.5%)"
+    }
+  },
+  "netToGrossCalculator": {
+    "title": "Tính Lương Net → Gross",
+    "subtitle": "Xác định lương gộp cần thiết để nhận được mức lương ròng mong muốn",
+    "presets": {
+      "minimum": "Lương tối thiểu",
+      "student": "Lương sinh viên",
+      "fresher": "Lương fresher",
+      "twoYearsExperience": "Lương 2 năm kinh nghiệm",
+      "senior": "Lương senior"
+    },
+    "regions": {
+      "1": "I - Hà Nội, TP.HCM",
+      "2": "II - Đà Nẵng, Hải Phòng, Cần Thơ",
+      "3": "III - Các đô thị loại I",
+      "4": "IV - Tỉnh lẻ khác"
+    },
+    "form": {
+      "desiredNetSalary": "Lương NET mong muốn",
+      "enterDesiredNetSalary": "Nhập lương ròng mong muốn",
+      "salaryRegion": "Vùng lương",
+      "selectRegion": "Chọn vùng",
+      "minimumWageLabel": "Lương tối thiểu",
+      "numberOfDependents": "Số người phụ thuộc",
+      "deductionPerPerson": "Giảm trừ",
+      "reset": "Làm lại"
+    },
+    "results": {
+      "desiredNetSalary": "Lương NET mong muốn",
+      "requiredGross": "Lương GROSS cần",
+      "iterations": "vòng lặp",
+      "convergenceWarning": "Không tìm thấy chính xác lương gross. Kết quả gần nhất với sai số: {error}",
+      "grossAnalysis": "Phân Tích Lương GROSS",
+      "grossSalary": "Lương GROSS",
+      "totalDeductions": "Tổng khấu trừ",
+      "deductionDetails": "Chi tiết khấu trừ",
+      "insurance": "Bảo hiểm",
+      "pit": "Thuế TNCN",
+      "netFormula": "Lương NET = Lương GROSS - Bảo hiểm (10.5%) - Thuế TNCN",
+      "pitFormula": "Thuế TNCN được tính theo biểu thuế lũy tiến từng phần",
+      "taxOptimizationTips": "Mẹo tối ưu thuế:",
+      "tip1": "Khai báo đầy đủ người phụ thuộc để tối đa hóa giảm trừ",
+      "tip2": "Góp quỹ hưu trí tự nguyện để giảm thuế TNCN",
+      "tip3": "Xem xét các khoản chiết khấu hợp lệ (hiếu thương, từ thiện)"
+    }
+  },
+  "results": {
+    "title": "Kết quả tính toán",
+    "finalAmount": "Tổng số tiền nhận được",
+    "totalDeposits": "Tổng số tiền gửi",
+    "totalInterest": "Tổng lãi nhận được",
+    "effectiveRate": "Lãi suất hiệu quả",
+    "projection": "Biểu đồ tăng trưởng",
+    "year": "Năm",
+    "deposits": "Tiền gửi",
+    "interest": "Lãi suất",
+    "balance": "Số dư"
+  },
+  "comparison": {
+    "title": "So sánh lãi suất các ngân hàng",
+    "bank": "Ngân hàng",
+    "term": "Kỳ hạn",
+    "rate": "Lãi suất",
+    "minAmount": "Số tiền tối thiểu",
+    "notes": "Ghi chú",
+    "lastUpdated": "Cập nhật lần cuối",
+    "onlineHigher": "Online cao hơn"
+  }
+}

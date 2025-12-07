@@ -1,0 +1,57 @@
+{
+  "welcome": "Chào mừng trở lại, {username}!",
+  "subtitle": "Đây là trang tổng quan quản trị của bạn. Dưới đây là các hoạt động gần đây.",
+  "createNewFlow": "Tạo Flow mới",
+  "stats": {
+    "totalFlows": "Tổng số flows",
+    "totalUsers": "Tổng số người dùng",
+    "applications": "Đơn vay",
+    "visits": "Lượt truy cập",
+    "conversionRate": "Tỷ lệ chuyển đổi",
+    "changePrefix": "Tăng {percentage}% so với tháng trước",
+    "conversionChange": "{rate} so với tháng trước",
+    "noChange": "Không thay đổi"
+  },
+  "quickActions": {
+    "title": "Hành động nhanh",
+    "flowManagement": {
+      "title": "Quản lý Flow",
+      "description": "Tạo và quản lý các luồng làm việc",
+      "button": "Truy cập"
+    },
+    "userManagement": {
+      "title": "Quản lý người dùng",
+      "description": "Quản lý tài khoản người dùng",
+      "button": "Truy cập"
+    },
+    "loanApplications": {
+      "title": "Đơn vay vốn",
+      "description": "Xem và quản lý các đơn vay vốn",
+      "button": "Truy cập"
+    },
+    "systemSettings": {
+      "title": "Cài đặt hệ thống",
+      "description": "Cấu hình hệ thống",
+      "button": "Truy cập"
+    }
+  },
+  "systemStatus": {
+    "title": "Trạng thái hệ thống",
+    "subtitle": "Trạng thái hoạt động của các dịch vụ chính",
+    "api": "API",
+    "database": "Cơ sở dữ liệu",
+    "ekyc": "eKYC",
+    "notifications": "Thông báo",
+    "operational": "Hoạt động",
+    "maintenance": "Bảo trì"
+  },
+  "recentActivity": {
+    "title": "Hoạt động gần đây",
+    "subtitle": "Các hoạt động gần đây trong hệ thống",
+    "flowCreated": "Flow \"{flowName}\" đã được tạo",
+    "userRegistered": "Người dùng mới đăng ký: {username}",
+    "settingsUpdated": "Cài đặt hệ thống đã được cập nhật",
+    "minutesAgo": "{minutes} phút trước",
+    "hoursAgo": "{hours} giờ trước"
+  }
+}

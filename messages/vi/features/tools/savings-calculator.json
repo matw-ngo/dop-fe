@@ -1,0 +1,83 @@
+{
+  "title": "Tính Lãi Tiền Gửi",
+  "subtitle": "So sánh lãi suất tiền gửi tiết kiệm tại các ngân hàng Việt Nam. Tìm kiếm khoản tiết kiệm phù hợp với nhu cầu của bạn với lãi suất tốt nhất.",
+  "importantNotes": "Lưu ý quan trọng",
+  "notes": [
+    "Lãi suất có thể thay đổi tùy thuộc chính sách của từng ngân hàng",
+    "Lãi suất hiển thị là lãi suất niêm yết, thực tế có thể khác",
+    "Gửi tiền online thường có lãi suất cao hơn tại quầy",
+    "Kiểm tra điều kiện rút tiền trước hạn trước khi gửi",
+    "Cân nhắc gửi tiết kiệm có kỳ hạn để có lãi suất tốt hơn"
+  ],
+  "savingsTypes": "Các loại tiết kiệm phổ biến",
+  "savingsTypesList": [
+    {
+      "name": "Tiết kiệm không kỳ hạn",
+      "description": "Linh hoạt rút tiền nhưng lãi suất thấp"
+    },
+    {
+      "name": "Tiết kiệm có kỳ hạn",
+      "description": "Lãi suất cao hơn, không thể rút trước hạn"
+    },
+    {
+      "name": "Tiết kiệm tích lũy",
+      "description": "Góp thêm hàng tháng với lãi suất ưu đãi"
+    },
+    {
+      "name": "Tiết kiệm siêu ưu đãi",
+      "description": "Số tiền lớn, kỳ hạn dài với lãi suất cao nhất"
+    }
+  ],
+  "form": {
+    "initialDeposit": "Số tiền gửi ban đầu",
+    "monthlyDeposit": "Gửi thêm hàng tháng",
+    "interestRate": "Lãi suất năm",
+    "term": "Kỳ hạn gửi",
+    "compoundFrequency": "Tính lãi",
+    "monthly": "Hàng tháng",
+    "quarterly": "Hàng quý",
+    "annually": "Hàng năm",
+    "bank": "Ngân hàng",
+    "selectBank": "Chọn ngân hàng",
+    "savingsType": "Loại tiết kiệm",
+    "calculate": "Tính toán",
+    "reset": "Làm lại",
+    "compareRates": "So sánh lãi suất",
+    "savingsAmount": "Số tiền tiết kiệm",
+    "enterAmount": "Nhập số tiền",
+    "savingsPeriod": "Kỳ hạn gửi",
+    "onlineSavings": "Tiết kiệm online",
+    "counterSavings": "Tiết kiệm tại quầy",
+    "sortBy": "Sắp xếp theo",
+    "highestInterestRate": "Lãi suất cao nhất",
+    "lowestInterestRate": "Lãi suất thấp nhất",
+    "calculating": "Đang tính toán...",
+    "applyFilters": "Áp dụng bộ lọc",
+    "retry": "Thử lại"
+  },
+  "results": {
+    "bankComparisonResults": "Kết quả so sánh ngân hàng",
+    "banksFound": "{count} ngân hàng được tìm thấy",
+    "basedOn": "Dựa trên {amount} trong {period} tháng",
+    "table": {
+      "bankName": "Tên ngân hàng",
+      "interestRate": "Lãi suất",
+      "interestAmount": "Số tiền lãi",
+      "totalAmount": "Tổng số tiền",
+      "action": "Hành động"
+    },
+    "bestRate": "Tốt nhất",
+    "lowRate": "Thấp",
+    "open": "Mở",
+    "showing": "Hiển thị từ {start} đến {end} của {total} kết quả",
+    "pageOf": "Trang {current} của {total}",
+    "previous": "Trước",
+    "next": "Tiếp",
+    "summary": "Tóm tắt",
+    "averageRate": "Lãi suất trung bình",
+    "totalInterestRange": "Khoảng lãi suất tổng",
+    "bestTotalReturn": "Tổng lợi nhuận tốt nhất",
+    "noSavingsFound": "Không tìm thấy sản phẩm tiết kiệm nào phù hợp với tiêu chí của bạn.",
+    "tryAdjustingFilters": "Thử điều chỉnh bộ lọc để xem thêm kết quả."
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "buttons": {
+    "next": "Tiếp theo",
+    "previous": "Trước"
+  },
+  "errors": {
+    "required": "Trường này là bắt buộc",
+    "minLength": "Phải có ít nhất {value} ký tự",
+    "maxLength": "Phải có tối đa {value} ký tự",
+    "min": "Phải có giá trị ít nhất {value}",
+    "max": "Phải có giá trị tối đa {value}",
+    "emailInvalid": "Vui lòng nhập địa chỉ email hợp lệ",
+    "phoneInvalid": "Vui lòng nhập số điện thoại hợp lệ (10 chữ số)",
+    "urlInvalid": "Vui lòng nhập URL hợp lệ",
+    "passwordMinLength": "Mật khẩu phải có ít nhất {value} ký tự",
+    "passwordRegex": "Mật khẩu phải chứa chữ hoa, chữ thường và số",
+    "number": "Phải là một số hợp lệ",
+    "integer": "Phải là một số nguyên",
+    "positive": "Phải là một số dương",
+    "negative": "Phải là một số âm"
+  }
+}

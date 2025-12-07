@@ -1,0 +1,38 @@
+{
+  "welcome": "Welcome back, {username}!",
+  "subtitle": "This is your admin dashboard. Here's what's been happening recently.",
+  "createNewFlow": "Create New Flow",
+  "stats": {
+    "totalFlows": "Total Flows",
+    "totalUsers": "Total Users",
+    "visits": "Visits",
+    "changePrefix": "Up {percentage}% from last month"
+  },
+  "quickActions": {
+    "title": "Quick Actions",
+    "flowManagement": {
+      "title": "Flow Management",
+      "description": "Create and manage workflows",
+      "button": "Access"
+    },
+    "userManagement": {
+      "title": "User Management",
+      "description": "Manage user accounts",
+      "button": "Access"
+    },
+    "systemSettings": {
+      "title": "System Settings",
+      "description": "Configure system",
+      "button": "Access"
+    }
+  },
+  "recentActivity": {
+    "title": "Recent Activity",
+    "subtitle": "Recent activities in the system",
+    "flowCreated": "Flow \"{flowName}\" was created",
+    "userRegistered": "New user registered: {username}",
+    "settingsUpdated": "System settings were updated",
+    "minutesAgo": "{minutes} minutes ago",
+    "hoursAgo": "{hours} hours ago"
+  }
+}

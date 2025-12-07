@@ -1,0 +1,36 @@
+{
+  "title": "Tính Toán Khoản Vay",
+  "description": "Công cụ tính toán khoản vay miễn phí và dễ sử dụng. Tính toán các khoản thanh toán hàng tháng, tổng lãi suất và lịch trình trả nợ cho khoản vay của bạn.",
+  "breadcrumb": {
+    "home": "Trang chủ",
+    "tools": "Công cụ tài chính",
+    "current": "Tính toán khoản vay"
+  },
+  "importantNotes": {
+    "title": "Lưu ý quan trọng",
+    "note1": "Lãi suất có thể thay đổi tùy thuộc vào chính sách của ngân hàng",
+    "note2": "Lãi suất hiển thị là lãi suất danh nghĩa, lãi suất thực tế có thể khác",
+    "note3": "Khoản thanh toán chỉ bao gồm gốc và lãi, không bao gồm các loại phí khác",
+    "note4": "Các loại khoản vay khác nhau có thể có lãi suất và điều kiện khác nhau",
+    "note5": "Nên kiểm tra kỹ các điều khoản và điều kiện trước khi vay"
+  },
+  "loanTypes": {
+    "title": "Các loại vay phổ biến",
+    "homeLoan": {
+      "name": "Vay mua nhà",
+      "description": "Lãi suất thấp, kỳ hạn dài, thế chấp bất động sản"
+    },
+    "carLoan": {
+      "name": "Vay mua xe",
+      "description": "Lãi suất trung bình, kỳ hạn 5-8 năm, thế chấp xe"
+    },
+    "personalLoan": {
+      "name": "Vay tiêu dùng",
+      "description": "Lãi suất cao hơn, không cần thế chấp, thủ tục nhanh"
+    },
+    "businessLoan": {
+      "name": "Vay kinh doanh",
+      "description": "Lãi suất tùy thuộc vào phương án kinh doanh, cần bảo lãnh"
+    }
+  }
+}

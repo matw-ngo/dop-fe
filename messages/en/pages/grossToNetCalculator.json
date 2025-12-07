@@ -1,0 +1,54 @@
+{
+  "title": "Gross to Net Salary Calculator",
+  "subtitle": "Calculate net salary from gross salary with detailed tax and insurance breakdowns",
+  "component": {
+    "title": "Gross to Net Calculator",
+    "subtitle": "Calculate take-home pay from gross salary with full deduction details",
+    "presets": {
+      "minimum": "Minimum Wage",
+      "employee": "Employee Salary",
+      "professional": "Professional Salary",
+      "manager": "Manager Salary",
+      "director": "Director Salary"
+    },
+    "regions": {
+      "1": "I - Hanoi, Ho Chi Minh City",
+      "2": "II - Da Nang, Hai Phong, Can Tho",
+      "3": "III - Type I Urban Areas",
+      "4": "IV - Other Provinces"
+    },
+    "form": {
+      "grossSalary": "GROSS Salary",
+      "enterGrossSalary": "Enter gross salary",
+      "minimumWage": "Region {region} minimum wage",
+      "minimumWageLabel": "Minimum wage",
+      "salaryRegion": "Salary Region",
+      "selectRegion": "Select region",
+      "numberOfDependents": "Number of dependents",
+      "deductionPerPerson": "Deduction",
+      "reset": "Reset"
+    },
+    "results": {
+      "grossSalary": "GROSS Salary",
+      "netSalary": "NET Salary",
+      "monthlyTakeHome": "Monthly take-home",
+      "deductionBreakdown": "Deduction Breakdown",
+      "insurance": "Insurance",
+      "socialInsurance": "Social Insurance",
+      "healthInsurance": "Health Insurance",
+      "unemploymentInsurance": "Unemployment Insurance",
+      "totalInsurance": "Total Insurance",
+      "taxDeductions": "Tax Deductions",
+      "self": "Self",
+      "dependents": "Dependents ({count} person)",
+      "totalDeductions": "Total Deductions",
+      "pit": "Personal Income Tax",
+      "taxableIncome": "Taxable Income",
+      "viewTaxDetails": "View tax rate details",
+      "totalPit": "Total PIT",
+      "totalDeductionsAmount": "Total Deductions",
+      "totalEmployerCost": "Total Employer Cost",
+      "employerCostDescription": "GROSS + Company Insurance (21.5%)"
+    }
+  }
+}

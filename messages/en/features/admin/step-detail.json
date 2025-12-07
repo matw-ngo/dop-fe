@@ -1,0 +1,52 @@
+{
+  "backToFlow": "Back to flow",
+  "saveChanges": "Save Changes",
+  "modified": "Modified",
+  "cards": {
+    "status": "Status",
+    "stepOrder": "Step Order",
+    "ekyc": "eKYC",
+    "otp": "OTP"
+  },
+  "fields": {
+    "title": "Fields",
+    "subtitle": "Configure fields in this step",
+    "table": {
+      "headers": {
+        "name": "Field Name",
+        "type": "Type",
+        "visible": "Visible",
+        "required": "Required",
+        "actions": "Actions"
+      },
+      "searchPlaceholder": "Search fields...",
+      "emptyState": "No fields found. Add your first field to get started.",
+      "emptyStateWithFilters": "No fields found"
+    },
+    "actions": {
+      "editField": "Edit field",
+      "deleteField": "Delete field"
+    },
+    "toggle": {
+      "visible": "Visible",
+      "required": "Required",
+      "modified": "Modified"
+    }
+  },
+  "dialogs": {
+    "saveChanges": {
+      "title": "Save Changes",
+      "description": "Are you sure you want to save all changes to this step and its fields? This will update configuration immediately.",
+      "cancel": "Cancel",
+      "confirm": "Save Changes"
+    },
+    "unsavedChanges": {
+      "title": "Unsaved Changes",
+      "description": "You have unsaved changes. Are you sure you want to leave?"
+    }
+  },
+  "errorState": {
+    "title": "Failed to load step",
+    "message": "Failed to load step details"
+  }
+}

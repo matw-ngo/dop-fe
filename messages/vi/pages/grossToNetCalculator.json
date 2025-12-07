@@ -1,0 +1,57 @@
+{
+  "title": "Tính Lương Gross sang Net",
+  "description": "Công cụ tính lương từ Gross sang Net chính xác theo quy định pháp luật Việt Nam. Tính toán thuế thu nhập cá nhân, bảo hiểm xã hội, bảo hiểm y tế, bảo hiểm thất nghiệp.",
+  "breadcrumb": {
+    "home": "Trang chủ",
+    "tools": "Công cụ tài chính",
+    "current": "Tính lương Gross sang Net"
+  },
+  "deductions": {
+    "title": "Giải thích các khoản trích",
+    "socialInsurance": {
+      "name": "BHXH",
+      "description": "Bảo hiểm xã hội, tính trên mức lương tối đa 20倍地区平均工资"
+    },
+    "healthInsurance": {
+      "name": "BHYT",
+      "description": "Bảo hiểm y tế, tính trên toàn bộ lương"
+    },
+    "unemploymentInsurance": {
+      "name": "BHTN",
+      "description": "Bảo hiểm thất nghiệp, tính trên mức lương tối đa 20倍地区平均工资"
+    },
+    "personalIncomeTax": {
+      "name": "TNCN",
+      "description": "Thuế thu nhập cá nhân, áp dụng biểu thuế lũy tiến"
+    },
+    "deduction": {
+      "name": "Giảm trừ gia cảnh",
+      "description": "11 triệu/người (bản thân) + 4.4 triệu/người phụ thuộc"
+    }
+  },
+  "importantNotes": {
+    "title": "Lưu ý quan trọng",
+    "note1": "Lương Gross là tổng thu nhập trước khi trừ các khoản bảo hiểm và thuế",
+    "note2": "Lương Net là số tiền thực nhận sau khi đã trừ tất cả các khoản bắt buộc",
+    "note3": "Mức lương đóng bảo hiểm xã hội có giới hạn tối đa",
+    "note4": "Biểu thuế TNCN áp dụng theo bậc thuế lũy tiến từng phần",
+    "note5": "Công cụ tính toán đã cập nhật theo quy định mới nhất"
+  },
+  "taxRates": {
+    "title": "Biểu thuế thu nhập cá nhân (áp dụng từ 2020)",
+    "table": {
+      "bracket": "Bậc",
+      "income": "Thu nhập chịu thuế/tháng",
+      "rate": "Thuế suất",
+      "brackets": {
+        "bracket1": "Đến 5 triệu",
+        "bracket2": "Trên 5 đến 10 triệu",
+        "bracket3": "Trên 10 đến 18 triệu",
+        "bracket4": "Trên 18 đến 32 triệu",
+        "bracket5": "Trên 32 đến 52 triệu",
+        "bracket6": "Trên 52 đến 80 triệu",
+        "bracket7": "Trên 80 triệu"
+      }
+    }
+  }
+}

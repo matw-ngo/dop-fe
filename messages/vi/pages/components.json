@@ -1,0 +1,14 @@
+{
+  "errorState": {
+    "defaultTitle": "Đã xảy ra lỗi không mong muốn",
+    "description": "Vui lòng thử lại. Nếu sự cố vẫn tiếp diễn, hãy liên hệ với bộ phận hỗ trợ.",
+    "showDetails": "Hiển thị chi tiết",
+    "hideDetails": "Ẩn chi tiết",
+    "retryButton": "Thử lại"
+  },
+  "onboardingCard": {
+    "title": "Bắt đầu hành trình của bạn",
+    "description": "Nhấp vào nút bên dưới để bắt đầu quá trình giới thiệu người dùng.",
+    "buttonText": "Bắt đầu"
+  }
+}

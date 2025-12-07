@@ -1,0 +1,72 @@
+{
+  "title": "Công cụ tính phí bảo hiểm",
+  "description": "Tính nhanh phí bảo hiểm cho các loại xe tại Việt Nam",
+  "form": {
+    "title": "Thông tin xe",
+    "description": "Nhập thông tin chi tiết để tính phí bảo hiểm chính xác",
+    "insuranceType": "Loại bảo hiểm",
+    "compulsory": "Bắt buộc TNDS",
+    "voluntary": "Tự nguyện",
+    "vehicleType": "Loại xe",
+    "selectVehicleType": "Chọn loại xe",
+    "seats": "Số chỗ ngồi",
+    "enterSeats": "Nhập số chỗ ngồi",
+    "usage": "Mục đích sử dụng",
+    "vehicleValue": "Giá trị xe",
+    "vehicleValueNote": "Nhập giá trị xe tính theo VNĐ (ví dụ: 500000000)",
+    "coverage": "Mức bảo hiểm",
+    "coverageOptions": {
+      "100M": "100 triệu VNĐ",
+      "500M": "500 triệu VNĐ",
+      "1B": "1 tỷ VNĐ",
+      "2B": "2 tỷ VNĐ"
+    },
+    "reset": "Làm lại",
+    "export": "Xuất báo giá"
+  },
+  "result": {
+    "title": "Kết quả tính phí",
+    "premium": "Phí bảo hiểm",
+    "tax": "Thuế VAT",
+    "total": "Tổng cộng",
+    "noCalculation": "Chưa có kết quả",
+    "validityTitle": "Thời hạn hiệu lực",
+    "validityDesc": "Phí bảo hiểm tính cho 1 năm kể từ ngày hiệu lực"
+  },
+  "info": {
+    "title": "Lưu ý",
+    "description": "Thông tin tham khảo về phí bảo hiểm",
+    "note1": "Phí bảo hiểm có thể thay đổi tùy theo công ty và chính sách",
+    "note2": "Phí trên đây chưa bao gồm các loại thuế, phí khác",
+    "note3": "Liên hệ công ty bảo hiểm để có báo giá chính xác"
+  },
+  "tabs": {
+    "fees": "Biểu phí",
+    "regulations": "Quy định"
+  },
+  "fees": {
+    "title": "Biểu phí tham khảo",
+    "description": "Biểu phí bảo hiểm theo quy định hiện hành",
+    "table": {
+      "vehicle": "Loại xe",
+      "type": "Loại hình",
+      "baseFee": "Phí cơ bản",
+      "additional": "Phí cộng thêm"
+    }
+  },
+  "regulations": {
+    "title": "Quy định pháp luật",
+    "description": "Các văn bản pháp quy liên quan",
+    "important": "Quan trọng",
+    "importantDesc": "Bảo hiểm TNDS bắt buộc là yêu cầu pháp luật khi tham gia giao thông",
+    "requirements": "Yêu cầu bắt buộc",
+    "req1": "Phải có bảo hiểm TNDS khi tham gia giao thông",
+    "req2": "Phải mang theo giấy chứng nhận bảo hiểm",
+    "req3": "Phải xuất trình bảo hiểm khi được yêu cầu",
+    "req4": "Bảo hiểm có hiệu lực trên toàn lãnh thổ Việt Nam"
+  },
+  "export": {
+    "noData": "Không có dữ liệu để xuất",
+    "success": "Đã xuất báo giá thành công"
+  }
+}

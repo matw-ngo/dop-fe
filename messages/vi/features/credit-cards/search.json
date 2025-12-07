@@ -1,0 +1,57 @@
+{
+  "placeholder": "Tìm kiếm thẻ tín dụng...",
+  "searchSuggestions": "Gợi ý tìm kiếm...",
+  "searching": "Đang tìm kiếm",
+  "noSuggestions": "Không có gợi ý nào",
+  "trySearchingFor": "Thử tìm với",
+  "clear": "Xóa",
+  "recentSearches": "Tìm kiếm gần đây",
+  "popular": {
+    "title": "Tìm kiếm phổ biến",
+    "visa": "Thẻ Visa",
+    "mastercard": "Thẻ Mastercard",
+    "freeFee": "Miễn phí thường niên",
+    "cashback": "Hoàn tiền",
+    "travel": "Thẻ du lịch",
+    "shopping": "Thẻ mua sắm"
+  },
+  "suggestions": {
+    "freeAnnualFee": {
+      "title": "Thẻ miễn phí thường niên",
+      "subtitle": "Các loại thẻ không phí thường niên"
+    },
+    "cashback": {
+      "title": "Thẻ hoàn tiền",
+      "subtitle": "Nhận lại tiền khi chi tiêu"
+    },
+    "travel": {
+      "title": "Thẻ du lịch",
+      "subtitle": "Tích dặm bay và đặc quyền du lịch"
+    },
+    "shopping": {
+      "title": "Thẻ mua sắm",
+      "subtitle": "Ưu đãi đặc biệt khi mua sắm online"
+    },
+    "fuel": {
+      "title": "Thẻ xăng dầu",
+      "subtitle": "Tiết kiệm khi đổ xăng, dầu"
+    },
+    "dining": {
+      "title": "Thẻ ẩm thực",
+      "subtitle": "Ưu đãi đặc biệt tại nhà hàng"
+    },
+    "student": {
+      "title": "Thẻ sinh viên",
+      "subtitle": "Các loại thẻ thiết kế cho sinh viên"
+    }
+  },
+  "categories": {
+    "free-annual-fee": "Miễn phí",
+    "cashback": "Hoàn tiền",
+    "travel": "Du lịch",
+    "shopping": "Mua sắm",
+    "fuel": "Xăng dầu",
+    "dining": "Ẩm thực",
+    "student": "Sinh viên"
+  }
+}

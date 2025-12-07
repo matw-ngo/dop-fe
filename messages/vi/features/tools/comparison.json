@@ -1,0 +1,10 @@
+{
+  "title": "So sánh lãi suất các ngân hàng",
+  "bank": "Ngân hàng",
+  "term": "Kỳ hạn",
+  "rate": "Lãi suất",
+  "minAmount": "Số tiền tối thiểu",
+  "notes": "Ghi chú",
+  "lastUpdated": "Cập nhật lần cuối",
+  "onlineHigher": "Online cao hơn"
+}

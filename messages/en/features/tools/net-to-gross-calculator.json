@@ -1,0 +1,83 @@
+{
+  "title": "Net to Gross Salary Calculator",
+  "subtitle": "Accurate net to gross salary calculator. Determine the gross salary needed to achieve desired net salary after taxes and insurance deductions.",
+  "userGuide": "User Guide",
+  "guideSteps": [
+    "Enter desired net salary (actual amount received)",
+    "Enter number of dependents (if any)",
+    "Select region (maximum salary for social insurance)",
+    "Tool will automatically calculate required gross salary",
+    "Check deduction details to understand salary structure"
+  ],
+  "negotiationTips": "Salary Negotiation Tips",
+  "tips": [
+    "Always be clear about gross or net salary when negotiating",
+    "Gross salary is 20-30% higher than net salary",
+    "Consider allowances and bonuses when negotiating",
+    "Check company's social insurance policy (full or not)",
+    "Request detailed salary breakdown when receiving offer"
+  ],
+  "exampleCalculations": "Example Calculations",
+  "exampleTable": {
+    "desiredNet": "Desired Net Salary",
+    "requiredGross": "Required Gross Salary",
+    "totalDeductions": "Total Deductions",
+    "notes": "Notes",
+    "noDependents": "No dependents",
+    "higherTaxBracket": "Higher tax bracket applies"
+  },
+  "disclaimer": "The above figures are for reference only, actual figures may vary depending on specific factors.",
+  "usageTips": {
+    "title": "Usage Tips",
+    "tips": [
+      "Use this tool when you receive a net salary offer and want to know the corresponding gross",
+      "When negotiating salary, propose gross salary to avoid confusion",
+      "Don't forget to calculate bonuses and allowances when negotiating total income",
+      "Check if company pays social insurance on full salary",
+      "Some companies have 'flexible' salary policies with various allowances"
+    ]
+  },
+  "presets": {
+    "minimum": "Minimum Wage",
+    "student": "Student Salary",
+    "fresher": "Fresher Salary",
+    "experience2": "2 Years Experience Salary",
+    "senior": "Senior Salary"
+  },
+  "form": {
+    "netSalary": "Desired Net Salary",
+    "region": "Region",
+    "dependents": "Number of Dependents",
+    "placeholder": {
+      "net": "Enter desired net salary",
+      "region": "Select region"
+    },
+    "dependentReduction": "Reduction: {amount}/person",
+    "calculate": "Calculate",
+    "reset": "Reset"
+  },
+  "results": {
+    "desiredNet": "Desired Net Salary",
+    "requiredGross": "Required Gross Salary",
+    "iterations": "{count} iterations",
+    "convergenceError": "Could not find exact gross. Closest result with error: {amount}",
+    "analysis": "Gross Salary Analysis",
+    "totalDeductions": "Total Deductions",
+    "deductionPercentage": "({percentage})",
+    "deductionBreakdown": "Deduction Details",
+    "insurance": "Insurance (10.5%)",
+    "pit": "Personal Income Tax",
+    "formula": "Net Salary = Gross Salary - Insurance (10.5%) - PIT\nPIT applies progressive tax schedule",
+    "taxOptimization": "Tax Optimization Tips:",
+    "taxTips": [
+      "Declare all dependents to maximize deductions",
+      "Contribute to voluntary pension fund to reduce PIT",
+      "Consider valid deductions (charity, humanitarian)"
+    ],
+    "title": "Calculation Results",
+    "deductionDetails": "Deduction Details",
+    "monthlyBreakdown": "Monthly Breakdown",
+    "annualBreakdown": "Annual Breakdown",
+    "exportCalculation": "Export Calculation"
+  }
+}

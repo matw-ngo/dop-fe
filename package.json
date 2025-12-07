@@ -22,7 +22,14 @@
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:debug": "playwright test --debug",
     "test:e2e:codegen": "playwright codegen",
-    "test:all": "pnpm test:run"
+    "test:all": "pnpm test:run",
+    "translations:add": "node scripts/translation-cli.js add",
+    "translations:validate": "node scripts/translation-cli.js validate",
+    "translations:stats": "node scripts/translation-cli.js stats",
+    "translations:missing": "node scripts/translation-cli.js missing",
+    "translations:duplicates": "node scripts/translation-cli.js duplicates",
+    "translations:extract": "node scripts/translation-cli.js extract",
+    "translations:extract:output": "node scripts/translation-cli.js extract --output=docs/i18n/used-keys.json"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": "npx @biomejs/biome format --write"

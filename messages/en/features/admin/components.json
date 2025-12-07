@@ -1,0 +1,30 @@
+{
+  "loadingStates": {
+    "loading": "Loading..."
+  },
+  "errorStates": {
+    "default": {
+      "title": "Something went wrong",
+      "message": "An error occurred while loading data. Please try again.",
+      "retry": "Try Again"
+    },
+    "empty": {
+      "title": "No data found",
+      "message": "There are no items to display."
+    },
+    "notFound": {
+      "title": "Not Found",
+      "message": "The requested item could not be found.",
+      "goBack": "Go Back"
+    },
+    "networkError": {
+      "title": "Network Error",
+      "message": "Unable to connect to the server. Please check your internet connection and try again."
+    },
+    "permissionError": {
+      "title": "Access Denied",
+      "message": "You don't have permission to access this resource. Please contact your administrator.",
+      "goBack": "Go Back"
+    }
+  }
+}

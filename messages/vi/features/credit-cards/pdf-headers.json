@@ -1,0 +1,9 @@
+{
+  "cardName": "Tên thẻ",
+  "bank": "Ngân hàng",
+  "annualFee": "Phí thường niên",
+  "interestRate": "Lãi suất",
+  "maxCreditLimit": "Hạn mức tối đa",
+  "rating": "Đánh giá",
+  "rewardsProgram": "Chương trình thưởng"
+}

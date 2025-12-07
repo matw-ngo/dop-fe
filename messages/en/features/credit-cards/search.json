@@ -1,0 +1,57 @@
+{
+  "placeholder": "Search credit cards...",
+  "searchSuggestions": "Search suggestions...",
+  "searching": "Searching",
+  "suggestions": {
+    "freeAnnualFee": {
+      "title": "Free Annual Fee Cards",
+      "subtitle": "Cards with no annual fee"
+    },
+    "cashback": {
+      "title": "Cashback Cards",
+      "subtitle": "Earn money back on purchases"
+    },
+    "travel": {
+      "title": "Travel Cards",
+      "subtitle": "Earn miles and travel benefits"
+    },
+    "shopping": {
+      "title": "Shopping Cards",
+      "subtitle": "Extra rewards for online shopping"
+    },
+    "fuel": {
+      "title": "Fuel Cards",
+      "subtitle": "Save on gas and fuel purchases"
+    },
+    "dining": {
+      "title": "Dining Cards",
+      "subtitle": "Extra rewards at restaurants"
+    },
+    "student": {
+      "title": "Student Cards",
+      "subtitle": "Cards designed for students"
+    }
+  },
+  "noSuggestions": "No suggestions",
+  "trySearchingFor": "Try searching for",
+  "clear": "Clear",
+  "recentSearches": "Recent Searches",
+  "popular": {
+    "title": "Popular Searches",
+    "visa": "Visa Cards",
+    "mastercard": "Mastercard",
+    "freeFee": "Free Annual Fee",
+    "cashback": "Cashback",
+    "travel": "Travel Cards",
+    "shopping": "Shopping Cards"
+  },
+  "categories": {
+    "free-annual-fee": "Free Fee",
+    "cashback": "Cashback",
+    "travel": "Travel",
+    "shopping": "Shopping",
+    "fuel": "Fuel",
+    "dining": "Dining",
+    "student": "Student"
+  }
+}

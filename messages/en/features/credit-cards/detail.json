@@ -1,0 +1,133 @@
+{
+  "annualFee": "Annual fee",
+  "interestRate": "Interest rate",
+  "cardNetwork": "Network",
+  "feeTypes": {
+    "free": "Free",
+    "waivable": "Waivable",
+    "tiered": "Tiered",
+    "fixed": "Fixed"
+  },
+  "cardDetails": "Credit Card Details",
+  "cardDetailsDescription": "Detailed information and card conditions",
+  "features": "Key Features",
+  "requirements": {
+    "employment": {
+      "types": {
+        "full_time": "Full-time Employment",
+        "part_time": "Part-time Employment",
+        "business_owner": "Business Owner",
+        "freelancer": "Freelancer",
+        "retired": "Retired"
+      }
+    },
+    "documents": {
+      "types": {
+        "payroll": "Payroll Statement",
+        "bank_statement": "Bank Statement",
+        "tax_return": "Tax Return",
+        "business_license": "Business License"
+      }
+    },
+    "breadcrumb": {
+      "home": "Home",
+      "creditCards": "Credit Cards"
+    },
+    "details": {
+      "notFound": "Card Not Found",
+      "notFoundDesc": "The credit card you're looking for doesn't exist or has been removed.",
+      "noDescription": "No description available for this card.",
+      "welcomeOffer": "Welcome Offer",
+      "offerExpiry": "Expires: {date}",
+      "tabs": {
+        "overview": "Overview",
+        "overviewContent": "Card Overview",
+        "benefits": "Benefits",
+        "fees": "Fees",
+        "features": "Features",
+        "requirements": "Requirements"
+      },
+      "relatedCards": "Related Cards",
+      "viewAllCards": "View All Cards"
+    },
+    "requirements": {
+      "age": {
+        "title": "Age Requirements",
+        "minAge": "Min Age",
+        "maxAge": "Max Age",
+        "description": "Applicant must meet age requirements"
+      },
+      "income": {
+        "title": "Income Requirements",
+        "description": "Minimum monthly income required"
+      },
+      "employment": {
+        "title": "Employment Type",
+        "description": "Accepted employment types"
+      },
+      "documents": {
+        "title": "Required Documents",
+        "incomeProof": "Income Proof",
+        "additional": "Additional Documents"
+      },
+      "location": {
+        "title": "Geographic Availability",
+        "nationwide": "Available nationwide",
+        "specific": "Available in specific provinces"
+      }
+    },
+    "reviews": {
+      "title": "Customer Reviews",
+      "totalReviews": "reviews",
+      "filterBy": "Filter by:",
+      "sortBy": "Sort by:",
+      "verified": "Verified",
+      "pros": "Pros",
+      "cons": "Cons",
+      "helpful": "Helpful",
+      "notHelpful": "Not Helpful",
+      "reply": "Reply",
+      "loadMore": "Load More Reviews",
+      "writeReview": {
+        "title": "Write a Review",
+        "description": "Share your experience with this card",
+        "button": "Write Review"
+      }
+    },
+    "emptyState": {
+      "noResults": {
+        "title": "No credit cards found",
+        "description": "We couldn't find any credit cards matching your criteria. Try adjusting your filters or search terms.",
+        "action": "Clear Filters"
+      },
+      "noComparison": {
+        "title": "No cards to compare",
+        "description": "Add credit cards to compare their features, fees, and benefits side by side.",
+        "action": "Browse Credit Cards"
+      },
+      "noFilters": {
+        "title": "No filters applied",
+        "description": "Use filters to narrow down your search and find the perfect credit card for your needs.",
+        "action": "Browse All Cards"
+      },
+      "error": {
+        "title": "Something went wrong",
+        "description": "We encountered an error while loading credit cards. Please try again later.",
+        "action": "Try Again"
+      },
+      "generic": {
+        "title": "No data available",
+        "description": "No information is available at the moment."
+      }
+    }
+  },
+  "feesAndCharges": "Fees & Charges",
+  "requirementsAndApplication": "Requirements & Application",
+  "minimumIncome": "Minimum Income",
+  "fees": {
+    "primary": "Primary Card",
+    "supplementary": "Supplementary Card",
+    "replacement": "Replacement Card",
+    "interestRates": "Interest Rates"
+  }
+}

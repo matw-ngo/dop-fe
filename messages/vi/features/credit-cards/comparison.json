@@ -1,0 +1,17 @@
+{
+  "compare": "So sánh",
+  "comparisonPanel": "Bảng so sánh thẻ tín dụng",
+  "comparisonProgress": "Tiến độ so sánh",
+  "shareComparison": "Chia sẻ so sánh",
+  "exportComparison": "Xuất so sánh",
+  "comparisonLimit": "Giới hạn so sánh",
+  "comparisonLimitMessage": "Bạn chỉ có thể so sánh tối đa {max} thẻ tại một thời điểm",
+  "compareDescription": "So sánh chi tiết các thẻ tín dụng đã chọn",
+  "criteria": "Tiêu chí",
+  "selectCardsToCompare": "Chọn thẻ để so sánh",
+  "comparisonSnackbar": {
+    "selected": "Đã chọn {count} thẻ để so sánh",
+    "viewComparison": "Xem so sánh",
+    "clearAll": "Xóa tất cả"
+  }
+}

@@ -1,0 +1,245 @@
+{
+  "title": "Hướng dẫn bảo hiểm",
+  "description": "Tìm hiểu về bảo hiểm và cách chọn gói phù hợp với nhu cầu của bạn",
+  "featured": "Nổi bật",
+  "minutesRead": "phút đọc",
+  "allCategories": "Tất cả danh mục",
+  "allDifficulties": "Tất cả cấp độ",
+  "filterByCategory": "Lọc theo danh mục",
+  "filterByDifficulty": "Lọc theo cấp độ",
+  "searchPlaceholder": "Tìm kiếm bài viết...",
+  "resultsCount": "Tìm thấy {count} bài viết",
+  "noResults": "Không tìm thấy bài viết nào",
+  "noResultsDesc": "Thử thay đổi bộ lọc hoặc từ khóa tìm kiếm",
+  "difficulty": {
+    "beginner": "Cơ bản",
+    "intermediate": "Trung cấp",
+    "advanced": "Nâng cao"
+  },
+  "categories": {
+    "title": "Danh mục",
+    "basics": {
+      "title": "Cơ bản",
+      "description": "Các khái niệm bảo hiểm cơ bản"
+    },
+    "vehicle": {
+      "title": "Bảo hiểm xe",
+      "description": "Bảo hiểm cho các loại xe cơ giới"
+    },
+    "health": {
+      "title": "Bảo hiểm sức khỏe",
+      "description": "Bảo hiểm chăm sóc sức khỏe"
+    },
+    "property": {
+      "title": "Bảo hiểm tài sản",
+      "description": "Bảo hiểm nhà cửa và tài sản"
+    },
+    "travel": {
+      "title": "Bảo hiểm du lịch",
+      "description": "Bảo hiểm khi đi du lịch"
+    },
+    "life": {
+      "title": "Bảo hiểm nhân thọ",
+      "description": "Bảo hiểm cuộc sống và nhân thọ"
+    }
+  },
+  "quickActions": {
+    "calculator": "Công cụ tính phí",
+    "calculatorDesc": "Tính phí bảo hiểm nhanh chóng",
+    "feeTables": "Biểu phí",
+    "feeTablesDesc": "Xem biểu phí chi tiết",
+    "regulations": "Quy định",
+    "regulationsDesc": "Tìm hiểu quy định pháp luật"
+  },
+  "articles": {
+    "basics": {
+      "title": "Bảo hiểm là gì?",
+      "description": "Tìm hiểu về khái niệm bảo hiểm và lợi ích",
+      "author": "Biên tập viên",
+      "sections": {
+        "what": {
+          "title": "Bảo hiểm là gì?",
+          "content": "Bảo hiểm là một hợp đồng giữa bên mua bảo hiểm và công ty bảo hiểm..."
+        },
+        "types": {
+          "title": "Các loại bảo hiểm",
+          "content": "Có nhiều loại bảo hiểm khác nhau phục vụ nhu cầu đa dạng",
+          "items": {
+            "compulsory": "Bảo hiểm bắt buộc - theo quy định pháp luật",
+            "voluntary": "Bảo hiểm tự nguyện - theo nhu cầu cá nhân"
+          }
+        },
+        "benefits": {
+          "title": "Lợi ích của bảo hiểm",
+          "content": "Bảo hiểm mang lại nhiều lợi ích thiết thực cho cá nhân và gia đình"
+        },
+        "choose": {
+          "title": "Cách chọn bảo hiểm phù hợp",
+          "content": "Việc chọn bảo hiểm phù hợp cần xem xét nhiều yếu tố như nhu cầu, khả năng tài chính và mức độ rủi ro"
+        }
+      }
+    },
+    "compulsory": {
+      "title": "Bảo hiểm bắt buộc tại Việt Nam",
+      "description": "Các loại bảo hiểm bắt buộc theo quy định pháp luật Việt Nam",
+      "author": "Chuyên gia pháp chế",
+      "sections": {
+        "overview": {
+          "title": "Tổng quan về bảo hiểm bắt buộc",
+          "content": "Bảo hiểm bắt buộc là loại hình bảo hiểm mà pháp luật yêu cầu mọi cá nhân, tổ chức phải tham gia..."
+        },
+        "types": {
+          "title": "Các loại hình bảo hiểm bắt buộc",
+          "content": "Tại Việt Nam hiện có các loại hình bảo hiểm bắt buộc chính..."
+        },
+        "vehicle": {
+          "title": "Bảo hiểm TNDS bắt buộc xe cơ giới",
+          "content": "Đây là loại hình bảo hiểm bắt buộc phổ biến nhất..."
+        },
+        "requirements": {
+          "title": "Yêu cầu và điều kiện",
+          "content": "Để tham gia bảo hiểm bắt buộc, cần đáp ứng các điều kiện sau:",
+          "items": {
+            "registration": "Xe đã đăng ký hợp lệ",
+            "inspection": "Xe qua kiểm định kỹ thuật",
+            "documents": "Giấy tờ hợp lệ"
+          }
+        },
+        "penalties": {
+          "title": "Mức xử phạt vi phạm",
+          "content": "Không tham gia bảo hiểm bắt buộc sẽ bị xử phạt theo quy định..."
+        }
+      }
+    },
+    "calculation": {
+      "title": "Cách tính phí bảo hiểm xe",
+      "description": "Hướng dẫn chi tiết cách tính phí bảo hiểm các loại xe",
+      "author": "Chuyên gia bảo hiểm",
+      "sections": {
+        "factors": {
+          "title": "Các yếu tố ảnh hưởng đến phí bảo hiểm",
+          "content": "Phí bảo hiểm phụ thuộc vào các yếu tố:",
+          "items": {
+            "vehicleType": "Loại xe",
+            "capacity": "Dung tích xi lanh",
+            "purpose": "Mục đích sử dụng",
+            "seats": "Số chỗ ngồi"
+          }
+        },
+        "formula": {
+          "title": "Công thức tính phí",
+          "content": "Phí bảo hiểm = Phí cơ bản × Hệ số điều chỉnh\nPhí cơ bản theo quy định của Bộ Tài chính"
+        },
+        "examples": {
+          "title": "Ví dụ thực tế",
+          "content": "Ví dụ: Ô tô con dưới 9 chỗ có phí bảo hiểm bắt buộc là 437.000 VNĐ/năm"
+        },
+        "tools": {
+          "title": "Công cụ hỗ trợ",
+          "content": "Sử dụng công cụ tính phí bảo hiểm của chúng tôi để có kết quả chính xác"
+        }
+      }
+    },
+    "claims": {
+      "title": "Quy trình bồi thường bảo hiểm",
+      "description": "Hướng dẫn chi tiết các bước bồi thường khi có tổn thất",
+      "author": "Chuyên gia bồi thường",
+      "sections": {
+        "when": {
+          "title": "Khi nào cần bồi thường?",
+          "content": "Cần báo ngay cho công ty bảo hiểm khi xảy ra sự kiện bảo hiểm..."
+        },
+        "steps": {
+          "title": "Các bước bồi thường",
+          "content": "Quy trình bồi thường gồm các bước:",
+          "items": {
+            "report": "Báo cáo sự kiện",
+            "documents": "Chuẩn bị hồ sơ",
+            "assessment": "Giám định tổn thất",
+            "approval": "Phê duyệt bồi thường",
+            "payment": "Chi trả bồi thường"
+          }
+        },
+        "documents": {
+          "title": "Hồ sơ cần thiết",
+          "content": "Hồ sơ bồi thường bao gồm:",
+          "items": {
+            "claimForm": "Đơn yêu cầu bồi thường",
+            "policy": "Hợp đồng bảo hiểm",
+            "idCard": "Giấy tờ tùy thân",
+            "evidence": "Bằng chứng tổn thất",
+            "policeReport": "Biên bản cơ quan chức năng"
+          }
+        },
+        "timeline": {
+          "title": "Thời gian xử lý",
+          "content": "Thời gian xử lý bồi thường thường từ 5-15 ngày làm việc kể từ khi nhận đủ hồ sơ"
+        },
+        "tips": {
+          "title": "Lưu ý quan trọng",
+          "content": "- Báo cáo sự kiện ngay lập tức\n- Giữ gìn hiện trường\n- Chuẩn bị đầy đủ hồ sơ\n- Theo dõi sát sao quá trình xử lý"
+        }
+      }
+    },
+    "health": {
+      "title": "Bảo hiểm sức khỏe toàn diện",
+      "description": "Tìm hiểu về bảo hiểm sức khỏe và quyền lợi đi kèm",
+      "author": "Chuyên gia y tế",
+      "sections": {
+        "overview": {
+          "title": "Tổng quan bảo hiểm sức khỏe",
+          "content": "Bảo hiểm sức khỏe giúp trang trải chi phí y tế khi ốm đau, tai nạn..."
+        },
+        "coverage": {
+          "title": "Phạm vi bảo hiểm",
+          "content": "Bảo hiểm sức khỏe chi trả cho:",
+          "items": {
+            "inpatient": "Chi phí điều trị nội trú",
+            "outpatient": "Chi phí khám chữa bệnh ngoại trú",
+            "emergency": "Chi phí cấp cứu",
+            "dental": "Chi phí nha khoa",
+            "maternity": "Chi phí sản phụ khoa"
+          }
+        },
+        "exclusions": {
+          "title": "Các trường hợp không bảo hiểm",
+          "content": "Bảo hiểm sức khỏe không chi trả cho:",
+          "items": {
+            "preExisting": "Bệnh sẵn có trước khi tham gia",
+            "cosmetic": "Phẫu thuật thẩm mỹ",
+            "experimental": "Phương pháp điều trị thử nghiệm"
+          }
+        },
+        "choose": {
+          "title": "Lựa chọn bảo hiểm sức khỏe",
+          "content": "Khi chọn bảo hiểm sức khỏe cần xem xét: mức phí, phạm vi bảo hiểm, mạng lưới bệnh viện..."
+        }
+      }
+    },
+    "property": {
+      "title": "Bảo hiểm tài sản nhà cửa",
+      "description": "Bảo vệ tài sản của bạn trước các rủi ro",
+      "author": "Chuyên gia tài sản",
+      "sections": {
+        "what": {
+          "title": "Bảo hiểm tài sản là gì?",
+          "content": "Bảo hiểm tài sản giúp bảo vệ nhà cửa và tài sản cá nhân trước các rủi ro..."
+        },
+        "coverage": {
+          "title": "Các rủi ro được bảo hiểm",
+          "content": "Bảo hiểm tài sản chi trả cho:",
+          "items": {
+            "fire": "Thiệt hại do cháy nổ",
+            "natural": "Thiệt hại do thiên tai",
+            "theft": "Mất cắp tài sản",
+            "water": "Thiệt hại do đứt vỡ đường ống nước"
+          }
+        },
+        "factors": {
+          "title": "Yếu tố ảnh hưởng đến phí",
+          "content": "Phí bảo hiểm phụ thuộc vào: giá trị tài sản, địa điểm, các biện pháp an toàn..."
+        }
+      }
+    }
+  }
+}

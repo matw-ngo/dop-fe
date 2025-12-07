@@ -1,0 +1,57 @@
+{
+  "title": "Tính Lương Net sang Gross",
+  "description": "Công cụ tính lương từ Net sang Gross chính xác. Xác định mức lương Gross cần đề nghị để đạt được mức lương Net mong muốn sau khi đã trừ các khoản thuế và bảo hiểm.",
+  "breadcrumb": {
+    "home": "Trang chủ",
+    "tools": "Công cụ tài chính",
+    "current": "Tính lương Net sang Gross"
+  },
+  "usageGuide": {
+    "title": "Hướng dẫn sử dụng",
+    "step1": "Nhập mức lương Net mong muốn (số tiền thực nhận)",
+    "step2": "Nhập số người phụ thuộc (nếu có)",
+    "step3": "Chọn khu vực (mức lương tối đa để đóng BHXH)",
+    "step4": "Công cụ sẽ tự động tính mức lương Gross cần đề nghị",
+    "step5": "Kiểm tra chi tiết các khoản trừ để hiểu rõ cấu trúc lương"
+  },
+  "negotiationTips": {
+    "title": "Lưu ý khi đàm phán lương",
+    "tip1": "Luôn rõ ràng về lương Gross hay Net khi đàm phán",
+    "tip2": "Lương Gross cao hơn 20-30% so với lương Net",
+    "tip3": "Cân nhắc các khoản phụ cấp và thưởng khi đàm phán",
+    "tip4": "Kiểm tra chính sách BHXH của công ty (đủ tối đa hay không)",
+    "tip5": "Yêu cầu bảng tính lương chi tiết khi nhận offer"
+  },
+  "examples": {
+    "title": "Ví dụ tham khảo",
+    "table": {
+      "netWanted": "Lương Net mong muốn",
+      "grossNeeded": "Lương Gross cần đề nghị",
+      "totalDeductions": "Tổng các khoản trừ",
+      "notes": "Ghi chú",
+      "rows": {
+        "row1": {
+          "note": "Chưa có người phụ thuộc"
+        },
+        "row2": {
+          "note": "Chưa có người phụ thuộc"
+        },
+        "row3": {
+          "note": "Chưa có người phụ thuộc"
+        },
+        "row4": {
+          "note": "Bắt đầu áp dụng thuế suất cao hơn"
+        }
+      }
+    },
+    "disclaimer": "Số liệu trên chỉ mang tính chất tham khảo, con số thực tế có thể thay đổi tùy thuộc vào các yếu tố cụ thể."
+  },
+  "tips": {
+    "title": "Mẹo khi sử dụng công cụ",
+    "tip1": "Sử dụng công cụ này khi bạn nhận được offer lương Net và muốn biết Gross tương ứng",
+    "tip2": "Khi đàm phán lương, hãy đề nghị mức lương Gross để tránh nhầm lẫn",
+    "tip3": "Đừng quên tính toán các khoản thưởng và phụ cấp khi đàm phán tổng thu nhập",
+    "tip4": "Kiểm tra xem công ty có đóng BHXH trên toàn bộ lương hay không",
+    "tip5": "Một số công ty có chính sách lương 'flexible' với nhiều khoản phụ cấp khác nhau"
+  }
+}

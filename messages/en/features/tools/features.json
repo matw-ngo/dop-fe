@@ -1,0 +1,14 @@
+{
+  "accurate": {
+    "title": "Accurate according to Vietnamese regulations",
+    "description": "All calculations comply with Vietnamese regulations and circulars"
+  },
+  "realtime": {
+    "title": "Real-time data",
+    "description": "Always updated with interest rates and data from leading Vietnamese banks"
+  },
+  "free": {
+    "title": "Free and easy to use",
+    "description": "Completely free with user-friendly interface for everyone"
+  }
+}

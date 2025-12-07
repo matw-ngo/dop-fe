@@ -1,0 +1,7 @@
+{
+  "dashboard": "Trang tổng quan",
+  "flows": "Flows",
+  "flow": "Flow {id}",
+  "step": "Bước {id}",
+  "toggleMenu": "Chuyển đổi menu"
+}

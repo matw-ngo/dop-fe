@@ -1,0 +1,22 @@
+{
+  "buttons": {
+    "next": "Next",
+    "previous": "Previous"
+  },
+  "errors": {
+    "required": "This field is required",
+    "minLength": "Must be at least {value} characters",
+    "maxLength": "Must be at most {value} characters",
+    "min": "Must be at least {value}",
+    "max": "Must be at most {value}",
+    "emailInvalid": "Please enter a valid email address",
+    "phoneInvalid": "Please enter a valid phone number (10 digits)",
+    "urlInvalid": "Please enter a valid URL",
+    "passwordMinLength": "Password must be at least {value} characters",
+    "passwordRegex": "Password must contain uppercase, lowercase, and numbers",
+    "number": "Must be a valid number",
+    "integer": "Must be a whole number",
+    "positive": "Must be a positive number",
+    "negative": "Must be a negative number"
+  }
+}

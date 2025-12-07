@@ -1,0 +1,7 @@
+{
+  "dashboard": "Dashboard",
+  "flows": "Flows",
+  "flow": "Flow {id}",
+  "step": "Step {id}",
+  "toggleMenu": "Toggle menu"
+}

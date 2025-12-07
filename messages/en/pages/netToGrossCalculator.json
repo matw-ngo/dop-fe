@@ -1,0 +1,49 @@
+{
+  "title": "Net to Gross Salary Calculator",
+  "subtitle": "Determine the gross salary needed to achieve a desired net salary",
+  "component": {
+    "title": "Net to Gross Calculator",
+    "subtitle": "Determine the gross salary needed for your desired take-home pay",
+    "presets": {
+      "minimum": "Minimum Wage",
+      "student": "Student Salary",
+      "fresher": "Fresher Salary",
+      "twoYearsExperience": "2 Years Experience Salary",
+      "senior": "Senior Salary"
+    },
+    "regions": {
+      "1": "I - Hanoi, Ho Chi Minh City",
+      "2": "II - Da Nang, Hai Phòng, Can Tho",
+      "3": "III - Type I Urban Areas",
+      "4": "IV - Other Provinces"
+    },
+    "form": {
+      "desiredNetSalary": "Desired NET Salary",
+      "enterDesiredNetSalary": "Enter desired net salary",
+      "salaryRegion": "Salary Region",
+      "selectRegion": "Select region",
+      "minimumWageLabel": "Minimum wage",
+      "numberOfDependents": "Number of dependents",
+      "deductionPerPerson": "Deduction",
+      "reset": "Reset"
+    },
+    "results": {
+      "desiredNetSalary": "Desired NET Salary",
+      "requiredGross": "Required GROSS",
+      "iterations": "iterations",
+      "convergenceWarning": "Could not find exact gross salary. Closest result with error: {error}",
+      "grossAnalysis": "Gross Salary Analysis",
+      "grossSalary": "GROSS Salary",
+      "totalDeductions": "Total Deductions",
+      "deductionDetails": "Deduction Details",
+      "insurance": "Insurance",
+      "pit": "Personal Income Tax",
+      "netFormula": "NET Salary = GROSS Salary - Insurance (10.5%) - Personal Income Tax",
+      "pitFormula": "Personal Income Tax is calculated using progressive tax brackets",
+      "taxOptimizationTips": "Tax Optimization Tips:",
+      "tip1": "Declare all dependents to maximize deductions",
+      "tip2": "Contribute to voluntary pension funds to reduce PIT",
+      "tip3": "Consider legitimate deductions (charitable contributions, etc.)"
+    }
+  }
+}

@@ -1,0 +1,2620 @@
+{
+  "en": [
+    {
+      "key": "pages.creditCard.hasInstallments",
+      "baseValue": "Hỗ trợ trả góp"
+    },
+    {
+      "key": "pages.insurance.removeProduct",
+      "baseValue": "Xóa sản phẩm"
+    },
+    {
+      "key": "pages.insurance.comparisonProgress",
+      "baseValue": "Tiến trình so sánh"
+    },
+    {
+      "key": "pages.insurance.canAddMore",
+      "baseValue": "Có thể chọn thêm sản phẩm"
+    },
+    {
+      "key": "pages.insurance.maxProductsReached",
+      "baseValue": "Số lượng sản phẩm đã đạt tối đa"
+    },
+    {
+      "key": "pages.insurance.comparisonPanel",
+      "baseValue": "Bảng so sánh"
+    },
+    {
+      "key": "pages.insurance.shareComparison",
+      "baseValue": "Chia sẻ"
+    },
+    {
+      "key": "pages.insurance.exportComparison",
+      "baseValue": "Xuất"
+    },
+    {
+      "key": "pages.insurance.comparisonLimit",
+      "baseValue": "Giới hạn so sánh"
+    },
+    {
+      "key": "pages.insurance.youMightAlsoLike",
+      "baseValue": "Bạn cũng có thể thích"
+    },
+    {
+      "key": "pages.insurance.noMoreSuggestions",
+      "baseValue": "Không có gợi ý nào"
+    },
+    {
+      "key": "pages.insurance.addedToComparison",
+      "baseValue": "Đã thêm vào danh sách so sánh"
+    },
+    {
+      "key": "pages.insurance.removedFromComparison",
+      "baseValue": "Đã xóa khỏi danh sách so sánh"
+    },
+    {
+      "key": "pages.insurance.comparisonLimitReached",
+      "baseValue": "Chỉ có thể so sánh tối đa {max} sản phẩm"
+    },
+    {
+      "key": "pages.insurance.comparisonStatus",
+      "baseValue": "Trạng thái so sánh"
+    },
+    {
+      "key": "pages.insurance.products",
+      "baseValue": "sản phẩm"
+    },
+    {
+      "key": "pages.insurance.comparisonCountMessage",
+      "baseValue": "Đang có {count} sản phẩm trong danh sách so sánh"
+    },
+    {
+      "key": "pages.insurance.viewComparison",
+      "baseValue": "Xem so sánh"
+    },
+    {
+      "key": "pages.insurance.comparisonLimitMessage",
+      "baseValue": "Đã đạt giới hạn {max} sản phẩm. Vui lòng xóa sản phẩm khỏi danh sách để thêm sản phẩm mới."
+    },
+    {
+      "key": "pages.insurance.ctaNote",
+      "baseValue": "Thêm sản phẩm vào danh sách so sánh để dễ dàng đưa ra quyết định tốt nhất"
+    },
+    {
+      "key": "pages.insurance.searchAndFilterResults",
+      "baseValue": "Tìm thấy {count} sản phẩm cho '{query}' với bộ lọc"
+    },
+    {
+      "key": "pages.insurance.filterResults",
+      "baseValue": "Tìm thấy {count} sản phẩm với bộ lọc"
+    },
+    {
+      "key": "pages.insurance.addToComparisonAria",
+      "baseValue": "Thêm sản phẩm vào so sánh"
+    },
+    {
+      "key": "pages.insurance.removeFromComparisonAria",
+      "baseValue": "Xóa sản phẩm khỏi so sánh"
+    },
+    {
+      "key": "pages.insurance.coverageLevel",
+      "baseValue": "Mức bảo vệ"
+    },
+    {
+      "key": "pages.insurance.productOverview.title",
+      "baseValue": "Tổng quan sản phẩm"
+    },
+    {
+      "key": "pages.insurance.productOverview.basicInfo",
+      "baseValue": "Thông tin cơ bản"
+    },
+    {
+      "key": "pages.insurance.productOverview.provider",
+      "baseValue": "Nhà cung cấp"
+    },
+    {
+      "key": "pages.insurance.productOverview.insuranceType",
+      "baseValue": "Loại bảo hiểm"
+    },
+    {
+      "key": "pages.insurance.productOverview.compulsory",
+      "baseValue": "Bắt buộc"
+    },
+    {
+      "key": "pages.insurance.productOverview.voluntary",
+      "baseValue": "Tự nguyện"
+    },
+    {
+      "key": "pages.insurance.productOverview.coveragePeriod",
+      "baseValue": "Thời hạn bảo hiểm"
+    },
+    {
+      "key": "pages.insurance.productOverview.productCode",
+      "baseValue": "Mã sản phẩm"
+    },
+    {
+      "key": "pages.insurance.productOverview.insuredObjects",
+      "baseValue": "Đối tượng bảo hiểm"
+    },
+    {
+      "key": "pages.insurance.productOverview.ageRange",
+      "baseValue": "Độ tuổi"
+    },
+    {
+      "key": "pages.insurance.productOverview.occupation",
+      "baseValue": "Nghề nghiệp"
+    },
+    {
+      "key": "pages.insurance.productDetails.title",
+      "baseValue": "Thông tin chi tiết sản phẩm"
+    },
+    {
+      "key": "pages.insurance.tabs.coverage.title",
+      "baseValue": "Đối tượng và Phạm vi"
+    },
+    {
+      "key": "pages.insurance.tabs.coverage.shortTitle",
+      "baseValue": "Phạm vi"
+    },
+    {
+      "key": "pages.insurance.tabs.coverage.insuredObjects.title",
+      "baseValue": "Đối tượng bảo hiểm"
+    },
+    {
+      "key": "pages.insurance.tabs.coverage.insuredObjects.ageRangeTitle",
+      "baseValue": "Độ tuổi được bảo hiểm"
+    },
+    {
+      "key": "pages.insurance.tabs.coverage.insuredObjects.ageRangeText",
+      "baseValue": "Từ {min} đến {max} tuổi"
+    },
+    {
+      "key": "pages.insurance.tabs.coverage.insuredObjects.occupationTitle",
+      "baseValue": "Nghề nghiệp áp dụng"
+    },
+    {
+      "key": "pages.insurance.tabs.coverage.insuredObjects.geographicScope",
+      "baseValue": "Phạm vi địa lý"
+    },
+    {
+      "key": "pages.insurance.tabs.coverage.insuredObjects.nationwide",
+      "baseValue": "Toàn quốc"
+    },
+    {
+      "key": "pages.insurance.tabs.coverage.insuredObjects.provincesCount",
+      "baseValue": "{count} tỉnh/thành"
+    },
+    {
+      "key": "pages.insurance.tabs.coverage.insuredObjects.vehicleType",
+      "baseValue": "Loại xe được bảo hiểm"
+    },
+    {
+      "key": "pages.insurance.tabs.coverage.coverageScope.title",
+      "baseValue": "Phạm vi bảo hiểm"
+    },
+    {
+      "key": "pages.insurance.tabs.coverage.coverageScope.personalCoverage",
+      "baseValue": "Bảo vệ con người"
+    },
+    {
+      "key": "pages.insurance.tabs.coverage.coverageScope.propertyLiability",
+      "baseValue": "Tài sản & Trách nhiệm"
+    },
+    {
+      "key": "pages.insurance.tabs.coverage.specialNotes.title",
+      "baseValue": "Lưu ý đặc biệt về phạm vi bảo hiểm"
+    },
+    {
+      "key": "pages.insurance.tabs.coverage.specialNotes.note1",
+      "baseValue": "• Mức bồi thường thực tế có thể thay đổi tùy thuộc vào điều khoản cụ thể của hợp đồng"
+    },
+    {
+      "key": "pages.insurance.tabs.coverage.specialNotes.note2",
+      "baseValue": "• Một số quyền lợi có thể yêu cầu điều kiện bổ sung"
+    },
+    {
+      "key": "pages.insurance.tabs.coverage.specialNotes.vehicleValue",
+      "baseValue": "• Giá trị xe được bảo hiểm: {min} - {max}"
+    },
+    {
+      "key": "pages.insurance.tabs.coverage.deductibles.title",
+      "baseValue": "Mức miễn thường"
+    },
+    {
+      "key": "pages.insurance.tabs.coverage.deductibles.standardAmount",
+      "baseValue": "Mức miễn thường chuẩn: {amount}"
+    },
+    {
+      "key": "pages.insurance.tabs.coverage.deductibles.voluntaryOptions",
+      "baseValue": " (Tùy chọn: {options})"
+    },
+    {
+      "key": "pages.insurance.tabs.coverage.deductibles.explanation",
+      "baseValue": "Mức miễn thường là số tiền bạn phải tự chi trả cho mỗi sự cố bảo hiểm"
+    },
+    {
+      "key": "pages.insurance.tabs.benefits.title",
+      "baseValue": "Quyền lợi"
+    },
+    {
+      "key": "pages.insurance.tabs.benefits.shortTitle",
+      "baseValue": "Quyền lợi"
+    },
+    {
+      "key": "pages.insurance.tabs.benefits.mainBenefits.title",
+      "baseValue": "Quyền lợi bảo hiểm chính"
+    },
+    {
+      "key": "pages.insurance.tabs.benefits.features.title",
+      "baseValue": "Tính năng nổi bật"
+    },
+    {
+      "key": "pages.insurance.tabs.benefits.services.title",
+      "baseValue": "Dịch vụ bổ sung & Hỗ trợ 24/7"
+    },
+    {
+      "key": "pages.insurance.tabs.benefits.emergencySupport.title",
+      "baseValue": "Thông tin hỗ trợ khẩn cấp"
+    },
+    {
+      "key": "pages.insurance.tabs.benefits.emergencySupport.hotline247",
+      "baseValue": "Hotline 24/7"
+    },
+    {
+      "key": "pages.insurance.tabs.benefits.emergencySupport.email",
+      "baseValue": "Email hỗ trợ"
+    },
+    {
+      "key": "pages.insurance.tabs.benefits.emergencySupport.website",
+      "baseValue": "Website"
+    },
+    {
+      "key": "pages.insurance.tabs.benefits.offers.title",
+      "baseValue": "Ưu đãi đặc biệt"
+    },
+    {
+      "key": "pages.insurance.tabs.benefits.offers.discount",
+      "baseValue": "Giảm {value}"
+    },
+    {
+      "key": "pages.insurance.tabs.benefits.offers.noClaimBonus",
+      "baseValue": "Không tổn thất"
+    },
+    {
+      "key": "pages.insurance.tabs.benefits.offers.noClaimBonusDesc",
+      "baseValue": "Giảm đến {maxDiscount}% sau {maxYears} năm"
+    },
+    {
+      "key": "pages.insurance.tabs.exclusions.title",
+      "baseValue": "Điểm loại trừ"
+    },
+    {
+      "key": "pages.insurance.tabs.exclusions.shortTitle",
+      "baseValue": "Loại trừ"
+    },
+    {
+      "key": "pages.insurance.tabs.exclusions.list.title",
+      "baseValue": "Điều khoản loại trừ"
+    },
+    {
+      "key": "pages.insurance.tabs.exclusions.list.description",
+      "baseValue": "Các trường hợp sau đây không được bảo hiểm theo điều khoản hợp đồng:"
+    },
+    {
+      "key": "pages.insurance.tabs.exclusions.waitingPeriods.title",
+      "baseValue": "Thời gian chờ"
+    },
+    {
+      "key": "pages.insurance.tabs.exclusions.waitingPeriods.description",
+      "baseValue": "Thời gian chờ là khoảng thời gian từ ngày hợp đồng có hiệu lực đến ngày quyền lợi bảo hiểm được chi trả"
+    },
+    {
+      "key": "pages.insurance.tabs.exclusions.waitingPeriods.general",
+      "baseValue": "Thời gian chờ chung"
+    },
+    {
+      "key": "pages.insurance.tabs.exclusions.waitingPeriods.specific",
+      "baseValue": "Thời gian chờ theo từng quyền lợi"
+    },
+    {
+      "key": "pages.insurance.tabs.exclusions.preExistingConditions.title",
+      "baseValue": "Bệnh sẵn có"
+    },
+    {
+      "key": "pages.insurance.tabs.exclusions.preExistingConditions.allowed",
+      "baseValue": "Bệnh sẵn có được chấp nhận:"
+    },
+    {
+      "key": "pages.insurance.tabs.exclusions.preExistingConditions.notAllowed",
+      "baseValue": "Bệnh sẵn có không được chấp nhận:"
+    },
+    {
+      "key": "pages.insurance.tabs.exclusions.preExistingConditions.loading",
+      "baseValue": "Phụ thu theo bệnh sẵn có:"
+    },
+    {
+      "key": "pages.insurance.tabs.exclusions.specialTerms.title",
+      "baseValue": "Điều khoản đặc biệt"
+    },
+    {
+      "key": "pages.insurance.tabs.exclusions.specialTerms.term1",
+      "baseValue": "Thông tin khai báo phải đầy đủ và trung thực"
+    },
+    {
+      "key": "pages.insurance.tabs.exclusions.specialTerms.term2",
+      "baseValue": "Thay đổi thông tin phải được thông báo cho công ty bảo hiểm"
+    },
+    {
+      "key": "pages.insurance.tabs.exclusions.specialTerms.term3",
+      "baseValue": "Yêu cầu bồi thường phải được gửi trong thời hạn quy định"
+    },
+    {
+      "key": "pages.insurance.tabs.exclusions.specialTerms.term4",
+      "baseValue": "Vi phạm điều khoản có thể dẫn đến từ chối bồi thường"
+    },
+    {
+      "key": "pages.insurance.tabs.claims.title",
+      "baseValue": "Quy trình bồi thường"
+    },
+    {
+      "key": "pages.insurance.tabs.claims.shortTitle",
+      "baseValue": "Bồi thường"
+    },
+    {
+      "key": "pages.insurance.tabs.claims.process.title",
+      "baseValue": "Quy trình bồi thường 5 bước"
+    },
+    {
+      "key": "pages.insurance.tabs.claims.process.steps.report.title",
+      "baseValue": "Báo cáo sự cố"
+    },
+    {
+      "key": "pages.insurance.tabs.claims.process.steps.report.description",
+      "baseValue": "Ngay khi xảy ra sự cố"
+    },
+    {
+      "key": "pages.insurance.tabs.claims.process.steps.documents.title",
+      "baseValue": "Nộp hồ sơ"
+    },
+    {
+      "key": "pages.insurance.tabs.claims.process.steps.documents.description",
+      "baseValue": "Trong vòng 7 ngày"
+    },
+    {
+      "key": "pages.insurance.tabs.claims.process.steps.assessment.title",
+      "baseValue": "Thẩm định"
+    },
+    {
+      "key": "pages.insurance.tabs.claims.process.steps.assessment.description",
+      "baseValue": "3-5 ngày làm việc"
+    },
+    {
+      "key": "pages.insurance.tabs.claims.process.steps.approval.title",
+      "baseValue": "Phê duyệt"
+    },
+    {
+      "key": "pages.insurance.tabs.claims.process.steps.approval.description",
+      "baseValue": "1-2 ngày làm việc"
+    },
+    {
+      "key": "pages.insurance.tabs.claims.process.steps.payment.title",
+      "baseValue": "Chi trả"
+    },
+    {
+      "key": "pages.insurance.tabs.claims.process.steps.payment.description",
+      "baseValue": "Trong 24h sau duyệt"
+    },
+    {
+      "key": "pages.insurance.tabs.claims.documents.title",
+      "baseValue": "Hồ sơ cần chuẩn bị"
+    },
+    {
+      "key": "pages.insurance.tabs.claims.methods.title",
+      "baseValue": "Phương thức yêu cầu bồi thường"
+    },
+    {
+      "key": "pages.insurance.tabs.claims.metrics.processingTime.title",
+      "baseValue": "Thời gian xử lý"
+    },
+    {
+      "key": "pages.insurance.tabs.claims.metrics.processingTime.average",
+      "baseValue": "Thời gian xử lý trung bình"
+    },
+    {
+      "key": "pages.insurance.tabs.claims.metrics.processingTime.commitment",
+      "baseValue": "Cam kết xử lý"
+    },
+    {
+      "key": "pages.insurance.tabs.claims.metrics.processingTime.workingDays",
+      "baseValue": "ngày làm việc"
+    },
+    {
+      "key": "pages.insurance.tabs.claims.metrics.approvalRate.title",
+      "baseValue": "Tỷ lệ duyệt hồ sơ"
+    },
+    {
+      "key": "pages.insurance.tabs.claims.metrics.approvalRate.veryHigh",
+      "baseValue": "Tỷ lệ rất cao"
+    },
+    {
+      "key": "pages.insurance.tabs.claims.metrics.approvalRate.high",
+      "baseValue": "Tỷ lệ cao"
+    },
+    {
+      "key": "pages.insurance.tabs.claims.metrics.approvalRate.good",
+      "baseValue": "Tỷ lệ tốt"
+    },
+    {
+      "key": "pages.insurance.tabs.claims.metrics.approvalRate.average",
+      "baseValue": "Tỷ lệ trung bình"
+    },
+    {
+      "key": "pages.insurance.tabs.claims.emergency.title",
+      "baseValue": "Liên hệ khẩn cấp"
+    },
+    {
+      "key": "pages.insurance.tabs.claims.emergency.hotline",
+      "baseValue": "Hotline khẩn cấp"
+    },
+    {
+      "key": "pages.insurance.tabs.claims.emergency.emergency115",
+      "baseValue": "Cấp cứu 115"
+    },
+    {
+      "key": "pages.insurance.tabs.claims.emergency.free",
+      "baseValue": "Miễn phí"
+    },
+    {
+      "key": "pages.insurance.tabs.claims.emergency.zaloSupport",
+      "baseValue": "Zalo Support"
+    },
+    {
+      "key": "pages.insurance.tabs.claims.emergency.hours",
+      "baseValue": "8:00 - 22:00"
+    },
+    {
+      "key": "pages.insurance.tabs.payment.title",
+      "baseValue": "Thanh toán & Gia hạn"
+    },
+    {
+      "key": "pages.insurance.tabs.payment.shortTitle",
+      "baseValue": "Thanh toán"
+    },
+    {
+      "key": "pages.insurance.tabs.payment.methods.title",
+      "baseValue": "Phương thức thanh toán"
+    },
+    {
+      "key": "pages.insurance.tabs.payment.installment.title",
+      "baseValue": "Lựa chọn trả góp"
+    },
+    {
+      "key": "pages.insurance.tabs.payment.installment.zeroInterest",
+      "baseValue": "0% lãi suất"
+    },
+    {
+      "key": "pages.insurance.tabs.payment.installment.interestRate",
+      "baseValue": "Lãi suất: {rate}% năm"
+    },
+    {
+      "key": "pages.insurance.tabs.payment.installment.interestFree",
+      "baseValue": "Miễn lãi suất"
+    },
+    {
+      "key": "pages.insurance.tabs.payment.installment.monthlyPayment",
+      "baseValue": "Thanh toán: {amount}/tháng"
+    },
+    {
+      "key": "pages.insurance.tabs.payment.autoRenewal.title",
+      "baseValue": "Tự động gia hạn"
+    },
+    {
+      "key": "pages.insurance.tabs.payment.autoRenewal.enabled",
+      "baseValue": "Tự động gia hạn"
+    },
+    {
+      "key": "pages.insurance.tabs.payment.autoRenewal.enabledDesc",
+      "baseValue": "Hợp đồng sẽ được gia hạn tự động"
+    },
+    {
+      "key": "pages.insurance.tabs.payment.autoRenewal.reminder",
+      "baseValue": "Nhắc nhở gia hạn"
+    },
+    {
+      "key": "pages.insurance.tabs.payment.autoRenewal.reminderDesc",
+      "baseValue": "Trước {days} ngày"
+    },
+    {
+      "key": "pages.insurance.tabs.payment.autoRenewal.notSupported",
+      "baseValue": "Không hỗ trợ gia hạn tự động"
+    },
+    {
+      "key": "pages.insurance.tabs.payment.autoRenewal.notSupportedDesc",
+      "baseValue": "Vui lòng liên hệ để gia hạn hợp đồng trước khi hết hạn"
+    },
+    {
+      "key": "pages.insurance.tabs.payment.autoRenewal.benefits.title",
+      "baseValue": "Lợi ích gia hạn tự động:"
+    },
+    {
+      "key": "pages.insurance.tabs.payment.autoRenewal.benefits.benefit1",
+      "baseValue": "Không gián đoạn bảo hiểm"
+    },
+    {
+      "key": "pages.insurance.tabs.payment.autoRenewal.benefits.benefit2",
+      "baseValue": "Tiết kiệm thời gian và công sức"
+    },
+    {
+      "key": "pages.insurance.tabs.payment.autoRenewal.benefits.benefit3",
+      "baseValue": "Duy trì quyền lợi không tổn thất"
+    },
+    {
+      "key": "pages.insurance.tabs.payment.autoRenewal.benefits.benefit4",
+      "baseValue": "Nhận ưu đãi đặc biệt khi gia hạn"
+    },
+    {
+      "key": "pages.insurance.tabs.payment.noClaimBonus.title",
+      "baseValue": "Ưu đãi không tổn thất"
+    },
+    {
+      "key": "pages.insurance.tabs.payment.noClaimBonus.accumulationRules",
+      "baseValue": "Quy tắc tích lũy"
+    },
+    {
+      "key": "pages.insurance.tabs.payment.noClaimBonus.importantNotes",
+      "baseValue": "Lưu ý quan trọng"
+    },
+    {
+      "key": "pages.insurance.tabs.payment.noClaimBonus.yearsWithoutClaim",
+      "baseValue": "{years} năm không tổn thất"
+    },
+    {
+      "key": "pages.insurance.tabs.payment.noClaimBonus.note1",
+      "baseValue": "Ưu đãi áp dụng khi gia hạn đúng hạn"
+    },
+    {
+      "key": "pages.insurance.tabs.payment.noClaimBonus.note2",
+      "baseValue": "Một tổn thất sẽ làm giảm mức ưu đãi"
+    },
+    {
+      "key": "pages.insurance.tabs.payment.noClaimBonus.note3",
+      "baseValue": "Mức giảm tối đa: {maxDiscount}%"
+    },
+    {
+      "key": "pages.insurance.tabs.payment.cancellation.title",
+      "baseValue": "Chính sách hủy hợp đồng"
+    },
+    {
+      "key": "pages.insurance.tabs.payment.cancellation.considerationPeriod",
+      "baseValue": "Thời gian cân nhắc"
+    },
+    {
+      "key": "pages.insurance.tabs.payment.cancellation.considerationPeriodDesc",
+      "baseValue": "Trong vòng {days} ngày kể từ ngày hiệu lực hợp đồng, bạn có quyền hủy hợp đồng và được hoàn lại 100% phí bảo hiểm."
+    },
+    {
+      "key": "pages.insurance.tabs.payment.cancellation.afterConsideration",
+      "baseValue": "Sau thời gian cân nhắc"
+    },
+    {
+      "key": "pages.insurance.tabs.payment.cancellation.beforeExpiry",
+      "baseValue": "Hủy hợp đồng trước hạn: Hoàn lại phí bảo hiểm tương ứng với thời gian còn hiệu lực"
+    },
+    {
+      "key": "pages.insurance.tabs.payment.cancellation.cancellationFee",
+      "baseValue": "Phí hủy hợp đồng: Tối đa 10% phí bảo hiểm đã đóng"
+    },
+    {
+      "key": "pages.insurance.tabs.payment.cancellation.procedure",
+      "baseValue": "Thủ tục: Gửi yêu cầu bằng văn bản kèm giấy chứng minh nhân dân"
+    },
+    {
+      "key": "pages.insurance.tabs.payment.cancellation.note",
+      "baseValue": "Lưu ý"
+    },
+    {
+      "key": "pages.insurance.tabs.payment.cancellation.termination",
+      "baseValue": "Hợp đồng sẽ tự động terminate nếu phí bảo hiểm không được thanh toán sau thời gian gia hạn {days} ngày."
+    },
+    {
+      "key": "pages.insurance.coverageTypes.personalAccident",
+      "baseValue": "Tai nạn cá nhân"
+    },
+    {
+      "key": "pages.insurance.coverageTypes.death",
+      "baseValue": "Tử vong"
+    },
+    {
+      "key": "pages.insurance.coverageTypes.disability",
+      "baseValue": "Thương tật toàn bộ/vĩnh viễn"
+    },
+    {
+      "key": "pages.insurance.coverageTypes.medicalExpenses",
+      "baseValue": "Chi phí y tế"
+    },
+    {
+      "key": "pages.insurance.coverageTypes.hospitalization",
+      "baseValue": "Phí viện phòng"
+    },
+    {
+      "key": "pages.insurance.coverageTypes.surgery",
+      "baseValue": "Phí phẫu thuật"
+    },
+    {
+      "key": "pages.insurance.coverageTypes.criticalIllness",
+      "baseValue": "Bệnh hiểm nghèo"
+    },
+    {
+      "key": "pages.insurance.coverageTypes.lossOfIncome",
+      "baseValue": "Mất thu nhập"
+    },
+    {
+      "key": "pages.insurance.coverageTypes.propertyDamage",
+      "baseValue": "Thiệt hại tài sản"
+    },
+    {
+      "key": "pages.insurance.coverageTypes.thirdPartyLiability",
+      "baseValue": "Trách nhiệm dân sự"
+    },
+    {
+      "key": "pages.insurance.coverageTypes.ownDamage",
+      "baseValue": "Thiệt hại vật chất xe"
+    },
+    {
+      "key": "pages.insurance.coverageTypes.theft",
+      "baseValue": "Mất cắp toàn bộ"
+    },
+    {
+      "key": "pages.insurance.coverageTypes.fire",
+      "baseValue": "Cháy nổ"
+    },
+    {
+      "key": "pages.insurance.coverageTypes.naturalDisasters",
+      "baseValue": "Thiên tai"
+    },
+    {
+      "key": "pages.insurance.units.days",
+      "baseValue": "ngày"
+    },
+    {
+      "key": "pages.insurance.units.months",
+      "baseValue": "tháng"
+    },
+    {
+      "key": "pages.insurance.tutorials.title",
+      "baseValue": "Hướng dẫn bảo hiểm"
+    },
+    {
+      "key": "pages.insurance.tutorials.description",
+      "baseValue": "Tìm hiểu về bảo hiểm và cách chọn gói phù hợp với nhu cầu của bạn"
+    },
+    {
+      "key": "pages.insurance.tutorials.featured",
+      "baseValue": "Nổi bật"
+    },
+    {
+      "key": "pages.insurance.tutorials.minutesRead",
+      "baseValue": "phút đọc"
+    },
+    {
+      "key": "pages.insurance.tutorials.allCategories",
+      "baseValue": "Tất cả danh mục"
+    },
+    {
+      "key": "pages.insurance.tutorials.allDifficulties",
+      "baseValue": "Tất cả cấp độ"
+    },
+    {
+      "key": "pages.insurance.tutorials.filterByCategory",
+      "baseValue": "Lọc theo danh mục"
+    },
+    {
+      "key": "pages.insurance.tutorials.filterByDifficulty",
+      "baseValue": "Lọc theo cấp độ"
+    },
+    {
+      "key": "pages.insurance.tutorials.searchPlaceholder",
+      "baseValue": "Tìm kiếm bài viết..."
+    },
+    {
+      "key": "pages.insurance.tutorials.resultsCount",
+      "baseValue": "Tìm thấy {count} bài viết"
+    },
+    {
+      "key": "pages.insurance.tutorials.noResults",
+      "baseValue": "Không tìm thấy bài viết nào"
+    },
+    {
+      "key": "pages.insurance.tutorials.noResultsDesc",
+      "baseValue": "Thử thay đổi bộ lọc hoặc từ khóa tìm kiếm"
+    },
+    {
+      "key": "pages.insurance.tutorials.difficulty.beginner",
+      "baseValue": "Cơ bản"
+    },
+    {
+      "key": "pages.insurance.tutorials.difficulty.intermediate",
+      "baseValue": "Trung cấp"
+    },
+    {
+      "key": "pages.insurance.tutorials.difficulty.advanced",
+      "baseValue": "Nâng cao"
+    },
+    {
+      "key": "pages.insurance.tutorials.categories.title",
+      "baseValue": "Danh mục"
+    },
+    {
+      "key": "pages.insurance.tutorials.categories.basics.title",
+      "baseValue": "Cơ bản"
+    },
+    {
+      "key": "pages.insurance.tutorials.categories.basics.description",
+      "baseValue": "Các khái niệm bảo hiểm cơ bản"
+    },
+    {
+      "key": "pages.insurance.tutorials.categories.vehicle.title",
+      "baseValue": "Bảo hiểm xe"
+    },
+    {
+      "key": "pages.insurance.tutorials.categories.vehicle.description",
+      "baseValue": "Bảo hiểm cho các loại xe cơ giới"
+    },
+    {
+      "key": "pages.insurance.tutorials.categories.health.title",
+      "baseValue": "Bảo hiểm sức khỏe"
+    },
+    {
+      "key": "pages.insurance.tutorials.categories.health.description",
+      "baseValue": "Bảo hiểm chăm sóc sức khỏe"
+    },
+    {
+      "key": "pages.insurance.tutorials.categories.property.title",
+      "baseValue": "Bảo hiểm tài sản"
+    },
+    {
+      "key": "pages.insurance.tutorials.categories.property.description",
+      "baseValue": "Bảo hiểm nhà cửa và tài sản"
+    },
+    {
+      "key": "pages.insurance.tutorials.categories.travel.title",
+      "baseValue": "Bảo hiểm du lịch"
+    },
+    {
+      "key": "pages.insurance.tutorials.categories.travel.description",
+      "baseValue": "Bảo hiểm khi đi du lịch"
+    },
+    {
+      "key": "pages.insurance.tutorials.categories.life.title",
+      "baseValue": "Bảo hiểm nhân thọ"
+    },
+    {
+      "key": "pages.insurance.tutorials.categories.life.description",
+      "baseValue": "Bảo hiểm cuộc sống và nhân thọ"
+    },
+    {
+      "key": "pages.insurance.tutorials.quickActions.calculator",
+      "baseValue": "Công cụ tính phí"
+    },
+    {
+      "key": "pages.insurance.tutorials.quickActions.calculatorDesc",
+      "baseValue": "Tính phí bảo hiểm nhanh chóng"
+    },
+    {
+      "key": "pages.insurance.tutorials.quickActions.feeTables",
+      "baseValue": "Biểu phí"
+    },
+    {
+      "key": "pages.insurance.tutorials.quickActions.feeTablesDesc",
+      "baseValue": "Xem biểu phí chi tiết"
+    },
+    {
+      "key": "pages.insurance.tutorials.quickActions.regulations",
+      "baseValue": "Quy định"
+    },
+    {
+      "key": "pages.insurance.tutorials.quickActions.regulationsDesc",
+      "baseValue": "Tìm hiểu quy định pháp luật"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.basics.title",
+      "baseValue": "Bảo hiểm là gì?"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.basics.description",
+      "baseValue": "Tìm hiểu về khái niệm bảo hiểm và lợi ích"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.basics.author",
+      "baseValue": "Biên tập viên"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.basics.sections.what.title",
+      "baseValue": "Bảo hiểm là gì?"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.basics.sections.what.content",
+      "baseValue": "Bảo hiểm là một hợp đồng giữa bên mua bảo hiểm và công ty bảo hiểm..."
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.basics.sections.types.title",
+      "baseValue": "Các loại bảo hiểm"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.basics.sections.types.content",
+      "baseValue": "Có nhiều loại bảo hiểm khác nhau phục vụ nhu cầu đa dạng"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.basics.sections.types.items.compulsory",
+      "baseValue": "Bảo hiểm bắt buộc - theo quy định pháp luật"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.basics.sections.types.items.voluntary",
+      "baseValue": "Bảo hiểm tự nguyện - theo nhu cầu cá nhân"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.basics.sections.benefits.title",
+      "baseValue": "Lợi ích của bảo hiểm"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.basics.sections.benefits.content",
+      "baseValue": "Bảo hiểm mang lại nhiều lợi ích thiết thực cho cá nhân và gia đình"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.basics.sections.choose.title",
+      "baseValue": "Cách chọn bảo hiểm phù hợp"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.basics.sections.choose.content",
+      "baseValue": "Việc chọn bảo hiểm phù hợp cần xem xét nhiều yếu tố như nhu cầu, khả năng tài chính và mức độ rủi ro"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.compulsory.title",
+      "baseValue": "Bảo hiểm bắt buộc tại Việt Nam"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.compulsory.description",
+      "baseValue": "Các loại bảo hiểm bắt buộc theo quy định pháp luật Việt Nam"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.compulsory.author",
+      "baseValue": "Chuyên gia pháp chế"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.compulsory.sections.overview.title",
+      "baseValue": "Tổng quan về bảo hiểm bắt buộc"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.compulsory.sections.overview.content",
+      "baseValue": "Bảo hiểm bắt buộc là loại hình bảo hiểm mà pháp luật yêu cầu mọi cá nhân, tổ chức phải tham gia..."
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.compulsory.sections.types.title",
+      "baseValue": "Các loại hình bảo hiểm bắt buộc"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.compulsory.sections.types.content",
+      "baseValue": "Tại Việt Nam hiện có các loại hình bảo hiểm bắt buộc chính..."
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.compulsory.sections.vehicle.title",
+      "baseValue": "Bảo hiểm TNDS bắt buộc xe cơ giới"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.compulsory.sections.vehicle.content",
+      "baseValue": "Đây là loại hình bảo hiểm bắt buộc phổ biến nhất..."
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.compulsory.sections.requirements.title",
+      "baseValue": "Yêu cầu và điều kiện"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.compulsory.sections.requirements.content",
+      "baseValue": "Để tham gia bảo hiểm bắt buộc, cần đáp ứng các điều kiện sau:"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.compulsory.sections.requirements.items.registration",
+      "baseValue": "Xe đã đăng ký hợp lệ"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.compulsory.sections.requirements.items.inspection",
+      "baseValue": "Xe qua kiểm định kỹ thuật"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.compulsory.sections.requirements.items.documents",
+      "baseValue": "Giấy tờ hợp lệ"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.compulsory.sections.penalties.title",
+      "baseValue": "Mức xử phạt vi phạm"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.compulsory.sections.penalties.content",
+      "baseValue": "Không tham gia bảo hiểm bắt buộc sẽ bị xử phạt theo quy định..."
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.calculation.title",
+      "baseValue": "Cách tính phí bảo hiểm xe"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.calculation.description",
+      "baseValue": "Hướng dẫn chi tiết cách tính phí bảo hiểm các loại xe"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.calculation.author",
+      "baseValue": "Chuyên gia bảo hiểm"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.calculation.sections.factors.title",
+      "baseValue": "Các yếu tố ảnh hưởng đến phí bảo hiểm"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.calculation.sections.factors.content",
+      "baseValue": "Phí bảo hiểm phụ thuộc vào các yếu tố:"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.calculation.sections.factors.items.vehicleType",
+      "baseValue": "Loại xe"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.calculation.sections.factors.items.capacity",
+      "baseValue": "Dung tích xi lanh"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.calculation.sections.factors.items.purpose",
+      "baseValue": "Mục đích sử dụng"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.calculation.sections.factors.items.seats",
+      "baseValue": "Số chỗ ngồi"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.calculation.sections.formula.title",
+      "baseValue": "Công thức tính phí"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.calculation.sections.formula.content",
+      "baseValue": "Phí bảo hiểm = Phí cơ bản × Hệ số điều chỉnh\nPhí cơ bản theo quy định của Bộ Tài chính"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.calculation.sections.examples.title",
+      "baseValue": "Ví dụ thực tế"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.calculation.sections.examples.content",
+      "baseValue": "Ví dụ: Ô tô con dưới 9 chỗ có phí bảo hiểm bắt buộc là 437.000 VNĐ/năm"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.calculation.sections.tools.title",
+      "baseValue": "Công cụ hỗ trợ"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.calculation.sections.tools.content",
+      "baseValue": "Sử dụng công cụ tính phí bảo hiểm của chúng tôi để có kết quả chính xác"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.claims.title",
+      "baseValue": "Quy trình bồi thường bảo hiểm"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.claims.description",
+      "baseValue": "Hướng dẫn chi tiết các bước bồi thường khi có tổn thất"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.claims.author",
+      "baseValue": "Chuyên gia bồi thường"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.claims.sections.when.title",
+      "baseValue": "Khi nào cần bồi thường?"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.claims.sections.when.content",
+      "baseValue": "Cần báo ngay cho công ty bảo hiểm khi xảy ra sự kiện bảo hiểm..."
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.claims.sections.steps.title",
+      "baseValue": "Các bước bồi thường"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.claims.sections.steps.content",
+      "baseValue": "Quy trình bồi thường gồm các bước:"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.claims.sections.steps.items.report",
+      "baseValue": "Báo cáo sự kiện"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.claims.sections.steps.items.documents",
+      "baseValue": "Chuẩn bị hồ sơ"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.claims.sections.steps.items.assessment",
+      "baseValue": "Giám định tổn thất"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.claims.sections.steps.items.approval",
+      "baseValue": "Phê duyệt bồi thường"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.claims.sections.steps.items.payment",
+      "baseValue": "Chi trả bồi thường"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.claims.sections.documents.title",
+      "baseValue": "Hồ sơ cần thiết"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.claims.sections.documents.content",
+      "baseValue": "Hồ sơ bồi thường bao gồm:"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.claims.sections.documents.items.claimForm",
+      "baseValue": "Đơn yêu cầu bồi thường"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.claims.sections.documents.items.policy",
+      "baseValue": "Hợp đồng bảo hiểm"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.claims.sections.documents.items.idCard",
+      "baseValue": "Giấy tờ tùy thân"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.claims.sections.documents.items.evidence",
+      "baseValue": "Bằng chứng tổn thất"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.claims.sections.documents.items.policeReport",
+      "baseValue": "Biên bản cơ quan chức năng"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.claims.sections.timeline.title",
+      "baseValue": "Thời gian xử lý"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.claims.sections.timeline.content",
+      "baseValue": "Thời gian xử lý bồi thường thường từ 5-15 ngày làm việc kể từ khi nhận đủ hồ sơ"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.claims.sections.tips.title",
+      "baseValue": "Lưu ý quan trọng"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.claims.sections.tips.content",
+      "baseValue": "- Báo cáo sự kiện ngay lập tức\n- Giữ gìn hiện trường\n- Chuẩn bị đầy đủ hồ sơ\n- Theo dõi sát sao quá trình xử lý"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.health.title",
+      "baseValue": "Bảo hiểm sức khỏe toàn diện"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.health.description",
+      "baseValue": "Tìm hiểu về bảo hiểm sức khỏe và quyền lợi đi kèm"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.health.author",
+      "baseValue": "Chuyên gia y tế"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.health.sections.overview.title",
+      "baseValue": "Tổng quan bảo hiểm sức khỏe"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.health.sections.overview.content",
+      "baseValue": "Bảo hiểm sức khỏe giúp trang trải chi phí y tế khi ốm đau, tai nạn..."
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.health.sections.coverage.title",
+      "baseValue": "Phạm vi bảo hiểm"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.health.sections.coverage.content",
+      "baseValue": "Bảo hiểm sức khỏe chi trả cho:"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.health.sections.coverage.items.inpatient",
+      "baseValue": "Chi phí điều trị nội trú"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.health.sections.coverage.items.outpatient",
+      "baseValue": "Chi phí khám chữa bệnh ngoại trú"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.health.sections.coverage.items.emergency",
+      "baseValue": "Chi phí cấp cứu"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.health.sections.coverage.items.dental",
+      "baseValue": "Chi phí nha khoa"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.health.sections.coverage.items.maternity",
+      "baseValue": "Chi phí sản phụ khoa"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.health.sections.exclusions.title",
+      "baseValue": "Các trường hợp không bảo hiểm"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.health.sections.exclusions.content",
+      "baseValue": "Bảo hiểm sức khỏe không chi trả cho:"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.health.sections.exclusions.items.preExisting",
+      "baseValue": "Bệnh sẵn có trước khi tham gia"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.health.sections.exclusions.items.cosmetic",
+      "baseValue": "Phẫu thuật thẩm mỹ"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.health.sections.exclusions.items.experimental",
+      "baseValue": "Phương pháp điều trị thử nghiệm"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.health.sections.choose.title",
+      "baseValue": "Lựa chọn bảo hiểm sức khỏe"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.health.sections.choose.content",
+      "baseValue": "Khi chọn bảo hiểm sức khỏe cần xem xét: mức phí, phạm vi bảo hiểm, mạng lưới bệnh viện..."
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.property.title",
+      "baseValue": "Bảo hiểm tài sản nhà cửa"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.property.description",
+      "baseValue": "Bảo vệ tài sản của bạn trước các rủi ro"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.property.author",
+      "baseValue": "Chuyên gia tài sản"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.property.sections.what.title",
+      "baseValue": "Bảo hiểm tài sản là gì?"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.property.sections.what.content",
+      "baseValue": "Bảo hiểm tài sản giúp bảo vệ nhà cửa và tài sản cá nhân trước các rủi ro..."
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.property.sections.coverage.title",
+      "baseValue": "Các rủi ro được bảo hiểm"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.property.sections.coverage.content",
+      "baseValue": "Bảo hiểm tài sản chi trả cho:"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.property.sections.coverage.items.fire",
+      "baseValue": "Thiệt hại do cháy nổ"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.property.sections.coverage.items.natural",
+      "baseValue": "Thiệt hại do thiên tai"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.property.sections.coverage.items.theft",
+      "baseValue": "Mất cắp tài sản"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.property.sections.coverage.items.water",
+      "baseValue": "Thiệt hại do đứt vỡ đường ống nước"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.property.sections.factors.title",
+      "baseValue": "Yếu tố ảnh hưởng đến phí"
+    },
+    {
+      "key": "pages.insurance.tutorials.articles.property.sections.factors.content",
+      "baseValue": "Phí bảo hiểm phụ thuộc vào: giá trị tài sản, địa điểm, các biện pháp an toàn..."
+    },
+    {
+      "key": "pages.insurance.calculator.title",
+      "baseValue": "Công cụ tính phí bảo hiểm"
+    },
+    {
+      "key": "pages.insurance.calculator.description",
+      "baseValue": "Tính nhanh phí bảo hiểm cho các loại xe tại Việt Nam"
+    },
+    {
+      "key": "pages.insurance.calculator.form.title",
+      "baseValue": "Thông tin xe"
+    },
+    {
+      "key": "pages.insurance.calculator.form.description",
+      "baseValue": "Nhập thông tin chi tiết để tính phí bảo hiểm chính xác"
+    },
+    {
+      "key": "pages.insurance.calculator.form.insuranceType",
+      "baseValue": "Loại bảo hiểm"
+    },
+    {
+      "key": "pages.insurance.calculator.form.compulsory",
+      "baseValue": "Bắt buộc TNDS"
+    },
+    {
+      "key": "pages.insurance.calculator.form.voluntary",
+      "baseValue": "Tự nguyện"
+    },
+    {
+      "key": "pages.insurance.calculator.form.vehicleType",
+      "baseValue": "Loại xe"
+    },
+    {
+      "key": "pages.insurance.calculator.form.selectVehicleType",
+      "baseValue": "Chọn loại xe"
+    },
+    {
+      "key": "pages.insurance.calculator.form.seats",
+      "baseValue": "Số chỗ ngồi"
+    },
+    {
+      "key": "pages.insurance.calculator.form.enterSeats",
+      "baseValue": "Nhập số chỗ ngồi"
+    },
+    {
+      "key": "pages.insurance.calculator.form.usage",
+      "baseValue": "Mục đích sử dụng"
+    },
+    {
+      "key": "pages.insurance.calculator.form.vehicleValue",
+      "baseValue": "Giá trị xe"
+    },
+    {
+      "key": "pages.insurance.calculator.form.vehicleValueNote",
+      "baseValue": "Nhập giá trị xe tính theo VNĐ (ví dụ: 500000000)"
+    },
+    {
+      "key": "pages.insurance.calculator.form.coverage",
+      "baseValue": "Mức bảo hiểm"
+    },
+    {
+      "key": "pages.insurance.calculator.form.coverageOptions.100M",
+      "baseValue": "100 triệu VNĐ"
+    },
+    {
+      "key": "pages.insurance.calculator.form.coverageOptions.500M",
+      "baseValue": "500 triệu VNĐ"
+    },
+    {
+      "key": "pages.insurance.calculator.form.coverageOptions.1B",
+      "baseValue": "1 tỷ VNĐ"
+    },
+    {
+      "key": "pages.insurance.calculator.form.coverageOptions.2B",
+      "baseValue": "2 tỷ VNĐ"
+    },
+    {
+      "key": "pages.insurance.calculator.form.reset",
+      "baseValue": "Làm lại"
+    },
+    {
+      "key": "pages.insurance.calculator.form.export",
+      "baseValue": "Xuất báo giá"
+    },
+    {
+      "key": "pages.insurance.calculator.result.title",
+      "baseValue": "Kết quả tính phí"
+    },
+    {
+      "key": "pages.insurance.calculator.result.premium",
+      "baseValue": "Phí bảo hiểm"
+    },
+    {
+      "key": "pages.insurance.calculator.result.tax",
+      "baseValue": "Thuế VAT"
+    },
+    {
+      "key": "pages.insurance.calculator.result.total",
+      "baseValue": "Tổng cộng"
+    },
+    {
+      "key": "pages.insurance.calculator.result.noCalculation",
+      "baseValue": "Chưa có kết quả"
+    },
+    {
+      "key": "pages.insurance.calculator.result.validityTitle",
+      "baseValue": "Thời hạn hiệu lực"
+    },
+    {
+      "key": "pages.insurance.calculator.result.validityDesc",
+      "baseValue": "Phí bảo hiểm tính cho 1 năm kể từ ngày hiệu lực"
+    },
+    {
+      "key": "pages.insurance.calculator.info.title",
+      "baseValue": "Lưu ý"
+    },
+    {
+      "key": "pages.insurance.calculator.info.description",
+      "baseValue": "Thông tin tham khảo về phí bảo hiểm"
+    },
+    {
+      "key": "pages.insurance.calculator.info.note1",
+      "baseValue": "Phí bảo hiểm có thể thay đổi tùy theo công ty và chính sách"
+    },
+    {
+      "key": "pages.insurance.calculator.info.note2",
+      "baseValue": "Phí trên đây chưa bao gồm các loại thuế, phí khác"
+    },
+    {
+      "key": "pages.insurance.calculator.info.note3",
+      "baseValue": "Liên hệ công ty bảo hiểm để có báo giá chính xác"
+    },
+    {
+      "key": "pages.insurance.calculator.tabs.fees",
+      "baseValue": "Biểu phí"
+    },
+    {
+      "key": "pages.insurance.calculator.tabs.regulations",
+      "baseValue": "Quy định"
+    },
+    {
+      "key": "pages.insurance.calculator.fees.title",
+      "baseValue": "Biểu phí tham khảo"
+    },
+    {
+      "key": "pages.insurance.calculator.fees.description",
+      "baseValue": "Biểu phí bảo hiểm theo quy định hiện hành"
+    },
+    {
+      "key": "pages.insurance.calculator.fees.table.vehicle",
+      "baseValue": "Loại xe"
+    },
+    {
+      "key": "pages.insurance.calculator.fees.table.type",
+      "baseValue": "Loại hình"
+    },
+    {
+      "key": "pages.insurance.calculator.fees.table.baseFee",
+      "baseValue": "Phí cơ bản"
+    },
+    {
+      "key": "pages.insurance.calculator.fees.table.additional",
+      "baseValue": "Phí cộng thêm"
+    },
+    {
+      "key": "pages.insurance.calculator.regulations.title",
+      "baseValue": "Quy định pháp luật"
+    },
+    {
+      "key": "pages.insurance.calculator.regulations.description",
+      "baseValue": "Các văn bản pháp quy liên quan"
+    },
+    {
+      "key": "pages.insurance.calculator.regulations.important",
+      "baseValue": "Quan trọng"
+    },
+    {
+      "key": "pages.insurance.calculator.regulations.importantDesc",
+      "baseValue": "Bảo hiểm TNDS bắt buộc là yêu cầu pháp luật khi tham gia giao thông"
+    },
+    {
+      "key": "pages.insurance.calculator.regulations.requirements",
+      "baseValue": "Yêu cầu bắt buộc"
+    },
+    {
+      "key": "pages.insurance.calculator.regulations.req1",
+      "baseValue": "Phải có bảo hiểm TNDS khi tham gia giao thông"
+    },
+    {
+      "key": "pages.insurance.calculator.regulations.req2",
+      "baseValue": "Phải mang theo giấy chứng nhận bảo hiểm"
+    },
+    {
+      "key": "pages.insurance.calculator.regulations.req3",
+      "baseValue": "Phải xuất trình bảo hiểm khi được yêu cầu"
+    },
+    {
+      "key": "pages.insurance.calculator.regulations.req4",
+      "baseValue": "Bảo hiểm có hiệu lực trên toàn lãnh thổ Việt Nam"
+    },
+    {
+      "key": "pages.insurance.calculator.export.noData",
+      "baseValue": "Không có dữ liệu để xuất"
+    },
+    {
+      "key": "pages.insurance.calculator.export.success",
+      "baseValue": "Đã xuất báo giá thành công"
+    },
+    {
+      "key": "pages.insurance.feeTables.title",
+      "baseValue": "Biểu phí bảo hiểm"
+    },
+    {
+      "key": "pages.insurance.feeTables.description",
+      "baseValue": "Biểu phí chi tiết các loại bảo hiểm theo quy định hiện hành"
+    },
+    {
+      "key": "pages.insurance.feeTables.searchPlaceholder",
+      "baseValue": "Tìm kiếm biểu phí..."
+    },
+    {
+      "key": "pages.insurance.feeTables.exportPDF",
+      "baseValue": "Xuất PDF"
+    },
+    {
+      "key": "pages.insurance.feeTables.compulsory.title",
+      "baseValue": "Bảo hiểm bắt buộc"
+    },
+    {
+      "key": "pages.insurance.feeTables.compulsory.description",
+      "baseValue": "Biểu phí bảo hiểm TNDS bắt buộc theo Thông tư 04/2021/TT-BTC"
+    },
+    {
+      "key": "pages.insurance.feeTables.compulsory.cars",
+      "baseValue": "Ô tô con"
+    },
+    {
+      "key": "pages.insurance.feeTables.compulsory.trucks",
+      "baseValue": "Xe tải"
+    },
+    {
+      "key": "pages.insurance.feeTables.compulsory.motorcycles",
+      "baseValue": "Xe máy"
+    },
+    {
+      "key": "pages.insurance.feeTables.compulsory.specialized",
+      "baseValue": "Xe chuyên dụng"
+    },
+    {
+      "key": "pages.insurance.feeTables.compulsory.table.vehicleType",
+      "baseValue": "Loại xe"
+    },
+    {
+      "key": "pages.insurance.feeTables.compulsory.table.baseFee",
+      "baseValue": "Phí cơ bản"
+    },
+    {
+      "key": "pages.insurance.feeTables.compulsory.table.unit",
+      "baseValue": "Đơn vị tính"
+    },
+    {
+      "key": "pages.insurance.feeTables.compulsory.table.description",
+      "baseValue": "Ghi chú"
+    },
+    {
+      "key": "pages.insurance.feeTables.compulsory.noteTitle",
+      "baseValue": "Lưu ý quan trọng"
+    },
+    {
+      "key": "pages.insurance.feeTables.compulsory.note1",
+      "baseValue": "Biểu phí áp dụng theo Thông tư 04/2021/TT-BTC"
+    },
+    {
+      "key": "pages.insurance.feeTables.compulsory.note2",
+      "baseValue": "Phí bảo hiểm đã bao gồm thuế VAT"
+    },
+    {
+      "key": "pages.insurance.feeTables.compulsory.note3",
+      "baseValue": "Thời hạn bảo hiểm là 1 năm kể từ ngày hiệu lực"
+    },
+    {
+      "key": "pages.insurance.feeTables.voluntary.title",
+      "baseValue": "Bảo hiểm tự nguyện"
+    },
+    {
+      "key": "pages.insurance.feeTables.voluntary.description",
+      "baseValue": "Biểu phí tham khảo cho các loại bảo hiểm tự nguyện"
+    },
+    {
+      "key": "pages.insurance.feeTables.voluntary.material",
+      "baseValue": "Thiệt hại vật chất"
+    },
+    {
+      "key": "pages.insurance.feeTables.voluntary.personal",
+      "baseValue": "Tai nạn cá nhân"
+    },
+    {
+      "key": "pages.insurance.feeTables.voluntary.thirdParty",
+      "baseValue": "Trách nhiệm bên thứ ba"
+    },
+    {
+      "key": "pages.insurance.feeTables.voluntary.table.coverage",
+      "baseValue": "Quyền lợi bảo hiểm"
+    },
+    {
+      "key": "pages.insurance.feeTables.voluntary.table.coverageLimit",
+      "baseValue": "Mức bảo hiểm"
+    },
+    {
+      "key": "pages.insurance.feeTables.voluntary.table.rate",
+      "baseValue": "Tỷ lệ phí"
+    },
+    {
+      "key": "pages.insurance.feeTables.voluntary.table.basePremium",
+      "baseValue": "Phí tối thiểu"
+    },
+    {
+      "key": "pages.insurance.feeTables.voluntary.table.description",
+      "baseValue": "Mô tả"
+    },
+    {
+      "key": "pages.insurance.feeTables.voluntary.noteTitle",
+      "baseValue": "Lưu ý"
+    },
+    {
+      "key": "pages.insurance.feeTables.voluntary.note1",
+      "baseValue": "Biểu phí chỉ mang tính chất tham khảo"
+    },
+    {
+      "key": "pages.insurance.feeTables.voluntary.note2",
+      "baseValue": "Phí thực tế có thể thay đổi tùy công ty bảo hiểm"
+    },
+    {
+      "key": "pages.insurance.feeTables.voluntary.note3",
+      "baseValue": "Liên hệ trực tiếp để có báo giá chính xác"
+    },
+    {
+      "key": "pages.insurance.feeTables.regulations.title",
+      "baseValue": "Văn bản pháp quy"
+    },
+    {
+      "key": "pages.insurance.feeTables.regulations.description",
+      "baseValue": "Các văn bản pháp luật quy định về biểu phí bảo hiểm"
+    },
+    {
+      "key": "pages.insurance.feeTables.regulations.issued",
+      "baseValue": "Ban hành"
+    },
+    {
+      "key": "pages.insurance.feeTables.regulations.effective",
+      "baseValue": "Hiệu lực"
+    },
+    {
+      "key": "pages.insurance.feeTables.export.success",
+      "baseValue": "Đã xuất file {format} thành công"
+    },
+    {
+      "key": "pages.insurance.regulations.title",
+      "baseValue": "Quy định pháp luật về bảo hiểm"
+    },
+    {
+      "key": "pages.insurance.regulations.description",
+      "baseValue": "Tổng hợp các văn bản pháp quy, thông tư, nghị định về bảo hiểm tại Việt Nam"
+    },
+    {
+      "key": "pages.insurance.regulations.searchPlaceholder",
+      "baseValue": "Tìm kiếm quy định..."
+    },
+    {
+      "key": "pages.insurance.regulations.importantNotice",
+      "baseValue": "Thông báo quan trọng"
+    },
+    {
+      "key": "pages.insurance.regulations.importantNoticeDesc",
+      "baseValue": "Các quy định được cập nhật đến tháng 12/2024. Vui lòng kiểm tra các văn bản mới nhất có hiệu lực."
+    },
+    {
+      "key": "pages.insurance.regulations.noResults",
+      "baseValue": "Không tìm thấy quy định nào"
+    },
+    {
+      "key": "pages.insurance.regulations.noResultsDesc",
+      "baseValue": "Thử thay đổi từ khóa tìm kiếm"
+    },
+    {
+      "key": "pages.insurance.regulations.highlights",
+      "baseValue": "Điểm chính"
+    },
+    {
+      "key": "pages.insurance.regulations.feeTable",
+      "baseValue": "Biểu phí"
+    },
+    {
+      "key": "pages.insurance.regulations.process",
+      "baseValue": "Quy trình"
+    },
+    {
+      "key": "pages.insurance.regulations.violations",
+      "baseValue": "Vi phạm và xử phạt"
+    },
+    {
+      "key": "pages.insurance.regulations.documents",
+      "baseValue": "Tài liệu liên quan"
+    },
+    {
+      "key": "pages.insurance.regulations.download.started",
+      "baseValue": "Đang tải xuống {document}..."
+    },
+    {
+      "key": "pages.insurance.tutorial.back",
+      "baseValue": "Quay lại"
+    },
+    {
+      "key": "pages.insurance.tutorial.share.label",
+      "baseValue": "Chia sẻ"
+    },
+    {
+      "key": "pages.insurance.tutorial.share.copied",
+      "baseValue": "Đã sao chép liên kết"
+    },
+    {
+      "key": "pages.insurance.tutorial.bookmark.removed",
+      "baseValue": "Đã xóa khỏi danh sách lưu"
+    },
+    {
+      "key": "pages.insurance.tutorial.bookmark.added",
+      "baseValue": "Đã thêm vào danh sách lưu"
+    },
+    {
+      "key": "pages.insurance.tutorial.tableOfContents",
+      "baseValue": "Mục lục"
+    },
+    {
+      "key": "pages.insurance.tutorial.relatedArticles",
+      "baseValue": "Bài viết liên quan"
+    },
+    {
+      "key": "pages.insurance.tutorial.actions.calculate",
+      "baseValue": "Tính phí bảo hiểm"
+    },
+    {
+      "key": "pages.insurance.tutorial.actions.calculateDesc",
+      "baseValue": "Sử dụng công cụ tính phí"
+    },
+    {
+      "key": "pages.insurance.tutorial.actions.browse",
+      "baseValue": "Xem sản phẩm"
+    },
+    {
+      "key": "pages.insurance.tutorial.actions.browseDesc",
+      "baseValue": "So sánh các sản phẩm"
+    },
+    {
+      "key": "pages.insurance.tutorial.feedback.title",
+      "baseValue": "Bài viết này có hữu ích không?"
+    },
+    {
+      "key": "pages.insurance.tutorial.feedback.helpful",
+      "baseValue": "Hữu ích"
+    },
+    {
+      "key": "pages.insurance.tutorial.feedback.comment",
+      "baseValue": "Góp ý"
+    },
+    {
+      "key": "pages.insurance.tutorial.feedback.thanks",
+      "baseValue": "Cảm ơn phản hồi của bạn!"
+    },
+    {
+      "key": "pages.insurance.nav.insurance",
+      "baseValue": "Bảo hiểm"
+    },
+    {
+      "key": "pages.admin.dashboard.stats.applications",
+      "baseValue": "Đơn vay"
+    },
+    {
+      "key": "pages.admin.dashboard.stats.conversionRate",
+      "baseValue": "Tỷ lệ chuyển đổi"
+    },
+    {
+      "key": "pages.admin.dashboard.stats.conversionChange",
+      "baseValue": "{rate} so với tháng trước"
+    },
+    {
+      "key": "pages.admin.dashboard.stats.noChange",
+      "baseValue": "Không thay đổi"
+    },
+    {
+      "key": "pages.admin.dashboard.quickActions.loanApplications.title",
+      "baseValue": "Đơn vay vốn"
+    },
+    {
+      "key": "pages.admin.dashboard.quickActions.loanApplications.description",
+      "baseValue": "Xem và quản lý các đơn vay vốn"
+    },
+    {
+      "key": "pages.admin.dashboard.quickActions.loanApplications.button",
+      "baseValue": "Truy cập"
+    },
+    {
+      "key": "pages.admin.dashboard.systemStatus.title",
+      "baseValue": "Trạng thái hệ thống"
+    },
+    {
+      "key": "pages.admin.dashboard.systemStatus.subtitle",
+      "baseValue": "Trạng thái hoạt động của các dịch vụ chính"
+    },
+    {
+      "key": "pages.admin.dashboard.systemStatus.api",
+      "baseValue": "API"
+    },
+    {
+      "key": "pages.admin.dashboard.systemStatus.database",
+      "baseValue": "Cơ sở dữ liệu"
+    },
+    {
+      "key": "pages.admin.dashboard.systemStatus.ekyc",
+      "baseValue": "eKYC"
+    },
+    {
+      "key": "pages.admin.dashboard.systemStatus.notifications",
+      "baseValue": "Thông báo"
+    },
+    {
+      "key": "pages.admin.dashboard.systemStatus.operational",
+      "baseValue": "Hoạt động"
+    },
+    {
+      "key": "pages.admin.dashboard.systemStatus.maintenance",
+      "baseValue": "Bảo trì"
+    },
+    {
+      "key": "pages.admin.auth.unauthorized",
+      "baseValue": "Không có quyền truy cập"
+    },
+    {
+      "key": "pages.admin.auth.unauthorizedDescription",
+      "baseValue": "Bạn không có đủ quyền để truy cập trang này. Vui lòng liên hệ quản trị viên nếu bạn cho rằng đây là lỗi."
+    },
+    {
+      "key": "pages.admin.auth.accessDenied",
+      "baseValue": "Từ chối truy cập"
+    },
+    {
+      "key": "pages.admin.auth.accessDeniedDescription",
+      "baseValue": "Yêu cầu vai trò quản trị viên để truy cập trang này."
+    },
+    {
+      "key": "pages.admin.auth.backToDashboard",
+      "baseValue": "Quay lại trang quản trị"
+    },
+    {
+      "key": "pages.admin.auth.loginAsDifferentUser",
+      "baseValue": "Đăng nhập bằng tài khoản khác"
+    },
+    {
+      "key": "pages.admin.auth.backToHome",
+      "baseValue": "Quay lại trang chủ"
+    },
+    {
+      "key": "pages.admin.auth.needHelp",
+      "baseValue": "Cần trợ giúp?"
+    },
+    {
+      "key": "pages.admin.auth.contactSupport",
+      "baseValue": "Liên hệ hỗ trợ"
+    },
+    {
+      "key": "pages.tools.loanCalculator.form.selectTerm",
+      "baseValue": "Chọn kỳ hạn"
+    },
+    {
+      "key": "pages.tools.savingsCalculator.form.savingsAmount",
+      "baseValue": "Số tiền tiết kiệm"
+    },
+    {
+      "key": "pages.tools.savingsCalculator.form.enterAmount",
+      "baseValue": "Nhập số tiền"
+    },
+    {
+      "key": "pages.tools.savingsCalculator.form.savingsPeriod",
+      "baseValue": "Kỳ hạn gửi"
+    },
+    {
+      "key": "pages.tools.savingsCalculator.form.onlineSavings",
+      "baseValue": "Tiết kiệm online"
+    },
+    {
+      "key": "pages.tools.savingsCalculator.form.counterSavings",
+      "baseValue": "Tiết kiệm tại quầy"
+    },
+    {
+      "key": "pages.tools.savingsCalculator.form.sortBy",
+      "baseValue": "Sắp xếp theo"
+    },
+    {
+      "key": "pages.tools.savingsCalculator.form.highestInterestRate",
+      "baseValue": "Lãi suất cao nhất"
+    },
+    {
+      "key": "pages.tools.savingsCalculator.form.lowestInterestRate",
+      "baseValue": "Lãi suất thấp nhất"
+    },
+    {
+      "key": "pages.tools.savingsCalculator.form.calculating",
+      "baseValue": "Đang tính toán..."
+    },
+    {
+      "key": "pages.tools.savingsCalculator.form.applyFilters",
+      "baseValue": "Áp dụng bộ lọc"
+    },
+    {
+      "key": "pages.tools.savingsCalculator.form.retry",
+      "baseValue": "Thử lại"
+    },
+    {
+      "key": "pages.tools.savingsCalculator.results.bankComparisonResults",
+      "baseValue": "Kết quả so sánh ngân hàng"
+    },
+    {
+      "key": "pages.tools.savingsCalculator.results.banksFound",
+      "baseValue": "{count} ngân hàng được tìm thấy"
+    },
+    {
+      "key": "pages.tools.savingsCalculator.results.basedOn",
+      "baseValue": "Dựa trên {amount} trong {period} tháng"
+    },
+    {
+      "key": "pages.tools.savingsCalculator.results.table.bankName",
+      "baseValue": "Tên ngân hàng"
+    },
+    {
+      "key": "pages.tools.savingsCalculator.results.table.interestRate",
+      "baseValue": "Lãi suất"
+    },
+    {
+      "key": "pages.tools.savingsCalculator.results.table.interestAmount",
+      "baseValue": "Số tiền lãi"
+    },
+    {
+      "key": "pages.tools.savingsCalculator.results.table.totalAmount",
+      "baseValue": "Tổng số tiền"
+    },
+    {
+      "key": "pages.tools.savingsCalculator.results.table.action",
+      "baseValue": "Hành động"
+    },
+    {
+      "key": "pages.tools.savingsCalculator.results.bestRate",
+      "baseValue": "Tốt nhất"
+    },
+    {
+      "key": "pages.tools.savingsCalculator.results.lowRate",
+      "baseValue": "Thấp"
+    },
+    {
+      "key": "pages.tools.savingsCalculator.results.open",
+      "baseValue": "Mở"
+    },
+    {
+      "key": "pages.tools.savingsCalculator.results.showing",
+      "baseValue": "Hiển thị từ {start} đến {end} của {total} kết quả"
+    },
+    {
+      "key": "pages.tools.savingsCalculator.results.pageOf",
+      "baseValue": "Trang {current} của {total}"
+    },
+    {
+      "key": "pages.tools.savingsCalculator.results.previous",
+      "baseValue": "Trước"
+    },
+    {
+      "key": "pages.tools.savingsCalculator.results.next",
+      "baseValue": "Tiếp"
+    },
+    {
+      "key": "pages.tools.savingsCalculator.results.summary",
+      "baseValue": "Tóm tắt"
+    },
+    {
+      "key": "pages.tools.savingsCalculator.results.averageRate",
+      "baseValue": "Lãi suất trung bình"
+    },
+    {
+      "key": "pages.tools.savingsCalculator.results.totalInterestRange",
+      "baseValue": "Khoảng lãi suất tổng"
+    },
+    {
+      "key": "pages.tools.savingsCalculator.results.bestTotalReturn",
+      "baseValue": "Tổng lợi nhuận tốt nhất"
+    },
+    {
+      "key": "pages.tools.savingsCalculator.results.noSavingsFound",
+      "baseValue": "Không tìm thấy sản phẩm tiết kiệm nào phù hợp với tiêu chí của bạn."
+    },
+    {
+      "key": "pages.tools.savingsCalculator.results.tryAdjustingFilters",
+      "baseValue": "Thử điều chỉnh bộ lọc để xem thêm kết quả."
+    },
+    {
+      "key": "pages.tools.grossToNetCalculator.presets.professional",
+      "baseValue": "Lương chuyên viên"
+    },
+    {
+      "key": "pages.tools.grossToNetCalculator.form.enterGrossSalary",
+      "baseValue": "Nhập lương gộp"
+    },
+    {
+      "key": "pages.tools.grossToNetCalculator.form.minimumWage",
+      "baseValue": "Lương tối thiểu vùng {region}"
+    },
+    {
+      "key": "pages.tools.grossToNetCalculator.form.minimumWageLabel",
+      "baseValue": "Lương tối thiểu"
+    },
+    {
+      "key": "pages.tools.grossToNetCalculator.form.salaryRegion",
+      "baseValue": "Vùng lương"
+    },
+    {
+      "key": "pages.tools.grossToNetCalculator.form.selectRegion",
+      "baseValue": "Chọn vùng"
+    },
+    {
+      "key": "pages.tools.grossToNetCalculator.form.numberOfDependents",
+      "baseValue": "Số người phụ thuộc"
+    },
+    {
+      "key": "pages.tools.grossToNetCalculator.form.deductionPerPerson",
+      "baseValue": "Giảm trừ"
+    },
+    {
+      "key": "pages.tools.grossToNetCalculator.results.monthlyTakeHome",
+      "baseValue": "Thực nhận hàng tháng"
+    },
+    {
+      "key": "pages.tools.grossToNetCalculator.results.deductionBreakdown",
+      "baseValue": "Chi Tiết Khấu Trừ"
+    },
+    {
+      "key": "pages.tools.grossToNetCalculator.results.insurance",
+      "baseValue": "Bảo hiểm"
+    },
+    {
+      "key": "pages.tools.grossToNetCalculator.results.totalInsurance",
+      "baseValue": "Tổng bảo hiểm"
+    },
+    {
+      "key": "pages.tools.grossToNetCalculator.results.taxDeductions",
+      "baseValue": "Giảm trừ gia cảnh"
+    },
+    {
+      "key": "pages.tools.grossToNetCalculator.results.self",
+      "baseValue": "Bản thân"
+    },
+    {
+      "key": "pages.tools.grossToNetCalculator.results.dependents",
+      "baseValue": "Phụ thuộc ({count} người)"
+    },
+    {
+      "key": "pages.tools.grossToNetCalculator.results.viewTaxDetails",
+      "baseValue": "Xem chi tiết thuế suất"
+    },
+    {
+      "key": "pages.tools.grossToNetCalculator.results.totalPit",
+      "baseValue": "Tổng thuế TNCN"
+    },
+    {
+      "key": "pages.tools.grossToNetCalculator.results.totalDeductionsAmount",
+      "baseValue": "Tổng khấu trừ"
+    },
+    {
+      "key": "pages.tools.grossToNetCalculator.results.totalEmployerCost",
+      "baseValue": "Tổng chi phí của công ty"
+    },
+    {
+      "key": "pages.tools.grossToNetCalculator.results.employerCostDescription",
+      "baseValue": "GROSS + Bảo hiểm công ty (21.5%)"
+    },
+    {
+      "key": "pages.tools.netToGrossCalculator.presets.twoYearsExperience",
+      "baseValue": "Lương 2 năm kinh nghiệm"
+    },
+    {
+      "key": "pages.tools.netToGrossCalculator.regions.1",
+      "baseValue": "I - Hà Nội, TP.HCM"
+    },
+    {
+      "key": "pages.tools.netToGrossCalculator.regions.2",
+      "baseValue": "II - Đà Nẵng, Hải Phòng, Cần Thơ"
+    },
+    {
+      "key": "pages.tools.netToGrossCalculator.regions.3",
+      "baseValue": "III - Các đô thị loại I"
+    },
+    {
+      "key": "pages.tools.netToGrossCalculator.regions.4",
+      "baseValue": "IV - Tỉnh lẻ khác"
+    },
+    {
+      "key": "pages.tools.netToGrossCalculator.form.desiredNetSalary",
+      "baseValue": "Lương NET mong muốn"
+    },
+    {
+      "key": "pages.tools.netToGrossCalculator.form.enterDesiredNetSalary",
+      "baseValue": "Nhập lương ròng mong muốn"
+    },
+    {
+      "key": "pages.tools.netToGrossCalculator.form.salaryRegion",
+      "baseValue": "Vùng lương"
+    },
+    {
+      "key": "pages.tools.netToGrossCalculator.form.selectRegion",
+      "baseValue": "Chọn vùng"
+    },
+    {
+      "key": "pages.tools.netToGrossCalculator.form.minimumWageLabel",
+      "baseValue": "Lương tối thiểu"
+    },
+    {
+      "key": "pages.tools.netToGrossCalculator.form.numberOfDependents",
+      "baseValue": "Số người phụ thuộc"
+    },
+    {
+      "key": "pages.tools.netToGrossCalculator.form.deductionPerPerson",
+      "baseValue": "Giảm trừ"
+    },
+    {
+      "key": "pages.tools.netToGrossCalculator.results.desiredNetSalary",
+      "baseValue": "Lương NET mong muốn"
+    },
+    {
+      "key": "pages.tools.netToGrossCalculator.results.convergenceWarning",
+      "baseValue": "Không tìm thấy chính xác lương gross. Kết quả gần nhất với sai số: {error}"
+    },
+    {
+      "key": "pages.tools.netToGrossCalculator.results.grossAnalysis",
+      "baseValue": "Phân Tích Lương GROSS"
+    },
+    {
+      "key": "pages.tools.netToGrossCalculator.results.grossSalary",
+      "baseValue": "Lương GROSS"
+    },
+    {
+      "key": "pages.tools.netToGrossCalculator.results.netFormula",
+      "baseValue": "Lương NET = Lương GROSS - Bảo hiểm (10.5%) - Thuế TNCN"
+    },
+    {
+      "key": "pages.tools.netToGrossCalculator.results.pitFormula",
+      "baseValue": "Thuế TNCN được tính theo biểu thuế lũy tiến từng phần"
+    },
+    {
+      "key": "pages.tools.netToGrossCalculator.results.taxOptimizationTips",
+      "baseValue": "Mẹo tối ưu thuế:"
+    },
+    {
+      "key": "pages.tools.netToGrossCalculator.results.tip1",
+      "baseValue": "Khai báo đầy đủ người phụ thuộc để tối đa hóa giảm trừ"
+    },
+    {
+      "key": "pages.tools.netToGrossCalculator.results.tip2",
+      "baseValue": "Góp quỹ hưu trí tự nguyện để giảm thuế TNCN"
+    },
+    {
+      "key": "pages.tools.netToGrossCalculator.results.tip3",
+      "baseValue": "Xem xét các khoản chiết khấu hợp lệ (hiếu thương, từ thiện)"
+    },
+    {
+      "key": "pages.tools.results.title",
+      "baseValue": "Kết quả tính toán"
+    },
+    {
+      "key": "pages.tools.results.finalAmount",
+      "baseValue": "Tổng số tiền nhận được"
+    },
+    {
+      "key": "pages.tools.results.totalDeposits",
+      "baseValue": "Tổng số tiền gửi"
+    },
+    {
+      "key": "pages.tools.results.totalInterest",
+      "baseValue": "Tổng lãi nhận được"
+    },
+    {
+      "key": "pages.tools.results.effectiveRate",
+      "baseValue": "Lãi suất hiệu quả"
+    },
+    {
+      "key": "pages.tools.results.projection",
+      "baseValue": "Biểu đồ tăng trưởng"
+    },
+    {
+      "key": "pages.tools.results.year",
+      "baseValue": "Năm"
+    },
+    {
+      "key": "pages.tools.results.deposits",
+      "baseValue": "Tiền gửi"
+    },
+    {
+      "key": "pages.tools.results.interest",
+      "baseValue": "Lãi suất"
+    },
+    {
+      "key": "pages.tools.results.balance",
+      "baseValue": "Số dư"
+    },
+    {
+      "key": "pages.tools.comparison.title",
+      "baseValue": "So sánh lãi suất các ngân hàng"
+    },
+    {
+      "key": "pages.tools.comparison.bank",
+      "baseValue": "Ngân hàng"
+    },
+    {
+      "key": "pages.tools.comparison.term",
+      "baseValue": "Kỳ hạn"
+    },
+    {
+      "key": "pages.tools.comparison.rate",
+      "baseValue": "Lãi suất"
+    },
+    {
+      "key": "pages.tools.comparison.minAmount",
+      "baseValue": "Số tiền tối thiểu"
+    },
+    {
+      "key": "pages.tools.comparison.notes",
+      "baseValue": "Ghi chú"
+    },
+    {
+      "key": "pages.tools.comparison.lastUpdated",
+      "baseValue": "Cập nhật lần cuối"
+    },
+    {
+      "key": "pages.tools.comparison.onlineHigher",
+      "baseValue": "Online cao hơn"
+    },
+    {
+      "key": "pages.grossToNetCalculator.description",
+      "baseValue": "Công cụ tính lương từ Gross sang Net chính xác theo quy định pháp luật Việt Nam. Tính toán thuế thu nhập cá nhân, bảo hiểm xã hội, bảo hiểm y tế, bảo hiểm thất nghiệp."
+    },
+    {
+      "key": "pages.grossToNetCalculator.breadcrumb.home",
+      "baseValue": "Trang chủ"
+    },
+    {
+      "key": "pages.grossToNetCalculator.breadcrumb.tools",
+      "baseValue": "Công cụ tài chính"
+    },
+    {
+      "key": "pages.grossToNetCalculator.breadcrumb.current",
+      "baseValue": "Tính lương Gross sang Net"
+    },
+    {
+      "key": "pages.grossToNetCalculator.deductions.title",
+      "baseValue": "Giải thích các khoản trích"
+    },
+    {
+      "key": "pages.grossToNetCalculator.deductions.socialInsurance.name",
+      "baseValue": "BHXH"
+    },
+    {
+      "key": "pages.grossToNetCalculator.deductions.socialInsurance.description",
+      "baseValue": "Bảo hiểm xã hội, tính trên mức lương tối đa 20倍地区平均工资"
+    },
+    {
+      "key": "pages.grossToNetCalculator.deductions.healthInsurance.name",
+      "baseValue": "BHYT"
+    },
+    {
+      "key": "pages.grossToNetCalculator.deductions.healthInsurance.description",
+      "baseValue": "Bảo hiểm y tế, tính trên toàn bộ lương"
+    },
+    {
+      "key": "pages.grossToNetCalculator.deductions.unemploymentInsurance.name",
+      "baseValue": "BHTN"
+    },
+    {
+      "key": "pages.grossToNetCalculator.deductions.unemploymentInsurance.description",
+      "baseValue": "Bảo hiểm thất nghiệp, tính trên mức lương tối đa 20倍地区平均工资"
+    },
+    {
+      "key": "pages.grossToNetCalculator.deductions.personalIncomeTax.name",
+      "baseValue": "TNCN"
+    },
+    {
+      "key": "pages.grossToNetCalculator.deductions.personalIncomeTax.description",
+      "baseValue": "Thuế thu nhập cá nhân, áp dụng biểu thuế lũy tiến"
+    },
+    {
+      "key": "pages.grossToNetCalculator.deductions.deduction.name",
+      "baseValue": "Giảm trừ gia cảnh"
+    },
+    {
+      "key": "pages.grossToNetCalculator.deductions.deduction.description",
+      "baseValue": "11 triệu/người (bản thân) + 4.4 triệu/người phụ thuộc"
+    },
+    {
+      "key": "pages.grossToNetCalculator.importantNotes.title",
+      "baseValue": "Lưu ý quan trọng"
+    },
+    {
+      "key": "pages.grossToNetCalculator.importantNotes.note1",
+      "baseValue": "Lương Gross là tổng thu nhập trước khi trừ các khoản bảo hiểm và thuế"
+    },
+    {
+      "key": "pages.grossToNetCalculator.importantNotes.note2",
+      "baseValue": "Lương Net là số tiền thực nhận sau khi đã trừ tất cả các khoản bắt buộc"
+    },
+    {
+      "key": "pages.grossToNetCalculator.importantNotes.note3",
+      "baseValue": "Mức lương đóng bảo hiểm xã hội có giới hạn tối đa"
+    },
+    {
+      "key": "pages.grossToNetCalculator.importantNotes.note4",
+      "baseValue": "Biểu thuế TNCN áp dụng theo bậc thuế lũy tiến từng phần"
+    },
+    {
+      "key": "pages.grossToNetCalculator.importantNotes.note5",
+      "baseValue": "Công cụ tính toán đã cập nhật theo quy định mới nhất"
+    },
+    {
+      "key": "pages.grossToNetCalculator.taxRates.title",
+      "baseValue": "Biểu thuế thu nhập cá nhân (áp dụng từ 2020)"
+    },
+    {
+      "key": "pages.grossToNetCalculator.taxRates.table.bracket",
+      "baseValue": "Bậc"
+    },
+    {
+      "key": "pages.grossToNetCalculator.taxRates.table.income",
+      "baseValue": "Thu nhập chịu thuế/tháng"
+    },
+    {
+      "key": "pages.grossToNetCalculator.taxRates.table.rate",
+      "baseValue": "Thuế suất"
+    },
+    {
+      "key": "pages.grossToNetCalculator.taxRates.table.brackets.bracket1",
+      "baseValue": "Đến 5 triệu"
+    },
+    {
+      "key": "pages.grossToNetCalculator.taxRates.table.brackets.bracket2",
+      "baseValue": "Trên 5 đến 10 triệu"
+    },
+    {
+      "key": "pages.grossToNetCalculator.taxRates.table.brackets.bracket3",
+      "baseValue": "Trên 10 đến 18 triệu"
+    },
+    {
+      "key": "pages.grossToNetCalculator.taxRates.table.brackets.bracket4",
+      "baseValue": "Trên 18 đến 32 triệu"
+    },
+    {
+      "key": "pages.grossToNetCalculator.taxRates.table.brackets.bracket5",
+      "baseValue": "Trên 32 đến 52 triệu"
+    },
+    {
+      "key": "pages.grossToNetCalculator.taxRates.table.brackets.bracket6",
+      "baseValue": "Trên 52 đến 80 triệu"
+    },
+    {
+      "key": "pages.grossToNetCalculator.taxRates.table.brackets.bracket7",
+      "baseValue": "Trên 80 triệu"
+    },
+    {
+      "key": "pages.netToGrossCalculator.description",
+      "baseValue": "Công cụ tính lương từ Net sang Gross chính xác. Xác định mức lương Gross cần đề nghị để đạt được mức lương Net mong muốn sau khi đã trừ các khoản thuế và bảo hiểm."
+    },
+    {
+      "key": "pages.netToGrossCalculator.breadcrumb.home",
+      "baseValue": "Trang chủ"
+    },
+    {
+      "key": "pages.netToGrossCalculator.breadcrumb.tools",
+      "baseValue": "Công cụ tài chính"
+    },
+    {
+      "key": "pages.netToGrossCalculator.breadcrumb.current",
+      "baseValue": "Tính lương Net sang Gross"
+    },
+    {
+      "key": "pages.netToGrossCalculator.usageGuide.title",
+      "baseValue": "Hướng dẫn sử dụng"
+    },
+    {
+      "key": "pages.netToGrossCalculator.usageGuide.step1",
+      "baseValue": "Nhập mức lương Net mong muốn (số tiền thực nhận)"
+    },
+    {
+      "key": "pages.netToGrossCalculator.usageGuide.step2",
+      "baseValue": "Nhập số người phụ thuộc (nếu có)"
+    },
+    {
+      "key": "pages.netToGrossCalculator.usageGuide.step3",
+      "baseValue": "Chọn khu vực (mức lương tối đa để đóng BHXH)"
+    },
+    {
+      "key": "pages.netToGrossCalculator.usageGuide.step4",
+      "baseValue": "Công cụ sẽ tự động tính mức lương Gross cần đề nghị"
+    },
+    {
+      "key": "pages.netToGrossCalculator.usageGuide.step5",
+      "baseValue": "Kiểm tra chi tiết các khoản trừ để hiểu rõ cấu trúc lương"
+    },
+    {
+      "key": "pages.netToGrossCalculator.negotiationTips.title",
+      "baseValue": "Lưu ý khi đàm phán lương"
+    },
+    {
+      "key": "pages.netToGrossCalculator.negotiationTips.tip1",
+      "baseValue": "Luôn rõ ràng về lương Gross hay Net khi đàm phán"
+    },
+    {
+      "key": "pages.netToGrossCalculator.negotiationTips.tip2",
+      "baseValue": "Lương Gross cao hơn 20-30% so với lương Net"
+    },
+    {
+      "key": "pages.netToGrossCalculator.negotiationTips.tip3",
+      "baseValue": "Cân nhắc các khoản phụ cấp và thưởng khi đàm phán"
+    },
+    {
+      "key": "pages.netToGrossCalculator.negotiationTips.tip4",
+      "baseValue": "Kiểm tra chính sách BHXH của công ty (đủ tối đa hay không)"
+    },
+    {
+      "key": "pages.netToGrossCalculator.negotiationTips.tip5",
+      "baseValue": "Yêu cầu bảng tính lương chi tiết khi nhận offer"
+    },
+    {
+      "key": "pages.netToGrossCalculator.examples.title",
+      "baseValue": "Ví dụ tham khảo"
+    },
+    {
+      "key": "pages.netToGrossCalculator.examples.table.netWanted",
+      "baseValue": "Lương Net mong muốn"
+    },
+    {
+      "key": "pages.netToGrossCalculator.examples.table.grossNeeded",
+      "baseValue": "Lương Gross cần đề nghị"
+    },
+    {
+      "key": "pages.netToGrossCalculator.examples.table.totalDeductions",
+      "baseValue": "Tổng các khoản trừ"
+    },
+    {
+      "key": "pages.netToGrossCalculator.examples.table.notes",
+      "baseValue": "Ghi chú"
+    },
+    {
+      "key": "pages.netToGrossCalculator.examples.table.rows.row1.note",
+      "baseValue": "Chưa có người phụ thuộc"
+    },
+    {
+      "key": "pages.netToGrossCalculator.examples.table.rows.row2.note",
+      "baseValue": "Chưa có người phụ thuộc"
+    },
+    {
+      "key": "pages.netToGrossCalculator.examples.table.rows.row3.note",
+      "baseValue": "Chưa có người phụ thuộc"
+    },
+    {
+      "key": "pages.netToGrossCalculator.examples.table.rows.row4.note",
+      "baseValue": "Bắt đầu áp dụng thuế suất cao hơn"
+    },
+    {
+      "key": "pages.netToGrossCalculator.examples.disclaimer",
+      "baseValue": "Số liệu trên chỉ mang tính chất tham khảo, con số thực tế có thể thay đổi tùy thuộc vào các yếu tố cụ thể."
+    },
+    {
+      "key": "pages.netToGrossCalculator.tips.title",
+      "baseValue": "Mẹo khi sử dụng công cụ"
+    },
+    {
+      "key": "pages.netToGrossCalculator.tips.tip1",
+      "baseValue": "Sử dụng công cụ này khi bạn nhận được offer lương Net và muốn biết Gross tương ứng"
+    },
+    {
+      "key": "pages.netToGrossCalculator.tips.tip2",
+      "baseValue": "Khi đàm phán lương, hãy đề nghị mức lương Gross để tránh nhầm lẫn"
+    },
+    {
+      "key": "pages.netToGrossCalculator.tips.tip3",
+      "baseValue": "Đừng quên tính toán các khoản thưởng và phụ cấp khi đàm phán tổng thu nhập"
+    },
+    {
+      "key": "pages.netToGrossCalculator.tips.tip4",
+      "baseValue": "Kiểm tra xem công ty có đóng BHXH trên toàn bộ lương hay không"
+    },
+    {
+      "key": "pages.netToGrossCalculator.tips.tip5",
+      "baseValue": "Một số công ty có chính sách lương 'flexible' với nhiều khoản phụ cấp khác nhau"
+    },
+    {
+      "key": "pages.common.home",
+      "baseValue": "Trang chủ"
+    },
+    {
+      "key": "pages.common.yes",
+      "baseValue": "Có"
+    },
+    {
+      "key": "pages.common.no",
+      "baseValue": "Không"
+    },
+    {
+      "key": "pages.common.currency",
+      "baseValue": "VNĐ"
+    },
+    {
+      "key": "pages.common.million",
+      "baseValue": "triệu"
+    },
+    {
+      "key": "pages.common.billion",
+      "baseValue": "tỷ"
+    },
+    {
+      "key": "pages.common.percent",
+      "baseValue": "%"
+    },
+    {
+      "key": "pages.common.perYear",
+      "baseValue": "/năm"
+    },
+    {
+      "key": "pages.common.perMonth",
+      "baseValue": "/tháng"
+    },
+    {
+      "key": "pages.common.invalidInput",
+      "baseValue": "Vui lòng nhập giá trị hợp lệ"
+    },
+    {
+      "key": "pages.common.required",
+      "baseValue": "Trường này là bắt buộc"
+    },
+    {
+      "key": "pages.common.calculating",
+      "baseValue": "Đang tính toán..."
+    },
+    {
+      "key": "pages.common.calculationComplete",
+      "baseValue": "Tính toán hoàn tất"
+    },
+    {
+      "key": "pages.common.exportSuccess",
+      "baseValue": "Xuất file thành công"
+    },
+    {
+      "key": "pages.common.exportFailed",
+      "baseValue": "Xuất file thất công"
+    },
+    {
+      "key": "pages.common.copySuccess",
+      "baseValue": "Đã sao chép"
+    },
+    {
+      "key": "pages.common.copyFailed",
+      "baseValue": "Sao chép thất bại"
+    },
+    {
+      "key": "pages.common.confirm",
+      "baseValue": "Xác nhận"
+    },
+    {
+      "key": "pages.common.edit",
+      "baseValue": "Chỉnh sửa"
+    },
+    {
+      "key": "pages.common.delete",
+      "baseValue": "Xóa"
+    },
+    {
+      "key": "pages.common.add",
+      "baseValue": "Thêm"
+    },
+    {
+      "key": "pages.common.remove",
+      "baseValue": "Xóa"
+    },
+    {
+      "key": "pages.common.select",
+      "baseValue": "Chọn"
+    },
+    {
+      "key": "pages.common.clear",
+      "baseValue": "Xóa"
+    },
+    {
+      "key": "pages.common.search",
+      "baseValue": "Tìm kiếm"
+    },
+    {
+      "key": "pages.common.filter",
+      "baseValue": "Lọc"
+    },
+    {
+      "key": "pages.common.sort",
+      "baseValue": "Sắp xếp"
+    },
+    {
+      "key": "pages.common.asc",
+      "baseValue": "Tăng dần"
+    },
+    {
+      "key": "pages.common.desc",
+      "baseValue": "Giảm dần"
+    },
+    {
+      "key": "pages.common.date",
+      "baseValue": "Ngày"
+    },
+    {
+      "key": "pages.common.amount",
+      "baseValue": "Số tiền"
+    },
+    {
+      "key": "pages.common.rate",
+      "baseValue": "Lãi suất"
+    },
+    {
+      "key": "pages.common.term",
+      "baseValue": "Kỳ hạn"
+    },
+    {
+      "key": "pages.common.total",
+      "baseValue": "Tổng"
+    },
+    {
+      "key": "pages.common.subtotal",
+      "baseValue": "Tạm tính"
+    },
+    {
+      "key": "pages.common.details",
+      "baseValue": "Chi tiết"
+    },
+    {
+      "key": "pages.common.summary",
+      "baseValue": "Tóm tắt"
+    },
+    {
+      "key": "pages.common.expand",
+      "baseValue": "Mở rộng"
+    },
+    {
+      "key": "pages.common.collapse",
+      "baseValue": "Thu gọn"
+    },
+    {
+      "key": "pages.common.noData",
+      "baseValue": "Không có dữ liệu"
+    },
+    {
+      "key": "pages.common.warning",
+      "baseValue": "Cảnh báo"
+    },
+    {
+      "key": "pages.common.info",
+      "baseValue": "Thông tin"
+    },
+    {
+      "key": "pages.common.previous",
+      "baseValue": "Trước"
+    },
+    {
+      "key": "pages.common.next",
+      "baseValue": "Tiếp theo"
+    },
+    {
+      "key": "pages.common.first",
+      "baseValue": "Đầu"
+    },
+    {
+      "key": "pages.common.last",
+      "baseValue": "Cuối"
+    },
+    {
+      "key": "pages.common.page",
+      "baseValue": "Trang"
+    },
+    {
+      "key": "pages.common.of",
+      "baseValue": "của"
+    },
+    {
+      "key": "pages.common.itemsPerPage",
+      "baseValue": "mục/trang"
+    },
+    {
+      "key": "pages.common.showing",
+      "baseValue": "Hiển thị"
+    },
+    {
+      "key": "pages.common.to",
+      "baseValue": "đến"
+    },
+    {
+      "key": "pages.common.ofTotal",
+      "baseValue": "của tổng số"
+    }
+  ]
+}

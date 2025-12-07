@@ -1,0 +1,16 @@
+{
+  "personalAccident": "Tai nạn cá nhân",
+  "death": "Tử vong",
+  "disability": "Thương tật toàn bộ/vĩnh viễn",
+  "medicalExpenses": "Chi phí y tế",
+  "hospitalization": "Phí viện phòng",
+  "surgery": "Phí phẫu thuật",
+  "criticalIllness": "Bệnh hiểm nghèo",
+  "lossOfIncome": "Mất thu nhập",
+  "propertyDamage": "Thiệt hại tài sản",
+  "thirdPartyLiability": "Trách nhiệm dân sự",
+  "ownDamage": "Thiệt hại vật chất xe",
+  "theft": "Mất cắp toàn bộ",
+  "fire": "Cháy nổ",
+  "naturalDisasters": "Thiên tai"
+}
