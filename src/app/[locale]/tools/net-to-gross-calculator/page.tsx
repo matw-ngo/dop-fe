@@ -13,8 +13,22 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Metadata } from "next";
 import { useTranslations, useLocale } from "next-intl";
+import { ToolsThemeProvider } from "@/components/features/tools/ToolsThemeProvider";
+import { ToolsPageLayout } from "@/components/features/tools/ToolsPageLayout";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
+import { Lightbulb, TrendingUp, Target } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Tính lương Net sang Gross | Công cụ tính lương",
@@ -31,148 +45,248 @@ export const metadata: Metadata = {
 export default function NetToGrossCalculatorPage() {
   const t = useTranslations("pages.netToGrossCalculator");
   const locale = useLocale();
+
   return (
-    <div className="container mx-auto py-6 space-y-6">
-      {/* Breadcrumb */}
-      <Breadcrumb>
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink href={`/${locale}`}>
-              {t("breadcrumb.home")}
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink href={`/${locale}/tools`}>
-              {t("breadcrumb.tools")}
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage>{t("breadcrumb.current")}</BreadcrumbPage>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
+    <ToolsThemeProvider>
+      <ToolsPageLayout
+        title={t("title")}
+        description={t("description")}
+        showHero={false}
+        showControls={false}
+        showFilters={false}
+      >
+        {/* Breadcrumb */}
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink href={`/${locale}`}>
+                {t("breadcrumb.home")}
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink href={`/${locale}/tools`}>
+                {t("breadcrumb.tools")}
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>{t("breadcrumb.current")}</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
 
-      {/* Page Header */}
-      <div className="text-center space-y-4">
-        <h1 className="text-3xl font-bold tracking-tight">{t("title")}</h1>
-        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-          {t("description")}
-        </p>
-      </div>
-
-      {/* Calculator Component */}
-      <NetToGrossCalculator />
-
-      {/* Additional Information */}
-      <div className="grid md:grid-cols-2 gap-6 mt-12">
-        <div className="space-y-4">
-          <h2 className="text-xl font-semibold">{t("usageGuide.title")}</h2>
-          <ul className="space-y-2 text-sm text-muted-foreground">
-            <li>{t("usageGuide.step1")}</li>
-            <li>{t("usageGuide.step2")}</li>
-            <li>{t("usageGuide.step3")}</li>
-            <li>{t("usageGuide.step4")}</li>
-            <li>{t("usageGuide.step5")}</li>
-          </ul>
+        {/* Calculator Component */}
+        <div className="mb-12">
+          <NetToGrossCalculator />
         </div>
 
-        <div className="space-y-4">
-          <h2 className="text-xl font-semibold">
-            {t("negotiationTips.title")}
-          </h2>
-          <ul className="space-y-2 text-sm text-muted-foreground">
-            <li>{t("negotiationTips.tip1")}</li>
-            <li>{t("negotiationTips.tip2")}</li>
-            <li>{t("negotiationTips.tip3")}</li>
-            <li>{t("negotiationTips.tip4")}</li>
-            <li>{t("negotiationTips.tip5")}</li>
-          </ul>
-        </div>
-      </div>
+        {/* Information Sections */}
+        <div className="space-y-8">
+          <Tabs defaultValue="guide" className="w-full">
+            <TabsList className="grid w-full grid-cols-3">
+              <TabsTrigger value="guide">Hướng dẫn sử dụng</TabsTrigger>
+              <TabsTrigger value="tips">Mẹo đàm phán</TabsTrigger>
+              <TabsTrigger value="examples">Ví dụ thực tế</TabsTrigger>
+            </TabsList>
 
-      {/* Example Calculations */}
-      <div className="mt-12">
-        <h2 className="text-xl font-semibold mb-4">{t("examples.title")}</h2>
-        <div className="overflow-x-auto">
-          <table className="w-full border-collapse border border-gray-300">
-            <thead>
-              <tr className="bg-gray-50">
-                <th className="border border-gray-300 px-4 py-2 text-left">
-                  {t("examples.table.netWanted")}
-                </th>
-                <th className="border border-gray-300 px-4 py-2 text-left">
-                  {t("examples.table.grossNeeded")}
-                </th>
-                <th className="border border-gray-300 px-4 py-2 text-left">
-                  {t("examples.table.totalDeductions")}
-                </th>
-                <th className="border border-gray-300 px-4 py-2 text-left">
-                  {t("examples.table.notes")}
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td className="border border-gray-300 px-4 py-2">10 triệu</td>
-                <td className="border border-gray-300 px-4 py-2">
-                  ~12.8 triệu
-                </td>
-                <td className="border border-gray-300 px-4 py-2">~2.8 triệu</td>
-                <td className="border border-gray-300 px-4 py-2">
-                  {t("examples.table.rows.row1.note")}
-                </td>
-              </tr>
-              <tr>
-                <td className="border border-gray-300 px-4 py-2">15 triệu</td>
-                <td className="border border-gray-300 px-4 py-2">
-                  ~19.5 triệu
-                </td>
-                <td className="border border-gray-300 px-4 py-2">~4.5 triệu</td>
-                <td className="border border-gray-300 px-4 py-2">
-                  {t("examples.table.rows.row2.note")}
-                </td>
-              </tr>
-              <tr>
-                <td className="border border-gray-300 px-4 py-2">20 triệu</td>
-                <td className="border border-gray-300 px-4 py-2">
-                  ~26.5 triệu
-                </td>
-                <td className="border border-gray-300 px-4 py-2">~6.5 triệu</td>
-                <td className="border border-gray-300 px-4 py-2">
-                  {t("examples.table.rows.row3.note")}
-                </td>
-              </tr>
-              <tr>
-                <td className="border border-gray-300 px-4 py-2">30 triệu</td>
-                <td className="border border-gray-300 px-4 py-2">~41 triệu</td>
-                <td className="border border-gray-300 px-4 py-2">~11 triệu</td>
-                <td className="border border-gray-300 px-4 py-2">
-                  {t("examples.table.rows.row4.note")}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <p className="text-sm text-muted-foreground mt-4">
-          * {t("examples.disclaimer")}
-        </p>
-      </div>
+            <TabsContent value="guide" className="mt-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Target className="w-5 h-5" />
+                    {t("guide.title")}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <ol className="space-y-4 text-sm">
+                    <li className="flex items-start gap-3">
+                      <Badge variant="outline" className="mt-0.5 flex-shrink-0">
+                        1
+                      </Badge>
+                      <div>
+                        <strong>{t("guide.step1.title")}</strong>
+                        <p className="text-muted-foreground mt-1">
+                          {t("guide.step1.description")}
+                        </p>
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <Badge variant="outline" className="mt-0.5 flex-shrink-0">
+                        2
+                      </Badge>
+                      <div>
+                        <strong>{t("guide.step2.title")}</strong>
+                        <p className="text-muted-foreground mt-1">
+                          {t("guide.step2.description")}
+                        </p>
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <Badge variant="outline" className="mt-0.5 flex-shrink-0">
+                        3
+                      </Badge>
+                      <div>
+                        <strong>{t("guide.step3.title")}</strong>
+                        <p className="text-muted-foreground mt-1">
+                          {t("guide.step3.description")}
+                        </p>
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <Badge variant="outline" className="mt-0.5 flex-shrink-0">
+                        4
+                      </Badge>
+                      <div>
+                        <strong>{t("guide.step4.title")}</strong>
+                        <p className="text-muted-foreground mt-1">
+                          {t("guide.step4.description")}
+                        </p>
+                      </div>
+                    </li>
+                  </ol>
+                </CardContent>
+              </Card>
+            </TabsContent>
 
-      {/* Tips Section */}
-      <div className="mt-12 p-6 bg-blue-50 rounded-lg">
-        <h2 className="text-xl font-semibold mb-4 text-blue-900">
-          {t("tips.title")}
-        </h2>
-        <ul className="space-y-2 text-sm text-blue-800">
-          <li>• 💡 {t("tips.tip1")}</li>
-          <li>• 💡 {t("tips.tip2")}</li>
-          <li>• 💡 {t("tips.tip3")}</li>
-          <li>• 💡 {t("tips.tip4")}</li>
-          <li>• 💡 {t("tips.tip5")}</li>
-        </ul>
-      </div>
-    </div>
+            <TabsContent value="tips" className="mt-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Lightbulb className="w-5 h-5" />
+                    {t("tips.title")}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div className="space-y-4">
+                      <h4 className="font-semibold text-primary">
+                        {t("tips.negotiation.title")}
+                      </h4>
+                      <ul className="space-y-2 text-sm">
+                        <li className="flex items-start gap-2">
+                          <span className="text-emerald-500 mt-0.5">✓</span>
+                          <span>{t("tips.negotiation.tip1")}</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-emerald-500 mt-0.5">✓</span>
+                          <span>{t("tips.negotiation.tip2")}</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-emerald-500 mt-0.5">✓</span>
+                          <span>{t("tips.negotiation.tip3")}</span>
+                        </li>
+                      </ul>
+                    </div>
+                    <div className="space-y-4">
+                      <h4 className="font-semibold text-blue-600">
+                        {t("tips.considerations.title")}
+                      </h4>
+                      <ul className="space-y-2 text-sm">
+                        <li className="flex items-start gap-2">
+                          <span className="text-blue-500 mt-0.5">•</span>
+                          <span>{t("tips.considerations.point1")}</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-blue-500 mt-0.5">•</span>
+                          <span>{t("tips.considerations.point2")}</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-blue-500 mt-0.5">•</span>
+                          <span>{t("tips.considerations.point3")}</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="examples" className="mt-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <TrendingUp className="w-5 h-5" />
+                    {t("examples.title")}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="overflow-x-auto">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Mức lương Net mong muốn</TableHead>
+                          <TableHead>Mức lương Gross cần đề nghị</TableHead>
+                          <TableHead>Tổng chi phí công ty</TableHead>
+                          <TableHead>Ghi chú</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        <TableRow>
+                          <TableCell className="font-medium">
+                            10 triệu VNĐ
+                          </TableCell>
+                          <TableCell className="font-semibold text-emerald-600">
+                            12.7 triệu VNĐ
+                          </TableCell>
+                          <TableCell>14.5 triệu VNĐ</TableCell>
+                          <TableCell className="text-sm text-muted-foreground">
+                            Mức lương phổ biến cho nhân viên 1-2 năm kinh nghiệm
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell className="font-medium">
+                            15 triệu VNĐ
+                          </TableCell>
+                          <TableCell className="font-semibold text-emerald-600">
+                            19.5 triệu VNĐ
+                          </TableCell>
+                          <TableCell>22.3 triệu VNĐ</TableCell>
+                          <TableCell className="text-sm text-muted-foreground">
+                            Trưởng nhóm/Chuyên viên
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell className="font-medium">
+                            20 triệu VNĐ
+                          </TableCell>
+                          <TableCell className="font-semibold text-emerald-600">
+                            26.3 triệu VNĐ
+                          </TableCell>
+                          <TableCell>30.1 triệu VNĐ</TableCell>
+                          <TableCell className="text-sm text-muted-foreground">
+                            Quản lý/Chuyên gia cấp cao
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell className="font-medium">
+                            30 triệu VNĐ
+                          </TableCell>
+                          <TableCell className="font-semibold text-emerald-600">
+                            40 triệu VNĐ
+                          </TableCell>
+                          <TableCell>45.8 triệu VNĐ</TableCell>
+                          <TableCell className="text-sm text-muted-foreground">
+                            Quản lý cấp cao/Giám đốc
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </div>
+                  <div className="mt-6 p-4 bg-amber-50 dark:bg-amber-950/20 rounded-lg">
+                    <p className="text-sm text-amber-800 dark:text-amber-200">
+                      <strong>Lưu ý:</strong> Mức lương Gross đã bao gồm các
+                      khoản bảo hiểm bắt buộc và thuế TNCN. Công ty sẽ phải trả
+                      thêm các khoản bảo hiểm của người sử dụng lao động (BHXH
+                      17.5%, BHYT 3%, BHTN 1%).
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+          </Tabs>
+        </div>
+      </ToolsPageLayout>
+    </ToolsThemeProvider>
   );
 }

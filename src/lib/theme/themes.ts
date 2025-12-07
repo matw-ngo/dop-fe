@@ -1,6 +1,7 @@
 import { corporateTheme } from "./themes/corporate";
 import { creativeTheme } from "./themes/creative";
 import { defaultTheme } from "./themes/default";
+import { financeTheme } from "./themes/finance";
 import { medicalTheme } from "./themes/medical";
 import type { ThemeConfig, UserGroup } from "./types";
 
@@ -9,6 +10,7 @@ export const themes: Record<string, ThemeConfig> = {
   default: defaultTheme,
   corporate: corporateTheme,
   creative: creativeTheme,
+  finance: financeTheme,
   medical: medicalTheme,
 };
 
@@ -51,6 +53,19 @@ export const userGroups: Record<string, UserGroup> = {
       allowCustomFonts: true,
       allowCustomRadius: true,
       brandingRequired: false,
+    },
+  },
+  finance: {
+    id: "finance",
+    name: "Finance Users",
+    description: "Financial professionals and tools users",
+    defaultTheme: "finance",
+    availableThemes: ["default", "finance", "corporate"],
+    customizations: {
+      allowCustomColors: true,
+      allowCustomFonts: false,
+      allowCustomRadius: false,
+      brandingRequired: true,
     },
   },
   healthcare: {

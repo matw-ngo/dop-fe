@@ -71,7 +71,7 @@ interface SavingsCalculatorProps {
 const SavingsCalculatorInner: React.FC<SavingsCalculatorProps> = ({
   className,
 }) => {
-  const t = useTranslations("tools.savingsCalculator");
+  const t = useTranslations("features.tools.savings-calculator");
 
   // Error handling
   const {
@@ -486,15 +486,15 @@ const SavingsCalculatorInner: React.FC<SavingsCalculatorProps> = ({
 
       {/* Error State */}
       {errors.calculation && (
-        <Alert variant="destructive">
+        <Alert variant="destructive" className="flex items-center">
           <AlertCircle className="h-4 w-4" />
           <AlertDescription className="flex items-center justify-between">
             <span>{errors.calculation}</span>
-            <Button variant="outline" size="sm" onClick={handleRetry}>
-              <RefreshCw className="mr-2 h-4 w-4" />
-              {t("form.retry")}
-            </Button>
           </AlertDescription>
+          <Button variant="outline" size="sm" onClick={handleRetry}>
+            <RefreshCw className="mr-2 h-4 w-4" />
+            {t("form.retry")}
+          </Button>
         </Alert>
       )}
 

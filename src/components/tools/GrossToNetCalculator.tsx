@@ -74,7 +74,7 @@ interface GrossToNetCalculatorProps {
 const GrossToNetCalculatorInner: React.FC<GrossToNetCalculatorProps> = ({
   className,
 }) => {
-  const t = useTranslations("tools.grossToNetCalculator");
+  const t = useTranslations("features.tools.gross-to-net-calculator");
 
   // Error handling
   const {

@@ -268,7 +268,7 @@ export const CalculatorAsyncErrorHandler: React.FC<{
   if (!error) return null;
 
   return (
-    <Alert variant="destructive" className="mb-4">
+    <Alert variant="destructive" className="mb-4 flex items-center">
       <AlertTriangle className="h-4 w-4" />
       <AlertDescription>
         <div className="flex items-center justify-between">

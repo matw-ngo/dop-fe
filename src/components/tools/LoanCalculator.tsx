@@ -126,7 +126,7 @@ interface LoanCalculatorProps {
 }
 
 const LoanCalculatorInner: React.FC<LoanCalculatorProps> = ({ className }) => {
-  const t = useTranslations("tools.loanCalculator");
+  const t = useTranslations("features.tools.loan-calculator");
 
   // Error handling
   const {

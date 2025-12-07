@@ -103,11 +103,18 @@ export const finZoneNavbarConfig: NavbarConfig = {
           onClick: "top_navigation_click_savings_calculator",
         },
         {
-          id: "tools-gross-net-salary",
+          id: "tools-gross-to-net",
           label: "Tính lương Gross - Net",
           type: "link",
-          href: "/tools/salary-converter",
-          onClick: "top_navigation_click_salary_converter",
+          href: "/tools/gross-to-net-calculator",
+          onClick: "top_navigation_click_gross_to_net",
+        },
+        {
+          id: "tools-net-to-gross",
+          label: "Tính lương Net - Gross",
+          type: "link",
+          href: "/tools/net-to-gross-calculator",
+          onClick: "top_navigation_click_net_to_gross",
         },
         {
           id: "tools-all",

@@ -56,30 +56,28 @@
     "compact": "Thu gọn",
     "list": "Danh sách"
   },
-  "list": {
-    "loanCalculator": {
-      "title": "Tính toán khoản vay",
-      "description": "Tính toán các khoản thanh toán hàng tháng, tổng lãi suất và lịch trình trả nợ"
-    },
-    "savingsCalculator": {
-      "title": "Tính lãi suất tiết kiệm",
-      "description": "So sánh lãi suất tiền gửi tại các ngân hàng Việt Nam"
-    },
-    "grossToNetCalculator": {
-      "title": "Tính lương Gross sang Net",
-      "description": "Tính lương thực nhận từ lương gộp theo quy định pháp luật Việt Nam"
-    },
-    "netToGrossCalculator": {
-      "title": "Tính lương Net sang Gross",
-      "description": "Xác định mức lương Gross cần đề nghị để đạt được mức lương Net mong muốn"
-    },
-    "roiCalculator": {
-      "title": "Tính ROI",
-      "description": "Phân tích lợi tức đầu tư và so sánh cơ hội đầu tư"
-    },
-    "taxCalculator": {
-      "title": "Tính thuế",
-      "description": "Tính toán các loại thuế VAT, thuế thu nhập cá nhân, thuế doanh nghiệp"
-    }
+  "loanCalculator": {
+    "title": "Tính toán khoản vay",
+    "description": "Tính toán các khoản thanh toán hàng tháng, tổng lãi suất và lịch trình trả nợ"
+  },
+  "savingsCalculator": {
+    "title": "Tính lãi suất tiết kiệm",
+    "description": "So sánh lãi suất tiền gửi tại các ngân hàng Việt Nam"
+  },
+  "grossToNetCalculator": {
+    "title": "Tính lương Gross sang Net",
+    "description": "Tính lương thực nhận từ lương gộp theo quy định pháp luật Việt Nam"
+  },
+  "netToGrossCalculator": {
+    "title": "Tính lương Net sang Gross",
+    "description": "Xác định mức lương Gross cần đề nghị để đạt được mức lương Net mong muốn"
+  },
+  "roiCalculator": {
+    "title": "Tính ROI",
+    "description": "Phân tích lợi tức đầu tư và so sánh cơ hội đầu tư"
+  },
+  "taxCalculator": {
+    "title": "Tính thuế",
+    "description": "Tính toán các loại thuế VAT, thuế thu nhập cá nhân, thuế doanh nghiệp"
   }
 }

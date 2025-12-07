@@ -1,0 +1,20 @@
+{
+  "title": "Chọn Giao Diện",
+  "description": "Chọn giao diện phù hợp nhất với nhu cầu của bạn",
+  "current": "Hiện tại",
+  "note": "Lựa chọn giao diện của bạn sẽ được tự động lưu lại",
+  "themes": {
+    "finance": {
+      "name": "Tài chính",
+      "description": "Giao diện chuyên nghiệp với tông màu xanh lá và xanh dương cho công cụ tài chính"
+    },
+    "medical": {
+      "name": "Y tế",
+      "description": "Giao diện sạch sẽ với màu xanh lá cho công cụ y tế"
+    },
+    "corporate": {
+      "name": "Doanh nghiệp",
+      "description": "Giao diện trung tính chuyên nghiệp cho môi trường kinh doanh"
+    }
+  }
+}

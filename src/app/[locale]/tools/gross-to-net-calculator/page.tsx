@@ -13,8 +13,20 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Metadata } from "next";
 import { useTranslations, useLocale } from "next-intl";
+import { ToolsThemeProvider } from "@/components/features/tools/ToolsThemeProvider";
+import { ToolsPageLayout } from "@/components/features/tools/ToolsPageLayout";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import Header from "@/components/layout/header";
 
 export const metadata: Metadata = {
   title: "Tính lương Gross sang Net | Công cụ tính lương",
@@ -31,155 +43,237 @@ export const metadata: Metadata = {
 export default function GrossToNetCalculatorPage() {
   const t = useTranslations("pages.grossToNetCalculator");
   const locale = useLocale();
+
   return (
-    <div className="container mx-auto py-6 space-y-6">
-      {/* Breadcrumb */}
-      <Breadcrumb>
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink href={`/${locale}`}>
-              {t("breadcrumb.home")}
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink href={`/${locale}/tools`}>
-              {t("breadcrumb.tools")}
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage>{t("breadcrumb.current")}</BreadcrumbPage>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
+    <ToolsThemeProvider>
+      <ToolsPageLayout
+        title={t("title")}
+        description={t("description")}
+        showHero={false}
+        showControls={false}
+        showFilters={false}
+      >
+        {/* Breadcrumb */}
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink href={`/${locale}`}>
+                {t("breadcrumb.home")}
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink href={`/${locale}/tools`}>
+                {t("breadcrumb.tools")}
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>{t("breadcrumb.current")}</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
 
-      {/* Page Header */}
-      <div className="text-center space-y-4">
-        <h1 className="text-3xl font-bold tracking-tight">{t("title")}</h1>
-        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-          {t("description")}
-        </p>
-      </div>
-
-      {/* Calculator Component */}
-      <GrossToNetCalculator />
-
-      {/* Additional Information */}
-      <div className="grid md:grid-cols-2 gap-6 mt-12">
-        <div className="space-y-4">
-          <h2 className="text-xl font-semibold">{t("deductions.title")}</h2>
-          <ul className="space-y-2 text-sm text-muted-foreground">
-            <li>
-              • <strong>{t("deductions.socialInsurance.name")} (8%):</strong>{" "}
-              {t("deductions.socialInsurance.description")}
-            </li>
-            <li>
-              • <strong>{t("deductions.healthInsurance.name")} (1.5%):</strong>{" "}
-              {t("deductions.healthInsurance.description")}
-            </li>
-            <li>
-              •{" "}
-              <strong>
-                {t("deductions.unemploymentInsurance.name")} (1%):
-              </strong>{" "}
-              {t("deductions.unemploymentInsurance.description")}
-            </li>
-            <li>
-              • <strong>{t("deductions.personalIncomeTax.name")}:</strong>{" "}
-              {t("deductions.personalIncomeTax.description")}
-            </li>
-            <li>
-              • <strong>{t("deductions.deduction.name")}:</strong>{" "}
-              {t("deductions.deduction.description")}
-            </li>
-          </ul>
+        {/* Calculator Component */}
+        <div className="mb-12">
+          <GrossToNetCalculator />
         </div>
 
-        <div className="space-y-4">
-          <h2 className="text-xl font-semibold">{t("importantNotes.title")}</h2>
-          <ul className="space-y-2 text-sm text-muted-foreground">
-            <li>{t("importantNotes.note1")}</li>
-            <li>{t("importantNotes.note2")}</li>
-            <li>{t("importantNotes.note3")}</li>
-            <li>{t("importantNotes.note4")}</li>
-            <li>{t("importantNotes.note5")}</li>
-          </ul>
-        </div>
-      </div>
+        {/* Additional Information */}
+        <div className="grid md:grid-cols-2 gap-6 mb-12">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-xl">{t("deductions.title")}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ul className="space-y-3 text-sm">
+                <li className="flex items-start gap-2">
+                  <span className="w-2 h-2 rounded-full bg-blue-500 mt-2 flex-shrink-0"></span>
+                  <div>
+                    <strong>
+                      {t("deductions.socialInsurance.name")} (8%):
+                    </strong>
+                    <p className="text-muted-foreground mt-1">
+                      {t("deductions.socialInsurance.description")}
+                    </p>
+                  </div>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 mt-2 flex-shrink-0"></span>
+                  <div>
+                    <strong>
+                      {t("deductions.healthInsurance.name")} (1.5%):
+                    </strong>
+                    <p className="text-muted-foreground mt-1">
+                      {t("deductions.healthInsurance.description")}
+                    </p>
+                  </div>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="w-2 h-2 rounded-full bg-violet-500 mt-2 flex-shrink-0"></span>
+                  <div>
+                    <strong>
+                      {t("deductions.unemploymentInsurance.name")} (1%):
+                    </strong>
+                    <p className="text-muted-foreground mt-1">
+                      {t("deductions.unemploymentInsurance.description")}
+                    </p>
+                  </div>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="w-2 h-2 rounded-full bg-orange-500 mt-2 flex-shrink-0"></span>
+                  <div>
+                    <strong>{t("deductions.personalIncomeTax.name")}:</strong>
+                    <p className="text-muted-foreground mt-1">
+                      {t("deductions.personalIncomeTax.description")}
+                    </p>
+                  </div>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="w-2 h-2 rounded-full bg-pink-500 mt-2 flex-shrink-0"></span>
+                  <div>
+                    <strong>{t("deductions.deduction.name")}:</strong>
+                    <p className="text-muted-foreground mt-1">
+                      {t("deductions.deduction.description")}
+                    </p>
+                  </div>
+                </li>
+              </ul>
+            </CardContent>
+          </Card>
 
-      {/* Tax Rates Table */}
-      <div className="mt-12">
-        <h2 className="text-xl font-semibold mb-4">{t("taxRates.title")}</h2>
-        <div className="overflow-x-auto">
-          <table className="w-full border-collapse border border-gray-300">
-            <thead>
-              <tr className="bg-gray-50">
-                <th className="border border-gray-300 px-4 py-2 text-left">
-                  {t("taxRates.table.bracket")}
-                </th>
-                <th className="border border-gray-300 px-4 py-2 text-left">
-                  {t("taxRates.table.income")}
-                </th>
-                <th className="border border-gray-300 px-4 py-2 text-left">
-                  {t("taxRates.table.rate")}
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td className="border border-gray-300 px-4 py-2">1</td>
-                <td className="border border-gray-300 px-4 py-2">
-                  {t("taxRates.table.brackets.bracket1")}
-                </td>
-                <td className="border border-gray-300 px-4 py-2">5%</td>
-              </tr>
-              <tr>
-                <td className="border border-gray-300 px-4 py-2">2</td>
-                <td className="border border-gray-300 px-4 py-2">
-                  {t("taxRates.table.brackets.bracket2")}
-                </td>
-                <td className="border border-gray-300 px-4 py-2">10%</td>
-              </tr>
-              <tr>
-                <td className="border border-gray-300 px-4 py-2">3</td>
-                <td className="border border-gray-300 px-4 py-2">
-                  {t("taxRates.table.brackets.bracket3")}
-                </td>
-                <td className="border border-gray-300 px-4 py-2">15%</td>
-              </tr>
-              <tr>
-                <td className="border border-gray-300 px-4 py-2">4</td>
-                <td className="border border-gray-300 px-4 py-2">
-                  {t("taxRates.table.brackets.bracket4")}
-                </td>
-                <td className="border border-gray-300 px-4 py-2">20%</td>
-              </tr>
-              <tr>
-                <td className="border border-gray-300 px-4 py-2">5</td>
-                <td className="border border-gray-300 px-4 py-2">
-                  {t("taxRates.table.brackets.bracket5")}
-                </td>
-                <td className="border border-gray-300 px-4 py-2">25%</td>
-              </tr>
-              <tr>
-                <td className="border border-gray-300 px-4 py-2">6</td>
-                <td className="border border-gray-300 px-4 py-2">
-                  {t("taxRates.table.brackets.bracket6")}
-                </td>
-                <td className="border border-gray-300 px-4 py-2">30%</td>
-              </tr>
-              <tr>
-                <td className="border border-gray-300 px-4 py-2">7</td>
-                <td className="border border-gray-300 px-4 py-2">
-                  {t("taxRates.table.brackets.bracket7")}
-                </td>
-                <td className="border border-gray-300 px-4 py-2">35%</td>
-              </tr>
-            </tbody>
-          </table>
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-xl">
+                {t("importantNotes.title")}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ul className="space-y-3 text-sm">
+                <li className="flex items-start gap-2">
+                  <span className="text-amber-500 mt-0.5">⚠</span>
+                  <span className="text-muted-foreground">
+                    {t("importantNotes.note1")}
+                  </span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-amber-500 mt-0.5">⚠</span>
+                  <span className="text-muted-foreground">
+                    {t("importantNotes.note2")}
+                  </span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-amber-500 mt-0.5">⚠</span>
+                  <span className="text-muted-foreground">
+                    {t("importantNotes.note3")}
+                  </span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-amber-500 mt-0.5">⚠</span>
+                  <span className="text-muted-foreground">
+                    {t("importantNotes.note4")}
+                  </span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-amber-500 mt-0.5">⚠</span>
+                  <span className="text-muted-foreground">
+                    {t("importantNotes.note5")}
+                  </span>
+                </li>
+              </ul>
+            </CardContent>
+          </Card>
         </div>
-      </div>
-    </div>
+
+        {/* Tax Rates Table */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-xl">{t("taxRates.title")}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="w-16">
+                      {t("taxRates.table.bracket")}
+                    </TableHead>
+                    <TableHead>{t("taxRates.table.income")}</TableHead>
+                    <TableHead className="w-20">
+                      {t("taxRates.table.rate")}
+                    </TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  <TableRow>
+                    <TableCell className="font-medium">1</TableCell>
+                    <TableCell>
+                      {t("taxRates.table.brackets.bracket1")}
+                    </TableCell>
+                    <TableCell className="text-emerald-600 font-semibold">
+                      5%
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="font-medium">2</TableCell>
+                    <TableCell>
+                      {t("taxRates.table.brackets.bracket2")}
+                    </TableCell>
+                    <TableCell className="text-emerald-600 font-semibold">
+                      10%
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="font-medium">3</TableCell>
+                    <TableCell>
+                      {t("taxRates.table.brackets.bracket3")}
+                    </TableCell>
+                    <TableCell className="text-emerald-600 font-semibold">
+                      15%
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="font-medium">4</TableCell>
+                    <TableCell>
+                      {t("taxRates.table.brackets.bracket4")}
+                    </TableCell>
+                    <TableCell className="text-emerald-600 font-semibold">
+                      20%
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="font-medium">5</TableCell>
+                    <TableCell>
+                      {t("taxRates.table.brackets.bracket5")}
+                    </TableCell>
+                    <TableCell className="text-emerald-600 font-semibold">
+                      25%
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="font-medium">6</TableCell>
+                    <TableCell>
+                      {t("taxRates.table.brackets.bracket6")}
+                    </TableCell>
+                    <TableCell className="text-emerald-600 font-semibold">
+                      30%
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="font-medium">7</TableCell>
+                    <TableCell>
+                      {t("taxRates.table.brackets.bracket7")}
+                    </TableCell>
+                    <TableCell className="text-emerald-600 font-semibold">
+                      35%
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </div>
+          </CardContent>
+        </Card>
+      </ToolsPageLayout>
+    </ToolsThemeProvider>
   );
 }

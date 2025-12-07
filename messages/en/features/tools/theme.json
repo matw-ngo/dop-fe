@@ -1,0 +1,20 @@
+{
+  "title": "Theme Selection",
+  "description": "Choose a visual theme that best suits your needs",
+  "current": "Current",
+  "note": "Your theme preference will be saved automatically",
+  "themes": {
+    "finance": {
+      "name": "Finance",
+      "description": "Professional theme with blue and green tones for financial tools"
+    },
+    "medical": {
+      "name": "Medical",
+      "description": "Clean theme with emerald colors for healthcare tools"
+    },
+    "corporate": {
+      "name": "Corporate",
+      "description": "Professional neutral theme for business environments"
+    }
+  }
+}

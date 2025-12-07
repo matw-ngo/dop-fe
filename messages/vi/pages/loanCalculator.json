@@ -14,6 +14,64 @@
     "note4": "Các loại khoản vay khác nhau có thể có lãi suất và điều kiện khác nhau",
     "note5": "Nên kiểm tra kỹ các điều khoản và điều kiện trước khi vay"
   },
+  "loanBasics": {
+    "title": "Kiến thức cơ bản về vay",
+    "principal": {
+      "title": "Số tiền vay",
+      "description": "Số tiền bạn vay từ ngân hàng hoặc tổ chức tài chính"
+    },
+    "interest": {
+      "title": "Lãi suất",
+      "description": "Tỷ lệ phần trăm mà bạn phải trả trên số tiền vay"
+    },
+    "term": {
+      "title": "Kỳ hạn vay",
+      "description": "Thời gian bạn có để trả hết khoản vay"
+    },
+    "payment": {
+      "title": "Khoản thanh toán",
+      "description": "Số tiền bạn phải trả hàng tháng bao gồm cả gốc và lãi"
+    }
+  },
+  "amortization": {
+    "title": "Lịch trình trả nợ",
+    "point1": {
+      "title": "Gốc và lãi",
+      "description": "Mỗi khoản thanh toán bao gồm một phần gốc và một phần lãi"
+    },
+    "point2": {
+      "title": "Lãi giảm dần",
+      "description": "Lãi suất giảm theo thời gian khi bạn trả dần số tiền gốc"
+    },
+    "point3": {
+      "title": "Lịch trả nợ",
+      "description": "Bảng chi tiết cho thấy số tiền gốc và lãi trong mỗi khoản thanh toán"
+    }
+  },
+  "loanTips": {
+    "title": "Mẹo khi vay vốn",
+    "before": {
+      "title": "Trước khi vay",
+      "tip1": "Kiểm tra khả năng trả nợ của bạn",
+      "tip2": "So sánh lãi suất từ nhiều ngân hàng",
+      "tip3": "Đọc kỹ các điều khoản và điều kiện",
+      "tip4": "Chuẩn bị đầy đủ giấy tờ cần thiết"
+    },
+    "during": {
+      "title": "Trong khi vay",
+      "tip1": "Thanh toán đúng hạn để tránh phí phạt",
+      "tip2": "Giữ lại tất cả giấy tờ liên quan",
+      "tip3": "Theo dõi số tiền còn lại phải trả",
+      "tip4": "Cân nhắc trả trước khi có thể"
+    },
+    "after": {
+      "title": "Sau khi trả hết",
+      "tip1": "Yêu cầu giấy xác nhận đã trả hết nợ",
+      "tip2": "Kiểm tra báo cáo tín dụng của bạn",
+      "tip3": "Lưu trữ hồ sơ vay cho tương lai",
+      "tip4": "Xây dựng lịch sử tín dụng tốt"
+    }
+  },
   "loanTypes": {
     "title": "Các loại vay phổ biến",
     "homeLoan": {

@@ -13,80 +13,160 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useTranslations, useLocale } from "next-intl";
+import { ToolsThemeProvider } from "@/components/features/tools/ToolsThemeProvider";
+import { ToolsPageLayout } from "@/components/features/tools/ToolsPageLayout";
+import { Badge } from "@/components/ui/badge";
+import { TrendingUp, PiggyBank, Shield, Info } from "lucide-react";
 
 export default function SavingsCalculatorPage() {
   const t = useTranslations("pages.savingsCalculator");
   const locale = useLocale();
+
   return (
-    <div className="container mx-auto py-6 space-y-6">
-      {/* Breadcrumb */}
-      <Breadcrumb>
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink href={`/${locale}`}>
-              {t("breadcrumb.home")}
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink href={`/${locale}/tools`}>
-              {t("breadcrumb.tools")}
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage>{t("breadcrumb.current")}</BreadcrumbPage>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
+    <ToolsThemeProvider>
+      <ToolsPageLayout
+        title={t("title")}
+        description={t("description")}
+        showHero={false}
+        showControls={false}
+        showFilters={false}
+      >
+        {/* Breadcrumb */}
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink href={`/${locale}`}>
+                {t("breadcrumb.home")}
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink href={`/${locale}/tools`}>
+                {t("breadcrumb.tools")}
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>{t("breadcrumb.current")}</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
 
-      {/* Page Header */}
-      <div className="text-center space-y-4">
-        <h1 className="text-3xl font-bold tracking-tight">{t("title")}</h1>
-        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-          {t("description")}
-        </p>
-      </div>
-
-      {/* Calculator Component */}
-      <SavingsCalculator />
-
-      {/* Additional Information */}
-      <div className="grid md:grid-cols-2 gap-6 mt-12">
-        <div className="space-y-4">
-          <h2 className="text-xl font-semibold">{t("importantNotes.title")}</h2>
-          <ul className="space-y-2 text-sm text-muted-foreground">
-            <li>{t("importantNotes.note1")}</li>
-            <li>{t("importantNotes.note2")}</li>
-            <li>{t("importantNotes.note3")}</li>
-            <li>{t("importantNotes.note4")}</li>
-            <li>{t("importantNotes.note5")}</li>
-          </ul>
+        {/* Calculator Component */}
+        <div className="mb-12">
+          <SavingsCalculator />
         </div>
 
-        <div className="space-y-4">
-          <h2 className="text-xl font-semibold">{t("savingsTypes.title")}</h2>
-          <ul className="space-y-2 text-sm text-muted-foreground">
-            <li>
-              • <strong>{t("savingsTypes.noTerm.name")}:</strong>{" "}
-              {t("savingsTypes.noTerm.description")}
-            </li>
-            <li>
-              • <strong>{t("savingsTypes.term.name")}:</strong>{" "}
-              {t("savingsTypes.term.description")}
-            </li>
-            <li>
-              • <strong>{t("savingsTypes.accumulation.name")}:</strong>{" "}
-              {t("savingsTypes.accumulation.description")}
-            </li>
-            <li>
-              • <strong>{t("savingsTypes.super.name")}:</strong>{" "}
-              {t("savingsTypes.super.description")}
-            </li>
-          </ul>
+        {/* Additional Information */}
+        <div className="grid md:grid-cols-2 gap-6 mb-12">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Info className="w-5 h-5 text-blue-600" />
+                {t("importantNotes.title")}
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className="flex items-start gap-3">
+                <Badge variant="outline" className="mt-0.5">
+                  1
+                </Badge>
+                <p className="text-sm text-muted-foreground">
+                  {t("importantNotes.note1")}
+                </p>
+              </div>
+              <div className="flex items-start gap-3">
+                <Badge variant="outline" className="mt-0.5">
+                  2
+                </Badge>
+                <p className="text-sm text-muted-foreground">
+                  {t("importantNotes.note2")}
+                </p>
+              </div>
+              <div className="flex items-start gap-3">
+                <Badge variant="outline" className="mt-0.5">
+                  3
+                </Badge>
+                <p className="text-sm text-muted-foreground">
+                  {t("importantNotes.note3")}
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <TrendingUp className="w-5 h-5 text-emerald-600" />
+                {t("savingsTips.title")}
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <PiggyBank className="w-4 h-4 text-amber-500" />
+                  <span className="text-sm font-medium">{t("savingsTips.tip1.title")}</span>
+                </div>
+                <p className="text-sm text-muted-foreground ml-6">{t("savingsTips.tip1.description")}</p>
+              </div>
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <Shield className="w-4 h-4 text-blue-500" />
+                  <span className="text-sm font-medium">{t("savingsTips.tip2.title")}</span>
+                </div>
+                <p className="text-sm text-muted-foreground ml-6">{t("savingsTips.tip2.description")}</p>
+              </div>
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <TrendingUp className="w-4 h-4 text-emerald-500" />
+                  <span className="text-sm font-medium">{t("savingsTips.tip3.title")}</span>
+                </div>
+                <p className="text-sm text-muted-foreground ml-6">{t("savingsTips.tip3.description")}</p>
+              </div>
+            </CardContent>
+          </Card> */}
         </div>
-      </div>
-    </div>
+
+        {/* Savings Types */}
+        {/* <Card>
+          <CardHeader>
+            <CardTitle>{t("savingsTypes.title")}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid md:grid-cols-3 gap-4">
+              <div className="p-4 border rounded-lg space-y-3 hover:border-blue-200 transition-colors">
+                <h4 className="font-semibold text-blue-600">{t("savingsTypes.traditional.title")}</h4>
+                <ul className="text-sm text-muted-foreground space-y-1">
+                  <li>• {t("savingsTypes.traditional.feature1")}</li>
+                  <li>• {t("savingsTypes.traditional.feature2")}</li>
+                  <li>• {t("savingsTypes.traditional.feature3")}</li>
+                </ul>
+                <p className="text-xs text-blue-600 font-medium">{t("savingsTypes.traditional.interest")}</p>
+              </div>
+              <div className="p-4 border rounded-lg space-y-3 hover:border-emerald-200 transition-colors">
+                <h4 className="font-semibold text-emerald-600">{t("savingsTypes.digital.title")}</h4>
+                <ul className="text-sm text-muted-foreground space-y-1">
+                  <li>• {t("savingsTypes.digital.feature1")}</li>
+                  <li>• {t("savingsTypes.digital.feature2")}</li>
+                  <li>• {t("savingsTypes.digital.feature3")}</li>
+                </ul>
+                <p className="text-xs text-emerald-600 font-medium">{t("savingsTypes.digital.interest")}</p>
+              </div>
+              <div className="p-4 border rounded-lg space-y-3 hover:border-violet-200 transition-colors">
+                <h4 className="font-semibold text-violet-600">{t("savingsTypes.term.title")}</h4>
+                <ul className="text-sm text-muted-foreground space-y-1">
+                  <li>• {t("savingsTypes.term.feature1")}</li>
+                  <li>• {t("savingsTypes.term.feature2")}</li>
+                  <li>• {t("savingsTypes.term.feature3")}</li>
+                </ul>
+                <p className="text-xs text-violet-600 font-medium">{t("savingsTypes.term.interest")}</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card> */}
+      </ToolsPageLayout>
+    </ToolsThemeProvider>
   );
 }

@@ -65,7 +65,7 @@ interface NetToGrossCalculatorProps {
 const NetToGrossCalculatorInner: React.FC<NetToGrossCalculatorProps> = ({
   className,
 }) => {
-  const t = useTranslations("tools.netToGrossCalculator");
+  const t = useTranslations("features.tools.net-to-gross-calculator");
 
   // Error handling
   const {

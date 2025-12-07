@@ -14,6 +14,64 @@
     "note4": "Different loan types may have different rates and conditions",
     "note5": "Always review terms and conditions carefully before borrowing"
   },
+  "loanBasics": {
+    "title": "Loan Basics",
+    "principal": {
+      "title": "Principal Amount",
+      "description": "The amount of money you borrow from a bank or financial institution"
+    },
+    "interest": {
+      "title": "Interest Rate",
+      "description": "The percentage you pay on top of the borrowed amount"
+    },
+    "term": {
+      "title": "Loan Term",
+      "description": "The duration of time you have to repay the loan"
+    },
+    "payment": {
+      "title": "Monthly Payment",
+      "description": "The amount you pay each month including principal and interest"
+    }
+  },
+  "amortization": {
+    "title": "Amortization Schedule",
+    "point1": {
+      "title": "Principal and Interest",
+      "description": "Each payment includes both principal and interest components"
+    },
+    "point2": {
+      "title": "Decreasing Interest",
+      "description": "Interest decreases over time as you pay down the principal"
+    },
+    "point3": {
+      "title": "Payment Schedule",
+      "description": "Detailed table showing principal and interest portions of each payment"
+    }
+  },
+  "loanTips": {
+    "title": "Loan Tips",
+    "before": {
+      "title": "Before Borrowing",
+      "tip1": "Check your borrowing capacity",
+      "tip2": "Compare interest rates from multiple lenders",
+      "tip3": "Read all terms and conditions carefully",
+      "tip4": "Prepare all necessary documentation"
+    },
+    "during": {
+      "title": "During the Loan",
+      "tip1": "Make payments on time to avoid penalties",
+      "tip2": "Keep all loan-related documents",
+      "tip3": "Track your remaining balance",
+      "tip4": "Consider prepayment when possible"
+    },
+    "after": {
+      "title": "After Payoff",
+      "tip1": "Request a loan clearance certificate",
+      "tip2": "Check your credit report",
+      "tip3": "Maintain loan records for future reference",
+      "tip4": "Build a good credit history"
+    }
+  },
   "loanTypes": {
     "title": "Common Loan Types",
     "homeLoan": {
