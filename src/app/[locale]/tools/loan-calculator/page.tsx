@@ -74,7 +74,7 @@ export default function LoanCalculatorPage() {
         </Breadcrumb>
 
         {/* Calculator Component */}
-        <div className="mb-12">
+        <div className="my-12">
           <LoanCalculator />
         </div>
 

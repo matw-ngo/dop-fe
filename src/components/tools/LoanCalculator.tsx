@@ -233,10 +233,10 @@ const LoanCalculatorInner: React.FC<LoanCalculatorProps> = ({ className }) => {
       {/* Main Container with Glass Effect */}
       <Card className="w-full max-w-6xl mx-auto overflow-hidden border-0 bg-gradient-to-br from-white/95 to-blue-50/30 backdrop-blur-xl shadow-[0_20px_50px_-10px_rgba(0,0,0,0.1)] dark:from-gray-900/95 dark:to-blue-950/30">
         {/* Header with Gradient Background */}
-        <div className="relative bg-gradient-to-r from-blue-600 to-blue-700 p-8 pb-12">
+        <div className="relative bg-gradient-to-r from-blue-600 to-blue-700 dark:from-blue-800 dark:to-blue-800 p-8 pb-12">
           <CardHeader className="text-white p-0">
             <CardTitle className="flex items-center gap-3 text-2xl">
-              <div className="p-2 bg-white/20 rounded-xl backdrop-blur-sm">
+              <div className="p-2 bg-white/10 dark:bg-black/20 rounded-xl backdrop-blur-sm">
                 <Calculator className="h-6 w-6" />
               </div>
               {t("title")}
@@ -256,13 +256,13 @@ const LoanCalculatorInner: React.FC<LoanCalculatorProps> = ({ className }) => {
                 variant="outline"
                 size="sm"
                 onClick={() => handlePresetSelect(preset)}
-                className="group relative overflow-hidden border-2 bg-white/80 backdrop-blur-sm hover:bg-white hover:scale-[1.02] hover:border-blue-300 hover:shadow-md transition-all duration-200 text-xs h-auto py-3 px-4 whitespace-normal rounded-xl"
+                className="group relative overflow-hidden border-2 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm hover:bg-white dark:hover:bg-gray-700 hover:scale-[1.02] hover:border-blue-300 dark:hover:border-blue-400 hover:shadow-md transition-all duration-200 text-xs h-auto py-3 px-4 whitespace-normal rounded-xl"
               >
                 <div className="relative z-10">
-                  <div className="font-medium text-gray-700">
+                  <div className="font-medium text-gray-700 dark:text-gray-300">
                     {t(`presets.${preset.key}`)}
                   </div>
-                  <div className="text-blue-600 font-semibold mt-1">
+                  <div className="text-blue-600 dark:text-blue-400 font-semibold mt-1">
                     {formatCurrency(preset.amount)}
                   </div>
                 </div>
@@ -273,14 +273,14 @@ const LoanCalculatorInner: React.FC<LoanCalculatorProps> = ({ className }) => {
 
           <div className="grid lg:grid-cols-2 gap-8">
             {/* Input Form with Glass Effect */}
-            <Card className="border-0 bg-gradient-to-br from-white/80 to-blue-50/50 backdrop-blur-sm shadow-lg rounded-2xl p-6 space-y-6">
+            <Card className="border-0 bg-gradient-to-br from-white/80 to-blue-50/50 dark:from-gray-800/80 dark:to-blue-900/20 backdrop-blur-sm shadow-lg rounded-2xl p-6 space-y-6">
               {/* Loan Amount Input */}
               <div className="space-y-3">
                 <Label
                   htmlFor="amount"
                   className="text-sm font-semibold text-gray-700 flex items-center gap-2"
                 >
-                  <span className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600 text-xs font-bold">
+                  <span className="w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center text-blue-600 dark:text-blue-400 text-xs font-bold">
                     1
                   </span>
                   {t("form.loanAmount")}
@@ -298,7 +298,7 @@ const LoanCalculatorInner: React.FC<LoanCalculatorProps> = ({ className }) => {
                           Math.min(10_000_000_000, Math.max(1_000_000, value)),
                         );
                       }}
-                      className="text-lg font-semibold border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 rounded-xl h-12 transition-all duration-200 pr-16"
+                      className="text-lg font-semibold border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-4 focus:ring-blue-100 dark:focus:ring-blue-900/30 rounded-xl h-12 transition-all duration-200 pr-16"
                     />
                     <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-gray-500 font-medium">
                       VND
@@ -325,7 +325,7 @@ const LoanCalculatorInner: React.FC<LoanCalculatorProps> = ({ className }) => {
                   htmlFor="term"
                   className="text-sm font-semibold text-gray-700 flex items-center gap-2"
                 >
-                  <span className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600 text-xs font-bold">
+                  <span className="w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center text-blue-600 dark:text-blue-400 text-xs font-bold">
                     2
                   </span>
                   {t("form.loanTerm")}
@@ -334,10 +334,10 @@ const LoanCalculatorInner: React.FC<LoanCalculatorProps> = ({ className }) => {
                   value={term.toString()}
                   onValueChange={(value) => setTerm(parseInt(value))}
                 >
-                  <SelectTrigger className="h-12 border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 rounded-xl transition-all duration-200">
+                  <SelectTrigger className="h-12 border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-4 focus:ring-blue-100 dark:focus:ring-blue-900/30 rounded-xl transition-all duration-200">
                     <SelectValue placeholder={t("form.selectTerm")} />
                   </SelectTrigger>
-                  <SelectContent className="rounded-xl border-2">
+                  <SelectContent className="rounded-xl border-2 dark:border-gray-700 dark:bg-gray-900">
                     {LOAN_TERMS.map((termOption) => (
                       <SelectItem
                         key={termOption.value}
@@ -357,7 +357,7 @@ const LoanCalculatorInner: React.FC<LoanCalculatorProps> = ({ className }) => {
                   htmlFor="rate"
                   className="text-sm font-semibold text-gray-700 flex items-center gap-2"
                 >
-                  <span className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600 text-xs font-bold">
+                  <span className="w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center text-blue-600 dark:text-blue-400 text-xs font-bold">
                     3
                   </span>
                   {t("form.interestRate")}
@@ -375,7 +375,7 @@ const LoanCalculatorInner: React.FC<LoanCalculatorProps> = ({ className }) => {
                       step={0.1}
                       min={0.1}
                       max={30}
-                      className="text-lg font-semibold border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 rounded-xl h-12 transition-all duration-200 pr-12"
+                      className="text-lg font-semibold border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-4 focus:ring-blue-100 dark:focus:ring-blue-900/30 rounded-xl h-12 transition-all duration-200 pr-12"
                     />
                     <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-gray-500 font-medium">
                       %/năm
@@ -400,7 +400,7 @@ const LoanCalculatorInner: React.FC<LoanCalculatorProps> = ({ className }) => {
               <Button
                 onClick={handleReset}
                 variant="outline"
-                className="w-full h-12 border-2 bg-white/80 backdrop-blur-sm hover:bg-gray-50 hover:border-gray-300 hover:shadow-md transition-all duration-200 rounded-xl font-semibold"
+                className="w-full h-12 border-2 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-600 hover:shadow-md transition-all duration-200 rounded-xl font-semibold"
               >
                 <RotateCcw className="h-4 w-4 mr-2" />
                 {t("form.reset")}
@@ -430,31 +430,32 @@ const LoanCalculatorInner: React.FC<LoanCalculatorProps> = ({ className }) => {
               </Card>
 
               {/* Total Interest - Warning Card */}
-              <Card className="border-2 border-orange-200 bg-gradient-to-br from-orange-50 to-red-50 overflow-hidden rounded-2xl shadow-md">
+              <Card className="border-2 border-slate-200 dark:border-slate-800 bg-gradient-to-br from-slate-50 to-white dark:from-slate-900 dark:to-slate-800/50 overflow-hidden rounded-2xl shadow-md">
                 <CardContent className="p-5 text-center">
-                  <div className="flex items-center justify-center gap-2 text-orange-600 text-sm font-semibold mb-2">
+                  <div className="flex items-center justify-center gap-2 text-slate-600 dark:text-slate-400 text-sm font-semibold mb-2">
                     <TrendingUp className="h-4 w-4" />
                     {t("results.totalInterest")}
                   </div>
-                  <div className="text-3xl font-bold text-orange-600">
+                  <div className="text-3xl font-bold text-slate-700 dark:text-slate-300">
                     {formatCurrency(results.totalInterest)}
                   </div>
-                  <div className="text-xs text-orange-500 mt-2">
+                  <div className="text-xs text-slate-500 mt-2">
                     Lãi suất: {rate}%/năm
                   </div>
                 </CardContent>
               </Card>
 
               {/* Total Payment - Summary Card */}
-              <Card className="border-2 border-gray-200 bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden rounded-2xl shadow-md">
+              <Card className="border-2 border-gray-200 dark:border-gray-700 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 overflow-hidden rounded-2xl shadow-md">
                 <CardContent className="p-5 text-center">
                   <div className="text-gray-600 text-sm font-medium mb-2">
                     {t("results.totalPayment")}
+                    {t("results.totalPayment")}
                   </div>
-                  <div className="text-3xl font-bold text-gray-800">
+                  <div className="text-3xl font-bold text-gray-800 dark:text-gray-100">
                     {formatCurrency(results.totalPayment)}
                   </div>
-                  <div className="text-xs text-gray-500 mt-2 bg-gray-200 inline-block px-3 py-1 rounded-full">
+                  <div className="text-xs text-gray-500 dark:text-gray-400 mt-2 bg-gray-200 dark:bg-gray-700 inline-block px-3 py-1 rounded-full">
                     {term} {t("form.months")} ×{" "}
                     {formatCurrency(results.monthlyPayment)}
                   </div>
@@ -466,7 +467,7 @@ const LoanCalculatorInner: React.FC<LoanCalculatorProps> = ({ className }) => {
                 <Button
                   onClick={() => setShowSchedule(!showSchedule)}
                   variant="outline"
-                  className="flex-1 h-12 border-2 bg-white/80 backdrop-blur-sm hover:bg-gray-50 hover:border-blue-300 hover:shadow-md transition-all duration-200 rounded-xl font-semibold"
+                  className="flex-1 h-12 border-2 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-blue-300 dark:hover:border-blue-500 hover:shadow-md transition-all duration-200 rounded-xl font-semibold text-gray-700 dark:text-gray-300"
                 >
                   <Calendar className="h-4 w-4 mr-2" />
                   {showSchedule
@@ -477,7 +478,7 @@ const LoanCalculatorInner: React.FC<LoanCalculatorProps> = ({ className }) => {
                   onClick={exportSchedule}
                   variant="outline"
                   size="icon"
-                  className="h-12 w-12 border-2 bg-white/80 backdrop-blur-sm hover:bg-gray-50 hover:border-green-300 hover:shadow-md transition-all duration-200 rounded-xl"
+                  className="h-12 w-12 border-2 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-blue-300 dark:hover:border-blue-500 hover:shadow-md transition-all duration-200 rounded-xl text-gray-700 dark:text-gray-300"
                   title={t("results.exportCsv")}
                 >
                   <Download className="h-4 w-4" />
@@ -488,37 +489,37 @@ const LoanCalculatorInner: React.FC<LoanCalculatorProps> = ({ className }) => {
 
           {/* Amortization Schedule with Enhanced Design */}
           {showSchedule && (
-            <Card className="border-2 border-gray-200 bg-gradient-to-br from-gray-50 to-white overflow-hidden rounded-2xl shadow-lg">
-              <CardHeader className="bg-gradient-to-r from-gray-100 to-gray-50 px-6 py-5">
-                <CardTitle className="text-xl font-semibold text-gray-800 flex items-center gap-3">
-                  <div className="p-2 bg-blue-100 rounded-lg">
+            <Card className="border-2 border-gray-200 dark:border-gray-700 bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 overflow-hidden rounded-2xl shadow-lg">
+              <CardHeader className="bg-gradient-to-r from-gray-100 to-gray-50 dark:from-gray-800 dark:to-gray-900 px-6 py-5">
+                <CardTitle className="text-xl font-semibold text-gray-800 dark:text-gray-200 flex items-center gap-3">
+                  <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
                     <Calendar className="h-5 w-5 text-blue-600" />
                   </div>
                   {t("results.schedule")}
                 </CardTitle>
-                <p className="text-sm text-gray-600 mt-1">
+                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
                   Lịch trình trả nợ chi tiết cho khoản vay{" "}
                   {formatCurrency(amount)}
                 </p>
               </CardHeader>
               <CardContent className="p-6">
-                <div className="rounded-xl border border-gray-200 overflow-hidden bg-white shadow-sm">
+                <div className="rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden bg-white dark:bg-gray-800 shadow-sm">
                   <Table>
-                    <TableHeader className="bg-gray-50/80">
-                      <TableRow className="border-b border-gray-200">
-                        <TableHead className="w-20 px-4 py-4 font-semibold text-gray-700">
+                    <TableHeader className="bg-gray-50/80 dark:bg-gray-900/50">
+                      <TableRow className="border-b border-gray-200 dark:border-gray-700">
+                        <TableHead className="w-20 px-4 py-4 font-semibold text-gray-700 dark:text-gray-300">
                           {t("results.month")}
                         </TableHead>
-                        <TableHead className="text-right px-4 py-4 font-semibold text-gray-700">
+                        <TableHead className="text-right px-4 py-4 font-semibold text-gray-700 dark:text-gray-300">
                           {t("results.principal")}
                         </TableHead>
-                        <TableHead className="text-right px-4 py-4 font-semibold text-gray-700">
+                        <TableHead className="text-right px-4 py-4 font-semibold text-gray-700 dark:text-gray-300">
                           {t("results.interest")}
                         </TableHead>
-                        <TableHead className="text-right px-4 py-4 font-semibold text-gray-700">
+                        <TableHead className="text-right px-4 py-4 font-semibold text-gray-700 dark:text-gray-300">
                           {t("results.total")}
                         </TableHead>
-                        <TableHead className="text-right px-4 py-4 font-semibold text-gray-700">
+                        <TableHead className="text-right px-4 py-4 font-semibold text-gray-700 dark:text-gray-300">
                           {t("results.endingBalance")}
                         </TableHead>
                       </TableRow>
@@ -527,41 +528,43 @@ const LoanCalculatorInner: React.FC<LoanCalculatorProps> = ({ className }) => {
                       {results.amortization.map((entry, index) => (
                         <TableRow
                           key={entry.month}
-                          className={`border-b border-gray-100 hover:bg-blue-50/30 transition-colors duration-150 ${
-                            index === 0 ? "bg-blue-50/20" : ""
+                          className={`border-b border-gray-100 dark:border-gray-700 hover:bg-blue-50/30 dark:hover:bg-blue-950/30 transition-colors duration-150 ${
+                            index === 0
+                              ? "bg-blue-50/20 dark:bg-blue-950/20"
+                              : ""
                           }`}
                         >
-                          <TableCell className="px-4 py-4 font-medium text-gray-900">
+                          <TableCell className="px-4 py-4 font-medium text-gray-900 dark:text-gray-100">
                             <div className="flex items-center gap-2">
-                              <span className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-xs font-bold text-blue-600">
+                              <span className="w-8 h-8 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center text-xs font-bold text-blue-600 dark:text-blue-400">
                                 {entry.month}
                               </span>
                               {entry.month === 1 && (
-                                <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full font-medium">
+                                <span className="text-xs bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-400 px-2 py-1 rounded-full font-medium">
                                   Bắt đầu
                                 </span>
                               )}
                             </div>
                           </TableCell>
-                          <TableCell className="text-right px-4 py-4 font-mono text-sm text-gray-700">
+                          <TableCell className="text-right px-4 py-4 font-mono text-sm text-gray-700 dark:text-gray-300">
                             {formatCurrency(entry.principal)}
                           </TableCell>
-                          <TableCell className="text-right px-4 py-4 font-mono text-sm text-orange-600 font-medium">
+                          <TableCell className="text-right px-4 py-4 font-mono text-sm text-slate-600 dark:text-slate-400 font-medium">
                             {formatCurrency(entry.interest)}
                           </TableCell>
-                          <TableCell className="text-right px-4 py-4 font-mono text-sm font-semibold text-gray-900 bg-blue-50/50 rounded-lg">
+                          <TableCell className="text-right px-4 py-4 font-mono text-sm font-semibold text-gray-900 dark:text-gray-100 bg-blue-50/50 dark:bg-blue-950/50 rounded-lg">
                             {formatCurrency(entry.principal + entry.interest)}
                           </TableCell>
                           <TableCell
                             className={`text-right px-4 py-4 font-mono text-sm ${
                               entry.balance === 0
-                                ? "text-green-600 font-bold"
-                                : "text-gray-700"
+                                ? "text-blue-600 dark:text-blue-400 font-bold"
+                                : "text-gray-700 dark:text-gray-300"
                             }`}
                           >
                             {entry.balance === 0 ? (
                               <span className="flex items-center justify-end gap-2">
-                                <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+                                <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
                                 {formatCurrency(entry.balance)}
                               </span>
                             ) : (
@@ -573,29 +576,37 @@ const LoanCalculatorInner: React.FC<LoanCalculatorProps> = ({ className }) => {
                     </TableBody>
                   </Table>
                 </div>
-                <div className="mt-6 p-4 bg-gradient-to-r from-blue-50 to-blue-100 rounded-xl border border-blue-200">
+                <div className="mt-6 p-4 bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-950/20 rounded-xl border border-blue-200 dark:border-blue-900/50">
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                     <div className="text-center">
-                      <div className="text-gray-600 mb-1">Số kỳ trả</div>
-                      <div className="font-bold text-blue-600">
+                      <div className="text-gray-600 dark:text-gray-400 mb-1">
+                        Số kỳ trả
+                      </div>
+                      <div className="font-bold text-blue-600 dark:text-blue-400">
                         {results.amortization.length}
                       </div>
                     </div>
                     <div className="text-center">
-                      <div className="text-gray-600 mb-1">Tổng gốc</div>
-                      <div className="font-bold text-gray-800">
+                      <div className="text-gray-600 dark:text-gray-400 mb-1">
+                        Tổng gốc
+                      </div>
+                      <div className="font-bold text-gray-800 dark:text-gray-100">
                         {formatCurrency(amount)}
                       </div>
                     </div>
                     <div className="text-center">
-                      <div className="text-gray-600 mb-1">Tổng lãi</div>
-                      <div className="font-bold text-orange-600">
+                      <div className="text-gray-600 dark:text-gray-400 mb-1">
+                        Tổng lãi
+                      </div>
+                      <div className="font-bold text-slate-600 dark:text-slate-400">
                         {formatCurrency(results.totalInterest)}
                       </div>
                     </div>
                     <div className="text-center">
-                      <div className="text-gray-600 mb-1">Tổng cộng</div>
-                      <div className="font-bold text-green-600">
+                      <div className="text-gray-600 dark:text-gray-400 mb-1">
+                        Tổng cộng
+                      </div>
+                      <div className="font-bold text-blue-600 dark:text-blue-400">
                         {formatCurrency(results.totalPayment)}
                       </div>
                     </div>

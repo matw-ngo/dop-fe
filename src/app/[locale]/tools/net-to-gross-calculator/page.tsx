@@ -77,7 +77,7 @@ export default function NetToGrossCalculatorPage() {
         </Breadcrumb>
 
         {/* Calculator Component */}
-        <div className="mb-12">
+        <div className="my-12">
           <NetToGrossCalculator />
         </div>
 

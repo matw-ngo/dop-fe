@@ -55,7 +55,7 @@ export default function SavingsCalculatorPage() {
         </Breadcrumb>
 
         {/* Calculator Component */}
-        <div className="mb-12">
+        <div className="my-12">
           <SavingsCalculator />
         </div>
 

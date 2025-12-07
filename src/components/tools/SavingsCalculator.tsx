@@ -275,10 +275,10 @@ const SavingsCalculatorInner: React.FC<SavingsCalculatorProps> = ({
       {/* Filter Controls with Modern Design */}
       <Card className="border-0 bg-gradient-to-br from-white/95 to-green-50/30 backdrop-blur-xl shadow-[0_20px_50px_-10px_rgba(0,0,0,0.1)] dark:from-gray-900/95 dark:to-green-950/30 overflow-hidden">
         {/* Header with Gradient Background */}
-        <div className="relative bg-gradient-to-r from-green-600 to-emerald-600 p-8 pb-12">
+        <div className="relative bg-gradient-to-r from-green-600 to-green-500 dark:from-green-700 dark:to-green-800 p-8 pb-12">
           <CardHeader className="text-white p-0">
             <CardTitle className="flex items-center gap-3 text-2xl">
-              <div className="p-2 bg-white/20 rounded-xl backdrop-blur-sm">
+              <div className="p-2 bg-white/10 dark:bg-black/20 rounded-xl backdrop-blur-sm">
                 <TrendingUp className="h-6 w-6" />
               </div>
               {t("title")}
@@ -291,13 +291,13 @@ const SavingsCalculatorInner: React.FC<SavingsCalculatorProps> = ({
 
         <CardContent className="p-8 -mt-4 space-y-8">
           {/* Amount Slider with Enhanced Design */}
-          <Card className="border-2 border-gray-200 bg-gradient-to-br from-white/80 to-green-50/50 backdrop-blur-sm shadow-lg rounded-2xl p-6">
+          <Card className="border-2 border-gray-200 dark:border-gray-700 bg-gradient-to-br from-white/80 to-green-50/50 dark:from-gray-800/80 dark:to-green-900/20 backdrop-blur-sm shadow-lg rounded-2xl p-6">
             <div className="space-y-4">
               <Label
                 htmlFor="amount"
                 className="text-lg font-semibold text-gray-700 flex items-center gap-2"
               >
-                <span className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center text-green-600 text-xs font-bold">
+                <span className="w-8 h-8 bg-green-100 dark:bg-green-900/50 rounded-lg flex items-center justify-center text-green-600 dark:text-green-400 text-xs font-bold">
                   1
                 </span>
                 {t("form.savingsAmount")}:
@@ -311,7 +311,7 @@ const SavingsCalculatorInner: React.FC<SavingsCalculatorProps> = ({
                     type="text"
                     value={formatCurrency(amount)}
                     onChange={(e) => handleAmountInputChange(e.target.value)}
-                    className="h-12 text-lg font-semibold border-2 border-gray-200 focus:border-green-500 focus:ring-4 focus:ring-green-100 rounded-xl transition-all duration-200 pr-16"
+                    className="h-12 text-lg font-semibold border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 focus:border-green-500 dark:focus:border-green-500 focus:ring-4 focus:ring-green-100 dark:focus:ring-green-900/30 rounded-xl transition-all duration-200 pr-16"
                     placeholder={t("form.enterAmount")}
                   />
                   <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-gray-500 font-medium">
@@ -329,10 +329,10 @@ const SavingsCalculatorInner: React.FC<SavingsCalculatorProps> = ({
                     className="w-full h-2"
                   />
                   <div className="flex justify-between mt-3 text-xs text-muted-foreground font-medium">
-                    <span className="bg-gray-100 px-2 py-1 rounded">
+                    <span className="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">
                       {formatAmountDisplay(SAVINGS_DEFAULTS.MIN_AMOUNT)}
                     </span>
-                    <span className="bg-gray-100 px-2 py-1 rounded">
+                    <span className="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">
                       {formatAmountDisplay(SAVINGS_DEFAULTS.MAX_AMOUNT)}
                     </span>
                   </div>
@@ -344,13 +344,13 @@ const SavingsCalculatorInner: React.FC<SavingsCalculatorProps> = ({
           {/* Period and Type Controls with Enhanced Design */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {/* Period Dropdown */}
-            <Card className="border-2 border-gray-200 bg-gradient-to-br from-white/80 to-green-50/50 backdrop-blur-sm shadow-md rounded-2xl p-5">
+            <Card className="border-2 border-gray-200 dark:border-gray-700 bg-gradient-to-br from-white/80 to-green-50/50 dark:from-gray-800/80 dark:to-green-900/20 backdrop-blur-sm shadow-md rounded-2xl p-5">
               <div className="space-y-3">
                 <Label
                   htmlFor="period"
                   className="text-sm font-semibold text-gray-700 flex items-center gap-2"
                 >
-                  <span className="w-6 h-6 bg-green-100 rounded-lg flex items-center justify-center text-green-600 text-xs font-bold">
+                  <span className="w-6 h-6 bg-green-100 dark:bg-green-900/50 rounded-lg flex items-center justify-center text-green-600 dark:text-green-400 text-xs font-bold">
                     2
                   </span>
                   {t("form.savingsPeriod")}
@@ -361,11 +361,11 @@ const SavingsCalculatorInner: React.FC<SavingsCalculatorProps> = ({
                 >
                   <SelectTrigger
                     id="period"
-                    className="h-11 border-2 border-gray-200 focus:border-green-500 focus:ring-4 focus:ring-green-100 rounded-xl transition-all duration-200"
+                    className="h-11 border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 focus:border-green-500 dark:focus:border-green-500 focus:ring-4 focus:ring-green-100 dark:focus:ring-green-900/30 rounded-xl transition-all duration-200"
                   >
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="rounded-xl border-2">
+                  <SelectContent className="rounded-xl border-2 dark:border-gray-700 dark:bg-gray-900">
                     {SAVINGS_DEFAULTS.PERIOD_OPTIONS.map((p) => (
                       <SelectItem
                         key={p}
@@ -381,10 +381,10 @@ const SavingsCalculatorInner: React.FC<SavingsCalculatorProps> = ({
             </Card>
 
             {/* Type Toggle */}
-            <Card className="border-2 border-gray-200 bg-gradient-to-br from-white/80 to-green-50/50 backdrop-blur-sm shadow-md rounded-2xl p-5">
+            <Card className="border-2 border-gray-200 dark:border-gray-700 bg-gradient-to-br from-white/80 to-green-50/50 dark:from-gray-800/80 dark:to-green-900/20 backdrop-blur-sm shadow-md rounded-2xl p-5">
               <div className="space-y-3">
                 <Label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
-                  <span className="w-6 h-6 bg-green-100 rounded-lg flex items-center justify-center text-green-600 text-xs font-bold">
+                  <span className="w-6 h-6 bg-green-100 dark:bg-green-900/50 rounded-lg flex items-center justify-center text-green-600 dark:text-green-400 text-xs font-bold">
                     3
                   </span>
                   {t("form.savingsType")}
@@ -405,8 +405,8 @@ const SavingsCalculatorInner: React.FC<SavingsCalculatorProps> = ({
                     <span
                       className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${
                         type === "online"
-                          ? "bg-green-100 text-green-700"
-                          : "bg-gray-100 text-gray-700"
+                          ? "bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-400"
+                          : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300"
                       }`}
                     >
                       {type === "online"
@@ -419,13 +419,13 @@ const SavingsCalculatorInner: React.FC<SavingsCalculatorProps> = ({
             </Card>
 
             {/* Sort Options */}
-            <Card className="border-2 border-gray-200 bg-gradient-to-br from-white/80 to-green-50/50 backdrop-blur-sm shadow-md rounded-2xl p-5">
+            <Card className="border-2 border-gray-200 dark:border-gray-700 bg-gradient-to-br from-white/80 to-green-50/50 dark:from-gray-800/80 dark:to-green-900/20 backdrop-blur-sm shadow-md rounded-2xl p-5">
               <div className="space-y-3">
                 <Label
                   htmlFor="sort"
                   className="text-sm font-semibold text-gray-700 flex items-center gap-2"
                 >
-                  <span className="w-6 h-6 bg-green-100 rounded-lg flex items-center justify-center text-green-600 text-xs font-bold">
+                  <span className="w-6 h-6 bg-green-100 dark:bg-green-900/50 rounded-lg flex items-center justify-center text-green-600 dark:text-green-400 text-xs font-bold">
                     4
                   </span>
                   {t("form.sortBy")}
@@ -438,20 +438,20 @@ const SavingsCalculatorInner: React.FC<SavingsCalculatorProps> = ({
                 >
                   <SelectTrigger
                     id="sort"
-                    className="h-11 border-2 border-gray-200 focus:border-green-500 focus:ring-4 focus:ring-green-100 rounded-xl transition-all duration-200"
+                    className="h-11 border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 focus:border-green-500 dark:focus:border-green-500 focus:ring-4 focus:ring-green-100 dark:focus:ring-green-900/30 rounded-xl transition-all duration-200"
                   >
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="rounded-xl border-2">
+                  <SelectContent className="rounded-xl border-2 dark:border-gray-700 dark:bg-gray-900">
                     <SelectItem value="rate_desc" className="rounded-lg">
                       <div className="flex items-center gap-2">
-                        <TrendingUp className="h-4 w-4 text-green-600" />
+                        <TrendingUp className="h-4 w-4 text-green-600 dark:text-green-400" />
                         {t("form.highestInterestRate")}
                       </div>
                     </SelectItem>
                     <SelectItem value="rate_asc" className="rounded-lg">
                       <div className="flex items-center gap-2">
-                        <TrendingDown className="h-4 w-4 text-orange-600" />
+                        <TrendingDown className="h-4 w-4 text-gray-500 dark:text-gray-400" />
                         {t("form.lowestInterestRate")}
                       </div>
                     </SelectItem>
@@ -466,7 +466,7 @@ const SavingsCalculatorInner: React.FC<SavingsCalculatorProps> = ({
             <Button
               onClick={handleApplyFilters}
               disabled={loading.calculations}
-              className="min-w-[160px] h-12 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-200 rounded-xl border-0"
+              className="min-w-[160px] h-12 bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-200 rounded-xl border-0"
             >
               {loading.calculations ? (
                 <>
@@ -501,17 +501,17 @@ const SavingsCalculatorInner: React.FC<SavingsCalculatorProps> = ({
       {/* Results Table with Enhanced Design */}
       <Card className="border-0 bg-gradient-to-br from-white/95 to-green-50/30 backdrop-blur-xl shadow-[0_20px_50px_-10px_rgba(0,0,0,0.1)] overflow-hidden">
         {/* Header with Gradient Background */}
-        <div className="relative bg-gradient-to-r from-green-600 to-emerald-600 p-6">
+        <div className="relative bg-gradient-to-r from-green-600 to-green-500 p-6">
           <CardHeader className="text-white p-0">
             <CardTitle className="flex items-center justify-between text-xl">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-white/20 rounded-xl backdrop-blur-sm">
+                <div className="p-2 bg-white/10 dark:bg-black/20 rounded-xl backdrop-blur-sm">
                   <TrendingUp className="h-5 w-5" />
                 </div>
                 {t("results.bankComparisonResults")}
               </div>
               {savingsResults?.savings && savingsResults.savings.length > 0 && (
-                <Badge className="bg-white/20 text-white border-white/30 hover:bg-white/30 transition-colors duration-200">
+                <Badge className="bg-white/20 dark:bg-black/20 text-white border-white/30 dark:border-white/20 hover:bg-white/30 dark:hover:bg-white/10 transition-colors duration-200">
                   {t("results.banksFound", {
                     count: savingsResults.savings.length,
                   })}
@@ -549,23 +549,23 @@ const SavingsCalculatorInner: React.FC<SavingsCalculatorProps> = ({
             </div>
           ) : savingsResults?.savings && savingsResults.savings.length > 0 ? (
             <>
-              <div className="rounded-xl border-2 border-gray-200 overflow-hidden bg-white shadow-sm">
+              <div className="rounded-xl border-2 border-green-100 dark:border-green-900 overflow-hidden bg-gradient-to-br from-white to-green-50/30 dark:from-gray-800 dark:to-green-900/10 shadow-sm">
                 <Table>
-                  <TableHeader className="bg-gradient-to-r from-gray-50 to-gray-100">
-                    <TableRow className="border-b border-gray-200">
-                      <TableHead className="px-6 py-4 font-semibold text-gray-700">
+                  <TableHeader className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700">
+                    <TableRow className="border-b border-gray-200 dark:border-gray-600">
+                      <TableHead className="px-6 py-4 font-semibold text-gray-700 dark:text-gray-300">
                         {t("results.table.bankName")}
                       </TableHead>
-                      <TableHead className="text-right px-6 py-4 font-semibold text-gray-700">
+                      <TableHead className="text-right px-6 py-4 font-semibold text-gray-700 dark:text-gray-300">
                         {t("results.table.interestRate")}
                       </TableHead>
-                      <TableHead className="text-right px-6 py-4 font-semibold text-gray-700">
+                      <TableHead className="text-right px-6 py-4 font-semibold text-gray-700 dark:text-gray-300">
                         {t("results.table.interestAmount")}
                       </TableHead>
-                      <TableHead className="text-right px-6 py-4 font-semibold text-gray-700">
+                      <TableHead className="text-right px-6 py-4 font-semibold text-gray-700 dark:text-gray-300">
                         {t("results.table.totalAmount")}
                       </TableHead>
-                      <TableHead className="text-center px-6 py-4 font-semibold text-gray-700">
+                      <TableHead className="text-center px-6 py-4 font-semibold text-gray-700 dark:text-gray-300">
                         {t("results.table.action")}
                       </TableHead>
                     </TableRow>
@@ -578,22 +578,24 @@ const SavingsCalculatorInner: React.FC<SavingsCalculatorProps> = ({
                       return (
                         <TableRow
                           key={result.name}
-                          className={`border-b border-gray-100 hover:bg-green-50/30 transition-colors duration-200 ${
-                            index === 0 ? "bg-green-50/20" : ""
+                          className={`border-b border-gray-100 dark:border-gray-700 hover:bg-green-50/30 dark:hover:bg-green-950/30 transition-colors duration-200 ${
+                            index === 0
+                              ? "bg-green-50/20 dark:bg-green-950/20"
+                              : ""
                           }`}
                         >
                           <TableCell className="px-6 py-4">
                             <div className="flex items-center gap-3">
-                              <div className="w-10 h-10 bg-gradient-to-br from-green-100 to-emerald-100 rounded-lg flex items-center justify-center">
-                                <span className="text-xs font-bold text-green-700">
+                              <div className="w-10 h-10 bg-gradient-to-br from-green-100 to-emerald-100 dark:from-green-900 dark:to-emerald-900 rounded-lg flex items-center justify-center">
+                                <span className="text-xs font-bold text-green-700 dark:text-green-400">
                                   {result.full_name.charAt(0)}
                                 </span>
                               </div>
-                              <span className="font-semibold text-gray-900">
+                              <span className="font-semibold text-gray-900 dark:text-gray-100">
                                 {result.full_name}
                               </span>
                               {index === 0 && (
-                                <Badge className="bg-green-100 text-green-700 border-green-200 text-xs">
+                                <Badge className="bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-400 border-green-200 dark:border-green-700 text-xs">
                                   Tốt nhất
                                 </Badge>
                               )}
@@ -606,7 +608,7 @@ const SavingsCalculatorInner: React.FC<SavingsCalculatorProps> = ({
                               </span>
                               <div className="w-12 h-12 rounded-full bg-gradient-to-br from-green-100 to-emerald-100 flex items-center justify-center">
                                 <div
-                                  className="w-10 h-10 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center"
+                                  className="w-10 h-10 rounded-full bg-gradient-to-br from-green-500 to-green-400 flex items-center justify-center"
                                   style={{
                                     background: `conic-gradient(from 0deg, rgb(34 197 94) 0%, rgb(34 197 94) ${(result.ir / 10) * 100}%, rgb(229 231 235) ${(result.ir / 10) * 100}%)`,
                                   }}
@@ -617,7 +619,7 @@ const SavingsCalculatorInner: React.FC<SavingsCalculatorProps> = ({
                                 </div>
                               </div>
                               {isMaxRate && (
-                                <Badge className="ml-2 bg-gradient-to-r from-green-500 to-emerald-500 text-white border-0">
+                                <Badge className="ml-2 bg-gradient-to-r from-green-500 to-green-400 text-white border-0">
                                   <TrendingUp className="mr-1 h-3 w-3" />
                                   {t("results.bestRate")}
                                 </Badge>
@@ -625,7 +627,7 @@ const SavingsCalculatorInner: React.FC<SavingsCalculatorProps> = ({
                               {isMinRate && !isMaxRate && (
                                 <Badge
                                   variant="outline"
-                                  className="ml-2 border-orange-200 text-orange-700"
+                                  className="ml-2 border-gray-200 text-gray-600 dark:text-gray-400"
                                 >
                                   <TrendingDown className="mr-1 h-3 w-3" />
                                   {t("results.lowRate")}
@@ -645,7 +647,7 @@ const SavingsCalculatorInner: React.FC<SavingsCalculatorProps> = ({
                               <span className="font-mono text-xl font-bold text-gray-900">
                                 {formatCurrency(result.total)}
                               </span>
-                              <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
+                              <span className="text-xs text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded-full">
                                 +{formatCurrency(result.interest)}
                               </span>
                             </div>
@@ -655,13 +657,13 @@ const SavingsCalculatorInner: React.FC<SavingsCalculatorProps> = ({
                               variant="outline"
                               size="sm"
                               asChild
-                              className="h-10 px-4 bg-gradient-to-r from-green-50 to-emerald-50 border-green-300 hover:bg-green-100 hover:border-green-400 hover:shadow-md transition-all duration-200 rounded-xl"
+                              className="h-10 px-4 bg-gradient-to-r from-green-50 to-white dark:from-green-950/30 dark:to-gray-900 border-green-200 dark:border-green-800 hover:bg-green-100 dark:hover:bg-green-900/50 hover:border-green-300 dark:hover:border-green-700 hover:shadow-md transition-all duration-200 rounded-xl"
                             >
                               <a
                                 href={result.link}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="flex items-center font-semibold text-green-700"
+                                className="flex items-center font-semibold text-green-700 dark:text-green-400"
                               >
                                 <ExternalLink className="mr-2 h-4 w-4" />
                                 {t("results.open")}
@@ -677,8 +679,8 @@ const SavingsCalculatorInner: React.FC<SavingsCalculatorProps> = ({
 
               {/* Enhanced Pagination */}
               {savingsResults.savings.length > itemsPerPage && (
-                <div className="flex items-center justify-between mt-6 p-4 bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl border border-gray-200">
-                  <div className="text-sm text-gray-600 font-medium">
+                <div className="flex items-center justify-between mt-6 p-4 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 rounded-xl border border-gray-200 dark:border-gray-700">
+                  <div className="text-sm text-gray-600 dark:text-gray-400 font-medium">
                     {t("results.showing", {
                       start: (currentPage - 1) * itemsPerPage + 1,
                       end: Math.min(
@@ -722,8 +724,8 @@ const SavingsCalculatorInner: React.FC<SavingsCalculatorProps> = ({
                               onClick={() => setCurrentPage(pageNum)}
                               className={`h-9 w-9 p-0 transition-all duration-200 rounded-lg ${
                                 isActive
-                                  ? "bg-gradient-to-r from-green-500 to-emerald-500 text-white border-0"
-                                  : "bg-white border-gray-300 hover:bg-gray-50 hover:border-gray-400"
+                                  ? "bg-gradient-to-r from-green-500 to-green-400 text-white border-0"
+                                  : "bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-600 hover:bg-green-50 dark:hover:bg-gray-700 hover:border-green-300 dark:hover:border-gray-500 text-gray-700 dark:text-gray-300"
                               }`}
                             >
                               {pageNum}
@@ -758,45 +760,45 @@ const SavingsCalculatorInner: React.FC<SavingsCalculatorProps> = ({
               )}
 
               {/* Enhanced Summary Stats */}
-              <div className="mt-8 p-6 bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl border-2 border-green-200">
-                <h4 className="text-lg font-semibold text-gray-800 mb-5 flex items-center gap-2">
-                  <div className="p-2 bg-green-100 rounded-lg">
-                    <TrendingUp className="h-4 w-4 text-green-600" />
+              <div className="mt-8 p-6 bg-gradient-to-r from-green-50 to-white dark:from-green-950/20 dark:to-gray-900/20 rounded-2xl border-2 border-green-100 dark:border-green-900/50">
+                <h4 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-5 flex items-center gap-2">
+                  <div className="p-2 bg-green-100 dark:bg-green-900/50 rounded-lg">
+                    <TrendingUp className="h-4 w-4 text-green-600 dark:text-green-400" />
                   </div>
                   {t("results.summary")}
                 </h4>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <Card className="border-0 bg-white/80 backdrop-blur-sm shadow-md rounded-xl p-4">
+                  <Card className="border-0 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm shadow-md rounded-xl p-4">
                     <div className="flex items-center justify-between">
                       <div>
-                        <div className="text-gray-600 text-sm mb-1">
+                        <div className="text-gray-600 dark:text-gray-400 text-sm mb-1">
                           {t("results.averageRate")}
                         </div>
-                        <div className="text-2xl font-bold text-gray-900">
+                        <div className="text-2xl font-bold text-gray-900 dark:text-white">
                           {(
                             savingsResults.savings.reduce(
                               (sum, r) => sum + r.ir,
                               0,
                             ) / savingsResults.savings.length
                           ).toFixed(2)}
-                          <span className="text-lg font-normal text-gray-600 ml-1">
+                          <span className="text-lg font-normal text-gray-600 dark:text-gray-300 ml-1">
                             %
                           </span>
                         </div>
                       </div>
-                      <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
-                        <TrendingUp className="h-6 w-6 text-blue-600" />
+                      <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-xl flex items-center justify-center">
+                        <TrendingUp className="h-6 w-6 text-green-600 dark:text-green-400" />
                       </div>
                     </div>
                   </Card>
 
-                  <Card className="border-0 bg-white/80 backdrop-blur-sm shadow-md rounded-xl p-4">
+                  <Card className="border-0 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm shadow-md rounded-xl p-4">
                     <div className="flex items-center justify-between">
                       <div>
-                        <div className="text-gray-600 text-sm mb-1">
+                        <div className="text-gray-600 dark:text-gray-400 text-sm mb-1">
                           {t("results.totalInterestRange")}
                         </div>
-                        <div className="text-lg font-bold text-gray-900">
+                        <div className="text-lg font-bold text-gray-900 dark:text-white">
                           {formatCurrency(
                             savingsResults.savings.reduce(
                               (min, r) => Math.min(min, r.interest),
@@ -814,8 +816,8 @@ const SavingsCalculatorInner: React.FC<SavingsCalculatorProps> = ({
                           )}
                         </div>
                       </div>
-                      <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center">
-                        <TrendingDown className="h-6 w-6 text-orange-600" />
+                      <div className="w-12 h-12 bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify-center">
+                        <TrendingDown className="h-6 w-6 text-gray-500 dark:text-gray-400" />
                       </div>
                     </div>
                   </Card>
@@ -860,7 +862,7 @@ const SavingsCalculatorInner: React.FC<SavingsCalculatorProps> = ({
               </p>
               <Button
                 onClick={handleRetry}
-                className="mt-4 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white rounded-xl"
+                className="mt-4 bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 text-white rounded-xl"
               >
                 <RefreshCw className="mr-2 h-4 w-4" />
                 Thử lại

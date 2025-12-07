@@ -75,7 +75,7 @@ export default function GrossToNetCalculatorPage() {
         </Breadcrumb>
 
         {/* Calculator Component */}
-        <div className="mb-12">
+        <div className="my-12">
           <GrossToNetCalculator />
         </div>
 
@@ -88,7 +88,7 @@ export default function GrossToNetCalculatorPage() {
             <CardContent>
               <ul className="space-y-3 text-sm">
                 <li className="flex items-start gap-2">
-                  <span className="w-2 h-2 rounded-full bg-blue-500 mt-2 flex-shrink-0"></span>
+                  <span className="w-2 h-2 rounded-full bg-blue-500 dark:bg-blue-400 mt-2 flex-shrink-0"></span>
                   <div>
                     <strong>
                       {t("deductions.socialInsurance.name")} (8%):
@@ -99,7 +99,7 @@ export default function GrossToNetCalculatorPage() {
                   </div>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500 mt-2 flex-shrink-0"></span>
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 dark:bg-emerald-400 mt-2 flex-shrink-0"></span>
                   <div>
                     <strong>
                       {t("deductions.healthInsurance.name")} (1.5%):
@@ -110,7 +110,7 @@ export default function GrossToNetCalculatorPage() {
                   </div>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="w-2 h-2 rounded-full bg-violet-500 mt-2 flex-shrink-0"></span>
+                  <span className="w-2 h-2 rounded-full bg-violet-500 dark:bg-violet-400 mt-2 flex-shrink-0"></span>
                   <div>
                     <strong>
                       {t("deductions.unemploymentInsurance.name")} (1%):
@@ -121,7 +121,7 @@ export default function GrossToNetCalculatorPage() {
                   </div>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="w-2 h-2 rounded-full bg-orange-500 mt-2 flex-shrink-0"></span>
+                  <span className="w-2 h-2 rounded-full bg-orange-500 dark:bg-orange-400 mt-2 flex-shrink-0"></span>
                   <div>
                     <strong>{t("deductions.personalIncomeTax.name")}:</strong>
                     <p className="text-muted-foreground mt-1">
@@ -130,7 +130,7 @@ export default function GrossToNetCalculatorPage() {
                   </div>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="w-2 h-2 rounded-full bg-pink-500 mt-2 flex-shrink-0"></span>
+                  <span className="w-2 h-2 rounded-full bg-pink-500 dark:bg-pink-400 mt-2 flex-shrink-0"></span>
                   <div>
                     <strong>{t("deductions.deduction.name")}:</strong>
                     <p className="text-muted-foreground mt-1">
