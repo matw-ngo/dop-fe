@@ -41,7 +41,7 @@ export const metadata: Metadata = {
 };
 
 export default function GrossToNetCalculatorPage() {
-  const t = useTranslations("pages.grossToNetCalculator");
+  const t = useTranslations("pages.gross-to-net-calculator");
   const locale = useLocale();
 
   return (

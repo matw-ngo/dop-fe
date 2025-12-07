@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { OnboardingFormContainer } from "./components/onboarding-form.container";
 
 export default function UserOnboardingPage() {
-  const t = useTranslations("pages.userOnboardingPage");
+  const t = useTranslations("pages.onboarding");
   const resetForm = useOnboardingFormStore((state) => state.resetForm);
 
   const handleReset = () => {

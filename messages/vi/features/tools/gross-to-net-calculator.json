@@ -1,6 +1,7 @@
 {
   "title": "Tính Lương Gross → Net",
   "subtitle": "Tính lương thực nhận từ lương gộp với đầy đủ các khoản khấu trừ",
+  "self": "Bản thân",
   "presets": {
     "minimum": "Lương tối thiểu",
     "employee": "Lương nhân viên",

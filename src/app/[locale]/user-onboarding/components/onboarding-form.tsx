@@ -23,7 +23,7 @@ export function OnboardingForm({
   error,
   refetch,
 }: OnboardingFormProps) {
-  const tPage = useTranslations("pages.userOnboardingPage");
+  const tPage = useTranslations("pages.onboarding");
   const tError = useTranslations("components.errorState");
   const tCommon = useTranslations("common");
   const formConfig = useOnboardingFormConfig(flowData, tPage);

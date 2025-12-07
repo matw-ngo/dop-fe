@@ -43,7 +43,7 @@ export const metadata: Metadata = {
 };
 
 export default function NetToGrossCalculatorPage() {
-  const t = useTranslations("pages.netToGrossCalculator");
+  const t = useTranslations("pages.net-to-gross-calculator");
   const locale = useLocale();
 
   return (
@@ -82,7 +82,7 @@ export default function NetToGrossCalculatorPage() {
         </div>
 
         {/* Information Sections */}
-        <div className="space-y-8">
+        {/* <div className="space-y-8">
           <Tabs defaultValue="guide" className="w-full">
             <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="guide">Hướng dẫn sử dụng</TabsTrigger>
@@ -285,7 +285,7 @@ export default function NetToGrossCalculatorPage() {
               </Card>
             </TabsContent>
           </Tabs>
-        </div>
+        </div> */}
       </ToolsPageLayout>
     </ToolsThemeProvider>
   );

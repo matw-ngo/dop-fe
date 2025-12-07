@@ -38,7 +38,6 @@ export default async function LocaleLayout({
   const { locale } = await params;
   const { loadAllTranslations } = await import("@/lib/i18n/split-loader");
   const messages = await loadAllTranslations(locale);
-  console.log("ALL MESSAGES: ", messages);
   return (
     <html lang={locale} suppressHydrationWarning>
       <body

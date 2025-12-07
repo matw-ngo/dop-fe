@@ -21,7 +21,7 @@ import { Badge } from "@/components/ui/badge";
 import { TrendingUp, PiggyBank, Shield, Info } from "lucide-react";
 
 export default function SavingsCalculatorPage() {
-  const t = useTranslations("pages.savingsCalculator");
+  const t = useTranslations("pages.savings-calculator");
   const locale = useLocale();
 
   return (

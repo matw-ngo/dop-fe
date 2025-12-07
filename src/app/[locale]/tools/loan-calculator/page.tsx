@@ -40,7 +40,7 @@ export const metadata: Metadata = {
 };
 
 export default function LoanCalculatorPage() {
-  const t = useTranslations("pages.loanCalculator");
+  const t = useTranslations("pages.loan-calculator");
   const locale = useLocale();
 
   return (

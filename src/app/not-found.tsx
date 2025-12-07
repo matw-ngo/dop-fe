@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils"; // Import cn for utility classes
 import "./globals.css";
 
 export async function generateMetadata() {
-  const t = await getTranslations("pages.notFoundPage");
+  const t = await getTranslations("pages.not-found");
 
   return {
     title: t("title"),
@@ -16,7 +16,7 @@ export async function generateMetadata() {
 }
 
 export default async function NotFoundPage() {
-  const t = await getTranslations("pages.notFoundPage");
+  const t = await getTranslations("pages.not-found");
 
   return (
     <main className="flex min-h-screen w-full items-center justify-center bg-gradient-to-br from-gray-50 to-gray-200 p-4">
