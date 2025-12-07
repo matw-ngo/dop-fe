@@ -41,7 +41,7 @@ interface InsuranceDetailsProps {
 export const InsuranceDetails = React.memo(function InsuranceDetails({
   product,
 }: InsuranceDetailsProps) {
-  const t = useTranslations("pages.insurance");
+  const t = useTranslations("features.insurance.detail");
 
   const comparisonState = useInsuranceComparison(product.id, t);
   const {

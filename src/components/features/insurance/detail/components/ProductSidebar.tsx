@@ -13,7 +13,7 @@ interface ProductSidebarProps {
 }
 
 export const ProductSidebar = ({ product, locale }: ProductSidebarProps) => {
-  const t = useTranslations("pages.insurance");
+  const t = useTranslations("features.insurance.detail");
 
   return (
     <div className="space-y-6">

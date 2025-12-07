@@ -46,7 +46,7 @@ const InsuranceResultsHeader: React.FC<InsuranceResultsHeaderProps> = ({
   onSortChange,
   className,
 }) => {
-  const t = useTranslations("pages.insurance");
+  const t = useTranslations("features.insurance.listing");
 
   // Calculate current range
   const startItem = total === 0 ? 0 : (currentPage - 1) * itemsPerPage + 1;

@@ -84,7 +84,7 @@ const InsuranceSearchBar: React.FC<InsuranceSearchBarProps> = ({
   recentSearches: externalRecentSearches,
   loading: externalLoading,
 }) => {
-  const t = useTranslations("pages.insurance");
+  const t = useTranslations("features.insurance.listing");
   const [inputValue, setInputValue] = useState(value);
   const [isOpen, setIsOpen] = useState(false);
   const [internalRecentSearches, setInternalRecentSearches] = useState<

@@ -45,7 +45,7 @@ const InsuranceFilterSidebar: React.FC<InsuranceFilterSidebarProps> = ({
   isOpen = false,
   onClose,
 }) => {
-  const t = useTranslations("pages.insurance");
+  const t = useTranslations("features.insurance.listing");
 
   // Calculate active filters count for badge
   const activeFiltersCount = useMemo(() => {

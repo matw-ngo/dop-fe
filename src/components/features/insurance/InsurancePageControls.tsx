@@ -50,7 +50,7 @@ export default function InsurancePageControls({
   mobileFiltersOpen,
   onMobileFiltersChange,
 }: InsurancePageControlsProps) {
-  const t = useTranslations("pages.insurance");
+  const t = useTranslations("features.insurance.listing");
   const { themeConfig } = useTheme();
 
   const isMedicalTheme = themeConfig?.id === "medical";

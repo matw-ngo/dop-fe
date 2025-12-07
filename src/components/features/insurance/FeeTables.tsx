@@ -232,7 +232,7 @@ const regulations = [
 ];
 
 export default function FeeTables() {
-  const t = useTranslations("insurance");
+  const t = useTranslations("features.insurance.main");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [expandedSections, setExpandedSections] = useState<string[]>([

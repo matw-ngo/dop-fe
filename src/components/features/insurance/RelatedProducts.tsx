@@ -141,7 +141,7 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({
   viewAllLink,
   onProductClick,
 }) => {
-  const t = useTranslations("pages.insurance");
+  const t = useTranslations("features.insurance.listing");
   const [isLoading, setIsLoading] = useState(true);
   const [relatedProducts, setRelatedProducts] = useState<RelatedProductScore[]>(
     [],

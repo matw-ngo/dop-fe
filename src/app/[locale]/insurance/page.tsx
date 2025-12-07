@@ -29,7 +29,7 @@ import ComparisonSnackbar from "@/components/features/insurance/InsuranceCompari
  * Insurance listing page with filtering, search, and pagination
  */
 export default function InsurancePage() {
-  const t = useTranslations("pages.insurance");
+  const t = useTranslations("features.insurance.listing");
 
   // Configuration - use theme-aware navbar config
   const insuranceNavbarConfig = useInsuranceNavbarTheme();

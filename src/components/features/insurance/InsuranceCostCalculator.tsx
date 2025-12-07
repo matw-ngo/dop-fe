@@ -106,7 +106,7 @@ const premiumRates = {
 };
 
 export default function InsuranceCostCalculator() {
-  const t = useTranslations("insurance");
+  const t = useTranslations("features.insurance.main");
   const [insuranceType, setInsuranceType] = useState("compulsory");
   const [vehicleType, setVehicleType] = useState("");
   const [seats, setSeats] = useState("");

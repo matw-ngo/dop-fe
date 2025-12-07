@@ -31,7 +31,7 @@ interface InsuranceComparisonSnackbarProps {
 export default function InsuranceComparisonSnackbar({
   onClose,
 }: InsuranceComparisonSnackbarProps) {
-  const t = useTranslations("pages.insurance");
+  const t = useTranslations("features.insurance.comparison");
   const locale = useLocale();
   const [isVisible, setIsVisible] = useState(true);
   const [isExpanded, setIsExpanded] = useState(false);

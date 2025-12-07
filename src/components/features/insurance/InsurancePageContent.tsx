@@ -49,7 +49,7 @@ export default function InsurancePageContent({
   onSearchClear,
   viewMode,
 }: InsurancePageContentProps) {
-  const t = useTranslations("pages.insurance");
+  const t = useTranslations("features.insurance.listing");
   const { themeConfig } = useTheme();
 
   // Get comparison state from store

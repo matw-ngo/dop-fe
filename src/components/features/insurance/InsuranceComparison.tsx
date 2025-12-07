@@ -33,7 +33,7 @@ export const InsuranceComparison: React.FC<InsuranceComparisonProps> = ({
   onClear,
   className = "",
 }) => {
-  const t = useTranslations("pages.insurance");
+  const t = useTranslations("features.insurance.comparison");
 
   // Get category icon
   const getCategoryIcon = (category: string) => {

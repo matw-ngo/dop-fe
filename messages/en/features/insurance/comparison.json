@@ -1,0 +1,11 @@
+{
+  "title": "Compare Insurance",
+  "subtitle": "Select up to 4 products to compare",
+  "addToComparison": "Add to Compare",
+  "removeFromComparison": "Remove",
+  "maxProductsToCompare": "You can compare up to 4 products",
+  "clearAllComparisons": "Clear All",
+  "exportComparison": "Export Comparison",
+  "noProductsInComparison": "No products selected for comparison",
+  "addProductsToCompare": "Add products to compare"
+}

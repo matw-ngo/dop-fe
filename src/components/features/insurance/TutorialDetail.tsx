@@ -43,7 +43,7 @@ export default function TutorialDetail({
   content,
   locale,
 }: TutorialDetailProps) {
-  const t = useTranslations("insurance");
+  const t = useTranslations("features.insurance.main");
   const params = useParams();
   const router = useRouter();
   const [isBookmarked, setIsBookmarked] = useState(false);

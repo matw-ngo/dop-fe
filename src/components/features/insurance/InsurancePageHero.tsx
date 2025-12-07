@@ -12,7 +12,7 @@ export default function InsurancePageHero({
   descriptionKey,
 }: InsurancePageHeroProps) {
   const { themeConfig } = useTheme();
-  const t = useTranslations("pages.insurance");
+  const t = useTranslations("features.insurance.listing");
 
   return (
     <section className="relative bg-muted border-b overflow-hidden">

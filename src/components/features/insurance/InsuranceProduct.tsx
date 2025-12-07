@@ -57,7 +57,7 @@ const InsuranceProductCard: React.FC<InsuranceProductProps> = ({
   onClick,
   className,
 }) => {
-  const t = useTranslations("pages.insurance");
+  const t = useTranslations("features.insurance.listing");
 
   // Format currency to VND
   const formatCurrency = (amount: number): string => {

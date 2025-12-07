@@ -31,7 +31,7 @@ const InsuranceGrid: React.FC<InsuranceGridProps> = ({
   className,
   emptyStateMessage,
 }) => {
-  const t = useTranslations("pages.insurance");
+  const t = useTranslations("features.insurance.listing");
 
   // Get grid columns based on view mode and custom columns prop
   const gridColsClass = useMemo(() => {

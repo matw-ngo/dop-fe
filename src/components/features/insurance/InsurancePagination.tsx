@@ -35,7 +35,7 @@ const InsurancePagination: React.FC<InsurancePaginationProps> = ({
   showItemsPerPageSelector = true,
   className,
 }) => {
-  const t = useTranslations("pages.insurance");
+  const t = useTranslations("features.insurance.listing");
 
   // Validate props
   if (totalItems < 0) {

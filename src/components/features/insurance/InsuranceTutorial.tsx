@@ -174,7 +174,7 @@ interface InsuranceTutorialProps {
 }
 
 export default function InsuranceTutorial({ locale }: InsuranceTutorialProps) {
-  const t = useTranslations("insurance");
+  const t = useTranslations("features.insurance.main");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [selectedDifficulty, setSelectedDifficulty] = useState<string>("all");

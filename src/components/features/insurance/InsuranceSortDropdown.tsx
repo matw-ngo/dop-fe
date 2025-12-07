@@ -50,7 +50,7 @@ const InsuranceSortDropdown: React.FC<InsuranceSortDropdownProps> = ({
   className,
   showDirectionIcon = true,
 }) => {
-  const t = useTranslations("pages.insurance");
+  const t = useTranslations("features.insurance.listing");
 
   // Find the current sort option
   const currentSort = SORT_OPTIONS.find((option) => option.value === value);

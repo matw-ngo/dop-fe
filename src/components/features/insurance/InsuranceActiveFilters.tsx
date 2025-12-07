@@ -83,7 +83,7 @@ interface FilterGroup {
 
 const InsuranceActiveFilters: React.FC<ActiveFiltersProps> = React.memo(
   ({ filters, onFiltersChange, onClearAll, maxDisplay = 10, className }) => {
-    const t = useTranslations("pages.insurance");
+    const t = useTranslations("features.insurance.listing");
 
     // Format currency values
     const formatCurrency = useCallback((value: number) => {

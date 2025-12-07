@@ -12,7 +12,7 @@ interface ProductHeaderProps {
 }
 
 export const ProductHeader = ({ product, locale }: ProductHeaderProps) => {
-  const t = useTranslations("pages.insurance");
+  const t = useTranslations("features.insurance.detail");
   const tCommon = useTranslations("common");
 
   const breadcrumbItems = [

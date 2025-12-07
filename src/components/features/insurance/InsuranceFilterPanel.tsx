@@ -140,7 +140,7 @@ const InsuranceFilterPanel: React.FC<FilterPanelProps> = React.memo(
     className,
     isMobile = false,
   }) => {
-    const t = useTranslations("pages.insurance");
+    const t = useTranslations("features.insurance.listing");
 
     // Calculate active filters count
     const activeFiltersCount = useMemo(() => {

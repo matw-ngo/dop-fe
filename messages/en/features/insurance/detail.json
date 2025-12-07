@@ -1,0 +1,19 @@
+{
+  "title": "Product Details",
+  "backToProducts": "← Back to all products",
+  "getQuoteNow": "Get Quote Now",
+  "overview": "Overview",
+  "coverage": "Coverage",
+  "benefits": "Benefits",
+  "claims": "Claims",
+  "payment": "Payment",
+  "exclusions": "Exclusions",
+  "tabs": {
+    "overview": "Overview",
+    "coverage": "Coverage Details",
+    "benefits": "Benefits",
+    "claims": "Claims Process",
+    "payment": "Payment Options",
+    "exclusions": "Exclusions"
+  }
+}

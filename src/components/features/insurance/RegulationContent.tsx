@@ -295,7 +295,7 @@ const regulationsData = {
 };
 
 export default function RegulationContent() {
-  const t = useTranslations("insurance");
+  const t = useTranslations("features.insurance.main");
   const [searchQuery, setSearchQuery] = useState("");
   const [expandedCategories, setExpandedCategories] = useState<string[]>([
     "basic",
