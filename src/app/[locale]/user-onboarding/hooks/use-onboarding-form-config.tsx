@@ -86,7 +86,7 @@ const getFieldBuilderMap = (
         display: "block",
         padding: "p-2",
       },
-      className: "col-span-1 md:col-span-2",
+      className: "col-span-1 lg:col-span-2",
       ...config,
     });
     return fieldConfig;
@@ -298,8 +298,13 @@ function generateFieldsForStep(
           ? [{ type: "required", messageKey: "form.errors.required" }]
           : [];
 
-        // Pass config directly to builder
-        fields.push(builder({ validations }));
+        // Pass config directly to builder with both validations and required
+        fields.push(
+          builder({
+            validations,
+            required: config.required,
+          }),
+        );
       }
     }
   }

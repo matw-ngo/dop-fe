@@ -13,6 +13,7 @@ interface BaseComponentProps {
   placeholder?: string;
   descriptionKey?: string;
   description?: string;
+  required?: boolean;
   validations?: ValidationRule[];
   disabled?: boolean;
   className?: string;

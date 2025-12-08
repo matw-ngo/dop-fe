@@ -419,7 +419,6 @@ export const FormRenderer: React.FC<FormRendererProps> = ({
               fieldConfig={field}
               translationNamespace={translationNamespace}
               variant={variant} // Pass form-level variant as default
-              responsive={responsive} // Pass form-level responsive as default
               layout={layout} // Pass form-level layout as default
             />
           ))}

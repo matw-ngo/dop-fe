@@ -41,6 +41,9 @@ export interface FieldProps {
   /** (Optional) i18n key for field description/help text */
   descriptionKey?: string;
 
+  /** (Optional) Whether the field is required */
+  required?: boolean;
+
   /** (Optional) Array of validation rules for the field */
   validations?: ValidationRule[];
 
