@@ -10,7 +10,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Grid, List, Loader2, SlidersHorizontal, X } from "lucide-react";
-import { useTheme } from "@/lib/theme/context";
+import { useTheme } from "@/components/renderer/theme/context";
 import SearchBar from "@/components/features/credit-card/SearchBar";
 import SortDropdown from "@/components/features/credit-card/SortDropdown";
 import CreditCardFilterPanel from "@/components/features/credit-cards/CreditCardFilterPanel";

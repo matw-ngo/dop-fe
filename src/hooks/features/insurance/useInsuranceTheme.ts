@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { useTheme } from "@/lib/theme/context";
+import { useTheme } from "@/components/renderer/theme/context";
 
 /**
  * Hook to manage insurance-specific theme settings

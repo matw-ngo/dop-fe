@@ -1,8 +1,8 @@
 // Helper utilities for building multi-step form configurations
 // Provides fluent API for creating multi-step forms
 
-import type { StepConfig, MultiStepFormConfig } from "@/types/multi-step-form";
-import type { RawFieldConfig } from "@/types/data-driven-ui";
+import type { StepConfig, MultiStepFormConfig } from "../types/multi-step-form";
+import type { RawFieldConfig } from "../types/data-driven-ui";
 
 /**
  * Create a step configuration
@@ -130,6 +130,72 @@ export class MultiStepFormBuilder {
    */
   onStepChange(callback: (fromStep: number, toStep: number) => void): this {
     this.config.onStepChange = callback;
+    return this;
+  }
+
+  /**
+   * Set form-level UI variant
+   */
+  setFormVariant(variant: {
+    size?: string;
+    color?: string;
+    variant?: string;
+  }): this {
+    this.config.formVariant = variant;
+    return this;
+  }
+
+  /**
+   * Set step transition animation
+   */
+  setStepTransitionAnimation(animation: {
+    type?: string;
+    direction?: string;
+    duration?: number;
+  }): this {
+    this.config.stepTransitionAnimation = animation;
+    return this;
+  }
+
+  /**
+   * Set form responsive configuration
+   */
+  setResponsiveConfig(responsive: {
+    form?: any;
+    progress?: any;
+    navigation?: any;
+  }): this {
+    this.config.responsive = responsive;
+    return this;
+  }
+
+  /**
+   * Set form layout properties
+   */
+  setLayout(layout: {
+    display?: string;
+    direction?: string;
+    align?: string;
+    justify?: string;
+    gap?: string;
+  }): this {
+    this.config.layout = layout;
+    return this;
+  }
+
+  /**
+   * Set custom className for the form
+   */
+  setFormClassName(className: string): this {
+    this.config.className = className;
+    return this;
+  }
+
+  /**
+   * Set custom inline styles for the form
+   */
+  setFormStyle(style: React.CSSProperties): this {
+    this.config.style = style;
     return this;
   }
 

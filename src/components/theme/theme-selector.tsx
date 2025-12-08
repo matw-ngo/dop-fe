@@ -31,10 +31,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useTheme } from "@/lib/theme/context";
-import { themes, userGroups } from "@/lib/theme/themes";
-import type { ThemeMode } from "@/lib/theme/types";
-import { exportThemeAsCSS } from "@/lib/theme/utils";
+import { useTheme } from "@/components/renderer/theme/context";
+import { themes, userGroups } from "@/components/renderer/theme/themes";
+import type { ThemeMode } from "@/components/renderer/theme/types";
+import { exportThemeAsCSS } from "@/components/renderer/theme/utils";
 import { ThemeCustomizer } from "./theme-customizer";
 
 export function ThemeSelector() {

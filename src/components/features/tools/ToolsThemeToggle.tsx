@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useTheme } from "@/lib/theme/context";
+import { useTheme } from "@/components/renderer/theme/context";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,

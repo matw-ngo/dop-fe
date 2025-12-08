@@ -2,7 +2,7 @@ import { useTranslations } from "next-intl";
 import { CreditCard as CreditCardIcon, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { useTheme } from "@/lib/theme/context";
+import { useTheme } from "@/components/renderer/theme/context";
 import type { CreditCard } from "@/types/credit-card";
 
 interface CreditCardsPageHeroProps {

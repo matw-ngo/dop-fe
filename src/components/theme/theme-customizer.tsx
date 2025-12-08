@@ -14,9 +14,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useTheme } from "@/lib/theme/context";
-import { themes } from "@/lib/theme/themes";
-import type { ThemeColors } from "@/lib/theme/types";
+import { useTheme } from "@/components/renderer/theme/context";
+import { themes } from "@/components/renderer/theme/themes";
+import type { ThemeColors } from "@/components/renderer/theme/types";
 
 interface ThemeCustomizerProps {
   onClose?: () => void;

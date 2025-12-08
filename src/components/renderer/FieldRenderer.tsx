@@ -15,17 +15,37 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { getComponent } from "@/components/renderer/ComponentRegistry";
-import type { FieldConfig } from "@/types/data-driven-ui";
+import type { FieldConfig } from "./types/data-driven-ui";
+import type {
+  ComponentVariant,
+  ResponsiveValue,
+  LayoutProps,
+} from "./types/ui-theme";
+import { cn } from "@/lib/utils";
 
 interface FieldRendererProps {
   fieldConfig: FieldConfig;
   /** Optional namespace for translations */
   translationNamespace?: string;
+  /** UI customization properties for this field */
+  variant?: ComponentVariant;
+  responsive?: {
+    container?: ResponsiveValue<string>;
+    fields?: ResponsiveValue<string>;
+  };
+  layout?: LayoutProps | string;
+  className?: string;
+  style?: React.CSSProperties;
 }
 
 export const FieldRenderer: React.FC<FieldRendererProps> = ({
   fieldConfig,
   translationNamespace,
+  variant,
+  responsive,
+  layout,
+  className,
+  style,
 }) => {
   // Get form context from react-hook-form
   const { control } = useFormContext();
@@ -34,8 +54,23 @@ export const FieldRenderer: React.FC<FieldRendererProps> = ({
   const tRoot = useTranslations();
   const tNamespaced = useTranslations(translationNamespace);
 
-  const { component, fieldName, props } = fieldConfig;
+  const {
+    component,
+    fieldName,
+    props,
+    className: configClassName,
+    style: configStyle,
+  } = fieldConfig;
 
+  // Extract properties from props that are actually used for UI customization
+  const {
+    variant: configVariant,
+    responsive: configResponsive,
+    layout: configLayout,
+    className: propsClassName,
+    style: propsStyle,
+  } = props;
+  console.log("fieldConfig", fieldConfig);
   // Get the actual React component from registry
   const ComponentToRender = getComponent(component);
 
@@ -48,6 +83,108 @@ export const FieldRenderer: React.FC<FieldRendererProps> = ({
       </div>
     );
   }
+
+  // Apply UI customizations from fieldConfig (passed through from MultiStepFormRenderer)
+  // Field-level configs take priority over form-level configs
+  const fieldVariant = configVariant || variant;
+  const fieldResponsive = configResponsive || responsive;
+  const fieldLayout = configLayout || layout;
+  // Priority: props.className > configClassName > className prop
+  const fieldClassName = propsClassName || configClassName || className;
+  // Priority: props.style > configStyle > style prop
+  const fieldStyle = propsStyle || configStyle || style;
+
+  // Generate responsive classes
+  const responsiveClasses = React.useMemo(() => {
+    if (!fieldResponsive) return "";
+
+    // Handle the new responsive structure with breakpoint-specific values
+    const classes: string[] = [];
+
+    Object.entries(fieldResponsive).forEach(([breakpoint, value]) => {
+      if (typeof value === "string") {
+        // For breakpoints like 'initial', 'md', 'lg', etc.
+        if (breakpoint === "initial") {
+          classes.push(value);
+        } else {
+          classes.push(`${breakpoint}:${value}`);
+        }
+      }
+    });
+
+    return classes.join(" ");
+  }, [fieldResponsive]);
+
+  // Generate layout classes
+  const layoutClasses = React.useMemo(() => {
+    if (!fieldLayout) return "";
+
+    // If layout is a string, just return it
+    if (typeof fieldLayout === "string") {
+      return fieldLayout;
+    }
+
+    const classes: string[] = [];
+
+    if (fieldLayout.display) {
+      classes.push(fieldLayout.display);
+    }
+
+    if (fieldLayout.justify) {
+      classes.push(`justify-${fieldLayout.justify}`);
+    }
+
+    if (fieldLayout.align) {
+      classes.push(`items-${fieldLayout.align}`);
+    }
+
+    if (fieldLayout.direction) {
+      classes.push(`flex-${fieldLayout.direction}`);
+    }
+
+    if (fieldLayout.gap) {
+      classes.push(`gap-${String(fieldLayout.gap)}`);
+    }
+
+    if (fieldLayout.padding) {
+      classes.push(String(fieldLayout.padding));
+    }
+
+    if (fieldLayout.margin) {
+      classes.push(String(fieldLayout.margin));
+    }
+
+    return classes.join(" ");
+  }, [fieldLayout]);
+
+  // Generate variant classes
+  const variantClasses = React.useMemo(() => {
+    if (!fieldVariant) return "";
+
+    const classes: string[] = [];
+
+    if (fieldVariant.size) {
+      classes.push(`variant-${fieldVariant.size}`);
+    }
+
+    if (fieldVariant.color) {
+      classes.push(`variant-${fieldVariant.color}`);
+    }
+
+    if (fieldVariant.variant) {
+      classes.push(`variant-${fieldVariant.variant}`);
+    }
+
+    return classes.join(" ");
+  }, [fieldVariant]);
+
+  // Combine all CSS classes (excluding fieldClassName which will be applied to FormItem)
+  const containerClasses = cn(
+    "field-container",
+    responsiveClasses,
+    layoutClasses,
+    variantClasses,
+  );
 
   // Extract translatable props (ending with 'Key')
   const {
@@ -93,34 +230,92 @@ export const FieldRenderer: React.FC<FieldRendererProps> = ({
     // Cast to any to avoid TypeScript type issues with dynamic components
     const Component = ComponentToRender as any;
 
+    // Merge variant props with component props
+    const componentProps = React.useMemo(() => {
+      const merged: any = { ...restProps };
+
+      // Apply variant properties to the component
+      if (fieldVariant) {
+        if (fieldVariant.size && !merged.size) {
+          merged.size = fieldVariant.size;
+        }
+        if (fieldVariant.color && !merged.color) {
+          merged.color = fieldVariant.color;
+        }
+        if (fieldVariant.variant && !merged.variant) {
+          merged.variant = fieldVariant.variant;
+        }
+      }
+
+      return merged;
+    }, [fieldVariant, restProps]);
+
     switch (component) {
       case "Button":
         // Buttons don't use FormField wrapper
-        return <Component {...restProps}>{label}</Component>;
+        return (
+          <div
+            className={cn(containerClasses, fieldClassName)}
+            style={fieldStyle}
+          >
+            <Component {...componentProps}>{label}</Component>
+          </div>
+        );
 
       case "Label":
         // Labels are standalone
-        return <Component {...restProps}>{label}</Component>;
+        return (
+          <div
+            className={cn(containerClasses, fieldClassName)}
+            style={fieldStyle}
+          >
+            <Component {...componentProps}>{label}</Component>
+          </div>
+        );
 
       case "Badge":
         // Badges are display-only
-        return <Component {...restProps}>{label}</Component>;
+        return (
+          <div
+            className={cn(containerClasses, fieldClassName)}
+            style={fieldStyle}
+          >
+            <Component {...componentProps}>{label}</Component>
+          </div>
+        );
 
       case "Separator":
         // Separators are layout elements
-        return <Component {...restProps} />;
+        return (
+          <div
+            className={cn(containerClasses, fieldClassName)}
+            style={fieldStyle}
+          >
+            <Component {...componentProps} />
+          </div>
+        );
 
       case "Progress":
         return (
-          <div className="space-y-2">
+          <div
+            className={cn("space-y-2", containerClasses, fieldClassName)}
+            style={fieldStyle}
+          >
             {label && <FormLabel>{label}</FormLabel>}
-            <Component {...restProps} />
+            <Component {...componentProps} />
           </div>
         );
 
       case "Confirmation":
         // Confirmation component needs form data and additional props
-        return <Component {...restProps} />;
+        return (
+          <div
+            className={cn(containerClasses, fieldClassName)}
+            style={fieldStyle}
+          >
+            <Component {...componentProps} />
+          </div>
+        );
 
       default:
         return null;
@@ -150,16 +345,42 @@ export const FieldRenderer: React.FC<FieldRendererProps> = ({
         // Cast to any to avoid TypeScript type issues with dynamic components
         const Component = ComponentToRender as any;
 
+        // Merge variant props with component props
+        const componentProps = React.useMemo(() => {
+          const merged: any = { ...restProps };
+
+          // Apply variant properties to the component
+          if (fieldVariant) {
+            if (fieldVariant.size && !merged.size) {
+              merged.size = fieldVariant.size;
+            }
+            if (fieldVariant.color && !merged.color) {
+              merged.color = fieldVariant.color;
+            }
+            if (fieldVariant.variant && !merged.variant) {
+              merged.variant = fieldVariant.variant;
+            }
+          }
+
+          return merged;
+        }, [fieldVariant, restProps]);
+
         const renderInput = () => {
           switch (component) {
             case "Checkbox":
             case "Switch":
               return (
-                <div className="flex items-center space-x-2">
+                <div
+                  className={cn(
+                    "flex items-center space-x-2",
+                    containerClasses,
+                    fieldClassName,
+                  )}
+                >
                   <Component
                     checked={field.value || false}
                     onCheckedChange={field.onChange}
-                    {...restProps}
+                    {...componentProps}
                   />
                   {label && <FormLabel htmlFor={fieldName}>{label}</FormLabel>}
                 </div>
@@ -172,8 +393,8 @@ export const FieldRenderer: React.FC<FieldRendererProps> = ({
                   onValueChange={field.onChange}
                   name={fieldName}
                   placeholder={placeholder}
-                  options={restProps.options || []}
-                  {...restProps}
+                  options={componentProps.options || []}
+                  {...componentProps}
                 />
               );
 
@@ -183,8 +404,8 @@ export const FieldRenderer: React.FC<FieldRendererProps> = ({
                   value={field.value || ""}
                   onValueChange={field.onChange}
                   name={fieldName}
-                  options={restProps.options || []}
-                  {...restProps}
+                  options={componentProps.options || []}
+                  {...componentProps}
                 />
               );
 
@@ -194,8 +415,8 @@ export const FieldRenderer: React.FC<FieldRendererProps> = ({
                   value={field.value || ""}
                   onChange={field.onChange}
                   name={fieldName}
-                  options={restProps.options || []}
-                  {...restProps}
+                  options={componentProps.options || []}
+                  {...componentProps}
                 />
               );
 
@@ -205,7 +426,7 @@ export const FieldRenderer: React.FC<FieldRendererProps> = ({
                   value={field.value || ""}
                   onChange={field.onChange}
                   name={fieldName}
-                  {...restProps}
+                  {...componentProps}
                 />
               );
 
@@ -217,7 +438,7 @@ export const FieldRenderer: React.FC<FieldRendererProps> = ({
                   onChange={field.onChange}
                   name={fieldName}
                   placeholder={placeholder}
-                  {...restProps}
+                  {...componentProps}
                 />
               );
 
@@ -225,7 +446,7 @@ export const FieldRenderer: React.FC<FieldRendererProps> = ({
               return (
                 <Component
                   {...field}
-                  {...restProps}
+                  {...componentProps}
                   placeholder={placeholder}
                 />
               );
@@ -243,7 +464,10 @@ export const FieldRenderer: React.FC<FieldRendererProps> = ({
         ].includes(component);
 
         return (
-          <FormItem>
+          <FormItem
+            className={cn(containerClasses, fieldClassName)}
+            style={fieldStyle}
+          >
             {label && component !== "Checkbox" && component !== "Switch" && (
               <FormLabel>
                 {label}

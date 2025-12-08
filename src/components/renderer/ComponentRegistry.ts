@@ -20,6 +20,9 @@ import { CustomConfirmation } from "@/components/wrappers/CustomConfirmation";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 
+// Layout components
+import { Container, Grid, Flex, Stack, VStack, HStack } from "./layouts";
+
 /**
  * Registry of components that can be rendered dynamically
  * Add new components here as needed by the system
@@ -47,6 +50,14 @@ export const ComponentRegistry = {
   Progress,
   Badge,
   Separator,
+
+  // Layout components
+  Container,
+  Grid,
+  Flex,
+  Stack,
+  VStack,
+  HStack,
 
   // Action components
   Button,

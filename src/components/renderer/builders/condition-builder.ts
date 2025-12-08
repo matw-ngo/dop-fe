@@ -6,7 +6,7 @@ import type {
   ComplexCondition,
   FieldCondition,
   ConditionOperator,
-} from "@/types/field-conditions";
+} from "../types/field-conditions";
 
 /**
  * Create a simple condition rule

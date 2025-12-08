@@ -1,7 +1,7 @@
 "use client";
 
 import { ReactNode, useEffect, useRef } from "react";
-import { useTheme } from "@/lib/theme/context";
+import { useTheme } from "@/components/renderer/theme/context";
 
 interface ToolsThemeProviderProps {
   children: ReactNode;

@@ -7,6 +7,11 @@
   "loadErrorTitle": "Không thể tải được Form",
   "successAlert": "Đăng ký thành công!",
   "steps": {
+    "personalInfo": {
+      "title": "Thông tin cá nhân",
+      "label": "Cung cấp thông tin cá nhân",
+      "description": "Cung cấp thông tin cá nhân"
+    },
     "ekyc": {
       "title": "Xác thực danh tính",
       "label": "Xác thực danh tính eKYC",
@@ -24,16 +29,20 @@
   },
   "fields": {
     "fullName": {
-      "label": "Họ và tên"
+      "label": "Họ và tên",
+      "placeholder": "Nhập họ và tên đầy đủ"
     },
     "email": {
-      "label": "Email"
+      "label": "Email",
+      "placeholder": "example@email.com"
     },
     "phoneNumber": {
-      "label": "Số điện thoại"
+      "label": "Số điện thoại",
+      "placeholder": "09xxxxxxxx"
     },
     "dateOfBirth": {
-      "label": "Ngày sinh"
+      "label": "Ngày sinh",
+      "placeholder": "dd/mm/yyyy"
     },
     "gender": {
       "label": "Giới tính",
@@ -44,34 +53,43 @@
       }
     },
     "purpose": {
-      "label": "Mục đích"
+      "label": "Mục đích",
+      "placeholder": "Ví dụ: vay mua nhà, vay kinh doanh..."
     },
     "nationalId": {
-      "label": "Số CMND/CCCD"
+      "label": "Số CMND/CCCD",
+      "placeholder": "Nhập số CMND/CCCD"
     },
     "secondNationalId": {
-      "label": "Số CMND/CCCD thứ hai"
+      "label": "Số CMND/CCCD thứ hai",
+      "placeholder": "Nhập số CMND/CCCD thứ hai (nếu có)"
     },
     "location": {
-      "label": "Địa chỉ"
+      "label": "Địa chỉ",
+      "placeholder": "Nhập địa chỉ hiện tại"
     },
     "incomeType": {
-      "label": "Loại thu nhập"
+      "label": "Loại thu nhập",
+      "placeholder": "Ví dụ: lương, kinh doanh..."
     },
     "income": {
-      "label": "Thu nhập"
+      "label": "Thu nhập",
+      "placeholder": "Nhập thu nhập hàng tháng"
     },
     "havingLoan": {
       "label": "Đang có khoản vay"
     },
     "careerStatus": {
-      "label": "Tình trạng nghề nghiệp"
+      "label": "Tình trạng nghề nghiệp",
+      "placeholder": "Ví dụ: đang làm việc, thất nghiệp..."
     },
     "careerType": {
-      "label": "Loại nghề nghiệp"
+      "label": "Loại nghề nghiệp",
+      "placeholder": "Ví dụ: nhân viên, chủ doanh nghiệp..."
     },
     "creditStatus": {
-      "label": "Tình trạng tín dụng"
+      "label": "Tình trạng tín dụng",
+      "placeholder": "Ví dụ: tốt, trung bình..."
     }
   }
 }

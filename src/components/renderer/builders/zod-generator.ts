@@ -2,7 +2,7 @@
 // Converts validation rules from backend into Zod schemas
 
 import { z } from "zod";
-import type { FieldConfig, ValidationRule } from "@/types/data-driven-ui";
+import type { FieldConfig, ValidationRule } from "../types/data-driven-ui";
 
 /**
  * Generate a Zod schema from field configurations

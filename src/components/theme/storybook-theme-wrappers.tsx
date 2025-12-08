@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
-import { ThemeProvider } from "@/lib/theme/context";
-import { themes } from "@/lib/theme/themes";
-import { applyTheme } from "@/lib/theme/utils";
+import { ThemeProvider } from "@/components/renderer/theme/context";
+import { themes } from "@/components/renderer/theme/themes";
+import { applyTheme } from "@/components/renderer/theme/utils";
 
 interface ThemeWrapperProps {
   children: React.ReactNode;

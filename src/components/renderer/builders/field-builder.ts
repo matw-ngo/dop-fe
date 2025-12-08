@@ -18,8 +18,8 @@ import type {
   BadgeProps,
   SeparatorProps,
   EkycProps,
-} from "@/types/component-props";
-import type { RawFieldConfig, FieldCondition } from "@/types/data-driven-ui";
+} from "../types/component-props";
+import type { RawFieldConfig, FieldCondition } from "../types/data-driven-ui";
 
 /**
  * Generic field builder with type safety

@@ -1,6 +1,6 @@
 import { useTranslations } from "next-intl";
 import { Shield, Heart } from "lucide-react";
-import { useTheme } from "@/lib/theme/context";
+import { useTheme } from "@/components/renderer/theme/context";
 
 interface InsurancePageHeroProps {
   titleKey: string;

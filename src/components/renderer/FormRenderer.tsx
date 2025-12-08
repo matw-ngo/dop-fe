@@ -14,14 +14,21 @@ import {
   isRegisteredComponent,
   type RegisteredComponent,
 } from "@/components/renderer/ComponentRegistry";
-import type { FieldConfig, RawFieldConfig } from "@/types/data-driven-ui";
+import type { FieldConfig, RawFieldConfig } from "./types/data-driven-ui";
+import type {
+  ComponentVariant,
+  ResponsiveValue,
+  LayoutProps,
+} from "./types/ui-theme";
 import {
   evaluateCondition,
   isComplexCondition,
   evaluateRule,
-} from "@/types/field-conditions";
+} from "./types/field-conditions";
 import { useMultipleAsyncOptions } from "@/hooks/form/use-async-options";
-import { generateZodSchema } from "@/lib/builders/zod-generator";
+import { generateZodSchema } from "@/components/renderer/builders/zod-generator";
+import { getResponsiveClasses } from "@/components/renderer/constants/responsive-classnames";
+import { cn } from "@/lib/utils";
 
 interface FormRendererProps {
   /** Raw field configurations from backend */
@@ -47,6 +54,15 @@ interface FormRendererProps {
 
   /** Should validate on blur (default: true) */
   validateOnBlur?: boolean;
+
+  /** UI customization properties for the form */
+  variant?: ComponentVariant;
+  responsive?: {
+    form?: ResponsiveValue<string>;
+    fields?: ResponsiveValue<string>;
+  };
+  layout?: LayoutProps | "grid" | "flex" | "block";
+  style?: React.CSSProperties;
 }
 
 export const FormRenderer: React.FC<FormRendererProps> = ({
@@ -58,6 +74,10 @@ export const FormRenderer: React.FC<FormRendererProps> = ({
   formActions,
   validateOnChange = false,
   validateOnBlur = true,
+  variant,
+  responsive,
+  layout = "grid",
+  style,
 }) => {
   // Use root namespace to avoid duplication when keys already include namespace
   const tRaw = useTranslations();
@@ -279,6 +299,98 @@ export const FormRenderer: React.FC<FormRendererProps> = ({
     return fieldsWithAsyncOptions.filter(shouldRenderField);
   }, [fieldsWithAsyncOptions, watchedValues]);
 
+  // Generate responsive classes for the form
+  const formResponsiveClasses = React.useMemo(() => {
+    if (!responsive) return "";
+
+    const classes: string[] = [];
+
+    if (responsive.form) {
+      classes.push(getResponsiveClasses(responsive.form, (val) => String(val)));
+    }
+
+    return classes.join(" ");
+  }, [responsive]);
+
+  // Generate layout classes for the form
+  const formLayoutClasses = React.useMemo(() => {
+    if (!layout) return "";
+
+    // If layout is a string, just return it
+    if (typeof layout === "string") {
+      return layout;
+    }
+
+    const classes: string[] = [];
+
+    if (layout.display) {
+      classes.push(layout.display);
+    }
+
+    if (layout.justify) {
+      classes.push(`justify-${layout.justify}`);
+    }
+
+    if (layout.align) {
+      classes.push(`items-${layout.align}`);
+    }
+
+    if (layout.direction) {
+      classes.push(`flex-${layout.direction}`);
+    }
+
+    if (layout.gap) {
+      classes.push(`gap-${String(layout.gap)}`);
+    }
+
+    if (layout.padding) {
+      classes.push(String(layout.padding));
+    }
+
+    if (layout.margin) {
+      classes.push(String(layout.margin));
+    }
+
+    return classes.join(" ");
+  }, [layout]);
+
+  // Generate variant classes for the form
+  const formVariantClasses = React.useMemo(() => {
+    if (!variant) return "";
+
+    const classes: string[] = [];
+
+    if (variant.size) {
+      classes.push(`form-${variant.size}`);
+    }
+
+    if (variant.color) {
+      classes.push(`form-${variant.color}`);
+    }
+
+    if (variant.variant) {
+      classes.push(`form-${variant.variant}`);
+    }
+
+    return classes.join(" ");
+  }, [variant]);
+
+  // Check if we're using grid layout
+  const isGridLayout = layout === "grid";
+
+  // Combine all form CSS classes
+  const formClasses = cn(
+    // Only use space-y for non-grid layouts
+    !isGridLayout && "space-y-6",
+    // Add grid classes for grid layout
+    isGridLayout &&
+      "grid gap-4 w-full grid-cols-1 md:grid-cols-2 lg:grid-cols-3",
+    formResponsiveClasses,
+    formLayoutClasses,
+    formVariantClasses,
+    className,
+  );
+
   // Handle form submission with conditional validation
   const handleSubmit = form.handleSubmit(async (data) => {
     try {
@@ -300,17 +412,39 @@ export const FormRenderer: React.FC<FormRendererProps> = ({
   return (
     <FormProvider {...form}>
       <Form {...form}>
-        <form onSubmit={handleSubmit} className={`space-y-6 ${className}`}>
+        <form onSubmit={handleSubmit} className={formClasses} style={style}>
           {visibleFields.map((field) => (
             <FieldRenderer
               key={field.fieldName}
               fieldConfig={field}
               translationNamespace={translationNamespace}
+              variant={variant} // Pass form-level variant as default
+              responsive={responsive} // Pass form-level responsive as default
+              layout={layout} // Pass form-level layout as default
             />
           ))}
 
           {formActions && (
-            <div className="flex justify-end gap-4">{formActions}</div>
+            <div
+              className={cn(
+                "flex justify-end gap-4",
+                isGridLayout
+                  ? "col-span-full md:col-span-full lg:col-span-full"
+                  : "mt-6",
+                // Only check justify if layout is an object
+                typeof layout === "object" &&
+                  layout?.justify === "center" &&
+                  "justify-center",
+                typeof layout === "object" &&
+                  layout?.justify === "start" &&
+                  "justify-start",
+                typeof layout === "object" &&
+                  layout?.justify === "between" &&
+                  "justify-between",
+              )}
+            >
+              {formActions}
+            </div>
           )}
         </form>
       </Form>

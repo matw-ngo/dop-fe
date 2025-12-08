@@ -2,7 +2,7 @@
 
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/sonner";
-import { ThemeProvider } from "@/lib/theme/context";
+import { ThemeProvider } from "@/components/renderer/theme/context";
 import { AuthProvider } from "@/lib/auth/auth-context";
 import { queryClient } from "@/lib/query-client";
 

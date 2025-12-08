@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import { useTheme } from "@/lib/theme/context";
+import { useTheme } from "@/components/renderer/theme/context";
 import { useTheme as useNextTheme } from "next-themes";
 import { NavbarConfig } from "@/configs/navbar-config";
 

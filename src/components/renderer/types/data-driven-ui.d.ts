@@ -2,6 +2,14 @@
 // Based on the API Reference documentation
 
 import type { FieldCondition } from "./field-conditions";
+import type {
+  ComponentVariant,
+  AnimationVariant,
+  LayoutProps,
+  ResponsiveValue,
+  EnhancedFieldConfig,
+} from "./ui-theme";
+import type { ResponsiveFieldConfig } from "./responsive";
 
 // Re-export for convenience
 export type { FieldCondition };
@@ -52,6 +60,27 @@ export interface FieldProps {
     dependsOn?: string[];
   };
 
+  /** UI Customization - Component variant (size, color, style) */
+  variant?: ComponentVariant;
+
+  /** Animation configuration for field entrance/exit */
+  animation?: AnimationVariant;
+
+  /** Responsive configuration */
+  responsive?: ResponsiveFieldConfig;
+
+  /** Layout configuration (flex, grid, etc.) */
+  layout?: LayoutProps;
+
+  /** Custom inline styles */
+  style?: React.CSSProperties;
+
+  /** Theme-aware props */
+  theme?: {
+    colorScheme?: "light" | "dark" | "auto";
+    variant?: string;
+  };
+
   /** Any other props will be passed directly to the component */
   [key: string]: any;
 }
@@ -73,6 +102,17 @@ export interface FieldConfig {
 
   /** (Optional) Condition for rendering this field */
   condition?: FieldCondition;
+
+  /** (Optional) UI customization properties for this field */
+  variant?: ComponentVariant;
+  animation?: AnimationVariant;
+  responsive?: {
+    container?: ResponsiveValue<string>;
+    fields?: ResponsiveValue<string>;
+  };
+  layout?: LayoutProps;
+  className?: string;
+  style?: React.CSSProperties;
 
   /** (Optional) Additional properties for custom fields */
   [key: string]: any;

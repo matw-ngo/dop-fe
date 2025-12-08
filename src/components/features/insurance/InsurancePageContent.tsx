@@ -5,7 +5,7 @@ import InsuranceGrid from "@/components/features/insurance/InsuranceGrid";
 import InsuranceFilterPanel from "@/components/features/insurance/InsuranceFilterPanel";
 import Pagination from "@/components/features/insurance/InsurancePagination";
 import type { InsuranceProduct } from "@/types/insurance";
-import { useTheme } from "@/lib/theme/context";
+import { useTheme } from "@/components/renderer/theme/context";
 import { useInsuranceStore } from "@/store/use-insurance-store";
 
 interface InsurancePageContentProps {

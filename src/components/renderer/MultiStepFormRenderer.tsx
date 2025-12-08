@@ -5,6 +5,7 @@
 
 import React from "react";
 import { FormRenderer } from "./FormRenderer";
+import { AnimatedStepContainer } from "./AnimatedStepContainer";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import {
@@ -24,8 +25,13 @@ import {
   Loader2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import type { MultiStepFormRendererProps } from "@/types/multi-step-form";
+import type { MultiStepFormRendererProps } from "./types/multi-step-form";
 import { useMultiStepForm } from "@/hooks/form/use-multi-step-form";
+import {
+  getResponsiveWidth,
+  getResponsivePadding,
+  getResponsiveMargin,
+} from "@/components/renderer/constants/responsive-classnames";
 
 export const MultiStepFormRenderer: React.FC<MultiStepFormRendererProps> = ({
   config,
@@ -43,7 +49,36 @@ export const MultiStepFormRenderer: React.FC<MultiStepFormRendererProps> = ({
     progress,
   } = useMultiStepForm(config);
 
-  const { steps, showProgress = true, progressStyle = "steps" } = config;
+  const {
+    steps,
+    showProgress = true,
+    progressStyle = "steps",
+    formVariant,
+    stepTransitionAnimation,
+    responsive,
+    layout,
+    className: formClassName,
+    style: formStyle,
+  } = config;
+
+  // Build responsive classes for form container
+  const formResponsiveClasses = cn(
+    // Form-level responsive styles
+    responsive?.form && getResponsiveWidth(responsive.form),
+    responsive?.form && getResponsivePadding(responsive.form),
+    responsive?.form && getResponsiveMargin(responsive.form),
+    // Layout styles
+    layout?.display === "flex" && "flex",
+    layout?.display === "grid" && "grid",
+    layout?.direction && `flex-${layout.direction}`,
+    layout?.align && `items-${layout.align}`,
+    layout?.justify && `justify-${layout.justify}`,
+    layout?.wrap && layout.wrap,
+    layout?.gap && `gap-${layout.gap}`,
+    // Custom class name
+    formClassName,
+    className,
+  );
 
   // Handle form submission for current step
   const handleStepSubmit = async (data: Record<string, any>) => {
@@ -233,10 +268,35 @@ export const MultiStepFormRenderer: React.FC<MultiStepFormRendererProps> = ({
   };
 
   return (
-    <div className={cn("w-full", className)}>
-      <Card>
+    <div className={cn("w-full", formResponsiveClasses)} style={formStyle}>
+      <Card
+        className={cn(
+          "w-full",
+          // Form variant styles
+          formVariant?.variant === "solid" &&
+            "bg-primary text-primary-foreground",
+          formVariant?.variant === "outline" && "border-2",
+          formVariant?.variant === "ghost" && "bg-transparent shadow-none",
+          // Form size styles
+          formVariant?.size === "sm" && "p-4",
+          formVariant?.size === "lg" && "p-8",
+          formVariant?.size === "xl" && "p-10",
+        )}
+      >
         <CardHeader>
-          <CardTitle>{currentStepConfig.title}</CardTitle>
+          <CardTitle
+            className={cn(
+              // Form color styles for title
+              formVariant?.color === "primary" && "text-primary",
+              formVariant?.color === "secondary" && "text-secondary",
+              formVariant?.color === "success" && "text-green-600",
+              formVariant?.color === "warning" && "text-yellow-600",
+              formVariant?.color === "error" && "text-red-600",
+              formVariant?.color === "info" && "text-blue-600",
+            )}
+          >
+            {currentStepConfig.title}
+          </CardTitle>
           {currentStepConfig.description && (
             <CardDescription>{currentStepConfig.description}</CardDescription>
           )}
@@ -250,31 +310,40 @@ export const MultiStepFormRenderer: React.FC<MultiStepFormRendererProps> = ({
 
           {showProgress && progressStyle === "steps" && <Separator />}
 
-          {/* Current Step Form */}
-          <FormRenderer
-            fields={currentStepConfig.fields.map((field) => {
-              // Pass success callback to confirmation field
-              if (field.component === "Confirmation") {
-                return {
-                  ...field,
-                  props: {
-                    ...field.props,
-                    onSuccess: handleConfirmationSuccess,
-                    isSubmitting: state.isSubmitting,
-                  },
-                };
+          {/* Current Step Form with Animation */}
+          <AnimatedStepContainer
+            isActive={true}
+            animation={currentStepConfig.animation || stepTransitionAnimation}
+            responsive={currentStepConfig.responsive}
+            className={currentStepConfig.className}
+            style={currentStepConfig.style}
+            stepId={currentStepConfig.id}
+          >
+            <FormRenderer
+              fields={currentStepConfig.fields.map((field: any) => {
+                // Pass success callback to confirmation field
+                if (field.component === "Confirmation") {
+                  return {
+                    ...field,
+                    props: {
+                      ...field.props,
+                      onSuccess: handleConfirmationSuccess,
+                      isSubmitting: state.isSubmitting,
+                    },
+                  };
+                }
+                return field;
+              })}
+              onSubmit={handleStepSubmit}
+              defaultValues={state.formData}
+              translationNamespace={translationNamespace}
+              formActions={
+                renderNavigation
+                  ? renderNavigation(state, actions)
+                  : defaultNavigationRenderer()
               }
-              return field;
-            })}
-            onSubmit={handleStepSubmit}
-            defaultValues={state.formData}
-            translationNamespace={translationNamespace}
-            formActions={
-              renderNavigation
-                ? renderNavigation(state, actions)
-                : defaultNavigationRenderer()
-            }
-          />
+            />
+          </AnimatedStepContainer>
         </CardContent>
       </Card>
 

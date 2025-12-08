@@ -13,7 +13,7 @@ import InsuranceSearchBar from "@/components/features/insurance/InsuranceSearchB
 import SortDropdown from "@/components/features/insurance/InsuranceSortDropdown";
 import InsuranceFilterPanel from "@/components/features/insurance/InsuranceFilterPanel";
 import type { InsuranceFilters } from "@/types/insurance";
-import { useTheme } from "@/lib/theme/context";
+import { useTheme } from "@/components/renderer/theme/context";
 
 interface InsurancePageControlsProps {
   searchQuery: string;

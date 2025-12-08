@@ -2,6 +2,12 @@
 // Supports step-by-step forms with progress tracking and state management
 
 import type { RawFieldConfig } from "./data-driven-ui";
+import type {
+  ComponentVariant,
+  AnimationVariant,
+  ResponsiveValue,
+  LayoutProps,
+} from "./ui-theme";
 
 /**
  * Configuration for a single step in a multi-step form
@@ -30,6 +36,28 @@ export interface StepConfig {
 
   /** Icon for this step (optional) */
   icon?: React.ReactNode;
+
+  // UI Customization properties
+  /** Visual variant for this step */
+  variant?: ComponentVariant;
+
+  /** Animation for step transition */
+  animation?: AnimationVariant;
+
+  /** Responsive configuration for the step */
+  responsive?: {
+    container?: ResponsiveValue<string>;
+    fields?: ResponsiveValue<string>;
+  };
+
+  /** Layout properties for the step */
+  layout?: LayoutProps;
+
+  /** Custom className for the step container */
+  className?: string;
+
+  /** Custom inline styles for the step container */
+  style?: React.CSSProperties;
 }
 
 /**
@@ -68,6 +96,29 @@ export interface MultiStepFormConfig {
 
   /** Callback when navigation occurs */
   onStepChange?: (fromStep: number, toStep: number) => void;
+
+  // Form-level UI Customization properties
+  /** Visual variant for the entire form */
+  formVariant?: ComponentVariant;
+
+  /** Animation for step transitions */
+  stepTransitionAnimation?: AnimationVariant;
+
+  /** Responsive configuration for the form */
+  responsive?: {
+    form?: ResponsiveValue<string>;
+    progress?: ResponsiveValue<string>;
+    navigation?: ResponsiveValue<string>;
+  };
+
+  /** Layout properties for the form container */
+  layout?: LayoutProps;
+
+  /** Custom className for the form container */
+  className?: string;
+
+  /** Custom inline styles for the form container */
+  style?: React.CSSProperties;
 }
 
 /**
