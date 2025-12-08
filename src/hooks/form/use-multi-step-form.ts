@@ -2,14 +2,14 @@
 
 // Custom hook for managing multi-step form state
 // Handles navigation, validation, and data persistence
-
-import { useState, useCallback, useEffect } from "react";
-import type {
+import {
+  MultiStepFormActions,
   MultiStepFormConfig,
   MultiStepFormState,
-  MultiStepFormActions,
   StepConfig,
-} from "@/types/multi-step-form";
+} from "@/components/renderer/types/multi-step-form";
+
+import { useState, useCallback, useEffect } from "react";
 
 interface UseMultiStepFormReturn {
   state: MultiStepFormState;
@@ -107,12 +107,19 @@ export function useMultiStepForm(
 
   // Navigate to next step
   const goToNextStep = useCallback(async (): Promise<boolean> => {
-    if (isLastStep) {
+    // Get current state snapshot
+    const currentStep = state.currentStep;
+    const currentFormData = state.formData;
+    const isCurrentLastStep = currentStep === steps.length - 1;
+
+    // Debug: Remove logs in production
+
+    if (isCurrentLastStep) {
       // Submit the form
       setState((prev) => ({ ...prev, isSubmitting: true }));
 
       try {
-        await onComplete?.(state.formData);
+        await onComplete?.(currentFormData);
 
         // Mark last step as complete
         setState((prev) => ({
@@ -132,9 +139,8 @@ export function useMultiStepForm(
     // Run step validation if provided
     if (currentStepConfig.stepValidation?.validate) {
       try {
-        const result = await currentStepConfig.stepValidation.validate(
-          state.formData,
-        );
+        const result =
+          await currentStepConfig.stepValidation.validate(currentFormData);
         if (result !== true) {
           console.error("Step validation failed:", result);
           return false;
@@ -146,23 +152,25 @@ export function useMultiStepForm(
     }
 
     // Notify step completion
-    await onStepComplete?.(currentStepConfig.id, state.formData);
+    await onStepComplete?.(currentStepConfig.id, currentFormData);
 
     // Move to next step
-    const nextStep = state.currentStep + 1;
-    onStepChange?.(state.currentStep, nextStep);
+    const nextStep = currentStep + 1;
+
+    onStepChange?.(currentStep, nextStep);
 
     setState((prev) => ({
       ...prev,
       currentStep: nextStep,
-      completedSteps: new Set([...prev.completedSteps, prev.currentStep]),
+      completedSteps: new Set([...prev.completedSteps, currentStep]),
     }));
 
     return true;
   }, [
-    isLastStep,
+    state.currentStep,
+    state.formData,
+    steps,
     currentStepConfig,
-    state,
     onComplete,
     onStepComplete,
     onStepChange,

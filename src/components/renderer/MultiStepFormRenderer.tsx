@@ -17,13 +17,7 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
-import {
-  CheckCircle2,
-  Circle,
-  ChevronLeft,
-  ChevronRight,
-  Loader2,
-} from "lucide-react";
+import { CheckCircle2, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { MultiStepFormRendererProps } from "./types/multi-step-form";
 import { useMultiStepForm } from "@/hooks/form/use-multi-step-form";
@@ -85,7 +79,7 @@ export const MultiStepFormRenderer: React.FC<MultiStepFormRendererProps> = ({
     // Update the form data with current step's data
     actions.updateStepData(data);
 
-    // Try to proceed to next step
+    // Proceed to next step
     await actions.goToNextStep();
   };
 
@@ -313,7 +307,13 @@ export const MultiStepFormRenderer: React.FC<MultiStepFormRendererProps> = ({
           {/* Current Step Form with Animation */}
           <AnimatedStepContainer
             isActive={true}
-            animation={currentStepConfig.animation || stepTransitionAnimation}
+            animation={
+              currentStepConfig.animation || {
+                type: "fade",
+                direction: "up",
+                duration: 300,
+              }
+            }
             responsive={currentStepConfig.responsive}
             className={currentStepConfig.className}
             style={currentStepConfig.style}

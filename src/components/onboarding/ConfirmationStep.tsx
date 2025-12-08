@@ -44,10 +44,6 @@ export function ConfirmationStep({
   const t = useTranslations("onboarding.confirm");
   const tForm = useTranslations("form");
 
-  console.log("\n".repeat(3));
-  console.log("[CONFIRMATION] formData", formData);
-  console.log("\n".repeat(3));
-
   // Dữ liệu nằm trực tiếp trong formData, không trong nested objects
   const basicInfo = formData || {};
   const ekycInfo = formData.ekycVerification || {};
@@ -61,9 +57,7 @@ export function ConfirmationStep({
     try {
       setSubmitting(true);
 
-      // Log payload for testing
       const payload = toCreateLeadRequest(formData, flowId, stepId, domain);
-      console.log("[CONFIRMATION] Submit payload:", payload);
 
       // Make API call to create lead
       const { data, error } = await apiClient.POST("/leads", {
@@ -71,13 +65,11 @@ export function ConfirmationStep({
       });
 
       if (error) {
-        console.error("[CONFIRMATION] API Error:", error);
         toast.error(t("errors.submitError"));
         return;
       }
 
       if (data) {
-        console.log("[CONFIRMATION] API Response:", data);
         toast.success(t("success.submitSuccess"));
 
         // Call onSuccess callback if provided
@@ -86,7 +78,6 @@ export function ConfirmationStep({
         }
       }
     } catch (err) {
-      console.error("[CONFIRMATION] Submit Error:", err);
       toast.error(t("errors.submitError"));
     } finally {
       setSubmitting(false);

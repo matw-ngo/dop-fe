@@ -1,11 +1,14 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useRef } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { generateZodSchema } from "@/components/renderer/builders/zod-generator";
 import { evaluateCondition } from "@/components/renderer/types/field-conditions";
 import type { FieldConfig } from "@/components/renderer/types/data-driven-ui";
 import type { z } from "zod";
+
+// Global schema cache to improve performance
+const schemaCache = new Map<string, z.ZodSchema<any>>();
 
 interface UseFormValidationOptions {
   validateOnChange?: boolean;
@@ -28,7 +31,7 @@ interface UseFormValidationResult {
 export function useFormValidation(
   processedFields: FieldConfig[],
   t: any,
-  options: UseFormValidationOptions = {}
+  options: UseFormValidationOptions = {},
 ): UseFormValidationResult {
   const {
     validateOnChange = false,
@@ -41,30 +44,61 @@ export function useFormValidation(
     return generateZodSchema(processedFields, t);
   }, [processedFields, t]);
 
-  // Initialize react-hook-form with custom resolver that handles conditional fields
-  const resolver = useMemo(async (values: any, context: any, options: any) => {
-    // Custom resolver that only validates visible fields
-    const visibleFieldNames = new Set(
-      processedFields
-        .filter(
-          (field) =>
-            !field.condition ||
-            evaluateCondition(field.condition as any, values),
-        )
-        .map((field) => field.fieldName),
-    );
+  // Debounce timer for validation
+  const debounceTimer = useRef<NodeJS.Timeout | null>(null);
 
-    // Create a schema with only visible fields
-    const visibleFields = processedFields.filter((f) =>
-      visibleFieldNames.has(f.fieldName),
-    );
-    const visibleSchema = generateZodSchema(visibleFields, t);
+  // Custom resolver with caching
+  const resolver = useMemo(() => {
+    // Return the resolver function
+    return async (values: any, context: any, options: any) => {
+      // Clear existing timer
+      if (debounceTimer.current) {
+        clearTimeout(debounceTimer.current);
+      }
 
-    // Validate only visible fields
-    const result = await zodResolver(visibleSchema)(values, context, options);
+      // Return a promise that resolves after debounce
+      return new Promise<any>((resolve) => {
+        debounceTimer.current = setTimeout(async () => {
+          try {
+            // Determine visible fields based on current values
+            const visibleFieldNames = new Set(
+              processedFields
+                .filter(
+                  (field) =>
+                    !field.condition ||
+                    evaluateCondition(field.condition as any, values),
+                )
+                .map((field) => field.fieldName),
+            );
 
-    return result;
-  }, [processedFields, t]);
+            // Create cache key from visible field names
+            const cacheKey = Array.from(visibleFieldNames).sort().join(",");
+
+            // Get or create cached schema
+            let visibleSchema = schemaCache.get(cacheKey);
+            if (!visibleSchema) {
+              const visibleFields = processedFields.filter((f) =>
+                visibleFieldNames.has(f.fieldName),
+              );
+              visibleSchema = generateZodSchema(visibleFields, t);
+              schemaCache.set(cacheKey, visibleSchema);
+            }
+
+            // Validate using cached schema
+            const result = await zodResolver(visibleSchema as any)(
+              values,
+              context,
+              options,
+            );
+            resolve(result);
+          } catch (error) {
+            console.error("Validation error:", error);
+            resolve({ values, errors: {} });
+          }
+        }, 50); // 50ms debounce
+      });
+    };
+  }, [processedFields, t, evaluateCondition]);
 
   const mode: "onChange" | "onBlur" | "onSubmit" = validateOnChange
     ? "onChange"

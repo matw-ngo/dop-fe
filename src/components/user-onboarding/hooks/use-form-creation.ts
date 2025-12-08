@@ -47,7 +47,26 @@ export function useFormCreation(
       .showProgress(true)
       .setProgressStyle("steps")
       .persistData(true, "user-onboarding-data")
-      .onComplete(onSubmit || (() => {}))
+      .onStepComplete((stepId, data) => {
+        // Handle step completion
+        console.log(`Step ${stepId} completed:`, data);
+      })
+      .onComplete(
+        onSubmit ||
+          ((data) => {
+            // Default completion behavior
+            console.log("Multi-step form completed:", data);
+            // Save to store if needed
+            import("@/store/use-onboarding-form-store").then(
+              ({ useOnboardingFormStore }) => {
+                const store = useOnboardingFormStore.getState();
+                store.setFormData(data);
+              },
+            );
+            // Redirect to success page
+            window.location.href = "/onboarding-success";
+          }),
+      )
       .setFormVariant({
         size: "md",
         color: "primary",

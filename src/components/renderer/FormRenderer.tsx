@@ -79,18 +79,18 @@ export const FormRenderer: React.FC<FormRendererProps> = ({
   });
 
   // Setup form validation with conditional field support
-  const { resolver, mode } = useFormValidation(
-    processedFields,
-    t,
-    { validateOnChange, validateOnBlur, defaultValues: computedDefaultValues }
-  );
+  const { resolver, mode } = useFormValidation(processedFields, t, {
+    validateOnChange,
+    validateOnBlur,
+    defaultValues: computedDefaultValues,
+  });
 
   // Initialize react-hook-form
   const form = useForm({
     resolver,
     defaultValues: computedDefaultValues,
     mode,
-    reValidateMode: "onChange",
+    reValidateMode: mode,
     // Don't validate on mount
     shouldUnregister: false,
   });
@@ -168,8 +168,17 @@ export const FormRenderer: React.FC<FormRendererProps> = ({
   // Determine field visibility based on conditions
   const { visibleFields, visibleFieldNames } = useFieldVisibility(
     fieldsWithAsyncOptions,
-    watchedValues
+    watchedValues,
   );
+
+  // Clear errors for hidden fields
+  React.useEffect(() => {
+    processedFields.forEach((field) => {
+      if (!visibleFieldNames.has(field.fieldName)) {
+        form.clearErrors(field.fieldName);
+      }
+    });
+  }, [visibleFieldNames, form, processedFields]);
 
   // Generate form CSS classes
   const { formClasses } = useFormClassNames({

@@ -82,7 +82,7 @@ export const FieldRenderer: React.FC<FieldRendererProps> = ({
     className,
     style,
   );
-  console.log("styling", styling);
+
   // Merge component props with field configuration
   const mergedProps = React.useMemo(
     () => mergeComponentProps(fieldConfig.props, styling.fieldVariant),

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import { cn } from "@/lib/utils";
 import type { AnimationVariant, ResponsiveValue } from "./types/ui-theme";
@@ -165,24 +165,19 @@ export const AnimatedStepContainer: React.FC<AnimatedStepContainerProps> = ({
   stepId,
   direction = "forward",
 }) => {
-  const [isVisible, setIsVisible] = useState(isActive);
-
-  useEffect(() => {
-    if (isActive !== isVisible) {
-      setIsVisible(isActive);
-    }
-  }, [isActive, isVisible]);
+  // Simplified state management - no need for isVisible
+  // Just use isActive directly
 
   // Build responsive classes
   const containerClasses = cn(
-    "transition-all duration-300",
     // Container responsive styles
     responsive?.container && getResponsiveWidth(responsive.container),
     responsive?.container && getResponsivePadding(responsive.container),
     className,
   );
 
-  if (!isActive && !isVisible) {
+  // If not active and no animation, return null
+  if (!isActive) {
     return null;
   }
 

@@ -4,11 +4,7 @@ import { generateFieldsForStep, sortFields } from "../utils/field-generation";
 import { getStepMetadata, getStepNavigation } from "../utils/step-helpers";
 import { createConfirmationField } from "@/components/renderer/builders/field-builder";
 import { CheckCircle } from "lucide-react";
-import {
-  FIELD_VARIANTS,
-  FIELD_ANIMATIONS,
-  LAYOUT_CONFIG,
-} from "../constants/ui-themes";
+import { FIELD_VARIANTS, LAYOUT_CONFIG } from "../constants/ui-themes";
 import type { RawFieldConfig } from "@/components/renderer/types/data-driven-ui";
 
 interface GeneratedStepConfig {
@@ -46,23 +42,29 @@ export function useStepConfig(
       const metadata = getStepMetadata(step, t);
       const navigation = getStepNavigation(step, t);
 
-      const stepConfig: GeneratedStepConfig = {
-        id: step.id,
-        title: metadata.title,
-        description: metadata.description,
-        icon: metadata.icon,
-        fields: sortedFields,
-        validation: {
-          validateAll: true,
-        },
-        navigation: {
-          nextText: navigation.nextText,
-          previousText: navigation.previousText,
-          showSkip: navigation.showSkip,
-        },
-      };
+      // Only include step if it has fields OR if it's a special step (eKYC, OTP)
+      const hasFields = sortedFields.length > 0;
+      const isSpecialStep = step.useEkyc || step.sendOtp;
 
-      steps.push(stepConfig);
+      if (hasFields || isSpecialStep) {
+        const stepConfig: GeneratedStepConfig = {
+          id: step.id,
+          title: metadata.title,
+          description: metadata.description,
+          icon: metadata.icon,
+          fields: sortedFields,
+          validation: {
+            validateAll: true,
+          },
+          navigation: {
+            nextText: navigation.nextText,
+            previousText: navigation.previousText,
+            showSkip: navigation.showSkip,
+          },
+        };
+
+        steps.push(stepConfig);
+      }
     });
 
     // Add confirmation step
@@ -83,7 +85,6 @@ function createConfirmationStep(
   const confirmationField = createConfirmationField("confirmation", {
     leftIcon: CheckCircle,
     variant: FIELD_VARIANTS.LARGE,
-    animation: FIELD_ANIMATIONS.BOUNCE_IN,
     layout: LAYOUT_CONFIG.SPACIOUS,
     className: "col-span-1 lg:col-span-4",
     confirmationType: "success",

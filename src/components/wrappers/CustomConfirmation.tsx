@@ -22,7 +22,6 @@ export const CustomConfirmation = React.forwardRef<
 
   // Get all form data from parent form
   const allFormData = formContext?.getValues() || {};
-  console.log("allFormData", allFormData);
   // This component is read-only, just for display
   // The actual form data is managed by the multi-step form
 
