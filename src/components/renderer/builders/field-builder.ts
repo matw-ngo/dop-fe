@@ -18,6 +18,7 @@ import type {
   BadgeProps,
   SeparatorProps,
   EkycProps,
+  ConfirmationProps,
 } from "../types/component-props";
 import type { RawFieldConfig, FieldCondition } from "../types/data-driven-ui";
 
@@ -202,7 +203,7 @@ export function createEkycField(
  */
 export function createConfirmationField(
   fieldName: string,
-  props?: Partial<import("@/types/component-props").ConfirmationProps>,
+  props?: Partial<ConfirmationProps>,
   condition?: FieldCondition,
 ): RawFieldConfig {
   return createField(fieldName, "Confirmation", props || {}, condition);
