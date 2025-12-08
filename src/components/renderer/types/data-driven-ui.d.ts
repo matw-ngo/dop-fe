@@ -44,6 +44,9 @@ export interface FieldProps {
   /** (Optional) Whether the field is required */
   required?: boolean;
 
+  /** (Optional) Whether the field is disabled */
+  disabled?: boolean;
+
   /** (Optional) Array of validation rules for the field */
   validations?: ValidationRule[];
 

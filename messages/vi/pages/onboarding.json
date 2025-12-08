@@ -7,7 +7,12 @@
   "loadErrorTitle": "Không thể tải được Form",
   "successAlert": "Đăng ký thành công!",
   "steps": {
-    "personalInfo": {
+    "default": {
+      "title": "Bước",
+      "label": "",
+      "description": ""
+    },
+    "personal_info": {
       "title": "Thông tin cá nhân",
       "label": "Cung cấp thông tin cá nhân",
       "description": "Cung cấp thông tin cá nhân"
@@ -16,16 +21,17 @@
       "title": "Xác thực danh tính",
       "label": "Xác thực danh tính eKYC",
       "description": "Xác minh danh tính của bạn qua eKYC"
-    },
-    "confirmation": {
-      "title": "Xác nhận thông tin",
-      "description": "Xem lại và xác nhận thông tin",
-      "subtitle": "Vui lòng kiểm tra lại thông tin trước khi hoàn tất đăng ký",
-      "submitButton": "Hoàn tất đăng ký",
-      "submitting": "Đang gửi...",
-      "success": "Đăng ký thành công!",
-      "error": "Gửi thất bại. Vui lòng thử lại."
     }
+  },
+  "confirmation": {
+    "title": "Xác nhận thông tin",
+    "description": "Xem lại và xác nhận thông tin",
+    "subtitle": "Vui lòng kiểm tra lại thông tin trước khi hoàn tất đăng ký",
+    "submitButton": "Hoàn tất đăng ký",
+    "submitting": "Đang gửi...",
+    "success": "Đăng ký thành công!",
+    "error": "Gửi thất bại. Vui lòng thử lại.",
+    "defaultMessage": "Xác nhận thông tin đã nhập"
   },
   "fields": {
     "fullName": {
@@ -40,21 +46,15 @@
       "label": "Số điện thoại",
       "placeholder": "09xxxxxxxx"
     },
-    "dateOfBirth": {
-      "label": "Ngày sinh",
-      "placeholder": "dd/mm/yyyy"
-    },
     "gender": {
       "label": "Giới tính",
+      "placeholder": "Giới tính",
       "options": {
         "male": "Nam",
         "female": "Nữ",
-        "other": "Khác"
+        "other": "Khác",
+        "preferNotToSay": "Không muốn tiết lộ"
       }
-    },
-    "purpose": {
-      "label": "Mục đích",
-      "placeholder": "Ví dụ: vay mua nhà, vay kinh doanh..."
     },
     "nationalId": {
       "label": "Số CMND/CCCD",
@@ -64,32 +64,91 @@
       "label": "Số CMND/CCCD thứ hai",
       "placeholder": "Nhập số CMND/CCCD thứ hai (nếu có)"
     },
+    "dateOfBirth": {
+      "label": "Ngày sinh",
+      "placeholder": "dd/mm/yyyy"
+    },
     "location": {
       "label": "Địa chỉ",
       "placeholder": "Nhập địa chỉ hiện tại"
-    },
-    "incomeType": {
-      "label": "Loại thu nhập",
-      "placeholder": "Ví dụ: lương, kinh doanh..."
     },
     "income": {
       "label": "Thu nhập",
       "placeholder": "Nhập thu nhập hàng tháng"
     },
-    "havingLoan": {
-      "label": "Đang có khoản vay"
+    "incomeType": {
+      "label": "Loại thu nhập",
+      "placeholder": "Loại thu nhập",
+      "options": {
+        "salary": "Lương",
+        "business": "Kinh doanh",
+        "freelance": "Tự do",
+        "investment": "Đầu tư",
+        "rental": "Cho thuê",
+        "pension": "Lương hưu",
+        "other": "Khác"
+      }
     },
     "careerStatus": {
       "label": "Tình trạng nghề nghiệp",
-      "placeholder": "Ví dụ: đang làm việc, thất nghiệp..."
+      "placeholder": "Tình trạng nghề nghiệp",
+      "options": {
+        "employed": "Đang làm việc",
+        "selfEmployed": "Tự làm chủ",
+        "unemployed": "Thất nghiệp",
+        "student": "Sinh viên",
+        "homemaker": "Nội trợ",
+        "retired": "Đã nghỉ hưu"
+      }
     },
     "careerType": {
       "label": "Loại nghề nghiệp",
-      "placeholder": "Ví dụ: nhân viên, chủ doanh nghiệp..."
+      "placeholder": "Loại nghề nghiệp",
+      "options": {
+        "fullTime": "Toàn thời gian",
+        "partTime": "Bán thời gian",
+        "contract": "Hợp đồng",
+        "temporary": "Tạm thời",
+        "internship": "Thực tập"
+      }
+    },
+    "havingLoan": {
+      "label": "Đang có khoản vay",
+      "placeholder": "Đang có khoản vay",
+      "options": {
+        "yes": "Có",
+        "no": "Không"
+      }
     },
     "creditStatus": {
       "label": "Tình trạng tín dụng",
-      "placeholder": "Ví dụ: tốt, trung bình..."
+      "placeholder": "Tình trạng tín dụng",
+      "options": {
+        "excellent": "Xuất sắc",
+        "good": "Tốt",
+        "fair": "Khá",
+        "poor": "Kém",
+        "noCredit": "Chưa có tín dụng"
+      }
+    },
+    "purpose": {
+      "label": "Mục đích vay vốn",
+      "placeholder": "Ví dụ: vay mua nhà, vay kinh doanh..."
+    },
+    "ekycVerification": {
+      "label": "Xác thực danh tính điện tử",
+      "placeholder": "Xác thực danh tính điện tử"
+    }
+  },
+  "form": {
+    "errors": {
+      "required": "Trường này là bắt buộc",
+      "email": "Email không hợp lệ",
+      "phone": "Số điện thoại không hợp lệ",
+      "minLength": "Độ dài tối thiểu không đủ",
+      "maxLength": "Độ dài vượt quá giới hạn",
+      "pattern": "Định dạng không hợp lệ",
+      "positiveNumber": "Vui lòng nhập số dương"
     }
   }
 }
