@@ -7,7 +7,7 @@ import type { PhoneValidationResult } from "@/lib/utils/phone-validation";
  * Translates error messages based on the validation result
  */
 export const usePhoneValidationMessages = () => {
-  const t = useTranslations("common.phoneValidation");
+  const t = useTranslations("phoneValidation");
   const { getTelcoName } = useLocalizedTelcos();
 
   const translateValidationResult = (

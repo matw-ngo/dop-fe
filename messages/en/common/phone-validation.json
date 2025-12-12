@@ -1,6 +1,8 @@
 {
   "phoneValidation": {
     "invalid": "Invalid phone number. Please enter 10-11 digits.",
-    "telcoNotSupported": "Telco {telco} is not supported. Please use Viettel, Mobifone, or Vinaphone."
+    "telcoNotSupported": "Telco {telco} is not supported. Please use Viettel, Mobifone, or Vinaphone.",
+    "required": "Phone number is required",
+    "format": "Invalid phone number format"
   }
 }

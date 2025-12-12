@@ -2,10 +2,17 @@
   "title": "Đăng ký vay vốn",
   "expectedAmount": {
     "label": "Số tiền vay mong muốn",
-    "placeholder": "Nhập số tiền"
+    "labelShort": "Số tiền vay:",
+    "placeholder": "Nhập số tiền",
+    "selectText": "Chọn khoản vay",
+    "currency": "đồng"
   },
   "loanPeriod": {
-    "label": "Thời gian vay"
+    "label": "Thời gian vay",
+    "labelShort": "Thời hạn vay:",
+    "placeholder": "Chọn thời gian vay",
+    "selectText": "Chọn thời gian vay",
+    "unit": "tháng"
   },
   "loanPurpose": {
     "label": "Mục đích vay",
@@ -14,8 +21,10 @@
   "terms": {
     "text": "Bằng việc nhấn Gửi, bạn đồng ý với",
     "link": "Điều khoản dịch vụ",
-    "agree": "Tôi đồng ý",
-    "disagree": "Tôi không đồng ý"
+    "linkText": "Điều khoản sử dụng dịch vụ",
+    "fullText": "Để đăng kí và sử dụng dịch vụ từ Fin Zone, xin vui lòng đọc và đồng ý với {link} &nbsp;của chúng tôi.",
+    "agree": "Tôi đồng ý và muốn sử dụng dịch vụ.",
+    "disagree": "Tôi không đồng ý với toàn bộ hoặc một phần trong Điều khoản dịch vụ."
   },
   "errors": {
     "phoneRequired": "Số điện thoại không được để trống",
@@ -32,7 +41,8 @@
   "otp": {
     "title": "Xác thực số điện thoại",
     "description": "Vui lòng nhập số điện thoại để tiếp tục",
-    "placeholder": "Số điện thoại"
+    "placeholder": "Số điện thoại",
+    "continue": "Tiếp tục"
   },
   "messages": {
     "agreeRequired": "Vui lòng đồng ý với điều khoản để tiếp tục",

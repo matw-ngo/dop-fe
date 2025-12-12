@@ -6,7 +6,7 @@ import type { ISelectBoxOption } from "@/components/ui/select-group";
  * Returns translated loan purposes as ISelectBoxOption array
  */
 export const useLoanPurposes = (): ISelectBoxOption[] => {
-  const t = useTranslations("common.loanPurposes");
+  const t = useTranslations("loanPurposes");
 
   const purposes = [
     {

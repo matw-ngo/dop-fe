@@ -22,7 +22,8 @@ const DEFAULT_LOCALE = "vi";
 
 // Cache for loaded translations
 const translationCache = new Map<string, any>();
-const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+// const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+const CACHE_TTL = 0;
 
 function getFromCache(key: string): any | null {
   const entry = translationCache.get(key);
@@ -136,10 +137,51 @@ async function loadCommon(locale: string): Promise<any> {
   for (const file of commonFiles) {
     const content = await loadNamespaceFile(locale, `common/${file}`);
     const fileName = file.replace(".json", "");
-    common[fileName] = content;
+
+    // For loan-purposes and phone-validation, flatten the structure
+    // Instead of common["loan-purposes"] = { "loanPurposes": {...} }
+    // We want common["loanPurposes"] = {...}
+    if (fileName === "loan-purposes" && content.loanPurposes) {
+      common.loanPurposes = content.loanPurposes;
+      if (content.loanPurposeDescriptions) {
+        common.loanPurposeDescriptions = content.loanPurposeDescriptions;
+      }
+      if (content.defaultPurpose) {
+        common.defaultPurpose = content.defaultPurpose;
+      }
+      if (content.defaultDescription) {
+        common.defaultDescription = content.defaultDescription;
+      }
+    } else if (fileName === "phone-validation" && content.phoneValidation) {
+      common.phoneValidation = content.phoneValidation;
+    } else {
+      // Default behavior for other files
+      common[fileName] = content;
+    }
   }
 
   return common;
+}
+
+/**
+ * Load all components translations for a locale
+ */
+async function loadComponents(locale: string): Promise<any> {
+  const componentsDir = path.join(MESSAGES_DIR, locale, "components");
+  if (!fs.existsSync(componentsDir)) return {};
+
+  const components: any = {};
+  const componentFiles = fs
+    .readdirSync(componentsDir)
+    .filter((f) => f.endsWith(".json"));
+
+  for (const file of componentFiles) {
+    const content = await loadNamespaceFile(locale, `components/${file}`);
+    const fileName = file.replace(".json", "");
+    components[fileName] = content;
+  }
+
+  return components;
 }
 
 /**
@@ -150,17 +192,20 @@ const loadAllTranslations = cache(async (locale: string) => {
   const features = await loadFeatures(locale);
   const pages = await loadPages(locale);
   const common = await loadCommon(locale);
+  const components = await loadComponents(locale);
 
   // If we have split files, return them with proper structure
   if (
     Object.keys(features).length > 0 ||
     Object.keys(pages).length > 0 ||
-    Object.keys(common).length > 0
+    Object.keys(common).length > 0 ||
+    Object.keys(components).length > 0
   ) {
     // Create a merged structure for next-intl
     const merged: any = {
       ...common,
       pages,
+      components,
 
       // Properly nest features
       features: Object.entries(features).reduce(
@@ -181,11 +226,96 @@ const loadAllTranslations = cache(async (locale: string) => {
 
     // Log what we loaded for debugging
     if (process.env.NODE_ENV === "development") {
+      // Prepare feature details with sample keys
+      const featureDetails = Object.entries(features).map(
+        ([featureName, files]) => {
+          const typedFiles = files as Record<string, any>;
+          const fileNames = Object.keys(typedFiles);
+          const sampleKeys: string[] = [];
+
+          fileNames.forEach((fileName) => {
+            const keys = Object.keys(typedFiles[fileName] || {});
+            if (keys.length > 0) {
+              sampleKeys.push(
+                `${fileName}: ${keys.slice(0, 3).join(", ")}${keys.length > 3 ? "..." : ""}`,
+              );
+            }
+          });
+
+          return {
+            name: featureName,
+            files: fileNames,
+            sampleKeys: sampleKeys.length > 0 ? sampleKeys : ["No keys"],
+          };
+        },
+      );
+
+      // Prepare page details with sample keys
+      const pageDetails = Object.entries(pages).map(([pageName, content]) => {
+        const keys = Object.keys(content || {});
+        return {
+          name: pageName,
+          sampleKeys: keys.length > 0 ? keys.slice(0, 5).join(", ") : "No keys",
+        };
+      });
+
+      // Prepare common details with sample keys
+      const commonDetails = Object.entries(common).map(
+        ([commonName, content]) => {
+          const keys = Object.keys(content || {});
+          return {
+            name: commonName,
+            sampleKeys:
+              keys.length > 0 ? keys.slice(0, 5).join(", ") : "No keys",
+          };
+        },
+      );
+
+      // Prepare components details with sample keys
+      const componentsDetails = Object.entries(components).map(
+        ([componentName, content]) => {
+          const keys = Object.keys(content || {});
+          return {
+            name: componentName,
+            sampleKeys:
+              keys.length > 0 ? keys.slice(0, 5).join(", ") : "No keys",
+          };
+        },
+      );
+
       console.log(`📚 Loaded ${locale} translations:`, {
-        features: Object.keys(features).length,
-        pages: Object.keys(pages).length,
-        common: Object.keys(common).length,
-        totalKeys: Object.keys(merged).length,
+        summary: {
+          features: Object.keys(features).length,
+          pages: Object.keys(pages).length,
+          common: Object.keys(common).length,
+          components: Object.keys(components).length,
+          totalKeys: Object.keys(merged).length,
+        },
+        features: featureDetails,
+        pages: pageDetails,
+        common: commonDetails,
+        components: componentsDetails,
+      });
+
+      // Log the actual merged structure for debugging
+      const loanApp = merged.features?.["loan-application"];
+      console.log(`🔍 Merged structure for ${locale}:`, {
+        topLevelKeys: Object.keys(merged),
+        featuresKeys: Object.keys(merged.features || {}),
+        loanApplicationStructure: merged.features?.["loan-application"],
+        loanApplicationKeys: Object.keys(loanApp || {}),
+        hasLoanApplication: !!loanApp,
+        sampleLoanApplicationKeys: loanApp
+          ? {
+              title: loanApp.title,
+              expectedAmountLabel: loanApp.expectedAmount?.label,
+              loanPeriodLabel: loanApp.loanPeriod?.label,
+              loanPeriodPlaceholder: loanApp.loanPeriod?.placeholder,
+              otpContinue: loanApp.otp?.continue,
+            }
+          : null,
+        commonKeys: Object.keys(merged.common || {}),
+        componentsKeys: Object.keys(merged.components || {}),
       });
     }
 

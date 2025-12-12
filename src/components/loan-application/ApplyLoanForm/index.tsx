@@ -16,7 +16,38 @@ import {
 import { ALLOWED_TELCOS, phoneValidation } from "@/lib/utils/phone-validation";
 
 const ApplyLoanForm = () => {
-  const t = useTranslations("features.loan-application.page");
+  const t = useTranslations("features.loan-application");
+
+  // Debug: Check if translations are loaded
+  if (process.env.NODE_ENV === "development") {
+    // Get the raw function to test if keys exist
+    const testKey = (key: string) => {
+      try {
+        const value = t(key);
+        return value;
+      } catch (e) {
+        return `[KEY NOT FOUND: ${key}]`;
+      }
+    };
+
+    console.log("🔍 Translation namespace:", "features.loan-application");
+    console.log("🔍 Testing individual keys:", {
+      title: testKey("title"),
+      expectedAmountLabel: testKey("expectedAmount.label"),
+      loanPeriodLabel: testKey("loanPeriod.label"),
+      loanPurposeLabel: testKey("loanPurpose.label"),
+      submitButton: testKey("submit.button"),
+      // Test some nested keys that should exist
+      errors: {
+        phoneRequired: testKey("errors.phoneRequired"),
+        amountRequired: testKey("errors.amountRequired"),
+      },
+      otp: {
+        title: testKey("otp.title"),
+        description: testKey("otp.description"),
+      },
+    });
+  }
   const loanPurposes = useLoanPurposes();
   const { getTelcoList } = usePhoneValidationMessages();
 

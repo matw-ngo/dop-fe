@@ -2,10 +2,17 @@
   "title": "Loan Application",
   "expectedAmount": {
     "label": "Expected Loan Amount",
-    "placeholder": "Enter amount"
+    "labelShort": "Loan Amount:",
+    "placeholder": "Enter amount",
+    "selectText": "Select loan amount",
+    "currency": "VND"
   },
   "loanPeriod": {
-    "label": "Loan Period"
+    "label": "Loan Period",
+    "labelShort": "Loan Period:",
+    "placeholder": "Select loan period",
+    "selectText": "Select loan period",
+    "unit": "months"
   },
   "loanPurpose": {
     "label": "Loan Purpose",
@@ -14,8 +21,10 @@
   "terms": {
     "text": "By clicking Submit, you agree to",
     "link": "Terms of Service",
-    "agree": "I agree",
-    "disagree": "I disagree"
+    "linkText": "Terms of Service",
+    "fullText": "To register and use services from Fin Zone, please read and agree to our {link}.",
+    "agree": "I agree and want to use the service.",
+    "disagree": "I do not agree with all or part of the Terms of Service."
   },
   "errors": {
     "phoneRequired": "Phone number is required",
@@ -32,7 +41,8 @@
   "otp": {
     "title": "Phone Verification",
     "description": "Please enter your phone number to continue",
-    "placeholder": "Phone number"
+    "placeholder": "Phone number",
+    "continue": "Continue"
   },
   "messages": {
     "agreeRequired": "Please agree to the terms to continue",

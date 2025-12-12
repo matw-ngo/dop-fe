@@ -1,6 +1,8 @@
 {
   "phoneValidation": {
     "invalid": "Số điện thoại không hợp lệ. Vui lòng nhập 10-11 số.",
-    "telcoNotSupported": "Nhà mạng {telco} không được hỗ trợ. Vui lòng sử dụng số điện thoại của Viettel, Mobifone, hoặc Vinaphone."
+    "telcoNotSupported": "Nhà mạng {telco} không được hỗ trợ. Vui lòng sử dụng số điện thoại của Viettel, Mobifone, hoặc Vinaphone.",
+    "required": "Số điện thoại không được để trống",
+    "format": "Số điện thoại không hợp lệ"
   }
 }
