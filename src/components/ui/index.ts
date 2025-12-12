@@ -217,8 +217,7 @@ export {
   TooltipTrigger,
 } from "./tooltip";
 
-// Re-export commonly used types
-export type { IModalProps } from "./modal";
+export { OtpForm } from "./otp-form";
 
 export type {
   ISelectBoxOption,

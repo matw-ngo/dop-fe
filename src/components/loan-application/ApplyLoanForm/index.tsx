@@ -1,24 +1,13 @@
 import React, { useState } from "react";
 import type { ISelectBoxOption } from "@/components/ui/select-group";
-import { Modal, SelectGroup, TextInput, Slider, Button } from "@/components/ui";
-
-const OtpForm = ({ size }: any) => (
-  <div className="p-4 text-center font-['Lexend_Deca']">
-    <p className="mb-4 text-sm font-normal leading-6">
-      Vui lòng nhập mã OTP đã được gửi đến điện thoại của bạn
-    </p>
-    <div className="flex justify-center gap-2">
-      {Array.from({ length: size }).map((_, index) => (
-        <input
-          key={index}
-          type="text"
-          maxLength={1}
-          className="w-12 h-12 text-center border border-[#bfd1cc] rounded-md focus:outline-none focus:ring-2 focus:ring-[#017848]"
-        />
-      ))}
-    </div>
-  </div>
-);
+import {
+  Modal,
+  SelectGroup,
+  TextInput,
+  Slider,
+  Button,
+  OtpForm,
+} from "@/components/ui";
 
 const eventTracking = (eventType: string, data: any) => {
   console.log("Event tracked:", eventType, data);
@@ -96,6 +85,21 @@ const ApplyLoanForm = () => {
   const [agreeStatus, setAgreeStatus] = useState<"0" | "1" | "">("");
   const [formId, setFormId] = useState("");
 
+  // OTP-related state
+  const [otpStatus, setOtpStatus] = React.useState<
+    | "waiting"
+    | "success"
+    | "failed"
+    | "submitting"
+    | "expired"
+    | "force_refresh"
+  >("waiting");
+  const [timeRemaining, setTimeRemaining] = React.useState(300);
+  const [otpCount, setOtpCount] = React.useState(0);
+  const [otpAttempts, setOtpAttempts] = React.useState(0);
+  const [otpType, setOtpType] = React.useState<1 | 2>(2); // Default to SMS
+  const [telcoName, setTelcoName] = React.useState("Viettel");
+
   const [userData, setUserData] = useState({
     expected_amount: 0,
     loan_period: 0,
@@ -151,9 +155,87 @@ const ApplyLoanForm = () => {
     setFormId(uuidv4());
   }, []);
 
+  // Countdown timer effect for OTP
+  React.useEffect(() => {
+    if (timeRemaining > 0 && otpStatus === "waiting") {
+      const timer = setTimeout(() => {
+        setTimeRemaining(timeRemaining - 1);
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [timeRemaining, otpStatus]);
+
   const onSubmitFinal = () => {
     if (validatePhoneNum()) {
       console.log("Form submitted:", { userData, formId });
+      // Show OTP modal after phone validation
+      setShowPhoneModal(false);
+      setShowOTPModal(true);
+      // Reset OTP state and start countdown
+      setOtpStatus("waiting");
+      setTimeRemaining(300);
+      setOtpCount(0);
+      setOtpAttempts(0);
+    }
+  };
+
+  // OTP handlers
+  const handleOtpSubmit = async (otp: string) => {
+    console.log("Submitting OTP:", otp);
+    setOtpStatus("submitting");
+
+    // Simulate API call
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+
+    // Simulate validation - replace with actual API call
+    if (otp === "1234") {
+      // For testing, use 1234 as valid OTP
+      setOtpStatus("success");
+      // Here you would proceed to the next step
+      console.log("OTP verified successfully");
+    } else {
+      setOtpStatus("failed");
+      setOtpAttempts((prev) => prev + 1);
+
+      // Check if max attempts reached
+      if (otpAttempts + 1 >= 5) {
+        setOtpStatus("force_refresh");
+      }
+    }
+  };
+
+  const handleOtpResend = () => {
+    console.log("Resending OTP to:", userData.phone_number);
+    setOtpCount((prev) => prev + 1);
+    setTimeRemaining(300);
+    setOtpStatus("waiting");
+    setOtpAttempts(0);
+
+    // Determine telco from phone number
+    const phone = userData.phone_number;
+    if (phone.startsWith("09") || phone.startsWith("03")) {
+      setTelcoName("Viettel");
+    } else if (phone.startsWith("07")) {
+      setTelcoName("Mobifone");
+    } else if (phone.startsWith("08") || phone.startsWith("05")) {
+      setTelcoName("Vinaphone");
+    } else {
+      setTelcoName("Viettel"); // Default
+    }
+
+    // API call to resend OTP would go here
+    console.log(`Resending ${otpType === 1 ? "call" : "SMS"} OTP to ${phone}`);
+  };
+
+  const handleOtpExpired = () => {
+    setOtpStatus("expired");
+  };
+
+  const handleOtpInput = (otp: string) => {
+    console.log("Current OTP:", otp);
+    // Auto-submit when OTP is complete
+    if (otp.length === 4 && otpStatus === "waiting") {
+      handleOtpSubmit(otp);
     }
   };
 
@@ -421,7 +503,23 @@ const ApplyLoanForm = () => {
         }}
         size="md"
       >
-        <OtpForm size={4} />
+        <OtpForm
+          size={4}
+          otpType={otpType}
+          phoneNumber={userData.phone_number}
+          telcoName={telcoName}
+          otpStatus={otpStatus}
+          timeRemaining={timeRemaining}
+          otpCount={otpCount}
+          otpAttempts={otpAttempts}
+          maxRefresh={3}
+          maxAttempts={5}
+          isSubmitting={otpStatus === "submitting"}
+          onSubmit={handleOtpSubmit}
+          onResend={handleOtpResend}
+          onInput={handleOtpInput}
+          onExpired={handleOtpExpired}
+        />
       </Modal>
     </div>
   );
