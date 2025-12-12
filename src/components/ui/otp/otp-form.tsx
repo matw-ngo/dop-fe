@@ -63,7 +63,7 @@ export const OtpForm: React.FC<OtpFormProps> = ({
   // REFS
   // ============================================================================
 
-  const otpInputRefs = useRef<React.RefObject<HTMLInputElement>[]>(
+  const otpInputRefs = useRef<React.RefObject<HTMLInputElement | null>[]>(
     Array.from({ length: size }, () => React.createRef()),
   );
 

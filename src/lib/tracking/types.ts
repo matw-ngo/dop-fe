@@ -26,6 +26,14 @@ export enum EventType {
   TOOL_SALARY_SELECT_REGION = "tool_salary_select_region",
   TOOL_SALARY_CALCULATE = "tool_salary_calculate",
 
+  // Loan application events
+  LENDING_PAGE_VIEW = "lending_page_view",
+  LENDING_PAGE_INPUT_EXPECTED_AMOUNT = "lending_page_input_expected_amount",
+  LENDING_PAGE_INPUT_PURPOSE = "lending_page_input_purpose",
+  LENDING_PAGE_INPUT_PHONE_NUMBER = "lending_page_input_phone_number",
+  LENDING_PAGE_INPUT_PHONE_NUMBER_VALID = "lending_page_input_phone_number_valid",
+  LENDING_PAGE_FORM_SUBMIT = "lending_page_form_submit",
+
   // Generic events
   PAGE_VIEW = "page_view",
   FILTER_CHANGE = "filter_change",

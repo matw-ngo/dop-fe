@@ -281,3 +281,46 @@ export const trackGeneric = {
     await trackEvent("form_field_change", { fieldName, hasValue: !!value });
   },
 };
+
+/**
+ * Track loan application events
+ */
+export const trackLoanApplication = {
+  pageView: async () => {
+    await trackEvent("lending_page_view");
+  },
+
+  inputExpectedAmount: async (amount: number) => {
+    await trackEvent("lending_page_input_expected_amount", {
+      amountRange: getAmountRange(amount),
+    });
+  },
+
+  inputPurpose: async (purpose: string) => {
+    await trackEvent("lending_page_input_purpose", { purpose });
+  },
+
+  inputPhoneNumber: async (phoneNumber: string) => {
+    await trackEvent("lending_page_input_phone_number", {
+      hasPhone: !!phoneNumber,
+    });
+  },
+
+  phoneNumberValid: async (phoneNumber: string, telco: string) => {
+    await trackEvent("lending_page_input_phone_number_valid", {
+      telco,
+    });
+  },
+
+  formSubmit: async (data: {
+    amount: number;
+    purpose: string;
+    phoneNumber: string;
+  }) => {
+    await trackEvent("lending_page_form_submit", {
+      amountRange: getAmountRange(data.amount),
+      purpose: data.purpose,
+      telco: data.phoneNumber,
+    });
+  },
+};

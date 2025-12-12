@@ -217,7 +217,8 @@ export {
   TooltipTrigger,
 } from "./tooltip";
 
-export { OtpForm } from "./otp-form";
+// OTP Components
+export * from "./otp";
 
 export type {
   ISelectBoxOption,
@@ -283,3 +284,4 @@ export * from "./toaster";
 export * from "./toggle";
 export * from "./toggle-group";
 export * from "./tooltip";
+export * from "./otp";

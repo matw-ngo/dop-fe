@@ -31,3 +31,11 @@ export {
   NUMERIC_CONSTANTS,
   CURRENCY,
 } from "./tools";
+
+// Loan purposes
+export {
+  LOAN_PURPOSES,
+  LOAN_PURPOSE_DESCRIPTIONS,
+  getLoanPurposeLabel,
+  getLoanPurposeDescription,
+} from "./loan-purposes";
