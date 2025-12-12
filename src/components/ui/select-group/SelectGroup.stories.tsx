@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import SelectGroup, { ISelectBoxOption } from "./index";
+import { SelectGroup, ISelectBoxOption } from "./index";
 import React from "react";
 
 const meta: Meta<typeof SelectGroup> = {
-  title: "UI/SelectGroup",
+  title: "UI/SelectGroup/Legacy",
   component: SelectGroup,
   parameters: {
     layout: "centered",
@@ -158,7 +158,8 @@ export const Disabled: Story = {
       <div className="space-y-2">
         <Story />
         <p className="text-xs text-gray-500 mt-2">
-          Note: This component doesn't have built-in disabled prop. Use CSS classes to simulate.
+          Note: This component doesn't have built-in disabled prop. Use CSS
+          classes to simulate.
         </p>
       </div>
     ),

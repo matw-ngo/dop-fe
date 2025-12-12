@@ -27,11 +27,28 @@ export { default as BreadcrumbNav } from "./breadcrumb-nav";
 export { Button } from "./button";
 export { ButtonGroup } from "./button-group";
 export { Calendar } from "./calendar";
-export { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./card";
-export { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "./carousel";
+export {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "./card";
+export {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "./carousel";
 export * from "./chart";
 export { Checkbox } from "./checkbox";
-export { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./collapsible";
+export {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "./collapsible";
 export {
   Command,
   CommandDialog,
@@ -67,7 +84,15 @@ export {
   DialogTrigger,
 } from "./dialog";
 export * from "./data-table";
-export { Drawer, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from "./drawer";
+export {
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "./drawer";
 export {
   DropdownMenu,
   DropdownMenuContent,
@@ -87,7 +112,15 @@ export {
 export { Empty } from "./empty";
 export { ErrorBoundary } from "./error-boundary";
 export { Field } from "./field";
-export { Form, FormItem, FormLabel, FormControl, FormDescription, FormMessage, FormField } from "./form";
+export {
+  Form,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormDescription,
+  FormMessage,
+  FormField,
+} from "./form";
 export { HoverCard, HoverCardContent, HoverCardTrigger } from "./hover-card";
 export { Input } from "./input";
 export { InputGroup } from "./input-group";
@@ -110,16 +143,7 @@ export {
   MenubarSubTrigger,
   MenubarTrigger,
 } from "./menubar";
-export {
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  ModalTitle,
-  ModalDescription,
-  ModalTrigger,
-  ModalClose,
-} from "./modal";
+export { default as Modal } from "./modal";
 export {
   NavigationMenu,
   NavigationMenuContent,
@@ -128,16 +152,41 @@ export {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "./navigation-menu";
-export { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "./pagination";
+export {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "./pagination";
 export { Popover, PopoverContent, PopoverTrigger } from "./popover";
 export { Progress } from "./progress";
 export { RadioGroup } from "./radio-group";
-export { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "./resizable";
+export {
+  ResizablePanelGroup,
+  ResizablePanel,
+  ResizableHandle,
+} from "./resizable";
 export { ScrollArea } from "./scroll-area";
-export { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./select";
+export {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./select";
 export { SelectGroup } from "./select-group";
 export { Separator } from "./separator";
-export { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "./sheet";
+export {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "./sheet";
 export { Sidebar } from "./sidebar";
 export { Skeleton } from "./skeleton";
 export { CustomSlider as Slider } from "./slider";
@@ -161,15 +210,15 @@ export { Toast, ToastProvider, ToastViewport } from "./toast";
 export { Toaster } from "./toaster";
 export { Toggle } from "./toggle";
 export { ToggleGroup, ToggleGroupItem } from "./toggle-group";
-export { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./tooltip";
+export {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "./tooltip";
 
 // Re-export commonly used types
-export type {
-  ModalProps,
-  ModalHeaderProps,
-  ModalBodyProps,
-  ModalFooterProps,
-} from "./modal";
+export type { IModalProps } from "./modal";
 
 export type {
   ISelectBoxOption,
@@ -209,7 +258,6 @@ export * from "./item";
 export * from "./kbd";
 export * from "./label";
 export * from "./menubar";
-export * from "./modal";
 export * from "./navigation-menu";
 export * from "./pagination";
 export * from "./popover";
