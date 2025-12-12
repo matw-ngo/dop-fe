@@ -1,5 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import { Button } from "../button";
+import { useOtpFormTranslations } from "@/hooks/use-otp-form-translations";
+import { useLocalizedOtpTypes } from "@/hooks/use-localized-telcos";
 
 // ============================================================================
 // TYPE DEFINITIONS
@@ -60,6 +62,13 @@ export const OtpForm: React.FC<OtpFormProps> = ({
   className = "",
 }) => {
   // ============================================================================
+  // HOOKS
+  // ============================================================================
+
+  const t = useOtpFormTranslations();
+  const otpTypes = useLocalizedOtpTypes();
+
+  // ============================================================================
   // REFS
   // ============================================================================
 
@@ -71,7 +80,7 @@ export const OtpForm: React.FC<OtpFormProps> = ({
   // COMPUTED VALUES
   // ============================================================================
 
-  const otpMessage = otpType === 1 ? "cuộc gọi" : "tin nhắn";
+  const otpMessage = otpType === 1 ? otpTypes.call : otpTypes.sms;
 
   const isShowOtpInput = [
     "waiting",
@@ -245,33 +254,28 @@ export const OtpForm: React.FC<OtpFormProps> = ({
     <div className={`text-center font-sans p-[13px] ${className}`}>
       {/* Title */}
       <h2 className="text-[#073126] text-center text-2xl font-bold leading-8 mb-3">
-        Nhập mã xác thực
+        {t.title}
       </h2>
 
       {/* Caption for Call OTP */}
       {isShowOtpInput && otpType === 1 && (
         <p className="text-center max-w-[430px] mx-auto mb-4">
-          Bạn vui lòng nhập mã xác nhận từ {otpMessage} của Fin Zone tới số điện
-          thoại <strong>{phoneNumber}</strong>
+          {t.getCallOtpText(phoneNumber)}
         </p>
       )}
 
       {/* Caption for SMS OTP with consent */}
       {isShowOtpInput && otpType === 2 && (
         <p className="text-center max-w-full mx-auto mb-4">
-          Bằng việc cung cấp OTP này, tôi đồng ý ủy quyền cho Fin Zone yêu cầu{" "}
-          {telcoName} và Công ty Cổ phần Công nghệ Data Nest xử lý dữ liệu của
-          tôi tại {telcoName} và chia sẻ kết quả xử lý dữ liệu đến các đối tác
-          của Fin Zone theo danh mục tại{" "}
+          {t.getSMSCaption(telcoName)}{" "}
           <a
             className="text-[#0D40B6] underline"
             href="/dieu-khoan-su-dung"
             target="_blank"
             rel="noopener noreferrer"
           >
-            Điều khoản sử dụng dịch vụ
-          </a>{" "}
-          nhằm mục đích xác định khoản vay phù hợp và mở hồ sơ vay.
+            {t.termsLinkText}
+          </a>
         </p>
       )}
 
@@ -298,7 +302,7 @@ export const OtpForm: React.FC<OtpFormProps> = ({
                 onFocus={handleFocus}
                 ref={otpInputRefs.current[index]}
                 disabled={isSubmitting}
-                aria-label={`OTP digit ${index + 1}`}
+                aria-label={t.getInputPlaceholder(index)}
               />
             ))}
           </div>
@@ -307,7 +311,7 @@ export const OtpForm: React.FC<OtpFormProps> = ({
           {otpStatus === "failed" && (
             <div className="mt-2">
               <p className="text-center text-red-700 text-sm font-medium">
-                Mã OTP không hợp lệ
+                {t.errorMessage}
               </p>
             </div>
           )}
@@ -316,7 +320,7 @@ export const OtpForm: React.FC<OtpFormProps> = ({
           {otpStatus === "success" && (
             <div className="mt-4">
               <p className="text-center text-green-700 text-sm font-semibold">
-                Xác thực OTP thành công!
+                {t.successMessage}
               </p>
             </div>
           )}
@@ -327,7 +331,7 @@ export const OtpForm: React.FC<OtpFormProps> = ({
               {/* Resend OTP Link */}
               {showResendLink && (
                 <p className="text-[#073126] text-center text-sm font-normal leading-5">
-                  Bạn chưa nhận được mã OTP?{" "}
+                  {t.resendText}{" "}
                   {isSubmitting ? (
                     <span className="inline-block animate-spin">⏳</span>
                   ) : (
@@ -336,7 +340,7 @@ export const OtpForm: React.FC<OtpFormProps> = ({
                       className="text-[#017848] font-semibold underline hover:text-[#016039] cursor-pointer"
                       onClick={handleResend}
                     >
-                      Gửi Lại Mã OTP
+                      {t.resendButton}
                     </button>
                   )}
                 </p>
@@ -345,7 +349,7 @@ export const OtpForm: React.FC<OtpFormProps> = ({
               {/* Countdown Timer */}
               {timeRemaining > 0 && (
                 <div className="text-sm flex gap-1 items-center justify-center text-[#073126]">
-                  <span>Thời gian còn lại</span>
+                  <span>{t.timeRemaining}</span>
                   <strong className="text-[#017848] font-semibold">
                     {formatTime(timeRemaining)}
                   </strong>
@@ -359,10 +363,7 @@ export const OtpForm: React.FC<OtpFormProps> = ({
       {/* OTP Expired State */}
       {otpStatus === "expired" && (
         <div className="mt-4">
-          <p className="text-red-700 text-sm mb-3">
-            OTP đã hết thời hạn hiệu lực. Vui lòng kiểm tra lại số điện thoại
-            hoặc yêu cầu gửi lại mã mới.
-          </p>
+          <p className="text-red-700 text-sm mb-3">{t.expiredMessage}</p>
           {isSubmitting ? (
             <span className="inline-block animate-spin">⏳</span>
           ) : (
@@ -371,7 +372,7 @@ export const OtpForm: React.FC<OtpFormProps> = ({
               className="text-[#017848] font-semibold hover:text-[#016039] cursor-pointer"
               onClick={handleResend}
             >
-              Yêu cầu gửi lại mã
+              {t.resendButton}
             </button>
           )}
         </div>
@@ -380,16 +381,13 @@ export const OtpForm: React.FC<OtpFormProps> = ({
       {/* Force Refresh OTP State */}
       {otpStatus === "force_refresh" && (
         <div className="mt-4">
-          <p className="text-red-700 text-sm mb-3">
-            Bạn đã vượt quá số lần nhập sai OTP. Vui lòng kiểm tra lại thông tin
-            và thử lại
-          </p>
+          <p className="text-red-700 text-sm mb-3">{t.forceRefreshMessage}</p>
           <button
             type="button"
             className="text-[#017848] font-semibold hover:text-[#016039] cursor-pointer"
             onClick={handleResend}
           >
-            Yêu cầu gửi lại mã
+            {t.resendButton}
           </button>
         </div>
       )}
@@ -408,7 +406,7 @@ export const OtpForm: React.FC<OtpFormProps> = ({
             {isSubmitting ? (
               <span className="inline-block animate-spin">⏳</span>
             ) : (
-              "Tiếp tục"
+              t.submitButtonText
             )}
           </Button>
         </div>

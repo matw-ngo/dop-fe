@@ -1,0 +1,31 @@
+{
+  "form": {
+    "title": "Nhập mã xác thực",
+    "callOtpText": "Bạn vui lòng nhập mã xác nhận từ {otpType} của {companyName} tới số điện thoại",
+    "smsOtpConsent": "Bằng việc cung cấp OTP này, tôi đồng ý ủy quyền cho {companyName} yêu cầu {telcoName} và {dataProcessor} xử lý dữ liệu của tôi tại {telcoName} và chia sẻ kết quả xử lý dữ liệu đến các đối tác của {companyName} theo danh mục tại",
+    "termsLinkText": "Điều khoản sử dụng dịch vụ",
+    "smsOtpPurpose": "nhằm mục đích xác định khoản vay phù hợp và mở hồ sơ vay.",
+    "inputPlaceholder": "Số OTP thứ {index}",
+    "errorMessage": "Mã OTP không hợp lệ",
+    "successMessage": "Xác thực OTP thành công!",
+    "resendText": "Bạn chưa nhận được mã OTP?",
+    "resendButton": "Gửi Lại Mã OTP",
+    "timeRemaining": "Thời gian còn lại",
+    "expiredMessage": "OTP đã hết thời hạn hiệu lực. Vui lòng kiểm tra lại số điện thoại hoặc yêu cầu gửi lại mã mới.",
+    "forceRefreshMessage": "Bạn đã vượt quá số lần nhập sai OTP. Vui lòng kiểm tra lại thông tin và thử lại",
+    "submitButtonText": "Tiếp tục"
+  },
+  "companies": {
+    "finzone": "Fin Zone",
+    "dataNest": "Công ty Cổ phần Công nghệ Data Nest"
+  },
+  "otpTypes": {
+    "call": "cuộc gọi",
+    "sms": "tin nhắn"
+  },
+  "telcos": {
+    "viettel": "Viettel",
+    "mobifone": "Mobifone",
+    "vinaphone": "Vinaphone"
+  }
+}

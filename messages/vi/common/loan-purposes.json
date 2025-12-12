@@ -1,0 +1,24 @@
+{
+  "loanPurposes": {
+    "cd_loan": "Vay mua đồ công nghệ",
+    "consumer_loan": "Vay tiêu dùng hàng ngày",
+    "student_loan": "Vay học tập/học phí",
+    "travel_loan": "Vay du lịch",
+    "improvement_loan": "Vay sửa chữa nhà cửa",
+    "motor_loan": "Vay mua xe",
+    "healthcare_loan": "Vay làm đẹp và chăm sóc sức khỏe",
+    "other_loan": "Mục đích khác"
+  },
+  "loanPurposeDescriptions": {
+    "cd_loan": "Mua sắm thiết bị điện tử, công nghệ",
+    "consumer_loan": "Chi tiêu sinh hoạt, mua sắm hàng ngày",
+    "student_loan": "Học phí, khóa học, đào tạo",
+    "travel_loan": "Du lịch trong và ngoài nước",
+    "improvement_loan": "Sửa chữa, nâng cấp nhà cửa",
+    "motor_loan": "Mua xe máy, ô tô",
+    "healthcare_loan": "Chăm sóc sức khỏe, làm đẹp",
+    "other_loan": "Các mục đích khác"
+  },
+  "defaultPurpose": "Mục đích khác",
+  "defaultDescription": "Mục đích vay vốn"
+}

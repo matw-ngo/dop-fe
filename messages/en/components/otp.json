@@ -1,0 +1,31 @@
+{
+  "form": {
+    "title": "Enter verification code",
+    "callOtpText": "Please enter the verification code from the {otpType} of {companyName} to phone number",
+    "smsOtpConsent": "By providing this OTP, I authorize {companyName} to request {telcoName} and {dataProcessor} to process my data at {telcoName} and share the processing results to {companyName}'s partners according to the categories in the",
+    "termsLinkText": "Service Terms of Use",
+    "smsOtpPurpose": "for the purpose of determining suitable loans and opening loan files.",
+    "inputPlaceholder": "OTP digit {index}",
+    "errorMessage": "Invalid OTP code",
+    "successMessage": "OTP verification successful!",
+    "resendText": "Didn't receive the OTP code?",
+    "resendButton": "Resend OTP",
+    "timeRemaining": "Time remaining",
+    "expiredMessage": "OTP has expired. Please check your phone number or request a new code.",
+    "forceRefreshMessage": "You have exceeded the number of incorrect OTP entries. Please check your information and try again",
+    "submitButtonText": "Continue"
+  },
+  "companies": {
+    "finzone": "Fin Zone",
+    "dataNest": "Data Nest Technology Joint Stock Company"
+  },
+  "otpTypes": {
+    "call": "call",
+    "sms": "SMS"
+  },
+  "telcos": {
+    "viettel": "Viettel",
+    "mobifone": "Mobifone",
+    "vinaphone": "Vinaphone"
+  }
+}

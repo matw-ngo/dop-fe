@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 import { trackLoanApplication } from "@/lib/tracking/events";
-import { LOAN_PURPOSES } from "@/lib/constants";
+import { useLoanPurposes } from "@/hooks/use-loan-purposes";
+import { usePhoneValidationMessages } from "@/hooks/use-phone-validation-messages";
 
 import {
   Modal,
@@ -14,6 +16,10 @@ import {
 import { ALLOWED_TELCOS, phoneValidation } from "@/lib/utils/phone-validation";
 
 const ApplyLoanForm = () => {
+  const t = useTranslations("features.loan-application.page");
+  const loanPurposes = useLoanPurposes();
+  const { getTelcoList } = usePhoneValidationMessages();
+
   const [showPhoneModal, setShowPhoneModal] = React.useState(false);
   const [showOTPModal, setShowOTPModal] = React.useState(false);
   const [agreeStatus, setAgreeStatus] = useState<"0" | "1" | "">("");
@@ -63,7 +69,7 @@ const ApplyLoanForm = () => {
       if (agreeStatus === "1") {
         setShowPhoneModal(true);
       } else {
-        toast.info("Vui lòng đồng ý với điều khoản sử dụng để tiếp tục.");
+        toast.info(t("messages.agreeRequired"));
       }
     } else {
       toast.info(rs.msg);
@@ -87,7 +93,7 @@ const ApplyLoanForm = () => {
   const handleOtpSuccess = (otp: string) => {
     console.log("OTP verified successfully:", otp);
     // Here you can proceed to the next step after successful OTP verification
-    toast.info("Xác thực OTP thành công!");
+    toast.info(t("messages.otpSuccess"));
     setShowOTPModal(false);
   };
 
@@ -98,29 +104,26 @@ const ApplyLoanForm = () => {
 
   const handleOtpExpired = () => {
     console.log("OTP expired");
-    toast.error("OTP đã hết hạn. Vui lòng yêu cầu mã mới.");
+    toast.error(t("messages.otpExpired"));
   };
 
   const validatePhoneNum = () => {
     let value = String(userData.phone_number || "");
     if (!value || !value.trim()) {
-      setUserLoanValidate(
-        "phone_number",
-        false,
-        "Số điện thoại không được để trống",
-      );
+      setUserLoanValidate("phone_number", false, t("errors.phoneRequired"));
       return 0;
     }
     let phoneVerify = phoneValidation(value);
     if (isNaN(parseInt(value)) || phoneVerify.valid == false) {
-      setUserLoanValidate("phone_number", false, "Số điện thoại  không hợp lệ");
+      setUserLoanValidate("phone_number", false, t("errors.phoneInvalid"));
       return 0;
     }
     if (!ALLOWED_TELCOS.includes(phoneVerify.telco)) {
+      const telcoList = getTelcoList();
       setUserLoanValidate(
         "phone_number",
         false,
-        `Chỉ hỗ trợ nhà mạng ${ALLOWED_TELCOS.join(", ")}`,
+        t("errors.telcoNotSupported", { telcos: telcoList }),
       );
       return 0;
     }
@@ -140,13 +143,13 @@ const ApplyLoanForm = () => {
     };
     if (!userData.expected_amount) {
       rs.valid = false;
-      rs.msg = "Vui lòng chọn khoản vay";
+      rs.msg = t("errors.amountRequired");
     } else if (!userData.loan_period) {
       rs.valid = false;
-      rs.msg = "Vui lòng chọn thời gian vay";
+      rs.msg = t("errors.periodRequired");
     } else if (!userData.loan_purpose || userData.loan_purpose === "-1") {
       rs.valid = false;
-      rs.msg = "Vui lòng chọn mục đích vay";
+      rs.msg = t("errors.purposeRequired");
     }
     return rs;
   };
@@ -169,17 +172,19 @@ const ApplyLoanForm = () => {
       {/* Số tiền vay field */}
       <div className="relative mb-[34px] rounded-lg border border-[#bfd1cc] bg-white p-4 pb-[9px]">
         <label className="text-xs font-normal leading-4 text-[#4d7e70]">
-          Số tiền vay:
+          {t("expectedAmount.label")}:
         </label>
         <p className="mt-0.5 mb-0.5 text-xl font-semibold leading-[30px]">
           {userData.expected_amount === 0 ? (
             <h4 className="font-medium text-sm leading-[30px] mb-0.5">
-              Chọn khoản vay
+              {t("expectedAmount.placeholder")}
             </h4>
           ) : (
             <>
               {userData.expected_amount}.000.000
-              <span className="text-sm leading-5 ml-1">đ</span>
+              <span className="text-sm leading-5 ml-1">
+                {t("expectedAmount.currency")}
+              </span>
             </>
           )}
         </p>
@@ -200,17 +205,19 @@ const ApplyLoanForm = () => {
       {/* Thời hạn vay field */}
       <div className="relative mb-[34px] rounded-lg border border-[#bfd1cc] bg-white p-4 pb-[9px]">
         <label className="text-xs font-normal leading-4 text-[#4d7e70]">
-          Thời hạn vay:
+          {t("loanPeriod.label")}:
         </label>
         <p className="mt-0.5 mb-0.5 text-xl font-semibold leading-[30px]">
           {userData.loan_period === 0 ? (
             <h4 className="font-medium text-sm leading-[30px] mb-0.5">
-              Chọn thời gian vay
+              {t("loanPeriod.placeholder")}
             </h4>
           ) : (
             <>
               {userData.loan_period}
-              <span className="text-sm leading-5 ml-1">tháng</span>
+              <span className="text-sm leading-5 ml-1">
+                {t("loanPeriod.unit")}
+              </span>
             </>
           )}
         </p>
@@ -230,25 +237,25 @@ const ApplyLoanForm = () => {
       {/* Mục đích vay field - Using new SelectGroup */}
       <div className="relative mb-0">
         <SelectGroup
-          label="Mục đích vay"
-          options={LOAN_PURPOSES}
+          label={t("loanPurpose.label")}
+          options={loanPurposes}
           value={userData.loan_purpose}
           onChange={onPurposeChange}
-          placeholder="- Chọn -"
+          placeholder={t("loanPurpose.placeholder")}
         />
       </div>
 
       {/* Term Agreement */}
       <div className="my-4 text-xs font-normal leading-5">
         <div className="text-[#073126]">
-          Để đăng kí và sử dụng dịch vụ từ Fin Zone, xin vui lòng đọc và đồng ý
-          với&nbsp;
+          {t("terms.text")}
+          &nbsp;
           <a
             href="/dieu-khoan-su-dung"
             target="_blank"
             className="text-[#017848] font-semibold"
           >
-            Điều khoản sử dụng dịch vụ
+            {t("terms.link")}
           </a>
           &nbsp;của chúng tôi.
         </div>
@@ -270,7 +277,7 @@ const ApplyLoanForm = () => {
               htmlFor="radio-agree"
               className="ml-2 font-['Lexend_Deca'] text-sm md:text-xs font-normal leading-5 text-[#017848]"
             >
-              Tôi đồng ý và muốn sử dụng dịch vụ.
+              {t("terms.agree")}
             </label>
           </div>
           <div className="flex items-center">
@@ -285,8 +292,7 @@ const ApplyLoanForm = () => {
               htmlFor="radio-disagree"
               className="ml-2 font-['Lexend_Deca'] text-sm md:text-xs font-normal leading-5 text-[#017848]"
             >
-              Tôi không đồng ý với toàn bộ hoặc một phần trong Điều khoản dịch
-              vụ.
+              {t("terms.disagree")}
             </label>
           </div>
         </div>
@@ -314,14 +320,14 @@ const ApplyLoanForm = () => {
       >
         <div className="font-['Lexend_Deca']">
           <p className="text-center text-2xl font-bold leading-8 mb-3">
-            Nhập số điện thoại
+            {t("otp.title")}
           </p>
           <p className="text-center text-sm font-normal leading-6 mb-4">
-            Nhập số điện thoại của bạn để tiếp tục tìm kiếm khoản vay
+            {t("otp.description")}
           </p>
           <div>
             <TextInput
-              placeholder="Số điện thoại"
+              placeholder={t("otp.placeholder")}
               value={userData.phone_number as string}
               onBlur={() => {
                 validatePhoneNum();
@@ -343,7 +349,7 @@ const ApplyLoanForm = () => {
               className="mx-auto block rounded-lg font-semibold md:text-sm w-full bg-primary"
               onClick={onSubmitFinal}
             >
-              Tiếp Tục
+              {t("otp.continue")}
             </Button>
           </div>
         </div>

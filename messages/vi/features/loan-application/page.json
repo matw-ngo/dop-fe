@@ -1,0 +1,42 @@
+{
+  "title": "Đăng ký vay vốn",
+  "expectedAmount": {
+    "label": "Số tiền vay mong muốn",
+    "placeholder": "Nhập số tiền"
+  },
+  "loanPeriod": {
+    "label": "Thời gian vay"
+  },
+  "loanPurpose": {
+    "label": "Mục đích vay",
+    "placeholder": "- Chọn -"
+  },
+  "terms": {
+    "text": "Bằng việc nhấn Gửi, bạn đồng ý với",
+    "link": "Điều khoản dịch vụ",
+    "agree": "Tôi đồng ý",
+    "disagree": "Tôi không đồng ý"
+  },
+  "errors": {
+    "phoneRequired": "Số điện thoại không được để trống",
+    "phoneInvalid": "Số điện thoại không hợp lệ",
+    "telcoNotSupported": "Chỉ hỗ trợ nhà mạng: {telcos}",
+    "amountRequired": "Vui lòng chọn khoản vay",
+    "periodRequired": "Vui lòng chọn thời gian vay",
+    "purposeRequired": "Vui lòng chọn mục đích vay"
+  },
+  "submit": {
+    "button": "Bắt đầu tìm kiếm khoản vay",
+    "processing": "Đang xử lý..."
+  },
+  "otp": {
+    "title": "Xác thực số điện thoại",
+    "description": "Vui lòng nhập số điện thoại để tiếp tục",
+    "placeholder": "Số điện thoại"
+  },
+  "messages": {
+    "agreeRequired": "Vui lòng đồng ý với điều khoản để tiếp tục",
+    "otpSuccess": "Xác thực OTP thành công!",
+    "otpExpired": "OTP đã hết hạn. Vui lòng yêu cầu mã mới."
+  }
+}

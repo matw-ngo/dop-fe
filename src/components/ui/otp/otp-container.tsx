@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { useTranslations } from "next-intl";
+import { useLocalizedTelcos } from "@/hooks/use-localized-telcos";
+import { getLocalizableTelcoByPhoneNumber } from "@/lib/telcos/localizable-telcos";
 import { OtpForm } from "./otp-form";
 
 // ============================================================================
@@ -26,17 +29,6 @@ export interface OtpContainerProps {
 // HELPER FUNCTIONS
 // ============================================================================
 
-const getTelcoName = (phoneNumber: string): string => {
-  if (phoneNumber.startsWith("09") || phoneNumber.startsWith("03")) {
-    return "Viettel";
-  } else if (phoneNumber.startsWith("07")) {
-    return "Mobifone";
-  } else if (phoneNumber.startsWith("08") || phoneNumber.startsWith("05")) {
-    return "Vinaphone";
-  }
-  return "Viettel"; // Default
-};
-
 // ============================================================================
 // COMPONENT
 // ============================================================================
@@ -53,6 +45,13 @@ export const OtpContainer: React.FC<OtpContainerProps> = ({
   className = "",
 }) => {
   // ============================================================================
+  // HOOKS
+  // ============================================================================
+
+  const t = useTranslations("components.otp.form");
+  const { getTelcoName } = useLocalizedTelcos();
+
+  // ============================================================================
   // STATE MANAGEMENT
   // ============================================================================
 
@@ -67,7 +66,14 @@ export const OtpContainer: React.FC<OtpContainerProps> = ({
   const [timeRemaining, setTimeRemaining] = useState(300); // 5 minutes
   const [otpCount, setOtpCount] = useState(0);
   const [otpAttempts, setOtpAttempts] = useState(0);
-  const [telcoName, setTelcoName] = useState(() => getTelcoName(phoneNumber));
+
+  // Get telco name from phone number using localizable telcos
+  const getInitialTelcoName = () => {
+    const telco = getLocalizableTelcoByPhoneNumber(phoneNumber);
+    return telco ? getTelcoName(telco.code) : "Viettel";
+  };
+
+  const [telcoName, setTelcoName] = useState(getInitialTelcoName);
 
   // ============================================================================
   // EFFECTS
@@ -85,8 +91,10 @@ export const OtpContainer: React.FC<OtpContainerProps> = ({
 
   // Update telco when phone number changes
   useEffect(() => {
-    setTelcoName(getTelcoName(phoneNumber));
-  }, [phoneNumber]);
+    const telco = getLocalizableTelcoByPhoneNumber(phoneNumber);
+    const newTelcoName = telco ? getTelcoName(telco.code) : "Viettel";
+    setTelcoName(newTelcoName);
+  }, [phoneNumber, getTelcoName]);
 
   // ============================================================================
   // OTP HANDLERS
@@ -114,18 +122,15 @@ export const OtpContainer: React.FC<OtpContainerProps> = ({
         // Check if max attempts reached
         if (newAttempts >= maxAttempts) {
           setOtpStatus("force_refresh");
-          onFailure?.(
-            "Bạn đã vượt quá số lần nhập sai. Vui lòng yêu cầu mã mới.",
-          );
+          onFailure?.(t("forceRefreshMessage"));
         } else {
-          onFailure?.(
-            `Mã OTP không hợp lệ. Còn ${maxAttempts - newAttempts} lần thử.`,
-          );
+          const attemptsLeft = maxAttempts - newAttempts;
+          onFailure?.(t("errorMessage") + ` Còn ${attemptsLeft} lần thử.`);
         }
       }
     } catch (error) {
       setOtpStatus("failed");
-      onFailure?.("Đã xảy ra lỗi. Vui lòng thử lại.");
+      onFailure?.(t("errorMessage") + ". " + t("genericError"));
     }
   };
 

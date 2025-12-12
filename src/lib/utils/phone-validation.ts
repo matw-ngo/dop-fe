@@ -1,4 +1,4 @@
-import { getTelcoByPhoneNumber } from "@/lib/telcos/vietnamese-telcos";
+import { getLocalizableTelcoByPhoneNumber } from "@/lib/telcos/localizable-telcos";
 
 /**
  * Phone validation result
@@ -6,15 +6,16 @@ import { getTelcoByPhoneNumber } from "@/lib/telcos/vietnamese-telcos";
 export interface PhoneValidationResult {
   valid: boolean;
   telco: string;
+  telcoCode: string;
   validNum: string;
   originalNumber: string;
   errorMessage?: string;
 }
 
 /**
- * Allowed telcos for loan application
+ * Allowed telcos for loan application (using codes)
  */
-export const ALLOWED_TELCOS = ["Viettel", "Mobifone", "Vinaphone"];
+export const ALLOWED_TELCOS = ["VIETTEL", "MOBIFONE", "VINAPHONE"];
 
 /**
  * Validate Vietnamese phone number for loan application
@@ -32,32 +33,35 @@ export const phoneValidation = (phone: string): PhoneValidationResult => {
     return {
       valid: false,
       telco: "",
+      telcoCode: "",
       validNum: "",
       originalNumber: phone,
-      errorMessage: "Số điện thoại không hợp lệ. Vui lòng nhập 10-11 số.",
+      errorMessage: "INVALID_PHONE",
     };
   }
 
   // Get telco information
-  const telcoInfo = getTelcoByPhoneNumber(cleanPhone);
-  const telcoName = telcoInfo?.name || "Viettel"; // Default to Viettel for backward compatibility
+  const telcoInfo = getLocalizableTelcoByPhoneNumber(cleanPhone);
+  const telcoCode = telcoInfo?.code || "VIETTEL"; // Default to Viettel for backward compatibility
 
   // Check if telco is allowed
-  const isTelcoAllowed = ALLOWED_TELCOS.includes(telcoName);
+  const isTelcoAllowed = ALLOWED_TELCOS.includes(telcoCode);
 
   if (!isTelcoAllowed) {
     return {
       valid: false,
-      telco: telcoName,
+      telco: telcoCode,
+      telcoCode: telcoCode,
       validNum: cleanPhone,
       originalNumber: phone,
-      errorMessage: `Nhà mạng ${telcoName} không được hỗ trợ. Vui lòng sử dụng số điện thoại của Viettel, Mobifone, hoặc Vinaphone.`,
+      errorMessage: "UNSUPPORTED_TELCO",
     };
   }
 
   return {
     valid: true,
-    telco: telcoName,
+    telco: telcoCode,
+    telcoCode: telcoCode,
     validNum: cleanPhone,
     originalNumber: phone,
   };

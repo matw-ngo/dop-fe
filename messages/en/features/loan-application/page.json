@@ -1,0 +1,42 @@
+{
+  "title": "Loan Application",
+  "expectedAmount": {
+    "label": "Expected Loan Amount",
+    "placeholder": "Enter amount"
+  },
+  "loanPeriod": {
+    "label": "Loan Period"
+  },
+  "loanPurpose": {
+    "label": "Loan Purpose",
+    "placeholder": "- Select -"
+  },
+  "terms": {
+    "text": "By clicking Submit, you agree to",
+    "link": "Terms of Service",
+    "agree": "I agree",
+    "disagree": "I disagree"
+  },
+  "errors": {
+    "phoneRequired": "Phone number is required",
+    "phoneInvalid": "Invalid phone number",
+    "telcoNotSupported": "Only supported telcos: {telcos}",
+    "amountRequired": "Please select loan amount",
+    "periodRequired": "Please select loan period",
+    "purposeRequired": "Please select loan purpose"
+  },
+  "submit": {
+    "button": "Start Loan Search",
+    "processing": "Processing..."
+  },
+  "otp": {
+    "title": "Phone Verification",
+    "description": "Please enter your phone number to continue",
+    "placeholder": "Phone number"
+  },
+  "messages": {
+    "agreeRequired": "Please agree to the terms to continue",
+    "otpSuccess": "OTP verification successful!",
+    "otpExpired": "OTP has expired. Please request a new code."
+  }
+}

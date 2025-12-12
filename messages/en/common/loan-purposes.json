@@ -1,0 +1,24 @@
+{
+  "loanPurposes": {
+    "cd_loan": "Technology Gadgets Loan",
+    "consumer_loan": "Daily Consumer Loan",
+    "student_loan": "Education Loan",
+    "travel_loan": "Travel Loan",
+    "improvement_loan": "Home Improvement Loan",
+    "motor_loan": "Vehicle Loan",
+    "healthcare_loan": "Healthcare & Beauty Loan",
+    "other_loan": "Other Purpose"
+  },
+  "loanPurposeDescriptions": {
+    "cd_loan": "Purchase electronic devices and technology",
+    "consumer_loan": "Daily living expenses and shopping",
+    "student_loan": "Tuition fees, courses, training",
+    "travel_loan": "Domestic and international travel",
+    "improvement_loan": "Home repair and upgrades",
+    "motor_loan": "Motorcycle and car purchase",
+    "healthcare_loan": "Healthcare and beauty services",
+    "other_loan": "Other loan purposes"
+  },
+  "defaultPurpose": "Other Purpose",
+  "defaultDescription": "Loan for various purposes"
+}
