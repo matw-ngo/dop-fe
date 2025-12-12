@@ -24,7 +24,7 @@ const config: Config = {
           800: "var(--color-primary-800)",
           900: "var(--color-primary-900)",
           950: "var(--color-primary-950)",
-          DEFAULT: "var(--color-primary-500)",
+          DEFAULT: "var(--color-primary)",
         },
         secondary: {
           50: "var(--color-secondary-50)",
@@ -52,7 +52,7 @@ const config: Config = {
           800: "var(--color-gray-800)",
           900: "var(--color-gray-900)",
           950: "var(--color-gray-950)",
-          DEFAULT: "var(--color-gray-500)",
+          DEFAULT: "var(--color-gray)",
         },
         // Semantic colors
         success: "var(--color-success)",

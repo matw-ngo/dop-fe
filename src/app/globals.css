@@ -1,46 +1,87 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* Import Google Font - Lexend Deca */
+@import url('https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
-  --color-border: var(--border);
-  --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-muted: var(--muted);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
-  --color-card: var(--card);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+  /* Theme colors with proper fallbacks */
+  --color-background: var(--background, #ffffff);
+  --color-foreground: var(--foreground, #000000);
+
+  /* Font definitions */
+  --font-sans: var(--font-geist-sans, ui-sans-serif, system-ui), 'Lexend Deca';
+  --font-mono: var(--font-geist-mono, ui-monospace);
+
+  /* Define complete color palette for primary */
+  --color-primary-50: #eff6ff;
+  --color-primary-100: #dbeafe;
+  --color-primary-200: #bfdbfe;
+  --color-primary-300: #93c5fd;
+  --color-primary-400: #60a5fa;
+  --color-primary-500: #3b82f6;
+  --color-primary-600: #2563eb;
+  --color-primary-700: #1d4ed8;
+  --color-primary-800: #1e40af;
+  --color-primary-900: #1e3a8a;
+  --color-primary-950: #172554;
+  --color-primary: var(--color-primary-500);
+
+  /* Define complete color palette for gray */
+  --color-gray-50: #f9fafb;
+  --color-gray-100: #f3f4f6;
+  --color-gray-200: #e5e7eb;
+  --color-gray-300: #d1d5db;
+  --color-gray-400: #9ca3af;
+  --color-gray-500: #6b7280;
+  --color-gray-600: #4b5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1f2937;
+  --color-gray-900: #111827;
+  --color-gray-950: #030712;
+  --color-gray: var(--color-gray-500);
+
+  /* Sidebar colors */
+  --color-sidebar-ring: var(--sidebar-ring, #cbd5e1);
+  --color-sidebar-border: var(--sidebar-border, #e2e8f0);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground, #0f172a);
+  --color-sidebar-accent: var(--sidebar-accent, #f1f5f9);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground, #f8fafc);
+  --color-sidebar-primary: var(--sidebar-primary, #0f172a);
+  --color-sidebar-foreground: var(--sidebar-foreground, #f8fafc);
+  --color-sidebar: var(--sidebar, #f8fafc);
+
+  /* Chart colors */
+  --color-chart-5: var(--chart-5, #f97316);
+  --color-chart-4: var(--chart-4, #eab308);
+  --color-chart-3: var(--chart-3, #84cc16);
+  --color-chart-2: var(--chart-2, #22c55e);
+  --color-chart-1: var(--chart-1, #06b6d4);
+
+  /* UI colors */
+  --color-ring: var(--ring, #3b82f6);
+  --color-input: var(--input, #e5e7eb);
+  --color-border: var(--border, #e5e7eb);
+  --color-destructive: var(--destructive, #ef4444);
+  --color-accent-foreground: var(--accent-foreground, #0f172a);
+  --color-accent: var(--accent, #f1f5f9);
+  --color-muted-foreground: var(--muted-foreground, #6b7280);
+  --color-muted: var(--muted, #f1f5f9);
+  --color-secondary-foreground: var(--secondary-foreground, #0f172a);
+  --color-secondary: var(--secondary, #f1f5f9);
+  --color-primary-foreground: var(--primary-foreground, #f8fafc);
+  --color-popover-foreground: var(--popover-foreground, #0f172a);
+  --color-popover: var(--popover, #ffffff);
+  --color-card-foreground: var(--card-foreground, #0f172a);
+  --color-card: var(--card, #ffffff);
+
+  /* Border radius */
+  --radius-sm: calc(var(--radius, 0.5rem) - 4px);
+  --radius-md: calc(var(--radius, 0.5rem) - 2px);
+  --radius-lg: var(--radius, 0.5rem);
+  --radius-xl: calc(var(--radius, 0.5rem) + 4px);
 }
 
 @layer base {
