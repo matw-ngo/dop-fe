@@ -1,12 +1,13 @@
 import React from "react";
-import * as Slider from "@radix-ui/react-slider";
+import * as RadixSlider from "@radix-ui/react-slider";
 
 export interface ISliderProps {
   step: number;
   min: number;
   max: number;
   value: number;
-  onChange: (value: number) => void;
+  onValueChange?: (values: number[]) => void;
+  onChange?: (value: number) => void;
   trackingHandler?: (startValue: number, endValue: number) => void;
   thumbImg?: string;
 }
@@ -14,6 +15,7 @@ export interface ISliderProps {
 export default function CustomSlider({
   value,
   onChange,
+  onValueChange,
   min,
   max,
   step,
@@ -25,7 +27,12 @@ export default function CustomSlider({
 
   const handleValueChange = (values: number[]) => {
     const newValue = values[0];
-    onChange(newValue);
+    if (onChange) {
+      onChange(newValue);
+    }
+    if (onValueChange) {
+      onValueChange(values);
+    }
     valueRef.current = newValue;
   };
 
@@ -40,8 +47,8 @@ export default function CustomSlider({
   };
 
   return (
-    <Slider.Root
-      className="relative flex items-center select-none touch-none w-full h-7"
+    <RadixSlider.Root
+      className="relative flex items-center select-none touch-none w-full h-7 z-10"
       value={[value]}
       onValueChange={handleValueChange}
       onValueCommit={handleValueCommit}
@@ -50,24 +57,27 @@ export default function CustomSlider({
       max={max}
       step={step}
     >
-      <Slider.Track className="bg-[#E6F1ED] relative grow rounded-full h-[6px]">
-        <Slider.Range className="absolute bg-[#007848] rounded-full h-full" />
-      </Slider.Track>
-      <Slider.Thumb
-        className="block w-7 h-7 bg-white rounded shadow-lg border-4 border-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#007848] focus:ring-offset-2 cursor-pointer"
+      <RadixSlider.Track className="bg-[#E6F1ED] relative grow rounded-full h-[6px]">
+        <RadixSlider.Range className="absolute bg-[#007848] rounded-full h-full" />
+      </RadixSlider.Track>
+      <RadixSlider.Thumb
+        className="block w-7 h-7 bg-white rounded-full shadow-lg border-4 border-[#007848] hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#007848] focus:ring-offset-2 cursor-pointer hover:scale-110 transition-transform"
         style={
           thumbImg
             ? {
-              backgroundImage: `url(${thumbImg})`,
-              backgroundSize: "contain",
-              backgroundRepeat: "no-repeat",
-              backgroundPosition: "center",
-            }
+                backgroundImage: `url(${thumbImg})`,
+                backgroundSize: "contain",
+                backgroundRepeat: "no-repeat",
+                backgroundPosition: "center",
+              }
             : {}
         }
       />
-    </Slider.Root>
+    </RadixSlider.Root>
   );
 }
 
 export { CustomSlider };
+
+// Add named export for Slider to match the import pattern
+export const Slider = CustomSlider;

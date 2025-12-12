@@ -1,20 +1,12 @@
 import React, { useState } from "react";
 import type { ISelectBoxOption } from "@/components/ui/select-group";
-import { Modal, SelectGroup, TextInput, Slider } from "@/components/ui";
-
-const Button = ({ children, onClick, disabled, className = "" }: any) => (
-  <button
-    onClick={onClick}
-    disabled={disabled}
-    className={`bg-[#017848] hover:bg-[#016036] text-white font-semibold py-2 px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${className}`}
-  >
-    {children}
-  </button>
-);
+import { Modal, SelectGroup, TextInput, Slider, Button } from "@/components/ui";
 
 const OtpForm = ({ size }: any) => (
   <div className="p-4 text-center font-['Lexend_Deca']">
-    <p className="mb-4 text-sm font-normal leading-6">Vui lòng nhập mã OTP đã được gửi đến điện thoại của bạn</p>
+    <p className="mb-4 text-sm font-normal leading-6">
+      Vui lòng nhập mã OTP đã được gửi đến điện thoại của bạn
+    </p>
     <div className="flex justify-center gap-2">
       {Array.from({ length: size }).map((_, index) => (
         <input
@@ -36,7 +28,8 @@ const EventType = {
   lending_page_input_expected_amount: "lending_page_input_expected_amount",
   lending_page_input_purpose: "lending_page_input_purpose",
   lending_page_input_phone_number: "lending_page_input_phone_number",
-  lending_page_input_phone_number_valid: "lending_page_input_phone_number_valid",
+  lending_page_input_phone_number_valid:
+    "lending_page_input_phone_number_valid",
 };
 
 const ALLOWED_TELCOS = ["Viettel", "Mobifone", "Vinaphone"];
@@ -50,11 +43,12 @@ const phoneValidation = (phone: string) => {
   };
 };
 
-const uuidv4 = () => "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
-  const r = Math.random() * 16 | 0;
-  const v = c === "x" ? r : (r & 0x3 | 0x8);
-  return v.toString(16);
-});
+const uuidv4 = () =>
+  "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+    const r = (Math.random() * 16) | 0;
+    const v = c === "x" ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
 
 const toast = {
   info: (msg: string) => alert(msg),
@@ -98,7 +92,7 @@ const LOAN_PURPOSES: ISelectBoxOption[] = [
 
 const ApplyLoanForm = () => {
   const [showPhoneModal, setShowPhoneModal] = React.useState(false);
-  const [showOTPModal, setShowOTPModal] = React.useState(false);
+  const [showOTPModal, setShowOTPModal] = React.useState(true);
   const [agreeStatus, setAgreeStatus] = useState<"0" | "1" | "">("");
   const [formId, setFormId] = useState("");
 
@@ -120,14 +114,14 @@ const ApplyLoanForm = () => {
   const [currentLoanStep, setCurrentLoanStep] = useState(0);
 
   const setUserLoanData = (field: string, value: any) => {
-    setUserData(prev => ({
+    setUserData((prev) => ({
       ...prev,
       [field]: value,
     }));
   };
 
   const setUserLoanValidate = (field: string, valid: boolean, msg: string) => {
-    setUserDataValidate(prev => ({
+    setUserDataValidate((prev) => ({
       ...prev,
       [field]: {
         valid,
@@ -164,12 +158,12 @@ const ApplyLoanForm = () => {
   };
 
   const validatePhoneNum = () => {
-    let value = userData.phone_number;
+    let value = String(userData.phone_number || "");
     if (!value || !value.trim()) {
       setUserLoanValidate(
         "phone_number",
         false,
-        "Số điện thoại không được để trống"
+        "Số điện thoại không được để trống",
       );
       return 0;
     }
@@ -182,7 +176,7 @@ const ApplyLoanForm = () => {
       setUserLoanValidate(
         "phone_number",
         false,
-        `Chỉ hỗ trợ nhà mạng ${ALLOWED_TELCOS.join(", ")}`
+        `Chỉ hỗ trợ nhà mạng ${ALLOWED_TELCOS.join(", ")}`,
       );
       return 0;
     }
@@ -258,7 +252,6 @@ const ApplyLoanForm = () => {
               });
               onAmountChange(vals[0]);
             }}
-            className="mt-3"
           />
         </div>
       </div>
@@ -289,7 +282,6 @@ const ApplyLoanForm = () => {
             onValueChange={(vals) => {
               setUserLoanData("loan_period", vals[0]);
             }}
-            className="mt-3"
           />
         </div>
       </div>
@@ -308,7 +300,8 @@ const ApplyLoanForm = () => {
       {/* Term Agreement */}
       <div className="my-4 text-xs font-normal leading-5">
         <div className="text-[#073126]">
-          Để đăng kí và sử dụng dịch vụ từ Fin Zone, xin vui lòng đọc và đồng ý với&nbsp;
+          Để đăng kí và sử dụng dịch vụ từ Fin Zone, xin vui lòng đọc và đồng ý
+          với&nbsp;
           <a
             href="/dieu-khoan-su-dung"
             target="_blank"
@@ -351,7 +344,8 @@ const ApplyLoanForm = () => {
               htmlFor="radio-disagree"
               className="ml-2 font-['Lexend_Deca'] text-sm md:text-xs font-normal leading-5 text-[#017848]"
             >
-              Tôi không đồng ý với toàn bộ hoặc một phần trong Điều khoản dịch vụ.
+              Tôi không đồng ý với toàn bộ hoặc một phần trong Điều khoản dịch
+              vụ.
             </label>
           </div>
         </div>
@@ -391,11 +385,12 @@ const ApplyLoanForm = () => {
               onBlur={() => {
                 validatePhoneNum();
               }}
-              onChange={(value) => {
+              onChange={(e) => {
+                const value = e.target.value;
                 eventTracking(EventType.lending_page_input_phone_number, {
                   phone_number: value,
                 });
-                setUserLoanData("phone_number", value);
+                setUserLoanData("phone_number", String(value || ""));
               }}
             />
             <span className="block min-h-[18px] text-[11px] text-[rgb(255,116,116)]">
@@ -406,7 +401,7 @@ const ApplyLoanForm = () => {
           </div>
           <div>
             <Button
-              className="mx-auto block rounded-lg font-semibold md:text-sm"
+              className="mx-auto block rounded-lg font-semibold md:text-sm w-full bg-primary"
               onClick={onSubmitFinal}
             >
               Tiếp Tục

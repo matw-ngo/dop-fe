@@ -4,11 +4,14 @@ import { cn } from "@/lib/utils";
 
 interface IModalProps {
   onClose?: () => void;
-  isShow: boolean;
+  isShow?: boolean; // For backward compatibility
+  open?: boolean; // New prop to match Radix UI pattern
+  onOpenChange?: (open: boolean) => void; // New prop to match Radix UI pattern
   children?: React.ReactNode;
   className?: string;
   bodyClassName?: string;
   backgroundClassName?: string;
+  size?: "sm" | "md" | "lg" | "xl" | "full";
   components?: {
     modalClose?: React.ReactNode;
   };
@@ -25,7 +28,26 @@ const Modal = (props: IModalProps) => {
       <XIcon className="w-5 h-5" />
     );
 
-  if (!props.isShow) return null;
+  // Support both old (isShow) and new (open) props
+  const isOpen = props.open !== undefined ? props.open : props.isShow;
+
+  if (!isOpen) return null;
+
+  const handleClose = () => {
+    props.onClose?.();
+    if (props.onOpenChange) {
+      props.onOpenChange(false);
+    }
+  };
+
+  // Define size classes
+  const sizeClasses = {
+    sm: "max-w-md",
+    md: "max-w-lg",
+    lg: "max-w-2xl",
+    xl: "max-w-4xl",
+    full: "max-w-[95%]",
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
@@ -35,23 +57,22 @@ const Modal = (props: IModalProps) => {
           "fixed inset-0 bg-black/50 transition-opacity",
           props.backgroundClassName,
         )}
-        onClick={() => {
-          props.onClose?.();
-        }}
+        onClick={handleClose}
       />
 
       {/* Modal Card */}
       <div
         className={cn(
-          "relative z-50 w-full max-w-[calc(100%-2rem)] rounded-lg shadow-[0px_4px_4px_rgba(0,0,0,0.25)]",
+          "relative z-50 w-full rounded-lg shadow-[0px_4px_4px_rgba(0,0,0,0.25)]",
           "animate-in fade-in-0 zoom-in-95 duration-200",
+          props.size ? sizeClasses[props.size] : "max-w-[calc(100%-2rem)]",
           props.className,
         )}
       >
         {/* Modal Body */}
         <section
           className={cn(
-            "relative w-full mx-auto backdrop-blur-[40px] rounded-lg border-none",
+            "relative w-full mx-auto bg-white p-6 rounded-lg border-none",
             props.bodyClassName,
           )}
           style={props.styles?.modalCardBody}
@@ -59,7 +80,7 @@ const Modal = (props: IModalProps) => {
           {/* Close Button */}
           <button
             className="absolute top-2.5 right-2.5 opacity-70 transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-sm"
-            onClick={props.onClose}
+            onClick={handleClose}
           >
             {modalClose}
             <span className="sr-only">Close</span>
@@ -74,4 +95,3 @@ const Modal = (props: IModalProps) => {
 };
 
 export default Modal;
-export type { IModalProps };
