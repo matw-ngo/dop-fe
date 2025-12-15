@@ -689,7 +689,7 @@ export interface DynamicFormConfig {
   id?: string;
 
   /**
-   * Form fields (flat structure)
+   * Form fields (flat structure - single page)
    */
   fields?: FormField[];
 
@@ -697,6 +697,25 @@ export interface DynamicFormConfig {
    * Form sections (grouped structure)
    */
   sections?: FormSection[];
+
+  /**
+   * Multi-step wizard configuration
+   */
+  steps?: FormStep[];
+
+  /**
+   * Wizard navigation config (only for multi-step)
+   */
+  navigation?: WizardNavigationConfig;
+
+  /**
+   * Auto-save configuration
+   */
+  autoSave?: {
+    enabled?: boolean;
+    interval?: number; // ms
+    storageKey?: string;
+  };
 
   /**
    * Layout configuration
@@ -724,9 +743,189 @@ export interface DynamicFormConfig {
   onChange?: (fieldName: string, value: any) => void;
 
   /**
+   * Step change handler (multi-step only)
+   */
+  onStepChange?: (step: number, data: Record<string, any>) => void;
+
+  /**
+   * Step validation handler (multi-step only)
+   */
+  onStepValidation?: (step: number, isValid: boolean) => void;
+
+  /**
+   * Wizard completion handler (multi-step only)
+   */
+  onComplete?: (data: Record<string, any>) => void | Promise<void>;
+
+  /**
    * Validation mode
    */
   validationMode?: "onChange" | "onBlur" | "onSubmit";
+}
+
+// ============================================================================
+// Multi-Step Wizard Types
+// ============================================================================
+
+/**
+ * Step validation status
+ */
+export type StepValidationStatus =
+  | "idle" // Not validated yet
+  | "validating" // Validation in progress
+  | "valid" // Passed validation
+  | "invalid" // Failed validation
+  | "skipped"; // Skipped (optional step)
+
+/**
+ * Step completion status
+ */
+export type StepCompletionStatus =
+  | "pending" // Not started
+  | "current" // Currently active
+  | "complete" // Completed
+  | "locked" // Cannot access (previous steps incomplete)
+  | "error"; // Has errors
+
+/**
+ * Progress indicator type
+ */
+export type ProgressIndicatorType =
+  | "bar" // Linear progress bar
+  | "dots" // Dot indicators
+  | "numbers" // Numbered circles
+  | "stepper" // Material-style stepper
+  | "tabs" // Tab-like navigation
+  | "sidebar"; // Sidebar navigation
+
+/**
+ * Step condition for conditional visibility
+ */
+export interface StepCondition {
+  /** Field to check */
+  field: string;
+  /** Comparison operator */
+  operator: ConditionOperator;
+  /** Value to compare against */
+  value: FieldValue;
+  /** Logic for multiple conditions */
+  logic?: "and" | "or";
+}
+
+/**
+ * Step validation configuration
+ */
+export interface StepValidation {
+  /** Validate on next button click (default: true) */
+  validateOnNext?: boolean;
+  /** Allow skipping this step */
+  allowSkip?: boolean;
+  /** Show validation errors immediately */
+  showErrorsImmediately?: boolean;
+  /** Custom validation function */
+  customValidator?: (
+    stepData: Record<string, any>,
+    allData: Record<string, any>,
+  ) => Promise<boolean | string> | boolean | string;
+}
+
+/**
+ * Form step configuration for multi-step wizards
+ */
+export interface FormStep {
+  /** Unique step ID */
+  id: string;
+
+  /** Step title */
+  title: string;
+
+  /** Step description/subtitle */
+  description?: string;
+
+  /** Step icon (optional) */
+  icon?: ReactNode | string;
+
+  /** Fields in this step */
+  fields: FormField[];
+
+  /** Validation configuration */
+  validation?: StepValidation;
+
+  /** Conditional visibility */
+  condition?: StepCondition[];
+
+  /** Optional step flag */
+  optional?: boolean;
+
+  /** Lock step until previous completed */
+  locked?: boolean;
+
+  /** Custom layout for this step */
+  layout?: FormLayoutConfig;
+
+  /** Help text or instructions */
+  helpText?: string;
+
+  /** Step type (default: form) */
+  type?: "form" | "review" | "custom";
+
+  /** Step-specific CSS class */
+  className?: string;
+}
+
+/**
+ * Navigation button configuration
+ */
+export interface NavigationButtonConfig {
+  /** Button label */
+  label?: string;
+
+  /** Show/hide button */
+  show?: boolean;
+
+  /** Custom icon */
+  icon?: ReactNode;
+
+  /** Loading state label */
+  loadingLabel?: string;
+
+  /** CSS class */
+  className?: string;
+
+  /** Button variant */
+  variant?: "default" | "outline" | "ghost" | "link" | "destructive";
+}
+
+/**
+ * Wizard navigation configuration
+ */
+export interface WizardNavigationConfig {
+  /** Show progress indicator */
+  showProgress?: boolean;
+
+  /** Progress indicator type */
+  progressType?: ProgressIndicatorType;
+
+  /** Show step titles in progress */
+  showStepTitles?: boolean;
+
+  /** Allow clicking on completed steps */
+  allowStepClick?: boolean;
+
+  /** Back button config */
+  backButton?: NavigationButtonConfig;
+
+  /** Next button config */
+  nextButton?: NavigationButtonConfig;
+
+  /** Submit button config (last step) */
+  submitButton?: NavigationButtonConfig;
+
+  /** Show step numbers */
+  showStepNumbers?: boolean;
+
+  /** Sticky navigation */
+  stickyNavigation?: boolean;
 }
 
 // ============================================================================

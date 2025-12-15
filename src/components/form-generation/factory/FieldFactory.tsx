@@ -136,7 +136,7 @@ export function FieldFactory({
   const FieldComponent = useMemo(() => {
     // Check if custom component is specified
     if (field.type === FieldType.CUSTOM && field.options?.componentName) {
-      const componentName = field.options.componentName;
+      const componentName = String(field.options.componentName);
 
       // SECURITY: Check component allowlist
       if (!isCustomComponentAllowed(componentName)) {

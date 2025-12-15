@@ -1,7 +1,12 @@
 "use client";
 
-import { DynamicForm } from "@/components/form-generation";
-import type { FormConfig } from "@/components/form-generation";
+import {
+  DynamicForm,
+  FieldType,
+  ValidationRuleType,
+  LayoutType,
+} from "@/components/form-generation";
+import type { DynamicFormConfig } from "@/components/form-generation";
 import { useState } from "react";
 
 export default function FormGenerationTestPage() {
@@ -11,18 +16,26 @@ export default function FormGenerationTestPage() {
     any
   > | null>(null);
 
-  const testFormConfig: FormConfig = {
+  const testFormConfig: DynamicFormConfig = {
     fields: [
+      // TextField
       // TextField
       {
         id: "username",
         name: "username",
-        type: "text",
+        type: FieldType.TEXT,
         label: "Username",
         placeholder: "Enter your username",
         validation: [
-          { type: "required", message: "Username is required" },
-          { type: "minLength", value: 3, message: "At least 3 characters" },
+          {
+            type: ValidationRuleType.REQUIRED,
+            message: "Username is required",
+          },
+          {
+            type: ValidationRuleType.MIN_LENGTH,
+            value: 3,
+            message: "At least 3 characters",
+          },
         ],
       },
 
@@ -30,13 +43,13 @@ export default function FormGenerationTestPage() {
       {
         id: "email",
         name: "email",
-        type: "email",
+        type: FieldType.EMAIL,
         label: "Email Address",
         placeholder: "you@example.com",
         validation: [
-          { type: "required", message: "Email is required" },
+          { type: ValidationRuleType.REQUIRED, message: "Email is required" },
           {
-            type: "pattern",
+            type: ValidationRuleType.PATTERN,
             value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
             message: "Invalid email",
           },
@@ -47,13 +60,17 @@ export default function FormGenerationTestPage() {
       {
         id: "age",
         name: "age",
-        type: "number",
+        type: FieldType.NUMBER,
         label: "Age",
         placeholder: "Enter your age",
         options: { min: 18, max: 100 },
         validation: [
-          { type: "required", message: "Age is required" },
-          { type: "min", value: 18, message: "Must be 18 or older" },
+          { type: ValidationRuleType.REQUIRED, message: "Age is required" },
+          {
+            type: ValidationRuleType.MIN,
+            value: 18,
+            message: "Must be 18 or older",
+          },
         ],
       },
 
@@ -61,7 +78,7 @@ export default function FormGenerationTestPage() {
       {
         id: "bio",
         name: "bio",
-        type: "textarea",
+        type: FieldType.TEXTAREA,
         label: "Biography",
         placeholder: "Tell us about yourself...",
         options: {
@@ -75,7 +92,7 @@ export default function FormGenerationTestPage() {
       {
         id: "country",
         name: "country",
-        type: "select",
+        type: FieldType.SELECT,
         label: "Country",
         placeholder: "Select your country",
         options: {
@@ -87,14 +104,19 @@ export default function FormGenerationTestPage() {
             { value: "sg", label: "Singapore" },
           ],
         },
-        validation: [{ type: "required", message: "Please select a country" }],
+        validation: [
+          {
+            type: ValidationRuleType.REQUIRED,
+            message: "Please select a country",
+          },
+        ],
       },
 
       // SelectField with Groups
       {
         id: "category",
         name: "category",
-        type: "select",
+        type: FieldType.SELECT,
         label: "Product Category",
         placeholder: "Select category",
         options: {
@@ -113,7 +135,7 @@ export default function FormGenerationTestPage() {
       {
         id: "gender",
         name: "gender",
-        type: "radio",
+        type: FieldType.RADIO,
         label: "Gender",
         options: {
           choices: [
@@ -123,22 +145,27 @@ export default function FormGenerationTestPage() {
           ],
           layout: "horizontal",
         },
-        validation: [{ type: "required", message: "Please select gender" }],
+        validation: [
+          {
+            type: ValidationRuleType.REQUIRED,
+            message: "Please select gender",
+          },
+        ],
       },
 
       // CheckboxField (Single)
       {
         id: "terms",
         name: "terms",
-        type: "checkbox",
+        type: FieldType.CHECKBOX,
         label: "Terms and Conditions",
         options: {
           checkboxLabel: "I agree to the terms and conditions",
         },
         validation: [
           {
-            type: "custom",
-            validator: (value) => value === true,
+            type: ValidationRuleType.CUSTOM,
+            validator: (value: any) => value === true,
             message: "You must accept the terms",
           },
         ],
@@ -148,7 +175,7 @@ export default function FormGenerationTestPage() {
       {
         id: "interests",
         name: "interests",
-        type: "checkbox-group",
+        type: FieldType.CHECKBOX_GROUP,
         label: "Interests",
         options: {
           choices: [
@@ -165,7 +192,7 @@ export default function FormGenerationTestPage() {
       {
         id: "notifications",
         name: "notifications",
-        type: "switch",
+        type: FieldType.SWITCH,
         label: "Enable Notifications",
       },
 
@@ -173,7 +200,7 @@ export default function FormGenerationTestPage() {
       {
         id: "newsletter",
         name: "newsletter",
-        type: "switch",
+        type: FieldType.SWITCH,
         label: "Subscribe to Newsletter",
       },
 
@@ -181,19 +208,24 @@ export default function FormGenerationTestPage() {
       {
         id: "birthdate",
         name: "birthdate",
-        type: "date",
+        type: FieldType.DATE,
         label: "Birth Date",
         options: {
           maxDate: new Date(),
         },
-        validation: [{ type: "required", message: "Birth date is required" }],
+        validation: [
+          {
+            type: ValidationRuleType.REQUIRED,
+            message: "Birth date is required",
+          },
+        ],
       },
 
       // DateTime Field
       {
         id: "appointment",
         name: "appointment",
-        type: "datetime",
+        type: FieldType.DATETIME,
         label: "Appointment",
         placeholder: "Select date and time",
         options: {
@@ -205,16 +237,16 @@ export default function FormGenerationTestPage() {
       {
         id: "meeting_time",
         name: "meeting_time",
-        type: "time",
+        type: FieldType.TIME,
         label: "Meeting Time",
       },
     ],
     layout: {
-      type: "default",
+      type: LayoutType.STACK,
       columns: 1,
     },
     submitButton: {
-      text: "Submit Form",
+      label: "Submit Form",
       position: "right",
     },
   };
@@ -224,8 +256,12 @@ export default function FormGenerationTestPage() {
     setSubmittedData(data);
   };
 
-  const handleChange = (data: Record<string, any>) => {
-    setFormData(data);
+  const handleChange = (
+    fieldName: string,
+    value: any,
+    formData: Record<string, any>,
+  ) => {
+    setFormData(formData);
   };
 
   return (

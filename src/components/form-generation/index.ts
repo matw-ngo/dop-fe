@@ -25,6 +25,21 @@
 export { DynamicForm } from "./DynamicForm";
 export type { DynamicFormProps } from "./DynamicForm";
 
+// Wizard Components
+export { StepWizard } from "./wizard";
+export type { StepWizardProps } from "./wizard";
+export {
+  ProgressBar,
+  DotsIndicator,
+  NumberedStepper,
+  SidebarNav,
+  WizardProgress,
+  StepContent,
+  WizardNavigation,
+  StepErrors,
+  ReviewStep,
+} from "./wizard";
+
 export { FieldFactory } from "./factory/FieldFactory";
 export type { FieldFactoryProps } from "./factory/FieldFactory";
 
@@ -231,4 +246,13 @@ export type {
   // Component Props
   FieldComponentProps,
   FieldComponent,
+  // Multi-Step Wizard
+  FormStep,
+  StepValidation,
+  StepCondition,
+  StepValidationStatus,
+  StepCompletionStatus,
+  ProgressIndicatorType,
+  NavigationButtonConfig,
+  WizardNavigationConfig,
 } from "./types";

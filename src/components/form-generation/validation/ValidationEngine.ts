@@ -48,7 +48,7 @@ export class Validators {
   static minLength(value: any, rule: AnyValidationRule): ValidationResult {
     if (isEmpty(value)) return { valid: true };
 
-    const length = String(value).length;
+    const length = Array.isArray(value) ? value.length : String(value).length;
     const min = typeof rule.value === "number" ? rule.value : 0;
     const valid = length >= min;
 
@@ -66,7 +66,7 @@ export class Validators {
   static maxLength(value: any, rule: AnyValidationRule): ValidationResult {
     if (isEmpty(value)) return { valid: true };
 
-    const length = String(value).length;
+    const length = Array.isArray(value) ? value.length : String(value).length;
     const max = typeof rule.value === "number" ? rule.value : Infinity;
     const valid = length <= max;
 
@@ -254,14 +254,29 @@ export class Validators {
     rule: AnyValidationRule,
   ): Promise<ValidationResult> {
     // Type guard for custom rule
-    if (!("validator" in rule) || typeof rule.validator !== "function") {
+    if (!("validate" in rule) || typeof rule.validate !== "function") {
+      // Fallback for factories that use 'validator' property
+      if (
+        "validator" in rule &&
+        typeof (rule as any).validator === "function"
+      ) {
+        try {
+          const valid = await (rule as any).validator(value);
+          return {
+            valid: Boolean(valid),
+            error: valid ? undefined : rule.message || "Validation failed",
+          };
+        } catch (e) {
+          return { valid: false, error: rule.message || "Validation error" };
+        }
+      }
       return { valid: true };
     }
 
     try {
-      const valid = await Promise.resolve(rule.validator(value));
+      const valid = await rule.validate(value);
       return {
-        valid,
+        valid: Boolean(valid),
         error: valid ? undefined : rule.message || "Validation failed",
       };
     } catch (error) {
@@ -378,6 +393,11 @@ export class ValidationEngine {
    */
   static isFieldRequired(rules: AnyValidationRule[]): boolean {
     return rules.some((rule) => rule.type === ValidationRuleType.REQUIRED);
+  }
+
+  // Helper wrappers for testing
+  static isValidEmail(email: string): boolean {
+    return isValidEmail(email);
   }
 }
 

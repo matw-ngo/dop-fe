@@ -75,9 +75,28 @@ export function DynamicForm({
   disabled = false,
   readOnly = false,
 }: DynamicFormProps) {
+  // Check if this is a multi-step wizard
+  const isMultiStep = config.steps && config.steps.length > 0;
+
+  // If multi-step, render StepWizard
+  if (isMultiStep) {
+    const { StepWizard } = require("./wizard");
+    return (
+      <StepWizard
+        config={config}
+        initialData={initialValues}
+        onComplete={config.onComplete || customOnSubmit}
+        onStepChange={config.onStepChange}
+        className={className}
+      />
+    );
+  }
+
+  // Otherwise, render single-page form
   // Form state
   const [formData, setFormData] = useState<Record<string, any>>(initialValues);
   const [errors, setErrors] = useState<Record<string, string>>({});
+
   const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
