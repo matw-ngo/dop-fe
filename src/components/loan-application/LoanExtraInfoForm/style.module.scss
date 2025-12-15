@@ -1,0 +1,46 @@
+@import "../../styles/variables.scss";
+@import "~bulma/sass/utilities/mixins.sass";
+
+.loan_extra_form {
+  max-width: 570px;
+  margin: 25px auto;
+  .caption {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    span {
+      font-size: 18px;
+      font-weight: 600;
+    }
+  }
+  .field {
+    margin-top: 16px;
+    .text_input {
+      input {
+        height: 60px;
+        width: 100%;
+        border: 1px solid #bfd1cc;
+        border-radius: 8px;
+      }
+    }
+    .radio {
+      margin-right: 62px;
+      input:checked {
+        background: $bg-100;
+        border-color: $bg-100;
+      }
+    }
+
+    .btn {
+      width: 100%;
+      border-radius: 8px;
+    }
+    .error {
+      display: block;
+      min-height: 16px;
+      font-size: 12px;
+      margin-top: 0px;
+      color: rgb(255, 116, 116);
+    }
+  }
+}

@@ -19,13 +19,13 @@ import { ALLOWED_TELCOS, phoneValidation } from "@/lib/utils/phone-validation";
 import {
   createLoanApplicationSchema,
   type LoanApplicationFormData,
-} from "../schema";
-import { CSS_CLASSES, LOAN_AMOUNT, LOAN_PERIOD } from "../constants";
-import { AmountField } from "../components/AmountField";
-import { PeriodField } from "../components/PeriodField";
-import { PurposeField } from "../components/PurposeField";
-import { TermsAgreement } from "../components/TermsAgreement";
-import { SubmitButton } from "../components/SubmitButton";
+} from "./schema";
+import { CSS_CLASSES, LOAN_AMOUNT, LOAN_PERIOD } from "./constants";
+import { AmountField } from "./components/AmountField";
+import { PeriodField } from "./components/PeriodField";
+import { PurposeField } from "./components/PurposeField";
+import { TermsAgreement } from "./components/TermsAgreement";
+import { SubmitButton } from "./components/SubmitButton";
 
 const ApplyLoanForm: React.FC = () => {
   const t = useTranslations("features.loan-application");
