@@ -1,92 +1,91 @@
-/**
- * Form Generation Library - Checkbox Field
- */
+"use client";
 
-'use client';
-
-import type { FieldComponentProps, CheckboxFieldConfig } from '../types';
-import { cn } from '../utils/helpers';
+import type { FieldComponentProps, CheckboxFieldConfig } from "../types";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 
 export function CheckboxField({
-    field,
-    value,
-    onChange,
-    onBlur,
-    error,
-    disabled,
-    readOnly,
-    className,
-}: FieldComponentProps<boolean | any[]>) {
-    const checkboxField = field as CheckboxFieldConfig;
-    const options = checkboxField.options || {};
-    const isGroup = field.type === 'checkbox-group';
-    const choices = options.choices || [];
+  field,
+  value,
+  onChange,
+  onBlur,
+  error,
+  disabled,
+  className,
+}: FieldComponentProps<boolean | string[]>) {
+  const checkboxField = field as CheckboxFieldConfig;
+  const options = checkboxField.options || {};
+  const isGroup = field.type === "checkbox-group";
+  const isDisabled = disabled || field.disabled;
 
-    // Single checkbox
-    if (!isGroup) {
-        return (
-            <div className={cn('flex items-center gap-2', className)}>
-                <input
-                    id={field.id}
-                    name={field.name}
-                    type="checkbox"
-                    checked={!!value}
-                    onChange={(e) => onChange(e.target.checked)}
-                    onBlur={onBlur}
-                    disabled={disabled || field.disabled}
-                    readOnly={readOnly || field.readOnly}
-                    aria-invalid={!!error}
-                    className={cn(
-                        'h-4 w-4 rounded border-input text-primary focus:ring-2 focus:ring-ring focus:ring-offset-2',
-                        error && 'border-destructive'
-                    )}
-                />
-                {options.checkboxLabel && (
-                    <label htmlFor={field.id} className="text-sm">
-                        {options.checkboxLabel}
-                    </label>
-                )}
-            </div>
-        );
-    }
+  if (isGroup && options.choices) {
+    // Checkbox Group
+    const selectedValues = Array.isArray(value) ? value : [];
 
-    // Checkbox group
-    const selectedValues = (value as any[]) || [];
-
-    const handleToggle = (optionValue: any) => {
-        const newValues = selectedValues.includes(optionValue)
-            ? selectedValues.filter((v) => v !== optionValue)
-            : [...selectedValues, optionValue];
-        onChange(newValues);
+    const handleGroupChange = (choiceValue: string, checked: boolean) => {
+      if (checked) {
+        onChange([...selectedValues, choiceValue]);
+      } else {
+        onChange(selectedValues.filter((v) => v !== choiceValue));
+      }
     };
 
     return (
-        <div className={cn('flex flex-col gap-2', className)}>
-            {choices.map((choice) => (
-                <div key={choice.value} className="flex items-center gap-2">
-                    <input
-                        id={`${field.id}-${choice.value}`}
-                        type="checkbox"
-                        checked={selectedValues.includes(choice.value)}
-                        onChange={() => handleToggle(choice.value)}
-                        onBlur={onBlur}
-                        disabled={disabled || field.disabled || choice.disabled}
-                        readOnly={readOnly || field.readOnly}
-                        className={cn(
-                            'h-4 w-4 rounded border-input text-primary focus:ring-2 focus:ring-ring focus:ring-offset-2',
-                            error && 'border-destructive'
-                        )}
-                    />
-                    <label
-                        htmlFor={`${field.id}-${choice.value}`}
-                        className="text-sm cursor-pointer"
-                    >
-                        {choice.label}
-                    </label>
-                </div>
-            ))}
-        </div>
+      <div className={`space-y-3 ${className}`}>
+        {options.choices.map((choice) => {
+          const isChecked = selectedValues.includes(choice.value);
+          const choiceId = `${field.id}-${choice.value}`;
+
+          return (
+            <div key={choice.value} className="flex items-center gap-2">
+              <Checkbox
+                id={choiceId}
+                checked={isChecked}
+                onCheckedChange={(checked) =>
+                  handleGroupChange(choice.value, checked as boolean)
+                }
+                disabled={isDisabled || choice.disabled}
+                aria-invalid={!!error}
+                aria-describedby={error ? `${field.id}-error` : undefined}
+              />
+              <Label
+                htmlFor={choiceId}
+                className={`cursor-pointer ${isDisabled || choice.disabled ? "opacity-70 cursor-not-allowed" : ""}`}
+              >
+                {choice.label}
+              </Label>
+            </div>
+          );
+        })}
+      </div>
     );
+  }
+
+  // Single Checkbox
+  const isChecked = !!value;
+
+  return (
+    <div className={`flex items-center gap-2 ${className}`}>
+      <Checkbox
+        id={field.id}
+        name={field.name}
+        checked={isChecked}
+        onCheckedChange={(checked) => onChange(checked as boolean)}
+        onBlur={onBlur}
+        disabled={isDisabled}
+        aria-invalid={!!error}
+        aria-describedby={error ? `${field.id}-error` : undefined}
+      />
+      {(field.label || options.checkboxLabel) && (
+        <Label
+          htmlFor={field.id}
+          className={`cursor-pointer ${isDisabled ? "opacity-70 cursor-not-allowed" : ""}`}
+        >
+          {options.checkboxLabel || field.label}
+        </Label>
+      )}
+    </div>
+  );
 }
 
-CheckboxField.displayName = 'CheckboxField';
+CheckboxField.displayName = "CheckboxField";

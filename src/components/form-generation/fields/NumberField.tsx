@@ -1,75 +1,60 @@
-/**
- * Form Generation Library - Number Input Field
- */
+"use client";
 
-'use client';
-
-import type { FieldComponentProps, NumberFieldConfig } from '../types';
-import { cn, formatCurrency, parseCurrency } from '../utils/helpers';
-import { inputVariants } from '../styles/variants';
+import type { FieldComponentProps, NumberFieldConfig } from "../types";
+import { Input } from "@/components/ui/input";
+import { formatCurrency, parseCurrency } from "../utils/helpers";
 
 export function NumberField({
-    field,
-    value,
-    onChange,
-    onBlur,
-    error,
-    disabled,
-    readOnly,
-    className,
+  field,
+  value,
+  onChange,
+  onBlur,
+  error,
+  disabled,
+  readOnly,
+  className,
 }: FieldComponentProps<number>) {
-    const numberField = field as NumberFieldConfig;
-    const options = numberField.options || {};
-    const isCurrency = field.type === 'currency';
+  const numberField = field as NumberFieldConfig;
+  const options = numberField.options || {};
+  const isCurrency = field.type === "currency";
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (isCurrency) {
-            const numericValue = parseCurrency(e.target.value);
-            onChange(numericValue);
-        } else {
-            const numericValue = parseFloat(e.target.value) || 0;
-            onChange(numericValue);
-        }
-    };
+  // Display value (formatted for currency)
+  const displayValue =
+    isCurrency && value != null
+      ? formatCurrency(value, options.currency)
+      : value?.toString() || "";
 
-    const displayValue = isCurrency && value
-        ? formatCurrency(value, options.currency, 'vi-VN')
-        : value?.toString() || '';
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value;
 
-    return (
-        <div className="relative w-full">
-            {/* Currency symbol prefix */}
-            {isCurrency && options.showSymbol && (
-                <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
-                    {options.currency === 'VND' ? '₫' : options.currency === 'USD' ? '$' : '€'}
-                </div>
-            )}
+    if (isCurrency) {
+      const numValue = parseCurrency(inputValue);
+      onChange(numValue);
+    } else {
+      const numValue = inputValue === "" ? undefined : Number(inputValue);
+      onChange(numValue as number);
+    }
+  };
 
-            <input
-                id={field.id}
-                name={field.name}
-                type={isCurrency ? 'text' : 'number'}
-                value={displayValue}
-                onChange={handleChange}
-                onBlur={onBlur}
-                placeholder={field.placeholder}
-                disabled={disabled || field.disabled}
-                readOnly={readOnly || field.readOnly}
-                min={options.min}
-                max={options.max}
-                step={options.step}
-                aria-invalid={!!error}
-                aria-describedby={error ? `${field.id}-error` : undefined}
-                className={cn(
-                    inputVariants({
-                        state: error ? 'error' : 'default',
-                    }),
-                    isCurrency && options.showSymbol && 'pl-8',
-                    className
-                )}
-            />
-        </div>
-    );
+  return (
+    <Input
+      id={field.id}
+      name={field.name}
+      type={isCurrency ? "text" : "number"}
+      value={displayValue}
+      onChange={handleChange}
+      onBlur={onBlur}
+      placeholder={field.placeholder}
+      disabled={disabled || field.disabled}
+      readOnly={readOnly || field.readOnly}
+      min={options.min}
+      max={options.max}
+      step={options.step}
+      aria-invalid={!!error}
+      aria-describedby={error ? `${field.id}-error` : undefined}
+      className={className}
+    />
+  );
 }
 
-NumberField.displayName = 'NumberField';
+NumberField.displayName = "NumberField";

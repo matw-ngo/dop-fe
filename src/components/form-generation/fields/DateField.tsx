@@ -1,15 +1,8 @@
-/**
- * Form Generation Library - Date Field Component
- *
- * Date/DateTime/Time input field with calendar icon
- */
-
 "use client";
 
 import type { FieldComponentProps, DateFieldConfig } from "../types";
-import { cn } from "../utils/helpers";
-import { inputVariants } from "../styles/variants";
-import { Calendar } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { CalendarIcon } from "lucide-react";
 
 export function DateField({
   field,
@@ -20,17 +13,19 @@ export function DateField({
   disabled,
   readOnly,
   className,
-}: FieldComponentProps<Date | string>) {
+}: FieldComponentProps<string | Date | undefined>) {
   const dateField = field as DateFieldConfig;
   const options = dateField.options || {};
 
   // Determine input type based on field type
+  const inputTypeMapping = {
+    date: "date",
+    datetime: "datetime-local",
+    time: "time",
+  };
+
   const inputType =
-    field.type === "datetime"
-      ? "datetime-local"
-      : field.type === "time"
-        ? "time"
-        : "date";
+    inputTypeMapping[field.type as keyof typeof inputTypeMapping] || "date";
 
   // Format value for input
   const formatValue = (val: Date | string | undefined | null): string => {
@@ -57,8 +52,9 @@ export function DateField({
   };
 
   // Format min/max dates
-  const formatMinMax = (
+  const formatDateForInput = (
     date: Date | string | undefined,
+    type: string,
   ): string | undefined => {
     if (!date) return undefined;
 
@@ -66,9 +62,9 @@ export function DateField({
       const d = date instanceof Date ? date : new Date(date);
       if (isNaN(d.getTime())) return undefined;
 
-      if (inputType === "date") {
+      if (type === "date") {
         return d.toISOString().slice(0, 10);
-      } else if (inputType === "datetime-local") {
+      } else if (type === "datetime") {
         return d.toISOString().slice(0, 16);
       }
       return undefined;
@@ -96,29 +92,23 @@ export function DateField({
 
   return (
     <div className="relative w-full">
-      <input
+      <Input
         id={field.id}
         name={field.name}
         type={inputType}
         value={formatValue(value)}
         onChange={handleChange}
         onBlur={onBlur}
-        min={formatMinMax(options.minDate)}
-        max={formatMinMax(options.maxDate)}
+        placeholder={field.placeholder}
         disabled={disabled || field.disabled}
         readOnly={readOnly || field.readOnly}
+        min={formatDateForInput(options.minDate, field.type)}
+        max={formatDateForInput(options.maxDate, field.type)}
         aria-invalid={!!error}
         aria-describedby={error ? `${field.id}-error` : undefined}
-        className={cn(
-          inputVariants({ state: error ? "error" : "default" }),
-          "pr-10", // Space for icon
-          className,
-        )}
+        className={className}
       />
-      <Calendar
-        className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none"
-        aria-hidden="true"
-      />
+      <CalendarIcon className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
     </div>
   );
 }

@@ -1,63 +1,58 @@
-/**
- * Form Generation Library - Radio Field
- */
+"use client";
 
-'use client';
-
-import type { FieldComponentProps, RadioFieldConfig } from '../types';
-import { cn } from '../utils/helpers';
+import type { FieldComponentProps, RadioFieldConfig } from "../types";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 
 export function RadioField({
-    field,
-    value,
-    onChange,
-    onBlur,
-    error,
-    disabled,
-    readOnly,
-    className,
-}: FieldComponentProps<any>) {
-    const radioField = field as RadioFieldConfig;
-    const options = radioField.options || {};
-    const choices = options.choices || [];
-    const layout = options.layout || 'vertical';
+  field,
+  value,
+  onChange,
+  onBlur,
+  error,
+  disabled,
+  className,
+}: FieldComponentProps<string>) {
+  const radioField = field as RadioFieldConfig;
+  const options = radioField.options || {};
+  const isDisabled = disabled || field.disabled;
+  const layout = options.layout || "vertical";
 
-    return (
-        <div
-            className={cn(
-                'flex gap-4',
-                layout === 'vertical' ? 'flex-col' : 'flex-row flex-wrap',
-                className
-            )}
-        >
-            {choices.map((choice) => (
-                <div key={choice.value} className="flex items-center gap-2">
-                    <input
-                        id={`${field.id}-${choice.value}`}
-                        name={field.name}
-                        type="radio"
-                        value={choice.value}
-                        checked={value === choice.value}
-                        onChange={(e) => onChange(e.target.value)}
-                        onBlur={onBlur}
-                        disabled={disabled || field.disabled || choice.disabled}
-                        readOnly={readOnly || field.readOnly}
-                        aria-invalid={!!error}
-                        className={cn(
-                            'h-4 w-4 border-input text-primary focus:ring-2 focus:ring-ring focus:ring-offset-2',
-                            error && 'border-destructive'
-                        )}
-                    />
-                    <label
-                        htmlFor={`${field.id}-${choice.value}`}
-                        className="text-sm cursor-pointer"
-                    >
-                        {choice.label}
-                    </label>
-                </div>
-            ))}
-        </div>
-    );
+  if (!options.choices || options.choices.length === 0) {
+    return null;
+  }
+
+  return (
+    <RadioGroup
+      value={value || ""}
+      onValueChange={onChange}
+      onBlur={onBlur}
+      disabled={isDisabled}
+      className={`${layout === "horizontal" ? "flex flex-wrap gap-4" : "space-y-3"} ${className}`}
+      aria-invalid={!!error}
+      aria-describedby={error ? `${field.id}-error` : undefined}
+    >
+      {options.choices.map((choice) => {
+        const choiceId = `${field.id}-${choice.value}`;
+
+        return (
+          <div key={choice.value} className="flex items-center gap-2">
+            <RadioGroupItem
+              id={choiceId}
+              value={choice.value}
+              disabled={isDisabled || choice.disabled}
+            />
+            <Label
+              htmlFor={choiceId}
+              className={`cursor-pointer ${isDisabled || choice.disabled ? "opacity-70 cursor-not-allowed" : ""}`}
+            >
+              {choice.label}
+            </Label>
+          </div>
+        );
+      })}
+    </RadioGroup>
+  );
 }
 
-RadioField.displayName = 'RadioField';
+RadioField.displayName = "RadioField";
