@@ -1,8 +1,14 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useRef, useState } from "react";
-import { Theme, ThemeContextValue } from "@/types/ui-theme";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { lightTheme, darkTheme } from "./default-themes";
+import { Theme, ThemeContextValue } from "../types/ui-theme";
 
 type ThemeName = "light" | "dark" | string;
 
@@ -114,9 +120,18 @@ export function ThemeProvider({
       setVariableIfChanged("--border-error", theme.colors.border.error);
 
       // Typography
-      setVariableIfChanged("--font-sans", theme.typography.fontFamily.sans.join(", "));
-      setVariableIfChanged("--font-serif", theme.typography.fontFamily.serif.join(", "));
-      setVariableIfChanged("--font-mono", theme.typography.fontFamily.mono.join(", "));
+      setVariableIfChanged(
+        "--font-sans",
+        theme.typography.fontFamily.sans.join(", "),
+      );
+      setVariableIfChanged(
+        "--font-serif",
+        theme.typography.fontFamily.serif.join(", "),
+      );
+      setVariableIfChanged(
+        "--font-mono",
+        theme.typography.fontFamily.mono.join(", "),
+      );
 
       // Spacing
       Object.entries(theme.spacing).forEach(([key, value]) => {
