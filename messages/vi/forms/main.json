@@ -1,0 +1,126 @@
+{
+    "common": {
+        "firstName": {
+            "label": "Tên",
+            "placeholder": "Nam",
+            "help": "",
+            "errors": {
+                "required": "Vui lòng nhập tên"
+            }
+        },
+        "lastName": {
+            "label": "Họ",
+            "placeholder": "Nguyễn",
+            "help": "",
+            "errors": {
+                "required": "Vui lòng nhập họ"
+            }
+        },
+        "username": {
+            "label": "Tên đăng nhập",
+            "placeholder": "Nhập tên đăng nhập của bạn",
+            "help": "",
+            "errors": {
+                "required": "Vui lòng nhập tên đăng nhập",
+                "minLength": "Tối thiểu 3 ký tự"
+            }
+        },
+        "email": {
+            "label": "Địa chỉ Email",
+            "placeholder": "ban@vidu.com",
+            "help": "",
+            "errors": {
+                "required": "Vui lòng nhập email",
+                "pattern": "Định dạng email không hợp lệ"
+            }
+        },
+        "age": {
+            "label": "Tuổi",
+            "placeholder": "Nhập tuổi của bạn",
+            "help": "",
+            "errors": {
+                "required": "Vui lòng nhập tuổi",
+                "min": "Phải từ 18 tuổi trở lên"
+            }
+        },
+        "bio": {
+            "label": "Tiểu sử",
+            "placeholder": "Giới thiệu đôi chút về bản thân...",
+            "help": ""
+        },
+        "country": {
+            "label": "Quốc gia",
+            "placeholder": "Chọn quốc gia của bạn",
+            "help": "",
+            "errors": {
+                "required": "Vui lòng chọn quốc gia"
+            }
+        },
+        "category": {
+            "label": "Danh mục sản phẩm",
+            "placeholder": "Chọn danh mục",
+            "help": ""
+        },
+        "gender": {
+            "label": "Giới tính",
+            "placeholder": "",
+            "help": "",
+            "errors": {
+                "required": "Vui lòng chọn giới tính"
+            }
+        },
+        "terms": {
+            "label": "Điều khoản và Giới thiệu",
+            "placeholder": "",
+            "help": "",
+            "errors": {
+                "custom": "Bạn phải chấp nhận các điều khoản"
+            }
+        },
+        "interests": {
+            "label": "Sở thích",
+            "placeholder": "",
+            "help": ""
+        },
+        "notifications": {
+            "label": "Bật thông báo",
+            "placeholder": "",
+            "help": ""
+        },
+        "newsletter": {
+            "label": "Đăng ký nhận tin",
+            "placeholder": "",
+            "help": ""
+        },
+        "birthdate": {
+            "label": "Ngày sinh",
+            "placeholder": "Chọn ngày",
+            "help": "",
+            "errors": {
+                "required": "Vui lòng chọn ngày sinh"
+            }
+        },
+        "appointment": {
+            "label": "Lịch hẹn",
+            "placeholder": "Chọn ngày và giờ",
+            "help": ""
+        },
+        "meeting_time": {
+            "label": "Giờ họp",
+            "placeholder": "Chọn giờ",
+            "help": ""
+        }
+    },
+    "validation": {
+        "required": "Trường này là bắt buộc",
+        "email": "Vui lòng nhập địa chỉ email hợp lệ",
+        "url": "Vui lòng nhập URL hợp lệ",
+        "phone": "Vui lòng nhập số điện thoại hợp lệ",
+        "minLength": "Yêu cầu tối thiểu {min} ký tự",
+        "maxLength": "Tối đa {max} ký tự cho phép",
+        "min": "Giá trị phải lớn hơn hoặc bằng {min}",
+        "max": "Giá trị phải nhỏ hơn hoặc bằng {max}",
+        "pattern": "Định dạng không hợp lệ",
+        "custom": "Giá trị không hợp lệ"
+    }
+}

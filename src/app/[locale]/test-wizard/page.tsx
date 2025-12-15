@@ -87,6 +87,7 @@ export default function WizardTestPage() {
         id: "confirmation",
         title: "Review & Confirm",
         description: "Please review your information",
+        type: "review",
         fields: [],
       },
     ],

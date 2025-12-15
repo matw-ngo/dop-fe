@@ -185,6 +185,31 @@ async function loadComponents(locale: string): Promise<any> {
 }
 
 /**
+ * Load all forms translations for a locale
+ */
+async function loadForms(locale: string): Promise<any> {
+  const formsDir = path.join(MESSAGES_DIR, locale, "forms");
+  if (!fs.existsSync(formsDir)) return {};
+
+  const forms: any = {};
+  const formFiles = fs.readdirSync(formsDir).filter((f) => f.endsWith(".json"));
+
+  for (const file of formFiles) {
+    const content = await loadNamespaceFile(locale, `forms/${file}`);
+    const fileName = file.replace(".json", "");
+
+    if (fileName === "main") {
+      // For main.json, flatten the structure into the root of forms
+      Object.assign(forms, content);
+    } else {
+      forms[fileName] = content;
+    }
+  }
+
+  return forms;
+}
+
+/**
  * Main loader function that loads all translations for a locale
  */
 const loadAllTranslations = cache(async (locale: string) => {
@@ -193,19 +218,22 @@ const loadAllTranslations = cache(async (locale: string) => {
   const pages = await loadPages(locale);
   const common = await loadCommon(locale);
   const components = await loadComponents(locale);
+  const forms = await loadForms(locale);
 
   // If we have split files, return them with proper structure
   if (
     Object.keys(features).length > 0 ||
     Object.keys(pages).length > 0 ||
     Object.keys(common).length > 0 ||
-    Object.keys(components).length > 0
+    Object.keys(components).length > 0 ||
+    Object.keys(forms).length > 0
   ) {
     // Create a merged structure for next-intl
     const merged: any = {
       ...common,
       pages,
       components,
+      forms,
 
       // Properly nest features
       features: Object.entries(features).reduce(
@@ -289,6 +317,7 @@ const loadAllTranslations = cache(async (locale: string) => {
           pages: Object.keys(pages).length,
           common: Object.keys(common).length,
           components: Object.keys(components).length,
+          forms: Object.keys(forms).length,
           totalKeys: Object.keys(merged).length,
         },
         features: featureDetails,
