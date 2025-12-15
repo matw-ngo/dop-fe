@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useTheme } from "@/components/renderer/theme/context";
+import { useTheme } from "@/components/renderer/theme";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -15,8 +15,7 @@ import { useTranslations } from "next-intl";
 
 export function ToolsThemeToggle() {
   const t = useTranslations("features.tools.theme");
-  const { currentTheme, userGroup, availableThemes, setTheme, setUserGroup } =
-    useTheme();
+  const { currentTheme, setThemeById, toggleTheme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
 
   // Theme configurations for tools
@@ -26,7 +25,6 @@ export function ToolsThemeToggle() {
       name: t("themes.finance.name"),
       description: t("themes.finance.description"),
       icon: DollarSign,
-      userGroup: "finance",
       color: "text-blue-600",
       bgColor: "bg-blue-50",
     },
@@ -35,7 +33,6 @@ export function ToolsThemeToggle() {
       name: t("themes.medical.name"),
       description: t("themes.medical.description"),
       icon: HeartPulse,
-      userGroup: "healthcare",
       color: "text-emerald-600",
       bgColor: "bg-emerald-50",
     },
@@ -44,7 +41,6 @@ export function ToolsThemeToggle() {
       name: t("themes.corporate.name"),
       description: t("themes.corporate.description"),
       icon: Palette,
-      userGroup: "business",
       color: "text-slate-600",
       bgColor: "bg-slate-50",
     },
@@ -55,13 +51,8 @@ export function ToolsThemeToggle() {
   const CurrentIcon = currentThemeConfig.icon;
 
   const handleThemeSwitch = (themeConfig: (typeof themeOptions)[0]) => {
-    // Switch user group if needed
-    if (userGroup !== themeConfig.userGroup) {
-      setUserGroup(themeConfig.userGroup);
-    } else {
-      // If already in correct user group, just set theme
-      setTheme(themeConfig.id);
-    }
+    // Set the theme directly
+    setThemeById(themeConfig.id);
     setIsOpen(false);
   };
 
@@ -92,16 +83,14 @@ export function ToolsThemeToggle() {
             {themeOptions.map((themeConfig) => {
               const Icon = themeConfig.icon;
               const isActive = currentTheme === themeConfig.id;
-              const isAvailable = availableThemes.includes(themeConfig.id);
 
               return (
                 <DropdownMenuItem
                   key={themeConfig.id}
-                  onClick={() => isAvailable && handleThemeSwitch(themeConfig)}
-                  disabled={!isAvailable}
+                  onClick={() => handleThemeSwitch(themeConfig)}
                   className={`flex items-center gap-3 p-3 cursor-pointer ${
                     isActive ? "bg-muted/50" : "hover:bg-muted/30"
-                  } ${!isAvailable ? "opacity-50 cursor-not-allowed" : ""}`}
+                  }`}
                 >
                   <div className={`p-2 rounded-md ${themeConfig.bgColor}`}>
                     <Icon className={`w-4 h-4 ${themeConfig.color}`} />

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useRef, useState } from "react";
 import { Theme, ThemeContextValue } from "@/types/ui-theme";
 import { lightTheme, darkTheme } from "./default-themes";
 
@@ -47,101 +47,103 @@ export function ThemeProvider({
   const isDark = themeName === "dark";
   const resolvedTheme: "light" | "dark" = isDark ? "dark" : "light";
 
+  // Track previous theme values to optimize CSS variable updates
+  const previousThemeValues = useRef<Map<string, string>>(new Map());
+
   // Apply theme to CSS variables
   useEffect(() => {
     if (typeof document === "undefined") return;
 
     const root = document.documentElement;
 
-    // Remove existing theme classes
-    root.classList.remove("theme-light", "theme-dark");
+    // Set data attributes instead of classes
+    root.setAttribute("data-theme", themeName);
 
-    // Add current theme class
-    root.classList.add(`theme-${themeName}`);
+    // Set color-scheme for light/dark detection
+    root.setAttribute("data-color-scheme", resolvedTheme);
 
-    // Apply CSS custom properties
+    // Apply CSS custom properties with optimization
     const applyThemeVariables = (theme: Theme) => {
+      const currentValues = new Map<string, string>();
+
+      // Helper function to apply variable only if changed
+      const setVariableIfChanged = (property: string, value: string) => {
+        currentValues.set(property, value);
+        const previousValue = previousThemeValues.current.get(property);
+        if (previousValue !== value) {
+          root.style.setProperty(property, value);
+        }
+      };
+
       // Colors
       Object.entries(theme.colors.primary).forEach(([key, value]) => {
-        root.style.setProperty(`--color-primary-${key}`, value);
+        setVariableIfChanged(`--color-primary-${key}`, value as string);
       });
 
       Object.entries(theme.colors.secondary).forEach(([key, value]) => {
-        root.style.setProperty(`--color-secondary-${key}`, value);
+        setVariableIfChanged(`--color-secondary-${key}`, value as string);
       });
 
       Object.entries(theme.colors.gray).forEach(([key, value]) => {
-        root.style.setProperty(`--color-gray-${key}`, value);
+        setVariableIfChanged(`--color-gray-${key}`, value as string);
       });
 
       // Semantic colors
-      root.style.setProperty("--color-success", theme.colors.success);
-      root.style.setProperty("--color-warning", theme.colors.warning);
-      root.style.setProperty("--color-error", theme.colors.error);
-      root.style.setProperty("--color-info", theme.colors.info);
+      setVariableIfChanged("--color-success", theme.colors.success);
+      setVariableIfChanged("--color-warning", theme.colors.warning);
+      setVariableIfChanged("--color-error", theme.colors.error);
+      setVariableIfChanged("--color-info", theme.colors.info);
 
       // Background colors
-      root.style.setProperty("--bg-primary", theme.colors.background.primary);
-      root.style.setProperty(
-        "--bg-secondary",
-        theme.colors.background.secondary,
-      );
-      root.style.setProperty("--bg-tertiary", theme.colors.background.tertiary);
-      root.style.setProperty("--bg-inverse", theme.colors.background.inverse);
+      setVariableIfChanged("--bg-primary", theme.colors.background.primary);
+      setVariableIfChanged("--bg-secondary", theme.colors.background.secondary);
+      setVariableIfChanged("--bg-tertiary", theme.colors.background.tertiary);
+      setVariableIfChanged("--bg-inverse", theme.colors.background.inverse);
 
       // Text colors
-      root.style.setProperty("--text-primary", theme.colors.text.primary);
-      root.style.setProperty("--text-secondary", theme.colors.text.secondary);
-      root.style.setProperty("--text-tertiary", theme.colors.text.tertiary);
-      root.style.setProperty("--text-inverse", theme.colors.text.inverse);
-      root.style.setProperty("--text-disabled", theme.colors.text.disabled);
+      setVariableIfChanged("--text-primary", theme.colors.text.primary);
+      setVariableIfChanged("--text-secondary", theme.colors.text.secondary);
+      setVariableIfChanged("--text-tertiary", theme.colors.text.tertiary);
+      setVariableIfChanged("--text-inverse", theme.colors.text.inverse);
+      setVariableIfChanged("--text-disabled", theme.colors.text.disabled);
 
       // Border colors
-      root.style.setProperty("--border-primary", theme.colors.border.primary);
-      root.style.setProperty(
-        "--border-secondary",
-        theme.colors.border.secondary,
-      );
-      root.style.setProperty("--border-focus", theme.colors.border.focus);
-      root.style.setProperty("--border-error", theme.colors.border.error);
+      setVariableIfChanged("--border-primary", theme.colors.border.primary);
+      setVariableIfChanged("--border-secondary", theme.colors.border.secondary);
+      setVariableIfChanged("--border-focus", theme.colors.border.focus);
+      setVariableIfChanged("--border-error", theme.colors.border.error);
 
       // Typography
-      root.style.setProperty(
-        "--font-sans",
-        theme.typography.fontFamily.sans.join(", "),
-      );
-      root.style.setProperty(
-        "--font-serif",
-        theme.typography.fontFamily.serif.join(", "),
-      );
-      root.style.setProperty(
-        "--font-mono",
-        theme.typography.fontFamily.mono.join(", "),
-      );
+      setVariableIfChanged("--font-sans", theme.typography.fontFamily.sans.join(", "));
+      setVariableIfChanged("--font-serif", theme.typography.fontFamily.serif.join(", "));
+      setVariableIfChanged("--font-mono", theme.typography.fontFamily.mono.join(", "));
 
       // Spacing
       Object.entries(theme.spacing).forEach(([key, value]) => {
-        root.style.setProperty(`--spacing-${key}`, value);
+        setVariableIfChanged(`--spacing-${key}`, value as string);
       });
 
       // Border radius
       Object.entries(theme.borderRadius).forEach(([key, value]) => {
-        root.style.setProperty(`--radius-${key}`, value);
+        setVariableIfChanged(`--radius-${key}`, value as string);
       });
 
       // Shadows
       Object.entries(theme.shadows).forEach(([key, value]) => {
-        root.style.setProperty(`--shadow-${key}`, value);
+        setVariableIfChanged(`--shadow-${key}`, value as string);
       });
 
       // Animations
       Object.entries(theme.animations.duration).forEach(([key, value]) => {
-        root.style.setProperty(`--duration-${key}`, value);
+        setVariableIfChanged(`--duration-${key}`, value as string);
       });
 
       Object.entries(theme.animations.easing).forEach(([key, value]) => {
-        root.style.setProperty(`--easing-${key}`, value);
+        setVariableIfChanged(`--easing-${key}`, value as string);
       });
+
+      // Update the ref with current values for next comparison
+      previousThemeValues.current = currentValues;
     };
 
     applyThemeVariables(theme);

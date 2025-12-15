@@ -14,7 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useTheme } from "@/components/renderer/theme/context";
+import { useTheme } from "@/components/renderer/theme";
 import { themes } from "@/components/renderer/theme/themes";
 import type { ThemeColors } from "@/components/renderer/theme/types";
 
@@ -72,12 +72,15 @@ export function ThemeCustomizer({ onClose }: ThemeCustomizerProps) {
     setCustomizations,
     resetCustomizations,
     themeConfig,
+    resolvedTheme,
+    mode,
+    setMode,
   } = useTheme();
 
   const [localCustomizations, setLocalCustomizations] = useState<
     Partial<ThemeColors>
   >(customizations || {});
-  const [activeMode, setActiveMode] = useState<"light" | "dark">("light");
+  const [activeMode, setActiveMode] = useState<"light" | "dark">(resolvedTheme);
   const [previewMode, setPreviewMode] = useState(false);
 
   const baseTheme = themes[currentTheme];
@@ -89,6 +92,11 @@ export function ThemeCustomizer({ onClose }: ThemeCustomizerProps) {
       setCustomizations(localCustomizations);
     }
   }, [localCustomizations, previewMode, setCustomizations]);
+
+  // Sync activeMode with resolvedTheme
+  useEffect(() => {
+    setActiveMode(resolvedTheme);
+  }, [resolvedTheme]);
 
   const handleColorChange = (colorKey: string, value: string) => {
     setLocalCustomizations((prev) => ({

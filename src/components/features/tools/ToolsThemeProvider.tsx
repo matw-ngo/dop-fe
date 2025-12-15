@@ -1,7 +1,7 @@
 "use client";
 
 import { ReactNode, useEffect, useRef } from "react";
-import { useTheme } from "@/components/renderer/theme/context";
+import { useThemeUtils } from "@/components/renderer/theme";
 
 interface ToolsThemeProviderProps {
   children: ReactNode;
@@ -21,7 +21,7 @@ export function ToolsThemeProvider({
   children,
   defaultTheme = "finance",
 }: ToolsThemeProviderProps) {
-  const { userGroup, setUserGroup, setTheme, currentTheme } = useTheme();
+  const { theme, setTheme, resolvedTheme } = useThemeUtils();
   const isInitialized = useRef(false);
 
   useEffect(() => {
@@ -33,59 +33,35 @@ export function ToolsThemeProvider({
       if (savedToolsTheme) {
         // Restore saved theme preference
         try {
-          const { themeId, userGroupId } = JSON.parse(savedToolsTheme);
-
-          // Set user group first if different
-          if (userGroup !== userGroupId) {
-            setUserGroup(userGroupId);
-          } else {
-            // If user group is already correct, set the theme
-            setTheme(themeId);
-          }
+          const { themeId } = JSON.parse(savedToolsTheme);
+          // Set the saved theme
+          setTheme(themeId);
         } catch (error) {
           console.warn("Failed to parse saved tools theme:", error);
           // Fall back to default theme
-          setDefaultTheme();
+          setTheme(defaultTheme);
         }
       } else {
         // No saved preference, use default
-        setDefaultTheme();
+        setTheme(defaultTheme);
       }
 
       isInitialized.current = true;
     }
-  }, [userGroup, setUserGroup, setTheme]);
+  }, [setTheme, defaultTheme]);
 
   // Save theme changes to localStorage for persistence
   useEffect(() => {
-    if (isInitialized.current && currentTheme) {
+    if (isInitialized.current && theme) {
       // Save current theme configuration for tools
       const themeConfig = {
-        themeId: currentTheme,
-        userGroup: userGroup,
+        themeId: theme.name || defaultTheme,
         timestamp: Date.now(),
       };
 
       localStorage.setItem("dop-tools-theme", JSON.stringify(themeConfig));
     }
-  }, [currentTheme, userGroup]);
-
-  const setDefaultTheme = () => {
-    // Set the appropriate user group based on default theme
-    const themeToUserGroupMap = {
-      finance: "finance",
-      medical: "healthcare",
-      corporate: "business",
-    };
-
-    const targetUserGroup = themeToUserGroupMap[defaultTheme];
-
-    if (userGroup !== targetUserGroup) {
-      setUserGroup(targetUserGroup);
-    } else {
-      setTheme(defaultTheme);
-    }
-  };
+  }, [theme, defaultTheme]);
 
   return <>{children}</>;
 }

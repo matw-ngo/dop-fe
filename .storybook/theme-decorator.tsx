@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import type { Decorator } from "@storybook/react";
-import { ThemeProvider } from "../src/lib/theme/context";
-import { themes } from "../src/lib/theme/themes";
-import { applyTheme } from "../src/lib/theme/utils";
+import { ThemeProvider } from "../src/components/renderer/theme";
+import { themes } from "../src/components/renderer/theme/themes";
+import { applyTheme } from "../src/components/renderer/theme/utils";
 
 // Component to handle theme application
 function ThemeWrapper({
@@ -38,22 +38,16 @@ function ThemeWrapper({
     setMounted(true);
   }, [themeId, mode]);
 
-  // Apply dark class for dark mode
+  // Apply data attributes for dark mode
   useEffect(() => {
     const html = document.documentElement;
-    const body = document.body;
 
-    if (mode === "dark") {
-      html.classList.add("dark");
-      body.classList.add("dark");
-    } else {
-      html.classList.remove("dark");
-      body.classList.remove("dark");
-    }
+    // Set data-color-scheme attribute for dark mode
+    html.setAttribute("data-color-scheme", mode);
 
     return () => {
-      html.classList.remove("dark");
-      body.classList.remove("dark");
+      // Cleanup if needed
+      html.removeAttribute("data-color-scheme");
     };
   }, [mode]);
 

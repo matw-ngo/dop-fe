@@ -33,7 +33,7 @@
   }
 
   /* Dark mode selection */
-  .theme-dark ::selection {
+  [data-color-scheme="dark"] ::selection {
     background-color: var(--color-primary-800);
     color: var(--color-primary-100);
   }
@@ -199,7 +199,7 @@
     border: 1px solid rgba(255, 255, 255, 0.2);
   }
 
-  .theme-dark .glass {
+  [data-color-scheme="dark"] .glass {
     background: rgba(0, 0, 0, 0.2);
     border: 1px solid rgba(255, 255, 255, 0.1);
   }

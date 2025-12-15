@@ -10,12 +10,12 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Grid, List, Loader2, SlidersHorizontal, X } from "lucide-react";
-import { useTheme } from "@/components/renderer/theme/context";
 import SearchBar from "@/components/features/credit-card/SearchBar";
 import SortDropdown from "@/components/features/credit-card/SortDropdown";
 import CreditCardFilterPanel from "@/components/features/credit-cards/CreditCardFilterPanel";
 import { CreditCardActiveFilters } from "@/components/features/credit-cards/CreditCardActiveFilters";
 import type { CreditCardFilters, SortOption } from "@/types/credit-card";
+import { useThemeUtils } from "@/components/renderer/theme";
 
 interface CreditCardsPageControlsProps {
   searchQuery: string;
@@ -53,9 +53,9 @@ export function CreditCardsPageControls({
   onMobileFiltersChange,
 }: CreditCardsPageControlsProps) {
   const t = useTranslations("features.credit-cards.listing");
-  const { themeConfig } = useTheme();
+  const { theme } = useThemeUtils();
 
-  const isCorporateTheme = themeConfig?.id === "corporate";
+  const isCorporateTheme = theme.name === "corporate";
 
   return (
     <div

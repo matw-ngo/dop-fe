@@ -1,8 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import { useTheme } from "@/components/renderer/theme/context";
-import { useTheme as useNextTheme } from "next-themes";
+import { useThemeUtils } from "@/components/renderer/theme";
 import { NavbarConfig } from "@/configs/navbar-config";
 
 /**
@@ -10,24 +9,22 @@ import { NavbarConfig } from "@/configs/navbar-config";
  * This hook ensures the navbar colors match the active theme
  */
 export function useCreditCardsNavbarTheme(): NavbarConfig {
-  const { themeConfig, userGroup } = useTheme();
-  const { resolvedTheme } = useNextTheme();
+  const { theme, resolvedTheme } = useThemeUtils();
 
   return useMemo(() => {
     // Default colors
     let iconColor = "#017848"; // Default finzone green
 
     // Apply theme-specific colors
-    if (themeConfig) {
-      if (themeConfig.id === "corporate" || userGroup === "business") {
+    if (theme) {
+      if (theme.name === "corporate") {
         // Corporate theme uses professional blue tones
         // Light mode: oklch(0.47 0.13 220) -> hex approx #1e40af
         // Dark mode: oklch(0.67 0.13 220) -> hex approx #2563eb
         iconColor = resolvedTheme === "dark" ? "#2563eb" : "#1e40af";
       } else {
         // Use the theme's primary color based on current mode
-        const mode = resolvedTheme === "dark" ? "dark" : "light";
-        iconColor = themeConfig.colors[mode]?.primary || "#017848";
+        iconColor = theme.colors.primary || "#017848";
       }
     }
 
@@ -143,5 +140,5 @@ export function useCreditCardsNavbarTheme(): NavbarConfig {
       ],
       hideOnPaths: ["/thong-tin-vay/", "/tim-kiem-vay/", "/ket-qua-vay/"],
     };
-  }, [themeConfig, userGroup, resolvedTheme]);
+  }, [theme, resolvedTheme]);
 }

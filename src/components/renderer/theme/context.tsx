@@ -2,11 +2,12 @@
 
 import {
   ThemeProvider as NextThemesProvider,
-  ThemeProviderProps,
+  type ThemeProviderProps,
   useTheme as useNextTheme,
 } from "next-themes";
 import type React from "react";
 import { createContext, useContext, useEffect, useState } from "react";
+import { isValidColor } from "@/lib/validate-colors";
 import { themes, userGroups } from "./themes";
 import type { ThemeColors, ThemeState } from "./types";
 import { applyTheme } from "./utils";
@@ -28,6 +29,9 @@ interface ThemeContextType {
   canCustomize: boolean;
   themeConfig: (typeof themes)[string] | null;
 }
+
+// Validation cache for performance
+const validationCache = new Map<string, boolean>();
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
@@ -82,7 +86,7 @@ export function ThemeProvider({
         const stored = localStorage.getItem(storageKey);
         if (stored) {
           // We ignore the 'mode' property from old stored configs
-          const { mode, ...rest } = JSON.parse(stored);
+          const { mode: _, ...rest } = JSON.parse(stored);
           return { ...defaultState, ...rest };
         }
       } catch (error) {
@@ -124,10 +128,42 @@ export function ThemeProvider({
   const setCustomizations = (colors: Partial<ThemeColors>) => {
     const group = userGroups[state.userGroup];
     if (group?.customizations?.allowCustomColors) {
-      setState((prev) => ({
-        ...prev,
-        customizations: { ...prev.customizations, ...colors },
-      }));
+      // Validate all color inputs
+      const validatedColors: Partial<ThemeColors> = {};
+
+      for (const [key, value] of Object.entries(colors)) {
+        if (value === undefined || value === null || value === "") {
+          // Skip undefined/null/empty values
+          continue;
+        }
+
+        // Check cache first for performance
+        if (validationCache.has(value)) {
+          if (validationCache.get(value)) {
+            validatedColors[key as keyof ThemeColors] = value;
+          } else {
+            console.warn(`Invalid color value for ${key}: ${value} (cached)`);
+          }
+          continue;
+        }
+
+        // Validate the color
+        if (isValidColor(value)) {
+          validatedColors[key as keyof ThemeColors] = value;
+          validationCache.set(value, true);
+        } else {
+          console.warn(`Invalid color value for ${key}: ${value}`);
+          validationCache.set(value, false);
+        }
+      }
+
+      // Only update state if there are valid colors
+      if (Object.keys(validatedColors).length > 0) {
+        setState((prev) => ({
+          ...prev,
+          customizations: { ...prev.customizations, ...validatedColors },
+        }));
+      }
     }
   };
 
@@ -156,7 +192,7 @@ export function ThemeProvider({
   return (
     <NextThemesProvider
       {...props}
-      attribute="class"
+      attribute="data-theme"
       defaultTheme="system"
       enableSystem
       disableTransitionOnChange

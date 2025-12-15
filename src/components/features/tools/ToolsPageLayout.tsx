@@ -2,7 +2,7 @@
 
 import { ReactNode, useState } from "react";
 import { useTranslations } from "next-intl";
-import { useTheme } from "@/components/renderer/theme/context";
+import { useThemeUtils } from "@/components/renderer/theme";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
@@ -56,10 +56,10 @@ export function ToolsPageLayout({
   toolsCount = 0,
 }: ToolsPageLayoutProps) {
   const t = useTranslations("features.tools.list");
-  const { themeConfig } = useTheme();
+  const { theme } = useThemeUtils();
   const [isFilterSheetOpen, setIsFilterSheetOpen] = useState(false);
 
-  const isFinanceTheme = themeConfig?.id === "finance";
+  const isFinanceTheme = theme.name === "finance";
 
   const handleFilterChange = (
     type: "category" | "status" | "complexity",

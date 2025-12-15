@@ -13,7 +13,7 @@ import InsuranceSearchBar from "@/components/features/insurance/InsuranceSearchB
 import SortDropdown from "@/components/features/insurance/InsuranceSortDropdown";
 import InsuranceFilterPanel from "@/components/features/insurance/InsuranceFilterPanel";
 import type { InsuranceFilters } from "@/types/insurance";
-import { useTheme } from "@/components/renderer/theme/context";
+import { useThemeUtils } from "@/components/renderer/theme";
 
 interface InsurancePageControlsProps {
   searchQuery: string;
@@ -51,9 +51,9 @@ export default function InsurancePageControls({
   onMobileFiltersChange,
 }: InsurancePageControlsProps) {
   const t = useTranslations("features.insurance.listing");
-  const { themeConfig } = useTheme();
+  const { theme } = useThemeUtils();
 
-  const isMedicalTheme = themeConfig?.id === "medical";
+  const isMedicalTheme = theme.name === "medical";
 
   return (
     <div

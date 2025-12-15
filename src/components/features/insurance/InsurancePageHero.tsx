@@ -1,6 +1,6 @@
 import { useTranslations } from "next-intl";
 import { Shield, Heart } from "lucide-react";
-import { useTheme } from "@/components/renderer/theme/context";
+import { useThemeUtils } from "@/components/renderer/theme";
 
 interface InsurancePageHeroProps {
   titleKey: string;
@@ -11,13 +11,13 @@ export default function InsurancePageHero({
   titleKey,
   descriptionKey,
 }: InsurancePageHeroProps) {
-  const { themeConfig } = useTheme();
+  const { theme } = useThemeUtils();
   const t = useTranslations("features.insurance.listing");
 
   return (
     <section className="relative bg-muted border-b overflow-hidden">
       {/* Subtle background pattern for healthcare theme */}
-      {themeConfig?.id === "medical" && (
+      {theme.name === "medical" && (
         <div className="absolute inset-0 opacity-5">
           <div
             className="absolute inset-0"

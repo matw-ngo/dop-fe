@@ -1,7 +1,6 @@
 "use client";
 
 import { Download, Monitor, Moon, Palette, Settings, Sun } from "lucide-react";
-import { useTheme as useNextTheme } from "next-themes";
 import { useState, useEffect } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -31,22 +30,24 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useTheme } from "@/components/renderer/theme/context";
+import { useTheme } from "@/components/renderer/theme";
 import { themes, userGroups } from "@/components/renderer/theme/themes";
 import type { ThemeMode } from "@/components/renderer/theme/types";
 import { exportThemeAsCSS } from "@/components/renderer/theme/utils";
 import { ThemeCustomizer } from "./theme-customizer";
 
 export function ThemeSelector() {
-  const { theme: nextTheme, setTheme: setNextTheme } = useNextTheme();
   const {
     currentTheme,
     userGroup,
     availableThemes,
     canCustomize,
     themeConfig,
-    setTheme,
+    mode,
+    setThemeById,
     setUserGroup,
+    setMode,
+    resolvedTheme,
   } = useTheme();
 
   const [showCustomizer, setShowCustomizer] = useState(false);
@@ -60,8 +61,8 @@ export function ThemeSelector() {
     return null;
   }
 
-  const handleModeChange = (mode: string) => {
-    setNextTheme(mode);
+  const handleModeChange = (newMode: string) => {
+    setMode(newMode as "light" | "dark" | "system");
   };
 
   const handleThemeExport = () => {
@@ -97,7 +98,7 @@ export function ThemeSelector() {
       </Select>
 
       {/* Theme Selector */}
-      <Select value={currentTheme} onValueChange={setTheme}>
+      <Select value={currentTheme} onValueChange={setThemeById}>
         <SelectTrigger className="w-[120px]">
           <SelectValue />
         </SelectTrigger>
@@ -120,7 +121,7 @@ export function ThemeSelector() {
       </Select>
 
       {/* Mode Selector */}
-      <Select value={nextTheme} onValueChange={handleModeChange}>
+      <Select value={mode} onValueChange={handleModeChange}>
         <SelectTrigger className="w-[100px]">
           <SelectValue />
         </SelectTrigger>

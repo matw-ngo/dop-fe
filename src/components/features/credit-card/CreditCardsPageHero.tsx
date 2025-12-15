@@ -2,7 +2,7 @@ import { useTranslations } from "next-intl";
 import { CreditCard as CreditCardIcon, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { useTheme } from "@/components/renderer/theme/context";
+import { useThemeUtils } from "@/components/renderer/theme";
 import type { CreditCard } from "@/types/credit-card";
 
 interface CreditCardsPageHeroProps {
@@ -20,9 +20,9 @@ export default function CreditCardsPageHero({
 }: CreditCardsPageHeroProps) {
   const t = useTranslations("features.credit-cards.listing");
   const tMain = useTranslations("features.credit-cards.main");
-  const { themeConfig } = useTheme();
+  const { theme } = useThemeUtils();
 
-  const isCorporateTheme = themeConfig?.id === "corporate";
+  const isCorporateTheme = theme.name === "corporate";
 
   return (
     <section

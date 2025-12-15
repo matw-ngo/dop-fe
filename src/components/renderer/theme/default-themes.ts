@@ -1,4 +1,4 @@
-import { Theme } from "@/types/ui-theme";
+import { Theme } from "../types/ui-theme";
 
 // Light theme
 export const lightTheme: Theme = {
@@ -6,76 +6,76 @@ export const lightTheme: Theme = {
 
   colors: {
     primary: {
-      50: "#eff6ff",
-      100: "#dbeafe",
-      200: "#bfdbfe",
-      300: "#93c5fd",
-      400: "#60a5fa",
-      500: "#3b82f6", // Main primary
-      600: "#2563eb",
-      700: "#1d4ed8",
-      800: "#1e40af",
-      900: "#1e3a8a",
-      950: "#172554",
+      50: "oklch(0.979 0.014 250.981)",
+      100: "oklch(0.945 0.041 247.858)",
+      200: "oklch(0.904 0.073 247.858)",
+      300: "oklch(0.839 0.113 247.858)",
+      400: "oklch(0.733 0.155 247.858)",
+      500: "oklch(0.623 0.188 259.815)", // Main primary
+      600: "oklch(0.511 0.208 259.815)",
+      700: "oklch(0.425 0.199 259.815)",
+      800: "oklch(0.353 0.172 259.815)",
+      900: "oklch(0.297 0.143 259.815)",
+      950: "oklch(0.202 0.108 259.815)",
     },
 
     secondary: {
-      50: "#f8fafc",
-      100: "#f1f5f9",
-      200: "#e2e8f0",
-      300: "#cbd5e1",
-      400: "#94a3b8",
-      500: "#64748b", // Main secondary
-      600: "#475569",
-      700: "#334155",
-      800: "#1e293b",
-      900: "#0f172a",
-      950: "#020617",
+      50: "oklch(0.987 0.002 247.858)",
+      100: "oklch(0.971 0.009 247.858)",
+      200: "oklch(0.938 0.021 247.858)",
+      300: "oklch(0.887 0.037 247.858)",
+      400: "oklch(0.795 0.051 247.858)",
+      500: "oklch(0.685 0.059 247.858)", // Main secondary
+      600: "oklch(0.566 0.059 247.858)",
+      700: "oklch(0.449 0.055 247.858)",
+      800: "oklch(0.293 0.045 247.858)",
+      900: "oklch(0.147 0.032 247.858)",
+      950: "oklch(0.065 0.019 247.858)",
     },
 
     gray: {
-      50: "#f9fafb",
-      100: "#f3f4f6",
-      200: "#e5e7eb",
-      300: "#d1d5db",
-      400: "#9ca3af",
-      500: "#6b7280",
-      600: "#4b5563",
-      700: "#374151",
-      800: "#1f2937",
-      900: "#111827",
-      950: "#030712",
+      50: "oklch(0.989 0.002 247.858)",
+      100: "oklch(0.973 0.006 247.858)",
+      200: "oklch(0.938 0.011 247.858)",
+      300: "oklch(0.873 0.017 247.858)",
+      400: "oklch(0.773 0.022 247.858)",
+      500: "oklch(0.647 0.025 247.858)",
+      600: "oklch(0.516 0.025 247.858)",
+      700: "oklch(0.389 0.023 247.858)",
+      800: "oklch(0.245 0.02 247.858)",
+      900: "oklch(0.13 0.016 247.858)",
+      950: "oklch(0.047 0.011 247.858)",
     },
 
     // Semantic colors
-    success: "#10b981",
-    warning: "#f59e0b",
-    error: "#ef4444",
-    info: "#06b6d4",
+    success: "oklch(0.696 0.149 162.48)",
+    warning: "oklch(0.769 0.165 70.08)",
+    error: "oklch(0.637 0.208 25.331)",
+    info: "oklch(0.715 0.126 215.221)",
 
     // Background colors
     background: {
-      primary: "#ffffff",
-      secondary: "#f9fafb",
-      tertiary: "#f3f4f6",
-      inverse: "#1f2937",
+      primary: "oklch(1 0 0)",
+      secondary: "oklch(0.989 0.002 247.858)",
+      tertiary: "oklch(0.973 0.006 247.858)",
+      inverse: "oklch(0.245 0.02 247.858)",
     },
 
     // Text colors
     text: {
-      primary: "#111827",
-      secondary: "#4b5563",
-      tertiary: "#6b7280",
-      inverse: "#ffffff",
-      disabled: "#9ca3af",
+      primary: "oklch(0.13 0.016 247.858)",
+      secondary: "oklch(0.516 0.025 247.858)",
+      tertiary: "oklch(0.647 0.025 247.858)",
+      inverse: "oklch(1 0 0)",
+      disabled: "oklch(0.773 0.022 247.858)",
     },
 
     // Border colors
     border: {
-      primary: "#d1d5db",
-      secondary: "#e5e7eb",
-      focus: "#3b82f6",
-      error: "#ef4444",
+      primary: "oklch(0.873 0.017 247.858)",
+      secondary: "oklch(0.938 0.011 247.858)",
+      focus: "oklch(0.623 0.188 259.815)",
+      error: "oklch(0.637 0.208 25.331)",
     },
   },
 
@@ -234,76 +234,76 @@ export const darkTheme: Theme = {
 
   colors: {
     primary: {
-      50: "#1e3a8a",
-      100: "#1e40af",
-      200: "#1d4ed8",
-      300: "#2563eb",
-      400: "#3b82f6",
-      500: "#60a5fa", // Main primary (brighter in dark mode)
-      600: "#93c5fd",
-      700: "#bfdbfe",
-      800: "#dbeafe",
-      900: "#eff6ff",
-      950: "#eff6ff",
+      50: "oklch(0.202 0.108 259.815)",
+      100: "oklch(0.353 0.172 259.815)",
+      200: "oklch(0.425 0.199 259.815)",
+      300: "oklch(0.511 0.208 259.815)",
+      400: "oklch(0.623 0.188 259.815)",
+      500: "oklch(0.733 0.155 247.858)", // Main primary (brighter in dark mode)
+      600: "oklch(0.839 0.113 247.858)",
+      700: "oklch(0.904 0.073 247.858)",
+      800: "oklch(0.945 0.041 247.858)",
+      900: "oklch(0.979 0.014 250.981)",
+      950: "oklch(0.979 0.014 250.981)",
     },
 
     secondary: {
-      50: "#0f172a",
-      100: "#1e293b",
-      200: "#334155",
-      300: "#475569",
-      400: "#64748b",
-      500: "#94a3b8", // Main secondary (lighter in dark mode)
-      600: "#cbd5e1",
-      700: "#e2e8f0",
-      800: "#f1f5f9",
-      900: "#f8fafc",
-      950: "#f8fafc",
+      50: "oklch(0.065 0.019 247.858)",
+      100: "oklch(0.293 0.045 247.858)",
+      200: "oklch(0.449 0.055 247.858)",
+      300: "oklch(0.566 0.059 247.858)",
+      400: "oklch(0.685 0.059 247.858)",
+      500: "oklch(0.795 0.051 247.858)", // Main secondary (lighter in dark mode)
+      600: "oklch(0.887 0.037 247.858)",
+      700: "oklch(0.938 0.021 247.858)",
+      800: "oklch(0.971 0.009 247.858)",
+      900: "oklch(0.987 0.002 247.858)",
+      950: "oklch(0.987 0.002 247.858)",
     },
 
     gray: {
-      50: "#030712",
-      100: "#111827",
-      200: "#1f2937",
-      300: "#374151",
-      400: "#4b5563",
-      500: "#6b7280",
-      600: "#9ca3af",
-      700: "#d1d5db",
-      800: "#e5e7eb",
-      900: "#f3f4f6",
-      950: "#f9fafb",
+      50: "oklch(0.047 0.011 247.858)",
+      100: "oklch(0.13 0.016 247.858)",
+      200: "oklch(0.245 0.02 247.858)",
+      300: "oklch(0.389 0.023 247.858)",
+      400: "oklch(0.516 0.025 247.858)",
+      500: "oklch(0.647 0.025 247.858)",
+      600: "oklch(0.773 0.022 247.858)",
+      700: "oklch(0.873 0.017 247.858)",
+      800: "oklch(0.938 0.011 247.858)",
+      900: "oklch(0.973 0.006 247.858)",
+      950: "oklch(0.989 0.002 247.858)",
     },
 
     // Semantic colors
-    success: "#34d399",
-    warning: "#fbbf24",
-    error: "#f87171",
-    info: "#22d3ee",
+    success: "oklch(0.795 0.139 162.48)",
+    warning: "oklch(0.839 0.158 70.08)",
+    error: "oklch(0.718 0.181 25.331)",
+    info: "oklch(0.815 0.141 215.221)",
 
     // Background colors
     background: {
-      primary: "#0f172a",
-      secondary: "#1e293b",
-      tertiary: "#334155",
-      inverse: "#ffffff",
+      primary: "oklch(0.065 0.019 247.858)",
+      secondary: "oklch(0.293 0.045 247.858)",
+      tertiary: "oklch(0.449 0.055 247.858)",
+      inverse: "oklch(1 0 0)",
     },
 
     // Text colors
     text: {
-      primary: "#f9fafb",
-      secondary: "#d1d5db",
-      tertiary: "#9ca3af",
-      inverse: "#0f172a",
-      disabled: "#4b5563",
+      primary: "oklch(0.987 0.002 247.858)",
+      secondary: "oklch(0.873 0.017 247.858)",
+      tertiary: "oklch(0.773 0.022 247.858)",
+      inverse: "oklch(0.065 0.019 247.858)",
+      disabled: "oklch(0.516 0.025 247.858)",
     },
 
     // Border colors
     border: {
-      primary: "#374151",
-      secondary: "#4b5563",
-      focus: "#60a5fa",
-      error: "#f87171",
+      primary: "oklch(0.389 0.023 247.858)",
+      secondary: "oklch(0.516 0.025 247.858)",
+      focus: "oklch(0.733 0.155 247.858)",
+      error: "oklch(0.718 0.181 25.331)",
     },
   },
 
@@ -320,13 +320,13 @@ export const darkTheme: Theme = {
   },
 
   shadows: {
-    sm: "0 1px 2px 0 rgb(0 0 0 / 0.3)",
-    DEFAULT: "0 1px 3px 0 rgb(0 0 0 / 0.4), 0 1px 2px -1px rgb(0 0 0 / 0.4)",
-    md: "0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.4)",
-    lg: "0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.4)",
-    xl: "0 20px 25px -5px rgb(0 0 0 / 0.4), 0 8px 10px -6px rgb(0 0 0 / 0.4)",
-    "2xl": "0 25px 50px -12px rgb(0 0 0 / 0.6)",
-    inner: "inset 0 2px 4px 0 rgb(0 0 0 / 0.3)",
+    sm: "0 1px 2px 0 rgb(0 0 0 / 0.05)",
+    DEFAULT: "0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)",
+    md: "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
+    lg: "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
+    xl: "0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)",
+    "2xl": "0 25px 50px -12px rgb(0 0 0 / 0.25)",
+    inner: "inset 0 2px 4px 0 rgb(0 0 0 / 0.05)",
     none: "none",
   },
 

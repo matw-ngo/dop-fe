@@ -5,7 +5,7 @@ import InsuranceGrid from "@/components/features/insurance/InsuranceGrid";
 import InsuranceFilterPanel from "@/components/features/insurance/InsuranceFilterPanel";
 import Pagination from "@/components/features/insurance/InsurancePagination";
 import type { InsuranceProduct } from "@/types/insurance";
-import { useTheme } from "@/components/renderer/theme/context";
+import { useThemeUtils } from "@/components/renderer/theme";
 import { useInsuranceStore } from "@/store/use-insurance-store";
 
 interface InsurancePageContentProps {
@@ -50,14 +50,14 @@ export default function InsurancePageContent({
   viewMode,
 }: InsurancePageContentProps) {
   const t = useTranslations("features.insurance.listing");
-  const { themeConfig } = useTheme();
+  const { theme } = useThemeUtils();
 
   // Get comparison state from store
   const comparisonProducts = useInsuranceStore(
     (state: any) => state.comparison.selectedProducts,
   );
 
-  const isMedicalTheme = themeConfig?.id === "medical";
+  const isMedicalTheme = theme.name === "medical";
 
   return (
     <div className="container mx-auto px-4 py-8">

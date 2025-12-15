@@ -1,33 +1,25 @@
 "use client";
 
 import { useEffect } from "react";
-import { useTheme } from "@/components/renderer/theme/context";
+import { useThemeUtils } from "@/components/renderer/theme";
 
 /**
  * Hook to manage insurance-specific theme settings
- * Ensures the insurance section uses the healthcare user group
+ * Ensures the insurance section uses the medical theme
  */
 export function useInsuranceTheme() {
-  const { userGroup, setUserGroup, currentTheme, availableThemes, setTheme } =
-    useTheme();
-
-  useEffect(() => {
-    // If not already in healthcare group, switch to it
-    if (userGroup !== "healthcare") {
-      setUserGroup("healthcare");
-    }
-  }, [userGroup, setUserGroup]);
+  const { theme, setTheme } = useThemeUtils();
 
   // Ensure medical theme is active
   useEffect(() => {
-    if (currentTheme !== "medical" && availableThemes.includes("medical")) {
+    if (theme.name !== "medical") {
       setTheme("medical");
     }
-  }, [currentTheme, availableThemes, setTheme]);
+  }, [theme, setTheme]);
 
   return {
-    isHealthcareGroup: userGroup === "healthcare",
-    currentTheme,
-    isMedicalTheme: currentTheme === "medical",
+    isHealthcareGroup: true, // Always true for insurance section
+    currentTheme: theme.name,
+    isMedicalTheme: theme.name === "medical",
   };
 }

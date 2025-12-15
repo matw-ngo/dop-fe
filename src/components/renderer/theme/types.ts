@@ -82,4 +82,5 @@ export interface ThemeState {
   currentTheme: string;
   userGroup: string;
   customizations?: Partial<ThemeColors>;
+  mode?: ThemeMode;
 }

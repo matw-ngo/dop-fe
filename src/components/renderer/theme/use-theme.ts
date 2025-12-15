@@ -1,9 +1,38 @@
-import { useCallback } from "react";
-import { useTheme } from "./theme-provider";
-import type { Theme, ThemeName } from "@/types/ui-theme";
+import { useCallback, useEffect, useRef } from "react";
+import { useTheme } from "./index";
+import type { Theme } from "../types/ui-theme";
+import { debounce } from "@/lib/utils/debounce";
 
 export function useThemeUtils() {
   const { theme, setTheme, toggleTheme, isDark, resolvedTheme } = useTheme();
+
+  // Store debounced functions in refs to persist across re-renders
+  const debouncedSetThemeRef = useRef<ReturnType<typeof debounce> | null>(null);
+  const debouncedToggleThemeRef = useRef<ReturnType<typeof debounce> | null>(null);
+
+  // Cleanup function for debounced functions
+  useEffect(() => {
+    return () => {
+      // Cancel pending debounced calls on unmount
+      debouncedSetThemeRef.current?.cancel();
+      debouncedToggleThemeRef.current?.cancel();
+    };
+  }, []);
+
+  // Create debounced versions of theme change functions
+  const debouncedSetTheme = useCallback((newTheme: Parameters<typeof setTheme>[0]) => {
+    if (!debouncedSetThemeRef.current) {
+      debouncedSetThemeRef.current = debounce(setTheme, 300);
+    }
+    debouncedSetThemeRef.current(newTheme);
+  }, [setTheme]);
+
+  const debouncedToggleTheme = useCallback(() => {
+    if (!debouncedToggleThemeRef.current) {
+      debouncedToggleThemeRef.current = debounce(toggleTheme, 300);
+    }
+    debouncedToggleThemeRef.current();
+  }, [toggleTheme]);
 
   // Get theme-aware color
   const getColor = useCallback(
@@ -101,7 +130,7 @@ export function useThemeUtils() {
     }),
 
     // Animation shortcuts
-    transition: (duration: keyof Theme["animations"]["duration"] = "200") => ({
+    transition: (duration: keyof Theme["animations"]["duration"] = 200) => ({
       transition: `all ${theme.animations.duration[duration]} ${theme.animations.easing["in-out"]}`,
     }),
   };
@@ -113,6 +142,10 @@ export function useThemeUtils() {
     toggleTheme,
     isDark,
     resolvedTheme,
+
+    // Debounced versions (300ms delay to prevent layout thrashing)
+    setThemeDebounced: debouncedSetTheme,
+    toggleThemeDebounced: debouncedToggleTheme,
 
     // Utilities
     getColor,

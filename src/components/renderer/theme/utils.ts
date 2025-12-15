@@ -1,4 +1,6 @@
-import type { ThemeColors, ThemeConfig, ThemeMode } from "./types";
+import { sanitizeCSS } from "@/lib/sanitize-css";
+import { measureThemeOperation } from "@/lib/theme-performance";
+import type { ThemeColors, ThemeConfig } from "./types";
 
 /**
  * Convert camelCase to kebab-case for CSS variables
@@ -24,25 +26,90 @@ export function generateCSSVariables(
   return variables;
 }
 
-let appliedProperties: Set<string> = new Set();
+const appliedProperties: Set<string> = new Set();
+
+// DOM update batching system
+let pendingDOMUpdates: Map<string, string> = new Map();
+let rafId: number | null = null;
 
 /**
- * Apply theme colors to document root
+ * Batch DOM updates using requestAnimationFrame for better performance
+ */
+function batchDOMUpdates() {
+  if (rafId !== null) return; // Already scheduled
+
+  try {
+    rafId = requestAnimationFrame(() => {
+      const root = document.documentElement;
+
+      // Apply all pending updates in a single batch
+      pendingDOMUpdates.forEach((value, property) => {
+        root.style.setProperty(property, value);
+        appliedProperties.add(property);
+      });
+
+      // Clear pending updates
+      pendingDOMUpdates.clear();
+      rafId = null;
+    });
+  } catch (error) {
+    // Fallback to immediate DOM updates if RAF is not available
+    console.warn("requestAnimationFrame not available, applying updates immediately", error);
+    const root = document.documentElement;
+
+    pendingDOMUpdates.forEach((value, property) => {
+      root.style.setProperty(property, value);
+      appliedProperties.add(property);
+    });
+
+    pendingDOMUpdates.clear();
+  }
+}
+
+/**
+ * Schedule a DOM property update to be batched
+ */
+function scheduleDOMUpdate(property: string, value: string) {
+  pendingDOMUpdates.set(property, value);
+  batchDOMUpdates();
+}
+
+/**
+ * Apply theme colors to document root with batching optimization
  */
 export function applyTheme(
   theme: ThemeConfig,
   mode: "light" | "dark",
   customizations?: Partial<ThemeColors>,
 ): void {
-  if (typeof document === "undefined") return;
+  // Apply performance monitoring
+  return measureThemeOperation('applyTheme', () => {
+    if (typeof document === "undefined") return;
+
+  // Validate inputs
+  if (!theme || !theme.colors || !theme.colors[mode]) {
+    console.warn("Invalid theme configuration provided to applyTheme");
+    return;
+  }
 
   const root = document.documentElement;
 
-  // Clear previously applied properties
+  // Clear previously applied properties immediately to avoid conflicts
   appliedProperties.forEach((prop) => {
     root.style.removeProperty(prop);
   });
   appliedProperties.clear();
+
+  // Cancel any pending updates
+  if (rafId !== null) {
+    try {
+      cancelAnimationFrame(rafId);
+    } catch (error) {
+      console.warn("Failed to cancel requestAnimationFrame", error);
+    }
+    rafId = null;
+  }
+  pendingDOMUpdates.clear();
 
   // Get base colors for the mode
   const baseColors = theme.colors[mode];
@@ -52,44 +119,60 @@ export function applyTheme(
     ? { ...baseColors, ...customizations }
     : baseColors;
 
-  // Generate and apply CSS variables
-  const variables = generateCSSVariables(finalColors);
+  try {
+    // Generate and schedule CSS variable updates
+    const variables = generateCSSVariables(finalColors);
 
-  Object.entries(variables).forEach(([property, value]) => {
-    root.style.setProperty(property, value);
-    appliedProperties.add(property);
-  });
+    Object.entries(variables).forEach(([property, value]) => {
+      scheduleDOMUpdate(property, value);
+    });
 
-  // Apply radius if specified
-  if (theme.radius) {
-    root.style.setProperty("--radius", theme.radius);
-    appliedProperties.add("--radius");
-  }
-
-  // Apply custom fonts if specified
-  if (theme.fonts?.sans) {
-    root.style.setProperty("--font-sans", theme.fonts.sans);
-    appliedProperties.add("--font-sans");
-  }
-  if (theme.fonts?.mono) {
-    root.style.setProperty("--font-mono", theme.fonts.mono);
-    appliedProperties.add("--font-mono");
-  }
-
-  // Apply custom CSS if provided
-  if (theme.customCSS) {
-    // Remove existing custom theme styles
-    const existingStyle = document.getElementById("custom-theme-styles");
-    if (existingStyle) {
-      existingStyle.remove();
+    // Apply radius if specified
+    if (theme.radius) {
+      scheduleDOMUpdate("--radius", theme.radius);
     }
 
-    // Add new custom styles
-    const style = document.createElement("style");
-    style.id = "custom-theme-styles";
-    style.textContent = theme.customCSS;
-    document.head.appendChild(style);
+    // Apply custom fonts if specified
+    if (theme.fonts?.sans) {
+      scheduleDOMUpdate("--font-sans", theme.fonts.sans);
+    }
+    if (theme.fonts?.mono) {
+      scheduleDOMUpdate("--font-mono", theme.fonts.mono);
+    }
+  } catch (error) {
+    console.warn("Error applying theme properties", error);
   }
+
+  // Apply custom CSS if provided (handled separately for security)
+  if (theme.customCSS) {
+    // Defer custom CSS application to avoid blocking the main thread
+    setTimeout(() => {
+      try {
+        // Sanitize the custom CSS to prevent injection attacks
+        const sanitizedCSS = sanitizeCSS(theme.customCSS);
+
+        // Remove existing custom theme styles
+        const existingStyle = document.getElementById("custom-theme-styles");
+        if (existingStyle) {
+          existingStyle.remove();
+        }
+
+        // Only add sanitized CSS if it's not empty
+        if (sanitizedCSS) {
+          // Add new custom styles
+          const style = document.createElement("style");
+          style.id = "custom-theme-styles";
+          style.textContent = sanitizedCSS;
+          document.head.appendChild(style);
+        } else {
+          console.warn("Custom CSS was removed due to security concerns");
+        }
+      } catch (error) {
+        console.warn("Error applying custom CSS", error);
+      }
+    }, 0);
+  }
+  });
 }
 
 /**
@@ -259,7 +342,15 @@ export function exportThemeAsCSS(theme: ThemeConfig): string {
 
   // Custom CSS if provided
   if (theme.customCSS) {
-    css += `\n/* Custom styles */\n${theme.customCSS}\n`;
+    // Sanitize the custom CSS to prevent injection attacks
+    const sanitizedCSS = sanitizeCSS(theme.customCSS);
+
+    // Only include sanitized CSS if it's not empty
+    if (sanitizedCSS) {
+      css += `\n/* Custom styles */\n${sanitizedCSS}\n`;
+    } else {
+      console.warn("Custom CSS was removed due to security concerns");
+    }
   }
 
   return css;

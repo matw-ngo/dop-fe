@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { ThemeSelector } from "./theme-selector";
 import { ThemeCustomizer } from "./theme-customizer";
-import { useTheme } from "@/components/renderer/theme/context";
+import { useTheme } from "@/components/renderer/theme";
 import { Button } from "@/components/ui/button";
 import {
   Card,

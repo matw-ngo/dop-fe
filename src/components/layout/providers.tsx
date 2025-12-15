@@ -2,7 +2,7 @@
 
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/sonner";
-import { ThemeProvider } from "@/components/renderer/theme/context";
+import { ThemeProvider } from "@/components/renderer/theme";
 import { AuthProvider } from "@/lib/auth/auth-context";
 import { queryClient } from "@/lib/query-client";
 
@@ -18,7 +18,7 @@ export default function Providers({
       <AuthProvider>
         <ThemeProvider
           defaultUserGroup={defaultUserGroup}
-          attribute="class"
+          attribute="data-theme"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange

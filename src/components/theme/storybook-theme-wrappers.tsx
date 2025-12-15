@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { ThemeProvider } from "@/components/renderer/theme/context";
+import { ThemeProvider } from "@/components/renderer/theme";
 import { themes } from "@/components/renderer/theme/themes";
 import { applyTheme } from "@/components/renderer/theme/utils";
 
@@ -19,16 +19,8 @@ function ThemeWrapperBase({
   useEffect(() => {
     const theme = themes[themeId];
     if (theme) {
-      // Apply theme immediately
+      // Apply theme immediately - this will set data attributes
       applyTheme(theme, mode);
-
-      // Also apply dark class if needed
-      const html = document.documentElement;
-      if (mode === "dark") {
-        html.classList.add("dark");
-      } else {
-        html.classList.remove("dark");
-      }
     }
   }, [themeId, mode]);
 
