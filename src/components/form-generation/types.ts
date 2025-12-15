@@ -306,6 +306,36 @@ export interface FieldLayoutConfig {
 // ============================================================================
 
 /**
+ * Granular styling configuration for field components
+ */
+export interface FieldStylingConfig {
+  /**
+   * Wrapper container (spacing, layout)
+   */
+  wrapper?: string;
+
+  /**
+   * Label element
+   */
+  label?: string;
+
+  /**
+   * The actual input/select/control element
+   */
+  control?: string;
+
+  /**
+   * Error message container
+   */
+  error?: string;
+
+  /**
+   * Help text
+   */
+  help?: string;
+}
+
+/**
  * Base field configuration
  */
 export interface BaseFieldConfig {
@@ -375,7 +405,14 @@ export interface BaseFieldConfig {
   i18n?: FieldI18nConfig;
 
   /**
+   * Granular styling configuration with separate control for each part
+   */
+  styling?: FieldStylingConfig;
+
+  /**
    * Custom CSS classes
+   * @deprecated Use styling.control instead for better clarity
+   * Kept for backward compatibility - maps to styling.control
    */
   className?: string;
 

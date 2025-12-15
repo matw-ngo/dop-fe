@@ -109,6 +109,73 @@
             "label": "Meeting Time",
             "placeholder": "Select time",
             "help": ""
+        },
+        "full_name": {
+            "label": "Full Name",
+            "placeholder": "Enter full name",
+            "help": "",
+            "errors": {
+                "required": "Full name is required",
+                "pattern": "Full name must assume alpha characters"
+            }
+        },
+        "national_id": {
+            "label": "National ID (12 digits)",
+            "placeholder": "Enter 12-digit ID",
+            "help": "",
+            "errors": {
+                "required": "National ID is required"
+            }
+        },
+        "province": {
+            "label": "City / Province",
+            "placeholder": "Select province",
+            "help": "",
+            "errors": {
+                "required": "Please select a province"
+            }
+        },
+        "extra_docs": {
+            "label": "Vehicle Registration/Ownership",
+            "placeholder": "",
+            "help": ""
+        },
+        "career_status": {
+            "label": "Employment Status",
+            "placeholder": "Select status",
+            "help": "",
+            "errors": {
+                "required": "Please select employment status"
+            }
+        },
+        "career_type": {
+            "label": "Industry / Career Type",
+            "placeholder": "Select career type",
+            "help": "",
+            "errors": {
+                "required": "Please select career type"
+            }
+        },
+        "income": {
+            "label": "Monthly Income",
+            "placeholder": "Select income range",
+            "help": "",
+            "errors": {
+                "required": "Please select income"
+            }
+        },
+        "having_loan": {
+            "label": "Do you currently have a loan?",
+            "placeholder": "Select...",
+            "help": ""
+        },
+        "credit_status": {
+            "label": "Credit History (Last 3 years)",
+            "placeholder": "Select history...",
+            "help": "",
+            "errors": {
+                "required": "Please select credit history"
+            }
         }
     },
     "validation": {
