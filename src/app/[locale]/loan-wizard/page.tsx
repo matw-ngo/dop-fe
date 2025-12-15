@@ -7,6 +7,8 @@ import {
   FieldType,
   StepWizard,
   ValidationRuleType,
+  FormThemeProvider,
+  legacyLoanTheme,
 } from "@/components/form-generation";
 import { allowCustomComponent } from "@/components/form-generation/constants";
 import { registerComponent } from "@/components/form-generation/registry/ComponentRegistry";
@@ -254,7 +256,7 @@ export default function LoanWizardPage() {
       },
     ],
     navigation: {
-      showProgress: true,
+      showProgress: false,
       progressType: "bar",
       showStepNumbers: false,
       showStepTitles: false,
@@ -267,27 +269,29 @@ export default function LoanWizardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
-      <div className="max-w-2xl mx-auto space-y-8">
-        <div className="bg-white rounded-xl shadow-sm border p-6">
-          <StepWizard
-            config={wizardConfig}
-            onComplete={handleComplete}
-            className="max-w-[570px] mx-auto"
-          />
-        </div>
-
-        {submittedData && (
-          <div className="bg-green-50 border border-green-200 rounded-lg p-6">
-            <h3 className="text-green-800 font-semibold mb-2">
-              Đăng ký thành công!
-            </h3>
-            <pre className="text-xs bg-white p-4 rounded border overflow-auto">
-              {JSON.stringify(submittedData, null, 2)}
-            </pre>
+    <FormThemeProvider theme={legacyLoanTheme}>
+      <div className="min-h-screen bg-gray-50 p-8">
+        <div className="max-w-2xl mx-auto space-y-8">
+          <div className="bg-white rounded-xl shadow-sm border p-6">
+            <StepWizard
+              config={wizardConfig}
+              onComplete={handleComplete}
+              className="max-w-[570px] mx-auto"
+            />
           </div>
-        )}
+
+          {submittedData && (
+            <div className="bg-green-50 border border-green-200 rounded-lg p-6">
+              <h3 className="text-green-800 font-semibold mb-2">
+                Đăng ký thành công!
+              </h3>
+              <pre className="text-xs bg-white p-4 rounded border overflow-auto">
+                {JSON.stringify(submittedData, null, 2)}
+              </pre>
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </FormThemeProvider>
   );
 }

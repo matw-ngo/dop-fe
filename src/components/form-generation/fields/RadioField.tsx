@@ -3,6 +3,8 @@
 import type { FieldComponentProps, RadioFieldConfig } from "../types";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
+import { useFormTheme } from "../themes/ThemeProvider";
+import { cn } from "../utils/helpers";
 
 export function RadioField({
   field,
@@ -13,6 +15,7 @@ export function RadioField({
   disabled,
   className,
 }: FieldComponentProps<string>) {
+  const { theme } = useFormTheme();
   const radioField = field as RadioFieldConfig;
   const options = radioField.options || {};
   const isDisabled = disabled || field.disabled;
@@ -28,7 +31,10 @@ export function RadioField({
       onValueChange={onChange}
       onBlur={onBlur}
       disabled={isDisabled}
-      className={`${layout === "horizontal" ? "flex flex-wrap gap-4" : "space-y-3"} ${className}`}
+      className={cn(
+        layout === "horizontal" ? "flex flex-wrap gap-4" : "space-y-3",
+        className,
+      )}
       aria-invalid={!!error}
       aria-describedby={error ? `${field.id}-error` : undefined}
     >
@@ -41,10 +47,18 @@ export function RadioField({
               id={choiceId}
               value={choice.value}
               disabled={isDisabled || choice.disabled}
+              className={cn(
+                error && "border-destructive focus-visible:ring-destructive",
+              )}
             />
             <Label
               htmlFor={choiceId}
-              className={`cursor-pointer ${isDisabled || choice.disabled ? "opacity-70 cursor-not-allowed" : ""}`}
+              className={cn(
+                theme.label.base,
+                "cursor-pointer",
+                (isDisabled || choice.disabled) &&
+                  (theme.label.disabled || "opacity-70 cursor-not-allowed"),
+              )}
             >
               {choice.label}
             </Label>

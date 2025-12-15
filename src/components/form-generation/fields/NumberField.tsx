@@ -1,8 +1,9 @@
 "use client";
 
-import type { FieldComponentProps, NumberFieldConfig } from "../types";
 import { Input } from "@/components/ui/input";
-import { formatCurrency, parseCurrency } from "../utils/helpers";
+import { useFormTheme } from "../themes/ThemeProvider";
+import type { FieldComponentProps, NumberFieldConfig } from "../types";
+import { cn, formatCurrency, parseCurrency } from "../utils/helpers";
 
 export function NumberField({
   field,
@@ -14,9 +15,12 @@ export function NumberField({
   readOnly,
   className,
 }: FieldComponentProps<number>) {
+  const { theme } = useFormTheme();
   const numberField = field as NumberFieldConfig;
   const options = numberField.options || {};
   const isCurrency = field.type === "currency";
+  const isDisabled = disabled || field.disabled;
+  const isReadOnly = readOnly || field.readOnly;
 
   // Display value (formatted for currency)
   const displayValue =
@@ -36,6 +40,23 @@ export function NumberField({
     }
   };
 
+  // Build className from theme + user overrides
+  const inputClassName = cn(
+    // Base styles from theme
+    theme.control.base,
+    theme.control.variants.default,
+    theme.control.sizes.md,
+
+    // State styles
+    theme.control.states.focus,
+    error && theme.control.states.error,
+    isDisabled && theme.control.states.disabled,
+    isReadOnly && theme.control.states.readOnly,
+
+    // User override (highest priority)
+    className,
+  );
+
   return (
     <Input
       id={field.id}
@@ -45,14 +66,14 @@ export function NumberField({
       onChange={handleChange}
       onBlur={onBlur}
       placeholder={field.placeholder}
-      disabled={disabled || field.disabled}
-      readOnly={readOnly || field.readOnly}
+      disabled={isDisabled}
+      readOnly={isReadOnly}
       min={options.min}
       max={options.max}
       step={options.step}
       aria-invalid={!!error}
       aria-describedby={error ? `${field.id}-error` : undefined}
-      className={className}
+      className={inputClassName}
     />
   );
 }

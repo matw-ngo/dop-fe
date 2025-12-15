@@ -10,6 +10,7 @@ import { useState } from "react";
 import type { FieldComponentProps, FileFieldConfig } from "../types";
 import { cn, formatFileSize } from "../utils/helpers";
 import { Upload, X, File as FileIcon, Image as ImageIcon } from "lucide-react";
+import { useFormTheme } from "../themes/ThemeProvider";
 
 export function FileField({
   field,
@@ -19,6 +20,7 @@ export function FileField({
   disabled,
   className,
 }: FieldComponentProps<File | File[] | null>) {
+  const { theme } = useFormTheme();
   const fileField = field as FileFieldConfig;
   const options = fileField.options || {};
   const [previews, setPreviews] = useState<Map<string, string>>(new Map());
@@ -85,11 +87,18 @@ export function FileField({
         <label
           className={cn(
             "flex flex-col items-center justify-center w-full h-32",
+            // Apply theme control styles for base and variant
+            theme.control.base,
+            theme.control.variants.default,
+            // File input specific styles (border-dashed for drop zone)
             "border-2 border-dashed rounded-lg cursor-pointer",
             "hover:bg-muted/50 transition-colors",
-            "focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2",
-            error && "border-destructive",
-            isDisabled && "opacity-50 cursor-not-allowed hover:bg-transparent",
+            // Theme-based focus styles
+            theme.control.states.focus,
+            // Error state
+            error && theme.control.states.error,
+            // Disabled state
+            isDisabled && theme.control.states.disabled,
           )}
         >
           <div className="flex flex-col items-center justify-center pt-5 pb-6">
@@ -133,6 +142,10 @@ export function FileField({
                 key={`${file.name}-${index}`}
                 className={cn(
                   "flex items-center gap-3 p-3 rounded-lg",
+                  // Apply theme control base styles
+                  theme.control.base,
+                  theme.control.variants.default,
+                  // File list item specific styles
                   "bg-muted border border-border",
                 )}
               >
@@ -166,7 +179,8 @@ export function FileField({
                   className={cn(
                     "shrink-0 text-destructive hover:text-destructive/80",
                     "focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 rounded",
-                    "disabled:opacity-50 disabled:cursor-not-allowed",
+                    // Apply theme disabled state
+                    isDisabled && theme.control.states.disabled,
                   )}
                   aria-label={`Remove ${file.name}`}
                 >
@@ -179,10 +193,15 @@ export function FileField({
             <label
               className={cn(
                 "flex items-center justify-center gap-2 p-3",
+                // Apply theme control styles
+                theme.control.base,
+                theme.control.variants.default,
+                theme.control.sizes.sm,
+                // Add more files specific styles
                 "border-2 border-dashed rounded-lg cursor-pointer",
                 "hover:bg-muted/50 transition-colors text-sm text-muted-foreground",
-                isDisabled &&
-                  "opacity-50 cursor-not-allowed hover:bg-transparent",
+                // Disabled state
+                isDisabled && theme.control.states.disabled,
               )}
             >
               <Upload className="h-4 w-4" />

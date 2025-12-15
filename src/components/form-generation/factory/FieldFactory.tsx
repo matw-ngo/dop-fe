@@ -132,6 +132,10 @@ export function FieldFactory({
 }: FieldFactoryProps) {
   const { getLabel, getPlaceholder, getHelp } = useFormTranslations(namespace);
 
+  // Extract styling config with backward compatibility
+  const styling = field.styling || {};
+  const controlClassName = styling.control || field.className;
+
   // Get component from registry
   const FieldComponent = useMemo(() => {
     // Check if custom component is specified
@@ -209,7 +213,7 @@ export function FieldFactory({
     onBlur?.();
   }, [onBlur]);
 
-  // Props for field component
+  // Props for field component - ONLY control className
   const fieldProps: FieldComponentProps = {
     field: {
       ...field,
@@ -223,7 +227,7 @@ export function FieldFactory({
     error: externalError,
     disabled: disabled || field.disabled,
     readOnly: readOnly || field.readOnly,
-    className: field.className,
+    className: controlClassName, // Only control className
   };
 
   // If no component found, render error message
@@ -245,7 +249,11 @@ export function FieldFactory({
       error={externalError}
       help={help}
       disabled={disabled || field.disabled}
-      className={field.className}
+      // Granular styling - separate classNames
+      wrapperClassName={styling.wrapper}
+      labelClassName={styling.label}
+      errorClassName={styling.error}
+      helpClassName={styling.help}
     >
       <FieldComponent {...fieldProps} />
     </FieldWrapper>

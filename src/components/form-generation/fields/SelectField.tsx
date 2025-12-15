@@ -11,6 +11,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useFormTheme } from "../themes/ThemeProvider";
+import { cn } from "../utils/helpers";
 
 export function SelectField({
   field,
@@ -21,10 +23,27 @@ export function SelectField({
   disabled,
   className,
 }: FieldComponentProps<string>) {
+  const { theme } = useFormTheme();
   const selectField = field as SelectFieldConfig;
   const options = selectField.options || {};
   const choices = options.choices || [];
   const isDisabled = disabled || field.disabled;
+
+  // Build className from theme + user overrides
+  const triggerClassName = cn(
+    // Base styles from theme
+    theme.control.base,
+    theme.control.variants.default,
+    theme.control.sizes.md,
+
+    // State styles
+    theme.control.states.focus,
+    error && theme.control.states.error,
+    isDisabled && theme.control.states.disabled,
+
+    // User override (highest priority)
+    className,
+  );
 
   // Group choices if they have a `group` property
   const hasGroups = choices.some((choice) => choice.group);
@@ -51,7 +70,7 @@ export function SelectField({
       >
         <SelectTrigger
           id={field.id}
-          className={className}
+          className={triggerClassName}
           aria-invalid={!!error}
           aria-describedby={error ? `${field.id}-error` : undefined}
           onBlur={onBlur}
@@ -86,7 +105,7 @@ export function SelectField({
     <Select value={value || ""} onValueChange={onChange} disabled={isDisabled}>
       <SelectTrigger
         id={field.id}
-        className={className}
+        className={triggerClassName}
         aria-invalid={!!error}
         aria-describedby={error ? `${field.id}-error` : undefined}
         onBlur={onBlur}

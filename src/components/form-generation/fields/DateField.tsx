@@ -3,6 +3,8 @@
 import type { FieldComponentProps, DateFieldConfig } from "../types";
 import { Input } from "@/components/ui/input";
 import { CalendarIcon } from "lucide-react";
+import { useFormTheme } from "../themes/ThemeProvider";
+import { cn } from "../utils/helpers";
 
 export function DateField({
   field,
@@ -14,6 +16,7 @@ export function DateField({
   readOnly,
   className,
 }: FieldComponentProps<string | Date | undefined>) {
+  const { theme } = useFormTheme();
   const dateField = field as DateFieldConfig;
   const options = dateField.options || {};
 
@@ -90,8 +93,25 @@ export function DateField({
     }
   };
 
+  // Build className for the container
+  const containerClassName = cn("relative w-full", className);
+
+  // Build className for the input
+  const inputClassName = cn(
+    // Base styles from theme
+    theme.control.base,
+    theme.control.variants.default,
+    theme.control.sizes.md,
+
+    // State styles
+    theme.control.states.focus,
+    error && theme.control.states.error,
+    (disabled || field.disabled) && theme.control.states.disabled,
+    (readOnly || field.readOnly) && theme.control.states.readOnly,
+  );
+
   return (
-    <div className="relative w-full">
+    <div className={containerClassName}>
       <Input
         id={field.id}
         name={field.name}
@@ -106,7 +126,7 @@ export function DateField({
         max={formatDateForInput(options.maxDate, field.type)}
         aria-invalid={!!error}
         aria-describedby={error ? `${field.id}-error` : undefined}
-        className={className}
+        className={inputClassName}
       />
       <CalendarIcon className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
     </div>

@@ -3,6 +3,8 @@
 import type { FieldComponentProps, CheckboxFieldConfig } from "../types";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import { useFormTheme } from "../themes/ThemeProvider";
+import { cn } from "../utils/helpers";
 
 export function CheckboxField({
   field,
@@ -13,6 +15,7 @@ export function CheckboxField({
   disabled,
   className,
 }: FieldComponentProps<boolean | string[]>) {
+  const { theme } = useFormTheme();
   const checkboxField = field as CheckboxFieldConfig;
   const options = checkboxField.options || {};
   const isGroup = field.type === "checkbox-group";
@@ -31,7 +34,7 @@ export function CheckboxField({
     };
 
     return (
-      <div className={`space-y-3 ${className}`}>
+      <div className={cn("space-y-3", className)}>
         {options.choices.map((choice) => {
           const isChecked = selectedValues.includes(choice.value);
           const choiceId = `${field.id}-${choice.value}`;
@@ -45,12 +48,20 @@ export function CheckboxField({
                   handleGroupChange(choice.value, checked as boolean)
                 }
                 disabled={isDisabled || choice.disabled}
+                className={cn(
+                  error && "border-destructive focus-visible:ring-destructive",
+                )}
                 aria-invalid={!!error}
                 aria-describedby={error ? `${field.id}-error` : undefined}
               />
               <Label
                 htmlFor={choiceId}
-                className={`cursor-pointer ${isDisabled || choice.disabled ? "opacity-70 cursor-not-allowed" : ""}`}
+                className={cn(
+                  theme.label.base,
+                  "cursor-pointer",
+                  (isDisabled || choice.disabled) &&
+                    (theme.label.disabled || "opacity-70 cursor-not-allowed"),
+                )}
               >
                 {choice.label}
               </Label>
@@ -65,7 +76,7 @@ export function CheckboxField({
   const isChecked = !!value;
 
   return (
-    <div className={`flex items-center gap-2 ${className}`}>
+    <div className={cn("flex items-center gap-2", className)}>
       <Checkbox
         id={field.id}
         name={field.name}
@@ -73,13 +84,21 @@ export function CheckboxField({
         onCheckedChange={(checked) => onChange(checked as boolean)}
         onBlur={onBlur}
         disabled={isDisabled}
+        className={cn(
+          error && "border-destructive focus-visible:ring-destructive",
+        )}
         aria-invalid={!!error}
         aria-describedby={error ? `${field.id}-error` : undefined}
       />
       {(field.label || options.checkboxLabel) && (
         <Label
           htmlFor={field.id}
-          className={`cursor-pointer ${isDisabled ? "opacity-70 cursor-not-allowed" : ""}`}
+          className={cn(
+            theme.label.base,
+            "cursor-pointer",
+            isDisabled &&
+              (theme.label.disabled || "opacity-70 cursor-not-allowed"),
+          )}
         >
           {options.checkboxLabel || field.label}
         </Label>

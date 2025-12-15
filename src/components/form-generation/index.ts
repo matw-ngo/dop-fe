@@ -256,3 +256,15 @@ export type {
   NavigationButtonConfig,
   WizardNavigationConfig,
 } from "./types";
+
+// ============================================================================
+// Theme System
+// ============================================================================
+
+export {
+  FormThemeProvider,
+  useFormTheme,
+  defaultTheme,
+  legacyLoanTheme,
+} from "./themes";
+export type { FormTheme } from "./themes";
