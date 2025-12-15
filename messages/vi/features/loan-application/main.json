@@ -48,5 +48,33 @@
     "agreeRequired": "Vui lòng đồng ý với điều khoản để tiếp tục",
     "otpSuccess": "Xác thực OTP thành công!",
     "otpExpired": "OTP đã hết hạn. Vui lòng yêu cầu mã mới."
+  },
+  "validation": {
+    "amount": {
+      "min": "Số tiền vay tối thiểu là {min} triệu đồng",
+      "max": "Số tiền vay tối đa là {max} triệu đồng",
+      "required": "Vui lòng chọn khoản vay"
+    },
+    "period": {
+      "min": "Thời hạn vay tối thiểu là {min} tháng",
+      "max": "Thời hạn vay tối đa là {max} tháng",
+      "required": "Vui lòng chọn thời gian vay"
+    },
+    "purpose": {
+      "required": "Vui lòng chọn mục đích vay",
+      "invalid": "Vui lòng chọn mục đích vay hợp lệ"
+    },
+    "phone": {
+      "required": "Số điện thoại không được để trống",
+      "invalid": "Số điện thoại không hợp lệ",
+      "format": "Số điện thoại phải có 10 số bắt đầu bằng số 0"
+    },
+    "terms": {
+      "required": "Vui lòng đồng ý với điều khoản dịch vụ để tiếp tục"
+    },
+    "otp": {
+      "required": "OTP phải có 4 chữ số",
+      "invalid": "OTP không hợp lệ"
+    }
   }
 }

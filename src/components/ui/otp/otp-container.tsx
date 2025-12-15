@@ -101,7 +101,7 @@ export const OtpContainer: React.FC<OtpContainerProps> = ({
   // ============================================================================
 
   const handleSubmit = async (otp: string) => {
-    console.log("Submitting OTP:", otp);
+    console.log("Submitting OTP:", otp, "(Dev mode: use '0000' to pass)");
     setOtpStatus("submitting");
 
     try {
@@ -109,8 +109,8 @@ export const OtpContainer: React.FC<OtpContainerProps> = ({
       await new Promise((resolve) => setTimeout(resolve, 1500));
 
       // Simulate validation - replace with actual validation
-      if (otp === "1234") {
-        // For testing, use 1234 as valid OTP
+      if (otp === (process.env.NODE_ENV === "development" ? "0000" : "1234")) {
+        // For testing, use 0000 in development, 1234 in production
         setOtpStatus("success");
         onSuccess?.(otp);
         console.log("OTP verified successfully");

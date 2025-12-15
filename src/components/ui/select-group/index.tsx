@@ -20,9 +20,14 @@ export interface ISelectGroupProps {
   options: ISelectBoxOption[] | [];
   placeholder?: string;
   helpComponent?: any;
+  disabled?: boolean;
+  error?: string;
 }
 
-export const SelectGroup = React.forwardRef<HTMLButtonElement, ISelectGroupProps>((props, ref) => {
+export const SelectGroup = React.forwardRef<
+  HTMLButtonElement,
+  ISelectGroupProps
+>((props, ref) => {
   const theme = props.theme || "light";
   const currentValue = props.value?.toString() || "";
 
@@ -34,6 +39,9 @@ export const SelectGroup = React.forwardRef<HTMLButtonElement, ISelectGroupProps
           {props.label && (
             <label className="block text-xs font-normal leading-4 text-[#4d7e70]">
               {props.label}
+              {props.error && (
+                <span className="text-red-500 ml-1">({props.error})</span>
+              )}
             </label>
           )}
           {props.helpComponent && <div>{props.helpComponent}</div>}
@@ -44,6 +52,7 @@ export const SelectGroup = React.forwardRef<HTMLButtonElement, ISelectGroupProps
       <SelectPrimitive.Root
         value={currentValue}
         onValueChange={(value) => props.onChange?.(value)}
+        disabled={props.disabled}
       >
         <SelectPrimitive.Trigger
           ref={ref}
@@ -52,10 +61,15 @@ export const SelectGroup = React.forwardRef<HTMLButtonElement, ISelectGroupProps
             "text-sm font-normal text-[#3F4350]",
             "focus:outline-none focus:ring-2 focus:ring-[#017848] focus:border-[#017848]",
             "transition-colors",
-            "data-[placeholder]:text-[#BFD1CC]"
+            "data-[placeholder]:text-[#BFD1CC]",
+            props.disabled && "opacity-50 cursor-not-allowed",
+            props.error &&
+              "border-red-500 focus:ring-red-500 focus:border-red-500",
           )}
         >
-          <SelectPrimitive.Value placeholder={props.placeholder || "Vui lòng chọn"} />
+          <SelectPrimitive.Value
+            placeholder={props.placeholder || "Vui lòng chọn"}
+          />
           <SelectPrimitive.Icon asChild>
             <ChevronDown className="w-4 h-4 text-[#017848]" />
           </SelectPrimitive.Icon>
@@ -70,7 +84,7 @@ export const SelectGroup = React.forwardRef<HTMLButtonElement, ISelectGroupProps
               "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
               "data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
               "data-[side=bottom]:slide-in-from-top-2 data-[side=top]:slide-in-from-bottom-2",
-              "z-50"
+              "z-50",
             )}
             position="popper"
             sideOffset={12}
@@ -88,7 +102,7 @@ export const SelectGroup = React.forwardRef<HTMLButtonElement, ISelectGroupProps
                     "hover:bg-gray-50",
                     "focus:bg-gray-100",
                     "data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
-                    "data-[state=checked]:font-bold data-[state=unchecked]:font-normal"
+                    "data-[state=checked]:font-bold data-[state=unchecked]:font-normal",
                   )}
                 >
                   <SelectPrimitive.ItemText>

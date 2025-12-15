@@ -48,5 +48,33 @@
     "agreeRequired": "Please agree to the terms to continue",
     "otpSuccess": "OTP verification successful!",
     "otpExpired": "OTP has expired. Please request a new code."
+  },
+  "validation": {
+    "amount": {
+      "min": "Minimum loan amount is {min} million VND",
+      "max": "Maximum loan amount is {max} million VND",
+      "required": "Please select loan amount"
+    },
+    "period": {
+      "min": "Minimum loan period is {min} months",
+      "max": "Maximum loan period is {max} months",
+      "required": "Please select loan period"
+    },
+    "purpose": {
+      "required": "Please select loan purpose",
+      "invalid": "Please select a valid loan purpose"
+    },
+    "phone": {
+      "required": "Phone number is required",
+      "invalid": "Phone number is invalid",
+      "format": "Phone number must be 10 digits starting with 0"
+    },
+    "terms": {
+      "required": "You must agree to the terms of service to continue"
+    },
+    "otp": {
+      "required": "OTP must be 4 digits",
+      "invalid": "OTP is invalid"
+    }
   }
 }

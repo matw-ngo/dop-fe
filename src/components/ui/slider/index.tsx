@@ -10,6 +10,7 @@ export interface ISliderProps {
   onChange?: (value: number) => void;
   trackingHandler?: (startValue: number, endValue: number) => void;
   thumbImg?: string;
+  disabled?: boolean;
 }
 
 export default function CustomSlider({
@@ -21,6 +22,7 @@ export default function CustomSlider({
   step,
   thumbImg,
   trackingHandler,
+  disabled = false,
 }: ISliderProps) {
   const [startValue, setStartValue] = React.useState(0);
   const valueRef = React.useRef(0);
@@ -48,14 +50,15 @@ export default function CustomSlider({
 
   return (
     <RadixSlider.Root
-      className="relative flex items-center select-none touch-none w-full h-7 z-10"
+      className={`relative flex items-center select-none touch-none w-full h-7 z-10 ${disabled ? "opacity-50 pointer-events-none" : ""}`}
       value={[value]}
       onValueChange={handleValueChange}
       onValueCommit={handleValueCommit}
-      onPointerDown={handlePointerDown}
+      onPointerDown={disabled ? undefined : handlePointerDown}
       min={min}
       max={max}
       step={step}
+      disabled={disabled}
     >
       <RadixSlider.Track className="bg-[#E6F1ED] relative grow rounded-full h-[6px]">
         <RadixSlider.Range className="absolute bg-[#007848] rounded-full h-full" />
