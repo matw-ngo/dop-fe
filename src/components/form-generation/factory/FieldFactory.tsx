@@ -28,6 +28,7 @@ import {
   DateField,
   SwitchField,
   FileField,
+  EkycField,
 } from "../fields";
 
 // Register built-in components
@@ -62,6 +63,8 @@ if (!registry.has(FieldType.TEXT)) {
     [FieldType.FILE]: FileField,
     [FieldType.FILE_UPLOAD]: FileField,
     [FieldType.IMAGE_UPLOAD]: FileField,
+    // Verification fields
+    [FieldType.EKYC]: EkycField,
   });
 }
 

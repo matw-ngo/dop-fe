@@ -15,6 +15,7 @@ import { RadioField } from "./RadioField";
 import { DateField } from "./DateField";
 import { SwitchField } from "./SwitchField";
 import { FileField } from "./FileField";
+import { EkycField } from "./EkycField";
 
 // Memoize all field components to prevent unnecessary re-renders
 export const MemoizedTextField = memo(TextField);
@@ -26,6 +27,7 @@ export const MemoizedRadioField = memo(RadioField);
 export const MemoizedDateField = memo(DateField);
 export const MemoizedSwitchField = memo(SwitchField);
 export const MemoizedFileField = memo(FileField);
+export const MemoizedEkycField = memo(EkycField);
 
 // Also export non-memoized versions for direct use if needed
 export {
@@ -38,4 +40,5 @@ export {
   DateField,
   SwitchField,
   FileField,
+  EkycField,
 };

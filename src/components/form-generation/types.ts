@@ -56,6 +56,9 @@ export enum FieldType {
   RATING = "rating",
   COLOR = "color",
 
+  // Verification
+  EKYC = "ekyc",
+
   // Custom
   CUSTOM = "custom",
 }
@@ -581,6 +584,112 @@ export interface CustomFieldConfig extends BaseFieldConfig {
 }
 
 /**
+ * eKYC field configuration
+ */
+export interface EkycFieldConfig extends BaseFieldConfig {
+  type: FieldType.EKYC;
+
+  /**
+   * Rendering mode for the eKYC field
+   */
+  renderMode?: "button" | "inline" | "modal" | "custom";
+
+  /**
+   * eKYC verification configuration
+   */
+  verification?: {
+    /**
+     * Which provider to use
+     */
+    provider: "vnpt" | "citizenid" | "aws" | "custom";
+
+    /**
+     * Provider-specific options
+     */
+    providerOptions?: {
+      documentType?: string;
+      flowType?: "DOCUMENT_TO_FACE" | "FACE_TO_DOCUMENT" | "DOCUMENT" | "FACE";
+      enableLiveness?: boolean;
+      enableFaceMatch?: boolean;
+      enableAuthenticityCheck?: boolean;
+      metadata?: Record<string, any>;
+    };
+
+    /**
+     * Which fields to autofill after verification
+     */
+    autofillMapping: {
+      [targetFieldId: string]:
+        | keyof import("@/lib/verification/types").VerificationResult["personalData"]
+        | string;
+    };
+
+    /**
+     * Callback when verification completes
+     */
+    onVerified?: (
+      result: import("@/lib/verification/types").VerificationResult,
+    ) => void;
+
+    /**
+     * Callback when verification fails
+     */
+    onError?: (error: Error) => void;
+
+    /**
+     * Custom verification button text
+     */
+    buttonText?: string;
+
+    /**
+     * Require verification before form submission
+     */
+    required?: boolean;
+
+    /**
+     * Minimum confidence threshold (0-100)
+     */
+    confidenceThreshold?: number;
+
+    /**
+     * Show verification result preview
+     */
+    showResultPreview?: boolean;
+
+    /**
+     * Allow manual override of verified data
+     */
+    allowManualOverride?: boolean;
+
+    /**
+     * Modal configuration (for modal mode)
+     */
+    modalConfig?: {
+      title?: string;
+      size?: "sm" | "md" | "lg" | "xl";
+      closeOnOverlayClick?: boolean;
+    };
+
+    /**
+     * UI configuration
+     */
+    uiConfig?: {
+      theme?: "light" | "dark";
+      showProgress?: boolean;
+      allowRetry?: boolean;
+      maxRetries?: number;
+    };
+  };
+
+  /**
+   * Custom render function (for renderMode: "custom")
+   */
+  customRender?: (
+    props: import("@/lib/verification/types").EkycRenderProps,
+  ) => React.ReactNode;
+}
+
+/**
  * Union of all field configurations
  */
 export type FormField =
@@ -594,6 +703,7 @@ export type FormField =
   | FileFieldConfig
   | SliderFieldConfig
   | CustomFieldConfig
+  | EkycFieldConfig
   | BaseFieldConfig;
 
 // ============================================================================
