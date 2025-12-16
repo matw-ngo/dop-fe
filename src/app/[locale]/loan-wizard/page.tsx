@@ -10,6 +10,8 @@ import {
   FormThemeProvider,
   legacyLoanTheme,
 } from "@/components/form-generation";
+import { FormTrackingProvider } from "@/components/form-generation/tracking/TrackingProvider";
+import { LibTrackingAdapter } from "@/components/form-generation/tracking/adapters/LibTrackingAdapter";
 import { allowCustomComponent } from "@/components/form-generation/constants";
 import { registerComponent } from "@/components/form-generation/registry/ComponentRegistry";
 import { LoanStepHeader } from "./components/LoanStepHeader";
@@ -28,6 +30,8 @@ import { validateNationalId } from "./utils";
 // Register custom component
 allowCustomComponent("LoanStepHeader");
 registerComponent("LoanStepHeader", LoanStepHeader);
+
+const trackingBackend = new LibTrackingAdapter();
 
 export default function LoanWizardPage() {
   const [submittedData, setSubmittedData] = useState<Record<
@@ -62,6 +66,15 @@ export default function LoanWizardPage() {
             type: FieldType.TEXT,
             label: "Họ và tên",
             placeholder: "Họ và tên",
+            tracking: {
+              trackInput: {
+                eventName: "lending_page_input_name",
+                debounce: 500,
+              },
+              trackValidation: {
+                eventName: "lending_page_input_name_valid",
+              },
+            },
             validation: [
               {
                 type: ValidationRuleType.REQUIRED,
@@ -80,6 +93,15 @@ export default function LoanWizardPage() {
             type: FieldType.TEXT,
             label: "Căn cước công dân 12 Số",
             placeholder: "Căn cước công dân 12 Số",
+            tracking: {
+              trackInput: {
+                eventName: "lending_page_input_nid",
+                debounce: 500,
+              },
+              trackValidation: {
+                eventName: "lending_page_input_nid_valid",
+              },
+            },
             validation: [
               {
                 type: ValidationRuleType.CUSTOM,
@@ -101,6 +123,11 @@ export default function LoanWizardPage() {
               choices: VN_PROVINCES,
               placeholder: "Chọn tỉnh thành",
               searchable: true,
+            },
+            tracking: {
+              trackSelection: {
+                eventName: "lending_page_select_province",
+              },
             },
             validation: [
               {
@@ -146,6 +173,11 @@ export default function LoanWizardPage() {
             options: {
               choices: EMPLOYMENT_STATUSES,
             },
+            tracking: {
+              trackSelection: {
+                eventName: "lending_page_select_job",
+              },
+            },
             validation: [
               {
                 type: ValidationRuleType.REQUIRED,
@@ -160,6 +192,11 @@ export default function LoanWizardPage() {
             label: "Lĩnh vực làm việc",
             options: {
               choices: EMPLOYMENT_TYPE,
+            },
+            tracking: {
+              trackSelection: {
+                eventName: "lending_page_select_industry",
+              },
             },
             validation: [
               {
@@ -187,6 +224,11 @@ export default function LoanWizardPage() {
             label: "Mức thu nhập",
             options: {
               choices: INCOME_AMOUNT,
+            },
+            tracking: {
+              trackSelection: {
+                eventName: "lending_page_select_income_range",
+              },
             },
             validation: [
               {
@@ -236,6 +278,11 @@ export default function LoanWizardPage() {
             options: {
               choices: CREDIT_STATUSES,
             },
+            tracking: {
+              trackSelection: {
+                eventName: "lending_page_select_current_loan",
+              },
+            },
           },
           {
             id: "credit_status",
@@ -244,6 +291,11 @@ export default function LoanWizardPage() {
             label: "Lịch sử tín dụng của bạn trong 3 năm gần đây?",
             options: {
               choices: CREDIT_HISTORY,
+            },
+            tracking: {
+              trackSelection: {
+                eventName: "lending_page_select_credit_history",
+              },
             },
             validation: [
               {

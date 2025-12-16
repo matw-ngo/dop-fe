@@ -410,6 +410,11 @@ export interface BaseFieldConfig {
   styling?: FieldStylingConfig;
 
   /**
+   * Event tracking configuration
+   */
+  tracking?: FieldTrackingConfig;
+
+  /**
    * Custom CSS classes
    * @deprecated Use styling.control instead for better clarity
    * Kept for backward compatibility - maps to styling.control
@@ -966,6 +971,110 @@ export interface WizardNavigationConfig {
 }
 
 // ============================================================================
+// Event Tracking Configuration
+// ============================================================================
+
+/**
+ * Field tracking event data
+ */
+export interface FieldTrackingEvent {
+  /** Unique field identifier */
+  fieldId: string;
+
+  /** Field name for form data */
+  fieldName: string;
+
+  /** Event type */
+  eventType: "input" | "validation" | "blur" | "selection" | "focus";
+
+  /** Current field value */
+  value: any;
+
+  /** Whether the field is valid (for validation events) */
+  isValid?: boolean;
+
+  /** Additional metadata */
+  metadata?: Record<string, any>;
+}
+
+/**
+ * Tracking backend interface for pluggable tracking systems
+ */
+export interface TrackingBackend {
+  /**
+   * Track a generic event
+   */
+  trackEvent(eventName: string, data?: Record<string, any>): void;
+
+  /**
+   * Track field-specific event
+   */
+  trackField(event: FieldTrackingEvent): void;
+}
+
+/**
+ * Field-level tracking configuration
+ */
+export interface FieldTrackingConfig {
+  /**
+   * Track input events (onChange)
+   */
+  trackInput?: {
+    /**
+     * Event name/type to track
+     */
+    eventName: string;
+
+    /**
+     * Transform value before tracking
+     */
+    transformValue?: (value: any) => any;
+
+    /**
+     * Additional static data to include
+     */
+    metadata?: Record<string, any>;
+
+    /**
+     * Debounce tracking (ms)
+     */
+    debounce?: number;
+  };
+
+  /**
+   * Track validation success
+   */
+  trackValidation?: {
+    eventName: string;
+    transformValue?: (value: any) => any;
+    metadata?: Record<string, any>;
+  };
+
+  /**
+   * Track field blur events
+   */
+  trackBlur?: {
+    eventName: string;
+    transformValue?: (value: any) => any;
+    metadata?: Record<string, any>;
+  };
+
+  /**
+   * Track selection changes (for select/radio/checkbox)
+   */
+  trackSelection?: {
+    eventName: string;
+    transformValue?: (value: any) => any;
+    metadata?: Record<string, any>;
+  };
+
+  /**
+   * Custom tracking function
+   */
+  customTracking?: (event: FieldTrackingEvent) => void;
+}
+
+// ============================================================================
 // Component Props
 // ============================================================================
 
@@ -992,6 +1101,11 @@ export interface FieldComponentProps<T = any> {
    * Blur handler
    */
   onBlur?: () => void;
+
+  /**
+   * Focus handler
+   */
+  onFocus?: () => void;
 
   /**
    * Validation error message

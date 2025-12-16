@@ -15,6 +15,7 @@ import { ValidationEngine } from "../validation/ValidationEngine";
 import { useFormTranslations } from "../i18n/useFormTranslations";
 import { isCustomComponentAllowed } from "../constants";
 import { useCallback, useMemo } from "react";
+import { useFieldTracking } from "../tracking/useFieldTracking";
 
 // Import built-in field components (memoized for performance)
 import {
@@ -132,6 +133,14 @@ export function FieldFactory({
 }: FieldFactoryProps) {
   const { getLabel, getPlaceholder, getHelp } = useFormTranslations(namespace);
 
+  // Initialize tracking
+  const { trackInput, trackValidation, trackBlur, trackSelection, trackFocus } =
+    useFieldTracking({
+      fieldId: field.id,
+      fieldName: field.name,
+      trackingConfig: field.tracking,
+    });
+
   // Extract styling config with backward compatibility
   const styling = field.styling || {};
   const controlClassName = styling.control || field.className;
@@ -208,10 +217,61 @@ export function FieldFactory({
     return getHelp(field.id, field.help);
   }, [field, getHelp]);
 
-  // Handle blur with validation
+  // Wrap onChange with tracking
+  const handleChange = useCallback(
+    (newValue: any) => {
+      // Track input if configured
+      trackInput(newValue);
+
+      // Call original onChange
+      onChange(newValue);
+    },
+    [onChange, trackInput],
+  );
+
+  // For select/radio/checkbox fields, track selection
+  const handleSelectionChange = useCallback(
+    (newValue: any) => {
+      trackSelection(newValue);
+      onChange(newValue);
+    },
+    [onChange, trackSelection],
+  );
+
+  // Handle blur with validation and tracking
   const handleBlur = useCallback(async () => {
+    // Track blur if configured
+    trackBlur(value);
+
+    // Call original onBlur
     onBlur?.();
-  }, [onBlur]);
+
+    // Validate and track validation success
+    if (field.validation) {
+      const result = await ValidationEngine.validateField(
+        value,
+        field.validation,
+      );
+      if (result.valid) {
+        trackValidation(value, true);
+      }
+    }
+  }, [onBlur, value, trackBlur, trackValidation, field.validation]);
+
+  // Handle focus tracking
+  const handleFocus = useCallback(() => {
+    trackFocus(value);
+  }, [trackFocus, value]);
+
+  // Determine which onChange handler to use
+  const isSelectionField = [
+    FieldType.SELECT,
+    FieldType.MULTI_SELECT,
+    FieldType.RADIO,
+    FieldType.CHECKBOX,
+    FieldType.CHECKBOX_GROUP,
+  ].includes(field.type);
+  const fieldOnChange = isSelectionField ? handleSelectionChange : handleChange;
 
   // Props for field component - ONLY control className
   const fieldProps: FieldComponentProps = {
@@ -222,8 +282,9 @@ export function FieldFactory({
       help,
     },
     value,
-    onChange,
+    onChange: fieldOnChange,
     onBlur: handleBlur,
+    onFocus: handleFocus,
     error: externalError,
     disabled: disabled || field.disabled,
     readOnly: readOnly || field.readOnly,
