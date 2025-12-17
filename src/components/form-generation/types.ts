@@ -451,6 +451,8 @@ export interface TextFieldConfig extends BaseFieldConfig {
     autoComplete?: string;
     prefix?: ReactNode;
     suffix?: ReactNode;
+    startAdornment?: ReactNode; // Inside the input wrapper
+    endAdornment?: ReactNode; // Inside the input wrapper
   };
 }
 
@@ -501,6 +503,7 @@ export interface SelectFieldConfig extends BaseFieldConfig {
     clearable?: boolean;
     placeholder?: string;
     maxSelections?: number; // for multi-select
+    contentClassName?: string; // Custom class for dropdown content
   };
 }
 

@@ -75,4 +75,14 @@ export interface FormTheme {
   help: {
     base: string;
   };
+
+  /**
+   * Global field options for this theme
+   */
+  fieldOptions?: {
+    /**
+     * If true, renders the label inside the field control border
+     */
+    internalLabel?: boolean;
+  };
 }

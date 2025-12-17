@@ -31,7 +31,7 @@ export function StepWizard({
   onStepChange,
   className,
 }: StepWizardProps) {
-  const { currentStep, steps, initWizard, getProgress, formData, resetWizard } =
+  const { currentStep, steps, initWizard, formData, resetWizard } =
     useFormWizardStore();
 
   // Initialize wizard on mount
@@ -88,7 +88,7 @@ export function StepWizard({
       )}
 
       {/* Current Step Content */}
-      <StepContent step={currentStepConfig} stepIndex={currentStep} />
+      <StepContent step={currentStepConfig} />
 
       {/* Navigation Buttons */}
       <WizardNavigation config={config.navigation} onComplete={onComplete} />

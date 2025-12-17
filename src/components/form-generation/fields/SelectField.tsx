@@ -48,81 +48,68 @@ export function SelectField({
   // Group choices if they have a `group` property
   const hasGroups = choices.some((choice) => choice.group);
 
-  if (hasGroups) {
-    // Group choices by their group property
-    const groupedChoices = choices.reduce<Record<string, typeof choices>>(
-      (acc, choice) => {
-        const groupName = choice.group || "Other";
-        if (!acc[groupName]) {
-          acc[groupName] = [];
-        }
-        acc[groupName].push(choice);
-        return acc;
-      },
-      {},
-    );
+  // Internal label support
+  const internalLabel = theme.fieldOptions?.internalLabel;
 
-    return (
-      <Select
-        value={value || ""}
-        onValueChange={onChange}
-        disabled={isDisabled}
-      >
-        <SelectTrigger
-          id={field.id}
-          className={triggerClassName}
-          aria-invalid={!!error}
-          aria-describedby={error ? `${field.id}-error` : undefined}
-          onBlur={onBlur}
-        >
-          <SelectValue placeholder={field.placeholder || "Select..."} />
-        </SelectTrigger>
-        <SelectContent>
-          {Object.entries(groupedChoices).map(
-            ([groupName, groupChoices], idx) => (
-              <SelectGroup key={groupName}>
-                {idx > 0 && <SelectSeparator />}
-                <SelectLabel>{groupName}</SelectLabel>
-                {groupChoices.map((choice) => (
-                  <SelectItem
-                    key={choice.value}
-                    value={choice.value}
-                    disabled={choice.disabled}
-                  >
-                    {choice.label}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            ),
-          )}
-        </SelectContent>
-      </Select>
-    );
-  }
+  const renderSelectContent = () => (
+    <SelectContent className={options.contentClassName}>
+      {hasGroups
+        ? Object.entries(
+            choices.reduce<Record<string, typeof choices>>((acc, choice) => {
+              const groupName = choice.group || "Other";
+              if (!acc[groupName]) {
+                acc[groupName] = [];
+              }
+              acc[groupName].push(choice);
+              return acc;
+            }, {}),
+          ).map(([groupName, groupChoices], idx) => (
+            <SelectGroup key={groupName}>
+              {idx > 0 && <SelectSeparator />}
+              <SelectLabel>{groupName}</SelectLabel>
+              {groupChoices.map((choice) => (
+                <SelectItem
+                  key={choice.value}
+                  value={choice.value}
+                  disabled={choice.disabled}
+                >
+                  {choice.label}
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          ))
+        : choices.map((choice) => (
+            <SelectItem
+              key={choice.value}
+              value={choice.value}
+              disabled={choice.disabled}
+            >
+              {choice.label}
+            </SelectItem>
+          ))}
+    </SelectContent>
+  );
 
-  // Simple select without groups
   return (
     <Select value={value || ""} onValueChange={onChange} disabled={isDisabled}>
       <SelectTrigger
         id={field.id}
-        className={triggerClassName}
+        className={cn(
+          triggerClassName,
+          internalLabel && "flex-col items-start justify-center pt-5 pb-1 h-[60px]", // specific style for internal label
+        )}
         aria-invalid={!!error}
         aria-describedby={error ? `${field.id}-error` : undefined}
         onBlur={onBlur}
       >
+        {internalLabel && field.label && (
+          <span className="absolute top-2 left-4 text-xs font-medium text-[#017848]">
+            {field.label}
+          </span>
+        )}
         <SelectValue placeholder={field.placeholder || "Select..."} />
       </SelectTrigger>
-      <SelectContent>
-        {choices.map((choice) => (
-          <SelectItem
-            key={choice.value}
-            value={choice.value}
-            disabled={choice.disabled}
-          >
-            {choice.label}
-          </SelectItem>
-        ))}
-      </SelectContent>
+      {renderSelectContent()}
     </Select>
   );
 }

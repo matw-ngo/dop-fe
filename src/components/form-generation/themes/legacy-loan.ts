@@ -35,9 +35,13 @@ export const legacyLoanTheme: FormTheme = {
   },
 
   label: {
-    base: "text-base font-normal text-gray-700 mb-2 block",
-    required: 'after:content-["*"] after:ml-1 after:text-red-500',
+    base: "sr-only", // Internal label mode enabled
+    required: "", // Required marker handled internally or via placeholder
     disabled: "text-gray-400",
+  },
+
+  fieldOptions: {
+    internalLabel: true,
   },
 
   error: {
