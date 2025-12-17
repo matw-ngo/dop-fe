@@ -51,4 +51,20 @@ export const legacyLoanTheme: FormTheme = {
   fieldOptions: {
     internalLabel: true,
   },
+
+  // Backward compatibility properties
+  label: {
+    base: "sr-only", // Internal label mode enabled
+    required: "", // Required marker handled internally or via placeholder
+    disabled: "text-gray-400",
+  },
+
+  error: {
+    base: "flex items-start gap-1 text-xs text-[rgb(255,116,116)] mt-1 min-h-[16px]",
+    icon: "hidden", // No icon in legacy
+  },
+
+  help: {
+    base: "text-sm text-gray-500 mt-1",
+  },
 };

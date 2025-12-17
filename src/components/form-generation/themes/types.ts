@@ -153,4 +153,28 @@ export interface FormTheme {
      */
     internalLabel?: boolean;
   };
+
+  /**
+   * Backward compatibility properties for components that expect the old structure
+   */
+  label?: {
+    base: string;
+    required?: string;
+    disabled?: string;
+  };
+
+  /**
+   * Backward compatibility properties for error styling
+   */
+  error?: {
+    base: string;
+    icon?: string;
+  };
+
+  /**
+   * Backward compatibility properties for help text styling
+   */
+  help?: {
+    base: string;
+  };
 }
