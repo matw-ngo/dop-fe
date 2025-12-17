@@ -1,10 +1,8 @@
 /**
- * Form Generation Library - Legacy Loan Theme
+ * Form Generation Library - Legacy Loan Theme (Simplified)
  *
- * Theme matching the legacy LoanExtraInfoForm component
- *
- * @deprecated Use legacy-loan-simplified.ts instead
- * See example-usage.tsx for migration guide
+ * Simplified theme matching the legacy LoanExtraInfoForm component
+ * Only contains truly customizable properties
  */
 
 import type { FormTheme } from "./types";
@@ -12,47 +10,45 @@ import type { FormTheme } from "./types";
 export const legacyLoanTheme: FormTheme = {
   name: "legacy-loan",
 
-  control: {
-    base: "w-full border bg-white transition-colors placeholder:text-gray-400 placeholder:text-sm placeholder:font-medium data-[placeholder]:text-gray-400 data-[placeholder]:text-sm data-[placeholder]:font-medium [&::placeholder]:text-gray-400 [&::placeholder]:text-sm [&::placeholder]:font-medium [&[data-placeholder]]:text-gray-400 [&[data-placeholder]]:text-sm [&[data-placeholder]]:font-medium",
-
-    variants: {
-      default: "border-[#bfd1cc] rounded-[8px]",
-      outlined: "", // not used in legacy
-      filled: "", // not used in legacy
-      underlined: "", // not used in legacy
-    },
-
-    sizes: {
-      sm: "h-12 px-3 text-sm",
-      md: "h-[60px] px-4 text-sm md:text-sm",
-      lg: "h-16 px-4 text-lg",
-    },
-
-    states: {
-      focus:
-        "focus:outline-none focus:border-[#017848] focus:ring-2 focus:ring-[#017848]/20",
-      error: "border-red-500",
-      disabled: "bg-gray-100 cursor-not-allowed opacity-60",
-      readOnly: "bg-gray-50 cursor-default",
-    },
+  colors: {
+    primary: "#017848",
+    border: "#bfd1cc",
+    borderFocus: "#017848",
+    background: "#ffffff",
+    placeholder: "#9ca3af",
+    error: "#ff7474",
+    disabled: "#f3f4f6",
+    readOnly: "#f9fafb",
   },
 
-  label: {
-    base: "sr-only", // Internal label mode enabled
-    required: "", // Required marker handled internally or via placeholder
-    disabled: "text-gray-400",
+  borderRadius: {
+    control: "8px",
+  },
+
+  spacing: {
+    paddingHorizontal: "16px",
+    paddingVertical: "20px", // Used for internal label layout
+  },
+
+  typography: {
+    fontSize: "14px",
+    labelFontSize: "12px",
+    labelFontWeight: "500",
+  },
+
+  sizes: {
+    sm: "48px",
+    md: "60px",
+    lg: "64px",
+  },
+
+  focusRing: {
+    width: "2px",
+    color: "#017848",
+    opacity: "0.2",
   },
 
   fieldOptions: {
     internalLabel: true,
-  },
-
-  error: {
-    base: "flex items-start gap-1 text-xs text-[rgb(255,116,116)] mt-1 min-h-[16px]",
-    icon: "hidden", // No icon in legacy
-  },
-
-  help: {
-    base: "text-sm text-gray-500 mt-1",
   },
 };

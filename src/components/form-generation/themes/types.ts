@@ -1,14 +1,12 @@
 /**
- * Form Generation Library - Theme Types
+ * Form Generation Library - Simplified Theme Types
  *
- * Type definitions for the theme system
- *
- * @deprecated Consider using the simplified theme system in types-simplified.ts
- * See example-usage.tsx for migration guide
+ * Simplified type definitions for the theme system
+ * Only contains truly customizable properties
  */
 
 /**
- * Theme configuration for form controls
+ * Simplified theme configuration for form controls
  */
 export interface FormTheme {
   /**
@@ -17,66 +15,133 @@ export interface FormTheme {
   name: string;
 
   /**
-   * Control styles (inputs, selects, etc.)
+   * Color scheme for the theme
    */
-  control: {
+  colors: {
     /**
-     * Base styles applied to all controls
+     * Primary brand color (used for focus, labels, etc.)
      */
-    base: string;
+    primary: string;
 
     /**
-     * Visual variants
+     * Border color for normal state
      */
-    variants: {
-      default: string;
-      outlined: string;
-      filled: string;
-      underlined: string;
-    };
+    border: string;
 
     /**
-     * Size variants
+     * Border color on focus
      */
-    sizes: {
-      sm: string;
-      md: string;
-      lg: string;
-    };
+    borderFocus: string;
 
     /**
-     * State-based styles
+     * Background color for inputs
      */
-    states: {
-      focus: string;
-      error: string;
-      disabled: string;
-      readOnly: string;
-    };
-  };
+    background: string;
 
-  /**
-   * Label styles
-   */
-  label: {
-    base: string;
-    required: string;
+    /**
+     * Text color for placeholders
+     */
+    placeholder: string;
+
+    /**
+     * Text color for error states
+     */
+    error: string;
+
+    /**
+     * Background color for disabled states
+     */
     disabled: string;
+
+    /**
+     * Background color for read-only states
+     */
+    readOnly: string;
   };
 
   /**
-   * Error message styles
+   * Border radius values
    */
-  error: {
-    base: string;
-    icon: string;
+  borderRadius: {
+    /**
+     * Default border radius for inputs
+     */
+    control: string;
   };
 
   /**
-   * Help text styles
+   * Spacing values
    */
-  help: {
-    base: string;
+  spacing: {
+    /**
+     * Horizontal padding for inputs
+     */
+    paddingHorizontal: string;
+
+    /**
+     * Vertical padding for inputs
+     */
+    paddingVertical: string;
+  };
+
+  /**
+   * Typography settings
+   */
+  typography: {
+    /**
+     * Font size for inputs
+     */
+    fontSize: string;
+
+    /**
+     * Font size for internal labels
+     */
+    labelFontSize: string;
+
+    /**
+     * Font weight for internal labels
+     */
+    labelFontWeight: string;
+  };
+
+  /**
+   * Size configurations
+   */
+  sizes: {
+    /**
+     * Height for small inputs
+     */
+    sm: string;
+
+    /**
+     * Height for medium inputs (default)
+     */
+    md: string;
+
+    /**
+     * Height for large inputs
+     */
+    lg: string;
+  };
+
+  /**
+   * Focus ring configuration
+   */
+  focusRing: {
+    /**
+     * Width of the focus ring
+     */
+    width: string;
+
+    /**
+     * Color of the focus ring
+     */
+    color: string;
+
+    /**
+     * Opacity of the focus ring
+     */
+    opacity: string;
   };
 
   /**

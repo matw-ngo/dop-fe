@@ -14,6 +14,10 @@ import { useFormTheme } from "../themes/ThemeProvider";
 import type { FieldComponentProps, SelectFieldConfig } from "../types";
 import { cn } from "../utils/helpers";
 
+/**
+ * SelectField component that handles most styling directly
+ * Uses theme only for truly customizable properties
+ */
 export function SelectField({
   field,
   value,
@@ -28,31 +32,38 @@ export function SelectField({
   const options = selectField.options || {};
   const choices = options.choices || [];
   const isDisabled = disabled || field.disabled;
-
-  // Internal label support
   const internalLabel = theme.fieldOptions?.internalLabel;
 
-  // Build className from theme + user overrides
-  const triggerClassName = cn(
-    // Base styles from theme
-    theme.control.base,
-    theme.control.variants.default,
-    theme.control.sizes.md,
+  // Base trigger styles that are consistent across themes
+  const baseTriggerStyles = [
+    "w-full",
+    "border",
+    "transition-all",
+    "duration-200",
+    "text-sm",
+    // Focus styles
+    "focus:outline-none",
+    "focus:border-[#017848]",
+    "focus:ring-2",
+    "focus:ring-[#017848]/20",
+    // Disabled state
+    "disabled:cursor-not-allowed",
+    "disabled:opacity-60",
+    // Error state
+    error && "border-red-500",
+    error && "focus:ring-red-500/20",
+  ];
 
-    // State styles
-    theme.control.states.focus,
-    error && theme.control.states.error,
-    isDisabled && theme.control.states.disabled,
-
-    // Internal label defaults (can be overridden by className)
-    internalLabel && "min-h-[60px] py-3", // structural default for internal label
-
-    // Placeholder color override - applied through theme
-    // The theme already handles placeholder styling with higher specificity
-
-    // User override (highest priority)
-    className,
-  );
+  // Theme-specific styles
+  const themeStyles = [
+    // Border and background
+    "bg-white",
+    "border-[#bfd1cc]",
+    "rounded-[8px]",
+    // Size - adjust for internal label
+    internalLabel ? "min-h-[60px] py-3" : "h-[60px]",
+    "px-4",
+  ];
 
   // Group choices if they have a `group` property
   const hasGroups = choices.some((choice) => choice.group);
@@ -101,7 +112,14 @@ export function SelectField({
       <SelectTrigger
         id={field.id}
         icon={options.icon}
-        className={cn(triggerClassName, "relative")}
+        className={cn(
+          ...baseTriggerStyles,
+          ...themeStyles,
+          "relative",
+          "flex",
+          "items-center",
+          className,
+        )}
         aria-invalid={!!error}
         aria-describedby={error ? `${field.id}-error` : undefined}
         onBlur={onBlur}
@@ -114,7 +132,12 @@ export function SelectField({
           )}
           <SelectValue
             placeholder={field.placeholder || "Select..."}
-            className="data-[placeholder]:text-gray-400 data-[placeholder]:font-medium"
+            className={cn(
+              "text-sm",
+              // Placeholder styling - simpler approach
+              "data-[placeholder]:text-gray-400",
+              "data-[placeholder]:font-medium",
+            )}
           />
         </div>
       </SelectTrigger>

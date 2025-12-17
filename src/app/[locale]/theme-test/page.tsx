@@ -2,27 +2,29 @@
 
 import { FormThemeProvider } from "@/components/form-generation/themes/ThemeProvider";
 import { legacyLoanTheme } from "@/components/form-generation/themes/legacy-loan";
-import { legacyLoanThemeSimplified } from "@/components/form-generation/themes/legacy-loan-simplified";
 import { expandTheme } from "@/components/form-generation/themes/theme-utils";
-import { TextFieldSimplified } from "@/components/form-generation/fields/TextField-simplified";
-import { SelectFieldSimplified } from "@/components/form-generation/fields/SelectField-simplified";
 import { TextField } from "@/components/form-generation/fields/TextField";
 import { SelectField } from "@/components/form-generation/fields/SelectField";
+import { FieldType } from "@/components/form-generation";
+import type {
+  TextFieldConfig,
+  SelectFieldConfig,
+} from "@/components/form-generation/types";
 import { useState } from "react";
 
 // Test data
-const textFieldConfig = {
+const textFieldConfig: TextFieldConfig = {
   id: "test-input",
   name: "testInput",
-  type: "text" as const,
+  type: FieldType.TEXT,
   label: "Test Input",
   placeholder: "Enter some text...",
 };
 
-const selectFieldConfig = {
+const selectFieldConfig: SelectFieldConfig = {
   id: "test-select",
   name: "testSelect",
-  type: "select" as const,
+  type: FieldType.SELECT,
   label: "Test Select",
   placeholder: "Choose an option...",
   options: {
@@ -34,7 +36,7 @@ const selectFieldConfig = {
   },
 };
 
-const textFieldWithAdornments = {
+const textFieldWithAdornments: TextFieldConfig = {
   ...textFieldConfig,
   id: "input-with-adornments",
   options: {
@@ -101,13 +103,13 @@ export default function ThemeTestPage() {
           <h2 className="text-2xl font-semibold text-gray-800">
             Simplified Legacy Theme
           </h2>
-          <FormThemeProvider theme={expandTheme(legacyLoanThemeSimplified)}>
+          <FormThemeProvider theme={expandTheme(legacyLoanTheme)}>
             <div className="grid gap-6 md:grid-cols-2">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   TextField (Simplified)
                 </label>
-                <TextFieldSimplified
+                <TextField
                   field={textFieldConfig}
                   value={textValue}
                   onChange={setTextValue}
@@ -118,7 +120,7 @@ export default function ThemeTestPage() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   SelectField (Simplified)
                 </label>
-                <SelectFieldSimplified
+                <SelectField
                   field={selectFieldConfig}
                   value={selectValue}
                   onChange={setSelectValue}
@@ -132,7 +134,7 @@ export default function ThemeTestPage() {
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 TextField with Adornments (Simplified)
               </label>
-              <TextFieldSimplified
+              <TextField
                 field={textFieldWithAdornments}
                 value={adornedValue}
                 onChange={setAdornedValue}
@@ -145,7 +147,7 @@ export default function ThemeTestPage() {
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 TextField with Error (Simplified)
               </label>
-              <TextFieldSimplified
+              <TextField
                 field={textFieldConfig}
                 value=""
                 onChange={handleFieldChange}
@@ -159,7 +161,7 @@ export default function ThemeTestPage() {
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Disabled TextField (Simplified)
               </label>
-              <TextFieldSimplified
+              <TextField
                 field={textFieldConfig}
                 value="Disabled value"
                 onChange={handleFieldChange}

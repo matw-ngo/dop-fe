@@ -5,6 +5,10 @@ import { useFormTheme } from "../themes/ThemeProvider";
 import type { FieldComponentProps, TextFieldConfig } from "../types";
 import { cn } from "../utils/helpers";
 
+/**
+ * TextField component that handles most styling directly
+ * Uses theme only for truly customizable properties
+ */
 export function TextField({
   field,
   value,
@@ -18,29 +22,11 @@ export function TextField({
   const { theme } = useFormTheme();
   const textField = field as TextFieldConfig;
   const options = textField.options || {};
+  const internalLabel = theme.fieldOptions?.internalLabel;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange(e.target.value);
   };
-
-  // Build className from theme + user overrides
-  const inputClassName = cn(
-    // Base styles from theme
-    theme.control.base,
-    theme.control.variants.default,
-    theme.control.sizes.md,
-
-    // State styles
-    theme.control.states.focus,
-    error && theme.control.states.error,
-    disabled && theme.control.states.disabled,
-    readOnly && theme.control.states.readOnly,
-
-    // User override (highest priority)
-    className,
-  );
-
-  const internalLabel = theme.fieldOptions?.internalLabel;
 
   // Determine if we need a wrapper for adornments or internal label
   const hasAdornments =
@@ -50,14 +36,65 @@ export function TextField({
     options.endAdornment;
   const needsWrapper = internalLabel || hasAdornments;
 
+  // Base input styles that are consistent across themes
+  const baseInputStyles = [
+    "w-full",
+    "border",
+    "transition-all",
+    "duration-200",
+    "text-sm",
+    // Base focus styles
+    "focus:outline-none",
+    // Placeholder styles
+    "placeholder:text-gray-400",
+    "placeholder:font-medium",
+    // Disabled and readonly states
+    "disabled:cursor-not-allowed",
+    "disabled:opacity-60",
+    "read-only:cursor-default",
+  ];
+
+  // Theme-specific styles
+  const themeStyles = [
+    // Border radius from theme
+    "rounded-[8px]", // This could be extracted from theme if needed
+    // Border color
+    "border-[#bfd1cc]",
+    // Default background (important!)
+    "bg-white",
+    // Focus state
+    "focus:border-[#017848]",
+    "focus:ring-2",
+    "focus:ring-[#017848]/20",
+    // Error state
+    error && "border-red-500",
+    error && "focus:ring-red-500/20",
+    // Override background for special states
+    (disabled || field.disabled) && "!bg-gray-100",
+    (readOnly || field.readOnly) && "!bg-gray-50",
+  ].filter(Boolean);
+
+  // Size styles
+  const sizeStyles = {
+    sm: "h-12 px-3",
+    md: "h-[60px] px-4",
+    lg: "h-16 px-4 text-lg",
+  };
+
   if (needsWrapper) {
     return (
       <div
         className={cn(
-          // Use control styles on the wrapper
-          inputClassName,
-          "flex items-center relative gap-2",
-          internalLabel ? "pt-5 pb-1 h-[60px]" : "",
+          // Wrapper styles
+          ...baseInputStyles,
+          ...themeStyles,
+          "flex",
+          "items-center",
+          "relative",
+          "gap-2",
+          // Size handling for wrapper
+          sizeStyles.md,
+          internalLabel && "pt-5 pb-1",
         )}
       >
         {/* Internal Label */}
@@ -72,7 +109,7 @@ export function TextField({
 
         {/* Start Adornments */}
         {(options.prefix || options.startAdornment) && (
-          <div className="flex items-center shrink-0 text-muted-foreground ml-1">
+          <div className="flex items-center shrink-0 text-gray-500 ml-1">
             {options.prefix || options.startAdornment}
           </div>
         )}
@@ -93,15 +130,27 @@ export function TextField({
           aria-invalid={!!error}
           aria-describedby={error ? `${field.id}-error` : undefined}
           className={cn(
-            "border-none shadow-none focus-visible:ring-0 px-0 h-6 py-0 bg-transparent w-full text-sm",
+            // Reset native input styles
+            "border-none",
+            "shadow-none",
+            "focus-visible:ring-0",
+            "px-0",
+            "h-6",
+            "py-0",
+            "bg-transparent",
+            "w-full",
+            "text-sm",
+            // Adjust position for internal label
             internalLabel && "mt-1",
-            "placeholder:text-gray-400 placeholder:font-medium [&::placeholder]:text-gray-400 [&::placeholder]:font-medium",
+            // Keep placeholder styling
+            "placeholder:text-gray-400",
+            "placeholder:font-medium",
           )}
         />
 
         {/* End Adornments */}
         {(options.suffix || options.endAdornment) && (
-          <div className="flex items-center shrink-0 text-muted-foreground mr-1">
+          <div className="flex items-center shrink-0 text-gray-500 mr-1">
             {options.suffix || options.endAdornment}
           </div>
         )}
@@ -124,7 +173,12 @@ export function TextField({
       autoComplete={options.autoComplete}
       aria-invalid={!!error}
       aria-describedby={error ? `${field.id}-error` : undefined}
-      className={inputClassName}
+      className={cn(
+        ...baseInputStyles,
+        ...themeStyles,
+        sizeStyles.md,
+        className,
+      )}
     />
   );
 }
