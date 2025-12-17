@@ -29,6 +29,9 @@ export function SelectField({
   const choices = options.choices || [];
   const isDisabled = disabled || field.disabled;
 
+  // Internal label support
+  const internalLabel = theme.fieldOptions?.internalLabel;
+
   // Build className from theme + user overrides
   const triggerClassName = cn(
     // Base styles from theme
@@ -41,15 +44,15 @@ export function SelectField({
     error && theme.control.states.error,
     isDisabled && theme.control.states.disabled,
 
+    // Internal label defaults (can be overridden by className)
+    internalLabel && "min-h-[60px] py-3", // structural default for internal label
+
     // User override (highest priority)
     className,
   );
 
   // Group choices if they have a `group` property
   const hasGroups = choices.some((choice) => choice.group);
-
-  // Internal label support
-  const internalLabel = theme.fieldOptions?.internalLabel;
 
   const renderSelectContent = () => (
     <SelectContent className={options.contentClassName}>
@@ -94,21 +97,20 @@ export function SelectField({
     <Select value={value || ""} onValueChange={onChange} disabled={isDisabled}>
       <SelectTrigger
         id={field.id}
-        className={cn(
-          triggerClassName,
-          internalLabel &&
-            "relative flex-col items-start justify-center pt-5 pb-1 h-[60px]", // specific style for internal label
-        )}
+        icon={options.icon}
+        className={cn(triggerClassName, "relative")}
         aria-invalid={!!error}
         aria-describedby={error ? `${field.id}-error` : undefined}
         onBlur={onBlur}
       >
-        {internalLabel && field.label && (
-          <span className="absolute top-2 left-4 text-xs font-medium text-[#017848]">
-            {field.label}
-          </span>
-        )}
-        <SelectValue placeholder={field.placeholder || "Select..."} />
+        <div className="flex flex-col items-start justify-center flex-1 w-full text-left">
+          {internalLabel && field.label && (
+            <span className="text-xs font-medium text-[#017848] mb-0.5">
+              {field.label}
+            </span>
+          )}
+          <SelectValue placeholder={field.placeholder || "Select..."} />
+        </div>
       </SelectTrigger>
       {renderSelectContent()}
     </Select>

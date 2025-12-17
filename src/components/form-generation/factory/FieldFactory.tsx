@@ -25,9 +25,11 @@ import {
 } from "../fields";
 import { useFormTranslations } from "../i18n/useFormTranslations";
 import { ComponentRegistry } from "../registry/ComponentRegistry";
+import { useFormTheme } from "../themes/ThemeProvider";
 import { useFieldTracking } from "../tracking/useFieldTracking";
 import type { FieldComponentProps, FormField } from "../types";
 import { FieldType } from "../types";
+import { cn } from "../utils/helpers";
 import { ValidationEngine } from "../validation/ValidationEngine";
 
 // Register built-in components
@@ -303,6 +305,8 @@ export function FieldFactory({
     );
   }
 
+  const { theme } = useFormTheme();
+
   // Render with or without wrapper
   const fieldContent = showWrapper ? (
     <FieldWrapper
@@ -314,9 +318,9 @@ export function FieldFactory({
       disabled={disabled || field.disabled}
       // Granular styling - separate classNames
       wrapperClassName={styling.wrapper}
-      labelClassName={styling.label}
-      errorClassName={styling.error}
-      helpClassName={styling.help}
+      labelClassName={cn(theme.label.base, styling.label)} // Merge theme style with field override
+      errorClassName={cn(theme.error.base, styling.error)}
+      helpClassName={cn(theme.help.base, styling.help)}
     >
       <FieldComponent {...fieldProps} />
     </FieldWrapper>

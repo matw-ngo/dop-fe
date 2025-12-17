@@ -504,6 +504,7 @@ export interface SelectFieldConfig extends BaseFieldConfig {
     placeholder?: string;
     maxSelections?: number; // for multi-select
     contentClassName?: string; // Custom class for dropdown content
+    icon?: ReactNode; // Custom icon for the trigger
   };
 }
 
