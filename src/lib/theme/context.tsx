@@ -1,4 +1,4 @@
-import React, { createContext, useContext, ReactNode } from 'react';
+import React, { createContext, type ReactNode, useContext } from "react";
 
 interface ThemeContextValue {
   theme: string;
@@ -8,7 +8,7 @@ interface ThemeContextValue {
 }
 
 export const ThemeContext = createContext<ThemeContextValue>({
-  theme: 'default',
+  theme: "default",
   setTheme: () => {},
 });
 
@@ -23,11 +23,11 @@ interface ThemeProviderProps {
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({
   children,
-  defaultUserGroup = 'system',
-  storageKey = 'theme',
-  value
+  defaultUserGroup = "system",
+  storageKey = "theme",
+  value,
 }) => {
-  const [theme, setTheme] = React.useState('default');
+  const [theme, setTheme] = React.useState("default");
 
   const contextValue: ThemeContextValue = {
     theme,

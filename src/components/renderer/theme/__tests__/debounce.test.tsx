@@ -1,5 +1,5 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { renderHook, act } from "@testing-library/react";
+import { act, renderHook } from "@testing-library/react";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { ThemeProvider } from "../theme-provider";
 import { useThemeUtils } from "../use-theme";
 
@@ -15,7 +15,7 @@ Object.defineProperty(window, "localStorage", {
 // Mock matchMedia
 Object.defineProperty(window, "matchMedia", {
   writable: true,
-  value: vi.fn().mockImplementation(query => ({
+  value: vi.fn().mockImplementation((query) => ({
     matches: false,
     media: query,
     onchange: null,
@@ -39,9 +39,7 @@ describe("Theme Debounce", () => {
 
   it("should provide debounced versions of theme functions", () => {
     const wrapper = ({ children }: { children: React.ReactNode }) => (
-      <ThemeProvider defaultTheme="light">
-        {children}
-      </ThemeProvider>
+      <ThemeProvider defaultTheme="light">{children}</ThemeProvider>
     );
 
     const { result } = renderHook(() => useThemeUtils(), { wrapper });
@@ -53,9 +51,7 @@ describe("Theme Debounce", () => {
 
   it("should debounce toggle theme changes with 300ms delay", () => {
     const wrapper = ({ children }: { children: React.ReactNode }) => (
-      <ThemeProvider defaultTheme="light">
-        {children}
-      </ThemeProvider>
+      <ThemeProvider defaultTheme="light">{children}</ThemeProvider>
     );
 
     const { result } = renderHook(() => useThemeUtils(), { wrapper });
@@ -87,9 +83,7 @@ describe("Theme Debounce", () => {
 
   it("should only apply the last theme change when multiple rapid calls occur", () => {
     const wrapper = ({ children }: { children: React.ReactNode }) => (
-      <ThemeProvider defaultTheme="light">
-        {children}
-      </ThemeProvider>
+      <ThemeProvider defaultTheme="light">{children}</ThemeProvider>
     );
 
     const { result } = renderHook(() => useThemeUtils(), { wrapper });
@@ -120,9 +114,7 @@ describe("Theme Debounce", () => {
 
   it("should cancel pending debounced calls on component unmount", () => {
     const wrapper = ({ children }: { children: React.ReactNode }) => (
-      <ThemeProvider defaultTheme="light">
-        {children}
-      </ThemeProvider>
+      <ThemeProvider defaultTheme="light">{children}</ThemeProvider>
     );
 
     const { result, unmount } = renderHook(() => useThemeUtils(), { wrapper });
@@ -148,9 +140,7 @@ describe("Theme Debounce", () => {
 
   it("should reset debounce timer when called again before timeout", () => {
     const wrapper = ({ children }: { children: React.ReactNode }) => (
-      <ThemeProvider defaultTheme="light">
-        {children}
-      </ThemeProvider>
+      <ThemeProvider defaultTheme="light">{children}</ThemeProvider>
     );
 
     const { result } = renderHook(() => useThemeUtils(), { wrapper });

@@ -4,7 +4,7 @@
  * React context provider for form state management.
  */
 
-import React, { createContext, useContext, ReactNode } from "react";
+import React, { createContext, type ReactNode, useContext } from "react";
 
 // ============================================================================
 // Form Context Types

@@ -11,7 +11,7 @@
  * - Fraud detection logic
  */
 
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 
 describe("Data Normalization", () => {
   describe("Vietnamese Date Format Conversion", () => {
@@ -177,7 +177,7 @@ describe("Data Normalization", () => {
       ];
 
       invalidGenders.forEach((input) => {
-        let result: "male" | "female" | "other" | undefined = undefined;
+        let result: "male" | "female" | "other" | undefined;
 
         if (input && typeof input === "string") {
           const normalized = input.toLowerCase().trim();

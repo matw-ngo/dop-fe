@@ -1,7 +1,7 @@
 "use client";
 
-import { ReactNode, useEffect } from "react";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { type ReactNode, useEffect } from "react";
 import { useAuth } from "@/lib/auth/auth-context";
 import { getLocalizedRedirect } from "@/lib/client-utils";
 
@@ -26,7 +26,8 @@ export function RequireAuth({
 
     // Redirect to login if not authenticated
     if (!isAuthenticated) {
-      const loginUrl = redirectTo || getLocalizedRedirect("/admin/login", pathname);
+      const loginUrl =
+        redirectTo || getLocalizedRedirect("/admin/login", pathname);
       router.push(loginUrl);
     }
   }, [isAuthenticated, isLoading, isHydrated, pathname, router, redirectTo]);

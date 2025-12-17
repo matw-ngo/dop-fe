@@ -1,9 +1,9 @@
-import React from "react";
+import { Check, CreditCard, Globe, Shield, Smartphone } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import type React from "react";
 import { Badge } from "@/components/ui/badge";
-import { Check, CreditCard, Shield, Smartphone, Globe } from "lucide-react";
-import { DetailedCreditCardInfo } from "@/types/credit-card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import type { DetailedCreditCardInfo } from "@/types/credit-card";
 
 // Type for digital features object
 type DigitalFeatures = {

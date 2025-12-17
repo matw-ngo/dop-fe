@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import { useThemeUtils } from "@/components/renderer/theme";
-import { NavbarConfig } from "@/configs/navbar-config";
+import type { NavbarConfig } from "@/configs/navbar-config";
 
 /**
  * Hook to get theme-aware credit cards navbar configuration

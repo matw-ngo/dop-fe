@@ -1,6 +1,11 @@
 // Core UI Components - Handle both default and named exports
+
+// For backward compatibility, also export everything
+export * from "./accordion";
 export { Accordion } from "./accordion";
+export * from "./alert";
 export { Alert } from "./alert";
+export * from "./alert-dialog";
 export {
   AlertDialog,
   AlertDialogAction,
@@ -12,9 +17,13 @@ export {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "./alert-dialog";
+export * from "./aspect-ratio";
 export { AspectRatio } from "./aspect-ratio";
+export * from "./avatar";
 export { Avatar, AvatarFallback, AvatarImage } from "./avatar";
+export * from "./badge";
 export { Badge } from "./badge";
+export * from "./breadcrumb";
 export {
   Breadcrumb,
   BreadcrumbItem,
@@ -24,9 +33,13 @@ export {
   BreadcrumbSeparator,
 } from "./breadcrumb";
 export { default as BreadcrumbNav } from "./breadcrumb-nav";
+export * from "./button";
 export { Button } from "./button";
+export * from "./button-group";
 export { ButtonGroup } from "./button-group";
+export * from "./calendar";
 export { Calendar } from "./calendar";
+export * from "./card";
 export {
   Card,
   CardContent,
@@ -35,6 +48,7 @@ export {
   CardHeader,
   CardTitle,
 } from "./card";
+export * from "./carousel";
 export {
   Carousel,
   CarouselContent,
@@ -43,12 +57,16 @@ export {
   CarouselPrevious,
 } from "./carousel";
 export * from "./chart";
+export * from "./chart";
+export * from "./checkbox";
 export { Checkbox } from "./checkbox";
+export * from "./collapsible";
 export {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "./collapsible";
+export * from "./command";
 export {
   Command,
   CommandDialog,
@@ -60,6 +78,7 @@ export {
   CommandSeparator,
   CommandShortcut,
 } from "./command";
+export * from "./context-menu";
 export {
   ContextMenu,
   ContextMenuContent,
@@ -74,6 +93,8 @@ export {
   ContextMenuSubTrigger,
   ContextMenuTrigger,
 } from "./context-menu";
+export * from "./data-table";
+export * from "./dialog";
 export {
   Dialog,
   DialogContent,
@@ -83,7 +104,7 @@ export {
   DialogTitle,
   DialogTrigger,
 } from "./dialog";
-export * from "./data-table";
+export * from "./drawer";
 export {
   Drawer,
   DrawerContent,
@@ -93,6 +114,7 @@ export {
   DrawerTitle,
   DrawerTrigger,
 } from "./drawer";
+export * from "./dropdown-menu";
 export {
   DropdownMenu,
   DropdownMenuContent,
@@ -109,25 +131,37 @@ export {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "./dropdown-menu";
+export * from "./empty";
 export { Empty } from "./empty";
+export * from "./error-boundary";
 export { ErrorBoundary } from "./error-boundary";
+export * from "./field";
 export { Field } from "./field";
+export * from "./form";
 export {
   Form,
-  FormItem,
-  FormLabel,
   FormControl,
   FormDescription,
-  FormMessage,
   FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
 } from "./form";
+export * from "./hover-card";
 export { HoverCard, HoverCardContent, HoverCardTrigger } from "./hover-card";
+export * from "./input";
 export { Input } from "./input";
+export * from "./input-group";
 export { InputGroup } from "./input-group";
+export * from "./input-otp";
 export { InputOTP, InputOTPGroup, InputOTPSlot } from "./input-otp";
+export * from "./item";
 export { Item } from "./item";
+export * from "./kbd";
 export { Kbd } from "./kbd";
+export * from "./label";
 export { Label } from "./label";
+export * from "./menubar";
 export {
   Menubar,
   MenubarContent,
@@ -144,6 +178,7 @@ export {
   MenubarTrigger,
 } from "./menubar";
 export { default as Modal } from "./modal";
+export * from "./navigation-menu";
 export {
   NavigationMenu,
   NavigationMenuContent,
@@ -152,6 +187,10 @@ export {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "./navigation-menu";
+// OTP Components
+export * from "./otp";
+export * from "./otp";
+export * from "./pagination";
 export {
   Pagination,
   PaginationContent,
@@ -160,15 +199,21 @@ export {
   PaginationNext,
   PaginationPrevious,
 } from "./pagination";
+export * from "./popover";
 export { Popover, PopoverContent, PopoverTrigger } from "./popover";
+export * from "./progress";
 export { Progress } from "./progress";
+export * from "./radio-group";
 export { RadioGroup } from "./radio-group";
+export * from "./resizable";
 export {
-  ResizablePanelGroup,
-  ResizablePanel,
   ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
 } from "./resizable";
+export * from "./scroll-area";
 export { ScrollArea } from "./scroll-area";
+export * from "./select";
 export {
   Select,
   SelectContent,
@@ -176,8 +221,15 @@ export {
   SelectTrigger,
   SelectValue,
 } from "./select";
+export type {
+  ISelectBoxOption,
+  ISelectGroupProps,
+} from "./select-group";
+export * from "./select-group";
 export { SelectGroup } from "./select-group";
+export * from "./separator";
 export { Separator } from "./separator";
+export * from "./sheet";
 export {
   Sheet,
   SheetContent,
@@ -187,12 +239,19 @@ export {
   SheetTitle,
   SheetTrigger,
 } from "./sheet";
+export * from "./sidebar";
 export { Sidebar } from "./sidebar";
+export * from "./skeleton";
 export { Skeleton } from "./skeleton";
+export * from "./slider";
 export { CustomSlider as Slider } from "./slider";
+export * from "./sonner";
 export { Toaster as Sonner } from "./sonner";
+export * from "./spinner";
 export { Spinner } from "./spinner";
+export * from "./switch";
 export { Switch } from "./switch";
+export * from "./table";
 export {
   Table,
   TableBody,
@@ -203,85 +262,24 @@ export {
   TableHeader,
   TableRow,
 } from "./table";
+export * from "./tabs";
 export { Tabs, TabsContent, TabsList, TabsTrigger } from "./tabs";
-export { Textarea } from "./textarea";
+export * from "./text-input";
 export { TextInput } from "./text-input";
+export * from "./textarea";
+export { Textarea } from "./textarea";
+export * from "./toast";
 export { Toast, ToastProvider, ToastViewport } from "./toast";
+export * from "./toaster";
 export { Toaster } from "./toaster";
+export * from "./toggle";
 export { Toggle } from "./toggle";
+export * from "./toggle-group";
 export { ToggleGroup, ToggleGroupItem } from "./toggle-group";
+export * from "./tooltip";
 export {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "./tooltip";
-
-// OTP Components
-export * from "./otp";
-
-export type {
-  ISelectBoxOption,
-  ISelectGroupProps,
-} from "./select-group";
-
-// For backward compatibility, also export everything
-export * from "./accordion";
-export * from "./alert";
-export * from "./alert-dialog";
-export * from "./aspect-ratio";
-export * from "./avatar";
-export * from "./badge";
-export * from "./breadcrumb";
-export * from "./button";
-export * from "./button-group";
-export * from "./calendar";
-export * from "./card";
-export * from "./carousel";
-export * from "./chart";
-export * from "./checkbox";
-export * from "./collapsible";
-export * from "./command";
-export * from "./context-menu";
-export * from "./dialog";
-export * from "./drawer";
-export * from "./dropdown-menu";
-export * from "./empty";
-export * from "./error-boundary";
-export * from "./field";
-export * from "./form";
-export * from "./hover-card";
-export * from "./input";
-export * from "./input-group";
-export * from "./input-otp";
-export * from "./item";
-export * from "./kbd";
-export * from "./label";
-export * from "./menubar";
-export * from "./navigation-menu";
-export * from "./pagination";
-export * from "./popover";
-export * from "./progress";
-export * from "./radio-group";
-export * from "./resizable";
-export * from "./scroll-area";
-export * from "./select";
-export * from "./select-group";
-export * from "./separator";
-export * from "./sheet";
-export * from "./sidebar";
-export * from "./skeleton";
-export * from "./slider";
-export * from "./sonner";
-export * from "./spinner";
-export * from "./switch";
-export * from "./table";
-export * from "./tabs";
-export * from "./textarea";
-export * from "./text-input";
-export * from "./toast";
-export * from "./toaster";
-export * from "./toggle";
-export * from "./toggle-group";
-export * from "./tooltip";
-export * from "./otp";

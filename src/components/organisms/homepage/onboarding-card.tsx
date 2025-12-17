@@ -1,5 +1,10 @@
 "use client";
 
+import { cva, type VariantProps } from "class-variance-authority";
+import { ArrowRight, Check, Rocket, Sparkles, Star, Zap } from "lucide-react";
+import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -7,13 +12,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { ArrowRight, Sparkles, Zap, Rocket, Check, Star } from "lucide-react";
-import { cva, type VariantProps } from "class-variance-authority";
-import { useTranslations } from "next-intl";
-import { cn } from "@/lib/utils";
 import { useLocalizedPath } from "@/lib/client-utils";
+import { cn } from "@/lib/utils";
 
 const onboardingCardVariants = cva(
   "overflow-hidden transition-all duration-500 ease-out relative group",

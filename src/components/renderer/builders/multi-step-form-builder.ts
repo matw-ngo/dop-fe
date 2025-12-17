@@ -1,8 +1,8 @@
 // Helper utilities for building multi-step form configurations
 // Provides fluent API for creating multi-step forms
 
-import type { StepConfig, MultiStepFormConfig } from "../types/multi-step-form";
 import type { RawFieldConfig } from "../types/data-driven-ui";
+import type { MultiStepFormConfig, StepConfig } from "../types/multi-step-form";
 
 /**
  * Create a step configuration

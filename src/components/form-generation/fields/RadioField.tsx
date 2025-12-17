@@ -1,9 +1,9 @@
 "use client";
 
-import type { FieldComponentProps, RadioFieldConfig } from "../types";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useFormTheme } from "../themes/ThemeProvider";
+import type { FieldComponentProps, RadioFieldConfig } from "../types";
 import { cn } from "../utils/helpers";
 
 export function RadioField({

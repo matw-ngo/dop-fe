@@ -4,7 +4,7 @@
  * Comprehensive WebSocket security with authentication, CSRF protection, and integrity verification
  */
 
-import { useTokenStore, securityUtils } from "@/lib/auth/secure-tokens";
+import { securityUtils, useTokenStore } from "@/lib/auth/secure-tokens";
 
 // WebSocket security configuration
 export interface WebSocketSecurityConfig {
@@ -450,7 +450,7 @@ export class SecureWebSocketManager {
   private attemptReconnection(): void {
     this.reconnectAttempts++;
     const delay =
-      this.config.reconnectDelay * Math.pow(2, this.reconnectAttempts - 1);
+      this.config.reconnectDelay * 2 ** (this.reconnectAttempts - 1);
 
     console.log(
       `Attempting WebSocket reconnection ${this.reconnectAttempts}/${this.config.maxReconnectAttempts} in ${delay}ms`,

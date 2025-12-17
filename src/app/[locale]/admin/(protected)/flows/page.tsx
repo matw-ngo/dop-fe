@@ -1,8 +1,25 @@
 "use client";
 
-import { Suspense, useState, useMemo, useCallback } from "react";
-import { PlusIcon } from "lucide-react";
-import { DataTable } from "@/components/ui/data-table";
+import type { ColumnDef } from "@tanstack/react-table";
+import {
+  Loader2,
+  PauseIcon,
+  PlayIcon,
+  PlusIcon,
+  Trash2Icon,
+} from "lucide-react";
+import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Suspense, useCallback, useMemo, useState } from "react";
+import AdminErrorBoundary from "@/components/admin/admin-error-boundary";
+import { AdminBreadcrumb } from "@/components/admin/breadcrumb";
+import { EmptyState, ErrorState } from "@/components/admin/error-states";
+import { FlowActions } from "@/components/admin/flow-actions";
+import { FlowFilters } from "@/components/admin/flow-filters";
+import { FlowStatusBadge } from "@/components/admin/flow-status-badge";
+import { FlowListSkeleton } from "@/components/admin/loading-states";
+import { StepManagementDialog } from "@/components/admin/step-management-dialog";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -11,28 +28,16 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { FlowStatusBadge } from "@/components/admin/flow-status-badge";
-import { FlowActions } from "@/components/admin/flow-actions";
-import { AdminBreadcrumb } from "@/components/admin/breadcrumb";
-import { FlowFilters } from "@/components/admin/flow-filters";
-import { FlowListSkeleton } from "@/components/admin/loading-states";
-import { ErrorState, EmptyState } from "@/components/admin/error-states";
-import { StepManagementDialog } from "@/components/admin/step-management-dialog";
-import { type ColumnDef } from "@tanstack/react-table";
-import { type FlowListItem, type FlowStatus } from "@/types/admin";
+import { DataTable } from "@/components/ui/data-table";
 import {
-  useFlows,
   useDeleteFlow,
   useDuplicateFlow,
-  useToggleFlowStatus,
+  useFlows,
   usePrefetchFlows,
+  useToggleFlowStatus,
 } from "@/hooks/admin/use-admin-flows";
-import AdminErrorBoundary from "@/components/admin/admin-error-boundary";
-import Link from "next/link";
 import { useLocalizedPath } from "@/lib/client-utils";
-import { Badge } from "@/components/ui/badge";
-import { PlayIcon, PauseIcon, Trash2Icon, Loader2 } from "lucide-react";
-import { useTranslations } from "next-intl";
+import type { FlowListItem, FlowStatus } from "@/types/admin";
 
 // FlowsPage component that uses mock API to prevent CORS issues when BE is not ready
 function FlowsPage() {

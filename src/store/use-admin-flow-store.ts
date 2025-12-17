@@ -1,11 +1,11 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
-import type { 
-  FlowDetail, 
-  StepDetail, 
-  FieldListItem, 
-  FlowStatus, 
-  StepStatus 
+import type {
+  FieldListItem,
+  FlowDetail,
+  FlowStatus,
+  StepDetail,
+  StepStatus,
 } from "@/types/admin";
 
 interface FieldChange {
@@ -24,18 +24,18 @@ interface AdminFlowState {
   currentFlow: FlowDetail | null;
   currentStep: StepDetail | null;
   isEditing: boolean;
-  
+
   // Temporary changes (not yet saved)
   pendingFlowChanges: Partial<FlowDetail>;
   pendingStepChanges: Record<string, StepChange>;
-  
+
   // Loading states
   isLoading: boolean;
   isSaving: boolean;
-  
+
   // Error states
   error: string | null;
-  
+
   // Actions
   setCurrentFlow: (flow: FlowDetail | null) => void;
   setCurrentStep: (step: StepDetail | null) => void;
@@ -43,30 +43,33 @@ interface AdminFlowState {
   setLoading: (loading: boolean) => void;
   setSaving: (saving: boolean) => void;
   setError: (error: string | null) => void;
-  
+
   // Flow management
   updateFlowStatus: (status: FlowStatus) => void;
   updateFlowName: (name: string) => void;
   updateFlowDescription: (description: string) => void;
-  
+
   // Step management
   updateStepStatus: (stepId: string, status: StepStatus) => void;
   updateStepName: (stepId: string, name: string) => void;
   updateStepDescription: (stepId: string, description: string) => void;
   updateStepOrder: (stepId: string, stepOrder: number) => void;
-  
+
   // Field management
   updateFieldVisibility: (fieldId: string, visible: boolean) => void;
   updateFieldRequirement: (fieldId: string, required: boolean) => void;
   updateFieldLabel: (fieldId: string, label: string) => void;
   updateFieldPlaceholder: (fieldId: string, placeholder: string) => void;
-  updateFieldValidation: (fieldId: string, validation: FieldListItem['validation']) => void;
-  
+  updateFieldValidation: (
+    fieldId: string,
+    validation: FieldListItem["validation"],
+  ) => void;
+
   // Change management
   hasUnsavedChanges: () => boolean;
   resetChanges: () => void;
   saveChanges: () => void;
-  
+
   // Computed values
   getModifiedFields: (stepId: string) => FieldChange[];
   getModifiedSteps: () => StepChange[];
@@ -87,20 +90,28 @@ export const useAdminFlowStore = create<AdminFlowState>()(
 
       // Basic setters
       setCurrentFlow: (flow) => {
-        set({ 
-          currentFlow: flow, 
-          currentStep: null,
-          pendingFlowChanges: {},
-          pendingStepChanges: {},
-          error: null 
-        }, false, "setCurrentFlow");
+        set(
+          {
+            currentFlow: flow,
+            currentStep: null,
+            pendingFlowChanges: {},
+            pendingStepChanges: {},
+            error: null,
+          },
+          false,
+          "setCurrentFlow",
+        );
       },
 
       setCurrentStep: (step) => {
-        set({ 
-          currentStep: step,
-          error: null 
-        }, false, "setCurrentStep");
+        set(
+          {
+            currentStep: step,
+            error: null,
+          },
+          false,
+          "setCurrentStep",
+        );
       },
 
       setEditing: (editing) => {
@@ -121,102 +132,130 @@ export const useAdminFlowStore = create<AdminFlowState>()(
 
       // Flow management
       updateFlowStatus: (status) => {
-        set((state) => ({
-          pendingFlowChanges: {
-            ...state.pendingFlowChanges,
-            status,
-          },
-          isEditing: true,
-        }), false, "updateFlowStatus");
+        set(
+          (state) => ({
+            pendingFlowChanges: {
+              ...state.pendingFlowChanges,
+              status,
+            },
+            isEditing: true,
+          }),
+          false,
+          "updateFlowStatus",
+        );
       },
 
       updateFlowName: (name) => {
-        set((state) => ({
-          pendingFlowChanges: {
-            ...state.pendingFlowChanges,
-            name,
-          },
-          isEditing: true,
-        }), false, "updateFlowName");
+        set(
+          (state) => ({
+            pendingFlowChanges: {
+              ...state.pendingFlowChanges,
+              name,
+            },
+            isEditing: true,
+          }),
+          false,
+          "updateFlowName",
+        );
       },
 
       updateFlowDescription: (description) => {
-        set((state) => ({
-          pendingFlowChanges: {
-            ...state.pendingFlowChanges,
-            description,
-          },
-          isEditing: true,
-        }), false, "updateFlowDescription");
+        set(
+          (state) => ({
+            pendingFlowChanges: {
+              ...state.pendingFlowChanges,
+              description,
+            },
+            isEditing: true,
+          }),
+          false,
+          "updateFlowDescription",
+        );
       },
 
       // Step management
       updateStepStatus: (stepId, status) => {
-        set((state) => ({
-          pendingStepChanges: {
-            ...state.pendingStepChanges,
-            [stepId]: {
-              ...state.pendingStepChanges[stepId],
-              stepId,
-              changes: {
-                ...state.pendingStepChanges[stepId]?.changes,
-                status,
+        set(
+          (state) => ({
+            pendingStepChanges: {
+              ...state.pendingStepChanges,
+              [stepId]: {
+                ...state.pendingStepChanges[stepId],
+                stepId,
+                changes: {
+                  ...state.pendingStepChanges[stepId]?.changes,
+                  status,
+                },
               },
             },
-          },
-          isEditing: true,
-        }), false, "updateStepStatus");
+            isEditing: true,
+          }),
+          false,
+          "updateStepStatus",
+        );
       },
 
       updateStepName: (stepId, name) => {
-        set((state) => ({
-          pendingStepChanges: {
-            ...state.pendingStepChanges,
-            [stepId]: {
-              ...state.pendingStepChanges[stepId],
-              stepId,
-              changes: {
-                ...state.pendingStepChanges[stepId]?.changes,
-                name,
+        set(
+          (state) => ({
+            pendingStepChanges: {
+              ...state.pendingStepChanges,
+              [stepId]: {
+                ...state.pendingStepChanges[stepId],
+                stepId,
+                changes: {
+                  ...state.pendingStepChanges[stepId]?.changes,
+                  name,
+                },
               },
             },
-          },
-          isEditing: true,
-        }), false, "updateStepName");
+            isEditing: true,
+          }),
+          false,
+          "updateStepName",
+        );
       },
 
       updateStepDescription: (stepId, description) => {
-        set((state) => ({
-          pendingStepChanges: {
-            ...state.pendingStepChanges,
-            [stepId]: {
-              ...state.pendingStepChanges[stepId],
-              stepId,
-              changes: {
-                ...state.pendingStepChanges[stepId]?.changes,
-                description,
+        set(
+          (state) => ({
+            pendingStepChanges: {
+              ...state.pendingStepChanges,
+              [stepId]: {
+                ...state.pendingStepChanges[stepId],
+                stepId,
+                changes: {
+                  ...state.pendingStepChanges[stepId]?.changes,
+                  description,
+                },
               },
             },
-          },
-          isEditing: true,
-        }), false, "updateStepDescription");
+            isEditing: true,
+          }),
+          false,
+          "updateStepDescription",
+        );
       },
 
       updateStepOrder: (stepId, stepOrder) => {
-        set((state) => ({
-          pendingStepChanges: {
-            ...state.pendingStepChanges,
-            [stepId]: {
-              ...state.pendingStepChanges[stepId],
-              stepId,
-              changes: {
-                ...state.pendingStepChanges[stepId]?.changes,
-                stepOrder,
+        set(
+          (state) => ({
+            pendingStepChanges: {
+              ...state.pendingStepChanges,
+              [stepId]: {
+                ...state.pendingStepChanges[stepId],
+                stepId,
+                changes: {
+                  ...state.pendingStepChanges[stepId]?.changes,
+                  stepOrder,
+                },
               },
             },
-          },
-          isEditing: true,
-        }), false, "updateStepOrder");
+            isEditing: true,
+          }),
+          false,
+          "updateStepOrder",
+        );
       },
 
       // Field management
@@ -224,220 +263,250 @@ export const useAdminFlowStore = create<AdminFlowState>()(
         const { currentStep } = get();
         if (!currentStep) return;
 
-        set((state) => {
-          const existingStepChange = state.pendingStepChanges[currentStep.id];
-          const existingFieldChanges = existingStepChange?.fieldChanges || [];
-          const existingFieldIndex = existingFieldChanges.findIndex(fc => fc.fieldId === fieldId);
-          
-          let newFieldChanges: FieldChange[];
-          
-          if (existingFieldIndex >= 0) {
-            // Update existing field change
-            newFieldChanges = [...existingFieldChanges];
-            newFieldChanges[existingFieldIndex] = {
-              fieldId,
-              changes: {
-                ...newFieldChanges[existingFieldIndex].changes,
-                visible,
-              },
-            };
-          } else {
-            // Add new field change
-            newFieldChanges = [
-              ...existingFieldChanges,
-              { fieldId, changes: { visible } }
-            ];
-          }
+        set(
+          (state) => {
+            const existingStepChange = state.pendingStepChanges[currentStep.id];
+            const existingFieldChanges = existingStepChange?.fieldChanges || [];
+            const existingFieldIndex = existingFieldChanges.findIndex(
+              (fc) => fc.fieldId === fieldId,
+            );
 
-          return {
-            pendingStepChanges: {
-              ...state.pendingStepChanges,
-              [currentStep.id]: {
-                ...existingStepChange,
-                stepId: currentStep.id,
-                changes: existingStepChange?.changes || {},
-                fieldChanges: newFieldChanges,
+            let newFieldChanges: FieldChange[];
+
+            if (existingFieldIndex >= 0) {
+              // Update existing field change
+              newFieldChanges = [...existingFieldChanges];
+              newFieldChanges[existingFieldIndex] = {
+                fieldId,
+                changes: {
+                  ...newFieldChanges[existingFieldIndex].changes,
+                  visible,
+                },
+              };
+            } else {
+              // Add new field change
+              newFieldChanges = [
+                ...existingFieldChanges,
+                { fieldId, changes: { visible } },
+              ];
+            }
+
+            return {
+              pendingStepChanges: {
+                ...state.pendingStepChanges,
+                [currentStep.id]: {
+                  ...existingStepChange,
+                  stepId: currentStep.id,
+                  changes: existingStepChange?.changes || {},
+                  fieldChanges: newFieldChanges,
+                },
               },
-            },
-            isEditing: true,
-          };
-        }, false, "updateFieldVisibility");
+              isEditing: true,
+            };
+          },
+          false,
+          "updateFieldVisibility",
+        );
       },
 
       updateFieldRequirement: (fieldId, required) => {
         const { currentStep } = get();
         if (!currentStep) return;
 
-        set((state) => {
-          const existingStepChange = state.pendingStepChanges[currentStep.id];
-          const existingFieldChanges = existingStepChange?.fieldChanges || [];
-          const existingFieldIndex = existingFieldChanges.findIndex(fc => fc.fieldId === fieldId);
-          
-          let newFieldChanges: FieldChange[];
-          
-          if (existingFieldIndex >= 0) {
-            // Update existing field change
-            newFieldChanges = [...existingFieldChanges];
-            newFieldChanges[existingFieldIndex] = {
-              fieldId,
-              changes: {
-                ...newFieldChanges[existingFieldIndex].changes,
-                required,
-              },
-            };
-          } else {
-            // Add new field change
-            newFieldChanges = [
-              ...existingFieldChanges,
-              { fieldId, changes: { required } }
-            ];
-          }
+        set(
+          (state) => {
+            const existingStepChange = state.pendingStepChanges[currentStep.id];
+            const existingFieldChanges = existingStepChange?.fieldChanges || [];
+            const existingFieldIndex = existingFieldChanges.findIndex(
+              (fc) => fc.fieldId === fieldId,
+            );
 
-          return {
-            pendingStepChanges: {
-              ...state.pendingStepChanges,
-              [currentStep.id]: {
-                ...existingStepChange,
-                stepId: currentStep.id,
-                changes: existingStepChange?.changes || {},
-                fieldChanges: newFieldChanges,
+            let newFieldChanges: FieldChange[];
+
+            if (existingFieldIndex >= 0) {
+              // Update existing field change
+              newFieldChanges = [...existingFieldChanges];
+              newFieldChanges[existingFieldIndex] = {
+                fieldId,
+                changes: {
+                  ...newFieldChanges[existingFieldIndex].changes,
+                  required,
+                },
+              };
+            } else {
+              // Add new field change
+              newFieldChanges = [
+                ...existingFieldChanges,
+                { fieldId, changes: { required } },
+              ];
+            }
+
+            return {
+              pendingStepChanges: {
+                ...state.pendingStepChanges,
+                [currentStep.id]: {
+                  ...existingStepChange,
+                  stepId: currentStep.id,
+                  changes: existingStepChange?.changes || {},
+                  fieldChanges: newFieldChanges,
+                },
               },
-            },
-            isEditing: true,
-          };
-        }, false, "updateFieldRequirement");
+              isEditing: true,
+            };
+          },
+          false,
+          "updateFieldRequirement",
+        );
       },
 
       updateFieldLabel: (fieldId, label) => {
         const { currentStep } = get();
         if (!currentStep) return;
 
-        set((state) => {
-          const existingStepChange = state.pendingStepChanges[currentStep.id];
-          const existingFieldChanges = existingStepChange?.fieldChanges || [];
-          const existingFieldIndex = existingFieldChanges.findIndex(fc => fc.fieldId === fieldId);
-          
-          let newFieldChanges: FieldChange[];
-          
-          if (existingFieldIndex >= 0) {
-            // Update existing field change
-            newFieldChanges = [...existingFieldChanges];
-            newFieldChanges[existingFieldIndex] = {
-              fieldId,
-              changes: {
-                ...newFieldChanges[existingFieldIndex].changes,
-                label,
-              },
-            };
-          } else {
-            // Add new field change
-            newFieldChanges = [
-              ...existingFieldChanges,
-              { fieldId, changes: { label } }
-            ];
-          }
+        set(
+          (state) => {
+            const existingStepChange = state.pendingStepChanges[currentStep.id];
+            const existingFieldChanges = existingStepChange?.fieldChanges || [];
+            const existingFieldIndex = existingFieldChanges.findIndex(
+              (fc) => fc.fieldId === fieldId,
+            );
 
-          return {
-            pendingStepChanges: {
-              ...state.pendingStepChanges,
-              [currentStep.id]: {
-                ...existingStepChange,
-                stepId: currentStep.id,
-                changes: existingStepChange?.changes || {},
-                fieldChanges: newFieldChanges,
+            let newFieldChanges: FieldChange[];
+
+            if (existingFieldIndex >= 0) {
+              // Update existing field change
+              newFieldChanges = [...existingFieldChanges];
+              newFieldChanges[existingFieldIndex] = {
+                fieldId,
+                changes: {
+                  ...newFieldChanges[existingFieldIndex].changes,
+                  label,
+                },
+              };
+            } else {
+              // Add new field change
+              newFieldChanges = [
+                ...existingFieldChanges,
+                { fieldId, changes: { label } },
+              ];
+            }
+
+            return {
+              pendingStepChanges: {
+                ...state.pendingStepChanges,
+                [currentStep.id]: {
+                  ...existingStepChange,
+                  stepId: currentStep.id,
+                  changes: existingStepChange?.changes || {},
+                  fieldChanges: newFieldChanges,
+                },
               },
-            },
-            isEditing: true,
-          };
-        }, false, "updateFieldLabel");
+              isEditing: true,
+            };
+          },
+          false,
+          "updateFieldLabel",
+        );
       },
 
       updateFieldPlaceholder: (fieldId, placeholder) => {
         const { currentStep } = get();
         if (!currentStep) return;
 
-        set((state) => {
-          const existingStepChange = state.pendingStepChanges[currentStep.id];
-          const existingFieldChanges = existingStepChange?.fieldChanges || [];
-          const existingFieldIndex = existingFieldChanges.findIndex(fc => fc.fieldId === fieldId);
-          
-          let newFieldChanges: FieldChange[];
-          
-          if (existingFieldIndex >= 0) {
-            // Update existing field change
-            newFieldChanges = [...existingFieldChanges];
-            newFieldChanges[existingFieldIndex] = {
-              fieldId,
-              changes: {
-                ...newFieldChanges[existingFieldIndex].changes,
-                placeholder,
-              },
-            };
-          } else {
-            // Add new field change
-            newFieldChanges = [
-              ...existingFieldChanges,
-              { fieldId, changes: { placeholder } }
-            ];
-          }
+        set(
+          (state) => {
+            const existingStepChange = state.pendingStepChanges[currentStep.id];
+            const existingFieldChanges = existingStepChange?.fieldChanges || [];
+            const existingFieldIndex = existingFieldChanges.findIndex(
+              (fc) => fc.fieldId === fieldId,
+            );
 
-          return {
-            pendingStepChanges: {
-              ...state.pendingStepChanges,
-              [currentStep.id]: {
-                ...existingStepChange,
-                stepId: currentStep.id,
-                changes: existingStepChange?.changes || {},
-                fieldChanges: newFieldChanges,
+            let newFieldChanges: FieldChange[];
+
+            if (existingFieldIndex >= 0) {
+              // Update existing field change
+              newFieldChanges = [...existingFieldChanges];
+              newFieldChanges[existingFieldIndex] = {
+                fieldId,
+                changes: {
+                  ...newFieldChanges[existingFieldIndex].changes,
+                  placeholder,
+                },
+              };
+            } else {
+              // Add new field change
+              newFieldChanges = [
+                ...existingFieldChanges,
+                { fieldId, changes: { placeholder } },
+              ];
+            }
+
+            return {
+              pendingStepChanges: {
+                ...state.pendingStepChanges,
+                [currentStep.id]: {
+                  ...existingStepChange,
+                  stepId: currentStep.id,
+                  changes: existingStepChange?.changes || {},
+                  fieldChanges: newFieldChanges,
+                },
               },
-            },
-            isEditing: true,
-          };
-        }, false, "updateFieldPlaceholder");
+              isEditing: true,
+            };
+          },
+          false,
+          "updateFieldPlaceholder",
+        );
       },
 
       updateFieldValidation: (fieldId, validation) => {
         const { currentStep } = get();
         if (!currentStep) return;
 
-        set((state) => {
-          const existingStepChange = state.pendingStepChanges[currentStep.id];
-          const existingFieldChanges = existingStepChange?.fieldChanges || [];
-          const existingFieldIndex = existingFieldChanges.findIndex(fc => fc.fieldId === fieldId);
-          
-          let newFieldChanges: FieldChange[];
-          
-          if (existingFieldIndex >= 0) {
-            // Update existing field change
-            newFieldChanges = [...existingFieldChanges];
-            newFieldChanges[existingFieldIndex] = {
-              fieldId,
-              changes: {
-                ...newFieldChanges[existingFieldIndex].changes,
-                validation,
-              },
-            };
-          } else {
-            // Add new field change
-            newFieldChanges = [
-              ...existingFieldChanges,
-              { fieldId, changes: { validation } }
-            ];
-          }
+        set(
+          (state) => {
+            const existingStepChange = state.pendingStepChanges[currentStep.id];
+            const existingFieldChanges = existingStepChange?.fieldChanges || [];
+            const existingFieldIndex = existingFieldChanges.findIndex(
+              (fc) => fc.fieldId === fieldId,
+            );
 
-          return {
-            pendingStepChanges: {
-              ...state.pendingStepChanges,
-              [currentStep.id]: {
-                ...existingStepChange,
-                stepId: currentStep.id,
-                changes: existingStepChange?.changes || {},
-                fieldChanges: newFieldChanges,
+            let newFieldChanges: FieldChange[];
+
+            if (existingFieldIndex >= 0) {
+              // Update existing field change
+              newFieldChanges = [...existingFieldChanges];
+              newFieldChanges[existingFieldIndex] = {
+                fieldId,
+                changes: {
+                  ...newFieldChanges[existingFieldIndex].changes,
+                  validation,
+                },
+              };
+            } else {
+              // Add new field change
+              newFieldChanges = [
+                ...existingFieldChanges,
+                { fieldId, changes: { validation } },
+              ];
+            }
+
+            return {
+              pendingStepChanges: {
+                ...state.pendingStepChanges,
+                [currentStep.id]: {
+                  ...existingStepChange,
+                  stepId: currentStep.id,
+                  changes: existingStepChange?.changes || {},
+                  fieldChanges: newFieldChanges,
+                },
               },
-            },
-            isEditing: true,
-          };
-        }, false, "updateFieldValidation");
+              isEditing: true,
+            };
+          },
+          false,
+          "updateFieldValidation",
+        );
       },
 
       // Change management
@@ -450,12 +519,16 @@ export const useAdminFlowStore = create<AdminFlowState>()(
       },
 
       resetChanges: () => {
-        set({
-          pendingFlowChanges: {},
-          pendingStepChanges: {},
-          isEditing: false,
-          error: null,
-        }, false, "resetChanges");
+        set(
+          {
+            pendingFlowChanges: {},
+            pendingStepChanges: {},
+            isEditing: false,
+            error: null,
+          },
+          false,
+          "resetChanges",
+        );
       },
 
       saveChanges: () => {
@@ -477,14 +550,17 @@ export const useAdminFlowStore = create<AdminFlowState>()(
     }),
     {
       name: "AdminFlowStore",
-    }
-  )
+    },
+  ),
 );
 
 // Selectors for better performance
-export const useCurrentFlow = () => useAdminFlowStore((state) => state.currentFlow);
-export const useCurrentStep = () => useAdminFlowStore((state) => state.currentStep);
+export const useCurrentFlow = () =>
+  useAdminFlowStore((state) => state.currentFlow);
+export const useCurrentStep = () =>
+  useAdminFlowStore((state) => state.currentStep);
 export const useIsEditing = () => useAdminFlowStore((state) => state.isEditing);
-export const useHasUnsavedChanges = () => useAdminFlowStore((state) => state.hasUnsavedChanges());
+export const useHasUnsavedChanges = () =>
+  useAdminFlowStore((state) => state.hasUnsavedChanges());
 export const useIsSaving = () => useAdminFlowStore((state) => state.isSaving);
 export const useAdminError = () => useAdminFlowStore((state) => state.error);

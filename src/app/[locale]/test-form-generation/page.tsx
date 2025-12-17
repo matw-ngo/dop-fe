@@ -1,13 +1,13 @@
 "use client";
 
+import { useState } from "react";
+import type { DynamicFormConfig } from "@/components/form-generation";
 import {
   DynamicForm,
   FieldType,
-  ValidationRuleType,
   LayoutType,
+  ValidationRuleType,
 } from "@/components/form-generation";
-import type { DynamicFormConfig } from "@/components/form-generation";
-import { useState } from "react";
 
 export default function FormGenerationTestPage() {
   const [formData, setFormData] = useState<Record<string, any>>({});

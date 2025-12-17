@@ -1,21 +1,18 @@
 "use client";
 
-import React, { useState, useCallback } from "react";
-import { useTranslations } from "next-intl";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import {
-  X,
   ArrowRight,
-  Shield,
-  Trash2,
   ChevronDown,
   ChevronUp,
+  Shield,
+  Trash2,
+  X,
 } from "lucide-react";
-import { useInsuranceStore } from "@/store/use-insurance-store";
-import { useLocale } from "next-intl";
-import { cn } from "@/lib/utils";
+import Link from "next/link";
+import { useLocale, useTranslations } from "next-intl";
+import React, { useCallback, useState } from "react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,6 +20,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { cn } from "@/lib/utils";
+import { useInsuranceStore } from "@/store/use-insurance-store";
 
 interface InsuranceComparisonSnackbarProps {
   onClose?: () => void;

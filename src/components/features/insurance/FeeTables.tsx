@@ -1,22 +1,24 @@
 "use client";
 
-import { useState } from "react";
-import { useTranslations } from "next-intl";
 import {
-  FileText,
-  Download,
-  Search,
+  Bike,
+  Calendar,
   Car,
-  Truck,
-  Tractor,
-  Shield,
-  Filter,
   ChevronDown,
   ChevronUp,
+  Download,
+  FileText,
+  Filter,
   Info,
-  Calendar,
-  Bike,
+  Search,
+  Shield,
+  Tractor,
+  Truck,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { useState } from "react";
+import { toast } from "sonner";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -25,14 +27,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -40,6 +40,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
 import {
   Table,
   TableBody,
@@ -48,7 +49,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { toast } from "sonner";
 
 // Fee data for compulsory insurance
 const compulsoryFees = {

@@ -1,43 +1,31 @@
 "use client";
 
-import type React from "react";
-import { useState } from "react";
-import { useTranslations } from "next-intl";
 import {
-  useCreditCardsStore,
-  useCreditCardComparison,
-} from "@/store/use-credit-cards-store";
-import { useShallow } from "zustand/shallow";
-import type { CreditCard } from "@/types/credit-card";
-import {
-  CreditCard as CreditCardIcon,
-  X,
-  Plus,
-  Share2,
-  Download,
   BarChart3,
-  Loader2,
-  Copy,
-  FileText,
-  Printer,
-  Link,
   Check,
   ChevronDown,
-  TrendingUp,
-  Star,
-  Percent,
+  Copy,
+  CreditCard as CreditCardIcon,
   DollarSign,
+  Download,
+  FileText,
+  Link,
+  Loader2,
+  Percent,
+  Plus,
+  Printer,
+  Share2,
+  Star,
+  TrendingUp,
+  X,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { useTranslations } from "next-intl";
+import type React from "react";
+import { useState } from "react";
+import { useShallow } from "zustand/shallow";
 import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -45,8 +33,20 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { cn } from "@/lib/utils";
+import { Progress } from "@/components/ui/progress";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { useToast } from "@/hooks/ui/use-toast";
+import { cn } from "@/lib/utils";
+import {
+  useCreditCardComparison,
+  useCreditCardsStore,
+} from "@/store/use-credit-cards-store";
+import type { CreditCard } from "@/types/credit-card";
 
 interface CreditCardComparisonPanelProps {
   cards?: CreditCard[];

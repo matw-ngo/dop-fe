@@ -1,8 +1,16 @@
-import React, { useState, useEffect, useRef } from "react";
+import {
+  Clock,
+  CreditCard as CreditCardIcon,
+  Loader2,
+  Search,
+  TrendingUp,
+  X,
+} from "lucide-react";
 import { useTranslations } from "next-intl";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import type React from "react";
+import { useEffect, useRef, useState } from "react";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Command,
   CommandEmpty,
@@ -11,22 +19,15 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
+import { Input } from "@/components/ui/input";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
-import {
-  Search,
-  Clock,
-  TrendingUp,
-  CreditCard as CreditCardIcon,
-  X,
-  Loader2,
-} from "lucide-react";
-import { vietnameseCreditCards } from "@/data/credit-cards";
 import { ANALYTICS_EVENTS } from "@/constants/credit-cards";
+import { vietnameseCreditCards } from "@/data/credit-cards";
+import { cn } from "@/lib/utils";
 
 interface CreditCardSearchBarProps {
   value?: string;

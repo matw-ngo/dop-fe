@@ -1,12 +1,12 @@
+import type { InsuranceProduct } from "@/types/insurance";
 import {
-  COVERAGE_PERIODS,
-  SERVICE_INFO,
-  PAYMENT_METHODS,
   CLAIM_METHODS,
+  COVERAGE_PERIODS,
+  PAYMENT_METHODS,
+  SERVICE_INFO,
   VEHICLE_TYPES,
 } from "../constants";
 import type { ColorVariant } from "../types";
-import type { InsuranceProduct } from "@/types/insurance";
 
 export function getCoverageProgress(limit: number, maxLimit: number): number {
   return Math.min((limit / maxLimit) * 100, 100);

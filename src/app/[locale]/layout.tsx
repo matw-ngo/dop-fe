@@ -1,10 +1,10 @@
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
-import { Analytics } from "@vercel/analytics/next";
 import { NextIntlClientProvider } from "next-intl";
 
-// @ts-ignore
+// @ts-expect-error
 import "../globals.css";
 
 import Providers from "@/components/layout/providers";

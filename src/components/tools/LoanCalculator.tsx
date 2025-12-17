@@ -1,4 +1,5 @@
 "use client";
+
 /**
  * Loan Calculator Component
  *
@@ -8,8 +9,18 @@
  * - Amortization schedule
  */
 
-import React, { useState, useEffect, useMemo } from "react";
+import {
+  Calculator,
+  Calendar,
+  Download,
+  RotateCcw,
+  TrendingUp,
+} from "lucide-react";
 import { useTranslations } from "next-intl";
+import type React from "react";
+import { useEffect, useMemo, useState } from "react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -17,10 +28,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Slider } from "@/components/ui/slider";
 import {
   Select,
   SelectContent,
@@ -28,9 +37,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Slider } from "@/components/ui/slider";
 import {
   Table,
   TableBody,
@@ -39,24 +47,18 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Calculator,
-  TrendingUp,
-  Calendar,
-  Download,
-  RotateCcw,
-} from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { formatCurrency } from "@/lib/utils";
 import { useFinancialToolsStore } from "@/store/use-financial-tools-store";
 import type {
+  AmortizationEntry,
   ILoanParams,
   ILoanResult,
-  AmortizationEntry,
 } from "@/types/tools";
-import { formatCurrency } from "@/lib/utils";
 import {
+  CalculatorAsyncErrorHandler,
   CalculatorErrorBoundary,
   useCalculatorErrorHandler,
-  CalculatorAsyncErrorHandler,
 } from "./ErrorBoundary";
 
 // Loan terms in months
@@ -89,8 +91,8 @@ const calculateLoan = (params: ILoanParams): ILoanResult => {
 
   // Calculate monthly payment using reducing balance formula
   const monthlyPayment =
-    (amount * (monthlyRate * Math.pow(1 + monthlyRate, term))) /
-    (Math.pow(1 + monthlyRate, term) - 1);
+    (amount * (monthlyRate * (1 + monthlyRate) ** term)) /
+    ((1 + monthlyRate) ** term - 1);
 
   const totalPayment = monthlyPayment * term;
   const totalInterest = totalPayment - amount;

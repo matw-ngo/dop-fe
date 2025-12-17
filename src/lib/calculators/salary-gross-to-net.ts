@@ -5,17 +5,17 @@
  * including all mandatory deductions and tax calculations.
  */
 
-import { calculateTax } from "./tax";
-import {
-  calculateEmployeeInsurance,
-  calculateEmployerInsurance,
-  type InsuranceBreakdown,
-} from "./insurance";
 import {
   ALLOWANCES,
   REGIONAL_MINIMUM_WAGES,
   TAX_BRACKETS,
 } from "@/lib/constants/tools";
+import {
+  calculateEmployeeInsurance,
+  calculateEmployerInsurance,
+  type InsuranceBreakdown,
+} from "./insurance";
+import { calculateTax } from "./tax";
 
 // Type definition for the return value
 export interface SalaryGrossToNetResult {

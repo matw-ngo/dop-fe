@@ -1,12 +1,12 @@
 // @ts-nocheck
 import { toast } from "sonner";
-import apiClient from "./client";
 import type {
+  IFinancialToolResponse,
+  ISalary,
   ISavingsParams,
   ISavingsResult,
-  ISalary,
-  IFinancialToolResponse,
 } from "@/types/tools";
+import apiClient from "./client";
 
 // API Configuration for Tools endpoints
 const TOOLS_ENDPOINTS = {

@@ -11,17 +11,17 @@
  * - Form state management with eKYC
  */
 
-import React, { useState } from "react";
 import {
+  act,
+  fireEvent,
   render,
   screen,
-  fireEvent,
   waitFor,
-  act,
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { FormProvider, DynamicForm } from "../../index";
+import React, { useState } from "react";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { DynamicForm, FormProvider } from "../../index";
 import type { DynamicFormConfig, EkycFieldConfig } from "../../types";
 import { FieldType } from "../../types";
 

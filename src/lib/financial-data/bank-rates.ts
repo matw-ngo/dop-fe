@@ -6,7 +6,7 @@
  */
 
 import {
-  VietnameseBank,
+  type VietnameseBank,
   VietnameseLoanType,
 } from "./vietnamese-financial-data";
 
@@ -350,7 +350,7 @@ export const calculateCompoundInterest = (
   const ratePerPeriod = annualRate / 100 / compoundingFrequency;
   const numberOfPeriods = (termInMonths / 12) * compoundingFrequency;
 
-  const finalAmount = principal * Math.pow(1 + ratePerPeriod, numberOfPeriods);
+  const finalAmount = principal * (1 + ratePerPeriod) ** numberOfPeriods;
   const totalInterest = finalAmount - principal;
   const effectiveRate = ((finalAmount - principal) / principal) * 100;
 
@@ -577,10 +577,7 @@ function calculateEffectiveAnnualRate(
   compoundingFrequency: number,
 ): number {
   return (
-    Math.pow(
-      1 + nominalRate / 100 / compoundingFrequency,
-      compoundingFrequency,
-    ) - 1
+    (1 + nominalRate / 100 / compoundingFrequency) ** compoundingFrequency - 1
   );
 }
 

@@ -1,75 +1,72 @@
-import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { FormRenderer } from './FormRenderer';
-import type { RawFieldConfig } from './types/data-driven-ui';
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import React from "react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { FormRenderer } from "./FormRenderer";
+import type { RawFieldConfig } from "./types/data-driven-ui";
 
 // This test file uses actual implementations for more realistic integration testing
 // Only external dependencies are mocked
 
 // Mock external dependencies
-vi.mock('next-intl', () => ({
+vi.mock("next-intl", () => ({
   useTranslations: () => (key: string) => key,
 }));
 
-vi.mock('@tanstack/react-query', () => ({
+vi.mock("@tanstack/react-query", () => ({
   useQueries: vi.fn(),
 }));
 
-describe('FormRenderer Integration Tests', () => {
+describe("FormRenderer Integration Tests", () => {
   const mockFields: RawFieldConfig[] = [
     {
-      fieldName: 'fullName',
-      component: 'Input',
+      fieldName: "fullName",
+      component: "Input",
       props: {
-        label: 'Full Name',
-        type: 'text',
-        validations: [{ type: 'required' }],
+        label: "Full Name",
+        type: "text",
+        validations: [{ type: "required" }],
       },
     },
     {
-      fieldName: 'userType',
-      component: 'Select',
+      fieldName: "userType",
+      component: "Select",
       props: {
-        label: 'User Type',
+        label: "User Type",
         options: [
-          { value: 'individual', label: 'Individual' },
-          { value: 'business', label: 'Business' },
+          { value: "individual", label: "Individual" },
+          { value: "business", label: "Business" },
         ],
       },
     },
     {
-      fieldName: 'companyName',
-      component: 'Input',
+      fieldName: "companyName",
+      component: "Input",
       props: {
-        label: 'Company Name',
-        type: 'text',
+        label: "Company Name",
+        type: "text",
       },
       condition: {
-        field: 'userType',
-        operator: 'equals',
-        value: 'business',
+        field: "userType",
+        operator: "equals",
+        value: "business",
       },
     },
     {
-      fieldName: 'agreeToTerms',
-      component: 'Checkbox',
+      fieldName: "agreeToTerms",
+      component: "Checkbox",
       props: {
-        label: 'I agree to the terms and conditions',
+        label: "I agree to the terms and conditions",
       },
     },
   ];
 
-  it('should handle conditional field visibility', async () => {
+  it("should handle conditional field visibility", async () => {
     // This test would need actual component implementations
     // For now, we'll test the integration concept with mocked components
 
     const { result } = render(
-      <FormRenderer
-        fields={mockFields}
-        onSubmit={vi.fn()}
-      />
+      <FormRenderer fields={mockFields} onSubmit={vi.fn()} />,
     );
 
     // Initially, company name should not be visible
@@ -77,7 +74,7 @@ describe('FormRenderer Integration Tests', () => {
 
     // Select 'business' as user type
     const userTypeSelect = screen.getByLabelText(/User Type/);
-    await userEvent.selectOptions(userTypeSelect, 'business');
+    await userEvent.selectOptions(userTypeSelect, "business");
 
     // Company name should now be visible
     await waitFor(() => {
@@ -85,7 +82,7 @@ describe('FormRenderer Integration Tests', () => {
     });
 
     // Select 'individual' as user type
-    await userEvent.selectOptions(userTypeSelect, 'individual');
+    await userEvent.selectOptions(userTypeSelect, "individual");
 
     // Company name should be hidden again
     await waitFor(() => {
@@ -93,18 +90,13 @@ describe('FormRenderer Integration Tests', () => {
     });
   });
 
-  it('should validate required fields', async () => {
+  it("should validate required fields", async () => {
     const onSubmit = vi.fn();
 
-    render(
-      <FormRenderer
-        fields={mockFields}
-        onSubmit={onSubmit}
-      />
-    );
+    render(<FormRenderer fields={mockFields} onSubmit={onSubmit} />);
 
     // Try to submit without required fields
-    const submitButton = screen.getByRole('button', { name: /submit/i });
+    const submitButton = screen.getByRole("button", { name: /submit/i });
     await userEvent.click(submitButton);
 
     // Should show validation errors
@@ -116,7 +108,7 @@ describe('FormRenderer Integration Tests', () => {
     expect(onSubmit).not.toHaveBeenCalled();
 
     // Fill in required fields
-    await userEvent.type(screen.getByLabelText(/Full Name/), 'John Doe');
+    await userEvent.type(screen.getByLabelText(/Full Name/), "John Doe");
     await userEvent.click(screen.getByLabelText(/I agree to the terms/));
 
     // Submit again
@@ -126,58 +118,53 @@ describe('FormRenderer Integration Tests', () => {
     await waitFor(() => {
       expect(onSubmit).toHaveBeenCalledWith(
         expect.objectContaining({
-          fullName: 'John Doe',
+          fullName: "John Doe",
           agreeToTerms: true,
-        })
+        }),
       );
     });
   });
 
-  it('should handle async options loading', async () => {
+  it("should handle async options loading", async () => {
     const fieldsWithAsyncOptions: RawFieldConfig[] = [
       {
-        fieldName: 'country',
-        component: 'Select',
+        fieldName: "country",
+        component: "Select",
         props: {
-          label: 'Country',
+          label: "Country",
           optionsFetcher: {
             fetcher: async () => [
-              { value: 'us', label: 'United States' },
-              { value: 'ca', label: 'Canada' },
+              { value: "us", label: "United States" },
+              { value: "ca", label: "Canada" },
             ],
-            cacheKey: 'countries',
+            cacheKey: "countries",
             cacheDuration: 300000,
           },
         },
       },
       {
-        fieldName: 'state',
-        component: 'Select',
+        fieldName: "state",
+        component: "Select",
         props: {
-          label: 'State',
+          label: "State",
           optionsFetcher: {
             fetcher: async (values: any) => {
               if (!values.country) return [];
-              if (values.country === 'us') {
+              if (values.country === "us") {
                 return [
-                  { value: 'ca', label: 'California' },
-                  { value: 'ny', label: 'New York' },
+                  { value: "ca", label: "California" },
+                  { value: "ny", label: "New York" },
                 ];
               }
               return [];
             },
-            dependsOn: ['country'],
+            dependsOn: ["country"],
           },
         },
       },
     ];
 
-    render(
-      <FormRenderer
-        fields={fieldsWithAsyncOptions}
-        onSubmit={vi.fn()}
-      />
-    );
+    render(<FormRenderer fields={fieldsWithAsyncOptions} onSubmit={vi.fn()} />);
 
     // Should show loading state initially
     expect(screen.getByText(/Loading.../)).toBeInTheDocument();
@@ -188,7 +175,7 @@ describe('FormRenderer Integration Tests', () => {
     });
 
     // Select a country
-    await userEvent.selectOptions(screen.getByLabelText(/Country/), 'us');
+    await userEvent.selectOptions(screen.getByLabelText(/Country/), "us");
 
     // States should load based on selected country
     await waitFor(() => {
@@ -196,65 +183,60 @@ describe('FormRenderer Integration Tests', () => {
     });
   });
 
-  it('should handle complex form submission with all data types', async () => {
+  it("should handle complex form submission with all data types", async () => {
     const complexFields: RawFieldConfig[] = [
       {
-        fieldName: 'name',
-        component: 'Input',
+        fieldName: "name",
+        component: "Input",
         props: {
-          label: 'Name',
-          type: 'text',
-          validations: [{ type: 'required' }],
+          label: "Name",
+          type: "text",
+          validations: [{ type: "required" }],
         },
       },
       {
-        fieldName: 'age',
-        component: 'Input',
+        fieldName: "age",
+        component: "Input",
         props: {
-          label: 'Age',
-          type: 'number',
-          validations: [{ type: 'min', value: 18 }],
+          label: "Age",
+          type: "number",
+          validations: [{ type: "min", value: 18 }],
         },
       },
       {
-        fieldName: 'interests',
-        component: 'Checkbox',
+        fieldName: "interests",
+        component: "Checkbox",
         props: {
-          label: 'Sports',
+          label: "Sports",
         },
       },
       {
-        fieldName: 'newsletter',
-        component: 'Switch',
+        fieldName: "newsletter",
+        component: "Switch",
         props: {
-          label: 'Subscribe to newsletter',
+          label: "Subscribe to newsletter",
         },
       },
     ];
 
     const onSubmit = vi.fn();
 
-    render(
-      <FormRenderer
-        fields={complexFields}
-        onSubmit={onSubmit}
-      />
-    );
+    render(<FormRenderer fields={complexFields} onSubmit={onSubmit} />);
 
     // Fill form with different data types
-    await userEvent.type(screen.getByLabelText(/Name/), 'Jane Smith');
-    await userEvent.type(screen.getByLabelText(/Age/), '25');
+    await userEvent.type(screen.getByLabelText(/Name/), "Jane Smith");
+    await userEvent.type(screen.getByLabelText(/Age/), "25");
     await userEvent.click(screen.getByLabelText(/Sports/));
     await userEvent.click(screen.getByLabelText(/Subscribe to newsletter/));
 
     // Submit form
-    const submitButton = screen.getByRole('button', { name: /submit/i });
+    const submitButton = screen.getByRole("button", { name: /submit/i });
     await userEvent.click(submitButton);
 
     // Verify all data types are correctly captured
     await waitFor(() => {
       expect(onSubmit).toHaveBeenCalledWith({
-        name: 'Jane Smith',
+        name: "Jane Smith",
         age: 25,
         interests: true,
         newsletter: true,
@@ -262,21 +244,21 @@ describe('FormRenderer Integration Tests', () => {
     });
   });
 
-  it('should handle form reset', async () => {
+  it("should handle form reset", async () => {
     const resetFields: RawFieldConfig[] = [
       {
-        fieldName: 'title',
-        component: 'Input',
+        fieldName: "title",
+        component: "Input",
         props: {
-          label: 'Title',
-          type: 'text',
+          label: "Title",
+          type: "text",
         },
       },
       {
-        fieldName: 'description',
-        component: 'Textarea',
+        fieldName: "description",
+        component: "Textarea",
         props: {
-          label: 'Description',
+          label: "Description",
         },
       },
     ];
@@ -285,60 +267,58 @@ describe('FormRenderer Integration Tests', () => {
       <FormRenderer
         fields={resetFields}
         onSubmit={vi.fn()}
-        formActions={
-          <button type="button">Reset</button>
-        }
-      />
+        formActions={<button type="button">Reset</button>}
+      />,
     );
 
     // Fill form
-    await userEvent.type(screen.getByLabelText(/Title/), 'Test Title');
-    await userEvent.type(screen.getByLabelText(/Description/), 'Test Description');
+    await userEvent.type(screen.getByLabelText(/Title/), "Test Title");
+    await userEvent.type(
+      screen.getByLabelText(/Description/),
+      "Test Description",
+    );
 
     // Reset form
-    await userEvent.click(screen.getByText('Reset'));
+    await userEvent.click(screen.getByText("Reset"));
 
     // Fields should be empty
     await waitFor(() => {
-      expect(screen.getByLabelText(/Title/)).toHaveValue('');
-      expect(screen.getByLabelText(/Description/)).toHaveValue('');
+      expect(screen.getByLabelText(/Title/)).toHaveValue("");
+      expect(screen.getByLabelText(/Description/)).toHaveValue("");
     });
   });
 
-  it('should handle dynamic field addition/removal', async () => {
+  it("should handle dynamic field addition/removal", async () => {
     // This test demonstrates how the renderer handles dynamic forms
     const dynamicFields: RawFieldConfig[] = [
       {
-        fieldName: 'hasChildren',
-        component: 'Checkbox',
+        fieldName: "hasChildren",
+        component: "Checkbox",
         props: {
-          label: 'Do you have children?',
+          label: "Do you have children?",
         },
       },
       {
-        fieldName: 'numberOfChildren',
-        component: 'Input',
+        fieldName: "numberOfChildren",
+        component: "Input",
         props: {
-          label: 'Number of children',
-          type: 'number',
+          label: "Number of children",
+          type: "number",
         },
         condition: {
-          field: 'hasChildren',
-          operator: 'equals',
+          field: "hasChildren",
+          operator: "equals",
           value: true,
         },
       },
     ];
 
-    render(
-      <FormRenderer
-        fields={dynamicFields}
-        onSubmit={vi.fn()}
-      />
-    );
+    render(<FormRenderer fields={dynamicFields} onSubmit={vi.fn()} />);
 
     // Initially, number of children should not be visible
-    expect(screen.queryByLabelText(/Number of children/)).not.toBeInTheDocument();
+    expect(
+      screen.queryByLabelText(/Number of children/),
+    ).not.toBeInTheDocument();
 
     // Check the hasChildren checkbox
     await userEvent.click(screen.getByLabelText(/Do you have children\?/));
@@ -353,7 +333,9 @@ describe('FormRenderer Integration Tests', () => {
 
     // Number of children should be hidden again
     await waitFor(() => {
-      expect(screen.queryByLabelText(/Number of children/)).not.toBeInTheDocument();
+      expect(
+        screen.queryByLabelText(/Number of children/),
+      ).not.toBeInTheDocument();
     });
   });
 });

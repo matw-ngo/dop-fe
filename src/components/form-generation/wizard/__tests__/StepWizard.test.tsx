@@ -1,8 +1,12 @@
-import { describe, it, expect, beforeEach, vi } from "vitest";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { StepWizard } from "../StepWizard";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { useFormWizardStore } from "../../store/use-form-wizard-store";
-import { DynamicFormConfig, FieldType, ValidationRuleType } from "../../types";
+import {
+  type DynamicFormConfig,
+  FieldType,
+  ValidationRuleType,
+} from "../../types";
+import { StepWizard } from "../StepWizard";
 
 // Mock FieldFactory to avoid rendering complex UI components
 vi.mock("../../factory/FieldFactory", () => ({

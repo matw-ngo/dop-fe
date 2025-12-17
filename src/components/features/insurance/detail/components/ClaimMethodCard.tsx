@@ -1,8 +1,8 @@
 import React from "react";
 import {
+  getClaimMethodDescription,
   getClaimMethodIcon,
   getClaimMethodName,
-  getClaimMethodDescription,
 } from "../utils";
 
 interface ClaimMethodCardProps {

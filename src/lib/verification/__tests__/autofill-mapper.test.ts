@@ -10,7 +10,7 @@
  * - Edge cases and malformed data
  */
 
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import type { VerificationResult } from "../types";
 
 // Sample verification result for testing
@@ -435,14 +435,14 @@ describe("Autofill Mapper", () => {
         test_field: "self.fullName", // This would create a circular reference
       };
 
-      let maxIterations = 10;
+      const maxIterations = 10;
       let iterations = 0;
 
       Object.entries(mapping).forEach(([targetFieldId, sourcePath]) => {
         if (typeof sourcePath === "string") {
           const pathParts = sourcePath.split(".");
           let current: any = circularResult.personalData;
-          let visited = new Set();
+          const visited = new Set();
 
           for (const part of pathParts) {
             iterations++;

@@ -1,10 +1,10 @@
-import { getTranslations } from "next-intl/server";
-import Link from "next/link";
-import { buttonVariants } from "@/components/ui/button"; // Import buttonVariants
 import { FileQuestion } from "lucide-react";
+import Link from "next/link";
+import { getTranslations } from "next-intl/server";
+import { buttonVariants } from "@/components/ui/button"; // Import buttonVariants
 import { cn } from "@/lib/utils"; // Import cn for utility classes
 
-// @ts-ignore
+// @ts-expect-error
 import "./globals.css";
 
 export async function generateMetadata() {

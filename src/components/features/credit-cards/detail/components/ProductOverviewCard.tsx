@@ -1,8 +1,8 @@
-import React from "react";
-import { useTranslations } from "next-intl";
 import { CreditCard as CreditCardIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
+import type React from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { DetailedCreditCardInfo } from "@/types/credit-card";
+import type { DetailedCreditCardInfo } from "@/types/credit-card";
 
 interface ProductOverviewCardProps {
   card: DetailedCreditCardInfo;

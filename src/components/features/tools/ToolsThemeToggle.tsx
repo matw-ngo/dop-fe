@@ -1,7 +1,10 @@
 "use client";
 
+import { ChevronDown, DollarSign, HeartPulse, Palette } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { useTheme } from "@/components/renderer/theme";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -9,9 +12,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Badge } from "@/components/ui/badge";
-import { DollarSign, HeartPulse, Palette, ChevronDown } from "lucide-react";
-import { useTranslations } from "next-intl";
 
 export function ToolsThemeToggle() {
   const t = useTranslations("features.tools.theme");

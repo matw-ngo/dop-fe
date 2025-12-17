@@ -1,14 +1,14 @@
 #!/usr/bin/env node
 
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
 /**
  * Simple migration script to split translation files
  */
 
-const MESSAGES_DIR = path.join(__dirname, '..', 'messages');
-const LOCALES = ['vi', 'en'];
+const MESSAGES_DIR = path.join(__dirname, "..", "messages");
+const LOCALES = ["vi", "en"];
 
 // Create directory structure
 function ensureDir(dirPath) {
@@ -21,9 +21,13 @@ function ensureDir(dirPath) {
 function countKeys(obj) {
   let count = 0;
   for (const key in obj) {
-    if (obj.hasOwnProperty(key)) {
+    if (Object.hasOwn(obj, key)) {
       count++;
-      if (typeof obj[key] === 'object' && obj[key] !== null && !Array.isArray(obj[key])) {
+      if (
+        typeof obj[key] === "object" &&
+        obj[key] !== null &&
+        !Array.isArray(obj[key])
+      ) {
         count += countKeys(obj[key]);
       }
     }
@@ -42,11 +46,15 @@ function migrate(locale) {
   }
 
   // Read original file
-  const translations = JSON.parse(fs.readFileSync(sourceFile, 'utf8'));
+  const translations = JSON.parse(fs.readFileSync(sourceFile, "utf8"));
   const originalKeys = countKeys(translations);
 
   // Create backup
-  const backupFile = path.join(MESSAGES_DIR, 'backup', `${locale}-${Date.now()}.json`);
+  const backupFile = path.join(
+    MESSAGES_DIR,
+    "backup",
+    `${locale}-${Date.now()}.json`,
+  );
   ensureDir(path.dirname(backupFile));
   fs.copyFileSync(sourceFile, backupFile);
   console.log(`💾 Backed up to ${backupFile}`);
@@ -58,25 +66,34 @@ function migrate(locale) {
   const namespaces = {
     features: {
       insurance: {},
-      'credit-cards': {},
+      "credit-cards": {},
       tools: {},
-      admin: {}
+      admin: {},
     },
     pages: {},
-    common: {}
+    common: {},
   };
 
   // Process each namespace
   for (const [namespace, content] of Object.entries(pages)) {
-    if (namespace.startsWith('insurance')) {
-      namespaces.features.insurance[namespace.replace('insurance', '') || 'main'] = content;
-    } else if (namespace.startsWith('creditCard')) {
-      namespaces.features['credit-cards'][namespace.replace('creditCard', '') || 'main'] = content;
-    } else if (namespace.startsWith('tools')) {
-      namespaces.features.tools[namespace.replace('tools', '') || 'main'] = content;
-    } else if (namespace.startsWith('admin')) {
-      namespaces.features.admin[namespace.replace('admin', '') || 'main'] = content;
-    } else if (namespace.startsWith('common') || ['actions', 'errors', 'navigation'].includes(namespace)) {
+    if (namespace.startsWith("insurance")) {
+      namespaces.features.insurance[
+        namespace.replace("insurance", "") || "main"
+      ] = content;
+    } else if (namespace.startsWith("creditCard")) {
+      namespaces.features["credit-cards"][
+        namespace.replace("creditCard", "") || "main"
+      ] = content;
+    } else if (namespace.startsWith("tools")) {
+      namespaces.features.tools[namespace.replace("tools", "") || "main"] =
+        content;
+    } else if (namespace.startsWith("admin")) {
+      namespaces.features.admin[namespace.replace("admin", "") || "main"] =
+        content;
+    } else if (
+      namespace.startsWith("common") ||
+      ["actions", "errors", "navigation"].includes(namespace)
+    ) {
       namespaces.common[namespace] = content;
     } else {
       namespaces.pages[namespace] = content;
@@ -92,23 +109,25 @@ function migrate(locale) {
 
   // Write features
   for (const [feature, content] of Object.entries(namespaces.features)) {
-    const featureDir = path.join(localeDir, 'features', feature);
+    const featureDir = path.join(localeDir, "features", feature);
     ensureDir(featureDir);
 
     for (const [fileName, fileContent] of Object.entries(content)) {
       if (Object.keys(fileContent).length > 0) {
-        const filePath = path.join(featureDir, `${fileName || 'main'}.json`);
+        const filePath = path.join(featureDir, `${fileName || "main"}.json`);
         fs.writeFileSync(filePath, JSON.stringify(fileContent, null, 2));
         const keyCount = countKeys(fileContent);
         totalMigrated += keyCount;
         filesCreated.push(filePath);
-        console.log(`  ✓ ${path.relative(process.cwd(), filePath)} - ${keyCount} keys`);
+        console.log(
+          `  ✓ ${path.relative(process.cwd(), filePath)} - ${keyCount} keys`,
+        );
       }
     }
   }
 
   // Write pages
-  const pagesDir = path.join(localeDir, 'pages');
+  const pagesDir = path.join(localeDir, "pages");
   ensureDir(pagesDir);
   for (const [fileName, content] of Object.entries(namespaces.pages)) {
     if (Object.keys(content).length > 0) {
@@ -117,13 +136,15 @@ function migrate(locale) {
       const keyCount = countKeys(content);
       totalMigrated += keyCount;
       filesCreated.push(filePath);
-      console.log(`  ✓ ${path.relative(process.cwd(), filePath)} - ${keyCount} keys`);
+      console.log(
+        `  ✓ ${path.relative(process.cwd(), filePath)} - ${keyCount} keys`,
+      );
     }
   }
 
   // Write common
   if (Object.keys(namespaces.common).length > 0) {
-    const commonDir = path.join(localeDir, 'common');
+    const commonDir = path.join(localeDir, "common");
     ensureDir(commonDir);
 
     for (const [fileName, content] of Object.entries(namespaces.common)) {
@@ -133,7 +154,9 @@ function migrate(locale) {
         const keyCount = countKeys(content);
         totalMigrated += keyCount;
         filesCreated.push(filePath);
-        console.log(`  ✓ ${path.relative(process.cwd(), filePath)} - ${keyCount} keys`);
+        console.log(
+          `  ✓ ${path.relative(process.cwd(), filePath)} - ${keyCount} keys`,
+        );
       }
     }
   }
@@ -146,16 +169,16 @@ function migrate(locale) {
 }
 
 // Main execution
-console.log('🚀 Simple Translation Migration');
-console.log('===============================\n');
+console.log("🚀 Simple Translation Migration");
+console.log("===============================\n");
 
 for (const locale of LOCALES) {
   migrate(locale);
 }
 
-console.log('\n✅ Migration complete!');
-console.log('\nNext steps:');
-console.log('1. Review the split files in messages/[locale]/');
-console.log('2. Update your i18n configuration to load from namespaces');
-console.log('3. Test the application');
-console.log('4. Remove original files when ready');
+console.log("\n✅ Migration complete!");
+console.log("\nNext steps:");
+console.log("1. Review the split files in messages/[locale]/");
+console.log("2. Update your i18n configuration to load from namespaces");
+console.log("3. Test the application");
+console.log("4. Remove original files when ready");

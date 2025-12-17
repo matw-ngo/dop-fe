@@ -1,7 +1,7 @@
-import { createFieldBuilderFactory } from "./base-field-builder";
-import { GRID_SPANS, LAYOUT_CONFIG } from "../constants/ui-themes";
-import { FieldType } from "../constants/field-types";
 import type { RawFieldConfig } from "@/components/renderer/types/data-driven-ui";
+import { FieldType } from "../constants/field-types";
+import { GRID_SPANS, LAYOUT_CONFIG } from "../constants/ui-themes";
+import { createFieldBuilderFactory } from "./base-field-builder";
 
 /**
  * Create identity verification field builders

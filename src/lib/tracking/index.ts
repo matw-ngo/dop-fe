@@ -3,56 +3,51 @@
  * Provides privacy-compliant user tracking capabilities
  */
 
-// Export types
-export type {
-  TrackingEvent,
-  TrackingSession,
-  TrackingConfig,
-  DeviceInfo,
-} from "./types";
-
-export { EventType } from "./types";
-
 // Export configuration
 export {
   DEFAULT_TRACKING_CONFIG,
-  TRACKING_ENDPOINTS,
   STORAGE_KEYS,
+  TRACKING_ENDPOINTS,
 } from "./config";
-
-// Export privacy utilities
-export {
-  isDNTEnabled,
-  hasUserConsent,
-  setUserConsent,
-  isEventAllowed,
-  filterSensitiveData,
-  shouldEnableTracking,
-  getPrivacySafeSessionId,
-  clearTrackingData,
-} from "./privacy";
-
-// Export session management
-export {
-  generateDeviceFingerprint,
-  getDeviceId,
-  generateSessionId,
-  initializeSession,
-  getSessionId,
-  updateLastActivity,
-  isSessionValid,
-  endSession,
-  incrementPageViews,
-} from "./session";
-
 // Export event tracking
 export {
   trackEvent,
-  trackSavingsCalculator,
+  trackGeneric,
   trackLoanCalculator,
   trackSalaryCalculator,
-  trackGeneric,
+  trackSavingsCalculator,
 } from "./events";
+// Export privacy utilities
+export {
+  clearTrackingData,
+  filterSensitiveData,
+  getPrivacySafeSessionId,
+  hasUserConsent,
+  isDNTEnabled,
+  isEventAllowed,
+  setUserConsent,
+  shouldEnableTracking,
+} from "./privacy";
+// Export session management
+export {
+  endSession,
+  generateDeviceFingerprint,
+  generateSessionId,
+  getDeviceId,
+  getSessionId,
+  incrementPageViews,
+  initializeSession,
+  isSessionValid,
+  updateLastActivity,
+} from "./session";
+// Export types
+export type {
+  DeviceInfo,
+  TrackingConfig,
+  TrackingEvent,
+  TrackingSession,
+} from "./types";
+export { EventType } from "./types";
 
 /**
  * Initialize tracking system

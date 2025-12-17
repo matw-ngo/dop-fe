@@ -1,36 +1,36 @@
 "use client";
 
-import React, { useMemo } from "react";
-import type { InsuranceProduct } from "@/types/insurance";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
 import {
-  Shield,
-  Heart,
-  Car,
-  Plane,
-  Home,
-  CreditCard,
-  Star,
-  ShieldCheck,
   Ban,
-  Plus,
-  Minus,
   BarChart3,
+  Car,
+  CreditCard,
   FileCheck,
+  Heart,
+  Home,
+  Minus,
+  Plane,
+  Plus,
+  Shield,
+  ShieldCheck,
+  Star,
 } from "lucide-react";
-import { useTranslations } from "next-intl";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
+import React, { useMemo } from "react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import type { InsuranceProduct } from "@/types/insurance";
 
 import {
-  ProductOverviewCard,
-  CoverageTab,
   BenefitsTab,
-  ExclusionsTab,
   ClaimsTab,
+  CoverageTab,
+  ExclusionsTab,
   PaymentTab,
+  ProductOverviewCard,
 } from "./detail/components";
 import { useInsuranceComparison } from "./detail/hooks/useInsuranceComparison";
 

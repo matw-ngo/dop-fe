@@ -1,10 +1,10 @@
-import { cn } from "@/lib/utils";
 import { getResponsiveClasses } from "@/components/renderer/constants/responsive-classnames";
 import type {
   ComponentVariant,
-  ResponsiveValue,
   LayoutProps,
+  ResponsiveValue,
 } from "@/components/renderer/types/ui-theme";
+import { cn } from "@/lib/utils";
 
 interface FormClassNamesOptions {
   className?: string;
@@ -31,7 +31,7 @@ interface FormClassNamesResult {
  * - Combines all classes with proper ordering
  */
 export function useFormClassNames(
-  options: FormClassNamesOptions
+  options: FormClassNamesOptions,
 ): FormClassNamesResult {
   const { className, variant, responsive, layout } = options;
 

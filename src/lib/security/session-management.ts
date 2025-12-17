@@ -4,9 +4,9 @@
  * Implements cryptographically secure session management for OTP verification
  */
 
+import { parse, serialize } from "cookie";
 import crypto from "crypto";
-import { NextRequest, NextResponse } from "next/server";
-import { serialize, parse } from "cookie";
+import { type NextRequest, NextResponse } from "next/server";
 
 // Session configuration
 interface SessionConfig {
@@ -415,12 +415,12 @@ export class CSRFProtection {
   private static readonly COOKIE_NAME = "csrf-token";
 
   static generateToken(): string {
-    return crypto.randomBytes(this.TOKEN_LENGTH).toString("hex");
+    return crypto.randomBytes(CSRFProtection.TOKEN_LENGTH).toString("hex");
   }
 
   static validateToken(request: NextRequest): boolean {
     const cookies = parse(request.headers.get("cookie") || "");
-    const cookieToken = cookies[this.COOKIE_NAME];
+    const cookieToken = cookies[CSRFProtection.COOKIE_NAME];
 
     if (!cookieToken) return false;
 
@@ -438,8 +438,8 @@ export class CSRFProtection {
   }
 
   static setCSRFCookie(response: NextResponse): void {
-    const token = this.generateToken();
-    const cookieValue = serialize(this.COOKIE_NAME, token, {
+    const token = CSRFProtection.generateToken();
+    const cookieValue = serialize(CSRFProtection.COOKIE_NAME, token, {
       maxAge: DEFAULT_SESSION_CONFIG.maxAge / 1000,
       secure: DEFAULT_SESSION_CONFIG.secure,
       httpOnly: DEFAULT_SESSION_CONFIG.httpOnly,

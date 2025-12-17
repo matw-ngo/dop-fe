@@ -1,9 +1,9 @@
+import { Car, Heart, Home, Plane, Shield } from "lucide-react";
 import React from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Heart, Car, Plane, Home, Shield } from "lucide-react";
-import { getCoveragePeriodText } from "../utils";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { ProductOverviewCardProps } from "../types";
+import { getCoveragePeriodText } from "../utils";
 
 const categoryIcons = {
   health: <Heart className="w-5 h-5" />,
@@ -18,7 +18,11 @@ export const ProductOverviewCard = React.memo(function ProductOverviewCard({
   t,
 }: ProductOverviewCardProps) {
   const getCategoryIcon = (category: string) => {
-    return categoryIcons[category as keyof typeof categoryIcons] || <Shield className="w-5 h-5" />;
+    return (
+      categoryIcons[category as keyof typeof categoryIcons] || (
+        <Shield className="w-5 h-5" />
+      )
+    );
   };
 
   return (
@@ -32,14 +36,20 @@ export const ProductOverviewCard = React.memo(function ProductOverviewCard({
       <CardContent>
         <div className="grid md:grid-cols-2 gap-6">
           <div>
-            <h4 className="font-semibold mb-3">{t("productOverview.basicInfo")}</h4>
+            <h4 className="font-semibold mb-3">
+              {t("productOverview.basicInfo")}
+            </h4>
             <dl className="space-y-2">
               <div className="flex justify-between">
-                <dt className="text-muted-foreground">{t("productOverview.provider")}:</dt>
+                <dt className="text-muted-foreground">
+                  {t("productOverview.provider")}:
+                </dt>
                 <dd className="font-medium">{product.issuer}</dd>
               </div>
               <div className="flex justify-between">
-                <dt className="text-muted-foreground">{t("productOverview.insuranceType")}:</dt>
+                <dt className="text-muted-foreground">
+                  {t("productOverview.insuranceType")}:
+                </dt>
                 <dd className="font-medium">
                   {product.type === "compulsory"
                     ? t("productOverview.compulsory")
@@ -47,7 +57,9 @@ export const ProductOverviewCard = React.memo(function ProductOverviewCard({
                 </dd>
               </div>
               <div className="flex justify-between">
-                <dt className="text-muted-foreground">{t("productOverview.coveragePeriod")}:</dt>
+                <dt className="text-muted-foreground">
+                  {t("productOverview.coveragePeriod")}:
+                </dt>
                 <dd className="font-medium">
                   {product.pricing.customPeriodDays
                     ? `${product.pricing.customPeriodDays} ${t("units.days")}`
@@ -56,7 +68,9 @@ export const ProductOverviewCard = React.memo(function ProductOverviewCard({
               </div>
               {product.productCode && (
                 <div className="flex justify-between">
-                  <dt className="text-muted-foreground">{t("productOverview.productCode")}:</dt>
+                  <dt className="text-muted-foreground">
+                    {t("productOverview.productCode")}:
+                  </dt>
                   <dd className="font-medium">{product.productCode}</dd>
                 </div>
               )}
@@ -64,10 +78,14 @@ export const ProductOverviewCard = React.memo(function ProductOverviewCard({
           </div>
 
           <div>
-            <h4 className="font-semibold mb-3">{t("productOverview.insuredObjects")}</h4>
+            <h4 className="font-semibold mb-3">
+              {t("productOverview.insuredObjects")}
+            </h4>
             <dl className="space-y-2">
               <div className="flex justify-between">
-                <dt className="text-muted-foreground">{t("productOverview.ageRange")}:</dt>
+                <dt className="text-muted-foreground">
+                  {t("productOverview.ageRange")}:
+                </dt>
                 <dd className="font-medium">
                   {product.eligibility.ageRange.min}
                   {product.eligibility.ageRange.max &&
@@ -76,17 +94,21 @@ export const ProductOverviewCard = React.memo(function ProductOverviewCard({
               </div>
               {product.eligibility.occupation && (
                 <div>
-                  <dt className="text-muted-foreground">{t("productOverview.occupation")}:</dt>
+                  <dt className="text-muted-foreground">
+                    {t("productOverview.occupation")}:
+                  </dt>
                   <dd className="mt-1">
-                    {product.eligibility.occupation.map((occ: string, index: number) => (
-                      <Badge
-                        key={index}
-                        variant="secondary"
-                        className="mr-2 mb-2"
-                      >
-                        {occ}
-                      </Badge>
-                    ))}
+                    {product.eligibility.occupation.map(
+                      (occ: string, index: number) => (
+                        <Badge
+                          key={index}
+                          variant="secondary"
+                          className="mr-2 mb-2"
+                        >
+                          {occ}
+                        </Badge>
+                      ),
+                    )}
                   </dd>
                 </div>
               )}

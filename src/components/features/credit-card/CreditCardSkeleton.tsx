@@ -1,16 +1,16 @@
 "use client";
 
-import React from "react";
+import type React from "react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 import { DEFAULT_PAGE_SIZE } from "@/constants/credit-cards";
+import { cn } from "@/lib/utils";
 
 interface CreditCardSkeletonProps {
   viewMode?: "grid" | "list" | "compact";

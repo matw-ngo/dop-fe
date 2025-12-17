@@ -1,7 +1,8 @@
-import React, { useState } from "react";
-import { useTranslations } from "next-intl";
+import { ArrowRight, TrendingUp } from "lucide-react";
 import Link from "next/link";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useTranslations } from "next-intl";
+import type React from "react";
+import { useState } from "react";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -10,19 +11,19 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, TrendingUp } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import vietnameseCreditCards from "@/data/credit-cards";
-import { CreditCard } from "@/types/credit-card";
+import type { CreditCard } from "@/types/credit-card";
+import CreditCardComponent from "../../credit-card/CreditCard";
 import { LoadingState } from "./components/LoadingState";
 import { ProductHeader } from "./components/ProductHeader";
 import { ProductOverviewCard } from "./components/ProductOverviewCard";
 import { ProductSidebar } from "./components/ProductSidebar";
-import CreditCardComponent from "../../credit-card/CreditCard";
 import { BenefitsTab } from "./components/tabs/BenefitsTab";
-import { FeesTab } from "./components/tabs/FeesTab";
 import { FeaturesTab } from "./components/tabs/FeaturesTab";
+import { FeesTab } from "./components/tabs/FeesTab";
 import { RequirementsTab } from "./components/tabs/RequirementsTab";
 import { ReviewsTab } from "./components/tabs/ReviewsTab";
 

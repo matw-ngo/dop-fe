@@ -6,28 +6,28 @@
  * for the Vietnamese digital lending platform.
  */
 
+import { INSURANCE_PRODUCTS } from "@/data/insurance-products";
 // import apiClient from "@/lib/api/client"; // Using mock data
 import type {
-  InsuranceProduct,
-  VehicleType,
-  InsuranceFilters,
-  SearchOptions,
-  PaginationOptions,
-  InsuranceComparisonResult,
-  InsuranceComparisonCriteria,
-  InsuranceCategoryInfo,
-  InsuranceProductsResponse,
-  InsuranceProductDetailResponse,
-  InsuranceError,
-  FeeType,
   CoveragePeriod,
+  FeeType,
+  InsuranceCategoryInfo,
+  InsuranceComparisonCriteria,
+  InsuranceComparisonResult,
+  InsuranceError,
+  InsuranceFilters,
+  InsuranceProduct,
+  InsuranceProductDetailResponse,
+  InsuranceProductsResponse,
+  PaginationOptions,
+  SearchOptions,
+  VehicleType,
 } from "@/types/insurance";
 import {
   InsuranceCategory,
   InsuranceType,
   SortOption,
 } from "@/types/insurance";
-import { INSURANCE_PRODUCTS } from "@/data/insurance-products";
 
 // Using mock data, no API client needed
 

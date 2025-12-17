@@ -1,10 +1,18 @@
 "use client";
 
-import { ReactNode } from "react";
+import {
+  FileTextIcon,
+  LayoutDashboardIcon,
+  LogOutIcon,
+  MenuIcon,
+  SettingsIcon,
+  UsersIcon,
+} from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useAuth } from "@/lib/auth/auth-context";
-import { useLocalizedPath } from "@/lib/client-utils";
+import { useTranslations } from "next-intl";
+import type { ReactNode } from "react";
+import { Button } from "@/components/ui/button";
 import {
   Sidebar,
   SidebarContent,
@@ -20,16 +28,8 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { Button } from "@/components/ui/button";
-import {
-  LayoutDashboardIcon,
-  SettingsIcon,
-  UsersIcon,
-  FileTextIcon,
-  LogOutIcon,
-  MenuIcon
-} from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useAuth } from "@/lib/auth/auth-context";
+import { useLocalizedPath } from "@/lib/client-utils";
 
 interface AdminLayoutProps {
   children: ReactNode;
@@ -79,14 +79,16 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
               <span className="text-sm font-bold">A</span>
             </div>
             <div className="grid flex-1 text-left text-sm leading-tight">
-              <span className="truncate font-semibold">{t("sidebar.title")}</span>
+              <span className="truncate font-semibold">
+                {t("sidebar.title")}
+              </span>
               <span className="truncate text-xs text-muted-foreground">
                 {user?.username}
               </span>
             </div>
           </div>
         </SidebarHeader>
-        
+
         <SidebarContent>
           <SidebarGroup>
             <SidebarGroupLabel>{t("sidebar.navigation")}</SidebarGroupLabel>
@@ -129,7 +131,8 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
             <div className="flex items-center gap-2">
               <MenuIcon className="size-4 text-muted-foreground" />
               <h1 className="text-lg font-semibold">
-                {localizedNavigation.find(item => item.href === pathname)?.title || "Admin"}
+                {localizedNavigation.find((item) => item.href === pathname)
+                  ?.title || "Admin"}
               </h1>
             </div>
             <div className="flex items-center gap-2">
@@ -139,10 +142,8 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
             </div>
           </div>
         </header>
-        
-        <main className="flex-1 p-6">
-          {children}
-        </main>
+
+        <main className="flex-1 p-6">{children}</main>
       </SidebarInset>
     </SidebarProvider>
   );

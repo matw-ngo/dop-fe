@@ -1,10 +1,10 @@
-import type { InsuranceProduct } from "@/types/insurance";
-import BreadcrumbNav from "@/components/ui/breadcrumb-nav";
-import { Button } from "@/components/ui/button";
 import { ArrowLeft, Shield } from "lucide-react";
 import Link from "next/link";
-import { Badge } from "@/components/ui/badge";
 import { useTranslations } from "next-intl";
+import { Badge } from "@/components/ui/badge";
+import BreadcrumbNav from "@/components/ui/breadcrumb-nav";
+import { Button } from "@/components/ui/button";
+import type { InsuranceProduct } from "@/types/insurance";
 
 interface ProductHeaderProps {
   product: InsuranceProduct;

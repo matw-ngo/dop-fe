@@ -3,9 +3,18 @@
 
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
-import type { VietnameseLoanProduct, VietnameseLoanType } from "@/lib/loan-products/vietnamese-loan-products";
-import type { ApplicantProfile, EligibilityResult } from "@/lib/loan-products/eligibility-rules";
-import type { LoanCalculationResult, LoanCalculationParams } from "@/lib/loan-products/interest-calculations";
+import type {
+  ApplicantProfile,
+  EligibilityResult,
+} from "@/lib/loan-products/eligibility-rules";
+import type {
+  LoanCalculationParams,
+  LoanCalculationResult,
+} from "@/lib/loan-products/interest-calculations";
+import type {
+  VietnameseLoanProduct,
+  VietnameseLoanType,
+} from "@/lib/loan-products/vietnamese-loan-products";
 
 /**
  * Product comparison interface
@@ -104,7 +113,12 @@ interface LoanProductStoreState {
   /** Current filters */
   filters: ProductFilters;
   /** Sort criteria */
-  sortBy: "popularity" | "interest_rate" | "processing_time" | "max_amount" | "rating";
+  sortBy:
+    | "popularity"
+    | "interest_rate"
+    | "processing_time"
+    | "max_amount"
+    | "rating";
   /** Sort order */
   sortOrder: "asc" | "desc";
 
@@ -211,7 +225,10 @@ interface LoanProductStoreActions {
   /** Remove product from comparison */
   removeFromComparison: (productId: string) => void;
   /** Update comparison calculation */
-  updateComparisonCalculation: (productId: string, result: LoanCalculationResult) => void;
+  updateComparisonCalculation: (
+    productId: string,
+    result: LoanCalculationResult,
+  ) => void;
   /** Save comparison */
   saveComparison: (name?: string, notes?: string, isPublic?: boolean) => void;
   /** Load comparison */
@@ -225,9 +242,14 @@ interface LoanProductStoreActions {
   /** Update calculation parameters */
   updateCalculationParams: (params: Partial<LoanCalculationParams>) => void;
   /** Set calculation result */
-  setCalculationResult: (productId: string, result: LoanCalculationResult) => void;
+  setCalculationResult: (
+    productId: string,
+    result: LoanCalculationResult,
+  ) => void;
   /** Get calculation result */
-  getCalculationResult: (productId: string) => LoanCalculationResult | undefined;
+  getCalculationResult: (
+    productId: string,
+  ) => LoanCalculationResult | undefined;
   /** Clear calculation results */
   clearCalculationResults: () => void;
 
@@ -320,42 +342,61 @@ export const useLoanProductStore = create<LoanProductStore>()(
         // Product management actions
         setProducts: (products) => set({ products }),
 
-        addProduct: (product) => set((state) => ({
-          products: [...state.products.filter(p => p.id !== product.id), product],
-        })),
+        addProduct: (product) =>
+          set((state) => ({
+            products: [
+              ...state.products.filter((p) => p.id !== product.id),
+              product,
+            ],
+          })),
 
-        updateProduct: (id, updates) => set((state) => ({
-          products: state.products.map(product =>
-            product.id === id ? { ...product, ...updates } : product
-          ),
-        })),
+        updateProduct: (id, updates) =>
+          set((state) => ({
+            products: state.products.map((product) =>
+              product.id === id ? { ...product, ...updates } : product,
+            ),
+          })),
 
-        removeProduct: (id) => set((state) => ({
-          products: state.products.filter(product => product.id !== id),
-          selectedProducts: state.selectedProducts.filter(product => product.id !== id),
-          favoriteProducts: state.favoriteProducts.filter(productId => productId !== id),
-          recentlyViewed: state.recentlyViewed.filter(productId => productId !== id),
-        })),
+        removeProduct: (id) =>
+          set((state) => ({
+            products: state.products.filter((product) => product.id !== id),
+            selectedProducts: state.selectedProducts.filter(
+              (product) => product.id !== id,
+            ),
+            favoriteProducts: state.favoriteProducts.filter(
+              (productId) => productId !== id,
+            ),
+            recentlyViewed: state.recentlyViewed.filter(
+              (productId) => productId !== id,
+            ),
+          })),
 
         getProduct: (id) => {
-          return get().products.find(product => product.id === id);
+          return get().products.find((product) => product.id === id);
         },
 
         // Selection management actions
-        selectProduct: (product) => set((state) => {
-          if (state.selectedProducts.length >= 3) {
+        selectProduct: (product) =>
+          set((state) => {
+            if (state.selectedProducts.length >= 3) {
+              return {
+                error: "Maximum 3 products can be compared at once",
+              };
+            }
             return {
-              error: "Maximum 3 products can be compared at once",
+              selectedProducts: [
+                ...state.selectedProducts.filter((p) => p.id !== product.id),
+                product,
+              ],
             };
-          }
-          return {
-            selectedProducts: [...state.selectedProducts.filter(p => p.id !== product.id), product],
-          };
-        }),
+          }),
 
-        deselectProduct: (productId) => set((state) => ({
-          selectedProducts: state.selectedProducts.filter(product => product.id !== productId),
-        })),
+        deselectProduct: (productId) =>
+          set((state) => ({
+            selectedProducts: state.selectedProducts.filter(
+              (product) => product.id !== productId,
+            ),
+          })),
 
         toggleProductSelection: (product) => {
           const state = get();
@@ -368,12 +409,15 @@ export const useLoanProductStore = create<LoanProductStore>()(
 
         clearSelections: () => set({ selectedProducts: [] }),
 
-        setSelectedProducts: (products) => set({
-          selectedProducts: products.slice(0, 3), // Limit to 3 products
-        }),
+        setSelectedProducts: (products) =>
+          set({
+            selectedProducts: products.slice(0, 3), // Limit to 3 products
+          }),
 
         isProductSelected: (productId) => {
-          return get().selectedProducts.some(product => product.id === productId);
+          return get().selectedProducts.some(
+            (product) => product.id === productId,
+          );
         },
 
         // Favorites management actions
@@ -386,114 +430,137 @@ export const useLoanProductStore = create<LoanProductStore>()(
           }
         },
 
-        addToFavorites: (productId) => set((state) => ({
-          favoriteProducts: [...new Set([...state.favoriteProducts, productId])],
-        })),
+        addToFavorites: (productId) =>
+          set((state) => ({
+            favoriteProducts: [
+              ...new Set([...state.favoriteProducts, productId]),
+            ],
+          })),
 
-        removeFromFavorites: (productId) => set((state) => ({
-          favoriteProducts: state.favoriteProducts.filter(id => id !== productId),
-        })),
+        removeFromFavorites: (productId) =>
+          set((state) => ({
+            favoriteProducts: state.favoriteProducts.filter(
+              (id) => id !== productId,
+            ),
+          })),
 
         isProductFavorited: (productId) => {
           return get().favoriteProducts.includes(productId);
         },
 
         // Recently viewed actions
-        addToRecentlyViewed: (productId) => set((state) => {
-          const filtered = state.recentlyViewed.filter(id => id !== productId);
-          return {
-            recentlyViewed: [productId, ...filtered].slice(0, 10), // Keep last 10
-          };
-        }),
+        addToRecentlyViewed: (productId) =>
+          set((state) => {
+            const filtered = state.recentlyViewed.filter(
+              (id) => id !== productId,
+            );
+            return {
+              recentlyViewed: [productId, ...filtered].slice(0, 10), // Keep last 10
+            };
+          }),
 
         clearRecentlyViewed: () => set({ recentlyViewed: [] }),
 
         // Search and filtering actions
         setSearchTerm: (term) => set({ searchTerm: term }),
 
-        updateFilters: (filters) => set((state) => ({
-          filters: { ...state.filters, ...filters },
-        })),
+        updateFilters: (filters) =>
+          set((state) => ({
+            filters: { ...state.filters, ...filters },
+          })),
 
-        clearFilters: () => set({
-          filters: {
-            loanTypes: [],
-            bankCodes: [],
-          },
-        }),
+        clearFilters: () =>
+          set({
+            filters: {
+              loanTypes: [],
+              bankCodes: [],
+            },
+          }),
 
         setSortBy: (sortBy) => set({ sortBy }),
 
         setSortOrder: (order) => set({ sortOrder: order }),
 
         // Comparison management actions
-        startComparison: (name, loanAmount, loanTerm) => set((state) => ({
-          currentComparison: {
-            id: `comparison_${Date.now()}`,
-            name,
-            productIds: state.selectedProducts.map(p => p.id),
-            products: state.selectedProducts,
-            loanAmount,
-            loanTerm,
-            calculations: [],
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-            isPublic: false,
-          },
-        })),
-
-        addToComparison: (product) => set((state) => {
-          if (!state.currentComparison) return state;
-
-          const existingIds = state.currentComparison.productIds;
-          if (existingIds.includes(product.id) || existingIds.length >= 3) return state;
-
-          return {
+        startComparison: (name, loanAmount, loanTerm) =>
+          set((state) => ({
             currentComparison: {
-              ...state.currentComparison,
-              productIds: [...existingIds, product.id],
-              products: [...state.currentComparison.products, product],
+              id: `comparison_${Date.now()}`,
+              name,
+              productIds: state.selectedProducts.map((p) => p.id),
+              products: state.selectedProducts,
+              loanAmount,
+              loanTerm,
+              calculations: [],
+              createdAt: new Date().toISOString(),
               updatedAt: new Date().toISOString(),
+              isPublic: false,
             },
-          };
-        }),
+          })),
 
-        removeFromComparison: (productId) => set((state) => {
-          if (!state.currentComparison) return state;
+        addToComparison: (product) =>
+          set((state) => {
+            if (!state.currentComparison) return state;
 
-          return {
-            currentComparison: {
-              ...state.currentComparison,
-              productIds: state.currentComparison.productIds.filter(id => id !== productId),
-              products: state.currentComparison.products.filter(p => p.id !== productId),
-              calculations: state.currentComparison.calculations.filter(c => c.productId !== productId),
-              updatedAt: new Date().toISOString(),
-            },
-          };
-        }),
+            const existingIds = state.currentComparison.productIds;
+            if (existingIds.includes(product.id) || existingIds.length >= 3)
+              return state;
 
-        updateComparisonCalculation: (productId, result) => set((state) => {
-          if (!state.currentComparison) return state;
+            return {
+              currentComparison: {
+                ...state.currentComparison,
+                productIds: [...existingIds, product.id],
+                products: [...state.currentComparison.products, product],
+                updatedAt: new Date().toISOString(),
+              },
+            };
+          }),
 
-          const existingCalcIndex = state.currentComparison.calculations.findIndex(
-            calc => calc.productId === productId
-          );
+        removeFromComparison: (productId) =>
+          set((state) => {
+            if (!state.currentComparison) return state;
 
-          const newCalculations = [...state.currentComparison.calculations];
-          if (existingCalcIndex >= 0) {
-            newCalculations[existingCalcIndex] = { productId, result };
-          } else {
-            newCalculations.push({ productId, result });
-          }
+            return {
+              currentComparison: {
+                ...state.currentComparison,
+                productIds: state.currentComparison.productIds.filter(
+                  (id) => id !== productId,
+                ),
+                products: state.currentComparison.products.filter(
+                  (p) => p.id !== productId,
+                ),
+                calculations: state.currentComparison.calculations.filter(
+                  (c) => c.productId !== productId,
+                ),
+                updatedAt: new Date().toISOString(),
+              },
+            };
+          }),
 
-          return {
-            currentComparison: {
-              ...state.currentComparison,
-              calculations: newCalculations,
-              updatedAt: new Date().toISOString(),
-            },
-          };
-        }),
+        updateComparisonCalculation: (productId, result) =>
+          set((state) => {
+            if (!state.currentComparison) return state;
+
+            const existingCalcIndex =
+              state.currentComparison.calculations.findIndex(
+                (calc) => calc.productId === productId,
+              );
+
+            const newCalculations = [...state.currentComparison.calculations];
+            if (existingCalcIndex >= 0) {
+              newCalculations[existingCalcIndex] = { productId, result };
+            } else {
+              newCalculations.push({ productId, result });
+            }
+
+            return {
+              currentComparison: {
+                ...state.currentComparison,
+                calculations: newCalculations,
+                updatedAt: new Date().toISOString(),
+              },
+            };
+          }),
 
         saveComparison: (name, notes, isPublic) => {
           const state = get();
@@ -512,7 +579,9 @@ export const useLoanProductStore = create<LoanProductStore>()(
         },
 
         loadComparison: (comparisonId) => {
-          const comparison = get().savedComparisons.find(c => c.id === comparisonId);
+          const comparison = get().savedComparisons.find(
+            (c) => c.id === comparisonId,
+          );
           if (comparison) {
             set({
               currentComparison: comparison,
@@ -521,21 +590,32 @@ export const useLoanProductStore = create<LoanProductStore>()(
           }
         },
 
-        deleteSavedComparison: (comparisonId) => set((state) => ({
-          savedComparisons: state.savedComparisons.filter(c => c.id !== comparisonId),
-          currentComparison: state.currentComparison?.id === comparisonId ? null : state.currentComparison,
-        })),
+        deleteSavedComparison: (comparisonId) =>
+          set((state) => ({
+            savedComparisons: state.savedComparisons.filter(
+              (c) => c.id !== comparisonId,
+            ),
+            currentComparison:
+              state.currentComparison?.id === comparisonId
+                ? null
+                : state.currentComparison,
+          })),
 
         clearCurrentComparison: () => set({ currentComparison: null }),
 
         // Calculator actions
-        updateCalculationParams: (params) => set((state) => ({
-          calculationParams: { ...state.calculationParams, ...params },
-        })),
+        updateCalculationParams: (params) =>
+          set((state) => ({
+            calculationParams: { ...state.calculationParams, ...params },
+          })),
 
-        setCalculationResult: (productId, result) => set((state) => ({
-          calculationResults: { ...state.calculationResults, [productId]: result },
-        })),
+        setCalculationResult: (productId, result) =>
+          set((state) => ({
+            calculationResults: {
+              ...state.calculationResults,
+              [productId]: result,
+            },
+          })),
 
         getCalculationResult: (productId) => {
           return get().calculationResults[productId];
@@ -544,13 +624,18 @@ export const useLoanProductStore = create<LoanProductStore>()(
         clearCalculationResults: () => set({ calculationResults: {} }),
 
         // Eligibility actions
-        updateApplicantProfile: (profile) => set((state) => ({
-          applicantProfile: { ...state.applicantProfile, ...profile },
-        })),
+        updateApplicantProfile: (profile) =>
+          set((state) => ({
+            applicantProfile: { ...state.applicantProfile, ...profile },
+          })),
 
-        setEligibilityResult: (productId, result) => set((state) => ({
-          eligibilityResults: { ...state.eligibilityResults, [productId]: result },
-        })),
+        setEligibilityResult: (productId, result) =>
+          set((state) => ({
+            eligibilityResults: {
+              ...state.eligibilityResults,
+              [productId]: result,
+            },
+          })),
 
         getEligibilityResult: (productId) => {
           return get().eligibilityResults[productId];
@@ -559,9 +644,10 @@ export const useLoanProductStore = create<LoanProductStore>()(
         clearEligibilityResults: () => set({ eligibilityResults: {} }),
 
         // Preferences actions
-        updatePreferences: (preferences) => set((state) => ({
-          preferences: { ...state.preferences, ...preferences },
-        })),
+        updatePreferences: (preferences) =>
+          set((state) => ({
+            preferences: { ...state.preferences, ...preferences },
+          })),
 
         // UI state actions
         setLoading: (loading) => set({ loading }),
@@ -573,13 +659,15 @@ export const useLoanProductStore = create<LoanProductStore>()(
           const state = get();
           const now = new Date();
           const lastUpdated = new Date(state.lastUpdated);
-          const diffMinutes = (now.getTime() - lastUpdated.getTime()) / (1000 * 60);
+          const diffMinutes =
+            (now.getTime() - lastUpdated.getTime()) / (1000 * 60);
           return diffMinutes > state.cacheExpiryMinutes;
         },
 
-        refreshCacheTimestamp: () => set({
-          lastUpdated: new Date().toISOString(),
-        }),
+        refreshCacheTimestamp: () =>
+          set({
+            lastUpdated: new Date().toISOString(),
+          }),
 
         // Utility actions
         getFilteredProducts: () => {
@@ -589,58 +677,82 @@ export const useLoanProductStore = create<LoanProductStore>()(
           // Apply search term
           if (state.searchTerm) {
             const term = state.searchTerm.toLowerCase();
-            filtered = filtered.filter(product =>
-              product.nameVi.toLowerCase().includes(term) ||
-              product.nameEn.toLowerCase().includes(term) ||
-              product.descriptionVi.toLowerCase().includes(term) ||
-              product.bank.nameVi.toLowerCase().includes(term) ||
-              product.bank.code.toLowerCase().includes(term)
+            filtered = filtered.filter(
+              (product) =>
+                product.nameVi.toLowerCase().includes(term) ||
+                product.nameEn.toLowerCase().includes(term) ||
+                product.descriptionVi.toLowerCase().includes(term) ||
+                product.bank.nameVi.toLowerCase().includes(term) ||
+                product.bank.code.toLowerCase().includes(term),
             );
           }
 
           // Apply filters
           if (state.filters.loanTypes.length > 0) {
-            filtered = filtered.filter(product => state.filters.loanTypes.includes(product.loanType));
+            filtered = filtered.filter((product) =>
+              state.filters.loanTypes.includes(product.loanType),
+            );
           }
 
           if (state.filters.bankCodes.length > 0) {
-            filtered = filtered.filter(product => state.filters.bankCodes.includes(product.bank.code));
+            filtered = filtered.filter((product) =>
+              state.filters.bankCodes.includes(product.bank.code),
+            );
           }
 
           if (state.filters.minAmount !== undefined) {
-            filtered = filtered.filter(product => product.amountLimits.max >= state.filters.minAmount!);
+            filtered = filtered.filter(
+              (product) => product.amountLimits.max >= state.filters.minAmount!,
+            );
           }
 
           if (state.filters.maxAmount !== undefined) {
-            filtered = filtered.filter(product => product.amountLimits.min <= state.filters.maxAmount!);
+            filtered = filtered.filter(
+              (product) => product.amountLimits.min <= state.filters.maxAmount!,
+            );
           }
 
           if (state.filters.minTerm !== undefined) {
-            filtered = filtered.filter(product => product.termOptions.max >= state.filters.minTerm!);
+            filtered = filtered.filter(
+              (product) => product.termOptions.max >= state.filters.minTerm!,
+            );
           }
 
           if (state.filters.maxTerm !== undefined) {
-            filtered = filtered.filter(product => product.termOptions.min <= state.filters.maxTerm!);
+            filtered = filtered.filter(
+              (product) => product.termOptions.min <= state.filters.maxTerm!,
+            );
           }
 
           if (state.filters.maxInterestRate !== undefined) {
-            filtered = filtered.filter(product => product.interestRate.annual <= state.filters.maxInterestRate!);
+            filtered = filtered.filter(
+              (product) =>
+                product.interestRate.annual <= state.filters.maxInterestRate!,
+            );
           }
 
           if (state.filters.collateralRequired !== undefined) {
-            filtered = filtered.filter(product => product.eligibility.collateralRequired === state.filters.collateralRequired);
+            filtered = filtered.filter(
+              (product) =>
+                product.eligibility.collateralRequired ===
+                state.filters.collateralRequired,
+            );
           }
 
           if (state.filters.featuredOnly) {
-            filtered = filtered.filter(product => product.metadata.featured);
+            filtered = filtered.filter((product) => product.metadata.featured);
           }
 
           if (state.filters.onlineApplicationOnly) {
-            filtered = filtered.filter(product => product.features.onlineApplication);
+            filtered = filtered.filter(
+              (product) => product.features.onlineApplication,
+            );
           }
 
           if (state.filters.fastApprovalOnly) {
-            filtered = filtered.filter(product => product.features.fastApproval);
+            filtered = filtered.filter(
+              (product) => product.features.fastApproval,
+            );
           }
 
           // Apply sorting
@@ -652,19 +764,23 @@ export const useLoanProductStore = create<LoanProductStore>()(
                 comparison = a.interestRate.annual - b.interestRate.annual;
                 break;
               case "processing_time":
-                comparison = a.applicationRequirements.processingTime.min - b.applicationRequirements.processingTime.min;
+                comparison =
+                  a.applicationRequirements.processingTime.min -
+                  b.applicationRequirements.processingTime.min;
                 break;
               case "max_amount":
                 comparison = a.amountLimits.max - b.amountLimits.max;
                 break;
-              case "rating":
+              case "rating": {
                 const aRating = a.metadata.averageRating || 0;
                 const bRating = b.metadata.averageRating || 0;
                 comparison = aRating - bRating;
                 break;
+              }
               case "popularity":
               default:
-                comparison = a.metadata.popularityScore - b.metadata.popularityScore;
+                comparison =
+                  a.metadata.popularityScore - b.metadata.popularityScore;
                 break;
             }
 
@@ -676,33 +792,41 @@ export const useLoanProductStore = create<LoanProductStore>()(
 
         getProductsByType: (loanType) => {
           const state = get();
-          return state.products.filter(product => product.loanType === loanType && product.active);
+          return state.products.filter(
+            (product) => product.loanType === loanType && product.active,
+          );
         },
 
         getProductsByBank: (bankCode) => {
           const state = get();
-          return state.products.filter(product => product.bank.code === bankCode && product.active);
+          return state.products.filter(
+            (product) => product.bank.code === bankCode && product.active,
+          );
         },
 
         searchProducts: (term) => {
           const state = get();
           const searchTerm = term.toLowerCase();
-          return state.products.filter(product =>
-            product.active && (
-              product.nameVi.toLowerCase().includes(searchTerm) ||
-              product.nameEn.toLowerCase().includes(searchTerm) ||
-              product.descriptionVi.toLowerCase().includes(searchTerm) ||
-              product.bank.nameVi.toLowerCase().includes(searchTerm) ||
-              product.metadata.tags.some(tag => tag.toLowerCase().includes(searchTerm))
-            )
+          return state.products.filter(
+            (product) =>
+              product.active &&
+              (product.nameVi.toLowerCase().includes(searchTerm) ||
+                product.nameEn.toLowerCase().includes(searchTerm) ||
+                product.descriptionVi.toLowerCase().includes(searchTerm) ||
+                product.bank.nameVi.toLowerCase().includes(searchTerm) ||
+                product.metadata.tags.some((tag) =>
+                  tag.toLowerCase().includes(searchTerm),
+                )),
           );
         },
 
         getBestMatches: (limit = 5) => {
           const state = get();
           return state.products
-            .filter(product => product.active && product.metadata.featured)
-            .sort((a, b) => b.metadata.popularityScore - a.metadata.popularityScore)
+            .filter((product) => product.active && product.metadata.featured)
+            .sort(
+              (a, b) => b.metadata.popularityScore - a.metadata.popularityScore,
+            )
             .slice(0, limit);
         },
       }),
@@ -730,39 +854,57 @@ export const useLoanProductStore = create<LoanProductStore>()(
  * Selectors for common use cases
  */
 export const useProducts = () => useLoanProductStore((state) => state.products);
-export const useSelectedProducts = () => useLoanProductStore((state) => state.selectedProducts);
-export const useFavoriteProducts = () => useLoanProductStore((state) => state.favoriteProducts);
-export const useCurrentComparison = () => useLoanProductStore((state) => state.currentComparison);
-export const useCalculationParams = () => useLoanProductStore((state) => state.calculationParams);
-export const useApplicantProfile = () => useLoanProductStore((state) => state.applicantProfile);
-export const useProductFilters = () => useLoanProductStore((state) => state.filters);
-export const useProductLoading = () => useLoanProductStore((state) => state.loading);
-export const useProductError = () => useLoanProductStore((state) => state.error);
+export const useSelectedProducts = () =>
+  useLoanProductStore((state) => state.selectedProducts);
+export const useFavoriteProducts = () =>
+  useLoanProductStore((state) => state.favoriteProducts);
+export const useCurrentComparison = () =>
+  useLoanProductStore((state) => state.currentComparison);
+export const useCalculationParams = () =>
+  useLoanProductStore((state) => state.calculationParams);
+export const useApplicantProfile = () =>
+  useLoanProductStore((state) => state.applicantProfile);
+export const useProductFilters = () =>
+  useLoanProductStore((state) => state.filters);
+export const useProductLoading = () =>
+  useLoanProductStore((state) => state.loading);
+export const useProductError = () =>
+  useLoanProductStore((state) => state.error);
 
 /**
  * Derived selectors
  */
 export const useFilteredProducts = () => {
-  const getFilteredProducts = useLoanProductStore((state) => state.getFilteredProducts);
+  const getFilteredProducts = useLoanProductStore(
+    (state) => state.getFilteredProducts,
+  );
   return getFilteredProducts();
 };
 
 export const useIsProductSelected = (productId: string) => {
-  const isProductSelected = useLoanProductStore((state) => state.isProductSelected);
+  const isProductSelected = useLoanProductStore(
+    (state) => state.isProductSelected,
+  );
   return isProductSelected(productId);
 };
 
 export const useIsProductFavorited = (productId: string) => {
-  const isProductFavorited = useLoanProductStore((state) => state.isProductFavorited);
+  const isProductFavorited = useLoanProductStore(
+    (state) => state.isProductFavorited,
+  );
   return isProductFavorited(productId);
 };
 
 export const useCalculationResult = (productId: string) => {
-  const getCalculationResult = useLoanProductStore((state) => state.getCalculationResult);
+  const getCalculationResult = useLoanProductStore(
+    (state) => state.getCalculationResult,
+  );
   return getCalculationResult(productId);
 };
 
 export const useEligibilityResult = (productId: string) => {
-  const getEligibilityResult = useLoanProductStore((state) => state.getEligibilityResult);
+  const getEligibilityResult = useLoanProductStore(
+    (state) => state.getEligibilityResult,
+  );
   return getEligibilityResult(productId);
 };

@@ -60,440 +60,819 @@ export interface DocumentMetadata {
   machineReadable: boolean;
 }
 
-export const VIETNAMESE_DOCUMENT_TYPES: Record<string, VietnameseDocumentType> = {
-  CCCD_CHIP: {
-    id: 9,
-    name: "Chip-based Citizen ID",
-    nameVi: "Căn cước công dân gắn chip",
-    code: "CCCD_CHIP",
-    description: "Vietnamese citizen identity card with embedded chip",
-    descriptionVi: "Căn cước công dân Việt Nam gắn chip điện tử",
-    validation: {
-      idPattern: /^[0-9]{12}$/,
-      idLength: 12,
-      idChecksum: true,
-      nameRequired: true,
-      birthDateRequired: true,
-      issueDateRequired: true,
-      expiryDateRequired: false,
-      provinceCodes: [
-        "001", "002", "004", "006", "008", "010", "011", "012", "014", "015",
-        "016", "018", "020", "022", "024", "025", "026", "027", "030", "031",
-        "032", "033", "034", "035", "036", "037", "038", "040", "042", "044",
-        "045", "046", "048", "049", "050", "052", "054", "056", "058", "060",
-        "062", "064", "066", "067", "068", "070", "072", "074", "075", "076",
-        "077", "078", "079", "080", "082", "083", "084", "086", "087", "088",
-        "089", "091", "092", "093", "094", "095", "096", "097", "098", "099"
-      ],
-      addressRequired: true,
+export const VIETNAMESE_DOCUMENT_TYPES: Record<string, VietnameseDocumentType> =
+  {
+    CCCD_CHIP: {
+      id: 9,
+      name: "Chip-based Citizen ID",
+      nameVi: "Căn cước công dân gắn chip",
+      code: "CCCD_CHIP",
+      description: "Vietnamese citizen identity card with embedded chip",
+      descriptionVi: "Căn cước công dân Việt Nam gắn chip điện tử",
+      validation: {
+        idPattern: /^[0-9]{12}$/,
+        idLength: 12,
+        idChecksum: true,
+        nameRequired: true,
+        birthDateRequired: true,
+        issueDateRequired: true,
+        expiryDateRequired: false,
+        provinceCodes: [
+          "001",
+          "002",
+          "004",
+          "006",
+          "008",
+          "010",
+          "011",
+          "012",
+          "014",
+          "015",
+          "016",
+          "018",
+          "020",
+          "022",
+          "024",
+          "025",
+          "026",
+          "027",
+          "030",
+          "031",
+          "032",
+          "033",
+          "034",
+          "035",
+          "036",
+          "037",
+          "038",
+          "040",
+          "042",
+          "044",
+          "045",
+          "046",
+          "048",
+          "049",
+          "050",
+          "052",
+          "054",
+          "056",
+          "058",
+          "060",
+          "062",
+          "064",
+          "066",
+          "067",
+          "068",
+          "070",
+          "072",
+          "074",
+          "075",
+          "076",
+          "077",
+          "078",
+          "079",
+          "080",
+          "082",
+          "083",
+          "084",
+          "086",
+          "087",
+          "088",
+          "089",
+          "091",
+          "092",
+          "093",
+          "094",
+          "095",
+          "096",
+          "097",
+          "098",
+          "099",
+        ],
+        addressRequired: true,
+      },
+      ocrConfig: {
+        frontRequired: true,
+        backRequired: true,
+        supportUpload: true,
+        supportCamera: true,
+        qualityThreshold: 0.85,
+        edgeDetection: true,
+        autoCapture: true,
+        supportedFormats: ["image/jpeg", "image/png", "image/webp"],
+      },
+      security: {
+        hologramCheck: true,
+        uvLightCheck: true,
+        microprintCheck: true,
+        barcodeCheck: true,
+        qrCodeCheck: true,
+        chipCheck: true,
+        photoIntegrity: true,
+        antiSpoofing: true,
+      },
+      metadata: {
+        issuingAuthority: "Ministry of Public Security",
+        issuingAuthorityVi: "Bộ Công an",
+        documentVersion: "2013-2024",
+        validPeriod: 0, // No expiry for citizens under 25
+        renewalRequired: false,
+        biometricData: true,
+        machineReadable: true,
+      },
     },
-    ocrConfig: {
-      frontRequired: true,
-      backRequired: true,
-      supportUpload: true,
-      supportCamera: true,
-      qualityThreshold: 0.85,
-      edgeDetection: true,
-      autoCapture: true,
-      supportedFormats: ["image/jpeg", "image/png", "image/webp"],
+    CCCD_NO_CHIP: {
+      id: 1,
+      name: "Citizen ID Card",
+      nameVi: "Căn cước công dân",
+      code: "CCCD",
+      description: "Vietnamese citizen identity card without chip",
+      descriptionVi: "Căn cước công dân Việt Nam không gắn chip",
+      validation: {
+        idPattern: /^[0-9]{12}$/,
+        idLength: 12,
+        idChecksum: true,
+        nameRequired: true,
+        birthDateRequired: true,
+        issueDateRequired: true,
+        expiryDateRequired: false,
+        provinceCodes: [
+          "001",
+          "002",
+          "004",
+          "006",
+          "008",
+          "010",
+          "011",
+          "012",
+          "014",
+          "015",
+          "016",
+          "018",
+          "020",
+          "022",
+          "024",
+          "025",
+          "026",
+          "027",
+          "030",
+          "031",
+          "032",
+          "033",
+          "034",
+          "035",
+          "036",
+          "037",
+          "038",
+          "040",
+          "042",
+          "044",
+          "045",
+          "046",
+          "048",
+          "049",
+          "050",
+          "052",
+          "054",
+          "056",
+          "058",
+          "060",
+          "062",
+          "064",
+          "066",
+          "067",
+          "068",
+          "070",
+          "072",
+          "074",
+          "075",
+          "076",
+          "077",
+          "078",
+          "079",
+          "080",
+          "082",
+          "083",
+          "084",
+          "086",
+          "087",
+          "088",
+          "089",
+          "091",
+          "092",
+          "093",
+          "094",
+          "095",
+          "096",
+          "097",
+          "098",
+          "099",
+        ],
+        addressRequired: true,
+      },
+      ocrConfig: {
+        frontRequired: true,
+        backRequired: true,
+        supportUpload: true,
+        supportCamera: true,
+        qualityThreshold: 0.8,
+        edgeDetection: true,
+        autoCapture: true,
+        supportedFormats: ["image/jpeg", "image/png", "image/webp"],
+      },
+      security: {
+        hologramCheck: true,
+        uvLightCheck: false,
+        microprintCheck: true,
+        barcodeCheck: true,
+        qrCodeCheck: false,
+        chipCheck: false,
+        photoIntegrity: true,
+        antiSpoofing: true,
+      },
+      metadata: {
+        issuingAuthority: "Ministry of Public Security",
+        issuingAuthorityVi: "Bộ Công an",
+        documentVersion: "2013-2021",
+        validPeriod: 0, // No expiry for citizens under 25
+        renewalRequired: false,
+        biometricData: false,
+        machineReadable: true,
+      },
     },
-    security: {
-      hologramCheck: true,
-      uvLightCheck: true,
-      microprintCheck: true,
-      barcodeCheck: true,
-      qrCodeCheck: true,
-      chipCheck: true,
-      photoIntegrity: true,
-      antiSpoofing: true,
+    CMND_12: {
+      id: -1,
+      name: "National ID Card (12 digits)",
+      nameVi: "Chứng minh thư nhân dân (12 số)",
+      code: "CMND12",
+      description: "Vietnamese national identity card with 12 digits",
+      descriptionVi: "Chứng minh thư nhân dân 12 số Việt Nam",
+      validation: {
+        idPattern: /^[0-9]{12}$/,
+        idLength: 12,
+        idChecksum: false,
+        nameRequired: true,
+        birthDateRequired: true,
+        issueDateRequired: true,
+        expiryDateRequired: false,
+        provinceCodes: [
+          "001",
+          "002",
+          "004",
+          "006",
+          "008",
+          "010",
+          "011",
+          "012",
+          "014",
+          "015",
+          "016",
+          "018",
+          "020",
+          "022",
+          "024",
+          "025",
+          "026",
+          "027",
+          "030",
+          "031",
+          "032",
+          "033",
+          "034",
+          "035",
+          "036",
+          "037",
+          "038",
+          "040",
+          "042",
+          "044",
+          "045",
+          "046",
+          "048",
+          "049",
+          "050",
+          "052",
+          "054",
+          "056",
+          "058",
+          "060",
+          "062",
+          "064",
+          "066",
+          "067",
+          "068",
+          "070",
+          "072",
+          "074",
+          "075",
+          "076",
+          "077",
+          "078",
+          "079",
+          "080",
+          "082",
+          "083",
+          "084",
+          "086",
+          "087",
+          "088",
+          "089",
+          "091",
+          "092",
+          "093",
+          "094",
+          "095",
+          "096",
+          "097",
+          "098",
+          "099",
+        ],
+        addressRequired: true,
+      },
+      ocrConfig: {
+        frontRequired: true,
+        backRequired: true,
+        supportUpload: true,
+        supportCamera: true,
+        qualityThreshold: 0.75,
+        edgeDetection: true,
+        autoCapture: true,
+        supportedFormats: ["image/jpeg", "image/png", "image/webp"],
+      },
+      security: {
+        hologramCheck: true,
+        uvLightCheck: false,
+        microprintCheck: true,
+        barcodeCheck: false,
+        qrCodeCheck: false,
+        chipCheck: false,
+        photoIntegrity: true,
+        antiSpoofing: true,
+      },
+      metadata: {
+        issuingAuthority: "Ministry of Public Security",
+        issuingAuthorityVi: "Bộ Công an",
+        documentVersion: "2000-2013",
+        validPeriod: 15,
+        renewalRequired: true,
+        biometricData: false,
+        machineReadable: false,
+      },
     },
-    metadata: {
-      issuingAuthority: "Ministry of Public Security",
-      issuingAuthorityVi: "Bộ Công an",
-      documentVersion: "2013-2024",
-      validPeriod: 0, // No expiry for citizens under 25
-      renewalRequired: false,
-      biometricData: true,
-      machineReadable: true,
+    CMND_9: {
+      id: 0,
+      name: "National ID Card (9 digits)",
+      nameVi: "Chứng minh thư nhân dân (9 số)",
+      code: "CMND9",
+      description: "Vietnamese national identity card with 9 digits",
+      descriptionVi: "Chứng minh thư nhân dân 9 số Việt Nam",
+      validation: {
+        idPattern: /^[0-9]{9}$/,
+        idLength: 9,
+        idChecksum: false,
+        nameRequired: true,
+        birthDateRequired: true,
+        issueDateRequired: true,
+        expiryDateRequired: false,
+        provinceCodes: [
+          "001",
+          "002",
+          "004",
+          "006",
+          "008",
+          "010",
+          "011",
+          "012",
+          "014",
+          "015",
+          "016",
+          "018",
+          "020",
+          "022",
+          "024",
+          "025",
+          "026",
+          "027",
+          "030",
+          "031",
+          "032",
+          "033",
+          "034",
+          "035",
+          "036",
+          "037",
+          "038",
+          "040",
+          "042",
+          "044",
+          "045",
+          "046",
+          "048",
+          "049",
+          "050",
+          "052",
+          "054",
+          "056",
+          "058",
+          "060",
+          "062",
+          "064",
+          "066",
+          "067",
+          "068",
+          "070",
+          "072",
+          "074",
+          "075",
+          "076",
+          "077",
+          "078",
+          "079",
+          "080",
+          "082",
+          "083",
+          "084",
+          "086",
+          "087",
+          "088",
+          "089",
+          "091",
+          "092",
+          "093",
+          "094",
+          "095",
+          "096",
+          "097",
+          "098",
+          "099",
+        ],
+        addressRequired: true,
+      },
+      ocrConfig: {
+        frontRequired: true,
+        backRequired: true,
+        supportUpload: true,
+        supportCamera: true,
+        qualityThreshold: 0.7,
+        edgeDetection: true,
+        autoCapture: true,
+        supportedFormats: ["image/jpeg", "image/png", "image/webp"],
+      },
+      security: {
+        hologramCheck: true,
+        uvLightCheck: false,
+        microprintCheck: false,
+        barcodeCheck: false,
+        qrCodeCheck: false,
+        chipCheck: false,
+        photoIntegrity: true,
+        antiSpoofing: true,
+      },
+      metadata: {
+        issuingAuthority: "Ministry of Public Security",
+        issuingAuthorityVi: "Bộ Công an",
+        documentVersion: "1979-2000",
+        validPeriod: 15,
+        renewalRequired: true,
+        biometricData: false,
+        machineReadable: false,
+      },
     },
-  },
-  CCCD_NO_CHIP: {
-    id: 1,
-    name: "Citizen ID Card",
-    nameVi: "Căn cước công dân",
-    code: "CCCD",
-    description: "Vietnamese citizen identity card without chip",
-    descriptionVi: "Căn cước công dân Việt Nam không gắn chip",
-    validation: {
-      idPattern: /^[0-9]{12}$/,
-      idLength: 12,
-      idChecksum: true,
-      nameRequired: true,
-      birthDateRequired: true,
-      issueDateRequired: true,
-      expiryDateRequired: false,
-      provinceCodes: [
-        "001", "002", "004", "006", "008", "010", "011", "012", "014", "015",
-        "016", "018", "020", "022", "024", "025", "026", "027", "030", "031",
-        "032", "033", "034", "035", "036", "037", "038", "040", "042", "044",
-        "045", "046", "048", "049", "050", "052", "054", "056", "058", "060",
-        "062", "064", "066", "067", "068", "070", "072", "074", "075", "076",
-        "077", "078", "079", "080", "082", "083", "084", "086", "087", "088",
-        "089", "091", "092", "093", "094", "095", "096", "097", "098", "099"
-      ],
-      addressRequired: true,
+    PASSPORT: {
+      id: 5,
+      name: "Vietnamese Passport",
+      nameVi: "Hộ chiếu Việt Nam",
+      code: "PASSPORT",
+      description: "Vietnamese passport document",
+      descriptionVi: "Hộ chiếu公民 Việt Nam",
+      validation: {
+        idPattern: /^[A-Z0-9]{7,9}$/,
+        idLength: 8,
+        idChecksum: true,
+        nameRequired: true,
+        birthDateRequired: true,
+        issueDateRequired: true,
+        expiryDateRequired: true,
+        provinceCodes: [],
+        addressRequired: false,
+      },
+      ocrConfig: {
+        frontRequired: true,
+        backRequired: false,
+        supportUpload: true,
+        supportCamera: true,
+        qualityThreshold: 0.85,
+        edgeDetection: true,
+        autoCapture: true,
+        supportedFormats: ["image/jpeg", "image/png", "image/webp"],
+      },
+      security: {
+        hologramCheck: true,
+        uvLightCheck: true,
+        microprintCheck: true,
+        barcodeCheck: false,
+        qrCodeCheck: false,
+        chipCheck: true,
+        photoIntegrity: true,
+        antiSpoofing: true,
+      },
+      metadata: {
+        issuingAuthority: "Ministry of Foreign Affairs",
+        issuingAuthorityVi: "Bộ Ngoại giao",
+        documentVersion: "ICAO compliant",
+        validPeriod: 10,
+        renewalRequired: true,
+        biometricData: true,
+        machineReadable: true,
+      },
     },
-    ocrConfig: {
-      frontRequired: true,
-      backRequired: true,
-      supportUpload: true,
-      supportCamera: true,
-      qualityThreshold: 0.80,
-      edgeDetection: true,
-      autoCapture: true,
-      supportedFormats: ["image/jpeg", "image/png", "image/webp"],
+    DRIVER_LICENSE: {
+      id: 6,
+      name: "Vietnamese Driver's License",
+      nameVi: "Bằng lái xe Việt Nam",
+      code: "DRIVER_LICENSE",
+      description: "Vietnamese driver's license document",
+      descriptionVi: "Giấy phép lái xe Việt Nam",
+      validation: {
+        idPattern: /^[0-9]{12}$/,
+        idLength: 12,
+        idChecksum: false,
+        nameRequired: true,
+        birthDateRequired: true,
+        issueDateRequired: true,
+        expiryDateRequired: true,
+        provinceCodes: [
+          "001",
+          "002",
+          "004",
+          "006",
+          "008",
+          "010",
+          "011",
+          "012",
+          "014",
+          "015",
+          "016",
+          "018",
+          "020",
+          "022",
+          "024",
+          "025",
+          "026",
+          "027",
+          "030",
+          "031",
+          "032",
+          "033",
+          "034",
+          "035",
+          "036",
+          "037",
+          "038",
+          "040",
+          "042",
+          "044",
+          "045",
+          "046",
+          "048",
+          "049",
+          "050",
+          "052",
+          "054",
+          "056",
+          "058",
+          "060",
+          "062",
+          "064",
+          "066",
+          "067",
+          "068",
+          "070",
+          "072",
+          "074",
+          "075",
+          "076",
+          "077",
+          "078",
+          "079",
+          "080",
+          "082",
+          "083",
+          "084",
+          "086",
+          "087",
+          "088",
+          "089",
+          "091",
+          "092",
+          "093",
+          "094",
+          "095",
+          "096",
+          "097",
+          "098",
+          "099",
+        ],
+        addressRequired: true,
+      },
+      ocrConfig: {
+        frontRequired: true,
+        backRequired: true,
+        supportUpload: true,
+        supportCamera: true,
+        qualityThreshold: 0.75,
+        edgeDetection: true,
+        autoCapture: true,
+        supportedFormats: ["image/jpeg", "image/png", "image/webp"],
+      },
+      security: {
+        hologramCheck: true,
+        uvLightCheck: false,
+        microprintCheck: true,
+        barcodeCheck: true,
+        qrCodeCheck: false,
+        chipCheck: false,
+        photoIntegrity: true,
+        antiSpoofing: true,
+      },
+      metadata: {
+        issuingAuthority: "Department of Transport",
+        issuingAuthorityVi: "Sở Giao thông vận tải",
+        documentVersion: "2008-2023",
+        validPeriod: 5,
+        renewalRequired: true,
+        biometricData: false,
+        machineReadable: false,
+      },
     },
-    security: {
-      hologramCheck: true,
-      uvLightCheck: false,
-      microprintCheck: true,
-      barcodeCheck: true,
-      qrCodeCheck: false,
-      chipCheck: false,
-      photoIntegrity: true,
-      antiSpoofing: true,
+    MILITARY_ID: {
+      id: 7,
+      name: "Military Identity Card",
+      nameVi: "Chứng minh thư quân đội",
+      code: "MILITARY_ID",
+      description: "Vietnamese military identity card",
+      descriptionVi: "Chứng minh thư quân đội Việt Nam",
+      validation: {
+        idPattern: /^[0-9]{9,12}$/,
+        idLength: 12,
+        idChecksum: false,
+        nameRequired: true,
+        birthDateRequired: true,
+        issueDateRequired: true,
+        expiryDateRequired: false,
+        provinceCodes: [],
+        addressRequired: false,
+      },
+      ocrConfig: {
+        frontRequired: true,
+        backRequired: true,
+        supportUpload: true,
+        supportCamera: true,
+        qualityThreshold: 0.75,
+        edgeDetection: true,
+        autoCapture: true,
+        supportedFormats: ["image/jpeg", "image/png", "image/webp"],
+      },
+      security: {
+        hologramCheck: true,
+        uvLightCheck: false,
+        microprintCheck: true,
+        barcodeCheck: false,
+        qrCodeCheck: false,
+        chipCheck: false,
+        photoIntegrity: true,
+        antiSpoofing: true,
+      },
+      metadata: {
+        issuingAuthority: "Ministry of Defence",
+        issuingAuthorityVi: "Bộ Quốc phòng",
+        documentVersion: "1990-current",
+        validPeriod: 15,
+        renewalRequired: true,
+        biometricData: false,
+        machineReadable: false,
+      },
     },
-    metadata: {
-      issuingAuthority: "Ministry of Public Security",
-      issuingAuthorityVi: "Bộ Công an",
-      documentVersion: "2013-2021",
-      validPeriod: 0, // No expiry for citizens under 25
-      renewalRequired: false,
-      biometricData: false,
-      machineReadable: true,
+    HEALTH_INSURANCE: {
+      id: 8,
+      name: "Health Insurance Card",
+      nameVi: "Thẻ bảo hiểm y tế",
+      code: "HEALTH_INSURANCE",
+      description: "Vietnamese health insurance card",
+      descriptionVi: "Thẻ bảo hiểm y tế Việt Nam",
+      validation: {
+        idPattern: /^[A-Z0-9]{10,15}$/,
+        idLength: 13,
+        idChecksum: true,
+        nameRequired: true,
+        birthDateRequired: true,
+        issueDateRequired: false,
+        expiryDateRequired: true,
+        provinceCodes: [
+          "001",
+          "002",
+          "004",
+          "006",
+          "008",
+          "010",
+          "011",
+          "012",
+          "014",
+          "015",
+          "016",
+          "018",
+          "020",
+          "022",
+          "024",
+          "025",
+          "026",
+          "027",
+          "030",
+          "031",
+          "032",
+          "033",
+          "034",
+          "035",
+          "036",
+          "037",
+          "038",
+          "040",
+          "042",
+          "044",
+          "045",
+          "046",
+          "048",
+          "049",
+          "050",
+          "052",
+          "054",
+          "056",
+          "058",
+          "060",
+          "062",
+          "064",
+          "066",
+          "067",
+          "068",
+          "070",
+          "072",
+          "074",
+          "075",
+          "076",
+          "077",
+          "078",
+          "079",
+          "080",
+          "082",
+          "083",
+          "084",
+          "086",
+          "087",
+          "088",
+          "089",
+          "091",
+          "092",
+          "093",
+          "094",
+          "095",
+          "096",
+          "097",
+          "098",
+          "099",
+        ],
+        addressRequired: false,
+      },
+      ocrConfig: {
+        frontRequired: true,
+        backRequired: false,
+        supportUpload: true,
+        supportCamera: true,
+        qualityThreshold: 0.7,
+        edgeDetection: true,
+        autoCapture: true,
+        supportedFormats: ["image/jpeg", "image/png", "image/webp"],
+      },
+      security: {
+        hologramCheck: true,
+        uvLightCheck: false,
+        microprintCheck: false,
+        barcodeCheck: true,
+        qrCodeCheck: true,
+        chipCheck: false,
+        photoIntegrity: false,
+        antiSpoofing: false,
+      },
+      metadata: {
+        issuingAuthority: "Vietnam Social Security",
+        issuingAuthorityVi: "Bảo hiểm xã hội Việt Nam",
+        documentVersion: "2015-current",
+        validPeriod: 5,
+        renewalRequired: true,
+        biometricData: false,
+        machineReadable: false,
+      },
     },
-  },
-  CMND_12: {
-    id: -1,
-    name: "National ID Card (12 digits)",
-    nameVi: "Chứng minh thư nhân dân (12 số)",
-    code: "CMND12",
-    description: "Vietnamese national identity card with 12 digits",
-    descriptionVi: "Chứng minh thư nhân dân 12 số Việt Nam",
-    validation: {
-      idPattern: /^[0-9]{12}$/,
-      idLength: 12,
-      idChecksum: false,
-      nameRequired: true,
-      birthDateRequired: true,
-      issueDateRequired: true,
-      expiryDateRequired: false,
-      provinceCodes: [
-        "001", "002", "004", "006", "008", "010", "011", "012", "014", "015",
-        "016", "018", "020", "022", "024", "025", "026", "027", "030", "031",
-        "032", "033", "034", "035", "036", "037", "038", "040", "042", "044",
-        "045", "046", "048", "049", "050", "052", "054", "056", "058", "060",
-        "062", "064", "066", "067", "068", "070", "072", "074", "075", "076",
-        "077", "078", "079", "080", "082", "083", "084", "086", "087", "088",
-        "089", "091", "092", "093", "094", "095", "096", "097", "098", "099"
-      ],
-      addressRequired: true,
-    },
-    ocrConfig: {
-      frontRequired: true,
-      backRequired: true,
-      supportUpload: true,
-      supportCamera: true,
-      qualityThreshold: 0.75,
-      edgeDetection: true,
-      autoCapture: true,
-      supportedFormats: ["image/jpeg", "image/png", "image/webp"],
-    },
-    security: {
-      hologramCheck: true,
-      uvLightCheck: false,
-      microprintCheck: true,
-      barcodeCheck: false,
-      qrCodeCheck: false,
-      chipCheck: false,
-      photoIntegrity: true,
-      antiSpoofing: true,
-    },
-    metadata: {
-      issuingAuthority: "Ministry of Public Security",
-      issuingAuthorityVi: "Bộ Công an",
-      documentVersion: "2000-2013",
-      validPeriod: 15,
-      renewalRequired: true,
-      biometricData: false,
-      machineReadable: false,
-    },
-  },
-  CMND_9: {
-    id: 0,
-    name: "National ID Card (9 digits)",
-    nameVi: "Chứng minh thư nhân dân (9 số)",
-    code: "CMND9",
-    description: "Vietnamese national identity card with 9 digits",
-    descriptionVi: "Chứng minh thư nhân dân 9 số Việt Nam",
-    validation: {
-      idPattern: /^[0-9]{9}$/,
-      idLength: 9,
-      idChecksum: false,
-      nameRequired: true,
-      birthDateRequired: true,
-      issueDateRequired: true,
-      expiryDateRequired: false,
-      provinceCodes: [
-        "001", "002", "004", "006", "008", "010", "011", "012", "014", "015",
-        "016", "018", "020", "022", "024", "025", "026", "027", "030", "031",
-        "032", "033", "034", "035", "036", "037", "038", "040", "042", "044",
-        "045", "046", "048", "049", "050", "052", "054", "056", "058", "060",
-        "062", "064", "066", "067", "068", "070", "072", "074", "075", "076",
-        "077", "078", "079", "080", "082", "083", "084", "086", "087", "088",
-        "089", "091", "092", "093", "094", "095", "096", "097", "098", "099"
-      ],
-      addressRequired: true,
-    },
-    ocrConfig: {
-      frontRequired: true,
-      backRequired: true,
-      supportUpload: true,
-      supportCamera: true,
-      qualityThreshold: 0.70,
-      edgeDetection: true,
-      autoCapture: true,
-      supportedFormats: ["image/jpeg", "image/png", "image/webp"],
-    },
-    security: {
-      hologramCheck: true,
-      uvLightCheck: false,
-      microprintCheck: false,
-      barcodeCheck: false,
-      qrCodeCheck: false,
-      chipCheck: false,
-      photoIntegrity: true,
-      antiSpoofing: true,
-    },
-    metadata: {
-      issuingAuthority: "Ministry of Public Security",
-      issuingAuthorityVi: "Bộ Công an",
-      documentVersion: "1979-2000",
-      validPeriod: 15,
-      renewalRequired: true,
-      biometricData: false,
-      machineReadable: false,
-    },
-  },
-  PASSPORT: {
-    id: 5,
-    name: "Vietnamese Passport",
-    nameVi: "Hộ chiếu Việt Nam",
-    code: "PASSPORT",
-    description: "Vietnamese passport document",
-    descriptionVi: "Hộ chiếu公民 Việt Nam",
-    validation: {
-      idPattern: /^[A-Z0-9]{7,9}$/,
-      idLength: 8,
-      idChecksum: true,
-      nameRequired: true,
-      birthDateRequired: true,
-      issueDateRequired: true,
-      expiryDateRequired: true,
-      provinceCodes: [],
-      addressRequired: false,
-    },
-    ocrConfig: {
-      frontRequired: true,
-      backRequired: false,
-      supportUpload: true,
-      supportCamera: true,
-      qualityThreshold: 0.85,
-      edgeDetection: true,
-      autoCapture: true,
-      supportedFormats: ["image/jpeg", "image/png", "image/webp"],
-    },
-    security: {
-      hologramCheck: true,
-      uvLightCheck: true,
-      microprintCheck: true,
-      barcodeCheck: false,
-      qrCodeCheck: false,
-      chipCheck: true,
-      photoIntegrity: true,
-      antiSpoofing: true,
-    },
-    metadata: {
-      issuingAuthority: "Ministry of Foreign Affairs",
-      issuingAuthorityVi: "Bộ Ngoại giao",
-      documentVersion: "ICAO compliant",
-      validPeriod: 10,
-      renewalRequired: true,
-      biometricData: true,
-      machineReadable: true,
-    },
-  },
-  DRIVER_LICENSE: {
-    id: 6,
-    name: "Vietnamese Driver's License",
-    nameVi: "Bằng lái xe Việt Nam",
-    code: "DRIVER_LICENSE",
-    description: "Vietnamese driver's license document",
-    descriptionVi: "Giấy phép lái xe Việt Nam",
-    validation: {
-      idPattern: /^[0-9]{12}$/,
-      idLength: 12,
-      idChecksum: false,
-      nameRequired: true,
-      birthDateRequired: true,
-      issueDateRequired: true,
-      expiryDateRequired: true,
-      provinceCodes: [
-        "001", "002", "004", "006", "008", "010", "011", "012", "014", "015",
-        "016", "018", "020", "022", "024", "025", "026", "027", "030", "031",
-        "032", "033", "034", "035", "036", "037", "038", "040", "042", "044",
-        "045", "046", "048", "049", "050", "052", "054", "056", "058", "060",
-        "062", "064", "066", "067", "068", "070", "072", "074", "075", "076",
-        "077", "078", "079", "080", "082", "083", "084", "086", "087", "088",
-        "089", "091", "092", "093", "094", "095", "096", "097", "098", "099"
-      ],
-      addressRequired: true,
-    },
-    ocrConfig: {
-      frontRequired: true,
-      backRequired: true,
-      supportUpload: true,
-      supportCamera: true,
-      qualityThreshold: 0.75,
-      edgeDetection: true,
-      autoCapture: true,
-      supportedFormats: ["image/jpeg", "image/png", "image/webp"],
-    },
-    security: {
-      hologramCheck: true,
-      uvLightCheck: false,
-      microprintCheck: true,
-      barcodeCheck: true,
-      qrCodeCheck: false,
-      chipCheck: false,
-      photoIntegrity: true,
-      antiSpoofing: true,
-    },
-    metadata: {
-      issuingAuthority: "Department of Transport",
-      issuingAuthorityVi: "Sở Giao thông vận tải",
-      documentVersion: "2008-2023",
-      validPeriod: 5,
-      renewalRequired: true,
-      biometricData: false,
-      machineReadable: false,
-    },
-  },
-  MILITARY_ID: {
-    id: 7,
-    name: "Military Identity Card",
-    nameVi: "Chứng minh thư quân đội",
-    code: "MILITARY_ID",
-    description: "Vietnamese military identity card",
-    descriptionVi: "Chứng minh thư quân đội Việt Nam",
-    validation: {
-      idPattern: /^[0-9]{9,12}$/,
-      idLength: 12,
-      idChecksum: false,
-      nameRequired: true,
-      birthDateRequired: true,
-      issueDateRequired: true,
-      expiryDateRequired: false,
-      provinceCodes: [],
-      addressRequired: false,
-    },
-    ocrConfig: {
-      frontRequired: true,
-      backRequired: true,
-      supportUpload: true,
-      supportCamera: true,
-      qualityThreshold: 0.75,
-      edgeDetection: true,
-      autoCapture: true,
-      supportedFormats: ["image/jpeg", "image/png", "image/webp"],
-    },
-    security: {
-      hologramCheck: true,
-      uvLightCheck: false,
-      microprintCheck: true,
-      barcodeCheck: false,
-      qrCodeCheck: false,
-      chipCheck: false,
-      photoIntegrity: true,
-      antiSpoofing: true,
-    },
-    metadata: {
-      issuingAuthority: "Ministry of Defence",
-      issuingAuthorityVi: "Bộ Quốc phòng",
-      documentVersion: "1990-current",
-      validPeriod: 15,
-      renewalRequired: true,
-      biometricData: false,
-      machineReadable: false,
-    },
-  },
-  HEALTH_INSURANCE: {
-    id: 8,
-    name: "Health Insurance Card",
-    nameVi: "Thẻ bảo hiểm y tế",
-    code: "HEALTH_INSURANCE",
-    description: "Vietnamese health insurance card",
-    descriptionVi: "Thẻ bảo hiểm y tế Việt Nam",
-    validation: {
-      idPattern: /^[A-Z0-9]{10,15}$/,
-      idLength: 13,
-      idChecksum: true,
-      nameRequired: true,
-      birthDateRequired: true,
-      issueDateRequired: false,
-      expiryDateRequired: true,
-      provinceCodes: [
-        "001", "002", "004", "006", "008", "010", "011", "012", "014", "015",
-        "016", "018", "020", "022", "024", "025", "026", "027", "030", "031",
-        "032", "033", "034", "035", "036", "037", "038", "040", "042", "044",
-        "045", "046", "048", "049", "050", "052", "054", "056", "058", "060",
-        "062", "064", "066", "067", "068", "070", "072", "074", "075", "076",
-        "077", "078", "079", "080", "082", "083", "084", "086", "087", "088",
-        "089", "091", "092", "093", "094", "095", "096", "097", "098", "099"
-      ],
-      addressRequired: false,
-    },
-    ocrConfig: {
-      frontRequired: true,
-      backRequired: false,
-      supportUpload: true,
-      supportCamera: true,
-      qualityThreshold: 0.70,
-      edgeDetection: true,
-      autoCapture: true,
-      supportedFormats: ["image/jpeg", "image/png", "image/webp"],
-    },
-    security: {
-      hologramCheck: true,
-      uvLightCheck: false,
-      microprintCheck: false,
-      barcodeCheck: true,
-      qrCodeCheck: true,
-      chipCheck: false,
-      photoIntegrity: false,
-      antiSpoofing: false,
-    },
-    metadata: {
-      issuingAuthority: "Vietnam Social Security",
-      issuingAuthorityVi: "Bảo hiểm xã hội Việt Nam",
-      documentVersion: "2015-current",
-      validPeriod: 5,
-      renewalRequired: true,
-      biometricData: false,
-      machineReadable: false,
-    },
-  },
-};
+  };
 
 // Updated Vietnamese administrative divisions (2024)
 export const PROVINCE_CODES_VIETNAM = {
@@ -568,16 +947,30 @@ export const PROVINCE_CODES_VIETNAM = {
   "091": "Tỉnh Cà Mau",
 } as const;
 
-export const getDocumentTypeById = (id: number): VietnameseDocumentType | null => {
-  return Object.values(VIETNAMESE_DOCUMENT_TYPES).find(type => type.id === id) || null;
+export const getDocumentTypeById = (
+  id: number,
+): VietnameseDocumentType | null => {
+  return (
+    Object.values(VIETNAMESE_DOCUMENT_TYPES).find((type) => type.id === id) ||
+    null
+  );
 };
 
-export const getDocumentTypeByCode = (code: string): VietnameseDocumentType | null => {
-  return Object.values(VIETNAMESE_DOCUMENT_TYPES).find(type => type.code === code) || null;
+export const getDocumentTypeByCode = (
+  code: string,
+): VietnameseDocumentType | null => {
+  return (
+    Object.values(VIETNAMESE_DOCUMENT_TYPES).find(
+      (type) => type.code === code,
+    ) || null
+  );
 };
 
 // Enhanced Vietnamese document validation functions
-export const validateDocumentId = (id: string, documentType: VietnameseDocumentType): boolean => {
+export const validateDocumentId = (
+  id: string,
+  documentType: VietnameseDocumentType,
+): boolean => {
   const pattern = documentType.validation.idPattern;
   return pattern.test(id) && id.length === documentType.validation.idLength;
 };
@@ -585,13 +978,19 @@ export const validateDocumentId = (id: string, documentType: VietnameseDocumentT
 /**
  * Validate Vietnamese ID number with checksum (if applicable)
  */
-export const validateVietnameseIdChecksum = (id: string, documentType: VietnameseDocumentType): boolean => {
+export const validateVietnameseIdChecksum = (
+  id: string,
+  documentType: VietnameseDocumentType,
+): boolean => {
   if (!documentType.validation.idChecksum) {
     return true; // No checksum required
   }
 
   // For CCCD (12-digit IDs with checksum)
-  if (documentType.validation.idLength === 12 && documentType.validation.idChecksum) {
+  if (
+    documentType.validation.idLength === 12 &&
+    documentType.validation.idChecksum
+  ) {
     return validateCCCDChecksum(id);
   }
 
@@ -609,7 +1008,7 @@ export const validateCCCDChecksum = (id: string): boolean => {
 
   // Vietnamese CCCD checksum algorithm
   // The last digit is a checksum calculated from the first 11 digits
-  const digits = id.split('').map(Number);
+  const digits = id.split("").map(Number);
   const checkDigit = digits[11];
 
   // Calculate checksum using weights 2,3,4,5,6,7,8,9,1,2,3 for first 11 digits
@@ -628,13 +1027,16 @@ export const validateCCCDChecksum = (id: string): boolean => {
 /**
  * Validate province code in Vietnamese document
  */
-export const validateProvinceCode = (id: string, documentType: VietnameseDocumentType): boolean => {
+export const validateProvinceCode = (
+  id: string,
+  documentType: VietnameseDocumentType,
+): boolean => {
   // Extract province code from ID (first 3 digits for most documents)
   let provinceCode: string;
 
   if (documentType.validation.idLength === 9) {
     // 9-digit CMND: first 2 digits for older format
-    provinceCode = id.substring(0, 2).padStart(3, '0');
+    provinceCode = id.substring(0, 2).padStart(3, "0");
   } else {
     // 12-digit CCCD/CMND: first 3 digits
     provinceCode = id.substring(0, 3);
@@ -647,7 +1049,9 @@ export const validateProvinceCode = (id: string, documentType: VietnameseDocumen
  * Get province name from code
  */
 export const getProvinceName = (code: string): string => {
-  return PROVINCE_CODES_VIETNAM[code as keyof typeof PROVINCE_CODES_VIETNAM] || code;
+  return (
+    PROVINCE_CODES_VIETNAM[code as keyof typeof PROVINCE_CODES_VIETNAM] || code
+  );
 };
 
 /**
@@ -655,33 +1059,41 @@ export const getProvinceName = (code: string): string => {
  */
 export const validateVietnameseDocumentDate = (
   dateString: string,
-  type: 'issue' | 'expiry',
-  documentType: VietnameseDocumentType
+  type: "issue" | "expiry",
+  documentType: VietnameseDocumentType,
 ): { valid: boolean; message?: string } => {
   if (!dateString) {
-    if (type === 'issue' && documentType.validation.issueDateRequired) {
-      return { valid: false, message: 'Ngày cấp không được để trống' };
+    if (type === "issue" && documentType.validation.issueDateRequired) {
+      return { valid: false, message: "Ngày cấp không được để trống" };
     }
-    if (type === 'expiry' && documentType.validation.expiryDateRequired) {
-      return { valid: false, message: 'Ngày hết hạn không được để trống' };
+    if (type === "expiry" && documentType.validation.expiryDateRequired) {
+      return { valid: false, message: "Ngày hết hạn không được để trống" };
     }
     return { valid: true };
   }
 
   // Parse Vietnamese date format (DD/MM/YYYY or DD-MM-YYYY)
-  const dateRegex = /^(\d{2})[\/\-](\d{2})[\/\-](\d{4})$/;
+  const dateRegex = /^(\d{2})[/-](\d{2})[/-](\d{4})$/;
   const match = dateString.match(dateRegex);
 
   if (!match) {
-    return { valid: false, message: 'Định dạng ngày không hợp lệ. Sử dụng DD/MM/YYYY hoặc DD-MM-YYYY' };
+    return {
+      valid: false,
+      message:
+        "Định dạng ngày không hợp lệ. Sử dụng DD/MM/YYYY hoặc DD-MM-YYYY",
+    };
   }
 
   const [, day, month, year] = match.map(Number);
   const date = new Date(year, month - 1, day);
 
   // Validate date components
-  if (date.getDate() !== day || date.getMonth() !== month - 1 || date.getFullYear() !== year) {
-    return { valid: false, message: 'Ngày không hợp lệ' };
+  if (
+    date.getDate() !== day ||
+    date.getMonth() !== month - 1 ||
+    date.getFullYear() !== year
+  ) {
+    return { valid: false, message: "Ngày không hợp lệ" };
   }
 
   // Validate date range
@@ -690,45 +1102,47 @@ export const validateVietnameseDocumentDate = (
   const maxDate = new Date(2100, 11, 31); // 31/12/2100
 
   if (date < minDate || date > maxDate) {
-    return { valid: false, message: 'Ngày nằm ngoài phạm vi hợp lệ' };
+    return { valid: false, message: "Ngày nằm ngoài phạm vi hợp lệ" };
   }
 
   // Specific validations
-  if (type === 'issue') {
+  if (type === "issue") {
     // Issue date cannot be in the future
     if (date > now) {
-      return { valid: false, message: 'Ngày cấp không thể là ngày trong tương lai' };
+      return {
+        valid: false,
+        message: "Ngày cấp không thể là ngày trong tương lai",
+      };
     }
 
     // Document-specific issue date validations
     switch (documentType.code) {
-      case 'CMND9':
+      case "CMND9":
         // 9-digit CMND issued before 2016
         if (year > 2016) {
-          return { valid: false, message: 'CMND 9 số được cấp trước năm 2016' };
+          return { valid: false, message: "CMND 9 số được cấp trước năm 2016" };
         }
         break;
 
-      case 'CMND12':
+      case "CMND12":
         // 12-digit CMND issued between 2016-2021
         if (year < 2016 || year > 2021) {
-          return { valid: false, message: 'CMND 12 số được cấp từ 2016-2021' };
+          return { valid: false, message: "CMND 12 số được cấp từ 2016-2021" };
         }
         break;
 
-      case 'CCCD':
-      case 'CCCD_CHIP':
+      case "CCCD":
+      case "CCCD_CHIP":
         // CCCD issued from 2016 onwards
         if (year < 2016) {
-          return { valid: false, message: 'CCCD được cấp từ năm 2016' };
+          return { valid: false, message: "CCCD được cấp từ năm 2016" };
         }
         break;
     }
-
-  } else if (type === 'expiry') {
+  } else if (type === "expiry") {
     // Expiry date must be in the future for documents that expire
     if (documentType.validation.expiryDateRequired && date <= now) {
-      return { valid: false, message: 'Tài liệu đã hết hạn' };
+      return { valid: false, message: "Tài liệu đã hết hạn" };
     }
   }
 
@@ -746,7 +1160,7 @@ export const validateVietnameseDocument = (
     expiryDate?: string;
     name?: string;
     birthDate?: string;
-  }
+  },
 ): { valid: boolean; errors: string[]; warnings: string[] } => {
   const errors: string[] = [];
   const warnings: string[] = [];
@@ -758,23 +1172,23 @@ export const validateVietnameseDocument = (
 
   // Checksum validation
   if (!validateVietnameseIdChecksum(id, documentType)) {
-    errors.push('Mã kiểm tra số định danh không hợp lệ');
+    errors.push("Mã kiểm tra số định danh không hợp lệ");
   }
 
   // Province code validation
   if (!validateProvinceCode(id, documentType)) {
-    errors.push('Mã tỉnh/thành phố không hợp lệ');
+    errors.push("Mã tỉnh/thành phố không hợp lệ");
   }
 
   // Issue date validation
   if (options?.issueDate) {
     const issueValidation = validateVietnameseDocumentDate(
       options.issueDate,
-      'issue',
-      documentType
+      "issue",
+      documentType,
     );
     if (!issueValidation.valid) {
-      errors.push(issueValidation.message || 'Ngày cấp không hợp lệ');
+      errors.push(issueValidation.message || "Ngày cấp không hợp lệ");
     }
   }
 
@@ -782,11 +1196,11 @@ export const validateVietnameseDocument = (
   if (options?.expiryDate) {
     const expiryValidation = validateVietnameseDocumentDate(
       options.expiryDate,
-      'expiry',
-      documentType
+      "expiry",
+      documentType,
     );
     if (!expiryValidation.valid) {
-      errors.push(expiryValidation.message || 'Ngày hết hạn không hợp lệ');
+      errors.push(expiryValidation.message || "Ngày hết hạn không hợp lệ");
     }
   }
 
@@ -794,33 +1208,34 @@ export const validateVietnameseDocument = (
   if (options?.birthDate && documentType.validation.birthDateRequired) {
     const birthValidation = validateVietnameseDocumentDate(
       options.birthDate,
-      'issue', // Use issue validation logic
-      documentType
+      "issue", // Use issue validation logic
+      documentType,
     );
     if (!birthValidation.valid) {
-      errors.push('Ngày sinh không hợp lệ');
+      errors.push("Ngày sinh không hợp lệ");
     }
 
     // Check reasonable age range
-    const birthDate = new Date(options.birthDate.replace(/[\/\-]/g, '/'));
+    const birthDate = new Date(options.birthDate.replace(/[/-]/g, "/"));
     const now = new Date();
     const age = now.getFullYear() - birthDate.getFullYear();
 
     if (age < 14 || age > 120) {
-      warnings.push('Độ tuổi không hợp lệ cho cấp giấy tờ');
+      warnings.push("Độ tuổi không hợp lệ cho cấp giấy tờ");
     }
   }
 
   // Name validation (if provided)
   if (options?.name && documentType.validation.nameRequired) {
     if (!options.name.trim() || options.name.length < 2) {
-      errors.push('Họ và tên không được để trống');
+      errors.push("Họ và tên không được để trống");
     }
 
     // Check for Vietnamese characters
-    const vietnameseNameRegex = /^[A-Za-zÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂÂÔĐƠƯ\s']+$/;
+    const vietnameseNameRegex =
+      /^[A-Za-zÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂÂÔĐƠƯ\s']+$/;
     if (!vietnameseNameRegex.test(options.name)) {
-      warnings.push('Họ và tên có thể chứa ký tự không phải tiếng Việt');
+      warnings.push("Họ và tên có thể chứa ký tự không phải tiếng Việt");
     }
   }
 
@@ -834,10 +1249,12 @@ export const validateVietnameseDocument = (
 /**
  * Extract information from Vietnamese ID number
  */
-export const extractVietnameseIdInfo = (id: string): {
+export const extractVietnameseIdInfo = (
+  id: string,
+): {
   provinceCode?: string;
   provinceName?: string;
-  gender?: 'male' | 'female' | 'unknown';
+  gender?: "male" | "female" | "unknown";
   birthYear?: number;
   documentType?: string;
 } => {
@@ -855,7 +1272,7 @@ export const extractVietnameseIdInfo = (id: string): {
       const birthYearDigits = parseInt(id.substring(4, 6));
 
       // Gender determination: odd = male, even = female
-      info.gender = centuryDigit % 2 === 1 ? 'male' : 'female';
+      info.gender = centuryDigit % 2 === 1 ? "male" : "female";
 
       // Century determination
       let century: number;
@@ -869,12 +1286,12 @@ export const extractVietnameseIdInfo = (id: string): {
 
       // Determine document type
       if (info.birthYear >= 2016) {
-        info.documentType = 'CCCD/CMCD 12 số';
+        info.documentType = "CCCD/CMCD 12 số";
       } else {
-        info.documentType = 'CMND 12 số';
+        info.documentType = "CMND 12 số";
       }
     } else if (id.length === 9) {
-      info.documentType = 'CMND 9 số';
+      info.documentType = "CMND 9 số";
     }
   }
 

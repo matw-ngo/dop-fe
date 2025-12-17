@@ -1,5 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "../dropdown-menu";
+import {
   Breadcrumb,
   BreadcrumbEllipsis,
   BreadcrumbItem,
@@ -8,12 +14,6 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "./index";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "../dropdown-menu";
 
 const meta: Meta<typeof Breadcrumb> = {
   title: "UI/Breadcrumb",

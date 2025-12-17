@@ -5,37 +5,26 @@
  * used across the application.
  */
 
-// Tax-related constants
-export {
-  TAX_BRACKETS,
-  ALLOWANCES,
-} from "./tools";
-
-// Insurance-related constants
-export {
-  INSURANCE_RATES,
-  INSURANCE_SALARY_LIMITS,
-} from "./tools";
-
-// Regional constants
-export { REGIONAL_MINIMUM_WAGES } from "./tools";
-
-// Calculator defaults
-export {
-  SAVINGS_DEFAULTS,
-  LOAN_DEFAULTS,
-} from "./tools";
-
-// Utility constants
-export {
-  NUMERIC_CONSTANTS,
-  CURRENCY,
-} from "./tools";
-
 // Loan purposes
 export {
-  LOAN_PURPOSES,
-  LOAN_PURPOSE_DESCRIPTIONS,
-  getLoanPurposeLabel,
   getLoanPurposeDescription,
+  getLoanPurposeLabel,
+  LOAN_PURPOSE_DESCRIPTIONS,
+  LOAN_PURPOSES,
 } from "./loan-purposes";
+// Tax-related constants
+// Insurance-related constants
+// Regional constants
+// Calculator defaults
+// Utility constants
+export {
+  ALLOWANCES,
+  CURRENCY,
+  INSURANCE_RATES,
+  INSURANCE_SALARY_LIMITS,
+  LOAN_DEFAULTS,
+  NUMERIC_CONSTANTS,
+  REGIONAL_MINIMUM_WAGES,
+  SAVINGS_DEFAULTS,
+  TAX_BRACKETS,
+} from "./tools";

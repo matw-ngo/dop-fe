@@ -5,14 +5,20 @@
  * Provides intelligent caching strategies based on usage patterns.
  */
 
-import { TranslationCache, CacheFactory, createCacheKey, parseCacheKey, type CacheOptions } from './cache';
-import { translationMonitor } from './monitor';
+import {
+  CacheFactory,
+  type CacheOptions,
+  createCacheKey,
+  parseCacheKey,
+  type TranslationCache,
+} from "./cache";
+import { translationMonitor } from "./monitor";
 
 // Cache strategy definitions
 export interface CacheStrategy {
   name: string;
   ttl: number;
-  priority: 'low' | 'medium' | 'high';
+  priority: "low" | "medium" | "high";
   persistent: boolean;
   maxSize?: number;
   preloadKeys?: string[];
@@ -21,66 +27,66 @@ export interface CacheStrategy {
 export const CACHE_STRATEGIES: Record<string, CacheStrategy> = {
   // Core application translations (navigation, buttons, etc.)
   core: {
-    name: 'core',
+    name: "core",
     ttl: 60 * 60 * 1000, // 1 hour
-    priority: 'high',
+    priority: "high",
     persistent: true,
-    maxSize: 200
+    maxSize: 200,
   },
 
   // Common user interface elements
   ui: {
-    name: 'ui',
+    name: "ui",
     ttl: 30 * 60 * 1000, // 30 minutes
-    priority: 'high',
+    priority: "high",
     persistent: true,
-    maxSize: 300
+    maxSize: 300,
   },
 
   // Feature-specific translations
   feature: {
-    name: 'feature',
+    name: "feature",
     ttl: 15 * 60 * 1000, // 15 minutes
-    priority: 'medium',
+    priority: "medium",
     persistent: false,
-    maxSize: 400
+    maxSize: 400,
   },
 
   // Page-specific translations
   page: {
-    name: 'page',
+    name: "page",
     ttl: 10 * 60 * 1000, // 10 minutes
-    priority: 'medium',
+    priority: "medium",
     persistent: false,
-    maxSize: 500
+    maxSize: 500,
   },
 
   // Admin panel translations
   admin: {
-    name: 'admin',
+    name: "admin",
     ttl: 5 * 60 * 1000, // 5 minutes
-    priority: 'low',
+    priority: "low",
     persistent: false,
-    maxSize: 100
+    maxSize: 100,
   },
 
   // Error messages
   errors: {
-    name: 'errors',
+    name: "errors",
     ttl: 60 * 60 * 1000, // 1 hour (errors might be reused)
-    priority: 'high',
+    priority: "high",
     persistent: true,
-    maxSize: 50
+    maxSize: 50,
   },
 
   // Form validation messages
   validation: {
-    name: 'validation',
+    name: "validation",
     ttl: 30 * 60 * 1000, // 30 minutes
-    priority: 'medium',
+    priority: "medium",
     persistent: true,
-    maxSize: 100
-  }
+    maxSize: 100,
+  },
 };
 
 // Cache manager class
@@ -102,7 +108,7 @@ export class TranslationCacheManager {
     namespace: string,
     key: string,
     fetcher: () => Promise<string>,
-    strategy: keyof typeof CACHE_STRATEGIES = 'feature'
+    strategy: keyof typeof CACHE_STRATEGIES = "feature",
   ): Promise<string> {
     const cacheKey = createCacheKey(locale, namespace, key);
     const cache = this.getCache(strategy);
@@ -129,18 +135,30 @@ export class TranslationCacheManager {
         ttl: cacheStrategy.ttl,
         priority: cacheStrategy.priority,
         persistent: cacheStrategy.persistent,
-        namespace
+        namespace,
       });
 
       // Record successful fetch
-      translationMonitor.recordTranslationFetch(locale, namespace, key, fetchTime, true);
+      translationMonitor.recordTranslationFetch(
+        locale,
+        namespace,
+        key,
+        fetchTime,
+        true,
+      );
 
       return translation;
     } catch (error) {
       const fetchTime = performance.now() - startTime;
 
       // Record failed fetch
-      translationMonitor.recordTranslationFetch(locale, namespace, key, fetchTime, false);
+      translationMonitor.recordTranslationFetch(
+        locale,
+        namespace,
+        key,
+        fetchTime,
+        false,
+      );
 
       throw error;
     }
@@ -154,7 +172,7 @@ export class TranslationCacheManager {
     namespace: string,
     keys: string[],
     fetcher: (keys: string[]) => Promise<Record<string, string>>,
-    strategy: keyof typeof CACHE_STRATEGIES = 'feature'
+    strategy: keyof typeof CACHE_STRATEGIES = "feature",
   ): Promise<Record<string, string>> {
     const cache = this.getCache(strategy);
     const cacheStrategy = CACHE_STRATEGIES[strategy];
@@ -190,18 +208,29 @@ export class TranslationCacheManager {
             ttl: cacheStrategy.ttl,
             priority: cacheStrategy.priority,
             persistent: cacheStrategy.persistent,
-            namespace
+            namespace,
           });
         }
 
         // Record batch fetch
-        translationMonitor.recordBatchFetch(locale, namespace, uncachedKeys.length, fetchTime, true);
-
+        translationMonitor.recordBatchFetch(
+          locale,
+          namespace,
+          uncachedKeys.length,
+          fetchTime,
+          true,
+        );
       } catch (error) {
         const fetchTime = performance.now() - startTime;
 
         // Record failed batch fetch
-        translationMonitor.recordBatchFetch(locale, namespace, uncachedKeys.length, fetchTime, false);
+        translationMonitor.recordBatchFetch(
+          locale,
+          namespace,
+          uncachedKeys.length,
+          fetchTime,
+          false,
+        );
 
         throw error;
       }
@@ -215,7 +244,10 @@ export class TranslationCacheManager {
    */
   async preloadTranslations(
     locale: string,
-    fetcher: (namespace: string, keys: string[]) => Promise<Record<string, string>>
+    fetcher: (
+      namespace: string,
+      keys: string[],
+    ) => Promise<Record<string, string>>,
   ): Promise<void> {
     if (!this.warmingEnabled) return;
 
@@ -251,7 +283,7 @@ export class TranslationCacheManager {
       }
 
       // Delete matching keys
-      keysToDelete.forEach(key => cache.delete(key));
+      keysToDelete.forEach((key) => cache.delete(key));
     }
   }
 
@@ -270,7 +302,7 @@ export class TranslationCacheManager {
       }
 
       // Delete matching keys
-      keysToDelete.forEach(key => cache.delete(key));
+      keysToDelete.forEach((key) => cache.delete(key));
     }
   }
 
@@ -295,52 +327,54 @@ export class TranslationCacheManager {
 
     const commonTranslations = [
       // Core navigation
-      'nav.home',
-      'nav.about',
-      'nav.contact',
-      'nav.login',
-      'nav.logout',
-      'nav.profile',
+      "nav.home",
+      "nav.about",
+      "nav.contact",
+      "nav.login",
+      "nav.logout",
+      "nav.profile",
 
       // Common actions
-      'common.save',
-      'common.cancel',
-      'common.delete',
-      'common.edit',
-      'common.close',
-      'common.confirm',
-      'common.submit',
-      'common.loading',
-      'common.error',
-      'common.success',
+      "common.save",
+      "common.cancel",
+      "common.delete",
+      "common.edit",
+      "common.close",
+      "common.confirm",
+      "common.submit",
+      "common.loading",
+      "common.error",
+      "common.success",
 
       // Form fields
-      'form.email',
-      'form.password',
-      'form.name',
-      'form.phone',
-      'form.address',
+      "form.email",
+      "form.password",
+      "form.name",
+      "form.phone",
+      "form.address",
 
       // Validation messages
-      'validation.required',
-      'validation.email',
-      'validation.minLength',
-      'validation.maxLength',
-      'validation.pattern',
+      "validation.required",
+      "validation.email",
+      "validation.minLength",
+      "validation.maxLength",
+      "validation.pattern",
 
       // Error messages
-      'error.network',
-      'error.timeout',
-      'error.notFound',
-      'error.unauthorized',
-      'error.server'
+      "error.network",
+      "error.timeout",
+      "error.notFound",
+      "error.unauthorized",
+      "error.server",
     ];
 
     // Warm up different strategy caches
     for (const [strategyName, strategy] of Object.entries(CACHE_STRATEGIES)) {
-      const cache = this.getCache(strategyName as keyof typeof CACHE_STRATEGIES);
-      const relevantKeys = commonTranslations.filter(key =>
-        this.isKeyRelevantToStrategy(key, strategyName)
+      const cache = this.getCache(
+        strategyName as keyof typeof CACHE_STRATEGIES,
+      );
+      const relevantKeys = commonTranslations.filter((key) =>
+        this.isKeyRelevantToStrategy(key, strategyName),
       );
 
       await cache.warmUp(locale, relevantKeys, async (key) => {
@@ -389,7 +423,7 @@ export class TranslationCacheManager {
         cleanupInterval: 2 * 60 * 1000, // 2 minutes
         persistKey: `i18n-${strategyName}`,
         enableStats: true,
-        enablePersistence: strategy.persistent
+        enablePersistence: strategy.persistent,
       });
 
       this.caches.set(strategyName, cache);
@@ -406,66 +440,91 @@ export class TranslationCacheManager {
 
   private async doPreloadTranslations(
     locale: string,
-    fetcher: (namespace: string, keys: string[]) => Promise<Record<string, string>>
+    fetcher: (
+      namespace: string,
+      keys: string[],
+    ) => Promise<Record<string, string>>,
   ): Promise<void> {
     // Define preload configurations
     const preloadConfigs = [
       {
-        namespace: 'core',
-        strategy: 'core' as const,
-        keys: ['app.name', 'app.description', 'nav.home', 'nav.about', 'nav.contact']
+        namespace: "core",
+        strategy: "core" as const,
+        keys: [
+          "app.name",
+          "app.description",
+          "nav.home",
+          "nav.about",
+          "nav.contact",
+        ],
       },
       {
-        namespace: 'ui',
-        strategy: 'ui' as const,
-        keys: ['common.save', 'common.cancel', 'common.delete', 'common.edit', 'common.loading']
+        namespace: "ui",
+        strategy: "ui" as const,
+        keys: [
+          "common.save",
+          "common.cancel",
+          "common.delete",
+          "common.edit",
+          "common.loading",
+        ],
       },
       {
-        namespace: 'errors',
-        strategy: 'errors' as const,
-        keys: ['error.network', 'error.timeout', 'error.notFound', 'error.server']
-      }
+        namespace: "errors",
+        strategy: "errors" as const,
+        keys: [
+          "error.network",
+          "error.timeout",
+          "error.notFound",
+          "error.server",
+        ],
+      },
     ];
 
     // Preload in parallel
-    const preloadPromises = preloadConfigs.map(async ({ namespace, strategy, keys }) => {
-      try {
-        const translations = await fetcher(namespace, keys);
-        const cache = this.getCache(strategy);
-        const cacheStrategy = CACHE_STRATEGIES[strategy];
+    const preloadPromises = preloadConfigs.map(
+      async ({ namespace, strategy, keys }) => {
+        try {
+          const translations = await fetcher(namespace, keys);
+          const cache = this.getCache(strategy);
+          const cacheStrategy = CACHE_STRATEGIES[strategy];
 
-        for (const [key, translation] of Object.entries(translations)) {
-          const cacheKey = createCacheKey(locale, namespace, key);
-          cache.set(cacheKey, translation, {
-            ttl: cacheStrategy.ttl,
-            priority: cacheStrategy.priority,
-            persistent: cacheStrategy.persistent,
-            namespace
-          });
+          for (const [key, translation] of Object.entries(translations)) {
+            const cacheKey = createCacheKey(locale, namespace, key);
+            cache.set(cacheKey, translation, {
+              ttl: cacheStrategy.ttl,
+              priority: cacheStrategy.priority,
+              persistent: cacheStrategy.persistent,
+              namespace,
+            });
+          }
+        } catch (error) {
+          console.warn(
+            `Failed to preload ${namespace} translations for ${locale}:`,
+            error,
+          );
         }
-      } catch (error) {
-        console.warn(`Failed to preload ${namespace} translations for ${locale}:`, error);
-      }
-    });
+      },
+    );
 
     await Promise.allSettled(preloadPromises);
   }
 
   private isKeyRelevantToStrategy(key: string, strategy: string): boolean {
     // Simple heuristic to determine if a key belongs to a strategy
-    if (strategy === 'core' || strategy === 'ui') {
+    if (strategy === "core" || strategy === "ui") {
       return true; // These caches handle most common keys
     }
 
-    if (strategy === 'errors' && key.includes('error')) {
+    if (strategy === "errors" && key.includes("error")) {
       return true;
     }
 
-    if (strategy === 'validation' && key.includes('validation')) {
+    if (strategy === "validation" && key.includes("validation")) {
       return true;
     }
 
-    if (strategy === 'admin' && key.includes('admin')) {
+    if (strategy === "admin" && key.includes("admin")) {
       return true;
     }
 
@@ -482,7 +541,7 @@ export async function getCachedTranslation(
   namespace: string,
   key: string,
   fetcher: () => Promise<string>,
-  strategy?: keyof typeof CACHE_STRATEGIES
+  strategy?: keyof typeof CACHE_STRATEGIES,
 ): Promise<string> {
   return cacheManager.getTranslation(locale, namespace, key, fetcher, strategy);
 }
@@ -492,14 +551,20 @@ export async function getCachedTranslations(
   namespace: string,
   keys: string[],
   fetcher: (keys: string[]) => Promise<Record<string, string>>,
-  strategy?: keyof typeof CACHE_STRATEGIES
+  strategy?: keyof typeof CACHE_STRATEGIES,
 ): Promise<Record<string, string>> {
-  return cacheManager.getTranslations(locale, namespace, keys, fetcher, strategy);
+  return cacheManager.getTranslations(
+    locale,
+    namespace,
+    keys,
+    fetcher,
+    strategy,
+  );
 }
 
 export function invalidateTranslationCache(
   locale: string,
-  namespace?: string
+  namespace?: string,
 ): void {
   if (namespace) {
     cacheManager.invalidateNamespace(locale, namespace);

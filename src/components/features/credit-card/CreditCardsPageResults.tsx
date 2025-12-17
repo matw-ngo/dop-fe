@@ -3,12 +3,12 @@
  * Contains results header, card grid, and pagination
  */
 
-import React from "react";
+import { Filter as FilterIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
+import React from "react";
 import CreditCardGrid from "@/components/features/credit-card/CreditCardGrid";
 import Pagination from "@/components/features/credit-card/Pagination";
 import { Button } from "@/components/ui/button";
-import { Filter as FilterIcon } from "lucide-react";
 import type { CreditCard } from "@/types/credit-card";
 
 interface CreditCardsPageResultsProps {

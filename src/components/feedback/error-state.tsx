@@ -1,3 +1,4 @@
+import { AlertCircle, ChevronsUpDown, RotateCw } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -5,7 +6,6 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import { RotateCw, ChevronsUpDown, AlertCircle } from "lucide-react";
 
 interface ErrorStateProps {
   title?: string;

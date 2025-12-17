@@ -1,6 +1,14 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import {
+  AlertCircle,
+  Eye,
+  EyeOff,
+  Lock,
+  Mail,
+  Search,
+  User,
+} from "lucide-react";
 import React from "react";
-import { Eye, EyeOff, Search, User, Mail, Lock, AlertCircle } from "lucide-react";
 import { Button } from "../button";
 import { TextInput } from "./index";
 
@@ -287,7 +295,9 @@ export const FormExample: Story = {
           label="Username"
           placeholder="Enter your username"
           value={formData.username}
-          onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+          onChange={(e) =>
+            setFormData({ ...formData, username: e.target.value })
+          }
           error={!!errors.username}
           errorMessage={errors.username}
           leftIcon={<User className="w-4 h-4" />}
@@ -311,7 +321,9 @@ export const FormExample: Story = {
           type="password"
           placeholder="Enter your password"
           value={formData.password}
-          onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+          onChange={(e) =>
+            setFormData({ ...formData, password: e.target.value })
+          }
           error={!!errors.password}
           errorMessage={errors.password}
           leftIcon={<Lock className="w-4 h-4" />}
@@ -323,18 +335,16 @@ export const FormExample: Story = {
           type="password"
           placeholder="Confirm your password"
           value={formData.confirmPassword}
-          onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+          onChange={(e) =>
+            setFormData({ ...formData, confirmPassword: e.target.value })
+          }
           error={!!errors.confirmPassword}
           errorMessage={errors.confirmPassword}
           leftIcon={<Lock className="w-4 h-4" />}
           required
         />
 
-        <Button
-          type="button"
-          className="w-full"
-          onClick={validateForm}
-        >
+        <Button type="button" className="w-full" onClick={validateForm}>
           Validate Form
         </Button>
       </form>
@@ -377,7 +387,9 @@ export const InteractiveValidation: Story = {
             )
           }
           error={isValid === false}
-          errorMessage={isValid === false ? "Please enter a valid email" : undefined}
+          errorMessage={
+            isValid === false ? "Please enter a valid email" : undefined
+          }
         />
         <p className="text-sm text-gray-500">
           {isValid === true && "Email is valid!"}

@@ -1,16 +1,16 @@
 "use client";
 
-import { ReactNode, useState } from "react";
+import { Calculator, Filter, TrendingUp } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { type ReactNode, useState } from "react";
+import Footer from "@/components/layout/footer";
+import Header from "@/components/layout/header";
 import { useThemeUtils } from "@/components/renderer/theme";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Badge } from "@/components/ui/badge";
-import { Calculator, TrendingUp, Filter } from "lucide-react";
 import ToolsFilterPanel from "./ToolsFilterPanel";
 import ToolsPageControls from "./ToolsPageControls";
-import Header from "@/components/layout/header";
-import Footer from "@/components/layout/footer";
 
 interface ToolsPageLayoutProps {
   children: ReactNode;

@@ -1,22 +1,22 @@
 // Admin types for flow management
 
-export type FlowStatus = 'active' | 'inactive' | 'draft' | 'archived';
+export type FlowStatus = "active" | "inactive" | "draft" | "archived";
 
-export type StepStatus = 'active' | 'inactive' | 'draft';
+export type StepStatus = "active" | "inactive" | "draft";
 
-export type FieldType = 
-  | 'text'
-  | 'email'
-  | 'password'
-  | 'number'
-  | 'date'
-  | 'select'
-  | 'checkbox'
-  | 'radio'
-  | 'textarea'
-  | 'file'
-  | 'ekyc'
-  | 'otp';
+export type FieldType =
+  | "text"
+  | "email"
+  | "password"
+  | "number"
+  | "date"
+  | "select"
+  | "checkbox"
+  | "radio"
+  | "textarea"
+  | "file"
+  | "ekyc"
+  | "otp";
 
 export interface FlowListItem {
   id: string;

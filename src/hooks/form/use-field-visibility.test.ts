@@ -1,7 +1,7 @@
 import { renderHook } from "@testing-library/react";
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { useFieldVisibility } from "./use-field-visibility";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { FieldConfig } from "@/components/renderer/types/data-driven-ui";
+import { useFieldVisibility } from "./use-field-visibility";
 
 // Mock dependencies
 vi.mock("@/components/renderer/types/field-conditions", () => ({
@@ -10,7 +10,7 @@ vi.mock("@/components/renderer/types/field-conditions", () => ({
 
 describe("useFieldVisibility", () => {
   const mockEvaluateCondition = vi.mocked(
-    require("@/components/renderer/types/field-conditions").evaluateCondition
+    require("@/components/renderer/types/field-conditions").evaluateCondition,
   );
 
   const mockFields: FieldConfig[] = [
@@ -89,11 +89,11 @@ describe("useFieldVisibility", () => {
     });
 
     const { result } = renderHook(() =>
-      useFieldVisibility(mockFields, watchedValues)
+      useFieldVisibility(mockFields, watchedValues),
     );
 
     expect(result.current.visibleFieldNames).toEqual(
-      new Set(["firstName", "lastName", "company", "companyEmail"])
+      new Set(["firstName", "lastName", "company", "companyEmail"]),
     );
   });
 
@@ -118,11 +118,11 @@ describe("useFieldVisibility", () => {
     });
 
     const { result } = renderHook(() =>
-      useFieldVisibility(mockFields, watchedValues)
+      useFieldVisibility(mockFields, watchedValues),
     );
 
     expect(result.current.visibleFieldNames).toEqual(
-      new Set(["firstName", "lastName"])
+      new Set(["firstName", "lastName"]),
     );
   });
 
@@ -150,11 +150,11 @@ describe("useFieldVisibility", () => {
     });
 
     const { result } = renderHook(() =>
-      useFieldVisibility(mockFields, watchedValues)
+      useFieldVisibility(mockFields, watchedValues),
     );
 
     expect(result.current.visibleFields).toHaveLength(2);
-    expect(result.current.visibleFields.map(f => f.fieldName)).toEqual([
+    expect(result.current.visibleFields.map((f) => f.fieldName)).toEqual([
       "company",
       "companyEmail",
     ]);
@@ -169,13 +169,13 @@ describe("useFieldVisibility", () => {
     });
 
     const { result } = renderHook(() =>
-      useFieldVisibility(mockFields, watchedValues)
+      useFieldVisibility(mockFields, watchedValues),
     );
 
     expect(result.current.shouldRenderField(fieldWithCondition)).toBe(true);
     expect(mockEvaluateCondition).toHaveBeenCalledWith(
       fieldWithCondition.condition,
-      watchedValues
+      watchedValues,
     );
   });
 
@@ -184,7 +184,7 @@ describe("useFieldVisibility", () => {
     const fieldWithoutCondition = mockFields[0]; // firstName field
 
     const { result } = renderHook(() =>
-      useFieldVisibility(mockFields, watchedValues)
+      useFieldVisibility(mockFields, watchedValues),
     );
 
     expect(result.current.shouldRenderField(fieldWithoutCondition)).toBe(true);
@@ -202,14 +202,14 @@ describe("useFieldVisibility", () => {
     const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
     const { result } = renderHook(() =>
-      useFieldVisibility(mockFields, watchedValues)
+      useFieldVisibility(mockFields, watchedValues),
     );
 
     // Should return true (show field) when evaluation fails
     expect(result.current.shouldRenderField(fieldWithCondition)).toBe(true);
     expect(consoleSpy).toHaveBeenCalledWith(
       "Error evaluating field condition:",
-      expect.any(Error)
+      expect.any(Error),
     );
 
     consoleSpy.mockRestore();
@@ -230,24 +230,22 @@ describe("useFieldVisibility", () => {
       ({ values }) => useFieldVisibility(mockFields, values),
       {
         initialProps: { values: initialValues },
-      }
+      },
     );
 
     expect(result.current.visibleFieldNames).toEqual(
-      new Set(["firstName", "lastName"])
+      new Set(["firstName", "lastName"]),
     );
 
     rerender({ values: updatedValues });
 
     expect(result.current.visibleFieldNames).toEqual(
-      new Set(["firstName", "lastName", "company"])
+      new Set(["firstName", "lastName", "company"]),
     );
   });
 
   it("should handle empty fields array", () => {
-    const { result } = renderHook(() =>
-      useFieldVisibility([], {})
-    );
+    const { result } = renderHook(() => useFieldVisibility([], {}));
 
     expect(result.current.visibleFieldNames).toEqual(new Set());
     expect(result.current.visibleFields).toEqual([]);
@@ -259,7 +257,7 @@ describe("useFieldVisibility", () => {
     mockEvaluateCondition.mockReturnValue(true);
 
     const { result, rerender } = renderHook(() =>
-      useFieldVisibility(mockFields, watchedValues)
+      useFieldVisibility(mockFields, watchedValues),
     );
 
     const firstVisibleFields = result.current.visibleFields;
@@ -274,7 +272,7 @@ describe("useFieldVisibility", () => {
     mockEvaluateCondition.mockReturnValue(true);
 
     const { result, rerender } = renderHook(() =>
-      useFieldVisibility(mockFields, watchedValues)
+      useFieldVisibility(mockFields, watchedValues),
     );
 
     const firstShouldRender = result.current.shouldRenderField;

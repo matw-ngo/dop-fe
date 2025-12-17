@@ -1,16 +1,16 @@
-import React from "react";
-import { Badge } from "@/components/ui/badge";
 import {
-  Ban,
-  X,
-  Clock,
-  Timer,
-  Calendar,
   AlertTriangle,
-  FileText,
-  ChevronRight,
+  Ban,
+  Calendar,
   Check,
+  ChevronRight,
+  Clock,
+  FileText,
+  Timer,
+  X,
 } from "lucide-react";
+import type React from "react";
+import { Badge } from "@/components/ui/badge";
 
 interface ExclusionsTabProps {
   product: any;

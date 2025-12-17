@@ -5,28 +5,26 @@
  * caching, error handling, and analytics.
  */
 
-import { useState, useCallback, useEffect } from "react";
-import { useFinancialToolsStore } from "@/store/use-financial-tools-store";
+import { useCallback, useEffect, useState } from "react";
+import {
+  exportApi,
+  loanCalculationApi,
+} from "@/lib/api/endpoints/financial-tools";
 import {
   calculateLoanDetails,
-  LoanCalculationParams,
-  LoanCalculationResult,
+  type LoanCalculationParams,
+  type LoanCalculationResult,
 } from "@/lib/financial/calculations";
 import {
-  calculateHomeLoan,
-  calculateAutoLoan,
-  calculateConsumerLoan,
-  calculateBusinessLoan,
-} from "@/lib/financial/loan-calculations";
-import {
   assessLoanEligibility,
+  calculateAutoLoan,
+  calculateBusinessLoan,
+  calculateConsumerLoan,
+  calculateHomeLoan,
   compareLoanOptions,
 } from "@/lib/financial/loan-calculations";
-import {
-  loanCalculationApi,
-  exportApi,
-} from "@/lib/api/endpoints/financial-tools";
 import { validateLoanCalculationParams } from "@/lib/financial/validation";
+import { useFinancialToolsStore } from "@/store/use-financial-tools-store";
 import type { ILoanParams, ILoanResult } from "@/types/tools";
 
 // Type adapter functions for backward compatibility

@@ -1,6 +1,6 @@
 import { useMemo } from "react";
-import { createFieldBuilderRegistry } from "../builders/field-registry";
 import type { RawFieldConfig } from "@/components/renderer/types/data-driven-ui";
+import { createFieldBuilderRegistry } from "../builders/field-registry";
 
 /**
  * Hook to initialize and manage field builders

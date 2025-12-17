@@ -6,30 +6,29 @@
 
 "use client";
 
-import type { FormField, FieldComponentProps } from "../types";
-import { FieldType } from "../types";
-import { ComponentRegistry } from "../registry/ComponentRegistry";
-import { FieldWrapper } from "../components/FieldWrapper";
-import { FieldErrorBoundary } from "../components/FieldErrorBoundary";
-import { ValidationEngine } from "../validation/ValidationEngine";
-import { useFormTranslations } from "../i18n/useFormTranslations";
-import { isCustomComponentAllowed } from "../constants";
 import { useCallback, useMemo } from "react";
-import { useFieldTracking } from "../tracking/useFieldTracking";
-
+import { FieldErrorBoundary } from "../components/FieldErrorBoundary";
+import { FieldWrapper } from "../components/FieldWrapper";
+import { isCustomComponentAllowed } from "../constants";
 // Import built-in field components (memoized for performance)
 import {
-  TextField,
-  TextAreaField,
-  NumberField,
-  SelectField,
   CheckboxField,
-  RadioField,
   DateField,
-  SwitchField,
-  FileField,
   EkycField,
+  FileField,
+  NumberField,
+  RadioField,
+  SelectField,
+  SwitchField,
+  TextAreaField,
+  TextField,
 } from "../fields";
+import { useFormTranslations } from "../i18n/useFormTranslations";
+import { ComponentRegistry } from "../registry/ComponentRegistry";
+import { useFieldTracking } from "../tracking/useFieldTracking";
+import type { FieldComponentProps, FormField } from "../types";
+import { FieldType } from "../types";
+import { ValidationEngine } from "../validation/ValidationEngine";
 
 // Register built-in components
 const registry = ComponentRegistry.getInstance();

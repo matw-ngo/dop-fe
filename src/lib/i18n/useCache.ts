@@ -4,10 +4,10 @@
  * Provides React hooks for interacting with the translation cache system.
  */
 
-import { useEffect, useState, useCallback, useRef, useMemo } from 'react';
-import { cacheManager } from './cache-integration';
-import { translationMonitor } from './monitor';
-import type { CacheStats } from './cache';
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import type { CacheStats } from "./cache";
+import { cacheManager } from "./cache-integration";
+import { translationMonitor } from "./monitor";
 
 // Hook for getting cached translations
 export function useTranslation(
@@ -16,10 +16,10 @@ export function useTranslation(
   key: string,
   fetcher: () => Promise<string>,
   options?: {
-    strategy?: keyof typeof import('./cache-integration').CACHE_STRATEGIES;
+    strategy?: keyof typeof import("./cache-integration").CACHE_STRATEGIES;
     suspense?: boolean;
     revalidateOnMount?: boolean;
-  }
+  },
 ) {
   const [translation, setTranslation] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -38,7 +38,7 @@ export function useTranslation(
         namespace,
         key,
         fetcher,
-        options?.strategy || 'feature'
+        options?.strategy || "feature",
       );
 
       if (mountedRef.current) {
@@ -46,7 +46,9 @@ export function useTranslation(
       }
     } catch (err) {
       if (mountedRef.current) {
-        setError(err instanceof Error ? err : new Error('Translation fetch failed'));
+        setError(
+          err instanceof Error ? err : new Error("Translation fetch failed"),
+        );
       }
     } finally {
       if (mountedRef.current) {
@@ -60,7 +62,9 @@ export function useTranslation(
 
     // Check if already in cache
     const cacheKey = `${locale}:${namespace}:${key}`;
-    const cached = cacheManager['getCache'](options?.strategy || 'feature').get(cacheKey);
+    const cached = cacheManager["getCache"](options?.strategy || "feature").get(
+      cacheKey,
+    );
 
     if (cached !== null) {
       setTranslation(cached);
@@ -74,13 +78,18 @@ export function useTranslation(
     return () => {
       mountedRef.current = false;
     };
-  }, [loadTranslation, cacheKey, options?.revalidateOnMount, options?.strategy]);
+  }, [
+    loadTranslation,
+    cacheKey,
+    options?.revalidateOnMount,
+    options?.strategy,
+  ]);
 
   return {
     translation,
     loading,
     error,
-    reload: loadTranslation
+    reload: loadTranslation,
   };
 }
 
@@ -91,10 +100,10 @@ export function useTranslations(
   keys: string[],
   fetcher: (keys: string[]) => Promise<Record<string, string>>,
   options?: {
-    strategy?: keyof typeof import('./cache-integration').CACHE_STRATEGIES;
+    strategy?: keyof typeof import("./cache-integration").CACHE_STRATEGIES;
     suspense?: boolean;
     revalidateOnMount?: boolean;
-  }
+  },
 ) {
   const [translations, setTranslations] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
@@ -113,7 +122,7 @@ export function useTranslations(
         namespace,
         keys,
         fetcher,
-        options?.strategy || 'feature'
+        options?.strategy || "feature",
       );
 
       if (mountedRef.current) {
@@ -121,7 +130,9 @@ export function useTranslations(
       }
     } catch (err) {
       if (mountedRef.current) {
-        setError(err instanceof Error ? err : new Error('Translations fetch failed'));
+        setError(
+          err instanceof Error ? err : new Error("Translations fetch failed"),
+        );
       }
     } finally {
       if (mountedRef.current) {
@@ -134,7 +145,7 @@ export function useTranslations(
     mountedRef.current = true;
 
     // Check which translations are already cached
-    const cache = cacheManager['getCache'](options?.strategy || 'feature');
+    const cache = cacheManager["getCache"](options?.strategy || "feature");
     const cached: Record<string, string> = {};
     const uncached: string[] = [];
 
@@ -163,22 +174,24 @@ export function useTranslations(
     translations,
     loading,
     error,
-    reload: loadTranslations
+    reload: loadTranslations,
   };
 }
 
 // Hook for cache statistics
 export function useCacheStats(strategy?: string) {
-  const [stats, setStats] = useState<CacheStats | Record<string, CacheStats>>(() => {
-    return strategy
-      ? cacheManager['getCache'](strategy as any).getStats()
-      : cacheManager.getCacheStats();
-  });
+  const [stats, setStats] = useState<CacheStats | Record<string, CacheStats>>(
+    () => {
+      return strategy
+        ? cacheManager["getCache"](strategy as any).getStats()
+        : cacheManager.getCacheStats();
+    },
+  );
 
   useEffect(() => {
     const interval = setInterval(() => {
       if (strategy) {
-        setStats(cacheManager['getCache'](strategy as any).getStats());
+        setStats(cacheManager["getCache"](strategy as any).getStats());
       } else {
         setStats(cacheManager.getCacheStats());
       }
@@ -195,7 +208,7 @@ export function usePreloadTranslations(
   locale: string,
   namespaces: string[],
   keys: Record<string, string[]>,
-  enabled: boolean = true
+  enabled: boolean = true,
 ) {
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState<Error | null>(null);
@@ -211,7 +224,9 @@ export function usePreloadTranslations(
           const namespaceKeys = keys[namespace] || [];
           if (namespaceKeys.length > 0) {
             // This would call your actual fetcher
-            console.log(`Preloading ${namespaceKeys.length} translations for ${locale}:${namespace}`);
+            console.log(
+              `Preloading ${namespaceKeys.length} translations for ${locale}:${namespace}`,
+            );
           }
         }
 
@@ -220,7 +235,7 @@ export function usePreloadTranslations(
         }
       } catch (err) {
         if (mountedRef.current) {
-          setError(err instanceof Error ? err : new Error('Preload failed'));
+          setError(err instanceof Error ? err : new Error("Preload failed"));
         }
       }
     };
@@ -232,7 +247,10 @@ export function usePreloadTranslations(
 }
 
 // Hook for cache warming
-export function useCacheWarming(locale: string | null, enabled: boolean = true) {
+export function useCacheWarming(
+  locale: string | null,
+  enabled: boolean = true,
+) {
   const [warming, setWarming] = useState(false);
   const [warmed, setWarmed] = useState(false);
   const [error, setError] = useState<Error | null>(null);
@@ -244,7 +262,8 @@ export function useCacheWarming(locale: string | null, enabled: boolean = true) 
     setWarming(true);
     setError(null);
 
-    cacheManager.warmUpCache(locale)
+    cacheManager
+      .warmUpCache(locale)
       .then(() => {
         if (mountedRef.current) {
           setWarmed(true);
@@ -253,7 +272,9 @@ export function useCacheWarming(locale: string | null, enabled: boolean = true) 
       })
       .catch((err) => {
         if (mountedRef.current) {
-          setError(err instanceof Error ? err : new Error('Cache warming failed'));
+          setError(
+            err instanceof Error ? err : new Error("Cache warming failed"),
+          );
           setWarming(false);
         }
       });
@@ -297,67 +318,73 @@ export function useOptimisticCache<T = any>(
   key: string,
   fetcher: () => Promise<T>,
   options?: {
-    strategy?: keyof typeof import('./cache-integration').CACHE_STRATEGIES;
+    strategy?: keyof typeof import("./cache-integration").CACHE_STRATEGIES;
     optimisticUpdate?: (current: T) => T;
     rollback?: (previous: T) => void;
-  }
+  },
 ) {
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const previousDataRef = useRef<T | null>(null);
 
-  const update = useCallback(async (optimisticValue?: T) => {
-    if (!mountedRef.current) return;
+  const update = useCallback(
+    async (optimisticValue?: T) => {
+      if (!mountedRef.current) return;
 
-    // Store previous data for rollback
-    previousDataRef.current = data;
+      // Store previous data for rollback
+      previousDataRef.current = data;
 
-    // Apply optimistic update if provided
-    if (optimisticValue !== undefined || options?.optimisticUpdate) {
-      const newValue = optimisticValue !== undefined
-        ? optimisticValue
-        : options?.optimisticUpdate?.(data as T);
+      // Apply optimistic update if provided
+      if (optimisticValue !== undefined || options?.optimisticUpdate) {
+        const newValue =
+          optimisticValue !== undefined
+            ? optimisticValue
+            : options?.optimisticUpdate?.(data as T);
 
-      if (newValue !== undefined) {
-        setData(newValue);
-      }
-    }
-
-    setLoading(true);
-    setError(null);
-
-    try {
-      const result = await fetcher();
-
-      if (mountedRef.current) {
-        setData(result);
-
-        // Update cache
-        const cache = cacheManager['getCache'](options?.strategy || 'feature');
-        cache.set(key, result, {
-          ttl: 5 * 60 * 1000, // 5 minutes
-          priority: 'medium',
-          namespace: 'optimistic'
-        });
-      }
-    } catch (err) {
-      if (mountedRef.current) {
-        setError(err instanceof Error ? err : new Error('Update failed'));
-
-        // Rollback on error
-        if (previousDataRef.current !== null) {
-          setData(previousDataRef.current);
-          options?.rollback?.(previousDataRef.current);
+        if (newValue !== undefined) {
+          setData(newValue);
         }
       }
-      throw err;
-    } finally {
-      if (mountedRef.current) {
-        setLoading(false);
+
+      setLoading(true);
+      setError(null);
+
+      try {
+        const result = await fetcher();
+
+        if (mountedRef.current) {
+          setData(result);
+
+          // Update cache
+          const cache = cacheManager["getCache"](
+            options?.strategy || "feature",
+          );
+          cache.set(key, result, {
+            ttl: 5 * 60 * 1000, // 5 minutes
+            priority: "medium",
+            namespace: "optimistic",
+          });
+        }
+      } catch (err) {
+        if (mountedRef.current) {
+          setError(err instanceof Error ? err : new Error("Update failed"));
+
+          // Rollback on error
+          if (previousDataRef.current !== null) {
+            setData(previousDataRef.current);
+            options?.rollback?.(previousDataRef.current);
+          }
+        }
+        throw err;
+      } finally {
+        if (mountedRef.current) {
+          setLoading(false);
+        }
       }
-    }
-  }, [data, fetcher, key, options]);
+    },
+    [data, fetcher, key, options],
+  );
 
   useEffect(() => {
     mountedRef.current = true;
@@ -370,7 +397,7 @@ export function useOptimisticCache<T = any>(
     data,
     loading,
     error,
-    update
+    update,
   };
 }
 
@@ -379,7 +406,7 @@ export function useCacheKey(
   locale: string,
   namespace: string,
   key: string,
-  params?: Record<string, any>
+  params?: Record<string, any>,
 ) {
   return useMemo(() => {
     const baseKey = `${locale}:${namespace}:${key}`;

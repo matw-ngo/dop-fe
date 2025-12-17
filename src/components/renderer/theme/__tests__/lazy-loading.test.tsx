@@ -1,12 +1,12 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
+  clearThemeCache,
+  getAvailableThemes,
+  getThemeCacheMetrics,
+  isThemeCached,
   loadTheme,
   loadThemes,
   preloadThemes,
-  getAvailableThemes,
-  isThemeCached,
-  getThemeCacheMetrics,
-  clearThemeCache,
   themeCache,
 } from "../lazy-loader";
 import type { ThemeConfig } from "../types";
@@ -20,8 +20,14 @@ const mockThemes = {
       description: "Professional corporate theme",
       group: "business",
       colors: {
-        light: { background: "oklch(0.98 0.002 247.858)", foreground: "oklch(0.15 0.02 220)" },
-        dark: { background: "oklch(0.15 0.02 220)", foreground: "oklch(0.98 0.002 247.858)" },
+        light: {
+          background: "oklch(0.98 0.002 247.858)",
+          foreground: "oklch(0.15 0.02 220)",
+        },
+        dark: {
+          background: "oklch(0.15 0.02 220)",
+          foreground: "oklch(0.98 0.002 247.858)",
+        },
       },
     },
   },
@@ -44,8 +50,14 @@ const mockThemes = {
       description: "Default system theme",
       group: "system",
       colors: {
-        light: { background: "oklch(0.98 0.01 240)", foreground: "oklch(0.1 0.02 240)" },
-        dark: { background: "oklch(0.129 0.042 264.695)", foreground: "oklch(0.984 0.003 247.858)" },
+        light: {
+          background: "oklch(0.98 0.01 240)",
+          foreground: "oklch(0.1 0.02 240)",
+        },
+        dark: {
+          background: "oklch(0.129 0.042 264.695)",
+          foreground: "oklch(0.984 0.003 247.858)",
+        },
       },
     },
   },
@@ -56,8 +68,14 @@ const mockThemes = {
       description: "Professional finance theme",
       group: "business",
       colors: {
-        light: { background: "oklch(0.98 0.01 240)", foreground: "oklch(0.1 0.02 240)" },
-        dark: { background: "oklch(0.129 0.042 264.695)", foreground: "oklch(0.984 0.003 247.858)" },
+        light: {
+          background: "oklch(0.98 0.01 240)",
+          foreground: "oklch(0.1 0.02 240)",
+        },
+        dark: {
+          background: "oklch(0.129 0.042 264.695)",
+          foreground: "oklch(0.984 0.003 247.858)",
+        },
       },
     },
   },
@@ -78,8 +96,9 @@ const mockThemes = {
 // Mock the import function
 const mockImport = vi.fn();
 
-vi.mock('../lazy-loader', async () => {
-  const actual = await vi.importActual<typeof import('../lazy-loader')>('../lazy-loader');
+vi.mock("../lazy-loader", async () => {
+  const actual =
+    await vi.importActual<typeof import("../lazy-loader")>("../lazy-loader");
   return {
     ...actual,
   };
@@ -91,8 +110,10 @@ beforeEach(() => {
 
   // Reset the import mock
   mockImport.mockImplementation((path: string) => {
-    const themeName = path.replace('./themes/', '').replace('.ts', '');
-    return Promise.resolve(mockThemes[themeName as keyof typeof mockThemes] || {});
+    const themeName = path.replace("./themes/", "").replace(".ts", "");
+    return Promise.resolve(
+      mockThemes[themeName as keyof typeof mockThemes] || {},
+    );
   });
 
   // Mock the dynamic import
@@ -126,10 +147,12 @@ describe("Lazy Theme Loading", () => {
     });
 
     it("should handle non-existent themes", async () => {
-      mockImport.mockRejectedValue(new Error("Cannot find module './themes/nonexistent.ts'"));
+      mockImport.mockRejectedValue(
+        new Error("Cannot find module './themes/nonexistent.ts'"),
+      );
 
       await expect(loadTheme("nonexistent")).rejects.toThrow(
-        'Theme not found: nonexistent. Available themes: corporate, creative, default, finance, medical'
+        "Theme not found: nonexistent. Available themes: corporate, creative, default, finance, medical",
       );
     });
 
@@ -139,14 +162,16 @@ describe("Lazy Theme Loading", () => {
       });
 
       await expect(loadTheme("corporate")).rejects.toThrow(
-        'Invalid theme structure for: corporate'
+        "Invalid theme structure for: corporate",
       );
     });
 
     it("should validate theme ID", async () => {
-      await expect(loadTheme("")).rejects.toThrow('Invalid theme ID');
-      await expect(loadTheme(null as any)).rejects.toThrow('Invalid theme ID');
-      await expect(loadTheme(undefined as any)).rejects.toThrow('Invalid theme ID');
+      await expect(loadTheme("")).rejects.toThrow("Invalid theme ID");
+      await expect(loadTheme(null as any)).rejects.toThrow("Invalid theme ID");
+      await expect(loadTheme(undefined as any)).rejects.toThrow(
+        "Invalid theme ID",
+      );
     });
 
     it("should handle missing theme exports", async () => {
@@ -155,7 +180,7 @@ describe("Lazy Theme Loading", () => {
       });
 
       await expect(loadTheme("corporate")).rejects.toThrow(
-        'Theme configuration not found for: corporate'
+        "Theme configuration not found for: corporate",
       );
     });
   });
@@ -300,7 +325,13 @@ describe("Lazy Theme Loading", () => {
   describe("Utility Functions", () => {
     it("should get available themes", () => {
       const themes = getAvailableThemes();
-      expect(themes).toEqual(["corporate", "creative", "default", "finance", "medical"]);
+      expect(themes).toEqual([
+        "corporate",
+        "creative",
+        "default",
+        "finance",
+        "medical",
+      ]);
     });
 
     it("should provide cache memory size estimate", async () => {
@@ -318,7 +349,9 @@ describe("Lazy Theme Loading", () => {
         await loadTheme("corporate");
       } catch (error) {
         expect(error).toBeInstanceOf(Error);
-        expect((error as Error).message).toContain('Failed to load theme "corporate"');
+        expect((error as Error).message).toContain(
+          'Failed to load theme "corporate"',
+        );
       }
     });
 
@@ -336,7 +369,13 @@ describe("Lazy Theme Loading", () => {
   describe("Performance Characteristics", () => {
     it("should load themes quickly", async () => {
       const startTime = performance.now();
-      await loadThemes(["corporate", "creative", "default", "finance", "medical"]);
+      await loadThemes([
+        "corporate",
+        "creative",
+        "default",
+        "finance",
+        "medical",
+      ]);
       const duration = performance.now() - startTime;
 
       // Should complete quickly (< 100ms)
@@ -354,7 +393,10 @@ describe("Lazy Theme Loading", () => {
             id: theme,
             name: theme,
             group: "test",
-            colors: { light: { background: "#fff" }, dark: { background: "#000" } },
+            colors: {
+              light: { background: "#fff" },
+              dark: { background: "#000" },
+            },
           },
         });
       }
@@ -371,7 +413,7 @@ describe("Lazy Theme Loading", () => {
 
       // All should return the same theme
       expect(results).toHaveLength(10);
-      results.forEach(theme => {
+      results.forEach((theme) => {
         expect(theme.id).toBe("corporate");
       });
 

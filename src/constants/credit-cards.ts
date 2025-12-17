@@ -4,9 +4,9 @@
  */
 
 import type {
+  AnnualFeeType,
   CardCategory,
   CardNetwork,
-  AnnualFeeType,
   CreditCardFilters,
 } from "@/types/credit-card";
 

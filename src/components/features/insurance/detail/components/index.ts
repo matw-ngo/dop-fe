@@ -1,17 +1,17 @@
-export { CoverageItem } from "./CoverageItem";
-export { ServiceCard } from "./ServiceCard";
-export { PaymentMethodCard } from "./PaymentMethodCard";
 export { ClaimMethodCard } from "./ClaimMethodCard";
+export { CoverageItem } from "./CoverageItem";
+export { LoadingState } from "./LoadingState";
+export { PaymentMethodCard } from "./PaymentMethodCard";
+export { ProductHeader } from "./ProductHeader";
 export { ProductOverviewCard } from "./ProductOverviewCard";
-export { LoadingState } from "./LoadingState"
-export { ProductHeader } from "./ProductHeader"
-export { ProductSidebar } from "./ProductSidebar"
+export { ProductSidebar } from "./ProductSidebar";
+export { ServiceCard } from "./ServiceCard";
 
 // Tab components
 export {
-  CoverageTab,
   BenefitsTab,
-  ExclusionsTab,
   ClaimsTab,
+  CoverageTab,
+  ExclusionsTab,
   PaymentTab,
 } from "./tabs";

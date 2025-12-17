@@ -1,15 +1,15 @@
 "use client";
 
+import { usePathname, useRouter } from "next/navigation";
 import { useCallback } from "react";
-import { useRouter, usePathname } from "next/navigation";
 import { useAuth } from "@/lib/auth/auth-context";
 import { getLocalizedRedirect } from "@/lib/client-utils";
 import {
-  hasRole,
-  hasPermission,
   canAccessRoute,
   canPerformAction,
   getRoleBasedRedirect,
+  hasPermission,
+  hasRole,
 } from "@/lib/utils/auth-guards";
 
 /**
@@ -33,13 +33,24 @@ export function useAuthGuard(requiredRole?: "admin" | "user") {
 
     // Check role requirements
     if (requiredRole && !hasRole(user, requiredRole)) {
-      const unauthorizedUrl = getLocalizedRedirect("/admin/unauthorized", pathname);
+      const unauthorizedUrl = getLocalizedRedirect(
+        "/admin/unauthorized",
+        pathname,
+      );
       router.push(unauthorizedUrl);
       return false;
     }
 
     return true;
-  }, [user, isAuthenticated, isLoading, isHydrated, requiredRole, pathname, router]);
+  }, [
+    user,
+    isAuthenticated,
+    isLoading,
+    isHydrated,
+    requiredRole,
+    pathname,
+    router,
+  ]);
 
   const redirectToLogin = useCallback(() => {
     const loginUrl = getLocalizedRedirect("/admin/login", pathname);
@@ -47,7 +58,10 @@ export function useAuthGuard(requiredRole?: "admin" | "user") {
   }, [pathname, router]);
 
   const redirectToUnauthorized = useCallback(() => {
-    const unauthorizedUrl = getLocalizedRedirect("/admin/unauthorized", pathname);
+    const unauthorizedUrl = getLocalizedRedirect(
+      "/admin/unauthorized",
+      pathname,
+    );
     router.push(unauthorizedUrl);
   }, [pathname, router]);
 
@@ -104,7 +118,7 @@ export function useActionAccess() {
     (action: string, resource: string, resourceOwnerId?: string) => {
       return canPerformAction(user, action, resource, resourceOwnerId);
     },
-    [user]
+    [user],
   );
 
   return {
@@ -187,25 +201,28 @@ export function useUserAccess() {
 export function useFeatureAccess() {
   const { user } = useAuth();
 
-  const hasFeature = useCallback((feature: string) => {
-    if (!user) return false;
+  const hasFeature = useCallback(
+    (feature: string) => {
+      if (!user) return false;
 
-    const featurePermissions: Record<string, string[]> = {
-      dashboard: ["admin"],
-      "flow-management": ["admin"],
-      "lead-management": ["admin"],
-      "user-management": ["admin"],
-      analytics: ["admin"],
-      settings: ["admin"],
-      "loan-applications": ["admin", "user"],
-      "credit-cards": ["admin", "user"],
-      insurance: ["admin", "user"],
-      "financial-tools": ["admin", "user"],
-    };
+      const featurePermissions: Record<string, string[]> = {
+        dashboard: ["admin"],
+        "flow-management": ["admin"],
+        "lead-management": ["admin"],
+        "user-management": ["admin"],
+        analytics: ["admin"],
+        settings: ["admin"],
+        "loan-applications": ["admin", "user"],
+        "credit-cards": ["admin", "user"],
+        insurance: ["admin", "user"],
+        "financial-tools": ["admin", "user"],
+      };
 
-    const requiredRoles = featurePermissions[feature];
-    return requiredRoles ? requiredRoles.includes(user.role) : false;
-  }, [user]);
+      const requiredRoles = featurePermissions[feature];
+      return requiredRoles ? requiredRoles.includes(user.role) : false;
+    },
+    [user],
+  );
 
   return {
     hasFeature,

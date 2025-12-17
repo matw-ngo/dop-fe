@@ -6,14 +6,14 @@
  */
 
 import type {
-  VerificationProvider,
   ProviderConfig,
-  VerificationOptions,
-  VerificationSession,
-  VerificationResult,
-  VerificationStatus,
   ProviderRegistration,
+  VerificationOptions,
+  VerificationProvider,
+  VerificationResult,
+  VerificationSession,
   VerificationStats,
+  VerificationStatus,
 } from "./types";
 
 // ============================================================================

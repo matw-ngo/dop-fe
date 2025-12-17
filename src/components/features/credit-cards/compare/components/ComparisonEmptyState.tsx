@@ -1,6 +1,6 @@
-import React from "react";
-import { useTranslations } from "next-intl";
 import { CreditCard as CreditCardIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
+import type React from "react";
 
 export const ComparisonEmptyState: React.FC = () => {
   const t = useTranslations("features.credit-cards.comparison");

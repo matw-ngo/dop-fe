@@ -15,7 +15,7 @@
  * - Tax allowances and brackets
  */
 
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import { calculateGrossToNet } from "../salary-gross-to-net";
 
 describe("Vietnamese Gross to Net Salary Calculator", () => {

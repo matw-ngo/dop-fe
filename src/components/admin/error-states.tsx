@@ -1,9 +1,9 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { AlertTriangleIcon, RefreshCwIcon, SearchIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 
 interface ErrorStateProps {
   title?: string;
@@ -21,11 +21,11 @@ export function ErrorState({
   icon = <AlertTriangleIcon className="h-12 w-12 text-destructive" />,
 }: ErrorStateProps) {
   const t = useTranslations("admin.components.errorStates");
-  
+
   const defaultTitle = title || t("default.title");
   const defaultMessage = message || t("default.message");
   const defaultRetryText = retryText || t("default.retry");
-  
+
   return (
     <Card className="mx-auto max-w-md">
       <CardContent className="flex flex-col items-center justify-center py-12 text-center">
@@ -60,10 +60,10 @@ export function EmptyState({
   icon = <SearchIcon className="h-12 w-12 text-muted-foreground" />,
 }: EmptyStateProps) {
   const t = useTranslations("admin.components.errorStates");
-  
+
   const defaultTitle = title || t("empty.title");
   const defaultMessage = message || t("empty.message");
-  
+
   return (
     <Card className="mx-auto max-w-md">
       <CardContent className="flex flex-col items-center justify-center py-12 text-center">
@@ -96,11 +96,11 @@ export function NotFoundState({
   icon = <AlertTriangleIcon className="h-12 w-12 text-muted-foreground" />,
 }: NotFoundStateProps) {
   const t = useTranslations("admin.components.errorStates");
-  
+
   const defaultTitle = title || t("notFound.title");
   const defaultMessage = message || t("notFound.message");
   const defaultBackText = backText || t("notFound.goBack");
-  
+
   return (
     <Card className="mx-auto max-w-md">
       <CardContent className="flex flex-col items-center justify-center py-12 text-center">
@@ -119,7 +119,7 @@ export function NotFoundState({
 
 export function NetworkErrorState({ onRetry }: { onRetry?: () => void }) {
   const t = useTranslations("admin.components.errorStates");
-  
+
   return (
     <ErrorState
       title={t("networkError.title")}
@@ -132,7 +132,7 @@ export function NetworkErrorState({ onRetry }: { onRetry?: () => void }) {
 
 export function PermissionErrorState() {
   const t = useTranslations("admin.components.errorStates");
-  
+
   return (
     <ErrorState
       title={t("permissionError.title")}

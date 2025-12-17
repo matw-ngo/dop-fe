@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import { Filter, X } from "lucide-react";
 import { useTranslations } from "next-intl";
+import type React from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -8,10 +10,9 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Filter, X } from "lucide-react";
-import { CreditCardFilters } from "@/types/credit-card";
-import CreditCardFilterPanel from "./CreditCardFilterPanel";
 import { DEFAULT_FILTERS } from "@/constants/credit-cards";
+import type { CreditCardFilters } from "@/types/credit-card";
+import CreditCardFilterPanel from "./CreditCardFilterPanel";
 
 interface CreditCardFilterSidebarProps {
   filters: CreditCardFilters;

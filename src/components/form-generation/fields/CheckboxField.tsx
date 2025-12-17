@@ -1,9 +1,9 @@
 "use client";
 
-import type { FieldComponentProps, CheckboxFieldConfig } from "../types";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { useFormTheme } from "../themes/ThemeProvider";
+import type { CheckboxFieldConfig, FieldComponentProps } from "../types";
 import { cn } from "../utils/helpers";
 
 export function CheckboxField({

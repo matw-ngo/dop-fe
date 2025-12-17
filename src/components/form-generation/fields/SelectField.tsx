@@ -1,6 +1,5 @@
 "use client";
 
-import type { FieldComponentProps, SelectFieldConfig } from "../types";
 import {
   Select,
   SelectContent,
@@ -12,6 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useFormTheme } from "../themes/ThemeProvider";
+import type { FieldComponentProps, SelectFieldConfig } from "../types";
 import { cn } from "../utils/helpers";
 
 export function SelectField({
@@ -96,7 +96,8 @@ export function SelectField({
         id={field.id}
         className={cn(
           triggerClassName,
-          internalLabel && "flex-col items-start justify-center pt-5 pb-1 h-[60px]", // specific style for internal label
+          internalLabel &&
+            "relative flex-col items-start justify-center pt-5 pb-1 h-[60px]", // specific style for internal label
         )}
         aria-invalid={!!error}
         aria-describedby={error ? `${field.id}-error` : undefined}

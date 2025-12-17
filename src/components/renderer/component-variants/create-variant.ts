@@ -1,14 +1,14 @@
-import { clsx, type ClassValue } from "clsx";
+import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import type { AnimationVariant, ComponentVariant } from "../types/ui-theme";
 import {
-  VariantFactoryConfig,
-  COMMON_SIZES,
-  COMMON_COLORS,
-  COMMON_VARIANTS,
-  COMMON_STATES,
   ANIMATION_PRESETS,
+  COMMON_COLORS,
+  COMMON_SIZES,
+  COMMON_STATES,
+  COMMON_VARIANTS,
+  type VariantFactoryConfig,
 } from "./variant-types";
-import { AnimationVariant, ComponentVariant } from "../types/ui-theme";
 
 /**
  * Utility to merge class names with Tailwind classes

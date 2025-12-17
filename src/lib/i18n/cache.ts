@@ -14,7 +14,7 @@
 // Type definitions
 export interface CacheOptions {
   ttl?: number; // Time to live in milliseconds
-  priority?: 'low' | 'medium' | 'high';
+  priority?: "low" | "medium" | "high";
   persistent?: boolean; // Should persist across sessions
   namespace?: string;
 }
@@ -23,7 +23,7 @@ export interface CacheEntry<T> {
   value: T;
   timestamp: number;
   ttl: number;
-  priority: 'low' | 'medium' | 'high';
+  priority: "low" | "medium" | "high";
   namespace: string;
   accessCount: number;
   lastAccessed: number;
@@ -61,7 +61,7 @@ class LRUNode<T> {
     public key: string,
     public entry: CacheEntry<T>,
     public prev: LRUNode<T> | null = null,
-    public next: LRUNode<T> | null = null
+    public next: LRUNode<T> | null = null,
   ) {}
 }
 
@@ -86,14 +86,14 @@ export class TranslationCache<T = any> {
     evictions: 0,
     memoryUsage: 0,
     entriesByPriority: { low: 0, medium: 0, high: 0 },
-    entriesByNamespace: {}
+    entriesByNamespace: {},
   };
 
   constructor(config: CacheConfig = {}) {
     this.maxSize = config.maxSize || 1000;
     this.defaultTTL = config.defaultTTL || 5 * 60 * 1000; // 5 minutes
     this.cleanupInterval = config.cleanupInterval || 60 * 1000; // 1 minute
-    this.persistKey = config.persistKey || 'translation-cache';
+    this.persistKey = config.persistKey || "translation-cache";
     this.enableStats = config.enableStats !== false;
     this.enablePersistence = config.enablePersistence !== false;
 
@@ -158,11 +158,11 @@ export class TranslationCache<T = any> {
       value,
       timestamp: now,
       ttl,
-      priority: options.priority || 'medium',
-      namespace: options.namespace || 'default',
+      priority: options.priority || "medium",
+      namespace: options.namespace || "default",
       accessCount: 1,
       lastAccessed: now,
-      persistent: options.persistent || false
+      persistent: options.persistent || false,
     };
 
     // Check if key already exists
@@ -233,7 +233,11 @@ export class TranslationCache<T = any> {
     this.cache.delete(key);
 
     // Update persistent storage if needed
-    if (node.entry.persistent && this.enablePersistence && this.isClientSide()) {
+    if (
+      node.entry.persistent &&
+      this.enablePersistence &&
+      this.isClientSide()
+    ) {
       this.saveToStorage();
     }
 
@@ -250,7 +254,7 @@ export class TranslationCache<T = any> {
         ...this.stats,
         size: 0,
         entriesByPriority: { low: 0, medium: 0, high: 0 },
-        entriesByNamespace: {}
+        entriesByNamespace: {},
       };
     }
 
@@ -276,7 +280,9 @@ export class TranslationCache<T = any> {
   /**
    * Preload multiple entries into cache
    */
-  async preload(entries: Array<{ key: string; value: T; options?: CacheOptions }>): Promise<void> {
+  async preload(
+    entries: Array<{ key: string; value: T; options?: CacheOptions }>,
+  ): Promise<void> {
     for (const { key, value, options } of entries) {
       this.set(key, value, options);
     }
@@ -285,17 +291,21 @@ export class TranslationCache<T = any> {
   /**
    * Warm up cache with commonly used translations
    */
-  async warmUp(locale: string, commonKeys: string[], getValue: (key: string) => Promise<T>): Promise<void> {
+  async warmUp(
+    locale: string,
+    commonKeys: string[],
+    getValue: (key: string) => Promise<T>,
+  ): Promise<void> {
     const promises = commonKeys.map(async (key) => {
       const cacheKey = `${locale}:${key}`;
       if (!this.has(cacheKey)) {
         try {
           const value = await getValue(key);
           this.set(cacheKey, value, {
-            namespace: 'common',
-            priority: 'high',
+            namespace: "common",
+            priority: "high",
             ttl: 30 * 60 * 1000, // 30 minutes for common keys
-            persistent: true
+            persistent: true,
           });
         } catch (error) {
           console.warn(`Failed to warm up cache for key: ${key}`, error);
@@ -319,7 +329,7 @@ export class TranslationCache<T = any> {
       }
     }
 
-    keysToDelete.forEach(key => {
+    keysToDelete.forEach((key) => {
       if (this.delete(key)) count++;
     });
 
@@ -340,7 +350,7 @@ export class TranslationCache<T = any> {
   // Private methods
 
   private isClientSide(): boolean {
-    return typeof window !== 'undefined' && typeof localStorage !== 'undefined';
+    return typeof window !== "undefined" && typeof localStorage !== "undefined";
   }
 
   private isExpired(entry: CacheEntry<T>): boolean {
@@ -404,7 +414,7 @@ export class TranslationCache<T = any> {
   }
 
   private evictByPriority(): boolean {
-    const priorities: Array<'low' | 'medium' | 'high'> = ['low', 'medium'];
+    const priorities: Array<"low" | "medium" | "high"> = ["low", "medium"];
 
     for (const priority of priorities) {
       for (const [key, node] of this.cache.entries()) {
@@ -439,7 +449,7 @@ export class TranslationCache<T = any> {
       }
     }
 
-    keysToDelete.forEach(key => this.delete(key));
+    keysToDelete.forEach((key) => this.delete(key));
   }
 
   private updateStatsOnAdd(entry: CacheEntry<T>): void {
@@ -456,8 +466,10 @@ export class TranslationCache<T = any> {
 
     this.stats.size = this.cache.size - 1;
     this.stats.entriesByPriority[entry.priority]--;
-    this.stats.entriesByNamespace[entry.namespace] =
-      Math.max(0, (this.stats.entriesByNamespace[entry.namespace] || 0) - 1);
+    this.stats.entriesByNamespace[entry.namespace] = Math.max(
+      0,
+      (this.stats.entriesByNamespace[entry.namespace] || 0) - 1,
+    );
   }
 
   private updateHitRate(): void {
@@ -496,7 +508,7 @@ export class TranslationCache<T = any> {
         }
       }
     } catch (error) {
-      console.warn('Failed to load cache from storage:', error);
+      console.warn("Failed to load cache from storage:", error);
     }
   }
 
@@ -510,7 +522,7 @@ export class TranslationCache<T = any> {
       }
       localStorage.setItem(this.persistKey, JSON.stringify(persistentData));
     } catch (error) {
-      console.warn('Failed to save cache to storage:', error);
+      console.warn("Failed to save cache to storage:", error);
     }
   }
 
@@ -518,7 +530,7 @@ export class TranslationCache<T = any> {
     try {
       localStorage.removeItem(this.persistKey);
     } catch (error) {
-      console.warn('Failed to clear cache from storage:', error);
+      console.warn("Failed to clear cache from storage:", error);
     }
   }
 }
@@ -528,85 +540,93 @@ export class CacheFactory {
   private static instances = new Map<string, TranslationCache>();
 
   static getInstance(
-    name: string = 'default',
-    config?: CacheConfig
+    name: string = "default",
+    config?: CacheConfig,
   ): TranslationCache {
-    if (!this.instances.has(name)) {
+    if (!CacheFactory.instances.has(name)) {
       // Predefined configurations for different use cases
       const defaultConfigs: Record<string, CacheConfig> = {
         translations: {
           maxSize: 500,
           defaultTTL: 10 * 60 * 1000, // 10 minutes
           cleanupInterval: 2 * 60 * 1000, // 2 minutes
-          persistKey: 'i18n-translations',
+          persistKey: "i18n-translations",
           enableStats: true,
-          enablePersistence: true
+          enablePersistence: true,
         },
         common: {
           maxSize: 200,
           defaultTTL: 30 * 60 * 1000, // 30 minutes
           cleanupInterval: 5 * 60 * 1000, // 5 minutes
-          persistKey: 'i18n-common',
+          persistKey: "i18n-common",
           enableStats: true,
-          enablePersistence: true
+          enablePersistence: true,
         },
         admin: {
           maxSize: 100,
           defaultTTL: 2 * 60 * 1000, // 2 minutes
           cleanupInterval: 30 * 1000, // 30 seconds
-          persistKey: 'i18n-admin',
+          persistKey: "i18n-admin",
           enableStats: true,
-          enablePersistence: false // No persistence for admin
+          enablePersistence: false, // No persistence for admin
         },
         temporary: {
           maxSize: 50,
           defaultTTL: 30 * 1000, // 30 seconds
           cleanupInterval: 10 * 1000, // 10 seconds
           enableStats: false,
-          enablePersistence: false
-        }
+          enablePersistence: false,
+        },
       };
 
       const finalConfig = { ...defaultConfigs[name], ...config };
       const instance = new TranslationCache(finalConfig);
-      this.instances.set(name, instance);
+      CacheFactory.instances.set(name, instance);
     }
 
-    return this.instances.get(name)!;
+    return CacheFactory.instances.get(name)!;
   }
 
   static destroyInstance(name: string): void {
-    const instance = this.instances.get(name);
+    const instance = CacheFactory.instances.get(name);
     if (instance) {
       instance.destroy();
-      this.instances.delete(name);
+      CacheFactory.instances.delete(name);
     }
   }
 
   static destroyAll(): void {
-    for (const [name, instance] of this.instances.entries()) {
+    for (const [name, instance] of CacheFactory.instances.entries()) {
       instance.destroy();
     }
-    this.instances.clear();
+    CacheFactory.instances.clear();
   }
 }
 
 // Export singleton instances for common use cases
-export const translationCache = CacheFactory.getInstance('translations');
-export const commonCache = CacheFactory.getInstance('common');
-export const adminCache = CacheFactory.getInstance('admin');
+export const translationCache = CacheFactory.getInstance("translations");
+export const commonCache = CacheFactory.getInstance("common");
+export const adminCache = CacheFactory.getInstance("admin");
 
 // Utility functions
-export function createCacheKey(locale: string, namespace: string, key: string): string {
+export function createCacheKey(
+  locale: string,
+  namespace: string,
+  key: string,
+): string {
   return `${locale}:${namespace}:${key}`;
 }
 
-export function parseCacheKey(cacheKey: string): { locale: string; namespace: string; key: string } {
-  const parts = cacheKey.split(':');
+export function parseCacheKey(cacheKey: string): {
+  locale: string;
+  namespace: string;
+  key: string;
+} {
+  const parts = cacheKey.split(":");
   return {
-    locale: parts[0] || 'unknown',
-    namespace: parts[1] || 'default',
-    key: parts.slice(2).join(':') || 'unknown'
+    locale: parts[0] || "unknown",
+    namespace: parts[1] || "default",
+    key: parts.slice(2).join(":") || "unknown",
   };
 }
 

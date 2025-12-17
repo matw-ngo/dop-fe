@@ -1,6 +1,6 @@
 import type {
-  ComponentVariant,
   AnimationVariant,
+  ComponentVariant,
 } from "@/components/renderer/types/ui-theme";
 
 /**

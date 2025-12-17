@@ -1,15 +1,15 @@
 // Loan Eligibility Check Hook
 // Custom hook for loan eligibility verification
 
-import { useCallback, useEffect, useMemo, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { VietnameseLoanProduct } from "@/lib/loan-products/vietnamese-loan-products";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { loanProductApi } from "@/lib/api/endpoints/loans";
 import type {
   ApplicantProfile,
   EligibilityResult,
 } from "@/lib/loan-products/eligibility-rules";
 import { VietnameseEligibilityEngine } from "@/lib/loan-products/eligibility-rules";
-import { loanProductApi } from "@/lib/api/endpoints/loans";
+import type { VietnameseLoanProduct } from "@/lib/loan-products/vietnamese-loan-products";
 import { useLoanProductStore } from "@/store/use-loan-product-store";
 
 interface UseEligibilityCheckOptions {

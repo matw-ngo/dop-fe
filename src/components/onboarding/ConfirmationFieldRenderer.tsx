@@ -1,12 +1,12 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { Edit2 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Edit2 } from "lucide-react";
-import { FieldType } from "@/components/user-onboarding/constants/field-types";
+import type { FieldType } from "@/components/user-onboarding/constants/field-types";
 import { getFieldDisplayValue } from "@/utils/fieldLabelMapper";
-import { useTranslations } from "next-intl";
 
 interface ConfirmationFieldRendererProps {
   fieldType: FieldType;

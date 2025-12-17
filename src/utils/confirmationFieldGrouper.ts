@@ -1,12 +1,12 @@
 import {
-  FieldType,
-  FieldCategory,
   FIELD_CATEGORY_MAP,
+  FieldCategory,
+  FieldType,
   STEP_PATTERNS,
 } from "@/components/user-onboarding/constants/field-types";
 import type {
-  MappedFlow,
   GeneratedStepConfig,
+  MappedFlow,
 } from "@/components/user-onboarding/types/field-config";
 import { getFieldLabel } from "./fieldLabelMapper";
 

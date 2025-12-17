@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import type React from "react";
+import { useEffect } from "react";
 import { ThemeProvider } from "@/components/renderer/theme";
 import { themes } from "@/components/renderer/theme/themes";
 import { applyTheme } from "@/components/renderer/theme/utils";

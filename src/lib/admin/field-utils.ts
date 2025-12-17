@@ -1,15 +1,15 @@
-import type { 
-  StepDetail, 
-  FieldListItem, 
+import type {
   FieldFormData,
-  FieldType 
+  FieldListItem,
+  FieldType,
+  StepDetail,
 } from "@/types/admin";
 
 /**
  * Map step data to field list with proper typing
  */
 export function mapStepFields(step: StepDetail): FieldListItem[] {
-  return step.fields.map(field => ({
+  return step.fields.map((field) => ({
     ...field,
     // Ensure all required fields are present
     id: field.id,
@@ -18,7 +18,7 @@ export function mapStepFields(step: StepDetail): FieldListItem[] {
     visible: field.visible ?? true,
     required: field.required ?? false,
     label: field.label || field.name,
-    placeholder: field.placeholder || '',
+    placeholder: field.placeholder || "",
     validation: field.validation || {},
   }));
 }
@@ -33,54 +33,56 @@ export function validateFieldConfiguration(field: Partial<FieldFormData>): {
   const errors: string[] = [];
 
   // Required field validation
-  if (!field.name || field.name.trim() === '') {
-    errors.push('Field name is required');
+  if (!field.name || field.name.trim() === "") {
+    errors.push("Field name is required");
   }
 
   if (!field.type) {
-    errors.push('Field type is required');
+    errors.push("Field type is required");
   }
 
   // Name validation
   if (field.name && !/^[a-zA-Z_][a-zA-Z0-9_]*$/.test(field.name)) {
-    errors.push('Field name must be a valid identifier (letters, numbers, underscores, no spaces)');
+    errors.push(
+      "Field name must be a valid identifier (letters, numbers, underscores, no spaces)",
+    );
   }
 
   // Type-specific validation
   if (field.type) {
     switch (field.type) {
-      case 'email':
+      case "email":
         if (field.placeholder && !isValidEmailPlaceholder(field.placeholder)) {
-          errors.push('Invalid email placeholder format');
+          errors.push("Invalid email placeholder format");
         }
         break;
-      
-      case 'number':
+
+      case "number":
         if (field.validation) {
           const { min, max } = field.validation;
           if (min !== undefined && max !== undefined && min >= max) {
-            errors.push('Minimum value must be less than maximum value');
+            errors.push("Minimum value must be less than maximum value");
           }
         }
         break;
-      
-      case 'text':
-      case 'textarea':
+
+      case "text":
+      case "textarea":
         if (field.validation) {
           const { min, max } = field.validation;
           if (min !== undefined && max !== undefined && min >= max) {
-            errors.push('Minimum length must be less than maximum length');
+            errors.push("Minimum length must be less than maximum length");
           }
           if (min !== undefined && min < 0) {
-            errors.push('Minimum length cannot be negative');
+            errors.push("Minimum length cannot be negative");
           }
         }
         break;
-      
-      case 'select':
-      case 'radio':
-        if (!field.label || field.label.trim() === '') {
-          errors.push('Label is required for select and radio fields');
+
+      case "select":
+      case "radio":
+        if (!field.label || field.label.trim() === "") {
+          errors.push("Label is required for select and radio fields");
         }
         break;
     }
@@ -91,7 +93,7 @@ export function validateFieldConfiguration(field: Partial<FieldFormData>): {
     try {
       new RegExp(field.validation.pattern);
     } catch (e) {
-      errors.push('Invalid validation pattern');
+      errors.push("Invalid validation pattern");
     }
   }
 
@@ -106,7 +108,7 @@ export function validateFieldConfiguration(field: Partial<FieldFormData>): {
  */
 export function generateFieldUpdatePayload(
   field: FieldListItem,
-  changes: Partial<FieldFormData>
+  changes: Partial<FieldFormData>,
 ): Partial<FieldFormData> {
   const payload: Partial<FieldFormData> = {};
 
@@ -123,7 +125,10 @@ export function generateFieldUpdatePayload(
     payload.label = changes.label;
   }
 
-  if (changes.placeholder !== undefined && changes.placeholder !== field.placeholder) {
+  if (
+    changes.placeholder !== undefined &&
+    changes.placeholder !== field.placeholder
+  ) {
     payload.placeholder = changes.placeholder;
   }
 
@@ -139,22 +144,22 @@ export function generateFieldUpdatePayload(
   if (changes.validation !== undefined) {
     const currentValidation = field.validation || {};
     const newValidation = changes.validation || {};
-    
+
     const validationPayload = {};
-    
+
     // Only include validation rules that have changed
     if (newValidation.min !== currentValidation.min) {
       (validationPayload as any).min = newValidation.min;
     }
-    
+
     if (newValidation.max !== currentValidation.max) {
       (validationPayload as any).max = newValidation.max;
     }
-    
+
     if (newValidation.pattern !== currentValidation.pattern) {
       (validationPayload as any).pattern = newValidation.pattern;
     }
-    
+
     // Only include validation if there are actual changes
     if (Object.keys(validationPayload).length > 0) {
       payload.validation = validationPayload;
@@ -184,7 +189,7 @@ export function calculateFieldStats(fields: FieldListItem[]): {
     byType: {} as Record<FieldType, number>,
   };
 
-  fields.forEach(field => {
+  fields.forEach((field) => {
     // Visibility stats
     if (field.visible) {
       stats.visible++;
@@ -211,18 +216,18 @@ export function calculateFieldStats(fields: FieldListItem[]): {
  */
 export function getFieldTypeDisplayName(type: FieldType): string {
   const typeNames: Record<FieldType, string> = {
-    text: 'Text',
-    email: 'Email',
-    password: 'Password',
-    number: 'Number',
-    date: 'Date',
-    select: 'Select',
-    checkbox: 'Checkbox',
-    radio: 'Radio',
-    textarea: 'Textarea',
-    file: 'File',
-    ekyc: 'eKYC',
-    otp: 'OTP',
+    text: "Text",
+    email: "Email",
+    password: "Password",
+    number: "Number",
+    date: "Date",
+    select: "Select",
+    checkbox: "Checkbox",
+    radio: "Radio",
+    textarea: "Textarea",
+    file: "File",
+    ekyc: "eKYC",
+    otp: "OTP",
   };
 
   return typeNames[type] || type;
@@ -233,21 +238,21 @@ export function getFieldTypeDisplayName(type: FieldType): string {
  */
 export function getFieldTypeIcon(type: FieldType): string {
   const typeIcons: Record<FieldType, string> = {
-    text: 'Type',
-    email: 'Mail',
-    password: 'Lock',
-    number: 'Hash',
-    date: 'Calendar',
-    select: 'ChevronDown',
-    checkbox: 'CheckSquare',
-    radio: 'Circle',
-    textarea: 'FileText',
-    file: 'Paperclip',
-    ekyc: 'Camera',
-    otp: 'Smartphone',
+    text: "Type",
+    email: "Mail",
+    password: "Lock",
+    number: "Hash",
+    date: "Calendar",
+    select: "ChevronDown",
+    checkbox: "CheckSquare",
+    radio: "Circle",
+    textarea: "FileText",
+    file: "Paperclip",
+    ekyc: "Camera",
+    otp: "Smartphone",
   };
 
-  return typeIcons[type] || 'Type';
+  return typeIcons[type] || "Type";
 }
 
 /**
@@ -255,10 +260,10 @@ export function getFieldTypeIcon(type: FieldType): string {
  */
 export function fieldTypeSupportsValidation(type: FieldType): boolean {
   const typesWithValidation: FieldType[] = [
-    'text',
-    'email',
-    'number',
-    'textarea',
+    "text",
+    "email",
+    "number",
+    "textarea",
   ];
 
   return typesWithValidation.includes(type);
@@ -269,10 +274,10 @@ export function fieldTypeSupportsValidation(type: FieldType): boolean {
  */
 export function fieldTypeSupportsPlaceholder(type: FieldType): boolean {
   const typesWithPlaceholder: FieldType[] = [
-    'text',
-    'email',
-    'number',
-    'textarea',
+    "text",
+    "email",
+    "number",
+    "textarea",
   ];
 
   return typesWithPlaceholder.includes(type);
@@ -281,24 +286,26 @@ export function fieldTypeSupportsPlaceholder(type: FieldType): boolean {
 /**
  * Get default validation for field type
  */
-export function getDefaultValidationForType(type: FieldType): FieldListItem['validation'] {
+export function getDefaultValidationForType(
+  type: FieldType,
+): FieldListItem["validation"] {
   switch (type) {
-    case 'email':
+    case "email":
       return {
-        pattern: '^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$',
+        pattern: "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$",
       };
-    
-    case 'number':
+
+    case "number":
       return {
         min: 0,
       };
-    
-    case 'text':
-    case 'textarea':
+
+    case "text":
+    case "textarea":
       return {
         max: 255,
       };
-    
+
     default:
       return {};
   }
@@ -327,16 +334,19 @@ export function filterFields(
     required?: boolean;
     type?: FieldType;
     search?: string;
-  }
+  },
 ): FieldListItem[] {
-  return fields.filter(field => {
+  return fields.filter((field) => {
     // Visibility filter
     if (criteria.visible !== undefined && field.visible !== criteria.visible) {
       return false;
     }
 
     // Requirement filter
-    if (criteria.required !== undefined && field.required !== criteria.required) {
+    if (
+      criteria.required !== undefined &&
+      field.required !== criteria.required
+    ) {
       return false;
     }
 
@@ -353,8 +363,10 @@ export function filterFields(
         field.label,
         field.placeholder,
         field.type,
-      ].join(' ').toLowerCase();
-      
+      ]
+        .join(" ")
+        .toLowerCase();
+
       if (!searchableText.includes(searchLower)) {
         return false;
       }
@@ -368,14 +380,14 @@ export function filterFields(
 function isValidEmailPlaceholder(placeholder: string): boolean {
   // Basic check for email placeholder format
   const emailPlaceholders = [
-    'email',
-    'email address',
-    'your email',
-    'enter email',
+    "email",
+    "email address",
+    "your email",
+    "enter email",
   ];
-  
+
   const lowerPlaceholder = placeholder.toLowerCase();
-  return emailPlaceholders.some(p => lowerPlaceholder.includes(p));
+  return emailPlaceholders.some((p) => lowerPlaceholder.includes(p));
 }
 
 /**
@@ -383,23 +395,23 @@ function isValidEmailPlaceholder(placeholder: string): boolean {
  */
 export function generateUniqueFieldName(
   baseName: string,
-  existingFields: FieldListItem[]
+  existingFields: FieldListItem[],
 ): string {
-  let fieldName = baseName.toLowerCase().replace(/[^a-z0-9_]/g, '_');
+  let fieldName = baseName.toLowerCase().replace(/[^a-z0-9_]/g, "_");
   let counter = 1;
-  
+
   // Ensure it starts with a letter
   if (/^[0-9]/.test(fieldName)) {
     fieldName = `field_${fieldName}`;
   }
-  
+
   let finalName = fieldName;
-  
-  while (existingFields.some(field => field.name === finalName)) {
+
+  while (existingFields.some((field) => field.name === finalName)) {
     finalName = `${fieldName}_${counter}`;
     counter++;
   }
-  
+
   return finalName;
 }
 
@@ -408,10 +420,10 @@ export function generateUniqueFieldName(
  */
 export function createNewField(
   type: FieldType,
-  existingFields: FieldListItem[]
+  existingFields: FieldListItem[],
 ): FieldListItem {
   const name = generateUniqueFieldName(`new_${type}`, existingFields);
-  
+
   return {
     id: `temp_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
     name,
@@ -419,9 +431,9 @@ export function createNewField(
     visible: true,
     required: false,
     label: getFieldTypeDisplayName(type),
-    placeholder: fieldTypeSupportsPlaceholder(type) 
+    placeholder: fieldTypeSupportsPlaceholder(type)
       ? `Enter ${getFieldTypeDisplayName(type).toLowerCase()}`
-      : '',
+      : "",
     validation: getDefaultValidationForType(type),
   };
 }

@@ -1,24 +1,24 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
-import { CreditCardComparison } from "@/components/features/credit-card/CreditCardComparison";
-import { CreditCardComparisonPanel } from "@/components/features/credit-cards/compare";
-import {
-  useCreditCardsStore,
-  useCreditCardComparison,
-} from "@/store/use-credit-cards-store";
+import { useTranslations } from "next-intl";
+import React, { useEffect, useState } from "react";
 import { useShallow } from "zustand/shallow";
-import type { CreditCard } from "@/types/credit-card";
+import { CreditCardComparison } from "@/components/features/credit-card/CreditCardComparison";
 import { CreditCardsThemeProvider } from "@/components/features/credit-card/CreditCardsThemeProvider";
-import Header from "@/components/layout/header";
+import { CreditCardComparisonPanel } from "@/components/features/credit-cards/compare";
 import Footer from "@/components/layout/footer";
+import Header from "@/components/layout/header";
+import { Button } from "@/components/ui/button";
 import { useCreditCardsNavbarTheme } from "@/hooks/features/credit-card/useCreditCardsNavbarTheme";
 import { useCurrentLocale } from "@/lib/client-utils";
+import {
+  useCreditCardComparison,
+  useCreditCardsStore,
+} from "@/store/use-credit-cards-store";
+import type { CreditCard } from "@/types/credit-card";
 
 export default function ComparePage() {
   const t = useTranslations("pages.creditCard");

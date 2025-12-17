@@ -10,13 +10,13 @@ import { usePathname } from "next/navigation";
  */
 export function getLocalePath(path: string, locale: string): string {
   // Remove leading slash to avoid double slashes
-  const cleanPath = path.startsWith('/') ? path.slice(1) : path;
-  
+  const cleanPath = path.startsWith("/") ? path.slice(1) : path;
+
   // If path already starts with locale, return as is
   if (cleanPath.startsWith(`${locale}/`) || cleanPath === locale) {
     return `/${cleanPath}`;
   }
-  
+
   return `/${locale}/${cleanPath}`;
 }
 
@@ -26,14 +26,14 @@ export function getLocalePath(path: string, locale: string): string {
  */
 export function useCurrentLocale(): string {
   const pathname = usePathname();
-  
+
   // Extract locale from pathname
-  const segments = pathname.split('/').filter(Boolean);
+  const segments = pathname.split("/").filter(Boolean);
   const locale = segments[0];
-  
+
   // Validate locale (assuming vi and en are supported)
-  const supportedLocales = ['vi', 'en'];
-  return supportedLocales.includes(locale) ? locale : 'vi';
+  const supportedLocales = ["vi", "en"];
+  return supportedLocales.includes(locale) ? locale : "vi";
 }
 
 /**
@@ -42,14 +42,17 @@ export function useCurrentLocale(): string {
  * @param currentPathname - The current pathname to extract locale from
  * @returns The localized redirect URL
  */
-export function getLocalizedRedirect(path: string, currentPathname: string): string {
-  const segments = currentPathname.split('/').filter(Boolean);
+export function getLocalizedRedirect(
+  path: string,
+  currentPathname: string,
+): string {
+  const segments = currentPathname.split("/").filter(Boolean);
   const locale = segments[0];
-  
+
   // Validate locale
-  const supportedLocales = ['vi', 'en'];
-  const currentLocale = supportedLocales.includes(locale) ? locale : 'vi';
-  
+  const supportedLocales = ["vi", "en"];
+  const currentLocale = supportedLocales.includes(locale) ? locale : "vi";
+
   return getLocalePath(path, currentLocale);
 }
 
@@ -59,6 +62,6 @@ export function getLocalizedRedirect(path: string, currentPathname: string): str
  */
 export function useLocalizedPath() {
   const currentLocale = useCurrentLocale();
-  
+
   return (path: string) => getLocalePath(path, currentLocale);
 }

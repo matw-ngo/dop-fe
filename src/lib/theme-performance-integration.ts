@@ -6,19 +6,21 @@
  */
 
 import {
+  debugUtils,
   getPerformanceMonitor,
   measureThemeOperation,
-  debugUtils,
-  type PerformanceConfig
-} from './theme-performance';
+  type PerformanceConfig,
+} from "./theme-performance";
 
 /**
  * Initialize performance monitoring for the theme system
  * Call this early in your application startup
  */
-export function initializeThemePerformanceMonitoring(config?: Partial<PerformanceConfig>) {
+export function initializeThemePerformanceMonitoring(
+  config?: Partial<PerformanceConfig>,
+) {
   // Enable in development mode by default
-  if (process.env.NODE_ENV === 'development' && !config) {
+  if (process.env.NODE_ENV === "development" && !config) {
     debugUtils.enableDevelopmentMode();
   } else {
     // Initialize with custom configuration
@@ -31,30 +33,30 @@ export function initializeThemePerformanceMonitoring(config?: Partial<Performanc
  * This shows how to wrap existing theme utilities with performance tracking
  */
 
-import { applyTheme as baseApplyTheme } from '@/components/renderer/theme/utils';
-import type { ThemeConfig } from '@/components/renderer/theme/types';
+import type { ThemeConfig } from "@/components/renderer/theme/types";
+import { applyTheme as baseApplyTheme } from "@/components/renderer/theme/utils";
 
 /**
  * Wrapped applyTheme function with performance monitoring
  */
 export function applyThemeWithMonitoring(
   theme: ThemeConfig,
-  mode: 'light' | 'dark',
-  customizations?: any
+  mode: "light" | "dark",
+  customizations?: any,
 ): void {
   const monitor = getPerformanceMonitor();
 
   // Track the complete theme switch operation
-  monitor.startMark('theme-switch');
+  monitor.startMark("theme-switch");
 
   try {
     // Track validation if applicable
     if (theme.id) {
       monitor.recordPerformanceEntry({
         timestamp: Date.now(),
-        type: 'cache-miss',
+        type: "cache-miss",
         duration: 0,
-        metadata: { themeId: theme.id }
+        metadata: { themeId: theme.id },
       });
     }
 
@@ -62,21 +64,23 @@ export function applyThemeWithMonitoring(
     baseApplyTheme(theme, mode, customizations);
 
     // End timing and record the performance
-    const duration = monitor.endMark('theme-switch', 'theme-switch', {
+    const duration = monitor.endMark("theme-switch", "theme-switch", {
       themeId: theme.id,
       mode,
-      hasCustomizations: !!customizations
+      hasCustomizations: !!customizations,
     });
 
     // Log performance in development
-    if (process.env.NODE_ENV === 'development' && duration > 0) {
-      console.log(`[Theme Performance] Applied theme "${theme.name}" in ${duration.toFixed(2)}ms`);
+    if (process.env.NODE_ENV === "development" && duration > 0) {
+      console.log(
+        `[Theme Performance] Applied theme "${theme.name}" in ${duration.toFixed(2)}ms`,
+      );
     }
   } catch (error) {
     // Record error case
-    monitor.endMark('theme-switch', 'theme-switch', {
+    monitor.endMark("theme-switch", "theme-switch", {
       error: true,
-      errorMessage: error instanceof Error ? error.message : 'Unknown error'
+      errorMessage: error instanceof Error ? error.message : "Unknown error",
     });
     throw error;
   }
@@ -89,9 +93,9 @@ export function trackCacheHit(cacheKey: string, isHit: boolean): void {
   const monitor = getPerformanceMonitor();
   monitor.recordPerformanceEntry({
     timestamp: Date.now(),
-    type: isHit ? 'cache-hit' : 'cache-miss',
+    type: isHit ? "cache-hit" : "cache-miss",
     duration: 0,
-    metadata: { cacheKey }
+    metadata: { cacheKey },
   });
 }
 
@@ -118,7 +122,7 @@ export const useThemePerformance = () => {
     resetMetrics: monitor.reset.bind(monitor),
 
     // Debug utilities
-    debug: debugUtils
+    debug: debugUtils,
   };
 };
 
@@ -128,10 +132,14 @@ export const useThemePerformance = () => {
 export function withPerformanceMonitoring<T extends (...args: any[]) => any>(
   fn: T,
   operationName: string,
-  operationType: 'theme-switch' | 'dom-update' | 'validation' = 'theme-switch'
+  operationType: "theme-switch" | "dom-update" | "validation" = "theme-switch",
 ): T {
   return ((...args: any[]) => {
-    return measureThemeOperation(operationName, () => fn(...args), operationType);
+    return measureThemeOperation(
+      operationName,
+      () => fn(...args),
+      operationType,
+    );
   }) as T;
 }
 
@@ -175,8 +183,8 @@ initializeThemePerformanceMonitoring({
  * Add these to your window object in development for easy access
  */
 export function setupDevelopmentDebugShortcuts(): void {
-  if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
-    // @ts-ignore
+  if (process.env.NODE_ENV === "development" && typeof window !== "undefined") {
+    // @ts-expect-error
     window.themePerf = {
       // View current metrics
       metrics: () => getPerformanceMonitor().getMetrics(),
@@ -197,12 +205,12 @@ export function setupDevelopmentDebugShortcuts(): void {
       export: () => getPerformanceMonitor().exportData(),
 
       // Access monitor directly
-      monitor: getPerformanceMonitor()
+      monitor: getPerformanceMonitor(),
     };
 
     console.log(
-      '[Theme Performance] Debug shortcuts available at window.themePerf\n' +
-      'Try: themePerf.metrics(), themePerf.report(), themePerf.timeline(), themePerf.analyze()'
+      "[Theme Performance] Debug shortcuts available at window.themePerf\n" +
+        "Try: themePerf.metrics(), themePerf.report(), themePerf.timeline(), themePerf.analyze()",
     );
   }
 }

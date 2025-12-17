@@ -1,8 +1,8 @@
+import { Calendar, DollarSign, MapPin, User } from "lucide-react";
 import {
   FieldType,
   getFieldIcon,
 } from "@/components/user-onboarding/constants/field-types";
-import { Calendar, DollarSign, MapPin, User } from "lucide-react";
 
 /**
  * Maps field values to their display format with appropriate icons
@@ -37,12 +37,13 @@ export function getFieldDisplayValue(
         icon: User,
       };
 
-    case FieldType.DATE_OF_BIRTH:
+    case FieldType.DATE_OF_BIRTH: {
       const date = typeof value === "string" ? new Date(value) : value;
       return {
         display: date.toLocaleDateString("vi-VN"),
         icon: Calendar,
       };
+    }
 
     case FieldType.GENDER:
       return {

@@ -2,21 +2,21 @@
  * Tests for the tracking module
  */
 
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   EventType,
+  filterSensitiveData,
+  getDeviceId,
+  getSessionId,
+  hasUserConsent,
+  initializeSession,
+  isDNTEnabled,
+  setUserConsent,
+  shouldEnableTracking,
   trackEvent,
-  trackSavingsCalculator,
   trackLoanCalculator,
   trackSalaryCalculator,
-  initializeSession,
-  hasUserConsent,
-  setUserConsent,
-  isDNTEnabled,
-  filterSensitiveData,
-  shouldEnableTracking,
-  getSessionId,
-  getDeviceId,
+  trackSavingsCalculator,
 } from "../index";
 
 // Mock localStorage and sessionStorage

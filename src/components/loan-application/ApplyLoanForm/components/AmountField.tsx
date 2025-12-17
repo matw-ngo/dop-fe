@@ -1,5 +1,5 @@
-import type React from "react";
 import { useTranslations } from "next-intl";
+import type React from "react";
 import { Slider } from "@/components/ui";
 import { CSS_CLASSES, LOAN_AMOUNT } from "../constants";
 import type { AmountFieldProps } from "../types";

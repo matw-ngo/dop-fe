@@ -1,8 +1,8 @@
 "use client";
 
-import { useMemo, useCallback } from "react";
-import { evaluateCondition } from "@/components/renderer/types/field-conditions";
+import { useCallback, useMemo } from "react";
 import type { FieldConfig } from "@/components/renderer/types/data-driven-ui";
+import { evaluateCondition } from "@/components/renderer/types/field-conditions";
 
 interface UseFieldVisibilityResult {
   visibleFieldNames: Set<string>;
@@ -18,7 +18,7 @@ interface UseFieldVisibilityResult {
  */
 export function useFieldVisibility(
   processedFields: FieldConfig[],
-  watchedValues: Record<string, any>
+  watchedValues: Record<string, any>,
 ): UseFieldVisibilityResult {
   // Get list of currently visible field names (updated when form values change)
   const visibleFieldNames = useMemo(() => {
@@ -34,17 +34,20 @@ export function useFieldVisibility(
   }, [processedFields, watchedValues]);
 
   // Check if a field should be rendered based on its condition
-  const shouldRenderField = useCallback((field: FieldConfig): boolean => {
-    if (!field.condition) return true;
+  const shouldRenderField = useCallback(
+    (field: FieldConfig): boolean => {
+      if (!field.condition) return true;
 
-    // Use enhanced condition evaluation
-    try {
-      return evaluateCondition(field.condition as any, watchedValues);
-    } catch (error) {
-      console.error("Error evaluating field condition:", error);
-      return true; // Show field if evaluation fails
-    }
-  }, [watchedValues]);
+      // Use enhanced condition evaluation
+      try {
+        return evaluateCondition(field.condition as any, watchedValues);
+      } catch (error) {
+        console.error("Error evaluating field condition:", error);
+        return true; // Show field if evaluation fails
+      }
+    },
+    [watchedValues],
+  );
 
   // Get list of visible fields
   const visibleFields = useMemo(() => {

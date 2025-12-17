@@ -415,5 +415,5 @@ if (require.main === module) {
     });
 }
 
-export { SecurityTestRunner, SecurityReport };
+export { SecurityTestRunner, type SecurityReport };
 export default SecurityTestRunner;

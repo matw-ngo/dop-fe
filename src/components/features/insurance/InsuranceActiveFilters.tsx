@@ -1,7 +1,25 @@
 "use client";
 
-import React, { useMemo, useCallback } from "react";
+import {
+  Car,
+  Clock,
+  DollarSign,
+  Globe,
+  HeadphonesIcon,
+  Heart,
+  HelpCircle,
+  Home,
+  MapPin,
+  Plane,
+  Plus,
+  RotateCcw,
+  Shield,
+  Star,
+  Users,
+  X,
+} from "lucide-react";
 import { useTranslations } from "next-intl";
+import React, { useCallback, useMemo } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -12,43 +30,25 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { cn } from "@/lib/utils";
 import {
-  X,
-  RotateCcw,
-  Shield,
-  Car,
-  Heart,
-  Plane,
-  Home,
-  HelpCircle,
-  DollarSign,
-  MapPin,
-  Star,
-  Globe,
-  HeadphonesIcon,
-  Clock,
-  Users,
-  Plus,
-} from "lucide-react";
-import {
-  InsuranceFilters,
-  InsuranceCategory,
-  InsuranceType,
-  FeeType,
-  CoveragePeriod,
-  VehicleType,
-} from "@/types/insurance";
-import {
+  DEFAULT_FILTERS,
   INSURANCE_CATEGORIES,
   INSURANCE_TYPES,
-  PREMIUM_RANGES,
-  PERSONAL_ACCIDENT_COVERAGE_RANGES,
-  PROPERTY_DAMAGE_COVERAGE_RANGES,
   MEDICAL_EXPENSES_COVERAGE_RANGES,
+  PERSONAL_ACCIDENT_COVERAGE_RANGES,
+  PREMIUM_RANGES,
+  PROPERTY_DAMAGE_COVERAGE_RANGES,
   VEHICLE_TYPES,
-  DEFAULT_FILTERS,
 } from "@/constants/insurance";
+import { cn } from "@/lib/utils";
+import {
+  CoveragePeriod,
+  FeeType,
+  InsuranceCategory,
+  type InsuranceFilters,
+  type InsuranceType,
+  type VehicleType,
+} from "@/types/insurance";
 
 interface ActiveFiltersProps {
   filters: InsuranceFilters;

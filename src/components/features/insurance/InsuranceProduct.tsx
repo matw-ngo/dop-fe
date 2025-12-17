@@ -1,42 +1,42 @@
 "use client";
 
-import React from "react";
+import {
+  ArrowLeftRight,
+  Award,
+  Banknote,
+  Car,
+  CheckCircle,
+  Clock,
+  ExternalLink,
+  Heart,
+  Home,
+  Phone,
+  Plane,
+  Plus,
+  Shield,
+  Star,
+  User,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
+import type React from "react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import {
-  Star,
-  Plus,
-  ArrowLeftRight,
-  ExternalLink,
-  CheckCircle,
-  Shield,
-  Heart,
-  Car,
-  Home,
-  Plane,
-  User,
-  Banknote,
-  Clock,
-  Phone,
-  Award,
-} from "lucide-react";
-import { cn } from "@/lib/utils";
-import { InsuranceProduct } from "@/types/insurance";
-import {
+  COVERAGE_PERIODS,
   INSURANCE_CATEGORIES,
   INSURANCE_TYPES,
-  COVERAGE_PERIODS,
 } from "@/constants/insurance";
+import { cn } from "@/lib/utils";
+import type { InsuranceProduct } from "@/types/insurance";
 
 interface InsuranceProductProps {
   product: InsuranceProduct;

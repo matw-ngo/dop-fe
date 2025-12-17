@@ -4,22 +4,21 @@
  * This file exports all provider-related interfaces and utilities.
  */
 
+export { VerificationManager, verificationManager } from "../manager";
 export type {
-  VerificationProvider,
-  ProviderConfig,
-  VerificationOptions,
-  VerificationSession,
-  VerificationResult,
-  VerificationStatus,
-  ProviderRegistration,
-  VerificationStats,
   AutofillMapping,
-  EkycVerificationConfig,
   EkycRenderMode,
   EkycRenderProps,
+  EkycVerificationConfig,
+  ProviderConfig,
+  ProviderRegistration,
+  VerificationOptions,
+  VerificationProvider,
+  VerificationResult,
+  VerificationSession,
+  VerificationStats,
+  VerificationStatus,
 } from "../types";
-
-export { VerificationManager, verificationManager } from "../manager";
 
 // Import and export specific providers when they are created
 // export { VNPTVerificationProvider } from "./vnpt-provider";
@@ -36,14 +35,14 @@ export class ProviderFactory {
    * Register a provider class
    */
   static register(name: string, providerClass: any): void {
-    this.providerClasses.set(name, providerClass);
+    ProviderFactory.providerClasses.set(name, providerClass);
   }
 
   /**
    * Create a provider instance
    */
   static create(name: string, ...args: any[]): any {
-    const ProviderClass = this.providerClasses.get(name);
+    const ProviderClass = ProviderFactory.providerClasses.get(name);
     if (!ProviderClass) {
       throw new Error(`Provider "${name}" not registered`);
     }
@@ -54,13 +53,13 @@ export class ProviderFactory {
    * Get list of registered providers
    */
   static getRegisteredProviders(): string[] {
-    return Array.from(this.providerClasses.keys());
+    return Array.from(ProviderFactory.providerClasses.keys());
   }
 
   /**
    * Check if provider is registered
    */
   static isRegistered(name: string): boolean {
-    return this.providerClasses.has(name);
+    return ProviderFactory.providerClasses.has(name);
   }
 }

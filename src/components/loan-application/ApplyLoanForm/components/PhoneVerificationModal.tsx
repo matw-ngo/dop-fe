@@ -1,6 +1,6 @@
+import { useTranslations } from "next-intl";
 import type React from "react";
 import { useEffect, useState } from "react";
-import { useTranslations } from "next-intl";
 import { Button, Modal, TextInput } from "@/components/ui";
 import { MODAL_SIZE } from "../constants";
 import type { PhoneVerificationModalProps } from "../types";

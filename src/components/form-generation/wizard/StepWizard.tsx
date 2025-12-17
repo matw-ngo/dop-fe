@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect } from "react";
-import type { DynamicFormConfig } from "../types";
 import { useFormWizardStore } from "../store/use-form-wizard-store";
-import { WizardProgress } from "./WizardProgress";
+import type { DynamicFormConfig } from "../types";
 import { StepContent } from "./StepContent";
 import { WizardNavigation } from "./WizardNavigation";
+import { WizardProgress } from "./WizardProgress";
 
 export interface StepWizardProps {
   /** Wizard configuration */

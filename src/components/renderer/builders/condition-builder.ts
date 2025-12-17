@@ -2,10 +2,10 @@
 // Provides a fluent API for creating complex conditional logic
 
 import type {
-  ConditionRule,
   ComplexCondition,
-  FieldCondition,
   ConditionOperator,
+  ConditionRule,
+  FieldCondition,
 } from "../types/field-conditions";
 
 /**

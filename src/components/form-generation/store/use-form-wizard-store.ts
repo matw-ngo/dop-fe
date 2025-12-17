@@ -10,8 +10,8 @@ import { devtools, persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 import type {
   FormStep,
-  StepValidationStatus,
   StepCompletionStatus,
+  StepValidationStatus,
 } from "@/components/form-generation/types";
 
 // ============================================================================

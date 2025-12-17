@@ -23,7 +23,7 @@ export interface LoadTimeMetric {
   loadTime: number; // in milliseconds
   size: number; // in bytes
   timestamp: number;
-  source: 'server' | 'client';
+  source: "server" | "client";
 }
 
 export interface MissingKeyMetric {
@@ -77,7 +77,7 @@ const DEFAULT_ANALYTICS_CONFIG: AnalyticsConfig = {
 };
 
 // Global state
-let isEnabled = process.env.NODE_ENV === 'production';
+let isEnabled = process.env.NODE_ENV === "production";
 let metrics: TranslationMetrics = {
   loadTimes: {},
   missingKeys: [],
@@ -93,11 +93,13 @@ let flushTimer: NodeJS.Timeout | null = null;
 /**
  * Initialize the translation monitor
  */
-export function initTranslationMonitor(options: {
-  enabled?: boolean;
-  thresholds?: Partial<PerformanceThresholds>;
-  analytics?: Partial<AnalyticsConfig>;
-} = {}) {
+export function initTranslationMonitor(
+  options: {
+    enabled?: boolean;
+    thresholds?: Partial<PerformanceThresholds>;
+    analytics?: Partial<AnalyticsConfig>;
+  } = {},
+) {
   isEnabled = options.enabled ?? isEnabled;
 
   if (options.thresholds) {
@@ -124,7 +126,7 @@ export function trackLoadTime(
   locale: string,
   loadTime: number,
   size: number,
-  source: 'server' | 'client' = 'client'
+  source: "server" | "client" = "client",
 ) {
   if (!isEnabled) return;
 
@@ -148,7 +150,7 @@ export function trackLoadTime(
   // Check performance threshold
   if (loadTime > thresholds.maxLoadTime) {
     reportPerformanceIssue({
-      type: 'slow_load',
+      type: "slow_load",
       namespace,
       locale,
       loadTime,
@@ -159,7 +161,7 @@ export function trackLoadTime(
   // Check file size threshold
   if (size > thresholds.maxFileSize) {
     reportPerformanceIssue({
-      type: 'large_file',
+      type: "large_file",
       namespace,
       locale,
       size,
@@ -169,7 +171,7 @@ export function trackLoadTime(
 
   // Send to analytics
   if (analyticsConfig.enabled) {
-    sendToAnalytics('translation_load_time', {
+    sendToAnalytics("translation_load_time", {
       namespace,
       locale,
       load_time: loadTime,
@@ -186,7 +188,7 @@ export function trackMissingKey(
   key: string,
   namespace: string,
   locale: string,
-  context?: string
+  context?: string,
 ) {
   if (!isEnabled) return;
 
@@ -196,20 +198,21 @@ export function trackMissingKey(
     locale,
     context,
     timestamp: Date.now(),
-    userAgent: typeof window !== 'undefined' ? window.navigator.userAgent : undefined,
-    url: typeof window !== 'undefined' ? window.location.href : undefined,
+    userAgent:
+      typeof window !== "undefined" ? window.navigator.userAgent : undefined,
+    url: typeof window !== "undefined" ? window.location.href : undefined,
   };
 
   metrics.missingKeys.push(metric);
 
   // Check threshold
   const recentMissingKeys = metrics.missingKeys.filter(
-    (k) => Date.now() - k.timestamp < 60000 && k.namespace === namespace
+    (k) => Date.now() - k.timestamp < 60000 && k.namespace === namespace,
   );
 
   if (recentMissingKeys.length > thresholds.maxMissingKeysPerPage) {
     reportPerformanceIssue({
-      type: 'too_many_missing_keys',
+      type: "too_many_missing_keys",
       namespace,
       locale,
       count: recentMissingKeys.length,
@@ -219,7 +222,7 @@ export function trackMissingKey(
 
   // Send to analytics
   if (analyticsConfig.enabled) {
-    sendToAnalytics('translation_missing_key', {
+    sendToAnalytics("translation_missing_key", {
       key,
       namespace,
       locale,
@@ -253,7 +256,7 @@ export function trackCacheHit(namespace: string, locale: string, hit: boolean) {
     const hitRate = (metrics.cacheStats.hits / total) * 100;
     if (hitRate < thresholds.minCacheHitRate) {
       reportPerformanceIssue({
-        type: 'low_cache_hit_rate',
+        type: "low_cache_hit_rate",
         hitRate,
         threshold: thresholds.minCacheHitRate,
       });
@@ -262,7 +265,7 @@ export function trackCacheHit(namespace: string, locale: string, hit: boolean) {
 
   // Send to analytics
   if (analyticsConfig.enabled) {
-    sendToAnalytics('translation_cache_hit', {
+    sendToAnalytics("translation_cache_hit", {
       namespace,
       locale,
       hit,
@@ -281,7 +284,7 @@ export function trackTranslationRequest(locale: string, namespace: string) {
 
   // Send to analytics
   if (analyticsConfig.enabled) {
-    sendToAnalytics('translation_request', {
+    sendToAnalytics("translation_request", {
       locale,
       namespace,
     });
@@ -312,7 +315,9 @@ export function getMetricsSummary() {
   const allLoadTimes = Object.values(metrics.loadTimes).flat();
   summary.totalLoadTimes = allLoadTimes.length;
   if (allLoadTimes.length > 0) {
-    summary.averageLoadTime = allLoadTimes.reduce((sum, m) => sum + m.loadTime, 0) / allLoadTimes.length;
+    summary.averageLoadTime =
+      allLoadTimes.reduce((sum, m) => sum + m.loadTime, 0) /
+      allLoadTimes.length;
   }
 
   // Calculate cache hit rate
@@ -322,10 +327,16 @@ export function getMetricsSummary() {
   }
 
   // Calculate total file size
-  summary.totalFileSize = Object.values(metrics.fileSizes).reduce((sum, size) => sum + size, 0);
+  summary.totalFileSize = Object.values(metrics.fileSizes).reduce(
+    (sum, size) => sum + size,
+    0,
+  );
 
   // Calculate total requests
-  summary.totalRequests = Object.values(metrics.requestCounts).reduce((sum, count) => sum + count, 0);
+  summary.totalRequests = Object.values(metrics.requestCounts).reduce(
+    (sum, count) => sum + count,
+    0,
+  );
 
   return summary;
 }
@@ -364,9 +375,13 @@ function sendToAnalytics(eventName: string, data: Record<string, any>) {
   if (!analyticsConfig.enabled) return;
 
   // Send to Google Analytics if gtag is available
-  if (typeof window !== 'undefined' && 'gtag' in window && analyticsConfig.gtagId) {
-    (window as any).gtag('event', eventName, {
-      event_category: 'translation_performance',
+  if (
+    typeof window !== "undefined" &&
+    "gtag" in window &&
+    analyticsConfig.gtagId
+  ) {
+    (window as any).gtag("event", eventName, {
+      event_category: "translation_performance",
       custom_map: data,
     });
   }
@@ -374,7 +389,7 @@ function sendToAnalytics(eventName: string, data: Record<string, any>) {
   // Send to custom endpoint if configured
   if (analyticsConfig.customEndpoint) {
     // Store in batch for later sending
-    if (!('translationMetricsBatch' in window)) {
+    if (!("translationMetricsBatch" in window)) {
       (window as any).translationMetricsBatch = [];
     }
 
@@ -385,7 +400,10 @@ function sendToAnalytics(eventName: string, data: Record<string, any>) {
     });
 
     // Flush if batch size reached
-    if ((window as any).translationMetricsBatch.length >= analyticsConfig.batchSize) {
+    if (
+      (window as any).translationMetricsBatch.length >=
+      analyticsConfig.batchSize
+    ) {
       flushMetrics();
     }
   }
@@ -397,16 +415,16 @@ function sendToAnalytics(eventName: string, data: Record<string, any>) {
 async function flushMetrics() {
   if (!analyticsConfig.customEndpoint) return;
 
-  if (typeof window === 'undefined') return;
+  if (typeof window === "undefined") return;
 
   const batch = (window as any).translationMetricsBatch || [];
   if (batch.length === 0) return;
 
   try {
     await fetch(analyticsConfig.customEndpoint, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         metrics: batch,
@@ -418,7 +436,7 @@ async function flushMetrics() {
     // Clear batch on success
     (window as any).translationMetricsBatch = [];
   } catch (error) {
-    console.error('Failed to flush translation metrics:', error);
+    console.error("Failed to flush translation metrics:", error);
   }
 }
 
@@ -432,24 +450,24 @@ function reportPerformanceIssue(issue: {
   [key: string]: any;
 }) {
   // Log to console in development
-  if (process.env.NODE_ENV === 'development') {
-    console.warn('Translation performance issue:', issue);
+  if (process.env.NODE_ENV === "development") {
+    console.warn("Translation performance issue:", issue);
   }
 
   // Send to analytics
   if (analyticsConfig.enabled) {
-    sendToAnalytics('translation_performance_issue', issue);
+    sendToAnalytics("translation_performance_issue", issue);
   }
 
   // Could also integrate with error monitoring services like Sentry
-  if (typeof window !== 'undefined' && 'Sentry' in window) {
+  if (typeof window !== "undefined" && "Sentry" in window) {
     (window as any).Sentry.captureMessage(
       `Translation performance issue: ${issue.type}`,
       {
-        level: 'warning',
+        level: "warning",
         tags: { namespace: issue.namespace, locale: issue.locale },
         extra: issue,
-      }
+      },
     );
   }
 }
@@ -473,12 +491,12 @@ export const ServerTranslationMonitor = {
         const size = JSON.stringify(result.messages).length;
 
         // Track server-side metrics
-        trackLoadTime('messages', locale, loadTime, size, 'server');
+        trackLoadTime("messages", locale, loadTime, size, "server");
 
         return result;
       } catch (error) {
         const loadTime = Date.now() - startTime;
-        trackLoadTime('messages', locale, loadTime, 0, 'server');
+        trackLoadTime("messages", locale, loadTime, 0, "server");
         throw error;
       }
     };
@@ -493,8 +511,8 @@ export const ServerTranslationMonitor = {
 };
 
 // Clean up on page unload
-if (typeof window !== 'undefined') {
-  window.addEventListener('beforeunload', () => {
+if (typeof window !== "undefined") {
+  window.addEventListener("beforeunload", () => {
     if (flushTimer) {
       clearInterval(flushTimer);
     }

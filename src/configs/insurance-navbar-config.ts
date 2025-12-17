@@ -1,4 +1,4 @@
-import { NavbarConfig } from "./navbar-config";
+import type { NavbarConfig } from "./navbar-config";
 
 // Insurance-specific navigation configuration
 export const baseInsuranceNavbarConfig: NavbarConfig = {

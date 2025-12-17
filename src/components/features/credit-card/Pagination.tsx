@@ -1,7 +1,8 @@
 "use client";
 
-import React from "react";
+import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
 import { useTranslations } from "next-intl";
+import React from "react";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -10,9 +11,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
-import { cn } from "@/lib/utils";
 import { ITEMS_PER_PAGE_OPTIONS } from "@/constants/credit-cards";
+import { cn } from "@/lib/utils";
 
 interface PaginationProps {
   currentPage: number;

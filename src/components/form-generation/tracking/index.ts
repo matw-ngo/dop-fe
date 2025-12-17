@@ -14,15 +14,13 @@ export type {
   FieldTrackingEvent,
   TrackingBackend,
 } from "../types";
-
+// Export adapters
+export { LibTrackingAdapter } from "./adapters/LibTrackingAdapter";
 // Export provider and hook
 export {
   FormTrackingProvider,
   useFormTracking,
 } from "./TrackingProvider";
-
-// Export adapters
-export { LibTrackingAdapter } from "./adapters/LibTrackingAdapter";
 
 // Export tracking hook
 export { useFieldTracking } from "./useFieldTracking";

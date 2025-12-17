@@ -9,12 +9,16 @@
  */
 
 import { render, screen } from "@testing-library/react";
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { DANGEROUS_PATTERNS, isSafeCSS, sanitizeCSS } from "@/lib/sanitize-css";
+import {
+  getColorFormat,
+  isValidColor,
+  parseColor,
+} from "@/lib/validate-colors";
 import { ThemeProvider, useTheme } from "../context";
-import { applyTheme, exportThemeAsCSS } from "../utils";
-import { sanitizeCSS, isSafeCSS, DANGEROUS_PATTERNS } from "@/lib/sanitize-css";
-import { isValidColor, getColorFormat, parseColor } from "@/lib/validate-colors";
 import type { ThemeConfig } from "../types";
+import { applyTheme, exportThemeAsCSS } from "../utils";
 
 // Mock next-themes
 vi.mock("next-themes", () => ({
@@ -44,10 +48,12 @@ function TestComponent() {
         {JSON.stringify(customizations || {})}
       </div>
       <button
-        onClick={() => setCustomizations({
-          primary: "oklch(0.7 0.15 250)",
-          background: "#ffffff",
-        })}
+        onClick={() =>
+          setCustomizations({
+            primary: "oklch(0.7 0.15 250)",
+            background: "#ffffff",
+          })
+        }
         data-testid="set-valid-colors"
       >
         Set Valid Colors
@@ -73,7 +79,7 @@ describe("Theme System Security Tests", () => {
       render(
         <ThemeProvider>
           <TestComponent />
-        </ThemeProvider>
+        </ThemeProvider>,
       );
 
       // Get the setCustomizations function
@@ -92,7 +98,7 @@ describe("Theme System Security Tests", () => {
       render(
         <ThemeProvider>
           <TestComponent />
-        </ThemeProvider>
+        </ThemeProvider>,
       );
 
       // The component should render without errors
@@ -114,7 +120,7 @@ describe("Theme System Security Tests", () => {
       render(
         <ThemeProvider>
           <TestComponent />
-        </ThemeProvider>
+        </ThemeProvider>,
       );
 
       // Should handle nullish values gracefully
@@ -125,14 +131,15 @@ describe("Theme System Security Tests", () => {
       const injectionAttempts = {
         "background; color: red; font-size: 100px;": "oklch(0.5 0.1 0)",
         "display:none": "oklch(0.5 0.1 0)",
-        "position:fixed;top:0;left:0;width:100%;height:100%": "oklch(0.5 0.1 0)",
+        "position:fixed;top:0;left:0;width:100%;height:100%":
+          "oklch(0.5 0.1 0)",
         "@import url('https://evil.com/style.css')": "oklch(0.5 0.1 0)",
       };
 
       render(
         <ThemeProvider>
           <TestComponent />
-        </ThemeProvider>
+        </ThemeProvider>,
       );
 
       expect(screen.getByTestId("can-customize")).toBeInTheDocument();
@@ -769,7 +776,8 @@ describe("Theme System Security Tests", () => {
 
         // Note: HTML injection in CSS is handled by sanitizeCSS, not detected by isSafeCSS
         // The HTML will be stripped by sanitizeCSS, making it "safe" from CSS injection perspective
-        const htmlInjectionCSS = ".test { color: red; } <script>alert(1)</script>";
+        const htmlInjectionCSS =
+          ".test { color: red; } <script>alert(1)</script>";
         // This returns true because after sanitization, only the CSS remains
         expect(isSafeCSS(htmlInjectionCSS)).toBe(true);
       });
@@ -796,7 +804,7 @@ describe("Theme System Security Tests", () => {
       render(
         <ThemeProvider>
           <TestComponent />
-        </ThemeProvider>
+        </ThemeProvider>,
       );
 
       // Test component renders without errors
@@ -934,8 +942,12 @@ describe("Theme System Security Tests", () => {
       }).not.toThrow();
 
       // Check CSS variables are set
-      expect(document.documentElement.style.getPropertyValue("--background")).toBe("#ffffff");
-      expect(document.documentElement.style.getPropertyValue("--primary")).toBe("#0066cc");
+      expect(
+        document.documentElement.style.getPropertyValue("--background"),
+      ).toBe("#ffffff");
+      expect(document.documentElement.style.getPropertyValue("--primary")).toBe(
+        "#0066cc",
+      );
 
       // Check malicious CSS is sanitized
       const styleElement = document.getElementById("custom-theme-styles");

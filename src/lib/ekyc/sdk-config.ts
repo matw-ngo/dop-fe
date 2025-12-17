@@ -2,7 +2,7 @@
  * SDK Configuration - Centralized configuration for VNPT eKYC SDK
  */
 
-import { DocumentType } from "./types";
+import type { DocumentType } from "./types";
 
 export interface EkycSdkConfig {
   // Required credentials
@@ -319,28 +319,28 @@ export class EkycConfigBuilder {
     mobileStyle?: Partial<MobileStyle>;
   }): EkycConfigBuilder {
     if (styling.listChooseStyle) {
-      // @ts-ignore
+      // @ts-expect-error
       this.config.LIST_CHOOSE_STYLE = {
         ...this.config.LIST_CHOOSE_STYLE,
         ...styling.listChooseStyle,
       };
     }
     if (styling.captureImageStyle) {
-      // @ts-ignore
+      // @ts-expect-error
       this.config.CAPTURE_IMAGE_STYLE = {
         ...this.config.CAPTURE_IMAGE_STYLE,
         ...styling.captureImageStyle,
       };
     }
     if (styling.resultDefaultStyle) {
-      // @ts-ignore
+      // @ts-expect-error
       this.config.RESULT_DEFAULT_STYLE = {
         ...this.config.RESULT_DEFAULT_STYLE,
         ...styling.resultDefaultStyle,
       };
     }
     if (styling.mobileStyle) {
-      // @ts-ignore
+      // @ts-expect-error
       this.config.MOBILE_STYLE = {
         ...this.config.MOBILE_STYLE,
         ...styling.mobileStyle,

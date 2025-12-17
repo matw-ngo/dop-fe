@@ -20,7 +20,7 @@
  * - Unemployment (both): 34,500,000 VND
  */
 
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import {
   calculateEmployeeInsurance,
   calculateEmployerInsurance,

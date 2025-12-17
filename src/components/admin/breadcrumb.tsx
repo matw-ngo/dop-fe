@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 import {
   Breadcrumb as BreadcrumbComponent,
   BreadcrumbEllipsis,
@@ -18,7 +19,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useLocalizedPath } from "@/lib/client-utils";
-import { useTranslations } from "next-intl";
 
 interface BreadcrumbItem {
   label: string;

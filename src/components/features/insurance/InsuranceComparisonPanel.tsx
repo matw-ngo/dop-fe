@@ -1,33 +1,26 @@
 "use client";
 
-import type React from "react";
-import { useState } from "react";
-import { useTranslations } from "next-intl";
 import {
-  Shield,
-  X,
-  Plus,
-  Share2,
-  Download,
   BarChart3,
-  Loader2,
-  Copy,
-  FileText,
-  Printer,
-  Link,
   Check,
   ChevronDown,
+  Copy,
+  Download,
+  FileText,
+  Link,
+  Loader2,
+  Plus,
+  Printer,
+  Share2,
+  Shield,
+  X,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { useTranslations } from "next-intl";
+import type React from "react";
+import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -35,9 +28,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { InsuranceProduct } from "@/types/insurance";
-import { cn } from "@/lib/utils";
+import { Progress } from "@/components/ui/progress";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { useToast } from "@/hooks/ui/use-toast";
+import { cn } from "@/lib/utils";
+import type { InsuranceProduct } from "@/types/insurance";
 
 interface InsuranceComparisonPanelProps {
   products: InsuranceProduct[];

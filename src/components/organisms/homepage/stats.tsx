@@ -1,8 +1,8 @@
 "use client";
 
-import React from "react";
 import Link from "next/link";
-import { StatsConfig } from "@/configs/homepage-config";
+import React from "react";
+import type { StatsConfig } from "@/configs/homepage-config";
 
 interface StatsProps {
   config?: StatsConfig;

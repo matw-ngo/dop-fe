@@ -4,26 +4,35 @@
  */
 
 import { create } from "zustand";
-import { persist, createJSONStorage } from "zustand/middleware";
-import { getBiometricSecurityManager, destroyBiometricSecurityManager } from "@/lib/security/biometric-security";
-import { subscribeWithSelector } from "zustand/middleware";
 import {
-  EkycFullResult,
-  EkycOcrData,
-  EkycLivenessFaceData,
-  EkycCompareData,
-  OnboardingFormData,
-  mapEkycToFormData,
-  isEkycResultValid,
-} from "@/lib/ekyc/ekyc-data-mapper";
-import { VietnameseDocumentType, VIETNAMESE_DOCUMENT_TYPES } from "@/lib/ekyc/document-types";
+  createJSONStorage,
+  persist,
+  subscribeWithSelector,
+} from "zustand/middleware";
 import type {
-  EkycSession,
   DocumentVerificationResponse,
-  FaceVerificationResponse,
-  FaceComparisonResponse,
+  EkycSession,
   EkycVerificationStatus,
+  FaceComparisonResponse,
+  FaceVerificationResponse,
 } from "@/lib/api/endpoints/ekyc";
+import {
+  VIETNAMESE_DOCUMENT_TYPES,
+  type VietnameseDocumentType,
+} from "@/lib/ekyc/document-types";
+import {
+  type EkycCompareData,
+  type EkycFullResult,
+  type EkycLivenessFaceData,
+  type EkycOcrData,
+  isEkycResultValid,
+  mapEkycToFormData,
+  type OnboardingFormData,
+} from "@/lib/ekyc/ekyc-data-mapper";
+import {
+  destroyBiometricSecurityManager,
+  getBiometricSecurityManager,
+} from "@/lib/security/biometric-security";
 
 // Enhanced state interfaces
 export interface EkycDocumentData {
@@ -112,7 +121,14 @@ export interface EkycSecurity {
 
 export interface EkycState {
   // Primary status
-  status: "idle" | "initializing" | "running" | "processing" | "success" | "error" | "abandoned";
+  status:
+    | "idle"
+    | "initializing"
+    | "running"
+    | "processing"
+    | "success"
+    | "error"
+    | "abandoned";
 
   // Session data
   session?: EkycSession;
@@ -152,7 +168,10 @@ export interface EkycState {
 
   // Actions
   // Session management
-  initializeSession: (session: EkycSession, metadata: Partial<EkycMetadata>) => void;
+  initializeSession: (
+    session: EkycSession,
+    metadata: Partial<EkycMetadata>,
+  ) => void;
   updateSession: (session: Partial<EkycSession>) => void;
 
   // Step management
@@ -164,15 +183,24 @@ export interface EkycState {
 
   // Document verification
   setDocumentData: (data: Partial<EkycDocumentData>) => void;
-  setDocumentOcrData: (ocrData: EkycOcrData, verificationResult?: DocumentVerificationResponse) => void;
+  setDocumentOcrData: (
+    ocrData: EkycOcrData,
+    verificationResult?: DocumentVerificationResponse,
+  ) => void;
 
   // Face verification
   setFaceData: (data: Partial<EkycFaceData>) => void;
-  setFaceLivenessData: (livenessData: EkycLivenessFaceData, verificationResult?: FaceVerificationResponse) => void;
+  setFaceLivenessData: (
+    livenessData: EkycLivenessFaceData,
+    verificationResult?: FaceVerificationResponse,
+  ) => void;
 
   // Face comparison
   setComparisonData: (data: Partial<EkycComparisonData>) => void;
-  setFaceCompareData: (compareData: EkycCompareData, comparisonResult?: FaceComparisonResponse) => void;
+  setFaceCompareData: (
+    compareData: EkycCompareData,
+    comparisonResult?: FaceComparisonResponse,
+  ) => void;
 
   // Result management
   setResult: (result: EkycFullResult) => void;
@@ -187,7 +215,11 @@ export interface EkycState {
   updateFraudRisk: (risk: "low" | "medium" | "high" | "critical") => void;
 
   // Secure biometric data management
-  storeEncryptedData: (dataId: string, file: File, dataType: 'document_front' | 'document_back' | 'face') => Promise<void>;
+  storeEncryptedData: (
+    dataId: string,
+    file: File,
+    dataType: "document_front" | "document_back" | "face",
+  ) => Promise<void>;
   getEncryptedData: (dataId: string) => Promise<File | null>;
   deleteEncryptedData: (dataId: string) => void;
   cleanupExpiredData: () => void;
@@ -253,7 +285,7 @@ const EKYC_STEPS = [
 ];
 
 const createInitialSteps = (): EkycStep[] => {
-  return EKYC_STEPS.map(step => ({
+  return EKYC_STEPS.map((step) => ({
     id: step.id,
     name: step.name,
     nameVi: step.nameVi,
@@ -268,11 +300,14 @@ const createInitialSteps = (): EkycStep[] => {
 
 const calculateOverallProgress = (steps: EkycStep[]): number => {
   const totalSteps = steps.length;
-  const completedSteps = steps.filter(step => step.status === "completed").length;
-  const inProgressSteps = steps.filter(step => step.status === "in_progress");
+  const completedSteps = steps.filter(
+    (step) => step.status === "completed",
+  ).length;
+  const inProgressSteps = steps.filter((step) => step.status === "in_progress");
 
   const progressFromCompleted = (completedSteps / totalSteps) * 100;
-  const progressFromInProgress = inProgressSteps.reduce((acc, step) => acc + step.progress, 0) / totalSteps;
+  const progressFromInProgress =
+    inProgressSteps.reduce((acc, step) => acc + step.progress, 0) / totalSteps;
 
   return Math.min(100, progressFromCompleted + progressFromInProgress);
 };
@@ -293,7 +328,7 @@ export const useEkycStore = create<EkycState>()(
 
         // Secure biometric data management
         encryptedData: new Map(),
-        dataRetentionTimeout: Date.now() + (30 * 60 * 1000), // 30 minutes
+        dataRetentionTimeout: Date.now() + 30 * 60 * 1000, // 30 minutes
 
         // Verification data
         document: {
@@ -321,8 +356,14 @@ export const useEkycStore = create<EkycState>()(
         metadata: {
           flowType: "DOCUMENT_TO_FACE",
           language: "vi",
-          platform: typeof window !== "undefined" ? window.navigator.platform : "unknown",
-          userAgent: typeof window !== "undefined" ? window.navigator.userAgent : "unknown",
+          platform:
+            typeof window !== "undefined"
+              ? window.navigator.platform
+              : "unknown",
+          userAgent:
+            typeof window !== "undefined"
+              ? window.navigator.userAgent
+              : "unknown",
           startTime: new Date().toISOString(),
           consentGiven: false,
         },
@@ -338,7 +379,10 @@ export const useEkycStore = create<EkycState>()(
         },
 
         // Session management
-        initializeSession: (session: EkycSession, metadata: Partial<EkycMetadata>) => {
+        initializeSession: (
+          session: EkycSession,
+          metadata: Partial<EkycMetadata>,
+        ) => {
           console.log("[eKYC Store] Initializing session:", session);
 
           set((state) => ({
@@ -357,14 +401,16 @@ export const useEkycStore = create<EkycState>()(
             window.dispatchEvent(
               new CustomEvent("ekyc:session-initialized", {
                 detail: { session, metadata },
-              })
+              }),
             );
           }
         },
 
         updateSession: (sessionUpdate: Partial<EkycSession>) => {
           set((state) => ({
-            session: state.session ? { ...state.session, ...sessionUpdate } : undefined,
+            session: state.session
+              ? { ...state.session, ...sessionUpdate }
+              : undefined,
             updatedAt: new Date().toISOString(),
           }));
         },
@@ -372,10 +418,14 @@ export const useEkycStore = create<EkycState>()(
         // Step management
         setCurrentStep: (stepId: string) => {
           set((state) => {
-            const updatedSteps = state.steps.map(step =>
+            const updatedSteps = state.steps.map((step) =>
               step.id === stepId
-                ? { ...step, status: "in_progress" as const, startedAt: new Date().toISOString() }
-                : step
+                ? {
+                    ...step,
+                    status: "in_progress" as const,
+                    startedAt: new Date().toISOString(),
+                  }
+                : step,
             );
 
             return {
@@ -389,8 +439,8 @@ export const useEkycStore = create<EkycState>()(
 
         updateStep: (stepId: string, updates: Partial<EkycStep>) => {
           set((state) => {
-            const updatedSteps = state.steps.map(step =>
-              step.id === stepId ? { ...step, ...updates } : step
+            const updatedSteps = state.steps.map((step) =>
+              step.id === stepId ? { ...step, ...updates } : step,
             );
 
             return {
@@ -403,16 +453,18 @@ export const useEkycStore = create<EkycState>()(
 
         completeStep: (stepId: string) => {
           set((state) => {
-            const updatedSteps = state.steps.map(step =>
+            const updatedSteps = state.steps.map((step) =>
               step.id === stepId
                 ? {
                     ...step,
                     status: "completed" as const,
                     progress: 100,
                     completedAt: new Date().toISOString(),
-                    duration: step.startedAt ? Date.now() - new Date(step.startedAt).getTime() : undefined,
+                    duration: step.startedAt
+                      ? Date.now() - new Date(step.startedAt).getTime()
+                      : undefined,
                   }
-                : step
+                : step,
             );
 
             const progress = calculateOverallProgress(updatedSteps);
@@ -428,10 +480,14 @@ export const useEkycStore = create<EkycState>()(
 
         failStep: (stepId: string, errors: string[]) => {
           set((state) => {
-            const updatedSteps = state.steps.map(step =>
+            const updatedSteps = state.steps.map((step) =>
               step.id === stepId
-                ? { ...step, status: "failed" as const, errors: [...step.errors, ...errors] }
-                : step
+                ? {
+                    ...step,
+                    status: "failed" as const,
+                    errors: [...step.errors, ...errors],
+                  }
+                : step,
             );
 
             return {
@@ -445,7 +501,7 @@ export const useEkycStore = create<EkycState>()(
 
         retryStep: (stepId: string) => {
           set((state) => {
-            const updatedSteps = state.steps.map(step =>
+            const updatedSteps = state.steps.map((step) =>
               step.id === stepId
                 ? {
                     ...step,
@@ -458,7 +514,7 @@ export const useEkycStore = create<EkycState>()(
                     completedAt: undefined,
                     duration: undefined,
                   }
-                : step
+                : step,
             );
 
             return {
@@ -478,7 +534,10 @@ export const useEkycStore = create<EkycState>()(
           }));
         },
 
-        setDocumentOcrData: (ocrData: EkycOcrData, verificationResult?: DocumentVerificationResponse) => {
+        setDocumentOcrData: (
+          ocrData: EkycOcrData,
+          verificationResult?: DocumentVerificationResponse,
+        ) => {
           set((state) => ({
             document: {
               ...state.document,
@@ -501,7 +560,10 @@ export const useEkycStore = create<EkycState>()(
           }));
         },
 
-        setFaceLivenessData: (livenessData: EkycLivenessFaceData, verificationResult?: FaceVerificationResponse) => {
+        setFaceLivenessData: (
+          livenessData: EkycLivenessFaceData,
+          verificationResult?: FaceVerificationResponse,
+        ) => {
           set((state) => ({
             face: {
               ...state.face,
@@ -528,7 +590,10 @@ export const useEkycStore = create<EkycState>()(
           }));
         },
 
-        setFaceCompareData: (compareData: EkycCompareData, comparisonResult?: FaceComparisonResponse) => {
+        setFaceCompareData: (
+          compareData: EkycCompareData,
+          comparisonResult?: FaceComparisonResponse,
+        ) => {
           set((state) => ({
             comparison: {
               ...state.comparison,
@@ -537,7 +602,9 @@ export const useEkycStore = create<EkycState>()(
               isMatch: comparisonResult?.match ?? false,
               similarity: comparisonResult?.similarity ?? 0,
               confidence: comparisonResult?.confidence ?? 0,
-              warnings: comparisonResult?.metadata ? Object.values(comparisonResult.metadata) : [],
+              warnings: comparisonResult?.metadata
+                ? Object.values(comparisonResult.metadata)
+                : [],
             },
             updatedAt: new Date().toISOString(),
           }));
@@ -582,7 +649,7 @@ export const useEkycStore = create<EkycState>()(
                   formData: mapped,
                   completedAt: new Date().toISOString(),
                 },
-              })
+              }),
             );
           }
         },
@@ -601,8 +668,12 @@ export const useEkycStore = create<EkycState>()(
           if (typeof window !== "undefined") {
             window.dispatchEvent(
               new CustomEvent("ekyc:error", {
-                detail: { error, additionalErrors, timestamp: new Date().toISOString() },
-              })
+                detail: {
+                  error,
+                  additionalErrors,
+                  timestamp: new Date().toISOString(),
+                },
+              }),
             );
           }
         },
@@ -639,9 +710,14 @@ export const useEkycStore = create<EkycState>()(
             };
 
             const newRiskFactors = [...state.security.riskFactors, flag];
-            const fraudRisk = newRiskFactors.length > 5 ? "critical" :
-                            newRiskFactors.length > 3 ? "high" :
-                            newRiskFactors.length > 1 ? "medium" : "low";
+            const fraudRisk =
+              newRiskFactors.length > 5
+                ? "critical"
+                : newRiskFactors.length > 3
+                  ? "high"
+                  : newRiskFactors.length > 1
+                    ? "medium"
+                    : "low";
 
             return {
               security: {
@@ -679,7 +755,7 @@ export const useEkycStore = create<EkycState>()(
             window.dispatchEvent(
               new CustomEvent("ekyc:started", {
                 detail: { timestamp: new Date().toISOString() },
-              })
+              }),
             );
           }
         },
@@ -703,7 +779,8 @@ export const useEkycStore = create<EkycState>()(
 
           // Update final metadata
           const endTime = new Date().toISOString();
-          const totalDuration = Date.now() - new Date(state.metadata.startTime).getTime();
+          const totalDuration =
+            Date.now() - new Date(state.metadata.startTime).getTime();
 
           set({
             status: "success",
@@ -730,7 +807,7 @@ export const useEkycStore = create<EkycState>()(
                   },
                   completedAt: endTime,
                 },
-              })
+              }),
             );
           }
         },
@@ -780,8 +857,14 @@ export const useEkycStore = create<EkycState>()(
             metadata: {
               flowType: "DOCUMENT_TO_FACE",
               language: "vi",
-              platform: typeof window !== "undefined" ? window.navigator.platform : "unknown",
-              userAgent: typeof window !== "undefined" ? window.navigator.userAgent : "unknown",
+              platform:
+                typeof window !== "undefined"
+                  ? window.navigator.platform
+                  : "unknown",
+              userAgent:
+                typeof window !== "undefined"
+                  ? window.navigator.userAgent
+                  : "unknown",
               startTime: new Date().toISOString(),
               consentGiven: false,
             },
@@ -790,16 +873,20 @@ export const useEkycStore = create<EkycState>()(
         },
 
         // Secure biometric data management
-        storeEncryptedData: async (dataId: string, file: File, dataType: 'document_front' | 'document_back' | 'face') => {
+        storeEncryptedData: async (
+          dataId: string,
+          file: File,
+          dataType: "document_front" | "document_back" | "face",
+        ) => {
           try {
             const biometricSecurity = getBiometricSecurityManager();
-            const sessionId = get().session?.sessionId || 'default_session';
+            const sessionId = get().session?.sessionId || "default_session";
 
             // Encrypt the file using biometric security manager
             const encryptedData = await biometricSecurity.encryptBiometricData(
               await file.arrayBuffer(),
               dataType,
-              sessionId
+              sessionId,
             );
 
             // Store encrypted data in memory (not persisted)
@@ -816,12 +903,14 @@ export const useEkycStore = create<EkycState>()(
 
             // Update retention timeout
             set({
-              dataRetentionTimeout: Date.now() + (30 * 60 * 1000), // Reset to 30 minutes
+              dataRetentionTimeout: Date.now() + 30 * 60 * 1000, // Reset to 30 minutes
             });
-
           } catch (error) {
-            console.error('[eKYC Store] Failed to encrypt biometric data:', error);
-            get().setError('Failed to securely store biometric data');
+            console.error(
+              "[eKYC Store] Failed to encrypt biometric data:",
+              error,
+            );
+            get().setError("Failed to securely store biometric data");
           }
         },
 
@@ -835,17 +924,22 @@ export const useEkycStore = create<EkycState>()(
             }
 
             // Decrypt the data
-            const decryptedBuffer = await biometricSecurity.decryptBiometricData(encryptedEntry.encryptedData);
+            const decryptedBuffer =
+              await biometricSecurity.decryptBiometricData(
+                encryptedEntry.encryptedData,
+              );
 
             // Convert back to File
             return new File(
               [decryptedBuffer],
               encryptedEntry.originalFileName,
-              { type: encryptedEntry.fileType }
+              { type: encryptedEntry.fileType },
             );
-
           } catch (error) {
-            console.error('[eKYC Store] Failed to decrypt biometric data:', error);
+            console.error(
+              "[eKYC Store] Failed to decrypt biometric data:",
+              error,
+            );
             return null;
           }
         },
@@ -893,17 +987,17 @@ export const useEkycStore = create<EkycState>()(
 
         getCurrentStep: () => {
           const state = get();
-          return state.steps.find(step => step.id === state.currentStep);
+          return state.steps.find((step) => step.id === state.currentStep);
         },
 
         getCompletedSteps: () => {
           const state = get();
-          return state.steps.filter(step => step.status === "completed");
+          return state.steps.filter((step) => step.status === "completed");
         },
 
         getFailedSteps: () => {
           const state = get();
-          return state.steps.filter(step => step.status === "failed");
+          return state.steps.filter((step) => step.status === "failed");
         },
 
         getProgress: () => {
@@ -914,7 +1008,7 @@ export const useEkycStore = create<EkycState>()(
         canRetry: () => {
           const state = get();
           const failedSteps = state.getFailedSteps();
-          return failedSteps.some(step => step.retryCount < step.maxRetries);
+          return failedSteps.some((step) => step.retryCount < step.maxRetries);
         },
 
         isCompleted: () => {
@@ -967,7 +1061,10 @@ export const useEkycStore = create<EkycState>()(
                   const encryptedData = JSON.parse(item);
                   return encryptedData.data;
                 } catch (error) {
-                  console.error('[eKYC Store] Failed to decrypt stored data:', error);
+                  console.error(
+                    "[eKYC Store] Failed to decrypt stored data:",
+                    error,
+                  );
                   return null;
                 }
               },
@@ -977,12 +1074,18 @@ export const useEkycStore = create<EkycState>()(
                   const encryptedData = {
                     data: value,
                     timestamp: Date.now(),
-                    version: '1.0',
+                    version: "1.0",
                   };
 
-                  window.sessionStorage.setItem(key, JSON.stringify(encryptedData));
+                  window.sessionStorage.setItem(
+                    key,
+                    JSON.stringify(encryptedData),
+                  );
                 } catch (error) {
-                  console.error('[eKYC Store] Failed to encrypt and store data:', error);
+                  console.error(
+                    "[eKYC Store] Failed to encrypt and store data:",
+                    error,
+                  );
                   // Fallback to non-encrypted storage if encryption fails
                   window.sessionStorage.setItem(key, JSON.stringify(value));
                 }
@@ -1037,11 +1140,11 @@ export const useEkycStore = create<EkycState>()(
           updatedAt: state.updatedAt,
           // Never persist encrypted biometric data - memory only
           encryptedData: new Map(),
-          dataRetentionTimeout: Date.now() + (30 * 60 * 1000), // Reset timeout on restore
+          dataRetentionTimeout: Date.now() + 30 * 60 * 1000, // Reset timeout on restore
         }),
-      }
-    )
-  )
+      },
+    ),
+  ),
 );
 
 // Subscribe to changes and update progress automatically
@@ -1049,25 +1152,25 @@ useEkycStore.subscribe(
   (state) => state.steps,
   (steps) => {
     useEkycStore.getState().updateProgress();
-  }
+  },
 );
 
 // Automatic data cleanup for biometric security compliance
-if (typeof window !== 'undefined') {
+if (typeof window !== "undefined") {
   setInterval(() => {
     useEkycStore.getState().cleanupExpiredData();
   }, 60000); // Check every minute
 }
 
 // Cleanup on page unload for Vietnamese data protection compliance
-if (typeof window !== 'undefined') {
-  window.addEventListener('beforeunload', () => {
+if (typeof window !== "undefined") {
+  window.addEventListener("beforeunload", () => {
     const store = useEkycStore.getState();
     store.cleanupExpiredData();
     destroyBiometricSecurityManager();
   });
 
-  window.addEventListener('pagehide', () => {
+  window.addEventListener("pagehide", () => {
     const store = useEkycStore.getState();
     store.cleanupExpiredData();
     destroyBiometricSecurityManager();
@@ -1077,16 +1180,19 @@ if (typeof window !== 'undefined') {
 // Export selectors for efficient subscriptions
 export const useEkycStatus = () => useEkycStore((state) => state.status);
 export const useEkycProgress = () => useEkycStore((state) => state.progress);
-export const useEkycCurrentStep = () => useEkycStore((state) => state.getCurrentStep());
+export const useEkycCurrentStep = () =>
+  useEkycStore((state) => state.getCurrentStep());
 export const useEkycDocument = () => useEkycStore((state) => state.document);
 export const useEkycFace = () => useEkycStore((state) => state.face);
-export const useEkycComparison = () => useEkycStore((state) => state.comparison);
+export const useEkycComparison = () =>
+  useEkycStore((state) => state.comparison);
 export const useEkycErrors = () => useEkycStore((state) => state.errors);
 export const useEkycWarnings = () => useEkycStore((state) => state.warnings);
-export const useEkycResult = () => useEkycStore((state) => ({
-  rawResult: state.rawResult,
-  formData: state.formData,
-  isValid: state.isValid(),
-}));
+export const useEkycResult = () =>
+  useEkycStore((state) => ({
+    rawResult: state.rawResult,
+    formData: state.formData,
+    isValid: state.isValid(),
+  }));
 export const useEkycMetadata = () => useEkycStore((state) => state.metadata);
 export const useEkycSecurity = () => useEkycStore((state) => state.security);

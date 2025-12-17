@@ -3,15 +3,15 @@
  * Provides secure token storage and retrieval with automatic refresh mechanism
  */
 
-import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
+import { create } from "zustand";
+import { createJSONStorage, persist } from "zustand/middleware";
 
 // Token interface
 interface AuthTokens {
   accessToken: string;
   refreshToken: string;
   expiresAt: number; // Unix timestamp
-  tokenType: 'Bearer';
+  tokenType: "Bearer";
 }
 
 // Token store state
@@ -36,7 +36,7 @@ const TOKEN_EXPIRY_BUFFER = 5 * 60 * 1000;
  * Create secure storage that encrypts sensitive data
  */
 const createSecureStorage = () => {
-  if (typeof window === 'undefined') {
+  if (typeof window === "undefined") {
     return {
       getItem: () => null,
       setItem: () => {},
@@ -54,7 +54,7 @@ const createSecureStorage = () => {
         const decoded = atob(item);
         return decoded;
       } catch (error) {
-        console.warn('Failed to retrieve from secure storage:', error);
+        console.warn("Failed to retrieve from secure storage:", error);
         return null;
       }
     },
@@ -65,7 +65,7 @@ const createSecureStorage = () => {
         const encoded = btoa(value);
         sessionStorage.setItem(name, encoded);
       } catch (error) {
-        console.error('Failed to store in secure storage:', error);
+        console.error("Failed to store in secure storage:", error);
       }
     },
 
@@ -73,7 +73,7 @@ const createSecureStorage = () => {
       try {
         sessionStorage.removeItem(name);
       } catch (error) {
-        console.error('Failed to remove from secure storage:', error);
+        console.error("Failed to remove from secure storage:", error);
       }
     },
   };
@@ -117,7 +117,7 @@ export const useTokenStore = create<TokenStoreState>()(
         const { tokens } = get();
         if (!tokens) return true;
 
-        return Date.now() >= (tokens.expiresAt - TOKEN_EXPIRY_BUFFER);
+        return Date.now() >= tokens.expiresAt - TOKEN_EXPIRY_BUFFER;
       },
 
       refreshTokens: async (): Promise<boolean> => {
@@ -132,16 +132,16 @@ export const useTokenStore = create<TokenStoreState>()(
           set({ isLoading: true });
 
           // Make API call to refresh tokens
-          const response = await fetch('/api/v1/auth/refresh', {
-            method: 'POST',
+          const response = await fetch("/api/v1/auth/refresh", {
+            method: "POST",
             headers: {
-              'Content-Type': 'application/json',
+              "Content-Type": "application/json",
             },
             body: JSON.stringify({ refreshToken }),
           });
 
           if (!response.ok) {
-            throw new Error('Token refresh failed');
+            throw new Error("Token refresh failed");
           }
 
           const newTokens: AuthTokens = await response.json();
@@ -154,14 +154,14 @@ export const useTokenStore = create<TokenStoreState>()(
 
           return true;
         } catch (error) {
-          console.error('Token refresh error:', error);
+          console.error("Token refresh error:", error);
           get().clearTokens();
           return false;
         }
       },
     }),
     {
-      name: 'auth-tokens',
+      name: "auth-tokens",
       storage: createJSONStorage(() => createSecureStorage()),
       partialize: (state) => ({
         tokens: state.tokens,
@@ -183,7 +183,7 @@ export const useAuthTokens = () => {
       const refreshed = await tokenStore.refreshTokens();
       if (!refreshed) {
         // Token refresh failed, redirect to login
-        window.location.href = '/login';
+        window.location.href = "/login";
       }
     }
   };
@@ -211,7 +211,7 @@ export const tokenValidation = {
    */
   validateTokenFormat: (token: string): boolean => {
     // Basic JWT format validation (header.payload.signature)
-    const parts = token.split('.');
+    const parts = token.split(".");
     return parts.length === 3;
   },
 
@@ -220,7 +220,7 @@ export const tokenValidation = {
    */
   getTokenPayload: (token: string) => {
     try {
-      const payload = token.split('.')[1];
+      const payload = token.split(".")[1];
       return JSON.parse(atob(payload));
     } catch (error) {
       return null;
@@ -236,10 +236,13 @@ export const tokenValidation = {
 
     // Check for required claims
     return !!(
-      payload.sub && // Subject (user ID)
-      payload.iat && // Issued at
-      payload.exp && // Expiration
-      payload.scope || payload.roles // Scope or roles
+      (
+        (payload.sub && // Subject (user ID)
+          payload.iat && // Issued at
+          payload.exp && // Expiration
+          payload.scope) ||
+        payload.roles
+      ) // Scope or roles
     );
   },
 };
@@ -254,7 +257,9 @@ export const securityUtils = {
   generateCSRFToken: (): string => {
     const array = new Uint8Array(32);
     crypto.getRandomValues(array);
-    return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
+    return Array.from(array, (byte) => byte.toString(16).padStart(2, "0")).join(
+      "",
+    );
   },
 
   /**
@@ -263,9 +268,9 @@ export const securityUtils = {
   sanitizeInput: (input: string): string => {
     return input
       .trim()
-      .replace(/[<>]/g, '') // Remove potential HTML tags
-      .replace(/javascript:/gi, '') // Remove javascript protocol
-      .replace(/on\w+=/gi, ''); // Remove event handlers
+      .replace(/[<>]/g, "") // Remove potential HTML tags
+      .replace(/javascript:/gi, "") // Remove javascript protocol
+      .replace(/on\w+=/gi, ""); // Remove event handlers
   },
 
   /**

@@ -1,6 +1,11 @@
+import { Grid, List, Loader2, SlidersHorizontal, X } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { Button } from "@/components/ui/button";
+import InsuranceFilterPanel from "@/components/features/insurance/InsuranceFilterPanel";
+import InsuranceSearchBar from "@/components/features/insurance/InsuranceSearchBar";
+import SortDropdown from "@/components/features/insurance/InsuranceSortDropdown";
+import { useThemeUtils } from "@/components/renderer/theme";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Sheet,
   SheetContent,
@@ -8,12 +13,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Grid, List, Loader2, SlidersHorizontal, X } from "lucide-react";
-import InsuranceSearchBar from "@/components/features/insurance/InsuranceSearchBar";
-import SortDropdown from "@/components/features/insurance/InsuranceSortDropdown";
-import InsuranceFilterPanel from "@/components/features/insurance/InsuranceFilterPanel";
 import type { InsuranceFilters } from "@/types/insurance";
-import { useThemeUtils } from "@/components/renderer/theme";
 
 interface InsurancePageControlsProps {
   searchQuery: string;

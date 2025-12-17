@@ -75,7 +75,7 @@ const sanitizeSQL = (input: string): string => {
 const sanitizeFilePath = (input: string): string => {
   return input
     .replace(/\.\./g, "") // Remove directory traversal
-    .replace(/[\/\\:*?"<>|]/g, "") // Remove invalid characters
+    .replace(/[/\\:*?"<>|]/g, "") // Remove invalid characters
     .replace(/^\/+/, "") // Remove leading slashes
     .replace(/\/+$/, ""); // Remove trailing slashes
 };
@@ -194,7 +194,7 @@ export const sanitizeVietnameseName = (name: string): string => {
 
   // Only allow Vietnamese characters, letters, spaces, and some punctuation
   sanitized = sanitized.replace(
-    /[^a-zA-ZàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđĐ\s\.\-']/g,
+    /[^a-zA-ZàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđĐ\s.\-']/g,
     "",
   );
 

@@ -1,50 +1,51 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import {
+  ChevronDown,
+  ChevronUp,
+  CreditCard as CreditCardIcon,
+  DollarSign,
+  Filter,
+  Gift,
+  MapPin,
+  RotateCcw,
+  Shield,
+  Smartphone,
+  Star,
+  Tag,
+  TrendingUp,
+  Users,
+} from "lucide-react";
 import { useTranslations } from "next-intl";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import type React from "react";
+import { useMemo, useState } from "react";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Slider } from "@/components/ui/slider";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import { Slider } from "@/components/ui/slider";
 import {
-  ChevronDown,
-  ChevronUp,
-  RotateCcw,
-  Filter,
-  DollarSign,
-  Users,
-  MapPin,
-  Star,
-  Tag,
-  CreditCard as CreditCardIcon,
-  Gift,
-  Shield,
-  Smartphone,
-  TrendingUp,
-} from "lucide-react";
-import { cn } from "@/lib/utils";
-import {
-  CreditCardFilters,
-  CardNetwork,
-  CardCategory,
-} from "@/types/credit-card";
-import {
+  ANNUAL_FEE_RANGES,
   CARD_CATEGORIES,
   CARD_NETWORKS,
-  ANNUAL_FEE_RANGES,
   CREDIT_LIMIT_TIERS,
-  INCOME_REQUIREMENT_RANGES,
-  EMPLOYMENT_TYPES,
-  REWARDS_TYPES,
-  PROVINCE_GROUPS,
   DEFAULT_FILTERS,
+  EMPLOYMENT_TYPES,
+  INCOME_REQUIREMENT_RANGES,
+  PROVINCE_GROUPS,
+  REWARDS_TYPES,
 } from "@/constants/credit-cards";
+import { cn } from "@/lib/utils";
+import type {
+  CardCategory,
+  CardNetwork,
+  CreditCardFilters,
+} from "@/types/credit-card";
 
 interface FilterPanelProps {
   filters: CreditCardFilters;

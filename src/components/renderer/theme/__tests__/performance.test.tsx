@@ -1,6 +1,6 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { applyTheme, generateCSSVariables } from "../utils";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { ThemeConfig } from "../types";
+import { applyTheme, generateCSSVariables } from "../utils";
 
 // Mock requestAnimationFrame
 let rafCallbacks: Array<(timestamp: number) => void> = [];
@@ -139,7 +139,7 @@ describe("Theme Performance Optimizations", () => {
       const setPropertyCalls = mockRootStyle.setProperty.mock.calls;
 
       // Check for key CSS variables
-      const cssVars = setPropertyCalls.map(call => call[0]);
+      const cssVars = setPropertyCalls.map((call) => call[0]);
       expect(cssVars).toContain("--background");
       expect(cssVars).toContain("--foreground");
       expect(cssVars).toContain("--primary");
@@ -170,10 +170,10 @@ describe("Theme Performance Optimizations", () => {
 
       // Should only apply the final theme
       const setPropertyCalls = mockRootStyle.setProperty.mock.calls;
-      const cssVars = setPropertyCalls.map(call => call[0]);
+      const cssVars = setPropertyCalls.map((call) => call[0]);
 
       // Verify dark mode values were not applied
-      expect(cssVars.some(v => v.includes("oklch(0 0 0)"))).toBe(false);
+      expect(cssVars.some((v) => v.includes("oklch(0 0 0)"))).toBe(false);
     });
 
     it("should clear previous properties before applying new theme", () => {
@@ -203,15 +203,24 @@ describe("Theme Performance Optimizations", () => {
       rafCallbacks[0](0);
 
       const setPropertyCalls = mockRootStyle.setProperty.mock.calls;
-      const props = setPropertyCalls.map(call => call[0]);
+      const props = setPropertyCalls.map((call) => call[0]);
 
       expect(props).toContain("--radius");
       expect(props).toContain("--font-sans");
       expect(props).toContain("--font-mono");
 
-      expect(mockRootStyle.setProperty).toHaveBeenCalledWith("--radius", "0.5rem");
-      expect(mockRootStyle.setProperty).toHaveBeenCalledWith("--font-sans", "Inter, sans-serif");
-      expect(mockRootStyle.setProperty).toHaveBeenCalledWith("--font-mono", "JetBrains Mono, monospace");
+      expect(mockRootStyle.setProperty).toHaveBeenCalledWith(
+        "--radius",
+        "0.5rem",
+      );
+      expect(mockRootStyle.setProperty).toHaveBeenCalledWith(
+        "--font-sans",
+        "Inter, sans-serif",
+      );
+      expect(mockRootStyle.setProperty).toHaveBeenCalledWith(
+        "--font-mono",
+        "JetBrains Mono, monospace",
+      );
     });
 
     it("should handle theme customizations efficiently", () => {
@@ -228,8 +237,14 @@ describe("Theme Performance Optimizations", () => {
       const setPropertyCalls = mockRootStyle.setProperty.mock.calls;
 
       // Should have applied customizations
-      expect(mockRootStyle.setProperty).toHaveBeenCalledWith("--primary", "oklch(0.6 0.3 120)");
-      expect(mockRootStyle.setProperty).toHaveBeenCalledWith("--secondary", "oklch(0.3 0.2 240)");
+      expect(mockRootStyle.setProperty).toHaveBeenCalledWith(
+        "--primary",
+        "oklch(0.6 0.3 120)",
+      );
+      expect(mockRootStyle.setProperty).toHaveBeenCalledWith(
+        "--secondary",
+        "oklch(0.3 0.2 240)",
+      );
     });
   });
 
@@ -247,7 +262,7 @@ describe("Theme Performance Optimizations", () => {
               Array.from({ length: 50 }, (_, i) => [
                 `customColor${i}`,
                 `oklch(${0.5 + (i % 10) * 0.05} 0.1 ${i * 7.2})`,
-              ])
+              ]),
             ),
           },
         },
@@ -275,7 +290,7 @@ describe("Theme Performance Optimizations", () => {
           Array.from({ length: 100 }, (_, i) => [
             `custom${i}`,
             `oklch(${Math.random()} ${Math.random()} ${Math.random() * 360})`,
-          ])
+          ]),
         ),
       };
 

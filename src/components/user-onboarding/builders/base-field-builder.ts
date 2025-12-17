@@ -1,16 +1,16 @@
 import {
-  createInputField,
-  createSelectField,
+  createConfirmationField,
   createDatePickerField,
   createEkycField,
-  createConfirmationField,
+  createInputField,
+  createSelectField,
 } from "@/components/renderer/builders/field-builder";
 import type { RawFieldConfig } from "@/components/renderer/types/data-driven-ui";
 import {
-  FIELD_VARIANTS,
   FIELD_ANIMATIONS,
-  LAYOUT_CONFIG,
+  FIELD_VARIANTS,
   GRID_SPANS,
+  LAYOUT_CONFIG,
 } from "../constants/ui-themes";
 
 /**

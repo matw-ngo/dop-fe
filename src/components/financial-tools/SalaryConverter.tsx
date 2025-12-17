@@ -5,7 +5,26 @@
  * social insurance contributions, and various compensation scenarios.
  */
 
-import React, { useState, useEffect, useCallback } from "react";
+import {
+  AlertCircle,
+  Briefcase,
+  Calculator,
+  CheckCircle,
+  DollarSign,
+  Heart,
+  Home,
+  Info,
+  PiggyBank,
+  Receipt,
+  Shield,
+  TrendingUp,
+  Users,
+} from "lucide-react";
+import type React from "react";
+import { useCallback, useEffect, useState } from "react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -13,9 +32,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Progress } from "@/components/ui/progress";
 import {
   Select,
   SelectContent,
@@ -23,41 +42,23 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Separator } from "@/components/ui/separator";
 import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import { Progress } from "@/components/ui/progress";
-import {
-  Calculator,
-  DollarSign,
-  Users,
-  Receipt,
-  TrendingUp,
-  AlertCircle,
-  CheckCircle,
-  Info,
-  PiggyBank,
-  Briefcase,
-  Home,
-  Heart,
-  Shield,
-} from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 // Import calculation functions
 import {
-  calculateComprehensivePersonalTax,
   analyzeCompensationTax,
+  calculateComprehensivePersonalTax,
 } from "@/lib/financial/tax-calculations";
-import { TaxCalculationResult } from "@/lib/financial-data/tax-brackets";
+import type { TaxCalculationResult } from "@/lib/financial-data/tax-brackets";
 import {
-  SOCIAL_INSURANCE_RATES,
   FAMILY_DEDUCTIONS,
+  formatVND,
   REGIONAL_MINIMUM_WAGE,
+  SOCIAL_INSURANCE_RATES,
 } from "@/lib/financial-data/vietnamese-financial-data";
-import { formatVND } from "@/lib/financial-data/vietnamese-financial-data";
 
 // Types
 interface SalaryFormData {

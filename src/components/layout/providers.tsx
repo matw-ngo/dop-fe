@@ -1,8 +1,8 @@
 "use client";
 
 import { QueryClientProvider } from "@tanstack/react-query";
-import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/renderer/theme";
+import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider } from "@/lib/auth/auth-context";
 import { queryClient } from "@/lib/query-client";
 

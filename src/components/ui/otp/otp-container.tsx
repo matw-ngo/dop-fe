@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
+import type React from "react";
+import { useEffect, useState } from "react";
 import { useLocalizedTelcos } from "@/hooks/use-localized-telcos";
 import { getLocalizableTelcoByPhoneNumber } from "@/lib/telcos/localizable-telcos";
 import { OtpForm } from "./otp-form";

@@ -3,10 +3,10 @@
 // CustomToggleGroup wrapper component for Data-Driven UI system
 // Provides a form-friendly ToggleGroup with single/multiple selection
 
-import React from "react";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import type { VariantProps } from "class-variance-authority";
-import { toggleVariants } from "@/components/ui/toggle";
+import React from "react";
+import type { toggleVariants } from "@/components/ui/toggle";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 interface Option {
   value: string;

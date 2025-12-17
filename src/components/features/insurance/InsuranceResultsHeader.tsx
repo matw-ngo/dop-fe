@@ -1,7 +1,14 @@
 "use client";
 
-import React from "react";
+import {
+  AlertCircle,
+  ArrowUpDown,
+  Filter,
+  Loader2,
+  Search,
+} from "lucide-react";
 import { useTranslations } from "next-intl";
+import type React from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,13 +20,6 @@ import {
 } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
-import {
-  Loader2,
-  Filter,
-  Search,
-  ArrowUpDown,
-  AlertCircle,
-} from "lucide-react";
 import { SortOption } from "@/types/insurance";
 import InsuranceSortDropdown from "./InsuranceSortDropdown";
 

@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
 import dynamic from "next/dynamic";
+import { useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -9,8 +9,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useEkycStore } from "@/store/use-ekyc-store";
 import type { EkycFullResult } from "@/lib/ekyc/ekyc-data-mapper";
+import { useEkycStore } from "@/store/use-ekyc-store";
 
 // Dynamically import EkycSdkWrapper to avoid SSR issues
 const EkycSdkWrapper = dynamic(

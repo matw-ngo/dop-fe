@@ -1,19 +1,19 @@
-import React from "react";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import {
-  CreditCard,
   Calculator,
-  RotateCcw,
   Check,
-  X,
   Clock,
-  Trophy,
+  CreditCard,
   FileX,
   Info,
+  RotateCcw,
+  Trophy,
+  X,
 } from "lucide-react";
-import { PaymentMethodCard } from "../PaymentMethodCard";
+import type React from "react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { formatCurrency } from "@/lib/utils";
+import { PaymentMethodCard } from "../PaymentMethodCard";
 
 interface PaymentTabProps {
   product: any;

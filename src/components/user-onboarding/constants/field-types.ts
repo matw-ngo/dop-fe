@@ -1,15 +1,15 @@
 import {
+  Briefcase,
+  Calendar,
+  CheckCircle,
+  CreditCard,
+  DollarSign,
+  FileText,
+  Heart,
+  MapPin,
+  Shield,
   User,
   UserCircle,
-  FileText,
-  CreditCard,
-  MapPin,
-  Calendar,
-  DollarSign,
-  Briefcase,
-  Heart,
-  Shield,
-  CheckCircle,
 } from "lucide-react";
 
 /**

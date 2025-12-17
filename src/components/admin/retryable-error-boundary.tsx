@@ -1,9 +1,9 @@
 "use client";
 
-import React, { Component, ErrorInfo, ReactNode } from "react";
+import { AlertTriangleIcon, RefreshCwIcon } from "lucide-react";
+import React, { Component, type ErrorInfo, type ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { AlertTriangleIcon, RefreshCwIcon } from "lucide-react";
 
 interface RetryableErrorBoundaryProps {
   children: ReactNode;
@@ -36,7 +36,9 @@ export class RetryableErrorBoundary extends Component<
     };
   }
 
-  static getDerivedStateFromError(error: Error): Partial<RetryableErrorBoundaryState> {
+  static getDerivedStateFromError(
+    error: Error,
+  ): Partial<RetryableErrorBoundaryState> {
     return {
       hasError: true,
       error,
@@ -118,11 +120,9 @@ export class RetryableErrorBoundary extends Component<
         <Card className="mx-auto max-w-lg">
           <CardContent className="flex flex-col items-center justify-center py-12 text-center">
             <AlertTriangleIcon className="h-12 w-12 text-destructive mb-4" />
-            
-            <h3 className="text-lg font-semibold mb-2">
-              Something went wrong
-            </h3>
-            
+
+            <h3 className="text-lg font-semibold mb-2">Something went wrong</h3>
+
             <p className="text-sm text-muted-foreground mb-6">
               {error.message || "An unexpected error occurred"}
             </p>
@@ -133,9 +133,7 @@ export class RetryableErrorBoundary extends Component<
                   Error Details (Development Only)
                 </summary>
                 <pre className="whitespace-pre-wrap">
-                  <code>
-                    {errorInfo.componentStack}
-                  </code>
+                  <code>{errorInfo.componentStack}</code>
                 </pre>
               </details>
             )}
@@ -144,10 +142,12 @@ export class RetryableErrorBoundary extends Component<
               {canRetry && (
                 <Button onClick={this.handleRetry}>
                   <RefreshCwIcon className="mr-2 h-4 w-4" />
-                  {isLastRetry ? "Last Retry" : `Retry (${retryCount + 1}/${maxRetries})`}
+                  {isLastRetry
+                    ? "Last Retry"
+                    : `Retry (${retryCount + 1}/${maxRetries})`}
                 </Button>
               )}
-              
+
               <Button variant="outline" onClick={this.handleReset}>
                 Reset
               </Button>
@@ -170,7 +170,7 @@ export class RetryableErrorBoundary extends Component<
 // Higher-order component for easier usage
 export function withRetryableErrorBoundary<P extends object>(
   Component: React.ComponentType<P>,
-  errorBoundaryProps?: Omit<RetryableErrorBoundaryProps, "children">
+  errorBoundaryProps?: Omit<RetryableErrorBoundaryProps, "children">,
 ) {
   const WrappedComponent = (props: P) => (
     <RetryableErrorBoundary {...errorBoundaryProps}>
@@ -194,7 +194,7 @@ export function useRetryableError() {
   });
 
   const retry = React.useCallback(() => {
-    setRetryState(prev => ({
+    setRetryState((prev) => ({
       ...prev,
       hasError: false,
       error: null,
@@ -211,7 +211,7 @@ export function useRetryableError() {
   }, []);
 
   const setError = React.useCallback((error: Error) => {
-    setRetryState(prev => ({
+    setRetryState((prev) => ({
       ...prev,
       hasError: true,
       error,

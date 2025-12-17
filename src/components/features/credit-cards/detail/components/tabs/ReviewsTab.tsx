@@ -1,21 +1,22 @@
-import React, { useState } from "react";
-import { useTranslations } from "next-intl";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Progress } from "@/components/ui/progress";
 import {
+  ChevronDown,
+  Filter,
+  MessageSquare,
   Star,
   StarHalf,
-  ThumbsUp,
   ThumbsDown,
-  MessageSquare,
-  Filter,
-  ChevronDown,
+  ThumbsUp,
   User,
 } from "lucide-react";
-import { DetailedCreditCardInfo } from "@/types/credit-card";
+import { useTranslations } from "next-intl";
+import type React from "react";
+import { useState } from "react";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
+import type { DetailedCreditCardInfo } from "@/types/credit-card";
 
 interface ReviewsTabProps {
   card: DetailedCreditCardInfo;

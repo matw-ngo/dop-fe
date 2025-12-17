@@ -7,8 +7,8 @@ import React from "react";
 import {
   InputOTP,
   InputOTPGroup,
-  InputOTPSlot,
   InputOTPSeparator,
+  InputOTPSlot,
 } from "@/components/ui/input-otp";
 
 interface CustomInputOTPProps {

@@ -7,9 +7,9 @@
  * - Configure global test utilities
  */
 
-import { setupServer } from "msw/node";
 import { http } from "msw";
-import { vi, beforeAll, afterAll, afterEach, expect } from "vitest";
+import { setupServer } from "msw/node";
+import { afterAll, afterEach, beforeAll, expect, vi } from "vitest";
 
 // Mock server for API testing
 export const server = setupServer(

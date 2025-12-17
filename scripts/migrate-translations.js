@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
-const fs = require('fs');
-const path = require('path');
-const crypto = require('crypto');
+const fs = require("fs");
+const path = require("path");
+const crypto = require("crypto");
 
 /**
  * Translation Migration Script
@@ -20,111 +20,111 @@ const crypto = require('crypto');
  */
 
 // Configuration
-const MESSAGES_DIR = path.join(__dirname, '..', 'messages');
-const BACKUP_DIR = path.join(__dirname, '..', 'messages', 'backup');
-const REPORTS_DIR = path.join(__dirname, '..', 'docs', 'migration');
+const MESSAGES_DIR = path.join(__dirname, "..", "messages");
+const BACKUP_DIR = path.join(__dirname, "..", "messages", "backup");
+const REPORTS_DIR = path.join(__dirname, "..", "docs", "migration");
 
 // Target namespace structure mapping
 const NAMESPACE_MAPPING = {
   // Main feature namespaces
-  'insurance': {
-    targetPath: 'features/insurance',
+  insurance: {
+    targetPath: "features/insurance",
     subNamespaces: {
-      'calculator': 'calculator.json',
-      'tutorials': 'tutorials.json',
-      'articles': 'articles.json',
-      'comparison': 'comparison.json',
-      'productOverview': 'product-overview.json',
-      'productDetails': 'product-details.json',
-      'breadcrumb': 'breadcrumb.json',
-      'comparisonSnackbar': 'comparison-snackbar.json',
-      'productComparison': 'product-comparison.json',
-      'productDetail': 'product-detail.json',
-      'coverageTypes': 'coverage-types.json',
-      'units': 'units.json',
-      'categories': 'categories.json',
-      'coveragePeriods': 'coverage-periods.json',
-      'currency': 'currency.json'
+      calculator: "calculator.json",
+      tutorials: "tutorials.json",
+      articles: "articles.json",
+      comparison: "comparison.json",
+      productOverview: "product-overview.json",
+      productDetails: "product-details.json",
+      breadcrumb: "breadcrumb.json",
+      comparisonSnackbar: "comparison-snackbar.json",
+      productComparison: "product-comparison.json",
+      productDetail: "product-detail.json",
+      coverageTypes: "coverage-types.json",
+      units: "units.json",
+      categories: "categories.json",
+      coveragePeriods: "coverage-periods.json",
+      currency: "currency.json",
     },
-    defaultFile: 'insurance.json'
+    defaultFile: "insurance.json",
   },
 
-  'creditCard': {
-    targetPath: 'features/credit-cards',
+  creditCard: {
+    targetPath: "features/credit-cards",
     subNamespaces: {
-      'csvHeaders': 'csv-headers.json',
-      'pdfHeaders': 'pdf-headers.json',
-      'feeTypes': 'fee-types.json',
-      'interestTypes': 'interest-types.json',
-      'categories': 'categories.json',
-      'comparisonSnackbar': 'comparison-snackbar.json',
-      'creditLimitTiers': 'credit-limit-tiers.json',
-      'search': 'search.json',
-      'results': 'results.json',
-      'viewMode': 'view-mode.json'
+      csvHeaders: "csv-headers.json",
+      pdfHeaders: "pdf-headers.json",
+      feeTypes: "fee-types.json",
+      interestTypes: "interest-types.json",
+      categories: "categories.json",
+      comparisonSnackbar: "comparison-snackbar.json",
+      creditLimitTiers: "credit-limit-tiers.json",
+      search: "search.json",
+      results: "results.json",
+      viewMode: "view-mode.json",
     },
-    defaultFile: 'credit-cards.json'
+    defaultFile: "credit-cards.json",
   },
 
-  'tools': {
-    targetPath: 'features/tools',
+  tools: {
+    targetPath: "features/tools",
     subNamespaces: {
-      'loanCalculator': 'loan-calculator.json',
-      'savingsCalculator': 'savings-calculator.json',
-      'grossToNetCalculator': 'gross-to-net-calculator.json',
-      'netToGrossCalculator': 'net-to-gross-calculator.json',
-      'results': 'results.json',
-      'comparison': 'comparison.json',
-      'features': 'features.json',
-      'list': 'tools-list.json',
-      'breadcrumbs': 'breadcrumbs.json'
+      loanCalculator: "loan-calculator.json",
+      savingsCalculator: "savings-calculator.json",
+      grossToNetCalculator: "gross-to-net-calculator.json",
+      netToGrossCalculator: "net-to-gross-calculator.json",
+      results: "results.json",
+      comparison: "comparison.json",
+      features: "features.json",
+      list: "tools-list.json",
+      breadcrumbs: "breadcrumbs.json",
     },
-    defaultFile: 'tools.json'
+    defaultFile: "tools.json",
   },
 
-  'admin': {
-    targetPath: 'features/admin',
+  admin: {
+    targetPath: "features/admin",
     subNamespaces: {
-      'login': 'login.json',
-      'dashboard': 'dashboard.json',
-      'flows': 'flows.json',
-      'flowDetail': 'flow-detail.json',
-      'stepDetail': 'step-detail.json',
-      'breadcrumb': 'breadcrumb.json',
-      'components': 'components.json',
-      'layout': 'layout.json',
-      'auth': 'auth.json'
+      login: "login.json",
+      dashboard: "dashboard.json",
+      flows: "flows.json",
+      flowDetail: "flow-detail.json",
+      stepDetail: "step-detail.json",
+      breadcrumb: "breadcrumb.json",
+      components: "components.json",
+      layout: "layout.json",
+      auth: "auth.json",
     },
-    defaultFile: 'admin.json'
+    defaultFile: "admin.json",
   },
 
   // Common translations
-  'common': {
-    targetPath: 'common',
+  common: {
+    targetPath: "common",
     subNamespaces: {},
-    defaultFile: 'common.json'
+    defaultFile: "common.json",
   },
 
   // Pages (direct pages that don't belong to features)
-  'homePage': {
-    targetPath: 'pages',
-    defaultFile: 'home.json'
+  homePage: {
+    targetPath: "pages",
+    defaultFile: "home.json",
   },
 
-  'userOnboardingPage': {
-    targetPath: 'pages',
-    defaultFile: 'onboarding.json'
+  userOnboardingPage: {
+    targetPath: "pages",
+    defaultFile: "onboarding.json",
   },
 
-  'notFoundPage': {
-    targetPath: 'pages',
-    defaultFile: 'not-found.json'
+  notFoundPage: {
+    targetPath: "pages",
+    defaultFile: "not-found.json",
   },
 
-  'serverErrorPage': {
-    targetPath: 'pages',
-    defaultFile: 'server-error.json'
-  }
+  serverErrorPage: {
+    targetPath: "pages",
+    defaultFile: "server-error.json",
+  },
 };
 
 // Common/shared translations that should be extracted
@@ -142,17 +142,17 @@ const COMMON_PATTERNS = [
   /^buttons?\./i,
   /^labels?\./i,
   /^messages?\./i,
-  /^notifications?\./i
+  /^notifications?\./i,
 ];
 
 /**
  * Command line arguments
  */
 const args = process.argv.slice(2);
-const DRY_RUN = args.includes('--dry-run');
-const SKIP_BACKUP = args.includes('--skip-backup');
-const VERBOSE = args.includes('--verbose');
-const FORCE = args.includes('--force');
+const DRY_RUN = args.includes("--dry-run");
+const SKIP_BACKUP = args.includes("--skip-backup");
+const VERBOSE = args.includes("--verbose");
+const FORCE = args.includes("--force");
 
 /**
  * Ensure directory exists
@@ -174,7 +174,7 @@ function createBackup(language, content) {
 
   ensureDir(BACKUP_DIR);
 
-  const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+  const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
   const backupPath = path.join(BACKUP_DIR, `${language}-${timestamp}.json`);
 
   fs.writeFileSync(backupPath, JSON.stringify(content, null, 2));
@@ -188,9 +188,13 @@ function createBackup(language, content) {
  */
 function countKeys(obj, count = 0) {
   for (const key in obj) {
-    if (obj.hasOwnProperty(key)) {
+    if (Object.hasOwn(obj, key)) {
       count++;
-      if (typeof obj[key] === 'object' && obj[key] !== null && !Array.isArray(obj[key])) {
+      if (
+        typeof obj[key] === "object" &&
+        obj[key] !== null &&
+        !Array.isArray(obj[key])
+      ) {
         count = countKeys(obj[key], count);
       }
     }
@@ -201,22 +205,30 @@ function countKeys(obj, count = 0) {
 /**
  * Extract all keys with their paths from an object
  */
-function extractKeyPaths(obj, prefix = '') {
+function extractKeyPaths(obj, prefix = "") {
   const paths = [];
 
   for (const key in obj) {
-    if (obj.hasOwnProperty(key)) {
+    if (Object.hasOwn(obj, key)) {
       const fullKey = prefix ? `${prefix}.${key}` : key;
 
-      if (typeof obj[key] === 'object' && obj[key] !== null && !Array.isArray(obj[key])) {
+      if (
+        typeof obj[key] === "object" &&
+        obj[key] !== null &&
+        !Array.isArray(obj[key])
+      ) {
         // For objects, recurse to find actual string values
         paths.push(...extractKeyPaths(obj[key], fullKey));
-      } else if (typeof obj[key] === 'string' || typeof obj[key] === 'number' || typeof obj[key] === 'boolean') {
+      } else if (
+        typeof obj[key] === "string" ||
+        typeof obj[key] === "number" ||
+        typeof obj[key] === "boolean"
+      ) {
         // Only collect actual terminal values
         paths.push({
           key: fullKey,
           value: obj[key],
-          namespace: prefix.split('.')[0] || 'root'
+          namespace: prefix.split(".")[0] || "root",
         });
       }
     }
@@ -229,7 +241,7 @@ function extractKeyPaths(obj, prefix = '') {
  * Determine if a key should go to common namespace
  */
 function isCommonKey(key) {
-  return COMMON_PATTERNS.some(pattern => pattern.test(key));
+  return COMMON_PATTERNS.some((pattern) => pattern.test(key));
 }
 
 /**
@@ -240,14 +252,14 @@ function groupTranslationsByNamespace(translations) {
     features: {},
     pages: {},
     common: {},
-    components: {}
+    components: {},
   };
 
   // Process top-level namespaces directly from pages
   const pages = translations.pages || {};
 
   for (const [namespace, content] of Object.entries(pages)) {
-    if (typeof content === 'object' && content !== null) {
+    if (typeof content === "object" && content !== null) {
       // Check if this is a common translation
       if (isCommonKey(namespace)) {
         // Put the entire object under common
@@ -260,7 +272,7 @@ function groupTranslationsByNamespace(translations) {
 
       if (namespaceConfig) {
         // Determine if it's a feature or page
-        if (namespaceConfig.targetPath.includes('features/')) {
+        if (namespaceConfig.targetPath.includes("features/")) {
           // It's a feature
           const targetPath = namespaceConfig.targetPath;
 
@@ -269,9 +281,14 @@ function groupTranslationsByNamespace(translations) {
           }
 
           // Check if this namespace has sub-namespaces to split
-          if (namespaceConfig.subNamespaces && Object.keys(namespaceConfig.subNamespaces).length > 0) {
+          if (
+            namespaceConfig.subNamespaces &&
+            Object.keys(namespaceConfig.subNamespaces).length > 0
+          ) {
             // Split into sub-namespaces
-            for (const [subNamespace, fileName] of Object.entries(namespaceConfig.subNamespaces)) {
+            for (const [subNamespace, fileName] of Object.entries(
+              namespaceConfig.subNamespaces,
+            )) {
               if (content[subNamespace]) {
                 if (!grouped.features[targetPath][fileName]) {
                   grouped.features[targetPath][fileName] = {};
@@ -282,7 +299,9 @@ function groupTranslationsByNamespace(translations) {
 
             // Handle any remaining content that doesn't fit sub-namespaces
             const remaining = { ...content };
-            for (const subNamespace of Object.keys(namespaceConfig.subNamespaces)) {
+            for (const subNamespace of Object.keys(
+              namespaceConfig.subNamespaces,
+            )) {
               delete remaining[subNamespace];
             }
 
@@ -305,7 +324,7 @@ function groupTranslationsByNamespace(translations) {
           if (!grouped.pages) {
             grouped.pages = {};
           }
-          grouped.pages[fileName.replace('.json', '')] = content;
+          grouped.pages[fileName.replace(".json", "")] = content;
         }
       } else {
         // Unknown namespace - put it in pages
@@ -321,12 +340,12 @@ function groupTranslationsByNamespace(translations) {
  * Set nested value in an object
  */
 function setNestedValue(obj, keyPath, value) {
-  const keys = keyPath.split('.');
+  const keys = keyPath.split(".");
   let current = obj;
 
   for (let i = 0; i < keys.length - 1; i++) {
     const key = keys[i];
-    if (!current[key] || typeof current[key] !== 'object') {
+    if (!current[key] || typeof current[key] !== "object") {
       current[key] = {};
     }
     current = current[key];
@@ -342,7 +361,7 @@ function writeNamespaceFiles(grouped, language) {
   const stats = {
     filesCreated: 0,
     keysMigrated: 0,
-    directories: []
+    directories: [],
   };
 
   // Write feature files
@@ -363,13 +382,15 @@ function writeNamespaceFiles(grouped, language) {
       stats.keysMigrated += countKeys(content);
 
       if (VERBOSE) {
-        console.log(`  ✓ ${path.join(language, featurePath, fileName)} - ${countKeys(content)} keys`);
+        console.log(
+          `  ✓ ${path.join(language, featurePath, fileName)} - ${countKeys(content)} keys`,
+        );
       }
     }
   }
 
   // Write page files
-  const pagesPath = path.join(MESSAGES_DIR, language, 'pages');
+  const pagesPath = path.join(MESSAGES_DIR, language, "pages");
   ensureDir(pagesPath);
 
   for (const [key, value] of Object.entries(grouped.pages)) {
@@ -384,23 +405,25 @@ function writeNamespaceFiles(grouped, language) {
     stats.keysMigrated += countKeys(value);
 
     if (VERBOSE) {
-      console.log(`  ✓ ${path.join(language, 'pages', fileName)} - ${countKeys(value)} keys`);
+      console.log(
+        `  ✓ ${path.join(language, "pages", fileName)} - ${countKeys(value)} keys`,
+      );
     }
   }
 
   // Write common files
   if (Object.keys(grouped.common).length > 0) {
-    const commonPath = path.join(MESSAGES_DIR, language, 'common');
+    const commonPath = path.join(MESSAGES_DIR, language, "common");
     ensureDir(commonPath);
 
     // Group common translations by category
     const commonGrouped = {};
     for (const [key, value] of Object.entries(grouped.common)) {
-      const category = key.split('.')[0] || 'misc';
+      const category = key.split(".")[0] || "misc";
       if (!commonGrouped[category]) {
         commonGrouped[category] = {};
       }
-      const subKey = key.split('.').slice(1).join('.');
+      const subKey = key.split(".").slice(1).join(".");
       if (subKey) {
         setNestedValue(commonGrouped[category], subKey, value);
       } else {
@@ -420,7 +443,9 @@ function writeNamespaceFiles(grouped, language) {
       stats.keysMigrated += countKeys(content);
 
       if (VERBOSE) {
-        console.log(`  ✓ ${path.join(language, 'common', fileName)} - ${countKeys(content)} keys`);
+        console.log(
+          `  ✓ ${path.join(language, "common", fileName)} - ${countKeys(content)} keys`,
+        );
       }
     }
   }
@@ -461,7 +486,7 @@ function validateMigration(original, grouped, language) {
     migratedCount,
     difference,
     isValid,
-    note: 'Validation is based on key count due to namespace reorganization'
+    note: "Validation is based on key count due to namespace reorganization",
   };
 }
 
@@ -479,12 +504,18 @@ function generateReport(language, originalStats, migrationStats, validation) {
     summary: {
       success: validation.isValid,
       keyLoss: validation.originalCount - validation.migratedCount,
-      efficiency: Math.round((validation.migratedCount / validation.originalCount) * 100 * 100) / 100
-    }
+      efficiency:
+        Math.round(
+          (validation.migratedCount / validation.originalCount) * 100 * 100,
+        ) / 100,
+    },
   };
 
   ensureDir(REPORTS_DIR);
-  const reportPath = path.join(REPORTS_DIR, `migration-${language}-${Date.now()}.json`);
+  const reportPath = path.join(
+    REPORTS_DIR,
+    `migration-${language}-${Date.now()}.json`,
+  );
   fs.writeFileSync(reportPath, JSON.stringify(report, null, 2));
 
   return reportPath;
@@ -495,7 +526,7 @@ function generateReport(language, originalStats, migrationStats, validation) {
  */
 function createRollbackScript(backups) {
   if (!backups || Object.keys(backups).length === 0) {
-    console.log('⚠️  No backups available for rollback');
+    console.log("⚠️  No backups available for rollback");
     return;
   }
 
@@ -510,7 +541,7 @@ echo "🔄 Rolling back translation migration..."
   for (const [language, backupPath] of Object.entries(backups)) {
     if (backupPath && fs.existsSync(backupPath)) {
       rollbackScript += `echo "Restoring ${language}.json..."
-cp "${backupPath}" "${path.join(MESSAGES_DIR, language + '.json')}"
+cp "${backupPath}" "${path.join(MESSAGES_DIR, language + ".json")}"
 echo "✓ ${language}.json restored"
 `;
     }
@@ -523,9 +554,9 @@ echo "Note: This only restores the original monolithic files."
 echo "You may need to manually clean up the namespace files."
 `;
 
-  const rollbackPath = path.join(__dirname, 'rollback-migration.sh');
+  const rollbackPath = path.join(__dirname, "rollback-migration.sh");
   fs.writeFileSync(rollbackPath, rollbackScript);
-  fs.chmodSync(rollbackPath, '755');
+  fs.chmodSync(rollbackPath, "755");
 
   console.log(`📝 Rollback script created: ${rollbackPath}`);
   return rollbackPath;
@@ -545,7 +576,7 @@ async function migrateLanguage(language) {
   }
 
   // Read original file
-  const content = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+  const content = JSON.parse(fs.readFileSync(filePath, "utf8"));
   const originalKeyCount = countKeys(content);
 
   // Create backup
@@ -564,10 +595,15 @@ async function migrateLanguage(language) {
   const originalStats = {
     file: `${language}.json`,
     keyCount: originalKeyCount,
-    size: fs.statSync(filePath).size
+    size: fs.statSync(filePath).size,
   };
 
-  const reportPath = generateReport(language, originalStats, migrationStats, validation);
+  const reportPath = generateReport(
+    language,
+    originalStats,
+    migrationStats,
+    validation,
+  );
 
   // Print summary
   console.log(`\n📊 Migration Summary for ${language.toUpperCase()}:`);
@@ -577,9 +613,13 @@ async function migrateLanguage(language) {
   console.log(`  Directories: ${migrationStats.directories.length}`);
 
   if (validation.isValid) {
-    console.log(`  ✅ Migration successful! All ${validation.originalCount} keys preserved.`);
+    console.log(
+      `  ✅ Migration successful! All ${validation.originalCount} keys preserved.`,
+    );
   } else {
-    console.log(`  ⚠️  Migration completed with ${validation.difference} key difference`);
+    console.log(
+      `  ⚠️  Migration completed with ${validation.difference} key difference`,
+    );
     console.log(`  Note: ${validation.note}`);
   }
 
@@ -592,7 +632,7 @@ async function migrateLanguage(language) {
     backupPath,
     grouped,
     validation,
-    migrationStats
+    migrationStats,
   };
 }
 
@@ -600,45 +640,47 @@ async function migrateLanguage(language) {
  * Main execution
  */
 async function main() {
-  console.log('🚀 Translation Migration Script');
-  console.log('================================');
+  console.log("🚀 Translation Migration Script");
+  console.log("================================");
 
   if (DRY_RUN) {
-    console.log('\n🔍 DRY RUN MODE - No files will be modified');
+    console.log("\n🔍 DRY RUN MODE - No files will be modified");
   }
 
   if (FORCE) {
-    console.log('\n⚡ FORCE MODE - Skipping confirmations');
+    console.log("\n⚡ FORCE MODE - Skipping confirmations");
   }
 
   if (VERBOSE) {
-    console.log('\n📝 VERBOSE MODE - Detailed output enabled');
+    console.log("\n📝 VERBOSE MODE - Detailed output enabled");
   }
 
   // Confirmation for non-dry-run
   if (!DRY_RUN && !FORCE) {
-    console.log('\n⚠️  This will split your monolithic translation files into namespace-based chunks.');
-    console.log('   A backup will be created automatically.');
-    console.log('\nContinue? (y/N)');
+    console.log(
+      "\n⚠️  This will split your monolithic translation files into namespace-based chunks.",
+    );
+    console.log("   A backup will be created automatically.");
+    console.log("\nContinue? (y/N)");
 
     process.stdin.resume();
-    process.stdin.setEncoding('utf8');
+    process.stdin.setEncoding("utf8");
 
-    const answer = await new Promise(resolve => {
-      process.stdin.on('data', data => {
+    const answer = await new Promise((resolve) => {
+      process.stdin.on("data", (data) => {
         process.stdin.pause();
         resolve(data.trim().toLowerCase());
       });
     });
 
-    if (answer !== 'y' && answer !== 'yes') {
-      console.log('\n❌ Migration cancelled');
+    if (answer !== "y" && answer !== "yes") {
+      console.log("\n❌ Migration cancelled");
       process.exit(0);
     }
   }
 
   // Migrate languages
-  const languages = ['vi', 'en'];
+  const languages = ["vi", "en"];
   const results = {};
 
   for (const language of languages) {
@@ -663,34 +705,49 @@ async function main() {
   }
 
   // Final summary
-  console.log('\n🎉 Migration Complete!');
-  console.log('==================');
+  console.log("\n🎉 Migration Complete!");
+  console.log("==================");
 
-  const totalKeys = Object.values(results).reduce((sum, r) => sum + (r?.validation.originalCount || 0), 0);
-  const totalMigrated = Object.values(results).reduce((sum, r) => sum + (r?.validation.migratedCount || 0), 0);
-  const totalFiles = Object.values(results).reduce((sum, r) => sum + (r?.migrationStats.filesCreated || 0), 0);
+  const totalKeys = Object.values(results).reduce(
+    (sum, r) => sum + (r?.validation.originalCount || 0),
+    0,
+  );
+  const totalMigrated = Object.values(results).reduce(
+    (sum, r) => sum + (r?.validation.migratedCount || 0),
+    0,
+  );
+  const totalFiles = Object.values(results).reduce(
+    (sum, r) => sum + (r?.migrationStats.filesCreated || 0),
+    0,
+  );
 
   console.log(`\n📈 Overall Statistics:`);
   console.log(`  Total keys processed: ${totalKeys}`);
   console.log(`  Total keys migrated: ${totalMigrated}`);
   console.log(`  Total files created: ${totalFiles}`);
-  console.log(`  Migration success: ${Math.round((totalMigrated / totalKeys) * 100)}%`);
+  console.log(
+    `  Migration success: ${Math.round((totalMigrated / totalKeys) * 100)}%`,
+  );
 
   if (!DRY_RUN) {
     console.log(`\n📝 Reports generated in: ${REPORTS_DIR}`);
     console.log(`💾 Backups stored in: ${BACKUP_DIR}`);
-    console.log('\n⚠️  Next steps:');
-    console.log('  1. Review the migration reports');
-    console.log('  2. Test your application with the new namespace structure');
-    console.log('  3. Update your i18n configuration to use the namespace-based structure');
-    console.log('  4. Once verified, you can remove the original monolithic files');
+    console.log("\n⚠️  Next steps:");
+    console.log("  1. Review the migration reports");
+    console.log("  2. Test your application with the new namespace structure");
+    console.log(
+      "  3. Update your i18n configuration to use the namespace-based structure",
+    );
+    console.log(
+      "  4. Once verified, you can remove the original monolithic files",
+    );
   }
 }
 
 // Run the script
 if (require.main === module) {
-  main().catch(error => {
-    console.error('\n❌ Migration failed:', error.message);
+  main().catch((error) => {
+    console.error("\n❌ Migration failed:", error.message);
     if (VERBOSE) console.error(error.stack);
     process.exit(1);
   });
@@ -701,5 +758,5 @@ module.exports = {
   groupTranslationsByNamespace,
   validateMigration,
   countKeys,
-  NAMESPACE_MAPPING
+  NAMESPACE_MAPPING,
 };

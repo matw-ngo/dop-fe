@@ -4,6 +4,8 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 import { Button } from "../button";
+import { Input } from "../input";
+import { Toaster } from "../sonner";
 import {
   Form,
   FormControl,
@@ -13,8 +15,6 @@ import {
   FormLabel,
   FormMessage,
 } from "./index";
-import { Input } from "../input";
-import { Toaster } from "../sonner";
 
 const meta: Meta<typeof Form> = {
   title: "UI/Form",

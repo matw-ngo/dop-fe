@@ -1,18 +1,27 @@
 // Vietnamese Banking Compliance Module
 // Comprehensive validation for State Bank of Vietnam (SBV) regulations
 
-import type { VietnameseLoanProduct, VietnameseLoanType } from "./vietnamese-loan-products";
-import type { LoanCalculationParams, LoanCalculationResult } from "./interest-calculations";
+import type {
+  LoanCalculationParams,
+  LoanCalculationResult,
+} from "./interest-calculations";
+import type {
+  VietnameseLoanProduct,
+  VietnameseLoanType,
+} from "./vietnamese-loan-products";
 
 /**
  * Vietnamese Banking Regulation References
  */
 export const VIETNAMESE_REGULATIONS = {
   // State Bank of Vietnam regulations
-  SBV_CIRCULAR_39_2016: "Circular 39/2016/TT-NHNN - Consumer lending regulations",
-  SBV_CIRCULAR_22_2019: "Circular 22/2019/TT-NHNN - Risk management requirements",
+  SBV_CIRCULAR_39_2016:
+    "Circular 39/2016/TT-NHNN - Consumer lending regulations",
+  SBV_CIRCULAR_22_2019:
+    "Circular 22/2019/TT-NHNN - Risk management requirements",
   SBV_DECISION_1621_2007: "Decision 1621/2007 - Interest rate regulations",
-  SBV_CIRCULAR_01_2020: "Circular 01/2020/TT-NHNN - Credit information center regulations",
+  SBV_CIRCULAR_01_2020:
+    "Circular 01/2020/TT-NHNN - Credit information center regulations",
 
   // Consumer protection
   CONSUMER_PROTECTION_LAW: "Law on Protection of Consumers' Rights 2010",
@@ -23,13 +32,16 @@ export const VIETNAMESE_REGULATIONS = {
 /**
  * Interest Rate Caps by Loan Type (SBV regulations)
  */
-export const INTEREST_RATE_CAPS: Record<VietnameseLoanType, {
-  maximumAnnualRate: number;
-  effectiveDate: string;
-  regulation: keyof typeof VIETNAMESE_REGULATIONS;
-  notes: string;
-  notesVi: string;
-}> = {
+export const INTEREST_RATE_CAPS: Record<
+  VietnameseLoanType,
+  {
+    maximumAnnualRate: number;
+    effectiveDate: string;
+    regulation: keyof typeof VIETNAMESE_REGULATIONS;
+    notes: string;
+    notesVi: string;
+  }
+> = {
   home_loan: {
     maximumAnnualRate: 15.0, // Market-based but typically 9-15%
     effectiveDate: "2024-01-01",
@@ -146,7 +158,12 @@ export interface ComplianceCheck {
   /** Whether it passed */
   passed: boolean;
   /** Check category */
-  category: "interest_rate" | "disclosure" | "consumer_protection" | "risk_management" | "eligibility";
+  category:
+    | "interest_rate"
+    | "disclosure"
+    | "consumer_protection"
+    | "risk_management"
+    | "eligibility";
   /** Severity level */
   severity: "critical" | "major" | "minor" | "informational";
   /** Actual value */
@@ -172,7 +189,9 @@ export class VietnameseComplianceEngine {
   /**
    * Check loan product compliance with SBV regulations
    */
-  static checkProductCompliance(product: VietnameseLoanProduct): ComplianceCheckResult {
+  static checkProductCompliance(
+    product: VietnameseLoanProduct,
+  ): ComplianceCheckResult {
     const checks: ComplianceCheck[] = [];
     const passedChecks: ComplianceCheck[] = [];
     const failedChecks: ComplianceCheck[] = [];
@@ -181,27 +200,33 @@ export class VietnameseComplianceEngine {
     const requiredActionsVi: string[] = [];
 
     // 1. Interest rate cap check
-    const rateCapCheck = this.checkInterestRateCap(product);
+    const rateCapCheck =
+      VietnameseComplianceEngine.checkInterestRateCap(product);
     checks.push(rateCapCheck);
 
     // 2. Disclosure requirements check
-    const disclosureCheck = this.checkDisclosureRequirements(product);
+    const disclosureCheck =
+      VietnameseComplianceEngine.checkDisclosureRequirements(product);
     checks.push(disclosureCheck);
 
     // 3. SBV registration check
-    const registrationCheck = this.checkSBVRegistration(product);
+    const registrationCheck =
+      VietnameseComplianceEngine.checkSBVRegistration(product);
     checks.push(registrationCheck);
 
     // 4. Consumer protection check
-    const consumerProtectionCheck = this.checkConsumerProtection(product);
+    const consumerProtectionCheck =
+      VietnameseComplianceEngine.checkConsumerProtection(product);
     checks.push(consumerProtectionCheck);
 
     // 5. Risk management check
-    const riskManagementCheck = this.checkRiskManagement(product);
+    const riskManagementCheck =
+      VietnameseComplianceEngine.checkRiskManagement(product);
     checks.push(riskManagementCheck);
 
     // 6. Eligibility requirements check
-    const eligibilityCheck = this.checkEligibilityRequirements(product);
+    const eligibilityCheck =
+      VietnameseComplianceEngine.checkEligibilityRequirements(product);
     checks.push(eligibilityCheck);
 
     // Separate checks by result
@@ -213,7 +238,9 @@ export class VietnameseComplianceEngine {
           failedChecks.push(check);
           if (check.recommendation) {
             requiredActions.push(check.recommendation);
-            requiredActionsVi.push(check.recommendationVi || check.recommendation);
+            requiredActionsVi.push(
+              check.recommendationVi || check.recommendation,
+            );
           }
         } else {
           warningChecks.push(check);
@@ -223,20 +250,31 @@ export class VietnameseComplianceEngine {
 
     // Calculate compliance score
     const totalWeight = checks.reduce((sum, check) => {
-      const weight = check.severity === "critical" ? 30 :
-                    check.severity === "major" ? 20 :
-                    check.severity === "minor" ? 10 : 5;
+      const weight =
+        check.severity === "critical"
+          ? 30
+          : check.severity === "major"
+            ? 20
+            : check.severity === "minor"
+              ? 10
+              : 5;
       return sum + weight;
     }, 0);
 
     const earnedWeight = checks.reduce((sum, check) => {
-      const weight = check.severity === "critical" ? 30 :
-                    check.severity === "major" ? 20 :
-                    check.severity === "minor" ? 10 : 5;
+      const weight =
+        check.severity === "critical"
+          ? 30
+          : check.severity === "major"
+            ? 20
+            : check.severity === "minor"
+              ? 10
+              : 5;
       return sum + (check.passed ? weight : 0);
     }, 0);
 
-    const complianceScore = totalWeight > 0 ? Math.round((earnedWeight / totalWeight) * 100) : 0;
+    const complianceScore =
+      totalWeight > 0 ? Math.round((earnedWeight / totalWeight) * 100) : 0;
     const compliant = failedChecks.length === 0 && complianceScore >= 80;
 
     // Generate regulatory references
@@ -244,7 +282,8 @@ export class VietnameseComplianceEngine {
       {
         regulation: VIETNAMESE_REGULATIONS.SBV_CIRCULAR_39_2016,
         description: "Consumer lending regulations and disclosure requirements",
-        descriptionVi: "Quy định cho vay tiêu dùng và yêu cầu công bố thông tin",
+        descriptionVi:
+          "Quy định cho vay tiêu dùng và yêu cầu công bố thông tin",
       },
       {
         regulation: VIETNAMESE_REGULATIONS.SBV_CIRCULAR_22_2019,
@@ -276,7 +315,7 @@ export class VietnameseComplianceEngine {
   static validateCalculationCompliance(
     params: LoanCalculationParams,
     result: LoanCalculationResult,
-    loanType: VietnameseLoanType
+    loanType: VietnameseLoanType,
   ): ComplianceCheckResult {
     const checks: ComplianceCheck[] = [];
     const passedChecks: ComplianceCheck[] = [];
@@ -286,27 +325,46 @@ export class VietnameseComplianceEngine {
     const requiredActionsVi: string[] = [];
 
     // 1. Interest rate cap validation
-    const rateCapCheck = this.validateInterestRateCap(params, loanType);
+    const rateCapCheck = VietnameseComplianceEngine.validateInterestRateCap(
+      params,
+      loanType,
+    );
     checks.push(rateCapCheck);
 
     // 2. APR calculation accuracy
-    const aprCheck = this.validateAPRCalculation(params, result);
+    const aprCheck = VietnameseComplianceEngine.validateAPRCalculation(
+      params,
+      result,
+    );
     checks.push(aprCheck);
 
     // 3. Total payable calculation
-    const totalPayableCheck = this.validateTotalPayable(params, result);
+    const totalPayableCheck = VietnameseComplianceEngine.validateTotalPayable(
+      params,
+      result,
+    );
     checks.push(totalPayableCheck);
 
     // 4. Payment schedule consistency
-    const scheduleCheck = this.validatePaymentSchedule(params, result);
+    const scheduleCheck = VietnameseComplianceEngine.validatePaymentSchedule(
+      params,
+      result,
+    );
     checks.push(scheduleCheck);
 
     // 5. Fee disclosure compliance
-    const feeDisclosureCheck = this.validateFeeDisclosure(params, result);
+    const feeDisclosureCheck = VietnameseComplianceEngine.validateFeeDisclosure(
+      params,
+      result,
+    );
     checks.push(feeDisclosureCheck);
 
     // 6. Early repayment calculation
-    const earlyRepaymentCheck = this.validateEarlyRepaymentCalculation(params, result);
+    const earlyRepaymentCheck =
+      VietnameseComplianceEngine.validateEarlyRepaymentCalculation(
+        params,
+        result,
+      );
     checks.push(earlyRepaymentCheck);
 
     // Separate and process checks
@@ -318,7 +376,9 @@ export class VietnameseComplianceEngine {
           failedChecks.push(check);
           if (check.recommendation) {
             requiredActions.push(check.recommendation);
-            requiredActionsVi.push(check.recommendationVi || check.recommendation);
+            requiredActionsVi.push(
+              check.recommendationVi || check.recommendation,
+            );
           }
         } else {
           warningChecks.push(check);
@@ -326,8 +386,10 @@ export class VietnameseComplianceEngine {
       }
     }
 
-    const complianceScore = checks.length > 0 ?
-      Math.round((passedChecks.length / checks.length) * 100) : 0;
+    const complianceScore =
+      checks.length > 0
+        ? Math.round((passedChecks.length / checks.length) * 100)
+        : 0;
     const compliant = failedChecks.length === 0 && complianceScore >= 80;
 
     return {
@@ -353,7 +415,7 @@ export class VietnameseComplianceEngine {
    */
   static generateComplianceReport(
     productCompliance: ComplianceCheckResult,
-    calculationCompliance?: ComplianceCheckResult
+    calculationCompliance?: ComplianceCheckResult,
   ): {
     report: string;
     reportVi: string;
@@ -366,47 +428,64 @@ export class VietnameseComplianceEngine {
       recommendationsVi: string[];
     };
   } {
-    const criticalIssues = productCompliance.failedChecks.filter(c => c.severity === "critical").length +
-                         (calculationCompliance?.failedChecks.filter(c => c.severity === "critical").length || 0);
-    const majorIssues = productCompliance.failedChecks.filter(c => c.severity === "major").length +
-                       (calculationCompliance?.failedChecks.filter(c => c.severity === "major").length || 0);
+    const criticalIssues =
+      productCompliance.failedChecks.filter((c) => c.severity === "critical")
+        .length +
+      (calculationCompliance?.failedChecks.filter(
+        (c) => c.severity === "critical",
+      ).length || 0);
+    const majorIssues =
+      productCompliance.failedChecks.filter((c) => c.severity === "major")
+        .length +
+      (calculationCompliance?.failedChecks.filter((c) => c.severity === "major")
+        .length || 0);
 
-    const overallScore = calculationCompliance ?
-      Math.round((productCompliance.score + calculationCompliance.score) / 2) :
-      productCompliance.score;
+    const overallScore = calculationCompliance
+      ? Math.round((productCompliance.score + calculationCompliance.score) / 2)
+      : productCompliance.score;
 
-    const overallCompliant = productCompliance.compliant &&
-                           (calculationCompliance?.compliant ?? true);
+    const overallCompliant =
+      productCompliance.compliant && (calculationCompliance?.compliant ?? true);
 
-    const recommendations = [...productCompliance.requiredActions, ...(calculationCompliance?.requiredActions || [])];
-    const recommendationsVi = [...productCompliance.requiredActionsVi, ...(calculationCompliance?.requiredActionsVi || [])];
+    const recommendations = [
+      ...productCompliance.requiredActions,
+      ...(calculationCompliance?.requiredActions || []),
+    ];
+    const recommendationsVi = [
+      ...productCompliance.requiredActionsVi,
+      ...(calculationCompliance?.requiredActionsVi || []),
+    ];
 
     const report = [
       "VIETNAMESE BANKING COMPLIANCE REPORT",
       "=====================================",
       "",
       `Product Compliance Score: ${productCompliance.score}%`,
-      ...(calculationCompliance ? [`Calculation Compliance Score: ${calculationCompliance.score}%`] : []),
+      ...(calculationCompliance
+        ? [`Calculation Compliance Score: ${calculationCompliance.score}%`]
+        : []),
       `Overall Compliance Score: ${overallScore}%`,
-      `Status: ${overallCompliant ? 'COMPLIANT' : 'NON-COMPLIANT'}`,
+      `Status: ${overallCompliant ? "COMPLIANT" : "NON-COMPLIANT"}`,
       "",
       "Critical Issues: " + criticalIssues,
       "Major Issues: " + majorIssues,
       "",
       "Failed Checks:",
-      ...productCompliance.failedChecks.map(check =>
-        `- ${check.name}: ${check.description}`
+      ...productCompliance.failedChecks.map(
+        (check) => `- ${check.name}: ${check.description}`,
       ),
-      ...(calculationCompliance ? calculationCompliance.failedChecks.map(check =>
-        `- ${check.name}: ${check.description}`
-      ) : []),
+      ...(calculationCompliance
+        ? calculationCompliance.failedChecks.map(
+            (check) => `- ${check.name}: ${check.description}`,
+          )
+        : []),
       "",
       "Required Actions:",
-      ...recommendations.map(action => `- ${action}`),
+      ...recommendations.map((action) => `- ${action}`),
       "",
       "Regulatory References:",
-      ...productCompliance.regulatoryReferences.map(ref =>
-        `- ${ref.regulation}: ${ref.description}`
+      ...productCompliance.regulatoryReferences.map(
+        (ref) => `- ${ref.regulation}: ${ref.description}`,
       ),
     ].join("\n");
 
@@ -415,27 +494,31 @@ export class VietnameseComplianceEngine {
       "=======================================",
       "",
       `Điểm tuân thủ sản phẩm: ${productCompliance.score}%`,
-      ...(calculationCompliance ? [`Điểm tuân thủ tính toán: ${calculationCompliance.score}%`] : []),
+      ...(calculationCompliance
+        ? [`Điểm tuân thủ tính toán: ${calculationCompliance.score}%`]
+        : []),
       `Điểm tuân thủ tổng thể: ${overallScore}%`,
-      `Trạng thái: ${overallCompliant ? 'TUÂN THỦ' : 'KHÔNG TUÂN THỦ'}`,
+      `Trạng thái: ${overallCompliant ? "TUÂN THỦ" : "KHÔNG TUÂN THỦ"}`,
       "",
       "Vấn đề nghiêm trọng: " + criticalIssues,
       "Vấn đề quan trọng: " + majorIssues,
       "",
       "Các kiểm tra không đạt:",
-      ...productCompliance.failedChecks.map(check =>
-        `- ${check.nameVi}: ${check.descriptionVi}`
+      ...productCompliance.failedChecks.map(
+        (check) => `- ${check.nameVi}: ${check.descriptionVi}`,
       ),
-      ...(calculationCompliance ? calculationCompliance.failedChecks.map(check =>
-        `- ${check.nameVi}: ${check.descriptionVi}`
-      ) : []),
+      ...(calculationCompliance
+        ? calculationCompliance.failedChecks.map(
+            (check) => `- ${check.nameVi}: ${check.descriptionVi}`,
+          )
+        : []),
       "",
       "Hành động cần thiết:",
-      ...recommendationsVi.map(action => `- ${action}`),
+      ...recommendationsVi.map((action) => `- ${action}`),
       "",
       "Tham chiếu quy định:",
-      ...productCompliance.regulatoryReferences.map(ref =>
-        `- ${ref.regulation}: ${ref.descriptionVi}`
+      ...productCompliance.regulatoryReferences.map(
+        (ref) => `- ${ref.regulation}: ${ref.descriptionVi}`,
       ),
     ].join("\n");
 
@@ -456,9 +539,12 @@ export class VietnameseComplianceEngine {
   /**
    * Check interest rate cap compliance
    */
-  private static checkInterestRateCap(product: VietnameseLoanProduct): ComplianceCheck {
+  private static checkInterestRateCap(
+    product: VietnameseLoanProduct,
+  ): ComplianceCheck {
     const rateCap = INTEREST_RATE_CAPS[product.loanType];
-    const isCompliant = product.interestRate.annual <= rateCap.maximumAnnualRate;
+    const isCompliant =
+      product.interestRate.annual <= rateCap.maximumAnnualRate;
 
     return {
       name: "Interest Rate Cap",
@@ -468,25 +554,31 @@ export class VietnameseComplianceEngine {
       severity: "critical",
       actualValue: product.interestRate.annual,
       expectedValue: rateCap.maximumAnnualRate,
-      description: `Annual interest rate ${product.interestRate.annual}% ${isCompliant ? 'is within' : 'exceeds'} the SBV cap of ${rateCap.maximumAnnualRate}% for ${product.loanType}`,
-      descriptionVi: `Lãi suất hàng năm ${product.interestRate.annual}% ${isCompliant ? 'nằm trong' : 'vượt quá'} trần SBV ${rateCap.maximumAnnualRate}% cho ${product.loanType}`,
+      description: `Annual interest rate ${product.interestRate.annual}% ${isCompliant ? "is within" : "exceeds"} the SBV cap of ${rateCap.maximumAnnualRate}% for ${product.loanType}`,
+      descriptionVi: `Lãi suất hàng năm ${product.interestRate.annual}% ${isCompliant ? "nằm trong" : "vượt quá"} trần SBV ${rateCap.maximumAnnualRate}% cho ${product.loanType}`,
       regulatoryReference: "SBV_DECISION_1621_2007",
-      recommendation: isCompliant ? undefined : `Reduce interest rate to maximum ${rateCap.maximumAnnualRate}% or reclassify loan type`,
-      recommendationVi: isCompliant ? undefined : `Giảm lãi suất xuống tối đa ${rateCap.maximumAnnualRate}% hoặc phân loại lại loại khoản vay`,
+      recommendation: isCompliant
+        ? undefined
+        : `Reduce interest rate to maximum ${rateCap.maximumAnnualRate}% or reclassify loan type`,
+      recommendationVi: isCompliant
+        ? undefined
+        : `Giảm lãi suất xuống tối đa ${rateCap.maximumAnnualRate}% hoặc phân loại lại loại khoản vay`,
     };
   }
 
   /**
    * Check disclosure requirements
    */
-  private static checkDisclosureRequirements(product: VietnameseLoanProduct): ComplianceCheck {
+  private static checkDisclosureRequirements(
+    product: VietnameseLoanProduct,
+  ): ComplianceCheck {
     const required = [
       product.regulatoryCompliance.consumerProtectionCompliance,
       product.regulatoryCompliance.dataPrivacyCompliance,
       product.regulatoryCompliance.disclosureRequirementsMet,
     ];
 
-    const allMet = required.every(req => req);
+    const allMet = required.every((req) => req);
 
     return {
       name: "Disclosure Requirements",
@@ -496,23 +588,30 @@ export class VietnameseComplianceEngine {
       severity: "major",
       actualValue: required,
       expectedValue: [true, true, true],
-      description: allMet ?
-        "All disclosure requirements are met according to Circular 39/2016" :
-        "Some disclosure requirements are missing. Full fee breakdown, APR, and payment terms must be disclosed.",
-      descriptionVi: allMet ?
-        "Tất cả các yêu cầu công bố thông tin đều được đáp ứng theo Thông tư 39/2016" :
-        "Một số yêu cầu công bố thông tin bị thiếu. Phải công bố đầy đủ phí, APR và điều khoản thanh toán.",
+      description: allMet
+        ? "All disclosure requirements are met according to Circular 39/2016"
+        : "Some disclosure requirements are missing. Full fee breakdown, APR, and payment terms must be disclosed.",
+      descriptionVi: allMet
+        ? "Tất cả các yêu cầu công bố thông tin đều được đáp ứng theo Thông tư 39/2016"
+        : "Một số yêu cầu công bố thông tin bị thiếu. Phải công bố đầy đủ phí, APR và điều khoản thanh toán.",
       regulatoryReference: "SBV_CIRCULAR_39_2016",
-      recommendation: allMet ? undefined : "Add missing disclosure information to product documentation",
-      recommendationVi: allMet ? undefined : "Thêm thông tin công bố còn thiếu vào tài liệu sản phẩm",
+      recommendation: allMet
+        ? undefined
+        : "Add missing disclosure information to product documentation",
+      recommendationVi: allMet
+        ? undefined
+        : "Thêm thông tin công bố còn thiếu vào tài liệu sản phẩm",
     };
   }
 
   /**
    * Check SBV registration
    */
-  private static checkSBVRegistration(product: VietnameseLoanProduct): ComplianceCheck {
-    const hasRegistration = !!product.regulatoryCompliance.sbvRegistrationNumber;
+  private static checkSBVRegistration(
+    product: VietnameseLoanProduct,
+  ): ComplianceCheck {
+    const hasRegistration =
+      !!product.regulatoryCompliance.sbvRegistrationNumber;
 
     return {
       name: "SBV Registration",
@@ -522,29 +621,38 @@ export class VietnameseComplianceEngine {
       severity: "critical",
       actualValue: product.regulatoryCompliance.sbvRegistrationNumber,
       expectedValue: "SBV registration number",
-      description: hasRegistration ?
-        `Product registered with SBV: ${product.regulatoryCompliance.sbvRegistrationNumber}` :
-        "Product lacks SBV registration number - required for legal operation",
-      descriptionVi: hasRegistration ?
-        `Sản phẩm đã đăng ký với SBV: ${product.regulatoryCompliance.sbvRegistrationNumber}` :
-        "Sản phẩm thiếu số đăng ký SBV - bắt buộc để hoạt động hợp pháp",
+      description: hasRegistration
+        ? `Product registered with SBV: ${product.regulatoryCompliance.sbvRegistrationNumber}`
+        : "Product lacks SBV registration number - required for legal operation",
+      descriptionVi: hasRegistration
+        ? `Sản phẩm đã đăng ký với SBV: ${product.regulatoryCompliance.sbvRegistrationNumber}`
+        : "Sản phẩm thiếu số đăng ký SBV - bắt buộc để hoạt động hợp pháp",
       regulatoryReference: "SBV_CIRCULAR_22_2019",
-      recommendation: hasRegistration ? undefined : "Register product with State Bank of Vietnam",
-      recommendationVi: hasRegistration ? undefined : "Đăng ký sản phẩm với Ngân hàng Nhà nước",
+      recommendation: hasRegistration
+        ? undefined
+        : "Register product with State Bank of Vietnam",
+      recommendationVi: hasRegistration
+        ? undefined
+        : "Đăng ký sản phẩm với Ngân hàng Nhà nước",
     };
   }
 
   /**
    * Check consumer protection compliance
    */
-  private static checkConsumerProtection(product: VietnameseLoanProduct): ComplianceCheck {
+  private static checkConsumerProtection(
+    product: VietnameseLoanProduct,
+  ): ComplianceCheck {
     const checks = [
       product.regulatoryCompliance.consumerProtectionCompliance,
       product.eligibility.requiredDocuments.length > 0,
-      !product.fees.otherFees || product.fees.otherFees.every(fee => fee.mandatory || !fee.name.toLowerCase().includes("hidden")),
+      !product.fees.otherFees ||
+        product.fees.otherFees.every(
+          (fee) => fee.mandatory || !fee.name.toLowerCase().includes("hidden"),
+        ),
     ];
 
-    const allPassed = checks.every(check => check);
+    const allPassed = checks.every((check) => check);
 
     return {
       name: "Consumer Protection",
@@ -552,26 +660,33 @@ export class VietnameseComplianceEngine {
       passed: allPassed,
       category: "consumer_protection",
       severity: "major",
-      description: allPassed ?
-        "Consumer protection requirements are met" :
-        "Some consumer protection measures need improvement",
-      descriptionVi: allPassed ?
-        "Các yêu cầu bảo vệ người tiêu dùng được đáp ứng" :
-        "Một số biện pháp bảo vệ người tiêu dùng cần cải thiện",
+      description: allPassed
+        ? "Consumer protection requirements are met"
+        : "Some consumer protection measures need improvement",
+      descriptionVi: allPassed
+        ? "Các yêu cầu bảo vệ người tiêu dùng được đáp ứng"
+        : "Một số biện pháp bảo vệ người tiêu dùng cần cải thiện",
       regulatoryReference: "CONSUMER_PROTECTION_LAW",
-      recommendation: allPassed ? undefined : "Review and enhance consumer protection measures",
-      recommendationVi: allPassed ? undefined : "Rà soát và tăng cường các biện pháp bảo vệ người tiêu dùng",
+      recommendation: allPassed
+        ? undefined
+        : "Review and enhance consumer protection measures",
+      recommendationVi: allPassed
+        ? undefined
+        : "Rà soát và tăng cường các biện pháp bảo vệ người tiêu dùng",
     };
   }
 
   /**
    * Check risk management compliance
    */
-  private static checkRiskManagement(product: VietnameseLoanProduct): ComplianceCheck {
+  private static checkRiskManagement(
+    product: VietnameseLoanProduct,
+  ): ComplianceCheck {
     const hasRiskControls = [
       product.eligibility.minCreditScore !== undefined,
       product.eligibility.maxDebtToIncomeRatio !== undefined,
-      product.eligibility.collateralRequired || product.amountLimits.max <= 500000000, // 500 triệu VND limit for unsecured
+      product.eligibility.collateralRequired ||
+        product.amountLimits.max <= 500000000, // 500 triệu VND limit for unsecured
     ].every(Boolean);
 
     return {
@@ -580,27 +695,35 @@ export class VietnameseComplianceEngine {
       passed: hasRiskControls,
       category: "risk_management",
       severity: "major",
-      description: hasRiskControls ?
-        "Adequate risk management controls are in place" :
-        "Risk management controls need to be strengthened",
-      descriptionVi: hasRiskControls ?
-        "Các biện pháp kiểm soát quản lý rủi ro đầy đủ" :
-        "Biện pháp kiểm soát quản lý rủi ro cần được tăng cường",
+      description: hasRiskControls
+        ? "Adequate risk management controls are in place"
+        : "Risk management controls need to be strengthened",
+      descriptionVi: hasRiskControls
+        ? "Các biện pháp kiểm soát quản lý rủi ro đầy đủ"
+        : "Biện pháp kiểm soát quản lý rủi ro cần được tăng cường",
       regulatoryReference: "SBV_CIRCULAR_22_2019",
-      recommendation: hasRiskControls ? undefined : "Implement stronger risk assessment criteria",
-      recommendationVi: hasRiskControls ? undefined : "Thực hiện các tiêu chí đánh giá rủi ro chặt chẽ hơn",
+      recommendation: hasRiskControls
+        ? undefined
+        : "Implement stronger risk assessment criteria",
+      recommendationVi: hasRiskControls
+        ? undefined
+        : "Thực hiện các tiêu chí đánh giá rủi ro chặt chẽ hơn",
     };
   }
 
   /**
    * Check eligibility requirements
    */
-  private static checkEligibilityRequirements(product: VietnameseLoanProduct): ComplianceCheck {
+  private static checkEligibilityRequirements(
+    product: VietnameseLoanProduct,
+  ): ComplianceCheck {
     const hasCompleteEligibility = [
-      product.eligibility.minAge > 0 && product.eligibility.maxAgeAtMaturity > product.eligibility.minAge,
+      product.eligibility.minAge > 0 &&
+        product.eligibility.maxAgeAtMaturity > product.eligibility.minAge,
       product.eligibility.minMonthlyIncome > 0,
       product.eligibility.requiredDocuments.length > 0,
-      product.eligibility.employmentTypes && product.eligibility.employmentTypes.length > 0,
+      product.eligibility.employmentTypes &&
+        product.eligibility.employmentTypes.length > 0,
     ].every(Boolean);
 
     return {
@@ -609,15 +732,19 @@ export class VietnameseComplianceEngine {
       passed: hasCompleteEligibility,
       category: "eligibility",
       severity: "major",
-      description: hasCompleteEligibility ?
-        "Eligibility criteria are comprehensive and clear" :
-        "Eligibility requirements need to be more detailed",
-      descriptionVi: hasCompleteEligibility ?
-        "Tiêu chí đủ điều kiện toàn diện và rõ ràng" :
-        "Yêu cầu đủ điều kiện cần chi tiết hơn",
+      description: hasCompleteEligibility
+        ? "Eligibility criteria are comprehensive and clear"
+        : "Eligibility requirements need to be more detailed",
+      descriptionVi: hasCompleteEligibility
+        ? "Tiêu chí đủ điều kiện toàn diện và rõ ràng"
+        : "Yêu cầu đủ điều kiện cần chi tiết hơn",
       regulatoryReference: "SBV_CIRCULAR_39_2016",
-      recommendation: hasCompleteEligibility ? undefined : "Define clear and comprehensive eligibility criteria",
-      recommendationVi: hasCompleteEligibility ? undefined : "Xác định tiêu chí đủ điều kiện rõ ràng và toàn diện",
+      recommendation: hasCompleteEligibility
+        ? undefined
+        : "Define clear and comprehensive eligibility criteria",
+      recommendationVi: hasCompleteEligibility
+        ? undefined
+        : "Xác định tiêu chí đủ điều kiện rõ ràng và toàn diện",
     };
   }
 
@@ -626,11 +753,13 @@ export class VietnameseComplianceEngine {
    */
   private static validateInterestRateCap(
     params: LoanCalculationParams,
-    loanType: VietnameseLoanType
+    loanType: VietnameseLoanType,
   ): ComplianceCheck {
     const rateCap = INTEREST_RATE_CAPS[loanType];
-    const effectiveRate = params.promotionalRate && params.promotionalPeriod ?
-      Math.max(params.annualRate, params.promotionalRate) : params.annualRate;
+    const effectiveRate =
+      params.promotionalRate && params.promotionalPeriod
+        ? Math.max(params.annualRate, params.promotionalRate)
+        : params.annualRate;
 
     const isCompliant = effectiveRate <= rateCap.maximumAnnualRate;
 
@@ -642,11 +771,15 @@ export class VietnameseComplianceEngine {
       severity: "critical",
       actualValue: effectiveRate,
       expectedValue: rateCap.maximumAnnualRate,
-      description: `Calculated interest rate ${effectiveRate}% ${isCompliant ? 'complies with' : 'exceeds'} SBV cap of ${rateCap.maximumAnnualRate}%`,
-      descriptionVi: `Lãi suất tính toán ${effectiveRate}% ${isCompliant ? 'tuân thủ' : 'vượt quá'} trần SBV ${rateCap.maximumAnnualRate}%`,
+      description: `Calculated interest rate ${effectiveRate}% ${isCompliant ? "complies with" : "exceeds"} SBV cap of ${rateCap.maximumAnnualRate}%`,
+      descriptionVi: `Lãi suất tính toán ${effectiveRate}% ${isCompliant ? "tuân thủ" : "vượt quá"} trần SBV ${rateCap.maximumAnnualRate}%`,
       regulatoryReference: "SBV_DECISION_1621_2007",
-      recommendation: isCompliant ? undefined : `Adjust interest rate to comply with ${rateCap.maximumAnnualRate}% cap`,
-      recommendationVi: isCompliant ? undefined : `Điều chỉnh lãi suất để tuân thủ trần ${rateCap.maximumAnnualRate}%`,
+      recommendation: isCompliant
+        ? undefined
+        : `Adjust interest rate to comply with ${rateCap.maximumAnnualRate}% cap`,
+      recommendationVi: isCompliant
+        ? undefined
+        : `Điều chỉnh lãi suất để tuân thủ trần ${rateCap.maximumAnnualRate}%`,
     };
   }
 
@@ -655,7 +788,7 @@ export class VietnameseComplianceEngine {
    */
   private static validateAPRCalculation(
     params: LoanCalculationParams,
-    result: LoanCalculationResult
+    result: LoanCalculationResult,
   ): ComplianceCheck {
     // Simple validation: APR should be reasonable compared to nominal rate
     const aprDifference = Math.abs(result.effectiveAPR - params.annualRate);
@@ -669,11 +802,15 @@ export class VietnameseComplianceEngine {
       severity: "major",
       actualValue: result.effectiveAPR,
       expectedValue: params.annualRate,
-      description: `APR ${result.effectiveAPR}% ${isReasonable ? 'is reasonable' : 'seems incorrect'} compared to nominal rate ${params.annualRate}%`,
-      descriptionVi: `APR ${result.effectiveAPR}% ${isReasonable ? 'hợp lý' : 'có vẻ không chính xác'} so với lãi suất danh nghĩa ${params.annualRate}%`,
+      description: `APR ${result.effectiveAPR}% ${isReasonable ? "is reasonable" : "seems incorrect"} compared to nominal rate ${params.annualRate}%`,
+      descriptionVi: `APR ${result.effectiveAPR}% ${isReasonable ? "hợp lý" : "có vẻ không chính xác"} so với lãi suất danh nghĩa ${params.annualRate}%`,
       regulatoryReference: "SBV_CIRCULAR_39_2016",
-      recommendation: isReasonable ? undefined : "Review APR calculation methodology",
-      recommendationVi: isReasonable ? undefined : "Rà soát phương pháp tính toán APR",
+      recommendation: isReasonable
+        ? undefined
+        : "Review APR calculation methodology",
+      recommendationVi: isReasonable
+        ? undefined
+        : "Rà soát phương pháp tính toán APR",
     };
   }
 
@@ -682,9 +819,12 @@ export class VietnameseComplianceEngine {
    */
   private static validateTotalPayable(
     params: LoanCalculationParams,
-    result: LoanCalculationResult
+    result: LoanCalculationResult,
   ): ComplianceCheck {
-    const expectedTotal = result.paymentSchedule.reduce((sum, payment) => sum + payment.total, 0);
+    const expectedTotal = result.paymentSchedule.reduce(
+      (sum, payment) => sum + payment.total,
+      0,
+    );
     const isAccurate = Math.abs(result.totalPayable - expectedTotal) < 100; // Allow 100 VND difference
 
     return {
@@ -695,11 +835,15 @@ export class VietnameseComplianceEngine {
       severity: "critical",
       actualValue: result.totalPayable,
       expectedValue: expectedTotal,
-      description: `Total payable ${isAccurate ? 'matches' : 'does not match'} payment schedule sum`,
-      descriptionVi: `Tổng số phải trả ${isAccurate ? 'khớp' : 'không khớp'} với tổng lịch trình thanh toán`,
+      description: `Total payable ${isAccurate ? "matches" : "does not match"} payment schedule sum`,
+      descriptionVi: `Tổng số phải trả ${isAccurate ? "khớp" : "không khớp"} với tổng lịch trình thanh toán`,
       regulatoryReference: "SBV_CIRCULAR_39_2016",
-      recommendation: isAccurate ? undefined : "Fix total payable calculation to match payment schedule",
-      recommendationVi: isAccurate ? undefined : "Sửa tính toán tổng số phải trả để khớp với lịch trình thanh toán",
+      recommendation: isAccurate
+        ? undefined
+        : "Fix total payable calculation to match payment schedule",
+      recommendationVi: isAccurate
+        ? undefined
+        : "Sửa tính toán tổng số phải trả để khớp với lịch trình thanh toán",
     };
   }
 
@@ -708,11 +852,13 @@ export class VietnameseComplianceEngine {
    */
   private static validatePaymentSchedule(
     params: LoanCalculationParams,
-    result: LoanCalculationResult
+    result: LoanCalculationResult,
   ): ComplianceCheck {
     const hasCorrectLength = result.paymentSchedule.length === params.term;
-    const lastPaymentZero = result.paymentSchedule.length > 0 &&
-                          result.paymentSchedule[result.paymentSchedule.length - 1].remainingBalance === 0;
+    const lastPaymentZero =
+      result.paymentSchedule.length > 0 &&
+      result.paymentSchedule[result.paymentSchedule.length - 1]
+        .remainingBalance === 0;
 
     const isConsistent = hasCorrectLength && lastPaymentZero;
 
@@ -722,17 +868,26 @@ export class VietnameseComplianceEngine {
       passed: isConsistent,
       category: "disclosure",
       severity: "critical",
-      actualValue: { length: result.paymentSchedule.length, finalBalance: result.paymentSchedule[result.paymentSchedule.length - 1]?.remainingBalance },
+      actualValue: {
+        length: result.paymentSchedule.length,
+        finalBalance:
+          result.paymentSchedule[result.paymentSchedule.length - 1]
+            ?.remainingBalance,
+      },
       expectedValue: { length: params.term, finalBalance: 0 },
-      description: isConsistent ?
-        "Payment schedule is consistent with loan terms" :
-        "Payment schedule has inconsistencies in length or final balance",
-      descriptionVi: isConsistent ?
-        "Lịch trình thanh toán nhất quán với điều khoản vay" :
-        "Lịch trình thanh toán có sự không nhất quán về độ dài hoặc số dư cuối kỳ",
+      description: isConsistent
+        ? "Payment schedule is consistent with loan terms"
+        : "Payment schedule has inconsistencies in length or final balance",
+      descriptionVi: isConsistent
+        ? "Lịch trình thanh toán nhất quán với điều khoản vay"
+        : "Lịch trình thanh toán có sự không nhất quán về độ dài hoặc số dư cuối kỳ",
       regulatoryReference: "SBV_CIRCULAR_39_2016",
-      recommendation: isConsistent ? undefined : "Fix payment schedule to match loan terms and end with zero balance",
-      recommendationVi: isConsistent ? undefined : "Sửa lịch trình thanh toán để khớp với điều khoản vay và kết thúc với số dư bằng không",
+      recommendation: isConsistent
+        ? undefined
+        : "Fix payment schedule to match loan terms and end with zero balance",
+      recommendationVi: isConsistent
+        ? undefined
+        : "Sửa lịch trình thanh toán để khớp với điều khoản vay và kết thúc với số dư bằng không",
     };
   }
 
@@ -741,10 +896,14 @@ export class VietnameseComplianceEngine {
    */
   private static validateFeeDisclosure(
     params: LoanCalculationParams,
-    result: LoanCalculationResult
+    result: LoanCalculationResult,
   ): ComplianceCheck {
     const hasFees = result.totalFees > 0;
-    const feesAreCalculated = hasFees && (params.processingFee || params.processingFeeFixed || params.insuranceFee);
+    const feesAreCalculated =
+      hasFees &&
+      (params.processingFee ||
+        params.processingFeeFixed ||
+        params.insuranceFee);
 
     const isProperlyDisclosed = !hasFees || feesAreCalculated;
 
@@ -754,17 +913,24 @@ export class VietnameseComplianceEngine {
       passed: isProperlyDisclosed,
       category: "disclosure",
       severity: "major",
-      actualValue: { totalFees: result.totalFees, hasFeeParams: feesAreCalculated },
+      actualValue: {
+        totalFees: result.totalFees,
+        hasFeeParams: feesAreCalculated,
+      },
       expectedValue: { totalFees: 0, hasFeeParams: true },
-      description: isProperlyDisclosed ?
-        "All fees are properly disclosed and calculated" :
-        "Fee disclosure or calculation issues detected",
-      descriptionVi: isProperlyDisclosed ?
-        "Tất cả phí được công bố và tính toán đúng cách" :
-        "Phát hiện vấn đề về công bố hoặc tính toán phí",
+      description: isProperlyDisclosed
+        ? "All fees are properly disclosed and calculated"
+        : "Fee disclosure or calculation issues detected",
+      descriptionVi: isProperlyDisclosed
+        ? "Tất cả phí được công bố và tính toán đúng cách"
+        : "Phát hiện vấn đề về công bố hoặc tính toán phí",
       regulatoryReference: "SBV_CIRCULAR_39_2016",
-      recommendation: isProperlyDisclosed ? undefined : "Ensure all fees are properly disclosed and calculated",
-      recommendationVi: isProperlyDisclosed ? undefined : "Đảm bảo tất cả phí được công bố và tính toán đúng cách",
+      recommendation: isProperlyDisclosed
+        ? undefined
+        : "Ensure all fees are properly disclosed and calculated",
+      recommendationVi: isProperlyDisclosed
+        ? undefined
+        : "Đảm bảo tất cả phí được công bố và tính toán đúng cách",
     };
   }
 
@@ -773,19 +939,21 @@ export class VietnameseComplianceEngine {
    */
   private static validateEarlyRepaymentCalculation(
     params: LoanCalculationParams,
-    result: LoanCalculationResult
+    result: LoanCalculationResult,
   ): ComplianceCheck {
     // Test early repayment calculation for validity
     try {
-      const earlyRepaymentResult = VietnameseLoanCalculator.calculateEarlyRepayment(
-        params,
-        6, // After 6 payments
-        params.principal * 0.2, // 20% early repayment
-        2 // 2% fee
-      );
+      const earlyRepaymentResult =
+        VietnameseLoanCalculator.calculateEarlyRepayment(
+          params,
+          6, // After 6 payments
+          params.principal * 0.2, // 20% early repayment
+          2, // 2% fee
+        );
 
-      const isValidCalculation = earlyRepaymentResult.remainingBalance >= 0 &&
-                               earlyRepaymentResult.netSavings >= -earlyRepaymentResult.feeAmount;
+      const isValidCalculation =
+        earlyRepaymentResult.remainingBalance >= 0 &&
+        earlyRepaymentResult.netSavings >= -earlyRepaymentResult.feeAmount;
 
       return {
         name: "Early Repayment Calculation",
@@ -795,15 +963,19 @@ export class VietnameseComplianceEngine {
         severity: "minor",
         actualValue: earlyRepaymentResult,
         expectedValue: "Valid calculation result",
-        description: isValidCalculation ?
-          "Early repayment calculation produces valid results" :
-          "Early repayment calculation may have issues",
-        descriptionVi: isValidCalculation ?
-          "Tính toán trả nợ trước hạn cho kết quả hợp lệ" :
-          "Tính toán trả nợ trước hạn có thể có vấn đề",
+        description: isValidCalculation
+          ? "Early repayment calculation produces valid results"
+          : "Early repayment calculation may have issues",
+        descriptionVi: isValidCalculation
+          ? "Tính toán trả nợ trước hạn cho kết quả hợp lệ"
+          : "Tính toán trả nợ trước hạn có thể có vấn đề",
         regulatoryReference: "SBV_CIRCULAR_39_2016",
-        recommendation: isValidCalculation ? undefined : "Review early repayment calculation methodology",
-        recommendationVi: isValidCalculation ? undefined : "Rà soát phương pháp tính toán trả nợ trước hạn",
+        recommendation: isValidCalculation
+          ? undefined
+          : "Review early repayment calculation methodology",
+        recommendationVi: isValidCalculation
+          ? undefined
+          : "Rà soát phương pháp tính toán trả nợ trước hạn",
       };
     } catch (error) {
       return {

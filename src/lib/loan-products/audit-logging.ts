@@ -1,9 +1,12 @@
 // Financial Calculation Audit Logging
 // Secure audit logging for Vietnamese loan calculations
 
-import type { LoanCalculationParams, LoanCalculationResult } from "./interest-calculations";
-import type { VietnameseLoanProduct } from "./vietnamese-loan-products";
+import type {
+  LoanCalculationParams,
+  LoanCalculationResult,
+} from "./interest-calculations";
 import type { ComplianceCheckResult } from "./vietnamese-compliance";
+import type { VietnameseLoanProduct } from "./vietnamese-loan-products";
 
 /**
  * Audit log entry
@@ -18,7 +21,11 @@ export interface AuditLogEntry {
   /** Session ID */
   sessionId: string;
   /** Calculation type */
-  calculationType: "loan_calculation" | "eligibility_check" | "compliance_check" | "product_comparison";
+  calculationType:
+    | "loan_calculation"
+    | "eligibility_check"
+    | "compliance_check"
+    | "product_comparison";
   /** Input parameters (sanitized) */
   input: any;
   /** Output results */
@@ -92,11 +99,14 @@ export class VietnameseFinancialAuditLogger {
   /**
    * Get singleton instance
    */
-  static getInstance(config?: Partial<AuditLogConfig>): VietnameseFinancialAuditLogger {
-    if (!this.instance) {
-      this.instance = new VietnameseFinancialAuditLogger(config);
+  static getInstance(
+    config?: Partial<AuditLogConfig>,
+  ): VietnameseFinancialAuditLogger {
+    if (!VietnameseFinancialAuditLogger.instance) {
+      VietnameseFinancialAuditLogger.instance =
+        new VietnameseFinancialAuditLogger(config);
     }
-    return this.instance;
+    return VietnameseFinancialAuditLogger.instance;
   }
 
   /**
@@ -107,7 +117,7 @@ export class VietnameseFinancialAuditLogger {
     result: LoanCalculationResult | null,
     processingTime: number,
     error?: string,
-    userId?: string
+    userId?: string,
   ): void {
     if (!this.config.enabled) return;
 
@@ -144,7 +154,7 @@ export class VietnameseFinancialAuditLogger {
     product: VietnameseLoanProduct,
     complianceResult: ComplianceCheckResult,
     processingTime: number,
-    userId?: string
+    userId?: string,
   ): void {
     if (!this.config.enabled) return;
 
@@ -164,15 +174,25 @@ export class VietnameseFinancialAuditLogger {
       },
       processingTime,
       success: true,
-      complianceStatus: complianceResult.compliant ? "compliant" :
-                        complianceResult.score >= 60 ? "warning" : "non_compliant",
-      riskLevel: complianceResult.failedChecks.some(c => c.severity === "critical") ? "high" :
-                complianceResult.failedChecks.some(c => c.severity === "major") ? "medium" : "low",
+      complianceStatus: complianceResult.compliant
+        ? "compliant"
+        : complianceResult.score >= 60
+          ? "warning"
+          : "non_compliant",
+      riskLevel: complianceResult.failedChecks.some(
+        (c) => c.severity === "critical",
+      )
+        ? "high"
+        : complianceResult.failedChecks.some((c) => c.severity === "major")
+          ? "medium"
+          : "low",
       metadata: {
         productId: product.id,
         bankCode: product.bank.code,
         loanType: product.loanType,
-        regulatoryReferences: complianceResult.regulatoryReferences.map(r => r.regulation),
+        regulatoryReferences: complianceResult.regulatoryReferences.map(
+          (r) => r.regulation,
+        ),
       },
     };
 
@@ -193,31 +213,44 @@ export class VietnameseFinancialAuditLogger {
     let filteredLogs = [...this.logs];
 
     if (filter?.userId) {
-      const searchUserId = this.config.anonymizeUserData ? this.hashValue(filter.userId) : filter.userId;
-      filteredLogs = filteredLogs.filter(log => log.userId === searchUserId);
+      const searchUserId = this.config.anonymizeUserData
+        ? this.hashValue(filter.userId)
+        : filter.userId;
+      filteredLogs = filteredLogs.filter((log) => log.userId === searchUserId);
     }
 
     if (filter?.calculationType) {
-      filteredLogs = filteredLogs.filter(log => log.calculationType === filter.calculationType);
+      filteredLogs = filteredLogs.filter(
+        (log) => log.calculationType === filter.calculationType,
+      );
     }
 
     if (filter?.dateFrom) {
-      filteredLogs = filteredLogs.filter(log => new Date(log.timestamp) >= filter.dateFrom!);
+      filteredLogs = filteredLogs.filter(
+        (log) => new Date(log.timestamp) >= filter.dateFrom!,
+      );
     }
 
     if (filter?.dateTo) {
-      filteredLogs = filteredLogs.filter(log => new Date(log.timestamp) <= filter.dateTo!);
+      filteredLogs = filteredLogs.filter(
+        (log) => new Date(log.timestamp) <= filter.dateTo!,
+      );
     }
 
     if (filter?.riskLevel) {
-      filteredLogs = filteredLogs.filter(log => log.riskLevel === filter.riskLevel);
+      filteredLogs = filteredLogs.filter(
+        (log) => log.riskLevel === filter.riskLevel,
+      );
     }
 
     if (filter?.limit) {
       filteredLogs = filteredLogs.slice(0, filter.limit);
     }
 
-    return filteredLogs.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+    return filteredLogs.sort(
+      (a, b) =>
+        new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
+    );
   }
 
   /**
@@ -235,24 +268,37 @@ export class VietnameseFinancialAuditLogger {
     const cutoffDate = new Date();
     cutoffDate.setDate(cutoffDate.getDate() - timeframe);
 
-    const recentLogs = this.logs.filter(log =>
-      new Date(log.timestamp) >= cutoffDate &&
-      log.calculationType === "loan_calculation"
+    const recentLogs = this.logs.filter(
+      (log) =>
+        new Date(log.timestamp) >= cutoffDate &&
+        log.calculationType === "loan_calculation",
     );
 
     const totalCalculations = recentLogs.length;
-    const compliantCalculations = recentLogs.filter(log => log.complianceStatus === "compliant").length;
-    const nonCompliantCalculations = recentLogs.filter(log => log.complianceStatus === "non_compliant").length;
-    const warningCalculations = recentLogs.filter(log => log.complianceStatus === "warning").length;
-    const failedCalculations = recentLogs.filter(log => !log.success).length;
+    const compliantCalculations = recentLogs.filter(
+      (log) => log.complianceStatus === "compliant",
+    ).length;
+    const nonCompliantCalculations = recentLogs.filter(
+      (log) => log.complianceStatus === "non_compliant",
+    ).length;
+    const warningCalculations = recentLogs.filter(
+      (log) => log.complianceStatus === "warning",
+    ).length;
+    const failedCalculations = recentLogs.filter((log) => !log.success).length;
 
-    const averageProcessingTime = totalCalculations > 0 ?
-      recentLogs.reduce((sum, log) => sum + log.processingTime, 0) / totalCalculations : 0;
+    const averageProcessingTime =
+      totalCalculations > 0
+        ? recentLogs.reduce((sum, log) => sum + log.processingTime, 0) /
+          totalCalculations
+        : 0;
 
-    const riskDistribution = recentLogs.reduce((acc, log) => {
-      acc[log.riskLevel] = (acc[log.riskLevel] || 0) + 1;
-      return acc;
-    }, {} as Record<string, number>);
+    const riskDistribution = recentLogs.reduce(
+      (acc, log) => {
+        acc[log.riskLevel] = (acc[log.riskLevel] || 0) + 1;
+        return acc;
+      },
+      {} as Record<string, number>,
+    );
 
     return {
       totalCalculations,
@@ -261,7 +307,10 @@ export class VietnameseFinancialAuditLogger {
       warningCalculations,
       averageProcessingTime: Math.round(averageProcessingTime),
       riskDistribution,
-      errorRate: totalCalculations > 0 ? (failedCalculations / totalCalculations) * 100 : 0,
+      errorRate:
+        totalCalculations > 0
+          ? (failedCalculations / totalCalculations) * 100
+          : 0,
     };
   }
 
@@ -269,7 +318,7 @@ export class VietnameseFinancialAuditLogger {
    * Export logs for compliance reporting
    */
   exportLogs(format: "json" | "csv" = "json"): string {
-    const logsForExport = this.logs.map(log => ({
+    const logsForExport = this.logs.map((log) => ({
       ...log,
       // Remove sensitive data for export
       userId: log.userId ? "***" : undefined,
@@ -283,11 +332,17 @@ export class VietnameseFinancialAuditLogger {
 
     // CSV format
     const headers = [
-      "ID", "Timestamp", "Calculation Type", "Success", "Processing Time (ms)",
-      "Risk Level", "Compliance Status", "Error Message"
+      "ID",
+      "Timestamp",
+      "Calculation Type",
+      "Success",
+      "Processing Time (ms)",
+      "Risk Level",
+      "Compliance Status",
+      "Error Message",
     ];
 
-    const rows = logsForExport.map(log => [
+    const rows = logsForExport.map((log) => [
       log.id,
       log.timestamp,
       log.calculationType,
@@ -295,10 +350,10 @@ export class VietnameseFinancialAuditLogger {
       log.processingTime,
       log.riskLevel,
       log.complianceStatus || "",
-      log.errorMessage || ""
+      log.errorMessage || "",
     ]);
 
-    return [headers.join(","), ...rows.map(row => row.join(","))].join("\n");
+    return [headers.join(","), ...rows.map((row) => row.join(","))].join("\n");
   }
 
   /**
@@ -308,7 +363,9 @@ export class VietnameseFinancialAuditLogger {
     const cutoffDate = new Date();
     cutoffDate.setDate(cutoffDate.getDate() - this.config.retentionPeriod);
 
-    this.logs = this.logs.filter(log => new Date(log.timestamp) >= cutoffDate);
+    this.logs = this.logs.filter(
+      (log) => new Date(log.timestamp) >= cutoffDate,
+    );
     this.persistLogs();
   }
 
@@ -335,7 +392,7 @@ export class VietnameseFinancialAuditLogger {
     let hash = 0;
     for (let i = 0; i < value.length; i++) {
       const char = value.charCodeAt(i);
-      hash = ((hash << 5) - hash) + char;
+      hash = (hash << 5) - hash + char;
       hash = hash & hash; // Convert to 32-bit integer
     }
     return `hash_${Math.abs(hash)}`;
@@ -394,14 +451,19 @@ export class VietnameseFinancialAuditLogger {
       minTerm: product.termOptions.min,
       maxTerm: product.termOptions.max,
       collateralRequired: product.eligibility.collateralRequired,
-      sbvRegistrationNumber: product.regulatoryCompliance.sbvRegistrationNumber ? "registered" : "not_registered",
+      sbvRegistrationNumber: product.regulatoryCompliance.sbvRegistrationNumber
+        ? "registered"
+        : "not_registered",
     };
   }
 
   /**
    * Assess risk level of calculation
    */
-  private assessRiskLevel(params: LoanCalculationParams, result: LoanCalculationResult | null): "low" | "medium" | "high" {
+  private assessRiskLevel(
+    params: LoanCalculationParams,
+    result: LoanCalculationResult | null,
+  ): "low" | "medium" | "high" {
     // High risk indicators
     if (params.principal > 5000000000) return "high"; // > 5 tỷ VND
     if (params.annualRate > 20) return "high"; // > 20% interest
@@ -468,7 +530,10 @@ export class VietnameseFinancialAuditLogger {
         lastUpdated: new Date().toISOString(),
       };
 
-      localStorage.setItem(this.config.storageKey, JSON.stringify(logsToPersist));
+      localStorage.setItem(
+        this.config.storageKey,
+        JSON.stringify(logsToPersist),
+      );
     } catch (error) {
       console.warn("Failed to persist audit logs:", error);
     }
@@ -486,8 +551,8 @@ export class VietnameseFinancialAuditLogger {
         const parsed = JSON.parse(persisted);
         if (parsed.logs && Array.isArray(parsed.logs)) {
           // Validate and filter logs
-          this.logs = parsed.logs.filter((log: any) =>
-            log && log.id && log.timestamp && log.calculationType
+          this.logs = parsed.logs.filter(
+            (log: any) => log && log.id && log.timestamp && log.calculationType,
           );
         }
       }

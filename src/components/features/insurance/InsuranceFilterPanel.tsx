@@ -1,69 +1,69 @@
 "use client";
 
-import React, { useState, useMemo, useCallback } from "react";
+import {
+  Car,
+  CheckCircle,
+  ChevronDown,
+  ChevronUp,
+  Clock,
+  DollarSign,
+  Filter,
+  Globe,
+  HeadphonesIcon,
+  Heart,
+  HelpCircle,
+  Home,
+  MapPin,
+  Phone,
+  Plane,
+  RotateCcw,
+  Shield,
+  Star,
+  Users,
+} from "lucide-react";
 import { useTranslations } from "next-intl";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Slider } from "@/components/ui/slider";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
+import React, { useCallback, useMemo, useState } from "react";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Slider } from "@/components/ui/slider";
 import {
-  ChevronDown,
-  ChevronUp,
-  RotateCcw,
-  Filter,
-  DollarSign,
-  Car,
-  Heart,
-  Shield,
-  Plane,
-  Home,
-  Users,
-  MapPin,
-  Star,
-  Phone,
-  Globe,
-  HeadphonesIcon,
-  HelpCircle,
-  Clock,
-  CheckCircle,
-} from "lucide-react";
-import { cn } from "@/lib/utils";
-import {
-  InsuranceFilters,
-  InsuranceCategory,
-  InsuranceType,
-  VehicleType,
-  FeeType,
-  CoveragePeriod,
-} from "@/types/insurance";
-import {
+  ALL_PROVINCES,
+  COVERAGE_PERIODS,
   DEFAULT_FILTERS,
+  FEE_TYPES,
   INSURANCE_CATEGORIES,
   INSURANCE_TYPES,
-  VEHICLE_TYPES,
-  FEE_TYPES,
-  COVERAGE_PERIODS,
-  PERSONAL_ACCIDENT_COVERAGE_RANGES,
-  PROPERTY_DAMAGE_COVERAGE_RANGES,
   MEDICAL_EXPENSES_COVERAGE_RANGES,
+  PERSONAL_ACCIDENT_COVERAGE_RANGES,
   PREMIUM_RANGES,
-  ALL_PROVINCES,
+  PROPERTY_DAMAGE_COVERAGE_RANGES,
   PROVINCE_GROUPS,
+  VEHICLE_TYPES,
 } from "@/constants/insurance";
+import { cn } from "@/lib/utils";
+import {
+  CoveragePeriod,
+  FeeType,
+  InsuranceCategory,
+  type InsuranceFilters,
+  type InsuranceType,
+  type VehicleType,
+} from "@/types/insurance";
 
 interface FilterPanelProps {
   filters: InsuranceFilters;

@@ -1,6 +1,6 @@
-import type { TrackingSession, DeviceInfo } from "./types";
-import { STORAGE_KEYS, DEFAULT_TRACKING_CONFIG } from "./config";
-import { shouldEnableTracking, getPrivacySafeSessionId } from "./privacy";
+import { DEFAULT_TRACKING_CONFIG, STORAGE_KEYS } from "./config";
+import { getPrivacySafeSessionId, shouldEnableTracking } from "./privacy";
+import type { DeviceInfo, TrackingSession } from "./types";
 
 /**
  * Session management for tracking

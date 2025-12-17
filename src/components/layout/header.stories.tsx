@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import type { NavbarConfig } from "@/configs/navbar-config";
 import Header from "./header";
-import { NavbarConfig } from "@/configs/navbar-config";
 
 const meta: Meta<typeof Header> = {
   title: "Layout/Header",

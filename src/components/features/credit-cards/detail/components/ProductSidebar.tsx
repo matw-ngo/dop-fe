@@ -1,9 +1,9 @@
-import React from "react";
+import { AlertCircle, Check, TrendingUp, X } from "lucide-react";
 import { useTranslations } from "next-intl";
+import type React from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Check, X, TrendingUp, AlertCircle } from "lucide-react";
-import { DetailedCreditCardInfo } from "@/types/credit-card";
+import type { DetailedCreditCardInfo } from "@/types/credit-card";
 import { PaymentMethodCard } from "./PaymentMethodCard";
 import { ServiceCard } from "./ServiceCard";
 

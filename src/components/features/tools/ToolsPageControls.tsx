@@ -1,10 +1,24 @@
 "use client";
 
-import { useState } from "react";
+import {
+  ChevronDown,
+  Filter,
+  Grid3X3,
+  LayoutGrid,
+  List,
+  Search,
+} from "lucide-react";
 import { useTranslations } from "next-intl";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -12,20 +26,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
-  Search,
-  Filter,
-  Grid3X3,
-  List,
-  LayoutGrid,
-  ChevronDown,
-} from "lucide-react";
 import { ToolsThemeToggle } from "./ToolsThemeToggle";
 
 interface ToolsPageControlsProps {

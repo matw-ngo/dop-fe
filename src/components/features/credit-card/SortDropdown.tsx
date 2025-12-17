@@ -1,14 +1,8 @@
 "use client";
 
-import React from "react";
+import { ArrowDown, ArrowUp, ArrowUpDown } from "lucide-react";
 import { useTranslations } from "next-intl";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import type React from "react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -16,10 +10,16 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { SortOption, SortOptionUI } from "@/types/credit-card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { SORT_OPTIONS } from "@/constants/credit-cards";
+import { cn } from "@/lib/utils";
+import { SortOption, type SortOptionUI } from "@/types/credit-card";
 
 interface SortDropdownProps {
   value?: SortOptionUI["value"];

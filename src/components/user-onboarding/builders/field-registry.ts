@@ -1,9 +1,9 @@
-import { FieldCategory, FieldType } from "../constants/field-types";
-import { createPersonalFieldBuilders } from "./personal-fields";
-import { createIdentityFieldBuilders } from "./identity-fields";
-import { createFinancialFieldBuilders } from "./financial-fields";
-import { createLoanFieldBuilders } from "./loan-fields";
 import type { RawFieldConfig } from "@/components/renderer/types/data-driven-ui";
+import { FieldCategory, FieldType } from "../constants/field-types";
+import { createFinancialFieldBuilders } from "./financial-fields";
+import { createIdentityFieldBuilders } from "./identity-fields";
+import { createLoanFieldBuilders } from "./loan-fields";
+import { createPersonalFieldBuilders } from "./personal-fields";
 
 /**
  * Simplified field builder registry

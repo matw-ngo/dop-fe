@@ -1,8 +1,8 @@
 import { renderHook } from "@testing-library/react";
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { useFormValidation } from "./use-form-validation";
-import type { FieldConfig } from "@/components/renderer/types/data-driven-ui";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { z } from "zod";
+import type { FieldConfig } from "@/components/renderer/types/data-driven-ui";
+import { useFormValidation } from "./use-form-validation";
 
 // Mock dependencies
 vi.mock("@hookform/resolvers/zod", () => ({
@@ -18,12 +18,14 @@ vi.mock("@/components/renderer/types/field-conditions", () => ({
 }));
 
 describe("useFormValidation", () => {
-  const mockZodResolver = vi.mocked(require("@hookform/resolvers/zod").zodResolver);
+  const mockZodResolver = vi.mocked(
+    require("@hookform/resolvers/zod").zodResolver,
+  );
   const mockGenerateZodSchema = vi.mocked(
-    require("@/components/renderer/builders/zod-generator").generateZodSchema
+    require("@/components/renderer/builders/zod-generator").generateZodSchema,
   );
   const mockEvaluateCondition = vi.mocked(
-    require("@/components/renderer/types/field-conditions").evaluateCondition
+    require("@/components/renderer/types/field-conditions").evaluateCondition,
   );
 
   const mockFields: FieldConfig[] = [
@@ -51,7 +53,12 @@ describe("useFormValidation", () => {
       component: "Input",
       props: {
         label: "Age",
-        condition: { type: "field", field: "showAge", operator: "equals", value: "yes" },
+        condition: {
+          type: "field",
+          field: "showAge",
+          operator: "equals",
+          value: "yes",
+        },
         validations: [{ type: "min", value: 18 }],
       },
     },
@@ -60,19 +67,25 @@ describe("useFormValidation", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mockGenerateZodSchema.mockReturnValue({} as z.ZodSchema);
-    mockZodResolver.mockReturnValue(async (values: any) => ({ values, errors: {} }));
+    mockZodResolver.mockReturnValue(async (values: any) => ({
+      values,
+      errors: {},
+    }));
   });
 
   it("should create resolver with validation mode", () => {
     const { result } = renderHook(() =>
       useFormValidation(mockFields, vi.fn(), {
         validateOnChange: true,
-      })
+      }),
     );
 
     expect(result.current.mode).toBe("onChange");
     expect(typeof result.current.resolver).toBe("function");
-    expect(mockGenerateZodSchema).toHaveBeenCalledWith(mockFields, expect.any(Function));
+    expect(mockGenerateZodSchema).toHaveBeenCalledWith(
+      mockFields,
+      expect.any(Function),
+    );
   });
 
   it("should set mode to onBlur when validateOnBlur is true", () => {
@@ -80,7 +93,7 @@ describe("useFormValidation", () => {
       useFormValidation(mockFields, vi.fn(), {
         validateOnChange: false,
         validateOnBlur: true,
-      })
+      }),
     );
 
     expect(result.current.mode).toBe("onBlur");
@@ -91,7 +104,7 @@ describe("useFormValidation", () => {
       useFormValidation(mockFields, vi.fn(), {
         validateOnChange: false,
         validateOnBlur: false,
-      })
+      }),
     );
 
     expect(result.current.mode).toBe("onSubmit");
@@ -101,9 +114,7 @@ describe("useFormValidation", () => {
     const mockSchema = {} as z.ZodSchema;
     mockGenerateZodSchema.mockReturnValue(mockSchema);
 
-    const { result } = renderHook(() =>
-      useFormValidation(mockFields, vi.fn())
-    );
+    const { result } = renderHook(() => useFormValidation(mockFields, vi.fn()));
 
     expect(result.current.formSchema).toBe(mockSchema);
   });
@@ -117,12 +128,12 @@ describe("useFormValidation", () => {
       return true;
     });
 
-    const mockResolver = vi.fn().mockResolvedValue({ values: mockValues, errors: {} });
+    const mockResolver = vi
+      .fn()
+      .mockResolvedValue({ values: mockValues, errors: {} });
     mockZodResolver.mockReturnValue(mockResolver);
 
-    const { result } = renderHook(() =>
-      useFormValidation(mockFields, vi.fn())
-    );
+    const { result } = renderHook(() => useFormValidation(mockFields, vi.fn()));
 
     // Call the resolver
     await result.current.resolver(mockValues, {}, {});
@@ -136,7 +147,7 @@ describe("useFormValidation", () => {
         expect.objectContaining({ fieldName: "firstName" }),
         expect.objectContaining({ fieldName: "email" }),
       ]),
-      expect.any(Function)
+      expect.any(Function),
     );
   });
 
@@ -144,17 +155,18 @@ describe("useFormValidation", () => {
     const mockValues = { firstName: "John", email: "john@example.com" };
     mockEvaluateCondition.mockReturnValue(true);
 
-    const mockResolver = vi.fn().mockResolvedValue({ values: mockValues, errors: {} });
+    const mockResolver = vi
+      .fn()
+      .mockResolvedValue({ values: mockValues, errors: {} });
     mockZodResolver.mockReturnValue(mockResolver);
 
-    const { result } = renderHook(() =>
-      useFormValidation(mockFields, vi.fn())
-    );
+    const { result } = renderHook(() => useFormValidation(mockFields, vi.fn()));
 
     await result.current.resolver(mockValues, {}, {});
 
     // Should include fields without conditions
-    const visibleFields = mockGenerateZodSchema.mock.calls[1][0] as FieldConfig[];
+    const visibleFields = mockGenerateZodSchema.mock
+      .calls[1][0] as FieldConfig[];
     expect(visibleFields).toHaveLength(3);
   });
 
@@ -165,12 +177,12 @@ describe("useFormValidation", () => {
     });
 
     const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {});
-    const mockResolver = vi.fn().mockResolvedValue({ values: mockValues, errors: {} });
+    const mockResolver = vi
+      .fn()
+      .mockResolvedValue({ values: mockValues, errors: {} });
     mockZodResolver.mockReturnValue(mockResolver);
 
-    const { result } = renderHook(() =>
-      useFormValidation(mockFields, vi.fn())
-    );
+    const { result } = renderHook(() => useFormValidation(mockFields, vi.fn()));
 
     await result.current.resolver(mockValues, {}, {});
 
@@ -181,23 +193,21 @@ describe("useFormValidation", () => {
         expect.objectContaining({ fieldName: "email" }),
         expect.objectContaining({ fieldName: "age" }),
       ]),
-      expect.any(Function)
+      expect.any(Function),
     );
 
     consoleSpy.mockRestore();
   });
 
   it("should use default options", () => {
-    const { result } = renderHook(() =>
-      useFormValidation(mockFields, vi.fn())
-    );
+    const { result } = renderHook(() => useFormValidation(mockFields, vi.fn()));
 
     expect(result.current.mode).toBe("onBlur");
   });
 
   it("should memoize resolver", () => {
     const { result, rerender } = renderHook(() =>
-      useFormValidation(mockFields, vi.fn())
+      useFormValidation(mockFields, vi.fn()),
     );
 
     const firstResolver = result.current.resolver;
@@ -209,7 +219,7 @@ describe("useFormValidation", () => {
 
   it("should memoize form schema", () => {
     const { result, rerender } = renderHook(() =>
-      useFormValidation(mockFields, vi.fn())
+      useFormValidation(mockFields, vi.fn()),
     );
 
     const firstSchema = result.current.formSchema;

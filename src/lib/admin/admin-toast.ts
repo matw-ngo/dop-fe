@@ -1,5 +1,5 @@
 import { toast } from "sonner";
-import type { FlowListItem, StepListItem, FieldListItem } from "@/types/admin";
+import type { FieldListItem, FlowListItem, StepListItem } from "@/types/admin";
 
 // Base toast options for admin actions
 const adminToastOptions = {
@@ -58,13 +58,15 @@ export const flowErrorToast = {
 
   updateFailed: (flow: FlowListItem, error?: string) =>
     toast.error("Failed to update flow", {
-      description: error || `Failed to update "${flow.name}". Please try again.`,
+      description:
+        error || `Failed to update "${flow.name}". Please try again.`,
       ...adminToastOptions,
     }),
 
   deleteFailed: (flow: FlowListItem, error?: string) =>
     toast.error("Failed to delete flow", {
-      description: error || `Failed to delete "${flow.name}". Please try again.`,
+      description:
+        error || `Failed to delete "${flow.name}". Please try again.`,
       ...adminToastOptions,
     }),
 
@@ -76,7 +78,8 @@ export const flowErrorToast = {
 
   duplicateFailed: (flow: FlowListItem, error?: string) =>
     toast.error("Failed to duplicate flow", {
-      description: error || `Failed to duplicate "${flow.name}". Please try again.`,
+      description:
+        error || `Failed to duplicate "${flow.name}". Please try again.`,
       ...adminToastOptions,
     }),
 };
@@ -134,13 +137,15 @@ export const stepErrorToast = {
 
   updateFailed: (step: StepListItem, error?: string) =>
     toast.error("Failed to update step", {
-      description: error || `Failed to update "${step.name}". Please try again.`,
+      description:
+        error || `Failed to update "${step.name}". Please try again.`,
       ...adminToastOptions,
     }),
 
   deleteFailed: (step: StepListItem, error?: string) =>
     toast.error("Failed to delete step", {
-      description: error || `Failed to delete "${step.name}". Please try again.`,
+      description:
+        error || `Failed to delete "${step.name}". Please try again.`,
       ...adminToastOptions,
     }),
 
@@ -158,7 +163,8 @@ export const stepErrorToast = {
 
   duplicateFailed: (step: StepListItem, error?: string) =>
     toast.error("Failed to duplicate step", {
-      description: error || `Failed to duplicate "${step.name}". Please try again.`,
+      description:
+        error || `Failed to duplicate "${step.name}". Please try again.`,
       ...adminToastOptions,
     }),
 };
@@ -193,13 +199,13 @@ export const fieldSuccessToast = {
 
   visibilityToggled: (field: FieldListItem, visible: boolean) =>
     toast.success("Field visibility updated", {
-      description: `"${field.label || field.name}" is now ${visible ? 'visible' : 'hidden'}.`,
+      description: `"${field.label || field.name}" is now ${visible ? "visible" : "hidden"}.`,
       ...adminToastOptions,
     }),
 
   requirementToggled: (field: FieldListItem, required: boolean) =>
     toast.success("Field requirement updated", {
-      description: `"${field.label || field.name}" is now ${required ? 'required' : 'optional'}.`,
+      description: `"${field.label || field.name}" is now ${required ? "required" : "optional"}.`,
       ...adminToastOptions,
     }),
 };
@@ -210,31 +216,38 @@ export const fieldSuccessToast = {
 export const fieldErrorToast = {
   createFailed: (field: FieldListItem, error?: string) =>
     toast.error("Failed to create field", {
-      description: error || `Failed to create "${field.label || field.name}". Please try again.`,
+      description:
+        error ||
+        `Failed to create "${field.label || field.name}". Please try again.`,
       ...adminToastOptions,
     }),
 
   updateFailed: (field: FieldListItem, error?: string) =>
     toast.error("Failed to update field", {
-      description: error || `Failed to update "${field.label || field.name}". Please try again.`,
+      description:
+        error ||
+        `Failed to update "${field.label || field.name}". Please try again.`,
       ...adminToastOptions,
     }),
 
   deleteFailed: (field: FieldListItem, error?: string) =>
     toast.error("Failed to delete field", {
-      description: error || `Failed to delete "${field.label || field.name}". Please try again.`,
+      description:
+        error ||
+        `Failed to delete "${field.label || field.name}". Please try again.`,
       ...adminToastOptions,
     }),
 
   bulkUpdateFailed: (fieldCount: number, error?: string) =>
     toast.error("Failed to update fields", {
-      description: error || `Failed to update ${fieldCount} field(s). Please try again.`,
+      description:
+        error || `Failed to update ${fieldCount} field(s). Please try again.`,
       ...adminToastOptions,
     }),
 
   validationFailed: (fieldName: string, errors: string[]) =>
     toast.error("Field validation failed", {
-      description: `"${fieldName}": ${errors.join(', ')}`,
+      description: `"${fieldName}": ${errors.join(", ")}`,
       ...adminToastOptions,
     }),
 };
@@ -245,7 +258,7 @@ export const fieldErrorToast = {
 export const saveSuccessToast = {
   changesSaved: (itemType: string, itemName?: string) =>
     toast.success("Changes saved successfully", {
-      description: itemName 
+      description: itemName
         ? `${itemType} "${itemName}" has been saved.`
         : `All ${itemType.toLowerCase()} changes have been saved.`,
       ...adminToastOptions,
@@ -253,7 +266,7 @@ export const saveSuccessToast = {
 
   draftSaved: (itemType: string, itemName?: string) =>
     toast.success("Draft saved", {
-      description: itemName 
+      description: itemName
         ? `${itemType} "${itemName}" has been saved as draft.`
         : `All ${itemType.toLowerCase()} changes have been saved as draft.`,
       ...adminToastOptions,
@@ -266,13 +279,16 @@ export const saveSuccessToast = {
 export const saveErrorToast = {
   saveFailed: (itemType: string, error?: string) =>
     toast.error("Failed to save changes", {
-      description: error || `Failed to save ${itemType.toLowerCase()} changes. Please try again.`,
+      description:
+        error ||
+        `Failed to save ${itemType.toLowerCase()} changes. Please try again.`,
       ...adminToastOptions,
     }),
 
   networkError: () =>
     toast.error("Network error", {
-      description: "Unable to save changes due to network issues. Please check your connection and try again.",
+      description:
+        "Unable to save changes due to network issues. Please check your connection and try again.",
       ...adminToastOptions,
     }),
 
@@ -299,7 +315,11 @@ export const adminWarningToast = {
       ...adminToastOptions,
     }),
 
-  statusChangeWarning: (itemType: string, itemName: string, newStatus: string) =>
+  statusChangeWarning: (
+    itemType: string,
+    itemName: string,
+    newStatus: string,
+  ) =>
     toast.warning("Status change warning", {
       description: `Changing "${itemName}" status to ${newStatus} may affect active users.`,
       ...adminToastOptions,

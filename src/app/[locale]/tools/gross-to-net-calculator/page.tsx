@@ -4,6 +4,11 @@
  * Page for calculating net salary from gross salary in Vietnam
  */
 
+import type { Metadata } from "next";
+import { useLocale, useTranslations } from "next-intl";
+import { ToolsPageLayout } from "@/components/features/tools/ToolsPageLayout";
+import { ToolsThemeProvider } from "@/components/features/tools/ToolsThemeProvider";
+import Header from "@/components/layout/header";
 import { GrossToNetCalculator } from "@/components/tools";
 import {
   Breadcrumb,
@@ -14,10 +19,6 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Metadata } from "next";
-import { useTranslations, useLocale } from "next-intl";
-import { ToolsThemeProvider } from "@/components/features/tools/ToolsThemeProvider";
-import { ToolsPageLayout } from "@/components/features/tools/ToolsPageLayout";
 import {
   Table,
   TableBody,
@@ -26,7 +27,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import Header from "@/components/layout/header";
 
 export const metadata: Metadata = {
   title: "Tính lương Gross sang Net | Công cụ tính lương",

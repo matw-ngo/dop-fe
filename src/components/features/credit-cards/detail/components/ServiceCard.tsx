@@ -1,8 +1,8 @@
-import React from "react";
+import { Globe, Headphones, Phone, Shield } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { Shield, Phone, Globe, Headphones } from "lucide-react";
+import type React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { DetailedCreditCardInfo } from "@/types/credit-card";
+import type { DetailedCreditCardInfo } from "@/types/credit-card";
 
 interface ServiceCardProps {
   card: DetailedCreditCardInfo;

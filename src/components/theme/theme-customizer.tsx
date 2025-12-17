@@ -2,6 +2,9 @@
 
 import { Eye, RotateCcw } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useTheme } from "@/components/renderer/theme";
+import { themes } from "@/components/renderer/theme/themes";
+import type { ThemeColors } from "@/components/renderer/theme/types";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,9 +17,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useTheme } from "@/components/renderer/theme";
-import { themes } from "@/components/renderer/theme/themes";
-import type { ThemeColors } from "@/components/renderer/theme/types";
 
 interface ThemeCustomizerProps {
   onClose?: () => void;

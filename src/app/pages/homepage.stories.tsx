@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import Homepage from "./homepage";
 import {
-  finZoneHomepageConfig,
   exampleCompanyHomepageConfig,
+  finZoneHomepageConfig,
 } from "@/configs/homepage-config";
+import Homepage from "./homepage";
 
 const meta: Meta<typeof Homepage> = {
   title: "⭐ Trang chủ/Toàn bộ trang",

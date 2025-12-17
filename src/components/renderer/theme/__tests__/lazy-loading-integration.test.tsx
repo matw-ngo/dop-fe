@@ -1,13 +1,14 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
+  clearThemeCache,
+  getAvailableThemes,
+  getThemeCacheMetrics,
+  isThemeCached,
   loadTheme,
   loadThemes,
   preloadThemes,
-  getAvailableThemes,
-  isThemeCached,
-  getThemeCacheMetrics,
-  clearThemeCache,
 } from "../lazy-loader";
+
 // Note: initializeThemes is not easily testable due to auto-initialization logic
 
 describe("Lazy Loading Integration Tests", () => {
@@ -168,7 +169,7 @@ describe("Lazy Loading Integration Tests", () => {
   });
 
   // Note: Initialization tests are skipped due to complex auto-initialization logic
-// and import side effects that make testing difficult in the current setup
+  // and import side effects that make testing difficult in the current setup
 
   describe("Memory Management", () => {
     it("should provide cache memory estimate", async () => {

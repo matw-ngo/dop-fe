@@ -12,10 +12,10 @@
  *   └── common/
  */
 
-import { getRequestConfig } from "next-intl/server";
-import { cache } from "react";
 import fs from "fs";
+import { getRequestConfig } from "next-intl/server";
 import path from "path";
+import { cache } from "react";
 
 const MESSAGES_DIR = path.join(process.cwd(), "messages");
 const DEFAULT_LOCALE = "vi";

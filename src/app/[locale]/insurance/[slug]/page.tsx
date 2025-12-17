@@ -23,12 +23,7 @@ async function getProductData(slug: string): Promise<InsuranceProduct> {
 export default async function InsuranceProductDetailPage({ params }: Props) {
   const product = await getProductData(params.slug);
 
-  return (
-    <ProductPageClient
-      product={product}
-      locale={params.locale}
-    />
-  );
+  return <ProductPageClient product={product} locale={params.locale} />;
 }
 
 export async function generateMetadata({ params }: Props) {
@@ -36,11 +31,20 @@ export async function generateMetadata({ params }: Props) {
 
   return {
     title: product.metaTitle || `${product.name} - ${product.issuer}`,
-    description: product.metaDescription || `Thông tin chi tiết về ${product.name} từ ${product.issuer}`,
-    keywords: [product.name, product.issuer, product.category, ...product.tags].join(", "),
+    description:
+      product.metaDescription ||
+      `Thông tin chi tiết về ${product.name} từ ${product.issuer}`,
+    keywords: [
+      product.name,
+      product.issuer,
+      product.category,
+      ...product.tags,
+    ].join(", "),
     openGraph: {
       title: product.metaTitle || `${product.name} - ${product.issuer}`,
-      description: product.metaDescription || `Thông tin chi tiết về ${product.name} từ ${product.issuer}`,
+      description:
+        product.metaDescription ||
+        `Thông tin chi tiết về ${product.name} từ ${product.issuer}`,
       images: [
         {
           url: product.image,
@@ -55,7 +59,9 @@ export async function generateMetadata({ params }: Props) {
     twitter: {
       card: "summary_large_image",
       title: product.metaTitle || `${product.name} - ${product.issuer}`,
-      description: product.metaDescription || `Thông tin chi tiết về ${product.name} từ ${product.issuer}`,
+      description:
+        product.metaDescription ||
+        `Thông tin chi tiết về ${product.name} từ ${product.issuer}`,
       images: [product.image],
     },
     alternates: {

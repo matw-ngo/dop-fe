@@ -1,6 +1,6 @@
 import { useTranslations } from "next-intl";
-import { useLocalizedTelcos } from "./use-localized-telcos";
 import type { PhoneValidationResult } from "@/lib/utils/phone-validation";
+import { useLocalizedTelcos } from "./use-localized-telcos";
 
 /**
  * Hook to get localized phone validation messages

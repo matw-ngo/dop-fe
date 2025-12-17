@@ -4,7 +4,7 @@
  * Provides version-based conflict resolution for loan status updates
  */
 
-import { auditLogger, AuditEventType, AuditSeverity } from "./audit-logging";
+import { AuditEventType, AuditSeverity, auditLogger } from "./audit-logging";
 
 // Conflict types
 export enum ConflictType {
@@ -705,9 +705,12 @@ export class ConflictResolutionManager {
     this.retryAttempts.set(conflict.id, retryCount + 1);
 
     // Schedule retry
-    setTimeout(async () => {
-      await this.resolveConflict(conflict, userId);
-    }, this.config.retryDelayMs * Math.pow(2, retryCount));
+    setTimeout(
+      async () => {
+        await this.resolveConflict(conflict, userId);
+      },
+      this.config.retryDelayMs * 2 ** retryCount,
+    );
 
     return {
       success: false,

@@ -1,4 +1,5 @@
 "use client";
+
 /**
  * Net to Gross Salary Calculator Component
  *
@@ -6,8 +7,19 @@
  * the gross salary needed to achieve a desired net salary.
  */
 
-import React, { useState, useEffect, useMemo } from "react";
+import {
+  AlertTriangle,
+  Calculator,
+  Info,
+  RotateCcw,
+  TrendingUp,
+} from "lucide-react";
 import { useTranslations } from "next-intl";
+import type React from "react";
+import { useEffect, useMemo, useState } from "react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -15,7 +27,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -25,25 +36,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import {
-  Calculator,
-  TrendingUp,
-  RotateCcw,
-  Info,
-  AlertTriangle,
-} from "lucide-react";
-import { useFinancialToolsStore } from "@/store/use-financial-tools-store";
 import { calculateNetToGross } from "@/lib/calculators/salary-net-to-gross";
 import { ALLOWANCES, REGIONAL_MINIMUM_WAGES } from "@/lib/constants/tools";
-import { formatCurrency } from "@/lib/utils";
 import { formatPercentage } from "@/lib/financial-data/market-indicators";
+import { formatCurrency } from "@/lib/utils";
+import { useFinancialToolsStore } from "@/store/use-financial-tools-store";
 import {
+  CalculatorAsyncErrorHandler,
   CalculatorErrorBoundary,
   useCalculatorErrorHandler,
-  CalculatorAsyncErrorHandler,
 } from "./ErrorBoundary";
 
 // Vietnamese regions

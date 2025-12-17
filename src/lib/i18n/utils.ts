@@ -4,7 +4,7 @@
  * Helper functions for common translation operations
  */
 
-import { type TranslationMessages, type Namespace, type Locale } from './dynamic-loader';
+import type { Locale, Namespace, TranslationMessages } from "./dynamic-loader";
 
 /**
  * Deep merge translation messages
@@ -29,15 +29,15 @@ function deepMerge(target: any, source: any): any {
     return source;
   }
 
-  if (typeof source !== 'object' || typeof target !== 'object') {
+  if (typeof source !== "object" || typeof target !== "object") {
     return source;
   }
 
   const result = { ...target };
 
   for (const key in source) {
-    if (source.hasOwnProperty(key)) {
-      if (typeof source[key] === 'object' && !Array.isArray(source[key])) {
+    if (Object.hasOwn(source, key)) {
+      if (typeof source[key] === "object" && !Array.isArray(source[key])) {
         result[key] = deepMerge(result[key], source[key]);
       } else {
         result[key] = source[key];
@@ -54,14 +54,14 @@ function deepMerge(target: any, source: any): any {
  */
 export function flattenTranslations(
   messages: TranslationMessages,
-  prefix = ''
+  prefix = "",
 ): Record<string, string> {
   const flattened: Record<string, string> = {};
 
   for (const [key, value] of Object.entries(messages)) {
     const fullKey = prefix ? `${prefix}.${key}` : key;
 
-    if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+    if (typeof value === "object" && value !== null && !Array.isArray(value)) {
       Object.assign(flattened, flattenTranslations(value, fullKey));
     } else {
       flattened[fullKey] = String(value);
@@ -78,24 +78,28 @@ export function flattenTranslations(
 export function getTranslationByKey(
   messages: TranslationMessages,
   keyPath: string,
-  fallback?: string
+  fallback?: string,
 ): string | undefined {
-  const keys = keyPath.split('.');
+  const keys = keyPath.split(".");
   let current: any = messages;
 
   for (const key of keys) {
-    if (current === null || current === undefined || typeof current !== 'object') {
+    if (
+      current === null ||
+      current === undefined ||
+      typeof current !== "object"
+    ) {
       return fallback;
     }
 
-    if (!current.hasOwnProperty(key)) {
+    if (!Object.hasOwn(current, key)) {
       return fallback;
     }
 
     current = current[key];
   }
 
-  return typeof current === 'string' ? current : fallback;
+  return typeof current === "string" ? current : fallback;
 }
 
 /**
@@ -103,7 +107,7 @@ export function getTranslationByKey(
  */
 export function hasTranslationKey(
   messages: TranslationMessages,
-  keyPath: string
+  keyPath: string,
 ): boolean {
   return getTranslationByKey(messages, keyPath) !== undefined;
 }
@@ -115,21 +119,23 @@ export function hasTranslationKey(
 export function findMissingKeys(
   template: TranslationMessages,
   translations: TranslationMessages,
-  path = ''
+  path = "",
 ): string[] {
   const missing: string[] = [];
 
   for (const [key, value] of Object.entries(template)) {
     const currentPath = path ? `${path}.${key}` : key;
 
-    if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
-      if (!translations[key] || typeof translations[key] !== 'object') {
+    if (typeof value === "object" && value !== null && !Array.isArray(value)) {
+      if (!translations[key] || typeof translations[key] !== "object") {
         missing.push(currentPath);
       } else {
-        missing.push(...findMissingKeys(value, translations[key] || {}, currentPath));
+        missing.push(
+          ...findMissingKeys(value, translations[key] || {}, currentPath),
+        );
       }
     } else {
-      if (!translations.hasOwnProperty(key)) {
+      if (!Object.hasOwn(translations, key)) {
         missing.push(currentPath);
       }
     }
@@ -142,8 +148,11 @@ export function findMissingKeys(
  * Extract namespace from key path
  * Example: 'common.buttons.save' => 'common'
  */
-export function extractNamespace(keyPath: string, defaultNs = 'common'): Namespace {
-  const firstDot = keyPath.indexOf('.');
+export function extractNamespace(
+  keyPath: string,
+  defaultNs = "common",
+): Namespace {
+  const firstDot = keyPath.indexOf(".");
   return firstDot > 0 ? keyPath.substring(0, firstDot) : defaultNs;
 }
 
@@ -152,7 +161,7 @@ export function extractNamespace(keyPath: string, defaultNs = 'common'): Namespa
  * Example: 'common.buttons.save' => 'buttons.save'
  */
 export function extractKey(keyPath: string): string {
-  const firstDot = keyPath.indexOf('.');
+  const firstDot = keyPath.indexOf(".");
   return firstDot > 0 ? keyPath.substring(firstDot + 1) : keyPath;
 }
 
@@ -162,7 +171,7 @@ export function extractKey(keyPath: string): string {
  */
 export function formatTranslation(
   template: string,
-  params: Record<string, string | number> = {}
+  params: Record<string, string | number> = {},
 ): string {
   return template.replace(/\{\{(\w+)\}\}/g, (match, key) => {
     return params[key]?.toString() || match;
@@ -175,12 +184,13 @@ export function formatTranslation(
  */
 export function createKeyResolver(
   messages: TranslationMessages,
-  fallbackMessages?: TranslationMessages
+  fallbackMessages?: TranslationMessages,
 ) {
   return (key: string, params?: Record<string, string | number>): string => {
-    const value = getTranslationByKey(messages, key) ||
-                  (fallbackMessages && getTranslationByKey(fallbackMessages, key)) ||
-                  key;
+    const value =
+      getTranslationByKey(messages, key) ||
+      (fallbackMessages && getTranslationByKey(fallbackMessages, key)) ||
+      key;
 
     return params ? formatTranslation(value, params) : value;
   };
@@ -195,7 +205,7 @@ export function validateTranslationCompleteness(
   options: {
     ignoreKeys?: string[];
     strict?: boolean;
-  } = {}
+  } = {},
 ): {
   isComplete: boolean;
   missingKeys: string[];
@@ -209,17 +219,20 @@ export function validateTranslationCompleteness(
   const primaryFlat = flattenTranslations(primary);
   const fallbackFlat = flattenTranslations(fallback);
 
-  const missingKeys = findMissingKeys(fallback, primary)
-    .filter(key => !ignoreKeys.some(ignored => key.startsWith(ignored)));
+  const missingKeys = findMissingKeys(fallback, primary).filter(
+    (key) => !ignoreKeys.some((ignored) => key.startsWith(ignored)),
+  );
 
   const extraKeys = strict
-    ? findMissingKeys(primary, fallback)
-      .filter(key => !ignoreKeys.some(ignored => key.startsWith(ignored)))
+    ? findMissingKeys(primary, fallback).filter(
+        (key) => !ignoreKeys.some((ignored) => key.startsWith(ignored)),
+      )
     : [];
 
   const totalKeys = Object.keys(fallbackFlat).length;
   const translatedKeys = totalKeys - missingKeys.length;
-  const completionPercentage = totalKeys > 0 ? (translatedKeys / totalKeys) * 100 : 100;
+  const completionPercentage =
+    totalKeys > 0 ? (translatedKeys / totalKeys) * 100 : 100;
 
   return {
     isComplete: missingKeys.length === 0,
@@ -227,7 +240,7 @@ export function validateTranslationCompleteness(
     extraKeys,
     totalKeys,
     translatedKeys,
-    completionPercentage
+    completionPercentage,
   };
 }
 
@@ -236,7 +249,7 @@ export function validateTranslationCompleteness(
  */
 export function generateTranslationStats(
   messages: TranslationMessages,
-  namespace?: string
+  namespace?: string,
 ): {
   totalKeys: number;
   totalCharacters: number;
@@ -252,7 +265,7 @@ export function generateTranslationStats(
   const largestKeys: Array<{ key: string; length: number }> = [];
 
   for (const key of keys) {
-    const depth = key.split('.').length;
+    const depth = key.split(".").length;
     keysByDepth[depth] = (keysByDepth[depth] || 0) + 1;
 
     const length = flattened[key].length;
@@ -269,7 +282,7 @@ export function generateTranslationStats(
     totalCharacters,
     averageKeyLength: keys.length > 0 ? totalCharacters / keys.length : 0,
     keysByDepth,
-    largestKeys
+    largestKeys,
   };
 }
 
@@ -277,7 +290,7 @@ export function generateTranslationStats(
  * Sanitize translation key for safe usage
  */
 export function sanitizeKey(key: string): string {
-  return key.replace(/[^a-zA-Z0-9._-]/g, '');
+  return key.replace(/[^a-zA-Z0-9._-]/g, "");
 }
 
 /**
@@ -288,11 +301,11 @@ export function parseKey(key: string): {
   path: string[];
   fullKey: string;
 } {
-  const parts = key.split('.');
+  const parts = key.split(".");
   return {
     namespace: parts.length > 1 ? parts[0] : undefined,
     path: parts,
-    fullKey: key
+    fullKey: key,
   };
 }
 
@@ -300,7 +313,7 @@ export function parseKey(key: string): {
  * Create translation key from parts
  */
 export function createKey(parts: string[]): string {
-  return parts.filter(Boolean).join('.');
+  return parts.filter(Boolean).join(".");
 }
 
 /**
@@ -309,7 +322,7 @@ export function createKey(parts: string[]): string {
  */
 export function interpolate(
   template: string,
-  values: Record<string, any> = {}
+  values: Record<string, any> = {},
 ): string {
   // Handle simple {{key}} interpolation
   let result = template.replace(/\{\{([^}]+)\}\}/g, (match, key) => {
@@ -318,36 +331,44 @@ export function interpolate(
   });
 
   // Handle conditional blocks {{#if condition}}...{{/if}}
-  result = result.replace(/\{\{#if\s+([^}]+)\}\}([\s\S]*?)\{\{\/if\}\}/g, (match, condition, content) => {
-    const value = getNestedValue(values, condition.trim());
-    return value ? content : '';
-  });
+  result = result.replace(
+    /\{\{#if\s+([^}]+)\}\}([\s\S]*?)\{\{\/if\}\}/g,
+    (match, condition, content) => {
+      const value = getNestedValue(values, condition.trim());
+      return value ? content : "";
+    },
+  );
 
   // Handle loops {{#each items}}...{{/each}}
-  result = result.replace(/\{\{#each\s+([^}]+)\}\}([\s\S]*?)\{\{\/each\}\}/g, (match, arrayKey, content) => {
-    const array = getNestedValue(values, arrayKey.trim());
-    if (!Array.isArray(array)) return '';
+  result = result.replace(
+    /\{\{#each\s+([^}]+)\}\}([\s\S]*?)\{\{\/each\}\}/g,
+    (match, arrayKey, content) => {
+      const array = getNestedValue(values, arrayKey.trim());
+      if (!Array.isArray(array)) return "";
 
-    return array.map((item, index) => {
-      let itemContent = content;
+      return array
+        .map((item, index) => {
+          let itemContent = content;
 
-      // Replace {{this}} with item
-      itemContent = itemContent.replace(/\{\{this\}\}/g, String(item));
+          // Replace {{this}} with item
+          itemContent = itemContent.replace(/\{\{this\}\}/g, String(item));
 
-      // Replace {{@index}} with index
-      itemContent = itemContent.replace(/\{\{@index\}\}/g, String(index));
+          // Replace {{@index}} with index
+          itemContent = itemContent.replace(/\{\{@index\}\}/g, String(index));
 
-      // Replace item properties if item is an object
-      if (typeof item === 'object' && item !== null) {
-        Object.keys(item).forEach(prop => {
-          const regex = new RegExp(`\\{\\{${prop}\\}\\}`, 'g');
-          itemContent = itemContent.replace(regex, String(item[prop]));
-        });
-      }
+          // Replace item properties if item is an object
+          if (typeof item === "object" && item !== null) {
+            Object.keys(item).forEach((prop) => {
+              const regex = new RegExp(`\\{\\{${prop}\\}\\}`, "g");
+              itemContent = itemContent.replace(regex, String(item[prop]));
+            });
+          }
 
-      return itemContent;
-    }).join('');
-  });
+          return itemContent;
+        })
+        .join("");
+    },
+  );
 
   return result;
 }
@@ -356,7 +377,7 @@ export function interpolate(
  * Get nested value from object using dot notation
  */
 function getNestedValue(obj: any, path: string): any {
-  return path.split('.').reduce((current, key) => {
+  return path.split(".").reduce((current, key) => {
     return current && current[key] !== undefined ? current[key] : undefined;
   }, obj);
 }

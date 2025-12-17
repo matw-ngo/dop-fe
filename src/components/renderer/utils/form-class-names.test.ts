@@ -1,6 +1,10 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import type {
+  ComponentVariant,
+  LayoutProps,
+  ResponsiveValue,
+} from "../types/ui-theme";
 import { useFormClassNames } from "./form-class-names";
-import type { ComponentVariant, ResponsiveValue, LayoutProps } from "../types/ui-theme";
 
 // Mock dependencies
 vi.mock("@/components/renderer/constants/responsive-classnames", () => ({
@@ -9,7 +13,8 @@ vi.mock("@/components/renderer/constants/responsive-classnames", () => ({
 
 describe("useFormClassNames", () => {
   const mockGetResponsiveClasses = vi.mocked(
-    require("@/components/renderer/constants/responsive-classnames").getResponsiveClasses
+    require("@/components/renderer/constants/responsive-classnames")
+      .getResponsiveClasses,
   );
 
   beforeEach(() => {
@@ -51,7 +56,11 @@ describe("useFormClassNames", () => {
 
     const result = useFormClassNames({
       responsive: {
-        form: { base: "w-full", md: "w-1/2", lg: "w-1/3" } as ResponsiveValue<string>,
+        form: {
+          base: "w-full",
+          md: "w-1/2",
+          lg: "w-1/3",
+        } as ResponsiveValue<string>,
       },
     });
 
@@ -59,7 +68,7 @@ describe("useFormClassNames", () => {
     expect(result.formClasses).toContain("md:w-full lg:w-1/2");
     expect(mockGetResponsiveClasses).toHaveBeenCalledWith(
       { base: "w-full", md: "w-1/2", lg: "w-1/3" },
-      expect.any(Function)
+      expect.any(Function),
     );
   });
 
@@ -74,7 +83,7 @@ describe("useFormClassNames", () => {
 
     expect(mockGetResponsiveClasses).toHaveBeenCalledWith(
       { base: 1, md: 2, lg: 4 },
-      expect.any(Function)
+      expect.any(Function),
     );
   });
 
@@ -90,7 +99,9 @@ describe("useFormClassNames", () => {
       layout: "flex",
     });
 
-    expect(result.formVariantClasses).toBe("form-lg form-primary form-outlined");
+    expect(result.formVariantClasses).toBe(
+      "form-lg form-primary form-outlined",
+    );
     expect(result.formClasses).toContain("form-lg");
     expect(result.formClasses).toContain("form-primary");
     expect(result.formClasses).toContain("form-outlined");
@@ -121,7 +132,7 @@ describe("useFormClassNames", () => {
     });
 
     expect(result.formLayoutClasses).toBe(
-      "flex justify-center items-start flex-col gap-4 p-4 m-2"
+      "flex justify-center items-start flex-col gap-4 p-4 m-2",
     );
     expect(result.formClasses).toContain("flex");
     expect(result.formClasses).toContain("justify-center");

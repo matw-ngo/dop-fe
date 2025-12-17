@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { HeroConfig } from "@/configs/homepage-config";
+import type { HeroConfig } from "@/configs/homepage-config";
 
 interface HeroProps {
   config?: HeroConfig;

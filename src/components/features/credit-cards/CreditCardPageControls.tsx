@@ -1,12 +1,12 @@
-import React from "react";
+import { Grid3X3, LayoutGrid, List, SlidersHorizontal } from "lucide-react";
 import { useTranslations } from "next-intl";
+import type React from "react";
 import { Button } from "@/components/ui/button";
-import { CreditCardFilterSidebar } from "./CreditCardFilterSidebar";
-import { CreditCardSortDropdown } from "./CreditCardSortDropdown";
-import { CreditCardSearchBar } from "./CreditCardSearchBar";
-import { CreditCardFilters, SortOption } from "@/types/credit-card";
-import { Grid3X3, List, LayoutGrid, SlidersHorizontal } from "lucide-react";
 import { cn } from "@/lib/utils";
+import type { CreditCardFilters, SortOption } from "@/types/credit-card";
+import { CreditCardFilterSidebar } from "./CreditCardFilterSidebar";
+import { CreditCardSearchBar } from "./CreditCardSearchBar";
+import { CreditCardSortDropdown } from "./CreditCardSortDropdown";
 
 export type ViewMode = "grid" | "list" | "compact";
 

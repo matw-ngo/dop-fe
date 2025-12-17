@@ -1,14 +1,20 @@
 "use client";
 
-import React from "react";
-import { useTranslations } from "next-intl";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+  ArrowDown,
+  ArrowDownAZ,
+  ArrowUp,
+  ArrowUpAZ,
+  ArrowUpDown,
+  Calendar,
+  Clock,
+  Shield,
+  Star,
+  TrendingDown,
+  TrendingUp,
+} from "lucide-react";
+import { useTranslations } from "next-intl";
+import type React from "react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -17,21 +23,15 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
-  ArrowUpDown,
-  ArrowUp,
-  ArrowDown,
-  Star,
-  TrendingUp,
-  TrendingDown,
-  Shield,
-  Clock,
-  Calendar,
-  ArrowUpAZ,
-  ArrowDownAZ,
-} from "lucide-react";
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { SORT_OPTIONS } from "@/constants/insurance";
 import { cn } from "@/lib/utils";
 import { SortOption } from "@/types/insurance";
-import { SORT_OPTIONS } from "@/constants/insurance";
 
 interface InsuranceSortDropdownProps {
   value?: SortOption;

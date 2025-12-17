@@ -161,12 +161,12 @@ export const REGIONAL_MINIMUM_WAGE: RegionalMinimumWage = {
  */
 export const VIETNAMESE_BANKS: VietnameseBank[] = [
   {
-    id: 'vcb',
-    name: 'Vietcombank',
-    nameVn: 'Ngân hàng TMCP Ngoại thương Việt Nam',
-    logo: '/banks/vcb.png',
-    website: 'https://vietcombank.com.vn',
-    hotlines: ['1900 800 819', '024 3945 6677'],
+    id: "vcb",
+    name: "Vietcombank",
+    nameVn: "Ngân hàng TMCP Ngoại thương Việt Nam",
+    logo: "/banks/vcb.png",
+    website: "https://vietcombank.com.vn",
+    hotlines: ["1900 800 819", "024 3945 6677"],
     savingsRates: {
       1: { rate: 0.5, minimumAmount: 100000 },
       3: { rate: 1.5, minimumAmount: 100000 },
@@ -176,19 +176,23 @@ export const VIETNAMESE_BANKS: VietnameseBank[] = [
       36: { rate: 5.5, minimumAmount: 100000 },
     },
     loanRates: {
-      home: { minRate: 7.5, maxRate: 11.0, description: 'Vay mua nhà, đất, xây dựng/sửa chữa nhà ở' },
-      auto: { minRate: 9.0, maxRate: 13.0, description: 'Vay mua ô tô' },
-      consumer: { minRate: 12.0, maxRate: 18.0, description: 'Vay tiêu dùng' },
-      business: { minRate: 6.5, maxRate: 9.5, description: 'Vay kinh doanh' },
+      home: {
+        minRate: 7.5,
+        maxRate: 11.0,
+        description: "Vay mua nhà, đất, xây dựng/sửa chữa nhà ở",
+      },
+      auto: { minRate: 9.0, maxRate: 13.0, description: "Vay mua ô tô" },
+      consumer: { minRate: 12.0, maxRate: 18.0, description: "Vay tiêu dùng" },
+      business: { minRate: 6.5, maxRate: 9.5, description: "Vay kinh doanh" },
     },
   },
   {
-    id: 'tcb',
-    name: 'Techcombank',
-    nameVn: 'Ngân hàng TMCP Kỹ thương Việt Nam',
-    logo: '/banks/tcb.png',
-    website: 'https://techcombank.com.vn',
-    hotlines: ['1800 588 822'],
+    id: "tcb",
+    name: "Techcombank",
+    nameVn: "Ngân hàng TMCP Kỹ thương Việt Nam",
+    logo: "/banks/tcb.png",
+    website: "https://techcombank.com.vn",
+    hotlines: ["1800 588 822"],
     savingsRates: {
       1: { rate: 0.8, minimumAmount: 100000 },
       3: { rate: 2.0, minimumAmount: 100000 },
@@ -198,19 +202,23 @@ export const VIETNAMESE_BANKS: VietnameseBank[] = [
       36: { rate: 6.3, minimumAmount: 100000 },
     },
     loanRates: {
-      home: { minRate: 7.8, maxRate: 11.5, description: 'Vay mua nhà, đất' },
-      auto: { minRate: 9.5, maxRate: 14.0, description: 'Vay mua ô tô' },
-      consumer: { minRate: 13.0, maxRate: 20.0, description: 'Vay tiêu dùng không tài sản đảm bảo' },
-      business: { minRate: 7.0, maxRate: 10.0, description: 'Vay kinh doanh' },
+      home: { minRate: 7.8, maxRate: 11.5, description: "Vay mua nhà, đất" },
+      auto: { minRate: 9.5, maxRate: 14.0, description: "Vay mua ô tô" },
+      consumer: {
+        minRate: 13.0,
+        maxRate: 20.0,
+        description: "Vay tiêu dùng không tài sản đảm bảo",
+      },
+      business: { minRate: 7.0, maxRate: 10.0, description: "Vay kinh doanh" },
     },
   },
   {
-    id: 'acb',
-    name: 'ACB',
-    nameVn: 'Ngân hàng TMCP Á Châu',
-    logo: '/banks/acb.png',
-    website: 'https://acb.com.vn',
-    hotlines: ['1900 54 54 54'],
+    id: "acb",
+    name: "ACB",
+    nameVn: "Ngân hàng TMCP Á Châu",
+    logo: "/banks/acb.png",
+    website: "https://acb.com.vn",
+    hotlines: ["1900 54 54 54"],
     savingsRates: {
       1: { rate: 0.6, minimumAmount: 100000 },
       3: { rate: 1.8, minimumAmount: 100000 },
@@ -220,19 +228,19 @@ export const VIETNAMESE_BANKS: VietnameseBank[] = [
       36: { rate: 5.8, minimumAmount: 100000 },
     },
     loanRates: {
-      home: { minRate: 7.2, maxRate: 10.5, description: 'Vay mua nhà, đất' },
-      auto: { minRate: 8.8, maxRate: 12.5, description: 'Vay mua ô tô' },
-      consumer: { minRate: 11.5, maxRate: 17.0, description: 'Vay tiêu dùng' },
-      business: { minRate: 6.8, maxRate: 9.8, description: 'Vay kinh doanh' },
+      home: { minRate: 7.2, maxRate: 10.5, description: "Vay mua nhà, đất" },
+      auto: { minRate: 8.8, maxRate: 12.5, description: "Vay mua ô tô" },
+      consumer: { minRate: 11.5, maxRate: 17.0, description: "Vay tiêu dùng" },
+      business: { minRate: 6.8, maxRate: 9.8, description: "Vay kinh doanh" },
     },
   },
   {
-    id: 'mb',
-    name: 'MB Bank',
-    nameVn: 'Ngân hàng TMCP Quân đội',
-    logo: '/banks/mb.png',
-    website: 'https://mbbank.com.vn',
-    hotlines: ['1900 5454 36', '024 3767 4455'],
+    id: "mb",
+    name: "MB Bank",
+    nameVn: "Ngân hàng TMCP Quân đội",
+    logo: "/banks/mb.png",
+    website: "https://mbbank.com.vn",
+    hotlines: ["1900 5454 36", "024 3767 4455"],
     savingsRates: {
       1: { rate: 0.7, minimumAmount: 100000 },
       3: { rate: 1.9, minimumAmount: 100000 },
@@ -242,19 +250,19 @@ export const VIETNAMESE_BANKS: VietnameseBank[] = [
       36: { rate: 6.0, minimumAmount: 100000 },
     },
     loanRates: {
-      home: { minRate: 7.6, maxRate: 11.2, description: 'Vay mua nhà, đất' },
-      auto: { minRate: 9.2, maxRate: 13.5, description: 'Vay mua ô tô' },
-      consumer: { minRate: 12.5, maxRate: 19.0, description: 'Vay tiêu dùng' },
-      business: { minRate: 6.9, maxRate: 9.9, description: 'Vay kinh doanh' },
+      home: { minRate: 7.6, maxRate: 11.2, description: "Vay mua nhà, đất" },
+      auto: { minRate: 9.2, maxRate: 13.5, description: "Vay mua ô tô" },
+      consumer: { minRate: 12.5, maxRate: 19.0, description: "Vay tiêu dùng" },
+      business: { minRate: 6.9, maxRate: 9.9, description: "Vay kinh doanh" },
     },
   },
   {
-    id: 'vib',
-    name: 'VIB',
-    nameVn: 'Ngân hàng TMCP Quốc Tế Việt Nam',
-    logo: '/banks/vib.png',
-    website: 'https://vib.com.vn',
-    hotlines: ['1800 8180'],
+    id: "vib",
+    name: "VIB",
+    nameVn: "Ngân hàng TMCP Quốc Tế Việt Nam",
+    logo: "/banks/vib.png",
+    website: "https://vib.com.vn",
+    hotlines: ["1800 8180"],
     savingsRates: {
       1: { rate: 0.9, minimumAmount: 100000 },
       3: { rate: 2.2, minimumAmount: 100000 },
@@ -264,10 +272,10 @@ export const VIETNAMESE_BANKS: VietnameseBank[] = [
       36: { rate: 6.6, minimumAmount: 100000 },
     },
     loanRates: {
-      home: { minRate: 8.0, maxRate: 12.0, description: 'Vay mua nhà, đất' },
-      auto: { minRate: 10.0, maxRate: 15.0, description: 'Vay mua ô tô' },
-      consumer: { minRate: 14.0, maxRate: 22.0, description: 'Vay tiêu dùng' },
-      business: { minRate: 7.5, maxRate: 11.0, description: 'Vay kinh doanh' },
+      home: { minRate: 8.0, maxRate: 12.0, description: "Vay mua nhà, đất" },
+      auto: { minRate: 10.0, maxRate: 15.0, description: "Vay mua ô tô" },
+      consumer: { minRate: 14.0, maxRate: 22.0, description: "Vay tiêu dùng" },
+      business: { minRate: 7.5, maxRate: 11.0, description: "Vay kinh doanh" },
     },
   },
 ];
@@ -277,59 +285,59 @@ export const VIETNAMESE_BANKS: VietnameseBank[] = [
  */
 export const VIETNAMESE_LOAN_TYPES: VietnameseLoanType[] = [
   {
-    id: 'home-loan',
-    name: 'Home Loan',
-    nameVn: 'Vay mua nhà',
-    description: 'Mortgage loans for purchasing houses, apartments, or land',
+    id: "home-loan",
+    name: "Home Loan",
+    nameVn: "Vay mua nhà",
+    description: "Mortgage loans for purchasing houses, apartments, or land",
     typicalInterestRange: { min: 7.0, max: 15.0 },
     typicalTermRange: { min: 60, max: 360 },
     collateralRequired: true,
-    processingTime: '7-14 days',
-    targetAudience: ['individuals', 'families'],
+    processingTime: "7-14 days",
+    targetAudience: ["individuals", "families"],
   },
   {
-    id: 'auto-loan',
-    name: 'Auto Loan',
-    nameVn: 'Vay mua xe',
-    description: 'Loans for purchasing new or used vehicles',
+    id: "auto-loan",
+    name: "Auto Loan",
+    nameVn: "Vay mua xe",
+    description: "Loans for purchasing new or used vehicles",
     typicalInterestRange: { min: 9.0, max: 18.0 },
     typicalTermRange: { min: 12, max: 84 },
     collateralRequired: true,
-    processingTime: '3-7 days',
-    targetAudience: ['individuals', 'businesses'],
+    processingTime: "3-7 days",
+    targetAudience: ["individuals", "businesses"],
   },
   {
-    id: 'consumer-loan',
-    name: 'Consumer Loan',
-    nameVn: 'Vay tiêu dùng',
-    description: 'Personal loans for consumption purposes',
+    id: "consumer-loan",
+    name: "Consumer Loan",
+    nameVn: "Vay tiêu dùng",
+    description: "Personal loans for consumption purposes",
     typicalInterestRange: { min: 12.0, max: 24.0 },
     typicalTermRange: { min: 6, max: 60 },
     collateralRequired: false,
-    processingTime: '1-3 days',
-    targetAudience: ['individuals'],
+    processingTime: "1-3 days",
+    targetAudience: ["individuals"],
   },
   {
-    id: 'business-loan',
-    name: 'Business Loan',
-    nameVn: 'Vay kinh doanh',
-    description: 'Loans for business operations and expansion',
+    id: "business-loan",
+    name: "Business Loan",
+    nameVn: "Vay kinh doanh",
+    description: "Loans for business operations and expansion",
     typicalInterestRange: { min: 6.5, max: 12.0 },
     typicalTermRange: { min: 12, max: 120 },
     collateralRequired: true,
-    processingTime: '7-21 days',
-    targetAudience: ['businesses', 'enterprises'],
+    processingTime: "7-21 days",
+    targetAudience: ["businesses", "enterprises"],
   },
   {
-    id: 'credit-card-loan',
-    name: 'Credit Card Loan',
-    nameVn: 'Vay qua thẻ tín dụng',
-    description: 'Cash advance through credit cards',
+    id: "credit-card-loan",
+    name: "Credit Card Loan",
+    nameVn: "Vay qua thẻ tín dụng",
+    description: "Cash advance through credit cards",
     typicalInterestRange: { min: 18.0, max: 36.0 },
     typicalTermRange: { min: 1, max: 24 },
     collateralRequired: false,
-    processingTime: 'Immediate',
-    targetAudience: ['individuals'],
+    processingTime: "Immediate",
+    targetAudience: ["individuals"],
   },
 ];
 
@@ -353,7 +361,7 @@ export const VIETNAMESE_MARKET_INDICATORS: MarketIndicator = {
 export const EARLY_REPAYMENT_PENALTIES = {
   fixedRate: 0.05, // 5% of outstanding principal
   floatingRate: 0.03, // 3% of outstanding principal
-  promotionalRate: 0.10, // 10% during promotional period
+  promotionalRate: 0.1, // 10% during promotional period
   maxPenalty: 0.05, // Maximum 5% of outstanding principal
   gracePeriodMonths: 12, // No penalty for early repayment within 12 months
 };
@@ -377,18 +385,23 @@ export const LOAN_PROCESSING_FEES = {
 /**
  * Get tax bracket for given taxable income
  */
-export const getTaxBracket = (taxableIncome: number): VietnameseTaxBracket | null => {
-  return VIETNAMESE_TAX_BRACKETS.find(bracket =>
-    taxableIncome >= bracket.minIncome &&
-    (!bracket.maxIncome || taxableIncome <= bracket.maxIncome)
-  ) || null;
+export const getTaxBracket = (
+  taxableIncome: number,
+): VietnameseTaxBracket | null => {
+  return (
+    VIETNAMESE_TAX_BRACKETS.find(
+      (bracket) =>
+        taxableIncome >= bracket.minIncome &&
+        (!bracket.maxIncome || taxableIncome <= bracket.maxIncome),
+    ) || null
+  );
 };
 
 /**
  * Get bank by ID
  */
 export const getBankById = (bankId: string): VietnameseBank | null => {
-  return VIETNAMESE_BANKS.find(bank => bank.id === bankId) || null;
+  return VIETNAMESE_BANKS.find((bank) => bank.id === bankId) || null;
 };
 
 /**
@@ -396,8 +409,11 @@ export const getBankById = (bankId: string): VietnameseBank | null => {
  */
 export const getBestSavingsRates = (termInMonths: number): VietnameseBank[] => {
   return [...VIETNAMESE_BANKS]
-    .filter(bank => bank.savingsRates[termInMonths])
-    .sort((a, b) => b.savingsRates[termInMonths].rate - a.savingsRates[termInMonths].rate);
+    .filter((bank) => bank.savingsRates[termInMonths])
+    .sort(
+      (a, b) =>
+        b.savingsRates[termInMonths].rate - a.savingsRates[termInMonths].rate,
+    );
 };
 
 /**
@@ -405,24 +421,31 @@ export const getBestSavingsRates = (termInMonths: number): VietnameseBank[] => {
  */
 export const getBestLoanRates = (loanType: string): VietnameseBank[] => {
   return [...VIETNAMESE_BANKS]
-    .filter(bank => bank.loanRates[loanType])
-    .sort((a, b) => a.loanRates[loanType].minRate - b.loanRates[loanType].minRate);
+    .filter((bank) => bank.loanRates[loanType])
+    .sort(
+      (a, b) => a.loanRates[loanType].minRate - b.loanRates[loanType].minRate,
+    );
 };
 
 /**
  * Calculate effective annual rate with compound interest
  */
-export const calculateEffectiveAnnualRate = (nominalRate: number, compoundingFrequency: number = 12): number => {
-  return Math.pow(1 + nominalRate / 100 / compoundingFrequency, compoundingFrequency) - 1;
+export const calculateEffectiveAnnualRate = (
+  nominalRate: number,
+  compoundingFrequency: number = 12,
+): number => {
+  return (
+    (1 + nominalRate / 100 / compoundingFrequency) ** compoundingFrequency - 1
+  );
 };
 
 /**
  * Format currency amount in Vietnamese Dong
  */
 export const formatVND = (amount: number): string => {
-  return new Intl.NumberFormat('vi-VN', {
-    style: 'currency',
-    currency: 'VND',
+  return new Intl.NumberFormat("vi-VN", {
+    style: "currency",
+    currency: "VND",
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
   }).format(amount);
@@ -434,24 +457,34 @@ export const formatVND = (amount: number): string => {
 export const isValidBankAccount = (accountNumber: string): boolean => {
   // Basic validation: 8-15 digits, only numbers
   const accountRegex = /^\d{8,15}$/;
-  return accountRegex.test(accountNumber.replace(/\s/g, ''));
+  return accountRegex.test(accountNumber.replace(/\s/g, ""));
 };
 
 /**
  * Calculate monthly payment for reducing balance method
  */
-export const calculateReducingBalancePayment = (principal: number, annualRate: number, termInMonths: number): number => {
+export const calculateReducingBalancePayment = (
+  principal: number,
+  annualRate: number,
+  termInMonths: number,
+): number => {
   const monthlyRate = annualRate / 100 / 12;
   if (monthlyRate === 0) return principal / termInMonths;
 
-  return principal * (monthlyRate * Math.pow(1 + monthlyRate, termInMonths)) /
-         (Math.pow(1 + monthlyRate, termInMonths) - 1);
+  return (
+    (principal * (monthlyRate * (1 + monthlyRate) ** termInMonths)) /
+    ((1 + monthlyRate) ** termInMonths - 1)
+  );
 };
 
 /**
  * Calculate monthly payment for flat rate method
  */
-export const calculateFlatRatePayment = (principal: number, annualRate: number, termInMonths: number): number => {
+export const calculateFlatRatePayment = (
+  principal: number,
+  annualRate: number,
+  termInMonths: number,
+): number => {
   const totalInterest = principal * (annualRate / 100) * (termInMonths / 12);
   const totalPayment = principal + totalInterest;
   return totalPayment / termInMonths;
@@ -460,7 +493,11 @@ export const calculateFlatRatePayment = (principal: number, annualRate: number, 
 /**
  * Calculate total interest for flat rate method
  */
-export const calculateFlatRateInterest = (principal: number, annualRate: number, termInMonths: number): number => {
+export const calculateFlatRateInterest = (
+  principal: number,
+  annualRate: number,
+  termInMonths: number,
+): number => {
   return principal * (annualRate / 100) * (termInMonths / 12);
 };
 

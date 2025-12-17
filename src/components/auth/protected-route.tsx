@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, ReactNode } from "react";
-import { useRouter, usePathname } from "next/navigation";
-import { useAuth } from "@/lib/auth/auth-context";
+import { usePathname, useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { type ReactNode, useEffect } from "react";
 import { Spinner } from "@/components/ui/spinner";
+import { useAuth } from "@/lib/auth/auth-context";
 import { getLocalizedRedirect } from "@/lib/client-utils";
 import type { User } from "@/store/use-auth-store";
-import { useTranslations } from "next-intl";
 
 interface ProtectedRouteProps {
   children: ReactNode;

@@ -1,13 +1,13 @@
 "use client";
 
-import React from "react";
-import { motion, AnimatePresence, Variants } from "framer-motion";
+import { AnimatePresence, motion, type Variants } from "framer-motion";
+import type React from "react";
+import {
+  getResponsivePadding,
+  getResponsiveWidth,
+} from "@/components/renderer/constants/responsive-classnames";
 import { cn } from "@/lib/utils";
 import type { AnimationVariant, ResponsiveValue } from "./types/ui-theme";
-import {
-  getResponsiveWidth,
-  getResponsivePadding,
-} from "@/components/renderer/constants/responsive-classnames";
 
 interface AnimatedStepContainerProps {
   /** Step content to render */

@@ -1,6 +1,6 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
+import { type AnyValidationRule, ValidationRuleType } from "../../types";
 import { ValidationEngine } from "../ValidationEngine";
-import { AnyValidationRule, ValidationRuleType } from "../../types";
 
 describe("ValidationEngine", () => {
   describe("required validation", () => {

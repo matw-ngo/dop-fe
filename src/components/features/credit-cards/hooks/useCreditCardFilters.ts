@@ -1,6 +1,6 @@
-import { useState, useCallback, useMemo } from "react";
-import { CreditCardFilters } from "@/types/credit-card";
+import { useCallback, useMemo, useState } from "react";
 import { DEFAULT_FILTERS } from "@/constants/credit-cards";
+import type { CreditCardFilters } from "@/types/credit-card";
 
 interface UseCreditCardFiltersOptions {
   initialFilters?: Partial<CreditCardFilters>;

@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
-import { vi, describe, it, expect } from "vitest";
-import { FormTrackingProvider, useFormTracking } from "../TrackingProvider";
+import { describe, expect, it, vi } from "vitest";
 import type { TrackingBackend } from "../../types";
+import { FormTrackingProvider, useFormTracking } from "../TrackingProvider";
 
 describe("TrackingProvider", () => {
   const mockBackend: TrackingBackend = {

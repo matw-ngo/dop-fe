@@ -1,12 +1,15 @@
 "use client";
 
 import { useMemo } from "react";
-import { mergeWithDefaults } from "@/configs/DefaultFieldConfig";
 import {
   isRegisteredComponent,
   type RegisteredComponent,
 } from "@/components/renderer/ComponentRegistry";
-import type { FieldConfig, RawFieldConfig } from "@/components/renderer/types/data-driven-ui";
+import type {
+  FieldConfig,
+  RawFieldConfig,
+} from "@/components/renderer/types/data-driven-ui";
+import { mergeWithDefaults } from "@/configs/DefaultFieldConfig";
 
 interface UseFormProcessingOptions {
   defaultValues?: Record<string, any>;
@@ -25,7 +28,7 @@ interface UseFormProcessingResult {
  */
 export function useFormProcessing(
   fields: RawFieldConfig[],
-  options: UseFormProcessingOptions = {}
+  options: UseFormProcessingOptions = {},
 ): UseFormProcessingResult {
   const { defaultValues = {} } = options;
 

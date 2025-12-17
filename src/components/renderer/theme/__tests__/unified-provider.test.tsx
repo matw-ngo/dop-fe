@@ -1,8 +1,8 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import React from "react";
-import { renderHook, act } from "@testing-library/react";
+import { act, renderHook } from "@testing-library/react";
+import type React from "react";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { darkTheme, lightTheme } from "../default-themes";
 import { ThemeProvider, useTheme } from "../index.tsx";
-import { lightTheme, darkTheme } from "../default-themes";
 
 // Mock localStorage
 const localStorageMock = {
@@ -19,7 +19,7 @@ Object.defineProperty(global, "localStorage", {
 
 // Mock matchMedia
 Object.defineProperty(window, "matchMedia", {
-  value: vi.fn().mockImplementation(query => ({
+  value: vi.fn().mockImplementation((query) => ({
     matches: false,
     media: query,
     onchange: null,
@@ -210,7 +210,7 @@ describe("Unified Theme Provider", () => {
     });
 
     expect(consoleSpy).toHaveBeenCalledWith(
-      expect.stringContaining("Invalid color value for primary: invalid-color")
+      expect.stringContaining("Invalid color value for primary: invalid-color"),
     );
 
     consoleSpy.mockRestore();

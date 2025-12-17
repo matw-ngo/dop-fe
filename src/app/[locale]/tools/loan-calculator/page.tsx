@@ -4,7 +4,19 @@
  * Page for calculating loan payments, interest, and amortization schedule
  */
 
+import {
+  AlertCircle,
+  Calculator,
+  FileText,
+  Shield,
+  TrendingUp,
+} from "lucide-react";
+import type { Metadata } from "next";
+import { useLocale, useTranslations } from "next-intl";
+import { ToolsPageLayout } from "@/components/features/tools/ToolsPageLayout";
+import { ToolsThemeProvider } from "@/components/features/tools/ToolsThemeProvider";
 import { LoanCalculator } from "@/components/tools";
+import { Badge } from "@/components/ui/badge";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -14,18 +26,6 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Metadata } from "next";
-import { useTranslations, useLocale } from "next-intl";
-import { ToolsThemeProvider } from "@/components/features/tools/ToolsThemeProvider";
-import { ToolsPageLayout } from "@/components/features/tools/ToolsPageLayout";
-import { Badge } from "@/components/ui/badge";
-import {
-  Calculator,
-  TrendingUp,
-  Shield,
-  AlertCircle,
-  FileText,
-} from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Tính toán khoản vay | Công cụ tính toán vay vốn",

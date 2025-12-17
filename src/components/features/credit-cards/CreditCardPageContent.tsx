@@ -1,23 +1,28 @@
-import React, { useState, useCallback, useMemo } from "react";
+import { X } from "lucide-react";
 import { useTranslations } from "next-intl";
+import type React from "react";
+import { useCallback, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { CreditCardFilters, CreditCard, SortOption } from "@/types/credit-card";
-import CreditCardGrid from "../credit-card/CreditCardGrid";
-import CreditCardFilterPanel from "./CreditCardFilterPanel";
-import CreditCardResultsHeader from "./CreditCardResultsHeader";
-import CreditCardPageControls from "./CreditCardPageControls";
-import CreditCardPagination from "./CreditCardPagination";
-import CreditCardComparisonSnackbar from "./compare/CreditCardComparisonSnackbar";
-import { vietnameseCreditCards } from "@/data/credit-cards";
-import { cn } from "@/lib/utils";
 import {
   Sheet,
   SheetContent,
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { X } from "lucide-react";
 import { DEFAULT_FILTERS } from "@/constants/credit-cards";
+import { vietnameseCreditCards } from "@/data/credit-cards";
+import { cn } from "@/lib/utils";
+import type {
+  CreditCard,
+  CreditCardFilters,
+  SortOption,
+} from "@/types/credit-card";
+import CreditCardGrid from "../credit-card/CreditCardGrid";
+import CreditCardFilterPanel from "./CreditCardFilterPanel";
+import CreditCardPageControls from "./CreditCardPageControls";
+import CreditCardPagination from "./CreditCardPagination";
+import CreditCardResultsHeader from "./CreditCardResultsHeader";
+import CreditCardComparisonSnackbar from "./compare/CreditCardComparisonSnackbar";
 
 export type ViewMode = "grid" | "list" | "compact";
 

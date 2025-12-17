@@ -1,5 +1,5 @@
-export { CoverageTab } from "./CoverageTab";
 export { BenefitsTab } from "./BenefitsTab";
-export { ExclusionsTab } from "./ExclusionsTab";
 export { ClaimsTab } from "./ClaimsTab";
+export { CoverageTab } from "./CoverageTab";
+export { ExclusionsTab } from "./ExclusionsTab";
 export { PaymentTab } from "./PaymentTab";

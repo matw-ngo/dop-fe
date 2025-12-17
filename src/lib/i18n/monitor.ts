@@ -53,7 +53,7 @@ export class TranslationMonitor {
     errorRate: 0,
     hitRate: 0,
     metricsByLocale: {},
-    metricsByNamespace: {}
+    metricsByNamespace: {},
   };
 
   private startTimes = new Map<string, number>();
@@ -79,7 +79,7 @@ export class TranslationMonitor {
       totalFetches: 0,
       successfulFetches: 0,
       failedFetches: 0,
-      averageFetchTime: 0
+      averageFetchTime: 0,
     });
 
     // Update namespace metrics
@@ -88,7 +88,7 @@ export class TranslationMonitor {
       cacheMisses: 0,
       totalFetches: 0,
       averageFetchTime: 0,
-      requestCount: 0
+      requestCount: 0,
     });
   }
 
@@ -108,7 +108,7 @@ export class TranslationMonitor {
       totalFetches: 0,
       successfulFetches: 0,
       failedFetches: 0,
-      averageFetchTime: 0
+      averageFetchTime: 0,
     });
 
     // Update namespace metrics
@@ -117,7 +117,7 @@ export class TranslationMonitor {
       cacheMisses: 1,
       totalFetches: 0,
       averageFetchTime: 0,
-      requestCount: 0
+      requestCount: 0,
     });
   }
 
@@ -125,7 +125,7 @@ export class TranslationMonitor {
    * Start timing a translation fetch
    */
   startFetchTiming(locale: string, namespace: string, key: string): string {
-    if (!this.enabled) return '';
+    if (!this.enabled) return "";
 
     const id = `${locale}:${namespace}:${key}:${Date.now()}:${Math.random()}`;
     this.startTimes.set(id, performance.now());
@@ -141,7 +141,7 @@ export class TranslationMonitor {
     key: string,
     fetchTime: number,
     success: boolean,
-    timingId?: string
+    timingId?: string,
   ): void {
     if (!this.enabled) return;
 
@@ -152,7 +152,8 @@ export class TranslationMonitor {
 
     this.metrics.totalFetches++;
     this.metrics.totalFetchTime += fetchTime;
-    this.metrics.averageFetchTime = this.metrics.totalFetchTime / this.metrics.totalFetches;
+    this.metrics.averageFetchTime =
+      this.metrics.totalFetchTime / this.metrics.totalFetches;
 
     if (success) {
       this.metrics.successfulFetches++;
@@ -160,7 +161,8 @@ export class TranslationMonitor {
       this.metrics.failedFetches++;
     }
 
-    this.metrics.errorRate = this.metrics.failedFetches / this.metrics.totalFetches;
+    this.metrics.errorRate =
+      this.metrics.failedFetches / this.metrics.totalFetches;
 
     // Update locale metrics
     this.updateLocaleMetrics(locale, {
@@ -169,7 +171,7 @@ export class TranslationMonitor {
       totalFetches: 1,
       successfulFetches: success ? 1 : 0,
       failedFetches: success ? 0 : 1,
-      averageFetchTime: fetchTime
+      averageFetchTime: fetchTime,
     });
 
     // Update namespace metrics
@@ -178,7 +180,7 @@ export class TranslationMonitor {
       cacheMisses: 0,
       totalFetches: 1,
       averageFetchTime: fetchTime,
-      requestCount: 1
+      requestCount: 1,
     });
   }
 
@@ -190,14 +192,15 @@ export class TranslationMonitor {
     namespace: string,
     keyCount: number,
     fetchTime: number,
-    success: boolean
+    success: boolean,
   ): void {
     if (!this.enabled) return;
 
     this.metrics.batchFetches++;
     this.metrics.totalFetches += keyCount;
     this.metrics.totalFetchTime += fetchTime;
-    this.metrics.averageFetchTime = this.metrics.totalFetchTime / this.metrics.totalFetches;
+    this.metrics.averageFetchTime =
+      this.metrics.totalFetchTime / this.metrics.totalFetches;
 
     if (success) {
       this.metrics.successfulFetches += keyCount;
@@ -205,7 +208,8 @@ export class TranslationMonitor {
       this.metrics.failedFetches += keyCount;
     }
 
-    this.metrics.errorRate = this.metrics.failedFetches / this.metrics.totalFetches;
+    this.metrics.errorRate =
+      this.metrics.failedFetches / this.metrics.totalFetches;
 
     // Update locale metrics
     this.updateLocaleMetrics(locale, {
@@ -214,7 +218,7 @@ export class TranslationMonitor {
       totalFetches: keyCount,
       successfulFetches: success ? keyCount : 0,
       failedFetches: success ? 0 : keyCount,
-      averageFetchTime: fetchTime / keyCount // Average per key
+      averageFetchTime: fetchTime / keyCount, // Average per key
     });
 
     // Update namespace metrics
@@ -223,7 +227,7 @@ export class TranslationMonitor {
       cacheMisses: 0,
       totalFetches: keyCount,
       averageFetchTime: fetchTime / keyCount,
-      requestCount: 1
+      requestCount: 1,
     });
   }
 
@@ -264,7 +268,7 @@ export class TranslationMonitor {
       errorRate: 0,
       hitRate: 0,
       metricsByLocale: {},
-      metricsByNamespace: {}
+      metricsByNamespace: {},
     };
     this.startTimes.clear();
   }
@@ -293,16 +297,22 @@ export class TranslationMonitor {
       averageFetchTime: string;
       totalRequests: number;
     };
-    byLocale: Record<string, {
-      hitRate: string;
-      errorRate: string;
-      averageFetchTime: string;
-    }>;
-    byNamespace: Record<string, {
-      hitRate: string;
-      averageFetchTime: string;
-      requestCount: number;
-    }>;
+    byLocale: Record<
+      string,
+      {
+        hitRate: string;
+        errorRate: string;
+        averageFetchTime: string;
+      }
+    >;
+    byNamespace: Record<
+      string,
+      {
+        hitRate: string;
+        averageFetchTime: string;
+        requestCount: number;
+      }
+    >;
   } {
     const totalRequests = this.metrics.cacheHits + this.metrics.cacheMisses;
 
@@ -311,28 +321,41 @@ export class TranslationMonitor {
         hitRate: `${(this.metrics.hitRate * 100).toFixed(2)}%`,
         errorRate: `${(this.metrics.errorRate * 100).toFixed(2)}%`,
         averageFetchTime: `${this.metrics.averageFetchTime.toFixed(2)}ms`,
-        totalRequests
+        totalRequests,
       },
       byLocale: Object.fromEntries(
-        Object.entries(this.metrics.metricsByLocale).map(([locale, metrics]) => [
-          locale,
-          {
-            hitRate: this.calculateHitRate(metrics.cacheHits, metrics.cacheMisses),
-            errorRate: this.calculateErrorRate(metrics.successfulFetches, metrics.failedFetches),
-            averageFetchTime: `${metrics.averageFetchTime.toFixed(2)}ms`
-          }
-        ])
+        Object.entries(this.metrics.metricsByLocale).map(
+          ([locale, metrics]) => [
+            locale,
+            {
+              hitRate: this.calculateHitRate(
+                metrics.cacheHits,
+                metrics.cacheMisses,
+              ),
+              errorRate: this.calculateErrorRate(
+                metrics.successfulFetches,
+                metrics.failedFetches,
+              ),
+              averageFetchTime: `${metrics.averageFetchTime.toFixed(2)}ms`,
+            },
+          ],
+        ),
       ),
       byNamespace: Object.fromEntries(
-        Object.entries(this.metrics.metricsByNamespace).map(([namespace, metrics]) => [
-          namespace,
-          {
-            hitRate: this.calculateHitRate(metrics.cacheHits, metrics.cacheMisses),
-            averageFetchTime: `${metrics.averageFetchTime.toFixed(2)}ms`,
-            requestCount: metrics.requestCount
-          }
-        ])
-      )
+        Object.entries(this.metrics.metricsByNamespace).map(
+          ([namespace, metrics]) => [
+            namespace,
+            {
+              hitRate: this.calculateHitRate(
+                metrics.cacheHits,
+                metrics.cacheMisses,
+              ),
+              averageFetchTime: `${metrics.averageFetchTime.toFixed(2)}ms`,
+              requestCount: metrics.requestCount,
+            },
+          ],
+        ),
+      ),
     };
   }
 
@@ -343,7 +366,10 @@ export class TranslationMonitor {
     this.metrics.hitRate = total > 0 ? this.metrics.cacheHits / total : 0;
   }
 
-  private updateLocaleMetrics(locale: string, deltas: Partial<LocaleMetrics>): void {
+  private updateLocaleMetrics(
+    locale: string,
+    deltas: Partial<LocaleMetrics>,
+  ): void {
     if (!this.metrics.metricsByLocale[locale]) {
       this.metrics.metricsByLocale[locale] = {
         cacheHits: 0,
@@ -351,7 +377,7 @@ export class TranslationMonitor {
         totalFetches: 0,
         successfulFetches: 0,
         failedFetches: 0,
-        averageFetchTime: 0
+        averageFetchTime: 0,
       };
     }
 
@@ -360,27 +386,32 @@ export class TranslationMonitor {
     if (deltas.cacheHits) metrics.cacheHits += deltas.cacheHits;
     if (deltas.cacheMisses) metrics.cacheMisses += deltas.cacheMisses;
     if (deltas.totalFetches) metrics.totalFetches += deltas.totalFetches;
-    if (deltas.successfulFetches) metrics.successfulFetches += deltas.successfulFetches;
+    if (deltas.successfulFetches)
+      metrics.successfulFetches += deltas.successfulFetches;
     if (deltas.failedFetches) metrics.failedFetches += deltas.failedFetches;
 
     if (deltas.averageFetchTime) {
       const totalFetches = metrics.totalFetches;
       if (totalFetches > 0) {
-        metrics.averageFetchTime = (
-          (metrics.averageFetchTime * (totalFetches - 1) + deltas.averageFetchTime) / totalFetches
-        );
+        metrics.averageFetchTime =
+          (metrics.averageFetchTime * (totalFetches - 1) +
+            deltas.averageFetchTime) /
+          totalFetches;
       }
     }
   }
 
-  private updateNamespaceMetrics(namespace: string, deltas: Partial<NamespaceMetrics>): void {
+  private updateNamespaceMetrics(
+    namespace: string,
+    deltas: Partial<NamespaceMetrics>,
+  ): void {
     if (!this.metrics.metricsByNamespace[namespace]) {
       this.metrics.metricsByNamespace[namespace] = {
         cacheHits: 0,
         cacheMisses: 0,
         totalFetches: 0,
         averageFetchTime: 0,
-        requestCount: 0
+        requestCount: 0,
       };
     }
 
@@ -394,21 +425,22 @@ export class TranslationMonitor {
     if (deltas.averageFetchTime) {
       const totalFetches = metrics.totalFetches;
       if (totalFetches > 0) {
-        metrics.averageFetchTime = (
-          (metrics.averageFetchTime * (totalFetches - 1) + deltas.averageFetchTime) / totalFetches
-        );
+        metrics.averageFetchTime =
+          (metrics.averageFetchTime * (totalFetches - 1) +
+            deltas.averageFetchTime) /
+          totalFetches;
       }
     }
   }
 
   private calculateHitRate(hits: number, misses: number): string {
     const total = hits + misses;
-    return total > 0 ? `${((hits / total) * 100).toFixed(2)}%` : '0%';
+    return total > 0 ? `${((hits / total) * 100).toFixed(2)}%` : "0%";
   }
 
   private calculateErrorRate(success: number, failed: number): string {
     const total = success + failed;
-    return total > 0 ? `${((failed / total) * 100).toFixed(2)}%` : '0%';
+    return total > 0 ? `${((failed / total) * 100).toFixed(2)}%` : "0%";
   }
 }
 
@@ -416,15 +448,27 @@ export class TranslationMonitor {
 export const translationMonitor = new TranslationMonitor();
 
 // Export convenience functions
-export function recordCacheHit(locale: string, namespace: string, key: string): void {
+export function recordCacheHit(
+  locale: string,
+  namespace: string,
+  key: string,
+): void {
   translationMonitor.recordCacheHit(locale, namespace, key);
 }
 
-export function recordCacheMiss(locale: string, namespace: string, key: string): void {
+export function recordCacheMiss(
+  locale: string,
+  namespace: string,
+  key: string,
+): void {
   translationMonitor.recordCacheMiss(locale, namespace, key);
 }
 
-export function startFetchTiming(locale: string, namespace: string, key: string): string {
+export function startFetchTiming(
+  locale: string,
+  namespace: string,
+  key: string,
+): string {
   return translationMonitor.startFetchTiming(locale, namespace, key);
 }
 
@@ -434,9 +478,16 @@ export function recordTranslationFetch(
   key: string,
   fetchTime: number,
   success: boolean,
-  timingId?: string
+  timingId?: string,
 ): void {
-  translationMonitor.recordTranslationFetch(locale, namespace, key, fetchTime, success, timingId);
+  translationMonitor.recordTranslationFetch(
+    locale,
+    namespace,
+    key,
+    fetchTime,
+    success,
+    timingId,
+  );
 }
 
 export function recordBatchFetch(
@@ -444,7 +495,13 @@ export function recordBatchFetch(
   namespace: string,
   keyCount: number,
   fetchTime: number,
-  success: boolean
+  success: boolean,
 ): void {
-  translationMonitor.recordBatchFetch(locale, namespace, keyCount, fetchTime, success);
+  translationMonitor.recordBatchFetch(
+    locale,
+    namespace,
+    keyCount,
+    fetchTime,
+    success,
+  );
 }

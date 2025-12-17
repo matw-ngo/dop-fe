@@ -1,14 +1,16 @@
 import { useCallback, useEffect, useRef } from "react";
-import { useTheme } from "./index";
-import type { Theme } from "../types/ui-theme";
 import { debounce } from "@/lib/utils/debounce";
+import type { Theme } from "../types/ui-theme";
+import { useTheme } from "./index";
 
 export function useThemeUtils() {
   const { theme, setTheme, toggleTheme, isDark, resolvedTheme } = useTheme();
 
   // Store debounced functions in refs to persist across re-renders
   const debouncedSetThemeRef = useRef<ReturnType<typeof debounce> | null>(null);
-  const debouncedToggleThemeRef = useRef<ReturnType<typeof debounce> | null>(null);
+  const debouncedToggleThemeRef = useRef<ReturnType<typeof debounce> | null>(
+    null,
+  );
 
   // Cleanup function for debounced functions
   useEffect(() => {
@@ -20,12 +22,15 @@ export function useThemeUtils() {
   }, []);
 
   // Create debounced versions of theme change functions
-  const debouncedSetTheme = useCallback((newTheme: Parameters<typeof setTheme>[0]) => {
-    if (!debouncedSetThemeRef.current) {
-      debouncedSetThemeRef.current = debounce(setTheme, 300);
-    }
-    debouncedSetThemeRef.current(newTheme);
-  }, [setTheme]);
+  const debouncedSetTheme = useCallback(
+    (newTheme: Parameters<typeof setTheme>[0]) => {
+      if (!debouncedSetThemeRef.current) {
+        debouncedSetThemeRef.current = debounce(setTheme, 300);
+      }
+      debouncedSetThemeRef.current(newTheme);
+    },
+    [setTheme],
+  );
 
   const debouncedToggleTheme = useCallback(() => {
     if (!debouncedToggleThemeRef.current) {

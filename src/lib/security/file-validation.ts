@@ -5,7 +5,7 @@
  * malicious file scanning, virus scanning integration, and security checks
  */
 
-import { VietnameseDocumentType } from "@/lib/ekyc/document-types";
+import type { VietnameseDocumentType } from "@/lib/ekyc/document-types";
 import { loanStatusRateLimiter } from "./status-rate-limiting";
 
 // Magic numbers for file type validation
@@ -903,7 +903,7 @@ export class SecureFileValidator {
     const sizes = ["Bytes", "KB", "MB", "GB"];
     if (bytes === 0) return "0 Bytes";
     const i = Math.floor(Math.log(bytes) / Math.log(1024));
-    return Math.round((bytes / Math.pow(1024, i)) * 100) / 100 + " " + sizes[i];
+    return Math.round((bytes / 1024 ** i) * 100) / 100 + " " + sizes[i];
   }
 
   private looksLikeEncryptedData(buffer: ArrayBuffer): boolean {

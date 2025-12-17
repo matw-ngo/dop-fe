@@ -5,10 +5,20 @@
 
 "use client";
 
-import React from "react";
+import { format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
+import type React from "react";
 import { useFormContext } from "react-hook-form";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import {
   Select,
   SelectContent,
@@ -16,16 +26,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Calendar } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Button } from "@/components/ui/button";
-import { CalendarIcon } from "lucide-react";
-import { format } from "date-fns";
 
 interface CustomFieldsFormProps {
   form: any;
@@ -117,7 +117,7 @@ const CustomFieldsForm: React.FC<CustomFieldsFormProps> = ({
           </div>
         );
 
-      case "date":
+      case "date": {
         const selectedDate = watch(field.name);
         return (
           <Popover>
@@ -150,6 +150,7 @@ const CustomFieldsForm: React.FC<CustomFieldsFormProps> = ({
             </PopoverContent>
           </Popover>
         );
+      }
 
       default:
         return null;

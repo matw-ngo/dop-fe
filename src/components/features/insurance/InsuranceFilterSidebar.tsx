@@ -1,9 +1,11 @@
 "use client";
 
-import React, { useMemo } from "react";
+import { Filter, RotateCcw, SlidersHorizontal, X } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { Button } from "@/components/ui/button";
+import type React from "react";
+import { useMemo } from "react";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Sheet,
   SheetContent,
@@ -12,8 +14,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
-import { Filter, X, RotateCcw, SlidersHorizontal } from "lucide-react";
-import { InsuranceFilters, VehicleType } from "@/types/insurance";
+import type { InsuranceFilters, VehicleType } from "@/types/insurance";
 import InsuranceFilterPanel from "./InsuranceFilterPanel";
 
 interface InsuranceFilterSidebarProps {

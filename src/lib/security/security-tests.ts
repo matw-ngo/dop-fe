@@ -4,19 +4,19 @@
  * Validates all security implementations and Vietnamese compliance
  */
 
+import { AuditEventType, AuditSeverity, auditLogger } from "./audit-logging";
+import {
+  ConflictType,
+  conflictResolutionManager,
+  ResolutionStrategy,
+} from "./conflict-resolution";
+import { secureFileValidator } from "./file-validation";
 import {
   integratedSecurityManager,
   useIntegratedSecurity,
 } from "./integrated-security";
-import { auditLogger, AuditEventType, AuditSeverity } from "./audit-logging";
 import { loanStatusRateLimiter } from "./status-rate-limiting";
-import {
-  conflictResolutionManager,
-  ConflictType,
-  ResolutionStrategy,
-} from "./conflict-resolution";
 import { SecureWebSocketManager } from "./websocket-security";
-import { secureFileValidator } from "./file-validation";
 
 // Test result interface
 export interface SecurityTestResult {

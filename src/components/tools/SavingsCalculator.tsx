@@ -1,7 +1,19 @@
 "use client";
 
-import React, { useState, useEffect, useMemo, useCallback } from "react";
+import {
+  AlertCircle,
+  DollarSign,
+  ExternalLink,
+  RefreshCw,
+  TrendingDown,
+  TrendingUp,
+} from "lucide-react";
 import { useTranslations } from "next-intl";
+import type React from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -9,7 +21,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -19,9 +30,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
-import { Badge } from "@/components/ui/badge";
 import {
   Table,
   TableBody,
@@ -30,28 +41,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Skeleton } from "@/components/ui/skeleton";
-import {
-  AlertCircle,
-  TrendingUp,
-  TrendingDown,
-  ExternalLink,
-  RefreshCw,
-  DollarSign,
-} from "lucide-react";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { useFinancialToolsStore } from "@/store/use-financial-tools-store";
-import { formatCurrency } from "@/lib/utils";
-import {
-  type ISaving,
-  type ISavingsParams,
-  type ISavingsResult,
-} from "@/types/tools";
 import { useSavingsCalculator } from "@/hooks/use-savings-calculator";
+import { formatCurrency } from "@/lib/utils";
+import { useFinancialToolsStore } from "@/store/use-financial-tools-store";
+import type { ISaving, ISavingsParams, ISavingsResult } from "@/types/tools";
 import {
+  CalculatorAsyncErrorHandler,
   CalculatorErrorBoundary,
   useCalculatorErrorHandler,
-  CalculatorAsyncErrorHandler,
 } from "./ErrorBoundary";
 
 // Savings calculator constants

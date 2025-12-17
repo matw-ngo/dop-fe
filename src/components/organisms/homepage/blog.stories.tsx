@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import type { BlogConfig } from "@/configs/homepage-config";
 import Blog from "./blog";
-import { BlogConfig } from "@/configs/homepage-config";
 
 const meta: Meta<typeof Blog> = {
   title: "Organisms/Homepage/Blog",

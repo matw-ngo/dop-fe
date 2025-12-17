@@ -4,28 +4,28 @@
  * Comprehensive security management with Vietnamese compliance
  */
 
+import { securityUtils, useTokenStore } from "@/lib/auth/secure-tokens";
 import {
-  auditLogger,
-  useAuditLogging,
   AuditEventType,
   AuditSeverity,
+  auditLogger,
+  useAuditLogging,
 } from "./audit-logging";
+import {
+  conflictResolutionManager,
+  ResolutionStrategy,
+  useConflictResolution,
+} from "./conflict-resolution";
+import { secureFileValidator } from "./file-validation";
 import {
   loanStatusRateLimiter,
   useLoanStatusRateLimiting,
 } from "./status-rate-limiting";
 import {
-  conflictResolutionManager,
-  useConflictResolution,
-  ResolutionStrategy,
-} from "./conflict-resolution";
-import {
-  SecureWebSocketManager,
   createSecureLoanStatusWebSocket,
+  type SecureWebSocketManager,
   vietnameseComplianceMonitor,
 } from "./websocket-security";
-import { secureFileValidator } from "./file-validation";
-import { useTokenStore, securityUtils } from "@/lib/auth/secure-tokens";
 
 // Security manager configuration
 export interface IntegratedSecurityConfig {

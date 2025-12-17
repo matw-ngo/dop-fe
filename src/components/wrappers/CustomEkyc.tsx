@@ -4,8 +4,13 @@
 // Integrates eKYC SDK as a form field component
 // Supports both inline and modal modes
 
-import React from "react";
+import { Camera, CheckCircle2, ShieldCheck, ShieldX } from "lucide-react";
 import dynamic from "next/dynamic";
+import React from "react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   FormControl,
   FormDescription,
@@ -13,11 +18,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Badge } from "@/components/ui/badge";
-import { CheckCircle2, Camera, ShieldCheck, ShieldX } from "lucide-react";
 
 // Dynamically import components to avoid SSR issues
 const EkycSdkWrapper = dynamic(

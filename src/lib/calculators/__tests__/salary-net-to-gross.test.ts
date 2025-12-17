@@ -18,10 +18,10 @@
  * 4. Validate error handling for invalid inputs
  */
 
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
+import { ALLOWANCES, REGIONAL_MINIMUM_WAGES } from "@/lib/constants/tools";
 import { calculateGrossToNet } from "../salary-gross-to-net";
 import { calculateNetToGross } from "../salary-net-to-gross";
-import { ALLOWANCES, REGIONAL_MINIMUM_WAGES } from "@/lib/constants/tools";
 
 describe("Vietnamese Net to Gross Salary Calculator", () => {
   describe("Basic Reverse Calculations", () => {

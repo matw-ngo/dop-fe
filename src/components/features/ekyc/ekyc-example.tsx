@@ -4,10 +4,11 @@
 
 "use client";
 
-import React, { useState } from "react";
-import EkycSdkWrapper from "./ekyc-sdk-wrapper";
-import { useEkycStore } from "@/store/use-ekyc-store";
+import type React from "react";
+import { useState } from "react";
 import { DocumentType } from "@/lib/ekyc/types";
+import { useEkycStore } from "@/store/use-ekyc-store";
+import EkycSdkWrapper from "./ekyc-sdk-wrapper";
 
 const EkycExample: React.FC = () => {
   const [flowType, setFlowType] = useState<

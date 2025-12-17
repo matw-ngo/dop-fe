@@ -1,13 +1,14 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import type React from "react";
+import { useEffect, useState } from "react";
 import {
+  type FooterConfig,
+  type FooterLink,
   getFooterConfig,
-  FooterConfig,
-  FooterLink,
-  SocialMediaLink,
+  type SocialMediaLink,
 } from "@/configs/footer-config";
 
 interface FooterProps {

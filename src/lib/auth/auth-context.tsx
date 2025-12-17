@@ -1,11 +1,11 @@
 "use client";
 
-import { createContext, useContext, useEffect, ReactNode } from "react";
-import { useRouter, usePathname } from "next/navigation";
-import { useAuthStore } from "@/store/use-auth-store";
+import { usePathname, useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { createContext, type ReactNode, useContext, useEffect } from "react";
 import { getLocalizedRedirect } from "@/lib/client-utils";
 import type { AuthState } from "@/store/use-auth-store";
-import { useTranslations } from "next-intl";
+import { useAuthStore } from "@/store/use-auth-store";
 
 interface AuthContextType {
   user: AuthState["user"];

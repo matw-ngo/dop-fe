@@ -4,34 +4,31 @@
  * Vietnamese compliance integrated
  */
 
-import { useEffect, useCallback, useRef } from "react";
-
-import { useLoanStatusTrackingStore } from "@/store/use-loan-status-store";
+import { useCallback, useEffect, useRef } from "react";
 import { loanApi } from "@/lib/api/endpoints/loans";
-import { loanNotificationManager } from "@/lib/notifications/loan-notifications";
-import { useIntegratedSecurity } from "@/lib/security/integrated-security";
-import { useAuditLogging } from "@/lib/security/audit-logging";
-import { useLoanStatusRateLimiting } from "@/lib/security/status-rate-limiting";
-import { useConflictResolution } from "@/lib/security/conflict-resolution";
-import { createSecureLoanStatusWebSocket } from "@/lib/security/websocket-security";
-
 import type {
-  TimelineMilestone,
-  DocumentStatus,
-  CommunicationEntry,
-  ApplicationStatusData,
-  NotificationPreferences,
-} from "@/store/use-loan-status-store";
-
-import type {
-  NotificationMessage,
-  NotificationChannel,
-  NotificationPriority,
-} from "@/lib/notifications/loan-notifications";
-import {
   DocumentVerificationStatus,
   LoanApplicationStatus,
 } from "@/lib/loan-status/vietnamese-status-config";
+import type {
+  NotificationChannel,
+  NotificationMessage,
+  NotificationPriority,
+} from "@/lib/notifications/loan-notifications";
+import { loanNotificationManager } from "@/lib/notifications/loan-notifications";
+import { useAuditLogging } from "@/lib/security/audit-logging";
+import { useConflictResolution } from "@/lib/security/conflict-resolution";
+import { useIntegratedSecurity } from "@/lib/security/integrated-security";
+import { useLoanStatusRateLimiting } from "@/lib/security/status-rate-limiting";
+import { createSecureLoanStatusWebSocket } from "@/lib/security/websocket-security";
+import type {
+  ApplicationStatusData,
+  CommunicationEntry,
+  DocumentStatus,
+  NotificationPreferences,
+  TimelineMilestone,
+} from "@/store/use-loan-status-store";
+import { useLoanStatusTrackingStore } from "@/store/use-loan-status-store";
 
 /**
  * Hook for SECURE loan application status tracking

@@ -1,4 +1,4 @@
-!(function (t, e) {
+!((t, e) => {
   "object" == typeof exports && "undefined" != typeof module
     ? e(exports)
     : "function" == typeof define && define.amd
@@ -8,8 +8,7 @@
             "undefined" != typeof globalThis ? globalThis : t || self).ZXing =
             {}),
         );
-})(this, function (t) {
-  "use strict";
+})(this, (t) => {
   /*! *****************************************************************************
     Copyright (c) Microsoft Corporation. All rights reserved.
     Licensed under the Apache License, Version 2.0 (the "License"); you may not use
@@ -26,14 +25,14 @@
     ***************************************************************************** */ var e =
     Object.setPrototypeOf ||
     ({ __proto__: [] } instanceof Array &&
-      function (t, e) {
+      ((t, e) => {
         t.__proto__ = e;
-      }) ||
-    function (t, e) {
-      for (var r in e) e.hasOwnProperty(r) && (t[r] = e[r]);
-    };
+      })) ||
+    ((t, e) => {
+      for (var r in e) Object.hasOwn(e, r) && (t[r] = e[r]);
+    });
   var r,
-    n = (function (t) {
+    n = ((t) => {
       function r(e) {
         var r,
           n,
@@ -45,7 +44,7 @@
           (r = o),
           (n = s.prototype),
           (i = Object.setPrototypeOf) ? i(r, n) : (r.__proto__ = n),
-          (function (t, e) {
+          ((t, e) => {
             void 0 === e && (e = t.constructor);
             var r = Error.captureStackTrace;
             r && r(t, e);
@@ -54,7 +53,7 @@
         );
       }
       return (
-        (function (t, r) {
+        ((t, r) => {
           function n() {
             this.constructor = t;
           }
@@ -464,7 +463,7 @@
       return new w(this.size, this.bits.slice());
     }
   }
-  !(function (t) {
+  !((t) => {
     (t[(t.OTHER = 0)] = "OTHER"),
       (t[(t.PURE_BARCODE = 1)] = "PURE_BARCODE"),
       (t[(t.POSSIBLE_FORMATS = 2)] = "POSSIBLE_FORMATS"),
@@ -485,7 +484,7 @@
     }
   }
   (E.kind = "FormatException"),
-    (function (t) {
+    ((t) => {
       (t[(t.Cp437 = 0)] = "Cp437"),
         (t[(t.ISO8859_1 = 1)] = "ISO8859_1"),
         (t[(t.ISO8859_2 = 2)] = "ISO8859_2"),
@@ -685,22 +684,22 @@
   _.kind = "UnsupportedOperationException";
   class I {
     static decode(t, e) {
-      const r = this.encodingName(e);
-      return this.customDecoder
-        ? this.customDecoder(t, r)
-        : "undefined" == typeof TextDecoder || this.shouldDecodeOnFallback(r)
-          ? this.decodeFallback(t, r)
+      const r = I.encodingName(e);
+      return I.customDecoder
+        ? I.customDecoder(t, r)
+        : "undefined" == typeof TextDecoder || I.shouldDecodeOnFallback(r)
+          ? I.decodeFallback(t, r)
           : new TextDecoder(r).decode(t);
     }
     static shouldDecodeOnFallback(t) {
       return !I.isBrowser() && "ISO-8859-1" === t;
     }
     static encode(t, e) {
-      const r = this.encodingName(e);
-      return this.customEncoder
-        ? this.customEncoder(t, r)
+      const r = I.encodingName(e);
+      return I.customEncoder
+        ? I.customEncoder(t, r)
         : "undefined" == typeof TextEncoder
-          ? this.encodeFallback(t)
+          ? I.encodeFallback(t)
           : new TextEncoder().encode(t);
     }
     static isBrowser() {
@@ -716,7 +715,7 @@
       return t instanceof m ? t : m.getCharacterSetECIByName(t);
     }
     static decodeFallback(t, e) {
-      const r = this.encodingCharacterSet(e);
+      const r = I.encodingCharacterSet(e);
       if (I.isDecodeFallbackSupported(r)) {
         let e = "";
         for (let r = 0, n = t.length; r < n; r++) {
@@ -727,9 +726,7 @@
       }
       if (r.equals(m.UnicodeBigUnmarked))
         return String.fromCharCode.apply(null, new Uint16Array(t.buffer));
-      throw new _(
-        `Encoding ${this.encodingName(e)} not supported by fallback.`,
-      );
+      throw new _(`Encoding ${I.encodingName(e)} not supported by fallback.`);
     }
     static isDecodeFallbackSupported(t) {
       return t.equals(m.UTF8) || t.equals(m.ISO8859_1) || t.equals(m.ASCII);
@@ -743,7 +740,7 @@
   }
   class S {
     static castAsNonUtf8Char(t, e = null) {
-      const r = e ? e.getName() : this.ISO88591;
+      const r = e ? e.getName() : S.ISO88591;
       return I.decode(new Uint8Array([t]), r);
     }
     static guessEncoding(t, e) {
@@ -823,7 +820,7 @@
       let r = -1;
       return t.replace(
         /%(-)?(0?[0-9]+)?([.][0-9]+)?([#][0-9]+)?([scfpexd%])/g,
-        function (t, n, i, s, o, a) {
+        (t, n, i, s, o, a) => {
           if ("%%" === t) return "%";
           if (void 0 === e[++r]) return;
           t = s ? parseInt(s.substr(1)) : void 0;
@@ -852,7 +849,7 @@
               l = parseFloat(parseInt(e[r], h || 10).toPrecision(t)).toFixed(0);
           }
           l = "object" == typeof l ? JSON.stringify(l) : (+l).toString(h);
-          let c = parseInt(i),
+          const c = parseInt(i),
             u = i && i[0] + "" == "0" ? "0" : " ";
           for (; l.length < c; ) l = void 0 !== n ? l + u : u + l;
           return l;
@@ -1154,7 +1151,7 @@
       return this.buildToString(t, e, r);
     }
     buildToString(t, e, r) {
-      let n = new p();
+      const n = new p();
       for (let i = 0, s = this.height; i < s; i++) {
         for (let r = 0, s = this.width; r < s; r++)
           n.append(this.get(r, i) ? t : e);
@@ -1388,7 +1385,7 @@
     }
     toString() {
       const t = new Uint8ClampedArray(this.width);
-      let e = new p();
+      const e = new p();
       for (let r = 0; r < this.height; r++) {
         const n = this.getRow(r, t);
         for (let t = 0; t < this.width; t++) {
@@ -1544,8 +1541,8 @@
       (globalThis || global || self || window
         ? (globalThis || global || self || window || void 0).__awaiter
         : void 0) ||
-      function (t, e, r, n) {
-        return new (r || (r = Promise))(function (i, s) {
+      ((t, e, r, n) =>
+        new (r || (r = Promise))((i, s) => {
           function o(t) {
             try {
               l(n.next(t));
@@ -1567,13 +1564,12 @@
               : ((e = t.value),
                 e instanceof r
                   ? e
-                  : new r(function (t) {
+                  : new r((t) => {
                       t(e);
                     })).then(o, a);
           }
           l((n = n.apply(t, e || [])).next());
-        });
-      };
+        }));
   class L {
     constructor(t, e = 500, r) {
       (this.reader = t),
@@ -2091,7 +2087,7 @@
       return this.text;
     }
   }
-  !(function (t) {
+  !((t) => {
     (t[(t.AZTEC = 0)] = "AZTEC"),
       (t[(t.CODABAR = 1)] = "CODABAR"),
       (t[(t.CODE_39 = 2)] = "CODE_39"),
@@ -2112,7 +2108,7 @@
   })(b || (b = {}));
   var k,
     v = b;
-  !(function (t) {
+  !((t) => {
     (t[(t.OTHER = 0)] = "OTHER"),
       (t[(t.ORIENTATION = 1)] = "ORIENTATION"),
       (t[(t.BYTE_SEGMENTS = 2)] = "BYTE_SEGMENTS"),
@@ -2258,7 +2254,7 @@
         const t = e;
         (e = r), (r = t);
       }
-      let n = new Int32Array(r.length);
+      const n = new Int32Array(r.length);
       const i = r.length - e.length;
       c.arraycopy(r, 0, n, 0, i);
       for (let t = i; t < r.length; t++) n[t] = Y.addOrSubtract(e[t - i], r[t]);
@@ -2442,7 +2438,7 @@
         o = n.getZero(),
         a = n.getOne();
       for (; s.getDegree() >= ((r / 2) | 0); ) {
-        let t = i,
+        const t = i,
           e = o;
         if (((i = s), (o = a), i.isZero())) throw new Q("r_{i-1} was zero");
         s = t;
@@ -2496,7 +2492,7 @@
       return n;
     }
   }
-  !(function (t) {
+  !((t) => {
     (t[(t.UPPER = 0)] = "UPPER"),
       (t[(t.LOWER = 1)] = "LOWER"),
       (t[(t.MIXED = 2)] = "MIXED"),
@@ -2507,7 +2503,7 @@
   class $ {
     decode(t) {
       this.ddata = t;
-      let e = t.getBits(),
+      const e = t.getBits(),
         r = this.extractBits(e),
         n = this.correctBits(r),
         i = $.convertBoolArrayToByteArray(n),
@@ -2516,7 +2512,7 @@
       return o.setNumBits(n.length), o;
     }
     static highLevelDecode(t) {
-      return this.getEncodedData(t);
+      return $.getEncodedData(t);
     }
     static getEncodedData(t) {
       let e = t.length,
@@ -2542,11 +2538,11 @@
           }
           n = r;
         } else {
-          let o = n === x.DIGIT ? 4 : 5;
+          const o = n === x.DIGIT ? 4 : 5;
           if (e - s < o) break;
-          let a = $.readCode(t, s, o);
+          const a = $.readCode(t, s, o);
           s += o;
-          let l = $.getCharacter(n, a);
+          const l = $.getCharacter(n, a);
           l.startsWith("CTRL_")
             ? ((r = n),
               (n = $.getTable(l.charAt(5))),
@@ -2597,7 +2593,7 @@
           : this.ddata.getNbLayers() <= 22
             ? ((r = 10), (e = q.AZTEC_DATA_10))
             : ((r = 12), (e = q.AZTEC_DATA_12));
-      let n = this.ddata.getNbDatablocks(),
+      const n = this.ddata.getNbDatablocks(),
         i = t.length / r;
       if (i < n) throw new E();
       let s = t.length % r,
@@ -2611,41 +2607,41 @@
       let a = (1 << r) - 1,
         l = 0;
       for (let t = 0; t < n; t++) {
-        let e = o[t];
+        const e = o[t];
         if (0 === e || e === a) throw new E();
         (1 !== e && e !== a - 1) || l++;
       }
       let h = new Array(n * r - l),
         c = 0;
       for (let t = 0; t < n; t++) {
-        let e = o[t];
+        const e = o[t];
         if (1 === e || e === a - 1) h.fill(e > 1, c, c + r - 1), (c += r - 1);
         else for (let t = r - 1; t >= 0; --t) h[c++] = 0 != (e & (1 << t));
       }
       return h;
     }
     extractBits(t) {
-      let e = this.ddata.isCompact(),
+      const e = this.ddata.isCompact(),
         r = this.ddata.getNbLayers(),
         n = (e ? 11 : 14) + 4 * r,
         i = new Int32Array(n),
         s = new Array(this.totalBitsInLayer(r, e));
       if (e) for (let t = 0; t < i.length; t++) i[t] = t;
       else {
-        let t = n + 1 + 2 * f.truncDivision(f.truncDivision(n, 2) - 1, 15),
+        const t = n + 1 + 2 * f.truncDivision(f.truncDivision(n, 2) - 1, 15),
           e = n / 2,
           r = f.truncDivision(t, 2);
         for (let t = 0; t < e; t++) {
-          let n = t + f.truncDivision(t, 15);
+          const n = t + f.truncDivision(t, 15);
           (i[e - t - 1] = r - n - 1), (i[e + t] = r + n + 1);
         }
       }
       for (let o = 0, a = 0; o < r; o++) {
-        let l = 4 * (r - o) + (e ? 9 : 12),
+        const l = 4 * (r - o) + (e ? 9 : 12),
           h = 2 * o,
           c = n - 1 - h;
         for (let e = 0; e < l; e++) {
-          let r = 2 * e;
+          const r = 2 * e;
           for (let n = 0; n < 2; n++)
             (s[a + r + n] = t.get(i[h + n], i[h + e])),
               (s[a + 2 * l + r + n] = t.get(i[h + e], i[c - n])),
@@ -2662,11 +2658,11 @@
       return n;
     }
     static readByte(t, e) {
-      let r = t.length - e;
+      const r = t.length - e;
       return r >= 8 ? $.readCode(t, e, 8) : $.readCode(t, e, r) << (8 - r);
     }
     static convertBoolArrayToByteArray(t) {
-      let e = new Uint8Array((t.length + 7) / 8);
+      const e = new Uint8Array((t.length + 7) / 8);
       for (let r = 0; r < e.length; r++) e[r] = $.readByte(t, 8 * r);
       return e;
     }
@@ -2882,9 +2878,9 @@
       return "(" + this.x + "," + this.y + ")";
     }
     static orderBestPatterns(t) {
-      const e = this.distance(t[0], t[1]),
-        r = this.distance(t[1], t[2]),
-        n = this.distance(t[0], t[2]);
+      const e = rt.distance(t[0], t[1]),
+        r = rt.distance(t[1], t[2]),
+        n = rt.distance(t[0], t[2]);
       let i, s, o;
       if (
         (r >= e && r >= n
@@ -2892,7 +2888,7 @@
           : n >= r && n >= e
             ? ((s = t[1]), (i = t[0]), (o = t[2]))
             : ((s = t[2]), (i = t[0]), (o = t[1])),
-        this.crossProductZ(i, s, o) < 0)
+        rt.crossProductZ(i, s, o) < 0)
       ) {
         const t = i;
         (i = o), (o = t);
@@ -3304,14 +3300,14 @@
       return this.detectMirror(!1);
     }
     detectMirror(t) {
-      let e = this.getMatrixCenter(),
+      const e = this.getMatrixCenter(),
         r = this.getBullsEyeCorners(e);
       if (t) {
-        let t = r[0];
+        const t = r[0];
         (r[0] = r[2]), (r[2] = t);
       }
       this.extractParameters(r);
-      let n = this.sampleGrid(
+      const n = this.sampleGrid(
           this.image,
           r[this.shift % 4],
           r[(this.shift + 1) % 4],
@@ -3331,7 +3327,7 @@
         )
       )
         throw new R();
-      let e = 2 * this.nbCenterLayers,
+      const e = 2 * this.nbCenterLayers,
         r = new Int32Array([
           this.sampleLine(t[0], t[1], e),
           this.sampleLine(t[1], t[2], e),
@@ -3341,12 +3337,12 @@
       this.shift = this.getRotation(r, e);
       let n = 0;
       for (let t = 0; t < 4; t++) {
-        let e = r[(this.shift + t) % 4];
+        const e = r[(this.shift + t) % 4];
         this.compact
           ? ((n <<= 7), (n += (e >> 1) & 127))
           : ((n <<= 10), (n += ((e >> 2) & 992) + ((e >> 1) & 31)));
       }
-      let i = this.getCorrectedParameterData(n, this.compact);
+      const i = this.getCorrectedParameterData(n, this.compact);
       this.compact
         ? ((this.nbLayers = 1 + (i >> 6)), (this.nbDataBlocks = 1 + (63 & i)))
         : ((this.nbLayers = 1 + (i >> 11)),
@@ -3365,7 +3361,7 @@
     getCorrectedParameterData(t, e) {
       let r, n;
       e ? ((r = 7), (n = 2)) : ((r = 10), (n = 4));
-      let i = r - n,
+      const i = r - n,
         s = new Int32Array(r);
       for (let e = r - 1; e >= 0; --e) (s[e] = 15 & t), (t >>= 4);
       try {
@@ -3388,12 +3384,12 @@
         this.nbCenterLayers < 9;
         this.nbCenterLayers++
       ) {
-        let t = this.getFirstDifferent(e, s, 1, -1),
+        const t = this.getFirstDifferent(e, s, 1, -1),
           o = this.getFirstDifferent(r, s, 1, 1),
           a = this.getFirstDifferent(n, s, -1, 1),
           l = this.getFirstDifferent(i, s, -1, -1);
         if (this.nbCenterLayers > 2) {
-          let r =
+          const r =
             (this.distancePoint(l, t) * this.nbCenterLayers) /
             (this.distancePoint(i, e) * (this.nbCenterLayers + 2));
           if (r < 0.75 || r > 1.25 || !this.isWhiteOrBlackRectangle(t, o, a, l))
@@ -3403,7 +3399,7 @@
       }
       if (5 !== this.nbCenterLayers && 7 !== this.nbCenterLayers) throw new R();
       this.compact = 5 === this.nbCenterLayers;
-      let o = new rt(e.getX() + 0.5, e.getY() - 0.5),
+      const o = new rt(e.getX() + 0.5, e.getY() - 0.5),
         a = new rt(r.getX() + 0.5, r.getY() + 0.5),
         l = new rt(n.getX() - 0.5, n.getY() + 0.5),
         h = new rt(i.getX() - 0.5, i.getY() - 0.5);
@@ -3416,10 +3412,10 @@
     getMatrixCenter() {
       let t, e, r, n;
       try {
-        let i = new st(this.image).detect();
+        const i = new st(this.image).detect();
         (t = i[0]), (e = i[1]), (r = i[2]), (n = i[3]);
       } catch (i) {
-        let s = this.image.getWidth() / 2,
+        const s = this.image.getWidth() / 2,
           o = this.image.getHeight() / 2;
         (t = this.getFirstDifferent(
           new ct(s + 7, o - 7),
@@ -3449,7 +3445,7 @@
       let i = tt.round((t.getX() + n.getX() + e.getX() + r.getX()) / 4),
         s = tt.round((t.getY() + n.getY() + e.getY() + r.getY()) / 4);
       try {
-        let o = new st(this.image, 15, i, s).detect();
+        const o = new st(this.image, 15, i, s).detect();
         (t = o[0]), (e = o[1]), (r = o[2]), (n = o[3]);
       } catch (o) {
         (t = this.getFirstDifferent(
@@ -3487,7 +3483,7 @@
       return this.expandSquare(t, 2 * this.nbCenterLayers, this.getDimension());
     }
     sampleGrid(t, e, r, n, i) {
-      let s = ht.getInstance(),
+      const s = ht.getInstance(),
         o = this.getDimension(),
         a = o / 2 - this.nbCenterLayers,
         l = o / 2 + this.nbCenterLayers;
@@ -3531,7 +3527,7 @@
         (e = new ct(e.getX() - 3, e.getY() - 3)),
         (r = new ct(r.getX() + 3, r.getY() - 3)),
         (n = new ct(n.getX() + 3, n.getY() + 3));
-      let i = this.getColor(n, t);
+      const i = this.getColor(n, t);
       if (0 === i) return !1;
       let s = this.getColor(t, e);
       return (
@@ -3553,7 +3549,7 @@
         (o += n),
           (a += i),
           this.image.get(tt.round(o), tt.round(a)) !== l && s++;
-      let c = s / r;
+      const c = s / r;
       return c > 0.1 && c < 0.9 ? 0 : c <= 0.1 === l ? 1 : -1;
     }
     getFirstDifferent(t, e, r, n) {
@@ -3591,7 +3587,7 @@
       );
     }
     isValidPoint(t) {
-      let e = tt.round(t.getX()),
+      const e = tt.round(t.getX()),
         r = tt.round(t.getY());
       return this.isValid(e, r);
     }
@@ -3618,7 +3614,7 @@
         i = null,
         s = null;
       try {
-        let t = n.detectMirror(!1);
+        const t = n.detectMirror(!1);
         (i = t.getPoints()),
           this.reportFoundResultPoints(e, i),
           (s = new $().decode(t));
@@ -3627,7 +3623,7 @@
       }
       if (null == s)
         try {
-          let t = n.detectMirror(!0);
+          const t = n.detectMirror(!0);
           (i = t.getPoints()),
             this.reportFoundResultPoints(e, i),
             (s = new $().decode(t));
@@ -3635,7 +3631,7 @@
           if (null != r) throw r;
           throw t;
         }
-      let o = new F(
+      const o = new F(
           s.getText(),
           s.getRawBytes(),
           s.getNumBits(),
@@ -3645,12 +3641,12 @@
         ),
         a = s.getByteSegments();
       null != a && o.putMetadata(W.BYTE_SEGMENTS, a);
-      let l = s.getECLevel();
+      const l = s.getECLevel();
       return null != l && o.putMetadata(W.ERROR_CORRECTION_LEVEL, l), o;
     }
     reportFoundResultPoints(t, e) {
       if (null != t) {
-        let r = t.get(C.NEED_RESULT_POINT_CALLBACK);
+        const r = t.get(C.NEED_RESULT_POINT_CALLBACK);
         null != r &&
           e.forEach((t, e, n) => {
             r.foundPossibleResultPoint(t);
@@ -3812,7 +3808,7 @@
         i = -1;
       for (let t = 0; t < ft.CODE_PATTERNS.length; t++) {
         const r = ft.CODE_PATTERNS[t],
-          s = this.patternMatchVariance(e, r, ft.MAX_INDIVIDUAL_VARIANCE);
+          s = ft.patternMatchVariance(e, r, ft.MAX_INDIVIDUAL_VARIANCE);
         s < n && ((n = s), (i = t));
       }
       if (i >= 0) return i;
@@ -4129,7 +4125,7 @@
         (this.counters = new Int32Array(9));
     }
     decodeRow(t, e, r) {
-      let n = this.counters;
+      const n = this.counters;
       n.fill(0), (this.decodeRowResult = "");
       let i,
         s,
@@ -4138,10 +4134,10 @@
         h = e.getSize();
       do {
         wt.recordPattern(e, a, n);
-        let t = wt.toNarrowWidePattern(n);
+        const t = wt.toNarrowWidePattern(n);
         if (t < 0) throw new R();
         (i = wt.patternToChar(t)), (this.decodeRowResult += i), (s = a);
-        for (let t of n) a += t;
+        for (const t of n) a += t;
         a = e.getNextSet(a);
       } while ("*" !== i);
       this.decodeRowResult = this.decodeRowResult.substring(
@@ -4150,7 +4146,7 @@
       );
       let c,
         u = 0;
-      for (let t of n) u += t;
+      for (const t of n) u += t;
       if (a !== h && 2 * (a - s - u) < u) throw new R();
       if (this.usingCheckDigit) {
         let t = this.decodeRowResult.length - 1,
@@ -4167,7 +4163,7 @@
       c = this.extendedMode
         ? wt.decodeExtended(this.decodeRowResult)
         : this.decodeRowResult;
-      let d = (o[1] + o[0]) / 2,
+      const d = (o[1] + o[0]) / 2,
         g = s + u / 2;
       return new F(
         c,
@@ -4190,7 +4186,7 @@
         else {
           if (i === a - 1) {
             if (
-              this.toNarrowWidePattern(e) === wt.ASTERISK_ENCODING &&
+              wt.toNarrowWidePattern(e) === wt.ASTERISK_ENCODING &&
               t.isRange(Math.max(0, s - Math.floor((l - s) / 2)), s, !1)
             )
               return [s, l];
@@ -4210,17 +4206,17 @@
         n = 0;
       do {
         let i = 2147483647;
-        for (let e of t) e < i && e > n && (i = e);
+        for (const e of t) e < i && e > n && (i = e);
         (n = i), (e = 0);
         let s = 0,
           o = 0;
         for (let i = 0; i < r; i++) {
-          let a = t[i];
+          const a = t[i];
           a > n && ((o |= 1 << (r - 1 - i)), e++, (s += a));
         }
         if (3 === e) {
           for (let i = 0; i < r && e > 0; i++) {
-            let r = t[i];
+            const r = t[i];
             if (r > n && (e--, 2 * r >= s)) return -1;
           }
           return o;
@@ -4239,7 +4235,7 @@
       let e = t.length,
         r = "";
       for (let n = 0; n < e; n++) {
-        let e = t.charAt(n);
+        const e = t.charAt(n);
         if ("+" === e || "$" === e || "%" === e || "/" === e) {
           let i = t.charAt(n + 1),
             s = "\0";
@@ -4295,7 +4291,7 @@
       super(...arguments), (this.narrowLineWidth = -1);
     }
     decodeRow(t, e, r) {
-      let n = this.decodeStart(e),
+      const n = this.decodeStart(e),
         i = this.decodeEnd(e),
         s = new p();
       At.decodeMiddle(e, n[1], i[0], s);
@@ -4306,7 +4302,7 @@
       let l = o.length,
         h = !1,
         c = 0;
-      for (let t of a) {
+      for (const t of a) {
         if (l === t) {
           h = !0;
           break;
@@ -4318,26 +4314,26 @@
       return new F(o, null, 0, u, v.ITF, new Date().getTime());
     }
     static decodeMiddle(t, e, r, n) {
-      let i = new Int32Array(10),
+      const i = new Int32Array(10),
         s = new Int32Array(5),
         o = new Int32Array(5);
       for (i.fill(0), s.fill(0), o.fill(0); e < r; ) {
         gt.recordPattern(t, e, i);
         for (let t = 0; t < 5; t++) {
-          let e = 2 * t;
+          const e = 2 * t;
           (s[t] = i[e]), (o[t] = i[e + 1]);
         }
         let r = At.decodeDigit(s);
         n.append(r.toString()),
-          (r = this.decodeDigit(o)),
+          (r = At.decodeDigit(o)),
           n.append(r.toString()),
-          i.forEach(function (t) {
+          i.forEach((t) => {
             e += t;
           });
       }
     }
     decodeStart(t) {
-      let e = At.skipWhiteSpace(t),
+      const e = At.skipWhiteSpace(t),
         r = At.findGuardPattern(t, e, At.START_PATTERN);
       return (
         (this.narrowLineWidth = (r[1] - r[0]) / 4),
@@ -4369,7 +4365,7 @@
             (e = At.findGuardPattern(t, r, At.END_PATTERN_REVERSED[1]));
         }
         this.validateQuietZone(t, e[0]);
-        let n = e[0];
+        const n = e[0];
         return (e[0] = t.getSize() - e[1]), (e[1] = t.getSize() - n), e;
       } finally {
         t.reverse();
@@ -4407,7 +4403,7 @@
         r = -1,
         n = At.PATTERNS.length;
       for (let i = 0; i < n; i++) {
-        let n = At.PATTERNS[i],
+        const n = At.PATTERNS[i],
           s = gt.patternMatchVariance(t, n, At.MAX_INDIVIDUAL_VARIANCE);
         s < e ? ((e = s), (r = i)) : s === e && (r = -1);
       }
@@ -4456,10 +4452,10 @@
         i = Int32Array.from([0, 0, 0]);
       for (; !r; ) {
         (i = Int32Array.from([0, 0, 0])),
-          (e = Ct.findGuardPattern(t, n, !1, this.START_END_PATTERN, i));
-        let s = e[0];
+          (e = Ct.findGuardPattern(t, n, !1, Ct.START_END_PATTERN, i));
+        const s = e[0];
         n = e[1];
-        let o = s - (n - s);
+        const o = s - (n - s);
         o >= 0 && (r = t.isRange(o, s, !1));
       }
       return e;
@@ -4468,22 +4464,22 @@
       return Ct.checkStandardUPCEANChecksum(t);
     }
     static checkStandardUPCEANChecksum(t) {
-      let e = t.length;
+      const e = t.length;
       if (0 === e) return !1;
-      let r = parseInt(t.charAt(e - 1), 10);
+      const r = parseInt(t.charAt(e - 1), 10);
       return Ct.getStandardUPCEANChecksum(t.substring(0, e - 1)) === r;
     }
     static getStandardUPCEANChecksum(t) {
       let e = t.length,
         r = 0;
       for (let n = e - 1; n >= 0; n -= 2) {
-        let e = t.charAt(n).charCodeAt(0) - "0".charCodeAt(0);
+        const e = t.charAt(n).charCodeAt(0) - "0".charCodeAt(0);
         if (e < 0 || e > 9) throw new E();
         r += e;
       }
       r *= 3;
       for (let n = e - 2; n >= 0; n -= 2) {
-        let e = t.charAt(n).charCodeAt(0) - "0".charCodeAt(0);
+        const e = t.charAt(n).charCodeAt(0) - "0".charCodeAt(0);
         if (e < 0 || e > 9) throw new E();
         r += e;
       }
@@ -4499,7 +4495,7 @@
       );
     }
     static findGuardPatternWithoutCounters(t, e, r, n) {
-      return this.findGuardPattern(t, e, r, n, new Int32Array(n.length));
+      return Ct.findGuardPattern(t, e, r, n, new Int32Array(n.length));
     }
     static findGuardPattern(t, e, r, n, i) {
       let s = t.getSize(),
@@ -4517,7 +4513,7 @@
             )
               return Int32Array.from([a, r]);
             a += i[0] + i[1];
-            let t = i.slice(2, i.length - 1);
+            const t = i.slice(2, i.length - 1);
             for (let e = 0; e < o - 1; e++) i[e] = t[e];
             (i[o - 1] = 0), (i[o] = 0), o--;
           } else o++;
@@ -4526,12 +4522,12 @@
       throw new R();
     }
     static decodeDigit(t, e, r, n) {
-      this.recordPattern(t, r, e);
-      let i = this.MAX_AVG_VARIANCE,
+      Ct.recordPattern(t, r, e);
+      let i = Ct.MAX_AVG_VARIANCE,
         s = -1,
         o = n.length;
       for (let t = 0; t < o; t++) {
-        let r = n[t],
+        const r = n[t],
           o = gt.patternMatchVariance(e, r, Ct.MAX_INDIVIDUAL_VARIANCE);
         o < i && ((i = o), (s = t));
       }
@@ -4563,7 +4559,7 @@
         (this.decodeRowStringBuffer = "");
     }
     decodeRow(t, e, r) {
-      let n = this.decodeRowStringBuffer,
+      const n = this.decodeRowStringBuffer,
         i = this.decodeMiddle(e, r, n),
         s = n.toString(),
         o = Et.parseExtensionString(s),
@@ -4572,20 +4568,20 @@
       return null != o && l.putAllMetadata(o), l;
     }
     decodeMiddle(t, e, r) {
-      let n = this.decodeMiddleCounters;
+      const n = this.decodeMiddleCounters;
       (n[0] = 0), (n[1] = 0), (n[2] = 0), (n[3] = 0);
       let i = t.getSize(),
         s = e[1],
         o = 0;
       for (let e = 0; e < 5 && s < i; e++) {
-        let i = Ct.decodeDigit(t, n, s, Ct.L_AND_G_PATTERNS);
+        const i = Ct.decodeDigit(t, n, s, Ct.L_AND_G_PATTERNS);
         r += String.fromCharCode("0".charCodeAt(0) + (i % 10));
-        for (let t of n) s += t;
+        for (const t of n) s += t;
         i >= 10 && (o |= 1 << (4 - e)),
           4 !== e && ((s = t.getNextSet(s)), (s = t.getNextUnset(s)));
       }
       if (5 !== r.length) throw new R();
-      let a = this.determineCheckDigit(o);
+      const a = this.determineCheckDigit(o);
       if (Et.extensionChecksum(r.toString()) !== a) throw new R();
       return s;
     }
@@ -4606,7 +4602,7 @@
     }
     static parseExtensionString(t) {
       if (5 !== t.length) return null;
-      let e = Et.parseExtension5String(t);
+      const e = Et.parseExtension5String(t);
       return null == e ? null : new Map([[W.SUGGESTED_PRICE, e]]);
     }
     static parseExtension5String(t) {
@@ -4632,7 +4628,7 @@
         default:
           e = "";
       }
-      let r = parseInt(t.substring(1)),
+      const r = parseInt(t.substring(1)),
         n = r % 100;
       return e + (r / 100).toString() + "." + (n < 10 ? "0" + n : n.toString());
     }
@@ -4643,7 +4639,7 @@
         (this.decodeRowStringBuffer = "");
     }
     decodeRow(t, e, r) {
-      let n = this.decodeRowStringBuffer,
+      const n = this.decodeRowStringBuffer,
         i = this.decodeMiddle(e, r, n),
         s = n.toString(),
         o = mt.parseExtensionString(s),
@@ -4652,15 +4648,15 @@
       return null != o && l.putAllMetadata(o), l;
     }
     decodeMiddle(t, e, r) {
-      let n = this.decodeMiddleCounters;
+      const n = this.decodeMiddleCounters;
       (n[0] = 0), (n[1] = 0), (n[2] = 0), (n[3] = 0);
       let i = t.getSize(),
         s = e[1],
         o = 0;
       for (let e = 0; e < 2 && s < i; e++) {
-        let i = Ct.decodeDigit(t, n, s, Ct.L_AND_G_PATTERNS);
+        const i = Ct.decodeDigit(t, n, s, Ct.L_AND_G_PATTERNS);
         r += String.fromCharCode("0".charCodeAt(0) + (i % 10));
-        for (let t of n) s += t;
+        for (const t of n) s += t;
         i >= 10 && (o |= 1 << (1 - e)),
           1 !== e && ((s = t.getNextSet(s)), (s = t.getNextUnset(s)));
       }
@@ -4674,12 +4670,12 @@
   }
   class _t {
     static decodeRow(t, e, r) {
-      let n = Ct.findGuardPattern(
+      const n = Ct.findGuardPattern(
         e,
         r,
         !1,
-        this.EXTENSION_START_PATTERN,
-        new Int32Array(this.EXTENSION_START_PATTERN.length).fill(0),
+        _t.EXTENSION_START_PATTERN,
+        new Int32Array(_t.EXTENSION_START_PATTERN.length).fill(0),
       );
       try {
         return new Et().decodeRow(t, e, n);
@@ -4695,35 +4691,35 @@
         (this.decodeRowStringBuffer = ""),
         (It.L_AND_G_PATTERNS = It.L_PATTERNS.map((t) => Int32Array.from(t)));
       for (let t = 10; t < 20; t++) {
-        let e = It.L_PATTERNS[t - 10],
+        const e = It.L_PATTERNS[t - 10],
           r = new Int32Array(e.length);
         for (let t = 0; t < e.length; t++) r[t] = e[e.length - t - 1];
         It.L_AND_G_PATTERNS[t] = r;
       }
     }
     decodeRow(t, e, r) {
-      let n = It.findStartGuardPattern(e),
+      const n = It.findStartGuardPattern(e),
         i = null == r ? null : r.get(C.NEED_RESULT_POINT_CALLBACK);
       if (null != i) {
         const e = new rt((n[0] + n[1]) / 2, t);
         i.foundPossibleResultPoint(e);
       }
-      let s = this.decodeMiddle(e, n, this.decodeRowStringBuffer),
+      const s = this.decodeMiddle(e, n, this.decodeRowStringBuffer),
         o = s.rowOffset,
         a = s.resultString;
       if (null != i) {
         const e = new rt(o, t);
         i.foundPossibleResultPoint(e);
       }
-      let h = It.decodeEnd(e, o);
+      const h = It.decodeEnd(e, o);
       if (null != i) {
         const e = new rt((h[0] + h[1]) / 2, t);
         i.foundPossibleResultPoint(e);
       }
-      let c = h[1],
+      const c = h[1],
         u = c + (c - h[0]);
       if (u >= e.getSize() || !e.isRange(c, u, !1)) throw new R();
-      let d = a.toString();
+      const d = a.toString();
       if (d.length < 8) throw new E();
       if (!It.checkChecksum(d)) throw new l();
       let g = (n[1] + n[0]) / 2,
@@ -4733,16 +4729,16 @@
         m = new F(d, null, 0, A, w, new Date().getTime()),
         _ = 0;
       try {
-        let r = _t.decodeRow(t, e, h[1]);
+        const r = _t.decodeRow(t, e, h[1]);
         m.putMetadata(W.UPC_EAN_EXTENSION, r.getText()),
           m.putAllMetadata(r.getResultMetadata()),
           m.addResultPoints(r.getResultPoints()),
           (_ = r.getText().length);
       } catch (t) {}
-      let I = null == r ? null : r.get(C.ALLOWED_EAN_EXTENSIONS);
+      const I = null == r ? null : r.get(C.ALLOWED_EAN_EXTENSIONS);
       if (null != I) {
         let t = !1;
-        for (let e in I)
+        for (const e in I)
           if (_.toString() === e) {
             t = !0;
             break;
@@ -4755,22 +4751,22 @@
       return It.checkStandardUPCEANChecksum(t);
     }
     static checkStandardUPCEANChecksum(t) {
-      let e = t.length;
+      const e = t.length;
       if (0 === e) return !1;
-      let r = parseInt(t.charAt(e - 1), 10);
+      const r = parseInt(t.charAt(e - 1), 10);
       return It.getStandardUPCEANChecksum(t.substring(0, e - 1)) === r;
     }
     static getStandardUPCEANChecksum(t) {
       let e = t.length,
         r = 0;
       for (let n = e - 1; n >= 0; n -= 2) {
-        let e = t.charAt(n).charCodeAt(0) - "0".charCodeAt(0);
+        const e = t.charAt(n).charCodeAt(0) - "0".charCodeAt(0);
         if (e < 0 || e > 9) throw new E();
         r += e;
       }
       r *= 3;
       for (let n = e - 2; n >= 0; n -= 2) {
-        let e = t.charAt(n).charCodeAt(0) - "0".charCodeAt(0);
+        const e = t.charAt(n).charCodeAt(0) - "0".charCodeAt(0);
         if (e < 0 || e > 9) throw new E();
         r += e;
       }
@@ -4791,15 +4787,15 @@
       super(), (this.decodeMiddleCounters = Int32Array.from([0, 0, 0, 0]));
     }
     decodeMiddle(t, e, r) {
-      let n = this.decodeMiddleCounters;
+      const n = this.decodeMiddleCounters;
       (n[0] = 0), (n[1] = 0), (n[2] = 0), (n[3] = 0);
       let i = t.getSize(),
         s = e[1],
         o = 0;
       for (let e = 0; e < 6 && s < i; e++) {
-        let i = It.decodeDigit(t, n, s, It.L_AND_G_PATTERNS);
+        const i = It.decodeDigit(t, n, s, It.L_AND_G_PATTERNS);
         r += String.fromCharCode("0".charCodeAt(0) + (i % 10));
-        for (let t of n) s += t;
+        for (const t of n) s += t;
         i >= 10 && (o |= 1 << (5 - e));
       }
       (r = St.determineFirstDigit(r, o)),
@@ -4811,9 +4807,9 @@
           new Int32Array(It.MIDDLE_PATTERN.length).fill(0),
         )[1]);
       for (let e = 0; e < 6 && s < i; e++) {
-        let e = It.decodeDigit(t, n, s, It.L_PATTERNS);
+        const e = It.decodeDigit(t, n, s, It.L_PATTERNS);
         r += String.fromCharCode("0".charCodeAt(0) + e);
-        for (let t of n) s += t;
+        for (const t of n) s += t;
       }
       return { rowOffset: s, resultString: r };
     }
@@ -4822,7 +4818,7 @@
     }
     static determineFirstDigit(t, e) {
       for (let r = 0; r < 10; r++)
-        if (e === this.FIRST_DIGIT_ENCODINGS[r])
+        if (e === St.FIRST_DIGIT_ENCODINGS[r])
           return (t = String.fromCharCode("0".charCodeAt(0) + r) + t);
       throw new R();
     }
@@ -4838,9 +4834,9 @@
       let i = t.getSize(),
         s = e[1];
       for (let e = 0; e < 4 && s < i; e++) {
-        let e = It.decodeDigit(t, n, s, It.L_PATTERNS);
+        const e = It.decodeDigit(t, n, s, It.L_PATTERNS);
         r += String.fromCharCode("0".charCodeAt(0) + e);
-        for (let t of n) s += t;
+        for (const t of n) s += t;
       }
       s = It.findGuardPattern(
         t,
@@ -4850,9 +4846,9 @@
         new Int32Array(It.MIDDLE_PATTERN.length).fill(0),
       )[1];
       for (let e = 0; e < 4 && s < i; e++) {
-        let e = It.decodeDigit(t, n, s, It.L_PATTERNS);
+        const e = It.decodeDigit(t, n, s, It.L_PATTERNS);
         r += String.fromCharCode("0".charCodeAt(0) + e);
-        for (let t of n) s += t;
+        for (const t of n) s += t;
       }
       return { rowOffset: s, resultString: r };
     }
@@ -4877,9 +4873,15 @@
       return this.ean13Reader.decodeMiddle(t, e, r);
     }
     maybeReturnResult(t) {
-      let e = t.getText();
+      const e = t.getText();
       if ("0" === e.charAt(0)) {
-        let r = new F(e.substring(1), null, null, t.getResultPoints(), v.UPC_A);
+        const r = new F(
+          e.substring(1),
+          null,
+          null,
+          t.getResultPoints(),
+          v.UPC_A,
+        );
         return (
           null != t.getResultMetadata() &&
             r.putAllMetadata(t.getResultMetadata()),
@@ -4905,7 +4907,7 @@
       for (let e = 0; e < 6 && s < i; e++) {
         const i = Rt.decodeDigit(t, n, s, Rt.L_AND_G_PATTERNS);
         r += String.fromCharCode("0".charCodeAt(0) + (i % 10));
-        for (let t of n) s += t;
+        for (const t of n) s += t;
         i >= 10 && (o |= 1 << (5 - e));
       }
       return Rt.determineNumSysAndCheckDigit(new p(r), o), s;
@@ -4924,7 +4926,7 @@
     static determineNumSysAndCheckDigit(t, e) {
       for (let r = 0; r <= 1; r++)
         for (let n = 0; n < 10; n++)
-          if (e === this.NUMSYS_AND_CHECK_DIGIT_PATTERNS[r][n])
+          if (e === Rt.NUMSYS_AND_CHECK_DIGIT_PATTERNS[r][n])
             return t.insert(0, "0" + r), void t.append("0" + n);
       throw R.getNotFoundInstance();
     }
@@ -4938,7 +4940,7 @@
           .map((t) => t.charCodeAt(0)),
         r = new p();
       r.append(t.charAt(0));
-      let n = e[5];
+      const n = e[5];
       switch (n) {
         case 0:
         case 1:
@@ -4968,7 +4970,7 @@
   class Nt extends gt {
     constructor(t) {
       super();
-      let e = null == t ? null : t.get(C.POSSIBLE_FORMATS),
+      const e = null == t ? null : t.get(C.POSSIBLE_FORMATS),
         r = [];
       null != e &&
         (e.indexOf(v.EAN_13) > -1
@@ -4981,7 +4983,7 @@
         (this.readers = r);
     }
     decodeRow(t, e, r) {
-      for (let n of this.readers)
+      for (const n of this.readers)
         try {
           const i = n.decodeRow(t, e, r),
             s =
@@ -5005,7 +5007,7 @@
       throw new R();
     }
     reset() {
-      for (let t of this.readers) t.reset();
+      for (const t of this.readers) t.reset();
     }
   }
   class Dt extends gt {
@@ -5061,7 +5063,7 @@
       t[r]--;
     }
     static isFinderPattern(t) {
-      let e = t[0] + t[1],
+      const e = t[0] + t[1],
         r = e / (e + t[2] + t[3]);
       if (
         r >= Dt.MIN_FINDER_PATTERN_RATIO &&
@@ -5069,7 +5071,7 @@
       ) {
         let e = Number.MAX_SAFE_INTEGER,
           r = Number.MIN_SAFE_INTEGER;
-        for (let n of t) n > r && (r = n), n < e && (e = n);
+        for (const n of t) n > r && (r = n), n < e && (e = n);
         return r < 10 * e;
       }
       return !1;
@@ -5109,7 +5111,7 @@
         (this.startEnd = e),
         (this.value = t),
         (this.startEnd = e),
-        (this.resultPoints = new Array()),
+        (this.resultPoints = []),
         this.resultPoints.push(new rt(r, i)),
         this.resultPoints.push(new rt(n, i));
     }
@@ -5135,7 +5137,7 @@
     constructor() {}
     static getRSSvalue(t, e, r) {
       let n = 0;
-      for (let e of t) n += e;
+      for (const e of t) n += e;
       let i = 0,
         s = 0,
         o = t.length;
@@ -5252,27 +5254,27 @@
     static parseFieldsInGeneralPurpose(t) {
       if (!t) return null;
       if (t.length < 2) throw new R();
-      let e = t.substring(0, 2);
-      for (let r of kt.TWO_DIGIT_DATA_LENGTH)
+      const e = t.substring(0, 2);
+      for (const r of kt.TWO_DIGIT_DATA_LENGTH)
         if (r[0] === e)
           return r[1] === kt.VARIABLE_LENGTH
             ? kt.processVariableAI(2, r[2], t)
             : kt.processFixedAI(2, r[1], t);
       if (t.length < 3) throw new R();
-      let r = t.substring(0, 3);
-      for (let e of kt.THREE_DIGIT_DATA_LENGTH)
+      const r = t.substring(0, 3);
+      for (const e of kt.THREE_DIGIT_DATA_LENGTH)
         if (e[0] === r)
           return e[1] === kt.VARIABLE_LENGTH
             ? kt.processVariableAI(3, e[2], t)
             : kt.processFixedAI(3, e[1], t);
-      for (let e of kt.THREE_DIGIT_PLUS_DIGIT_DATA_LENGTH)
+      for (const e of kt.THREE_DIGIT_PLUS_DIGIT_DATA_LENGTH)
         if (e[0] === r)
           return e[1] === kt.VARIABLE_LENGTH
             ? kt.processVariableAI(4, e[2], t)
             : kt.processFixedAI(4, e[1], t);
       if (t.length < 4) throw new R();
-      let n = t.substring(0, 4);
-      for (let e of kt.FOUR_DIGIT_DATA_LENGTH)
+      const n = t.substring(0, 4);
+      for (const e of kt.FOUR_DIGIT_DATA_LENGTH)
         if (e[0] === n)
           return e[1] === kt.VARIABLE_LENGTH
             ? kt.processVariableAI(4, e[2], t)
@@ -5281,9 +5283,9 @@
     }
     static processFixedAI(t, e, r) {
       if (r.length < t) throw new R();
-      let n = r.substring(0, t);
+      const n = r.substring(0, t);
       if (r.length < t + e) throw new R();
-      let i = r.substring(t, t + e),
+      const i = r.substring(t, t + e),
         s = r.substring(t + e),
         o = "(" + n + ")" + i,
         a = kt.parseFieldsInGeneralPurpose(s);
@@ -5293,7 +5295,7 @@
       let n,
         i = r.substring(0, t);
       n = r.length < t + e ? r.length : t + e;
-      let s = r.substring(t, n),
+      const s = r.substring(t, n),
         o = r.substring(n),
         a = "(" + i + ")" + s,
         l = kt.parseFieldsInGeneralPurpose(o);
@@ -5439,7 +5441,7 @@
       let r = e,
         n = null;
       for (;;) {
-        let e = this.decodeGeneralPurposeField(r, n),
+        const e = this.decodeGeneralPurposeField(r, n),
           i = kt.parseFieldsInGeneralPurpose(e.getNewString());
         if (
           (null != i && t.append(i),
@@ -5459,14 +5461,14 @@
     }
     decodeNumeric(t) {
       if (t + 7 > this.information.getSize()) {
-        let e = this.extractNumericValueFromBitArray(t, 4);
+        const e = this.extractNumericValueFromBitArray(t, 4);
         return new Ft(
           this.information.getSize(),
           0 === e ? Ft.FNC1 : e - 1,
           Ft.FNC1,
         );
       }
-      let e = this.extractNumericValueFromBitArray(t, 7);
+      const e = this.extractNumericValueFromBitArray(t, 7);
       return new Ft(t + 7, (e - 8) / 11, (e - 8) % 11);
     }
     extractNumericValueFromBitArray(t, e) {
@@ -5481,7 +5483,7 @@
       this.buffer.setLengthToZero(),
         null != e && this.buffer.append(e),
         this.current.setPosition(t);
-      let r = this.parseBlocks();
+      const r = this.parseBlocks();
       return null != r && r.isRemaining()
         ? new Lt(
             this.current.getPosition(),
@@ -5493,7 +5495,7 @@
     parseBlocks() {
       let t, e;
       do {
-        let r = this.current.getPosition();
+        const r = this.current.getPosition();
         if (
           (this.current.isAlpha()
             ? ((e = this.parseAlphaBlock()), (t = e.isFinished()))
@@ -5508,7 +5510,7 @@
     }
     parseNumericBlock() {
       for (; this.isStillNumeric(this.current.getPosition()); ) {
-        let t = this.decodeNumeric(this.current.getPosition());
+        const t = this.decodeNumeric(this.current.getPosition());
         if (
           (this.current.setPosition(t.getNewPosition()), t.isFirstDigitFNC1())
         ) {
@@ -5525,7 +5527,7 @@
           );
         }
         if ((this.buffer.append(t.getFirstDigit()), t.isSecondDigitFNC1())) {
-          let t = new Lt(this.current.getPosition(), this.buffer.toString());
+          const t = new Lt(this.current.getPosition(), this.buffer.toString());
           return new Bt(!0, t);
         }
         this.buffer.append(t.getSecondDigit());
@@ -5538,9 +5540,9 @@
     }
     parseIsoIec646Block() {
       for (; this.isStillIsoIec646(this.current.getPosition()); ) {
-        let t = this.decodeIsoIec646(this.current.getPosition());
+        const t = this.decodeIsoIec646(this.current.getPosition());
         if ((this.current.setPosition(t.getNewPosition()), t.isFNC1())) {
-          let t = new Lt(this.current.getPosition(), this.buffer.toString());
+          const t = new Lt(this.current.getPosition(), this.buffer.toString());
           return new Bt(!0, t);
         }
         this.buffer.append(t.getValue());
@@ -5558,9 +5560,9 @@
     }
     parseAlphaBlock() {
       for (; this.isStillAlpha(this.current.getPosition()); ) {
-        let t = this.decodeAlphanumeric(this.current.getPosition());
+        const t = this.decodeAlphanumeric(this.current.getPosition());
         if ((this.current.setPosition(t.getNewPosition()), t.isFNC1())) {
-          let t = new Lt(this.current.getPosition(), this.buffer.toString());
+          const t = new Lt(this.current.getPosition(), this.buffer.toString());
           return new Bt(!0, t);
         }
         this.buffer.append(t.getValue());
@@ -5578,17 +5580,17 @@
     }
     isStillIsoIec646(t) {
       if (t + 5 > this.information.getSize()) return !1;
-      let e = this.extractNumericValueFromBitArray(t, 5);
+      const e = this.extractNumericValueFromBitArray(t, 5);
       if (e >= 5 && e < 16) return !0;
       if (t + 7 > this.information.getSize()) return !1;
-      let r = this.extractNumericValueFromBitArray(t, 7);
+      const r = this.extractNumericValueFromBitArray(t, 7);
       if (r >= 64 && r < 116) return !0;
       if (t + 8 > this.information.getSize()) return !1;
-      let n = this.extractNumericValueFromBitArray(t, 8);
+      const n = this.extractNumericValueFromBitArray(t, 8);
       return n >= 232 && n < 253;
     }
     decodeIsoIec646(t) {
-      let e = this.extractNumericValueFromBitArray(t, 5);
+      const e = this.extractNumericValueFromBitArray(t, 5);
       if (15 === e) return new Pt(t + 5, Pt.FNC1);
       if (e >= 5 && e < 15) return new Pt(t + 5, "0" + (e - 5));
       let r,
@@ -5666,14 +5668,14 @@
     }
     isStillAlpha(t) {
       if (t + 5 > this.information.getSize()) return !1;
-      let e = this.extractNumericValueFromBitArray(t, 5);
+      const e = this.extractNumericValueFromBitArray(t, 5);
       if (e >= 5 && e < 16) return !0;
       if (t + 6 > this.information.getSize()) return !1;
-      let r = this.extractNumericValueFromBitArray(t, 6);
+      const r = this.extractNumericValueFromBitArray(t, 6);
       return r >= 16 && r < 63;
     }
     decodeAlphanumeric(t) {
-      let e = this.extractNumericValueFromBitArray(t, 5);
+      const e = this.extractNumericValueFromBitArray(t, 5);
       if (15 === e) return new Pt(t + 5, Pt.FNC1);
       if (e >= 5 && e < 15) return new Pt(t + 5, "0" + (e - 5));
       let r,
@@ -5737,12 +5739,12 @@
     }
     encodeCompressedGtin(t, e) {
       t.append("(01)");
-      let r = t.length();
+      const r = t.length();
       t.append("9"), this.encodeCompressedGtinWithoutAI(t, e, r);
     }
     encodeCompressedGtinWithoutAI(t, e, r) {
       for (let r = 0; r < 4; ++r) {
-        let n = this.getGeneralDecoder().extractNumericValueFromBitArray(
+        const n = this.getGeneralDecoder().extractNumericValueFromBitArray(
           e + 10 * r,
           10,
         );
@@ -5755,7 +5757,7 @@
     static appendCheckDigit(t, e) {
       let r = 0;
       for (let n = 0; n < 13; n++) {
-        let i = t.charAt(n + e).charCodeAt(0) - "0".charCodeAt(0);
+        const i = t.charAt(n + e).charCodeAt(0) - "0".charCodeAt(0);
         r += 0 == (1 & n) ? 3 * i : i;
       }
       (r = 10 - (r % 10)), 10 === r && (r = 0), t.append(r);
@@ -5767,9 +5769,9 @@
       super(t);
     }
     parseInformation() {
-      let t = new p();
+      const t = new p();
       t.append("(01)");
-      let e = t.length(),
+      const e = t.length(),
         r = this.getGeneralDecoder().extractNumericValueFromBitArray(
           Ut.HEADER_SIZE,
           4,
@@ -5787,7 +5789,7 @@
       super(t);
     }
     parseInformation() {
-      let t = new p();
+      const t = new p();
       return this.getGeneralDecoder().decodeAllCodes(t, Ht.HEADER_SIZE);
     }
   }
@@ -5797,7 +5799,7 @@
       super(t);
     }
     encodeCompressedWeight(t, e, r) {
-      let n = this.getGeneralDecoder().extractNumericValueFromBitArray(e, r);
+      const n = this.getGeneralDecoder().extractNumericValueFromBitArray(e, r);
       this.addWeightCode(t, n);
       let i = this.checkWeight(n),
         s = 1e5;
@@ -5815,7 +5817,7 @@
         Xt.HEADER_SIZE + Gt.GTIN_SIZE + Xt.WEIGHT_SIZE
       )
         throw new R();
-      let t = new p();
+      const t = new p();
       return (
         this.encodeCompressedGtin(t, Xt.HEADER_SIZE),
         this.encodeCompressedWeight(
@@ -5857,14 +5859,14 @@
     parseInformation() {
       if (this.getInformation().getSize() < Yt.HEADER_SIZE + Vt.GTIN_SIZE)
         throw new R();
-      let t = new p();
+      const t = new p();
       this.encodeCompressedGtin(t, Yt.HEADER_SIZE);
-      let e = this.getGeneralDecoder().extractNumericValueFromBitArray(
+      const e = this.getGeneralDecoder().extractNumericValueFromBitArray(
         Yt.HEADER_SIZE + Vt.GTIN_SIZE,
         Yt.LAST_DIGIT_SIZE,
       );
       t.append("(392"), t.append(e), t.append(")");
-      let r = this.getGeneralDecoder().decodeGeneralPurposeField(
+      const r = this.getGeneralDecoder().decodeGeneralPurposeField(
         Yt.HEADER_SIZE + Vt.GTIN_SIZE + Yt.LAST_DIGIT_SIZE,
         null,
       );
@@ -5879,19 +5881,19 @@
     parseInformation() {
       if (this.getInformation().getSize() < Zt.HEADER_SIZE + Vt.GTIN_SIZE)
         throw new R();
-      let t = new p();
+      const t = new p();
       this.encodeCompressedGtin(t, Zt.HEADER_SIZE);
-      let e = this.getGeneralDecoder().extractNumericValueFromBitArray(
+      const e = this.getGeneralDecoder().extractNumericValueFromBitArray(
         Zt.HEADER_SIZE + Vt.GTIN_SIZE,
         Zt.LAST_DIGIT_SIZE,
       );
       t.append("(393"), t.append(e), t.append(")");
-      let r = this.getGeneralDecoder().extractNumericValueFromBitArray(
+      const r = this.getGeneralDecoder().extractNumericValueFromBitArray(
         Zt.HEADER_SIZE + Vt.GTIN_SIZE + Zt.LAST_DIGIT_SIZE,
         Zt.FIRST_THREE_DIGITS_SIZE,
       );
       r / 100 == 0 && t.append("0"), r / 10 == 0 && t.append("0"), t.append(r);
-      let n = this.getGeneralDecoder().decodeGeneralPurposeField(
+      const n = this.getGeneralDecoder().decodeGeneralPurposeField(
         Zt.HEADER_SIZE +
           Vt.GTIN_SIZE +
           Zt.LAST_DIGIT_SIZE +
@@ -5914,7 +5916,7 @@
         Kt.HEADER_SIZE + Kt.GTIN_SIZE + Kt.WEIGHT_SIZE + Kt.DATE_SIZE
       )
         throw new R();
-      let t = new p();
+      const t = new p();
       return (
         this.encodeCompressedGtin(t, Kt.HEADER_SIZE),
         this.encodeCompressedWeight(
@@ -5936,11 +5938,11 @@
       );
       if (38400 == r) return;
       t.append("("), t.append(this.dateCode), t.append(")");
-      let n = r % 32;
+      const n = r % 32;
       r /= 32;
-      let i = (r % 12) + 1;
+      const i = (r % 12) + 1;
       r /= 12;
-      let s = r;
+      const s = r;
       s / 10 == 0 && t.append("0"),
         t.append(s),
         i / 10 == 0 && t.append("0"),
@@ -6096,7 +6098,7 @@
     constructor() {
       super(...arguments),
         (this.pairs = new Array(Jt.MAX_PAIRS)),
-        (this.rows = new Array()),
+        (this.rows = []),
         (this.startEnd = [2]);
     }
     decodeRow(t, e, r) {
@@ -6138,7 +6140,7 @@
       (this.pairs.length = 0), t && (this.rows = this.rows.reverse());
       let e = null;
       try {
-        e = this.checkRows(new Array(), 0);
+        e = this.checkRows([], 0);
       } catch (t) {
         console.log(t);
       }
@@ -6146,13 +6148,13 @@
     }
     checkRows(t, e) {
       for (let r = e; r < this.rows.length; r++) {
-        let e = this.rows[r];
+        const e = this.rows[r];
         this.pairs.length = 0;
-        for (let e of t) this.pairs.push(e.getPairs());
+        for (const e of t) this.pairs.push(e.getPairs());
         if ((this.pairs.push(e.getPairs()), !Jt.isValidSequence(this.pairs)))
           continue;
         if (this.checkChecksum()) return this.pairs;
-        let n = new Array(t);
+        const n = new Array(t);
         n.push(e);
         try {
           return this.checkRows(n, r + 1);
@@ -6163,7 +6165,7 @@
       throw new R();
     }
     static isValidSequence(t) {
-      for (let e of Jt.FINDER_PATTERN_SEQUENCES) {
+      for (const e of Jt.FINDER_PATTERN_SEQUENCES) {
         if (t.length > e.length) continue;
         let r = !0;
         for (let n = 0; n < t.length; n++)
@@ -6180,7 +6182,7 @@
         n = !1,
         i = !1;
       for (; r < this.rows.length; ) {
-        let e = this.rows[r];
+        const e = this.rows[r];
         if (e.getRowNumber() > t) {
           i = e.isEquivalent(this.pairs);
           break;
@@ -6194,17 +6196,17 @@
         this.removePartialRows(this.pairs, this.rows));
     }
     removePartialRows(t, e) {
-      for (let r of e)
+      for (const r of e)
         if (r.getPairs().length !== t.length)
-          for (let e of r.getPairs())
-            for (let r of t) if (Qt.equals(e, r)) break;
+          for (const e of r.getPairs())
+            for (const r of t) if (Qt.equals(e, r)) break;
     }
     static isPartialRow(t, e) {
-      for (let r of e) {
+      for (const r of e) {
         let e = !0;
-        for (let n of t) {
+        for (const n of t) {
           let t = !1;
-          for (let e of r.getPairs())
+          for (const e of r.getPairs())
             if (n.equals(e)) {
               t = !0;
               break;
@@ -6222,7 +6224,7 @@
       return this.rows;
     }
     static constructResult(t) {
-      let e = qt(
+      const e = qt(
           class {
             static buildBitArray(t) {
               let e = 2 * t.length - 1;
@@ -6233,12 +6235,12 @@
               for (let t = 11; t >= 0; --t)
                 0 != (i & (1 << t)) && r.set(n), n++;
               for (let e = 1; e < t.length; ++e) {
-                let i = t[e],
+                const i = t[e],
                   s = i.getLeftChar().getValue();
                 for (let t = 11; t >= 0; --t)
                   0 != (s & (1 << t)) && r.set(n), n++;
                 if (null != i.getRightChar()) {
-                  let t = i.getRightChar().getValue();
+                  const t = i.getRightChar().getValue();
                   for (let e = 11; e >= 0; --e)
                     0 != (t & (1 << e)) && r.set(n), n++;
                 }
@@ -6253,16 +6255,16 @@
       return new F(e, null, null, i, v.RSS_EXPANDED, null);
     }
     checkChecksum() {
-      let t = this.pairs.get(0),
+      const t = this.pairs.get(0),
         e = t.getLeftChar(),
         r = t.getRightChar();
       if (null == r) return !1;
       let n = r.getChecksumPortion(),
         i = 2;
       for (let t = 1; t < this.pairs.size(); ++t) {
-        let e = this.pairs.get(t);
+        const e = this.pairs.get(t);
         (n += e.getLeftChar().getChecksumPortion()), i++;
-        let r = e.getRightChar();
+        const r = e.getRightChar();
         null != r && ((n += r.getChecksumPortion()), i++);
       }
       return (n %= 211), 211 * (i - 4) + n == e.getValue();
@@ -6301,7 +6303,7 @@
       return 0 === t.length;
     }
     findNextPair(t, e, r) {
-      let n = this.getDecodeFinderCounters();
+      const n = this.getDecodeFinderCounters();
       (n[0] = 0), (n[1] = 0), (n[2] = 0), (n[3] = 0);
       let i,
         s = t.getSize();
@@ -6335,9 +6337,9 @@
       throw new R();
     }
     static reverseCounters(t) {
-      let e = t.length;
+      const e = t.length;
       for (let r = 0; r < e / 2; ++r) {
-        let n = t[r];
+        const n = t[r];
         (t[r] = t[e - r - 1]), (t[e - r - 1] = n);
       }
     }
@@ -6362,20 +6364,20 @@
       return new Ot(o, [i, s], i, s, e);
     }
     decodeDataCharacter(t, e, r, n) {
-      let i = this.getDataCharacterCounters();
+      const i = this.getDataCharacterCounters();
       for (let t = 0; t < i.length; t++) i[t] = 0;
       if (n) Jt.recordPatternInReverse(t, e.getStartEnd()[0], i);
       else {
         Jt.recordPattern(t, e.getStartEnd()[1], i);
         for (let t = 0, e = i.length - 1; t < e; t++, e--) {
-          let r = i[t];
+          const r = i[t];
           (i[t] = i[e]), (i[e] = r);
         }
       }
-      let s = tt.sum(new Int32Array(i)) / 17,
+      const s = tt.sum(new Int32Array(i)) / 17,
         o = (e.getStartEnd()[1] - e.getStartEnd()[0]) / 15;
       if (Math.abs(s - o) / o > 0.3) throw new R();
-      let a = this.getOddCounts(),
+      const a = this.getOddCounts(),
         l = this.getEvenCounts(),
         h = this.getOddRoundingErrors(),
         c = this.getEvenRoundingErrors();
@@ -6389,7 +6391,7 @@
           if (e > 8.7) throw new R();
           r = 8;
         }
-        let n = t / 2;
+        const n = t / 2;
         0 == (1 & t)
           ? ((a[n] = r), (h[n] = e - r))
           : ((l[n] = r), (c[n] = e - r));
@@ -6400,7 +6402,7 @@
         g = 0;
       for (let t = a.length - 1; t >= 0; t--) {
         if (Jt.isNotA1left(e, r, n)) {
-          let e = Jt.WEIGHTS[u][2 * t];
+          const e = Jt.WEIGHTS[u][2 * t];
           g += a[t] * e;
         }
         d += a[t];
@@ -6408,12 +6410,12 @@
       let f = 0;
       for (let t = l.length - 1; t >= 0; t--)
         if (Jt.isNotA1left(e, r, n)) {
-          let e = Jt.WEIGHTS[u][2 * t + 1];
+          const e = Jt.WEIGHTS[u][2 * t + 1];
           f += l[t] * e;
         }
-      let w = g + f;
+      const w = g + f;
       if (0 != (1 & d) || d > 13 || d < 4) throw new R();
-      let A = (13 - d) / 2,
+      const A = (13 - d) / 2,
         C = Jt.SYMBOL_WIDEST[A],
         E = 9 - C,
         m = Mt.getRSSvalue(a, C, !0),
@@ -6434,7 +6436,7 @@
       let s = !1,
         o = !1;
       r > 13 ? (o = !0) : r < 4 && (s = !0);
-      let a = e + r - t,
+      const a = e + r - t,
         l = 1 == (1 & e),
         h = 0 == (1 & r);
       if (1 == a)
@@ -6614,11 +6616,11 @@
     decodeRow(t, e, r) {
       const n = this.decodePair(e, !1, t, r);
       te.addOrTally(this.possibleLeftPairs, n), e.reverse();
-      let i = this.decodePair(e, !0, t, r);
+      const i = this.decodePair(e, !0, t, r);
       te.addOrTally(this.possibleRightPairs, i), e.reverse();
-      for (let t of this.possibleLeftPairs)
+      for (const t of this.possibleLeftPairs)
         if (t.getCount() > 1)
-          for (let e of this.possibleRightPairs)
+          for (const e of this.possibleRightPairs)
             if (e.getCount() > 1 && te.checkChecksum(t, e))
               return te.constructResult(t, e);
       throw new R();
@@ -6626,7 +6628,7 @@
     static addOrTally(t, e) {
       if (null == e) return;
       let r = !1;
-      for (let n of t)
+      for (const n of t)
         if (n.getValue() === e.getValue()) {
           n.incrementCount(), (r = !0);
           break;
@@ -6637,18 +6639,18 @@
       (this.possibleLeftPairs.length = 0), (this.possibleRightPairs.length = 0);
     }
     static constructResult(t, e) {
-      let r = 4537077 * t.getValue() + e.getValue(),
+      const r = 4537077 * t.getValue() + e.getValue(),
         n = new String(r).toString(),
         i = new p();
       for (let t = 13 - n.length; t > 0; t--) i.append("0");
       i.append(n);
       let s = 0;
       for (let t = 0; t < 13; t++) {
-        let e = i.charAt(t).charCodeAt(0) - "0".charCodeAt(0);
+        const e = i.charAt(t).charCodeAt(0) - "0".charCodeAt(0);
         s += 0 == (1 & t) ? 3 * e : e;
       }
       (s = 10 - (s % 10)), 10 === s && (s = 0), i.append(s.toString());
-      let o = t.getFinderPattern().getResultPoints(),
+      const o = t.getFinderPattern().getResultPoints(),
         a = e.getFinderPattern().getResultPoints();
       return new F(
         i.toString(),
@@ -6667,7 +6669,7 @@
     }
     decodePair(t, e, r, n) {
       try {
-        let i = this.findFinderPattern(t, e),
+        const i = this.findFinderPattern(t, e),
           s = this.parseFoundFinderPattern(t, r, e, i),
           o = null == n ? null : n.get(C.NEED_RESULT_POINT_CALLBACK);
         if (null != o) {
@@ -6675,7 +6677,7 @@
           e && (n = t.getSize() - 1 - n),
             o.foundPossibleResultPoint(new rt(n, r));
         }
-        let a = this.decodeDataCharacter(t, s, !0),
+        const a = this.decodeDataCharacter(t, s, !0),
           l = this.decodeDataCharacter(t, s, !1);
         return new $t(
           1597 * a.getValue() + l.getValue(),
@@ -6687,17 +6689,17 @@
       }
     }
     decodeDataCharacter(t, e, r) {
-      let n = this.getDataCharacterCounters();
+      const n = this.getDataCharacterCounters();
       for (let t = 0; t < n.length; t++) n[t] = 0;
       if (r) gt.recordPatternInReverse(t, e.getStartEnd()[0], n);
       else {
         gt.recordPattern(t, e.getStartEnd()[1] + 1, n);
         for (let t = 0, e = n.length - 1; t < e; t++, e--) {
-          let r = n[t];
+          const r = n[t];
           (n[t] = n[e]), (n[e] = r);
         }
       }
-      let i = r ? 16 : 15,
+      const i = r ? 16 : 15,
         s = tt.sum(new Int32Array(n)) / i,
         o = this.getOddCounts(),
         a = this.getEvenCounts(),
@@ -6707,7 +6709,7 @@
         let e = n[t] / s,
           r = Math.floor(e + 0.5);
         r < 1 ? (r = 1) : r > 8 && (r = 8);
-        let i = Math.floor(t / 2);
+        const i = Math.floor(t / 2);
         0 == (1 & t)
           ? ((o[i] = r), (l[i] = e - r))
           : ((a[i] = r), (h[i] = e - r));
@@ -6721,10 +6723,10 @@
         g = 0;
       for (let t = a.length - 1; t >= 0; t--)
         (d *= 9), (d += a[t]), (g += a[t]);
-      let f = u + 3 * d;
+      const f = u + 3 * d;
       if (r) {
         if (0 != (1 & c) || c > 12 || c < 4) throw new R();
-        let t = (12 - c) / 2,
+        const t = (12 - c) / 2,
           e = te.OUTSIDE_ODD_WIDEST[t],
           r = 9 - e,
           n = Mt.getRSSvalue(o, e, !1),
@@ -6735,7 +6737,7 @@
       }
       {
         if (0 != (1 & g) || g > 10 || g < 4) throw new R();
-        let t = (10 - g) / 2,
+        const t = (10 - g) / 2,
           e = te.INSIDE_ODD_WIDEST[t],
           r = 9 - e,
           n = Mt.getRSSvalue(o, e, !0),
@@ -6746,7 +6748,7 @@
       }
     }
     findFinderPattern(t, e) {
-      let r = this.getDecodeFinderCounters();
+      const r = this.getDecodeFinderCounters();
       (r[0] = 0), (r[1] = 0), (r[2] = 0), (r[3] = 0);
       let n = t.getSize(),
         i = !1,
@@ -6799,7 +6801,7 @@
           n > 12 ? (a = !0) : n < 4 && (o = !0))
         : (r > 11 ? (s = !0) : r < 5 && (i = !0),
           n > 10 ? (a = !0) : n < 4 && (o = !0));
-      let l = r + n - e,
+      const l = r + n - e,
         h = (1 & r) == (t ? 1 : 0),
         c = 1 == (1 & n);
       if (1 === l)
@@ -6927,7 +6929,7 @@
       let o = 0;
       const a = s.getECCodewords(),
         l = s.getECBlocks();
-      for (let t of l) o += t.getCount() * (t.getDataCodewords() + a);
+      for (const t of l) o += t.getCount() * (t.getDataCodewords() + a);
       this.totalCodewords = o;
     }
     getVersionNumber() {
@@ -6953,7 +6955,7 @@
     }
     static getVersionForDimensions(t, e) {
       if (0 != (1 & t) || 0 != (1 & e)) throw new E();
-      for (let r of ie.VERSIONS)
+      for (const r of ie.VERSIONS)
         if (r.symbolSizeRows === t && r.symbolSizeColumns === e) return r;
       throw new E();
     }
@@ -7228,10 +7230,10 @@
       const r = e.getECBlocks();
       let n = 0;
       const i = r.getECBlocks();
-      for (let t of i) n += t.getCount();
+      for (const t of i) n += t.getCount();
       const s = new Array(n);
       let a = 0;
-      for (let t of i)
+      for (const t of i)
         for (let e = 0; e < t.getCount(); e++) {
           const e = t.getDataCodewords(),
             n = r.getECCodewords() + e;
@@ -7299,7 +7301,7 @@
       return 8 * (this.bytes.length - this.byteOffset) - this.bitOffset;
     }
   }
-  !(function (t) {
+  !((t) => {
     (t[(t.PAD_ENCODE = 0)] = "PAD_ENCODE"),
       (t[(t.ASCII_ENCODE = 1)] = "ASCII_ENCODE"),
       (t[(t.C40_ENCODE = 2)] = "C40_ENCODE"),
@@ -7313,26 +7315,26 @@
       const e = new ae(t),
         r = new p(),
         n = new p(),
-        i = new Array();
+        i = [];
       let s = V.ASCII_ENCODE;
       do {
-        if (s === V.ASCII_ENCODE) s = this.decodeAsciiSegment(e, r, n);
+        if (s === V.ASCII_ENCODE) s = le.decodeAsciiSegment(e, r, n);
         else {
           switch (s) {
             case V.C40_ENCODE:
-              this.decodeC40Segment(e, r);
+              le.decodeC40Segment(e, r);
               break;
             case V.TEXT_ENCODE:
-              this.decodeTextSegment(e, r);
+              le.decodeTextSegment(e, r);
               break;
             case V.ANSIX12_ENCODE:
-              this.decodeAnsiX12Segment(e, r);
+              le.decodeAnsiX12Segment(e, r);
               break;
             case V.EDIFACT_ENCODE:
-              this.decodeEdifactSegment(e, r);
+              le.decodeEdifactSegment(e, r);
               break;
             case V.BASE256_ENCODE:
-              this.decodeBase256Segment(e, r, i);
+              le.decodeBase256Segment(e, r, i);
               break;
             default:
               throw new E();
@@ -7403,16 +7405,16 @@
         if (8 === t.available()) return;
         const s = t.readBits(8);
         if (254 === s) return;
-        this.parseTwoBytes(s, t.readBits(8), n);
+        le.parseTwoBytes(s, t.readBits(8), n);
         for (let t = 0; t < 3; t++) {
           const s = n[t];
           switch (i) {
             case 0:
               if (s < 3) i = s + 1;
               else {
-                if (!(s < this.C40_BASIC_SET_CHARS.length)) throw new E();
+                if (!(s < le.C40_BASIC_SET_CHARS.length)) throw new E();
                 {
-                  const t = this.C40_BASIC_SET_CHARS[s];
+                  const t = le.C40_BASIC_SET_CHARS[s];
                   r
                     ? (e.append(String.fromCharCode(t.charCodeAt(0) + 128)),
                       (r = !1))
@@ -7427,8 +7429,8 @@
                 (i = 0);
               break;
             case 2:
-              if (s < this.C40_SHIFT2_SET_CHARS.length) {
-                const t = this.C40_SHIFT2_SET_CHARS[s];
+              if (s < le.C40_SHIFT2_SET_CHARS.length) {
+                const t = le.C40_SHIFT2_SET_CHARS[s];
                 r
                   ? (e.append(String.fromCharCode(t.charCodeAt(0) + 128)),
                     (r = !1))
@@ -7466,16 +7468,16 @@
         if (8 === t.available()) return;
         const s = t.readBits(8);
         if (254 === s) return;
-        this.parseTwoBytes(s, t.readBits(8), n);
+        le.parseTwoBytes(s, t.readBits(8), n);
         for (let t = 0; t < 3; t++) {
           const s = n[t];
           switch (i) {
             case 0:
               if (s < 3) i = s + 1;
               else {
-                if (!(s < this.TEXT_BASIC_SET_CHARS.length)) throw new E();
+                if (!(s < le.TEXT_BASIC_SET_CHARS.length)) throw new E();
                 {
-                  const t = this.TEXT_BASIC_SET_CHARS[s];
+                  const t = le.TEXT_BASIC_SET_CHARS[s];
                   r
                     ? (e.append(String.fromCharCode(t.charCodeAt(0) + 128)),
                       (r = !1))
@@ -7490,8 +7492,8 @@
                 (i = 0);
               break;
             case 2:
-              if (s < this.TEXT_SHIFT2_SET_CHARS.length) {
-                const t = this.TEXT_SHIFT2_SET_CHARS[s];
+              if (s < le.TEXT_SHIFT2_SET_CHARS.length) {
+                const t = le.TEXT_SHIFT2_SET_CHARS[s];
                 r
                   ? (e.append(String.fromCharCode(t.charCodeAt(0) + 128)),
                     (r = !1))
@@ -7510,9 +7512,9 @@
               i = 0;
               break;
             case 3:
-              if (!(s < this.TEXT_SHIFT3_SET_CHARS.length)) throw new E();
+              if (!(s < le.TEXT_SHIFT3_SET_CHARS.length)) throw new E();
               {
-                const t = this.TEXT_SHIFT3_SET_CHARS[s];
+                const t = le.TEXT_SHIFT3_SET_CHARS[s];
                 r
                   ? (e.append(String.fromCharCode(t.charCodeAt(0) + 128)),
                     (r = !1))
@@ -7532,7 +7534,7 @@
         if (8 === t.available()) return;
         const n = t.readBits(8);
         if (254 === n) return;
-        this.parseTwoBytes(n, t.readBits(8), r);
+        le.parseTwoBytes(n, t.readBits(8), r);
         for (let t = 0; t < 3; t++) {
           const n = r[t];
           switch (n) {
@@ -7582,7 +7584,7 @@
     }
     static decodeBase256Segment(t, e, r) {
       let n = 1 + t.getByteOffset();
-      const i = this.unrandomize255State(t.readBits(8), n++);
+      const i = le.unrandomize255State(t.readBits(8), n++);
       let s;
       if (
         ((s =
@@ -7590,14 +7592,14 @@
             ? (t.available() / 8) | 0
             : i < 250
               ? i
-              : 250 * (i - 249) + this.unrandomize255State(t.readBits(8), n++)),
+              : 250 * (i - 249) + le.unrandomize255State(t.readBits(8), n++)),
         s < 0)
       )
         throw new E();
       const o = new Uint8Array(s);
       for (let e = 0; e < s; e++) {
         if (t.available() < 8) throw new E();
-        o[e] = this.unrandomize255State(t.readBits(8), n++);
+        o[e] = le.unrandomize255State(t.readBits(8), n++);
       }
       r.push(o);
       try {
@@ -7771,7 +7773,7 @@
         n = e.readCodewords(),
         i = oe.getDataBlocks(n, r);
       let s = 0;
-      for (let t of i) s += t.getNumDataCodewords();
+      for (const t of i) s += t.getNumDataCodewords();
       const o = new Uint8Array(s),
         a = i.length;
       for (let t = 0; t < a; t++) {
@@ -7812,11 +7814,11 @@
       1 == (1 & o) && (o += 1),
         1 == (1 & a) && (a += 1),
         4 * o < 7 * a && 4 * a < 7 * o && (o = a = Math.max(o, a));
-      let l = ce.sampleGrid(this.image, r, n, i, s, o, a);
+      const l = ce.sampleGrid(this.image, r, n, i, s, o, a);
       return new nt(l, [r, n, i, s]);
     }
     static shiftPoint(t, e, r) {
-      let n = (e.getX() - t.getX()) / (r + 1),
+      const n = (e.getX() - t.getX()) / (r + 1),
         i = (e.getY() - t.getY()) / (r + 1);
       return new rt(t.getX() + n, t.getY() + i);
     }
@@ -7846,7 +7848,7 @@
       );
     }
     detectSolid2(t) {
-      let e = t[0],
+      const e = t[0],
         r = t[1],
         n = t[2],
         i = t[3],
@@ -7870,7 +7872,7 @@
         a = ce.shiftPoint(e, r, 4 * (o + 1)),
         l = ce.shiftPoint(n, r, 4 * (s + 1));
       (s = this.transitionsBetween(a, i)), (o = this.transitionsBetween(l, i));
-      let h = new rt(
+      const h = new rt(
           i.getX() + (n.getX() - r.getX()) / (s + 1),
           i.getY() + (n.getY() - r.getY()) / (s + 1),
         ),
@@ -7973,7 +7975,7 @@
         d = 0,
         g = this.image.get(o ? n : r, o ? r : n);
       for (let t = r, e = n; t !== i; t += u) {
-        let r = this.image.get(o ? e : t, o ? t : e);
+        const r = this.image.get(o ? e : t, o ? t : e);
         if ((r !== g && (d++, (g = r)), (h += l), h > 0)) {
           if (e === s) break;
           (e += c), (h -= a);
@@ -8014,7 +8016,7 @@
       const e = t.getTopLeftOnBit(),
         r = t.getBottomRightOnBit();
       if (null == e || null == r) throw new R();
-      const n = this.moduleSize(e, t);
+      const n = ue.moduleSize(e, t);
       let i = e[1];
       const s = r[1];
       let o = e[0];
@@ -8042,7 +8044,7 @@
     }
   }
   ue.NO_POINTS = [];
-  !(function (t) {
+  !((t) => {
     (t[(t.L = 0)] = "L"),
       (t[(t.M = 1)] = "M"),
       (t[(t.Q = 2)] = "Q"),
@@ -8238,7 +8240,7 @@
     static getProvisionalVersionForDimension(t) {
       if (t % 4 != 1) throw new E();
       try {
-        return this.getVersionForNumber((t - 17) / 4);
+        return Ae.getVersionForNumber((t - 17) / 4);
       } catch (t) {
         throw new E();
       }
@@ -8612,7 +8614,7 @@
         new fe(30, new we(20, 15), new we(61, 16)),
       ),
     ]),
-    (function (t) {
+    ((t) => {
       (t[(t.DATA_MASK_000 = 0)] = "DATA_MASK_000"),
         (t[(t.DATA_MASK_001 = 1)] = "DATA_MASK_001"),
         (t[(t.DATA_MASK_010 = 2)] = "DATA_MASK_010"),
@@ -8800,7 +8802,7 @@
       return this.codewords;
     }
   }
-  !(function (t) {
+  !((t) => {
     (t[(t.TERMINATOR = 0)] = "TERMINATOR"),
       (t[(t.NUMERIC = 1)] = "NUMERIC"),
       (t[(t.ALPHANUMERIC = 2)] = "ALPHANUMERIC"),
@@ -8894,8 +8896,8 @@
   class Ie {
     static decode(t, e, r, n) {
       const i = new ae(t);
-      let s = new p();
-      const o = new Array();
+      const s = new p();
+      const o = [];
       let a = -1,
         l = -1;
       try {
@@ -8919,17 +8921,19 @@
               if (i.available() < 16) throw new E();
               (a = i.readBits(8)), (l = i.readBits(8));
               break;
-            case _e.ECI:
+            case _e.ECI: {
               const c = Ie.parseECIValue(i);
               if (((r = m.getCharacterSetECIByValue(c)), null === r))
                 throw new E();
               break;
-            case _e.HANZI:
+            }
+            case _e.HANZI: {
               const u = i.readBits(4),
                 d = i.readBits(t.getCharacterCountBits(e));
               u === Ie.GB2312_SUBSET && Ie.decodeHanziSegment(i, s, d);
               break;
-            default:
+            }
+            default: {
               const g = i.readBits(t.getCharacterCountBits(e));
               switch (t) {
                 case _e.NUMERIC:
@@ -8947,6 +8951,7 @@
                 default:
                   throw new E();
               }
+            }
           }
         } while (t !== _e.TERMINATOR);
       } catch (t) {
@@ -9542,7 +9547,7 @@
           (n += e), (i += e * e);
         }
         r = n / t;
-        let s = Math.sqrt(i / t - r * r);
+        const s = Math.sqrt(i / t - r * r);
         e.sort((t, e) => {
           const n = Math.abs(e.getEstimatedModuleSize() - r),
             i = Math.abs(t.getEstimatedModuleSize() - r);
@@ -9805,7 +9810,7 @@
       const e = t.getTopLeftOnBit(),
         r = t.getBottomRightOnBit();
       if (null === e || null === r) throw new R();
-      const n = this.moduleSize(e, t);
+      const n = Me.moduleSize(e, t);
       let i = e[1],
         s = r[1],
         o = e[0],
@@ -9855,7 +9860,7 @@
       return (i - t[0]) / 7;
     }
   }
-  Me.NO_POINTS = new Array();
+  Me.NO_POINTS = [];
   class Be {
     PDF417Common() {}
     static getBitCountSum(t) {
@@ -10418,7 +10423,7 @@
       );
     }
     static detect(t, e) {
-      const r = new Array();
+      const r = [];
       let n = 0,
         i = 0,
         s = !1;
@@ -10544,11 +10549,11 @@
         s = 0;
       for (let r = 0; r < n; r++) (i += t[r]), (s += e[r]);
       if (i < s) return 1 / 0;
-      let o = i / s;
+      const o = i / s;
       r *= o;
       let a = 0;
       for (let i = 0; i < n; i++) {
-        let n = t[i],
+        const n = t[i],
           s = e[i] * o,
           l = n > s ? n - s : s - n;
         if (l > r) return 1 / 0;
@@ -10572,7 +10577,7 @@
     constructor(t, e) {
       if (0 === e.length) throw new o();
       this.field = t;
-      let r = e.length;
+      const r = e.length;
       if (r > 1 && 0 === e[0]) {
         let t = 1;
         for (; t < r && 0 === e[t]; ) t++;
@@ -10598,7 +10603,7 @@
       if (0 === t) return this.getCoefficient(0);
       if (1 === t) {
         let t = 0;
-        for (let e of this.coefficients) t = this.field.add(t, e);
+        for (const e of this.coefficients) t = this.field.add(t, e);
         return t;
       }
       let e = this.coefficients[0],
@@ -10615,10 +10620,10 @@
       let e = this.coefficients,
         r = t.coefficients;
       if (e.length > r.length) {
-        let t = e;
+        const t = e;
         (e = r), (r = t);
       }
-      let n = new Int32Array(r.length),
+      const n = new Int32Array(r.length),
         i = r.length - e.length;
       c.arraycopy(r, 0, n, 0, i);
       for (let t = i; t < r.length; t++) n[t] = this.field.add(e[t - i], r[t]);
@@ -10637,20 +10642,20 @@
         throw new o("ModulusPolys do not have same ModulusGF field");
       if (this.isZero() || t.isZero())
         return new Le(this.field, new Int32Array([0]));
-      let e = this.coefficients,
+      const e = this.coefficients,
         r = e.length,
         n = t.coefficients,
         i = n.length,
         s = new Int32Array(r + i - 1);
       for (let t = 0; t < r; t++) {
-        let r = e[t];
+        const r = e[t];
         for (let e = 0; e < i; e++)
           s[t + e] = this.field.add(s[t + e], this.field.multiply(r, n[e]));
       }
       return new Le(this.field, s);
     }
     negative() {
-      let t = this.coefficients.length,
+      const t = this.coefficients.length,
         e = new Int32Array(t);
       for (let r = 0; r < t; r++)
         e[r] = this.field.subtract(0, this.coefficients[r]);
@@ -10659,7 +10664,7 @@
     multiplyScalar(t) {
       if (0 === t) return new Le(this.field, new Int32Array([0]));
       if (1 === t) return this;
-      let e = this.coefficients.length,
+      const e = this.coefficients.length,
         r = new Int32Array(e);
       for (let n = 0; n < e; n++)
         r[n] = this.field.multiply(this.coefficients[n], t);
@@ -10668,14 +10673,14 @@
     multiplyByMonomial(t, e) {
       if (t < 0) throw new o();
       if (0 === e) return new Le(this.field, new Int32Array([0]));
-      let r = this.coefficients.length,
+      const r = this.coefficients.length,
         n = new Int32Array(r + t);
       for (let t = 0; t < r; t++)
         n[t] = this.field.multiply(this.coefficients[t], e);
       return new Le(this.field, n);
     }
     toString() {
-      let t = new p();
+      const t = new p();
       for (let e = this.getDegree(); e >= 0; e--) {
         let r = this.getCoefficient(e);
         0 !== r &&
@@ -10740,7 +10745,7 @@
     buildMonomial(t, e) {
       if (t < 0) throw new o();
       if (0 === e) return this.zero;
-      let r = new Int32Array(t + 1);
+      const r = new Int32Array(t + 1);
       return (r[0] = e), new Le(this, r);
     }
   }
@@ -10754,28 +10759,28 @@
         i = new Int32Array(e),
         s = !1;
       for (let t = e; t > 0; t--) {
-        let r = n.evaluateAt(this.field.exp(t));
+        const r = n.evaluateAt(this.field.exp(t));
         (i[e - t] = r), 0 !== r && (s = !0);
       }
       if (!s) return 0;
       let o = this.field.getOne();
       if (null != r)
         for (const e of r) {
-          let r = this.field.exp(t.length - 1 - e),
+          const r = this.field.exp(t.length - 1 - e),
             n = new Le(
               this.field,
               new Int32Array([this.field.subtract(0, r), 1]),
             );
           o = o.multiply(n);
         }
-      let a = new Le(this.field, i),
+      const a = new Le(this.field, i),
         h = this.runEuclideanAlgorithm(this.field.buildMonomial(e, 1), a, e),
         c = h[0],
         u = h[1],
         d = this.findErrorLocations(c),
         g = this.findErrorMagnitudes(u, c, d);
       for (let e = 0; e < d.length; e++) {
-        let r = t.length - 1 - this.field.log(d[e]);
+        const r = t.length - 1 - this.field.log(d[e]);
         if (r < 0) throw l.getChecksumInstance();
         t[r] = this.field.subtract(t[r], g[e]);
       }
@@ -10783,7 +10788,7 @@
     }
     runEuclideanAlgorithm(t, e, r) {
       if (t.getDegree() < e.getDegree()) {
-        let r = t;
+        const r = t;
         (t = e), (e = r);
       }
       let n = t,
@@ -10791,7 +10796,7 @@
         s = this.field.getZero(),
         o = this.field.getOne();
       for (; i.getDegree() >= Math.round(r / 2); ) {
-        let t = n,
+        const t = n,
           e = s;
         if (((n = i), (s = o), n.isZero())) throw l.getChecksumInstance();
         i = t;
@@ -10799,16 +10804,16 @@
           a = n.getCoefficient(n.getDegree()),
           h = this.field.inverse(a);
         for (; i.getDegree() >= n.getDegree() && !i.isZero(); ) {
-          let t = i.getDegree() - n.getDegree(),
+          const t = i.getDegree() - n.getDegree(),
             e = this.field.multiply(i.getCoefficient(i.getDegree()), h);
           (r = r.add(this.field.buildMonomial(t, e))),
             (i = i.subtract(n.multiplyByMonomial(t, e)));
         }
         o = r.multiply(s).subtract(e).negative();
       }
-      let a = o.getCoefficient(0);
+      const a = o.getCoefficient(0);
       if (0 === a) throw l.getChecksumInstance();
-      let h = this.field.inverse(a);
+      const h = this.field.inverse(a);
       return [o.multiply(h), i.multiply(h)];
     }
     findErrorLocations(t) {
@@ -10821,15 +10826,15 @@
       return r;
     }
     findErrorMagnitudes(t, e, r) {
-      let n = e.getDegree(),
+      const n = e.getDegree(),
         i = new Int32Array(n);
       for (let t = 1; t <= n; t++)
         i[n - t] = this.field.multiply(t, e.getCoefficient(t));
-      let s = new Le(this.field, i),
+      const s = new Le(this.field, i),
         o = r.length,
         a = new Int32Array(o);
       for (let e = 0; e < o; e++) {
-        let n = this.field.inverse(r[e]),
+        const n = this.field.inverse(r[e]),
           i = this.field.subtract(0, t.evaluateAt(n)),
           o = this.field.inverse(s.evaluateAt(n));
         a[e] = this.field.multiply(i, o);
@@ -10889,14 +10894,14 @@
         let e = r ? this.topLeft : this.topRight,
           i = Math.trunc(e.getY() - t);
         i < 0 && (i = 0);
-        let o = new rt(e.getX(), i);
+        const o = new rt(e.getX(), i);
         r ? (n = o) : (s = o);
       }
       if (e > 0) {
         let t = r ? this.bottomLeft : this.bottomRight,
           n = Math.trunc(t.getY() + e);
         n >= this.image.getHeight() && (n = this.image.getHeight() - 1);
-        let s = new rt(t.getX(), n);
+        const s = new rt(t.getX(), n);
         r ? (i = s) : (o = s);
       }
       return new ve(this.image, n, i, s, o);
@@ -10958,7 +10963,7 @@
       let r = -1;
       return t.replace(
         /%(-)?(0?[0-9]+)?([.][0-9]+)?([#][0-9]+)?([scfpexd%])/g,
-        function (t, n, i, s, o, a) {
+        (t, n, i, s, o, a) => {
           if ("%%" === t) return "%";
           if (void 0 === e[++r]) return;
           t = s ? parseInt(s.substr(1)) : void 0;
@@ -10987,7 +10992,7 @@
               l = parseFloat(parseInt(e[r], h || 10).toPrecision(t)).toFixed(0);
           }
           l = "object" == typeof l ? JSON.stringify(l) : (+l).toString(h);
-          let c = parseInt(i),
+          const c = parseInt(i),
             u = i && i[0] + "" == "0" ? "0" : " ";
           for (; l.length < c; ) l = void 0 !== n ? l + u : u + l;
           return l;
@@ -11057,7 +11062,7 @@
     }
     getValue() {
       let t = -1,
-        e = new Array();
+        e = [];
       for (const [r, n] of this.values.entries()) {
         const i = { getKey: () => r, getValue: () => n };
         i.getValue() > t
@@ -11075,11 +11080,11 @@
       super(t), (this._isLeft = e);
     }
     setRowNumbers() {
-      for (let t of this.getCodewords())
+      for (const t of this.getCodewords())
         null != t && t.setRowNumberAsRowIndicatorColumn();
     }
     adjustCompleteIndicatorColumnRowNumbers(t) {
-      let e = this.getCodewords();
+      const e = this.getCodewords();
       this.setRowNumbers(), this.removeIncorrectCodewords(e, t);
       let r = this.getBoundingBox(),
         n = this._isLeft ? r.getTopLeft() : r.getTopRight(),
@@ -11091,7 +11096,7 @@
         h = 0;
       for (let r = s; r < o; r++) {
         if (null == e[r]) continue;
-        let n = e[r],
+        const n = e[r],
           i = n.getRowNumber() - a;
         if (0 === i) h++;
         else if (1 === i) (l = Math.max(l, h)), (h = 1), (a = n.getRowNumber());
@@ -11107,13 +11112,13 @@
       }
     }
     getRowHeights() {
-      let t = this.getBarcodeMetadata();
+      const t = this.getBarcodeMetadata();
       if (null == t) return null;
       this.adjustIncompleteIndicatorColumnRowNumbers(t);
-      let e = new Int32Array(t.getRowCount());
-      for (let t of this.getCodewords())
+      const e = new Int32Array(t.getRowCount());
+      for (const t of this.getCodewords())
         if (null != t) {
-          let r = t.getRowNumber();
+          const r = t.getRowNumber();
           if (r >= e.length) continue;
           e[r]++;
         }
@@ -11129,9 +11134,9 @@
         a = -1;
       for (let e = i; e < s; e++) {
         if (null == o[e]) continue;
-        let r = o[e];
+        const r = o[e];
         r.setRowNumberAsRowIndicatorColumn();
-        let n = r.getRowNumber() - a;
+        const n = r.getRowNumber() - a;
         0 === n ||
           (1 === n
             ? (a = r.getRowNumber())
@@ -11141,12 +11146,12 @@
       }
     }
     getBarcodeMetadata() {
-      let t = this.getCodewords(),
+      const t = this.getCodewords(),
         e = new He(),
         r = new He(),
         n = new He(),
         i = new He();
-      for (let s of t) {
+      for (const s of t) {
         if (null == s) continue;
         s.setRowNumberAsRowIndicatorColumn();
         let t = s.getValue() % 30,
@@ -11172,7 +11177,7 @@
         r.getValue()[0] + n.getValue()[0] > Be.MAX_ROWS_IN_BARCODE
       )
         return null;
-      let s = new xe(
+      const s = new xe(
         e.getValue()[0],
         r.getValue()[0],
         n.getValue()[0],
@@ -11182,7 +11187,7 @@
     }
     removeIncorrectCodewords(t, e) {
       for (let r = 0; r < t.length; r++) {
-        let n = t[r];
+        const n = t[r];
         if (null == t[r]) continue;
         let i = n.getValue() % 30,
           s = n.getRowNumber();
@@ -11234,10 +11239,10 @@
         t.adjustCompleteIndicatorColumnRowNumbers(this.barcodeMetadata);
     }
     adjustRowNumbersAndGetCount() {
-      let t = this.adjustRowNumbersByRow();
+      const t = this.adjustRowNumbersByRow();
       if (0 === t) return 0;
       for (let t = 1; t < this.barcodeColumnCount + 1; t++) {
-        let e = this.detectionResultColumns[t].getCodewords();
+        const e = this.detectionResultColumns[t].getCodewords();
         for (let r = 0; r < e.length; r++)
           null != e[r] &&
             (e[r].hasValidRowNumber() || this.adjustRowNumbers(t, r, e));
@@ -11256,7 +11261,7 @@
         null == this.detectionResultColumns[this.barcodeColumnCount + 1]
       )
         return;
-      let t = this.detectionResultColumns[0].getCodewords(),
+      const t = this.detectionResultColumns[0].getCodewords(),
         e =
           this.detectionResultColumns[
             this.barcodeColumnCount + 1
@@ -11268,7 +11273,7 @@
           t[r].getRowNumber() === e[r].getRowNumber()
         )
           for (let e = 1; e <= this.barcodeColumnCount; e++) {
-            let n = this.detectionResultColumns[e].getCodewords()[r];
+            const n = this.detectionResultColumns[e].getCodewords()[r];
             null != n &&
               (n.setRowNumber(t[r].getRowNumber()),
               n.hasValidRowNumber() ||
@@ -11292,7 +11297,7 @@
           e > 0 && i < this.ADJUST_ROW_NUMBER_SKIP;
           e--
         ) {
-          let s = this.detectionResultColumns[e].getCodewords()[r];
+          const s = this.detectionResultColumns[e].getCodewords()[r];
           null != s &&
             ((i = Xe.adjustRowNumberIfValid(n, i, s)),
             s.hasValidRowNumber() || t++);
@@ -11313,7 +11318,7 @@
           e < this.barcodeColumnCount + 1 && i < this.ADJUST_ROW_NUMBER_SKIP;
           e++
         ) {
-          let s = this.detectionResultColumns[e].getCodewords()[r];
+          const s = this.detectionResultColumns[e].getCodewords()[r];
           null != s &&
             ((i = Xe.adjustRowNumberIfValid(n, i, s)),
             s.hasValidRowNumber() || t++);
@@ -11335,7 +11340,7 @@
         s = i;
       null != this.detectionResultColumns[t + 1] &&
         (s = this.detectionResultColumns[t + 1].getCodewords());
-      let o = new Array(14);
+      const o = new Array(14);
       (o[2] = i[e]),
         (o[3] = s[e]),
         e > 0 && ((o[0] = r[e - 1]), (o[4] = i[e - 1]), (o[5] = s[e - 1])),
@@ -11344,7 +11349,7 @@
           ((o[1] = r[e + 1]), (o[6] = i[e + 1]), (o[7] = s[e + 1])),
         e < r.length - 2 &&
           ((o[9] = r[e + 2]), (o[12] = i[e + 2]), (o[13] = s[e + 2]));
-      for (let t of o) if (Xe.adjustRowNumber(n, t)) return;
+      for (const t of o) if (Xe.adjustRowNumber(n, t)) return;
     }
     static adjustRowNumber(t, e) {
       return (
@@ -11378,7 +11383,7 @@
       let t = this.detectionResultColumns[0];
       null == t &&
         (t = this.detectionResultColumns[this.barcodeColumnCount + 1]);
-      let e = new Ve();
+      const e = new Ve();
       for (let r = 0; r < t.getCodewords().length; r++) {
         e.format("CW %3d:", r);
         for (let t = 0; t < this.barcodeColumnCount + 2; t++) {
@@ -11386,7 +11391,7 @@
             e.format("    |   ");
             continue;
           }
-          let n = this.detectionResultColumns[t].getCodewords()[r];
+          const n = this.detectionResultColumns[t].getCodewords()[r];
           null != n
             ? e.format(" %3d|%3d", n.getRowNumber(), n.getValue())
             : e.format("    |   ");
@@ -11457,10 +11462,10 @@
             ));
         }
       }
-      this.bSymbolTableReady = !0;
+      ze.bSymbolTableReady = !0;
     }
     static getDecodedValue(t) {
-      let e = ze.getDecodedCodewordValue(ze.sampleBitCounts(t));
+      const e = ze.getDecodedCodewordValue(ze.sampleBitCounts(t));
       return -1 !== e ? e : ze.getClosestDecodedValue(t);
     }
     static sampleBitCounts(t) {
@@ -11469,14 +11474,14 @@
         n = 0,
         i = 0;
       for (let s = 0; s < Be.MODULES_IN_CODEWORD; s++) {
-        let o =
+        const o =
           e / (2 * Be.MODULES_IN_CODEWORD) + (s * e) / Be.MODULES_IN_CODEWORD;
         i + t[n] <= o && ((i += t[n]), n++), r[n]++;
       }
       return r;
     }
     static getDecodedCodewordValue(t) {
-      let e = ze.getBitValue(t);
+      const e = ze.getBitValue(t);
       return -1 === Be.getCodeword(e) ? -1 : e;
     }
     static getBitValue(t) {
@@ -11486,18 +11491,18 @@
       return Math.trunc(e);
     }
     static getClosestDecodedValue(t) {
-      let e = tt.sum(t),
+      const e = tt.sum(t),
         r = new Array(Be.BARS_IN_MODULE);
       if (e > 1)
         for (let n = 0; n < r.length; n++) r[n] = Math.fround(t[n] / e);
       let n = et.MAX_VALUE,
         i = -1;
-      this.bSymbolTableReady || ze.initialize();
+      ze.bSymbolTableReady || ze.initialize();
       for (let t = 0; t < ze.RATIOS_TABLE.length; t++) {
         let e = 0,
           s = ze.RATIOS_TABLE[t];
         for (let t = 0; t < Be.BARS_IN_MODULE; t++) {
-          let i = Math.fround(s[t] - r[t]);
+          const i = Math.fround(s[t] - r[t]);
           if (((e += Math.fround(i * i)), e >= n)) break;
         }
         e < n && ((n = e), (i = Be.SYMBOL_TABLE[t]));
@@ -11673,7 +11678,7 @@
       throw new Error("BigInt is not supported!");
     return Je(t);
   }
-  !(function (t) {
+  !((t) => {
     (t[(t.ALPHA = 0)] = "ALPHA"),
       (t[(t.LOWER = 1)] = "LOWER"),
       (t[(t.MIXED = 2)] = "MIXED"),
@@ -11683,7 +11688,7 @@
   })(X || (X = {}));
   class tr {
     static decode(t, e) {
-      let r = new p(""),
+      const r = new p(""),
         n = m.ISO8859_1;
       r.enableDecoding(n);
       let i = 1,
@@ -11726,13 +11731,13 @@
         s = t[i++];
       }
       if (0 === r.length()) throw E.getFormatInstance();
-      let a = new z(null, r.toString(), null, e);
+      const a = new z(null, r.toString(), null, e);
       return a.setOther(o), a;
     }
     static decodeMacroBlock(t, e, r) {
       if (e + tr.NUMBER_OF_SEQUENCE_CODEWORDS > t[0])
         throw E.getFormatInstance();
-      let n = new Int32Array(tr.NUMBER_OF_SEQUENCE_CODEWORDS);
+      const n = new Int32Array(tr.NUMBER_OF_SEQUENCE_CODEWORDS);
       for (let r = 0; r < tr.NUMBER_OF_SEQUENCE_CODEWORDS; r++, e++)
         n[r] = t[e];
       r.setSegmentIndex(
@@ -11740,7 +11745,7 @@
           tr.decodeBase900toBase10(n, tr.NUMBER_OF_SEQUENCE_CODEWORDS),
         ),
       );
-      let i = new p();
+      const i = new p();
       (e = tr.textCompaction(t, e, i)), r.setFileId(i.toString());
       let s = -1;
       for (
@@ -11750,40 +11755,47 @@
         switch (t[e]) {
           case tr.BEGIN_MACRO_PDF417_OPTIONAL_FIELD:
             switch (t[++e]) {
-              case tr.MACRO_PDF417_OPTIONAL_FIELD_FILE_NAME:
-                let n = new p();
+              case tr.MACRO_PDF417_OPTIONAL_FIELD_FILE_NAME: {
+                const n = new p();
                 (e = tr.textCompaction(t, e + 1, n)),
                   r.setFileName(n.toString());
                 break;
-              case tr.MACRO_PDF417_OPTIONAL_FIELD_SENDER:
-                let i = new p();
+              }
+              case tr.MACRO_PDF417_OPTIONAL_FIELD_SENDER: {
+                const i = new p();
                 (e = tr.textCompaction(t, e + 1, i)), r.setSender(i.toString());
                 break;
-              case tr.MACRO_PDF417_OPTIONAL_FIELD_ADDRESSEE:
-                let s = new p();
+              }
+              case tr.MACRO_PDF417_OPTIONAL_FIELD_ADDRESSEE: {
+                const s = new p();
                 (e = tr.textCompaction(t, e + 1, s)),
                   r.setAddressee(s.toString());
                 break;
-              case tr.MACRO_PDF417_OPTIONAL_FIELD_SEGMENT_COUNT:
-                let o = new p();
+              }
+              case tr.MACRO_PDF417_OPTIONAL_FIELD_SEGMENT_COUNT: {
+                const o = new p();
                 (e = tr.numericCompaction(t, e + 1, o)),
                   r.setSegmentCount(f.parseInt(o.toString()));
                 break;
-              case tr.MACRO_PDF417_OPTIONAL_FIELD_TIME_STAMP:
-                let a = new p();
+              }
+              case tr.MACRO_PDF417_OPTIONAL_FIELD_TIME_STAMP: {
+                const a = new p();
                 (e = tr.numericCompaction(t, e + 1, a)),
                   r.setTimestamp(Ze.parseLong(a.toString()));
                 break;
-              case tr.MACRO_PDF417_OPTIONAL_FIELD_CHECKSUM:
-                let l = new p();
+              }
+              case tr.MACRO_PDF417_OPTIONAL_FIELD_CHECKSUM: {
+                const l = new p();
                 (e = tr.numericCompaction(t, e + 1, l)),
                   r.setChecksum(f.parseInt(l.toString()));
                 break;
-              case tr.MACRO_PDF417_OPTIONAL_FIELD_FILE_SIZE:
-                let h = new p();
+              }
+              case tr.MACRO_PDF417_OPTIONAL_FIELD_FILE_SIZE: {
+                const h = new p();
                 (e = tr.numericCompaction(t, e + 1, h)),
                   r.setFileSize(Ze.parseLong(h.toString()));
                 break;
+              }
               default:
                 throw E.getFormatInstance();
             }
@@ -11959,7 +11971,7 @@
         a = 0,
         l = !1;
       switch (t) {
-        case tr.BYTE_COMPACTION_MODE_LATCH:
+        case tr.BYTE_COMPACTION_MODE_LATCH: {
           let t = new Int32Array(6),
             r = e[n++];
           for (; n < e[0] && !l; )
@@ -11983,9 +11995,10 @@
           n === e[0] && r < tr.TEXT_COMPACTION_MODE_LATCH && (t[o++] = r);
           for (let e = 0; e < o; e++) s.write(t[e]);
           break;
+        }
         case tr.BYTE_COMPACTION_MODE_LATCH_6:
           for (; n < e[0] && !l; ) {
-            let t = e[n++];
+            const t = e[n++];
             if (t < tr.TEXT_COMPACTION_MODE_LATCH) o++, (a = 900 * a + t);
             else
               switch (t) {
@@ -12012,7 +12025,7 @@
         i = !1,
         s = new Int32Array(tr.MAX_NUMERIC_CODEWORDS);
       for (; e < t[0] && !i; ) {
-        let o = t[e++];
+        const o = t[e++];
         if ((e === t[0] && (i = !0), o < tr.TEXT_COMPACTION_MODE_LATCH))
           (s[n] = o), n++;
         else
@@ -12036,7 +12049,7 @@
     static decodeBase900toBase10(t, e) {
       let r = $e(0);
       for (let n = 0; n < e; n++) r += tr.EXP900[e - n - 1] * $e(t[n]);
-      let n = r.toString();
+      const n = r.toString();
       if ("1" !== n.charAt(0)) throw new E();
       return n.substring(1);
     }
@@ -12070,10 +12083,10 @@
     (tr.PUNCT_CHARS = ";<>@[\\]_`~!\r\t,:\n-.$/\"|*()?{}'"),
     (tr.MIXED_CHARS = "0123456789&\r\t,:#-.$/+%*=^"),
     (tr.EXP900 = je()
-      ? (function () {
-          let t = [];
+      ? (() => {
+          const t = [];
           t[0] = $e(1);
-          let e = $e(900);
+          const e = $e(900);
           t[1] = e;
           for (let r = 2; r < 16; r++) t[r] = t[r - 1] * e;
           return t;
@@ -12095,7 +12108,7 @@
           null == a)
         )
           throw R.getNotFoundInstance();
-        let i = a.getBoundingBox();
+        const i = a.getBoundingBox();
         if (
           !r ||
           null == i ||
@@ -12105,9 +12118,9 @@
         l = i;
       }
       a.setBoundingBox(l);
-      let u = a.getBarcodeColumnCount() + 1;
+      const u = a.getBarcodeColumnCount() + 1;
       a.setDetectionResultColumn(0, h), a.setDetectionResultColumn(u, c);
-      let d = null != h;
+      const d = null != h;
       for (let e = 1; e <= u; e++) {
         let r,
           n = d ? e : u - e;
@@ -12121,7 +12134,16 @@
             if (-1 === h) continue;
             i = h;
           }
-          let c = er.detectCodeword(t, l.getMinX(), l.getMaxX(), d, i, e, s, o);
+          const c = er.detectCodeword(
+            t,
+            l.getMinX(),
+            l.getMaxX(),
+            d,
+            i,
+            e,
+            s,
+            o,
+          );
           null != c &&
             (r.setCodeword(e, c),
             (h = i),
@@ -12133,19 +12155,19 @@
     }
     static merge(t, e) {
       if (null == t && null == e) return null;
-      let r = er.getBarcodeMetadata(t, e);
+      const r = er.getBarcodeMetadata(t, e);
       if (null == r) return null;
-      let n = ve.merge(er.adjustBoundingBox(t), er.adjustBoundingBox(e));
+      const n = ve.merge(er.adjustBoundingBox(t), er.adjustBoundingBox(e));
       return new Xe(r, n);
     }
     static adjustBoundingBox(t) {
       if (null == t) return null;
-      let e = t.getRowHeights();
+      const e = t.getRowHeights();
       if (null == e) return null;
       let r = er.getMax(e),
         n = 0;
-      for (let t of e) if (((n += r - t), t > 0)) break;
-      let i = t.getCodewords();
+      for (const t of e) if (((n += r - t), t > 0)) break;
+      const i = t.getCodewords();
       for (let t = 0; n > 0 && null == i[t]; t++) n--;
       let s = 0;
       for (let t = e.length - 1; t >= 0 && ((s += r - e[t]), !(e[t] > 0)); t--);
@@ -12154,7 +12176,7 @@
     }
     static getMax(t) {
       let e = -1;
-      for (let r of t) e = Math.max(e, r);
+      for (const r of t) e = Math.max(e, r);
       return e;
     }
     static getBarcodeMetadata(t, e) {
@@ -12172,7 +12194,7 @@
             : r;
     }
     static getRowIndicatorColumn(t, e, r, n, i, s) {
-      let o = new Ge(e, n);
+      const o = new Ge(e, n);
       for (let a = 0; a < 2; a++) {
         let l = 0 === a ? 1 : -1,
           h = Math.trunc(Math.trunc(r.getX()));
@@ -12181,7 +12203,7 @@
           a <= e.getMaxY() && a >= e.getMinY();
           a += l
         ) {
-          let e = er.detectCodeword(t, 0, t.getWidth(), n, h, a, i, s);
+          const e = er.detectCodeword(t, 0, t.getWidth(), n, h, a, i, s);
           null != e &&
             (o.setCodeword(a, e), (h = n ? e.getStartX() : e.getEndX()));
         }
@@ -12189,7 +12211,7 @@
       return o;
     }
     static adjustCodewordCount(t, e) {
-      let r = e[0][1],
+      const r = e[0][1],
         n = r.getValue(),
         i =
           t.getBarcodeColumnCount() * t.getBarcodeRowCount() -
@@ -12201,15 +12223,15 @@
       } else n[0] !== i && r.setValue(i);
     }
     static createDecoderResult(t) {
-      let e = er.createBarcodeMatrix(t);
+      const e = er.createBarcodeMatrix(t);
       er.adjustCodewordCount(t, e);
-      let r = new Array(),
+      const r = [],
         n = new Int32Array(t.getBarcodeRowCount() * t.getBarcodeColumnCount()),
         i = [],
-        s = new Array();
+        s = [];
       for (let o = 0; o < t.getBarcodeRowCount(); o++)
         for (let a = 0; a < t.getBarcodeColumnCount(); a++) {
-          let l = e[o][a + 1].getValue(),
+          const l = e[o][a + 1].getValue(),
             h = o * t.getBarcodeColumnCount() + a;
           0 === l.length
             ? r.push(h)
@@ -12217,7 +12239,7 @@
               ? (n[h] = l[0])
               : (s.push(h), i.push(l));
         }
-      let o = new Array(i.length);
+      const o = new Array(i.length);
       for (let t = 0; t < o.length; t++) o[t] = i[t];
       return er.createDecoderResultFromAmbiguousValues(
         t.getBarcodeECLevel(),
@@ -12249,18 +12271,18 @@
       throw l.getChecksumInstance();
     }
     static createBarcodeMatrix(t) {
-      let e = Array.from(
+      const e = Array.from(
         { length: t.getBarcodeRowCount() },
         () => new Array(t.getBarcodeColumnCount() + 2),
       );
       for (let t = 0; t < e.length; t++)
         for (let r = 0; r < e[t].length; r++) e[t][r] = new He();
       let r = 0;
-      for (let n of t.getDetectionResultColumns()) {
+      for (const n of t.getDetectionResultColumns()) {
         if (null != n)
-          for (let t of n.getCodewords())
+          for (const t of n.getCodewords())
             if (null != t) {
-              let n = t.getRowNumber();
+              const n = t.getRowNumber();
               if (n >= 0) {
                 if (n >= e.length) continue;
                 e[n][r].setValue(t.getValue());
@@ -12293,7 +12315,7 @@
       let o = 0;
       for (; er.isValidBarcodeColumn(t, e - i); ) {
         e -= i;
-        for (let r of t.getDetectionResultColumn(e).getCodewords())
+        for (const r of t.getDetectionResultColumn(e).getCodewords())
           if (null != r)
             return (
               (n ? r.getEndX() : r.getStartX()) +
@@ -12308,17 +12330,17 @@
       let l,
         h = er.getModuleBitCount(t, e, r, n, i, s);
       if (null == h) return null;
-      let c = tt.sum(h);
+      const c = tt.sum(h);
       if (n) l = i + c;
       else {
         for (let t = 0; t < h.length / 2; t++) {
-          let e = h[t];
+          const e = h[t];
           (h[t] = h[h.length - 1 - t]), (h[h.length - 1 - t] = e);
         }
         (l = i), (i = l - c);
       }
       if (!er.checkCodewordSkew(c, o, a)) return null;
-      let u = ze.getDecodedValue(h),
+      const u = ze.getDecodedValue(h),
         d = Be.getCodeword(u);
       return -1 === d ? null : new We(i, l, er.getCodewordBucketNumber(u), d);
     }
@@ -12354,10 +12376,10 @@
     }
     static decodeCodewords(t, e, r) {
       if (0 === t.length) throw E.getFormatInstance();
-      let n = 1 << (e + 1),
+      const n = 1 << (e + 1),
         i = er.correctErrors(t, r, n);
       er.verifyCodewordCount(t, n);
-      let s = tr.decode(t, "" + e);
+      const s = tr.decode(t, "" + e);
       return s.setErrorsCorrected(i), s.setErasures(r.length), s;
     }
     static correctErrors(t, e, r) {
@@ -12371,7 +12393,7 @@
     }
     static verifyCodewordCount(t, e) {
       if (t.length < 4) throw E.getFormatInstance();
-      let r = t[0];
+      const r = t[0];
       if (r > t.length) throw E.getFormatInstance();
       if (0 === r) {
         if (!(e < t.length)) throw E.getFormatInstance();
@@ -12387,8 +12409,8 @@
     }
     static getCodewordBucketNumber(t) {
       return t instanceof Int32Array
-        ? this.getCodewordBucketNumber_Int32Array(t)
-        : this.getCodewordBucketNumber_number(t);
+        ? er.getCodewordBucketNumber_Int32Array(t)
+        : er.getCodewordBucketNumber_number(t);
     }
     static getCodewordBucketNumber_number(t) {
       return er.getCodewordBucketNumber(er.getBitCountForCodeword(t));
@@ -12397,11 +12419,11 @@
       return (t[0] - t[2] + t[4] - t[6] + 9) % 9;
     }
     static toString(t) {
-      let e = new Ve();
+      const e = new Ve();
       for (let r = 0; r < t.length; r++) {
         e.format("Row %2d: ", r);
         for (let n = 0; n < t[r].length; n++) {
-          let i = t[r][n];
+          const i = t[r][n];
           0 === i.getValue().length
             ? e.format("        ", null)
             : e.format(
@@ -12421,7 +12443,7 @@
     (er.errorCorrection = new ke());
   class rr {
     decode(t, e = null) {
-      let r = rr.decode(t, e, !1);
+      const r = rr.decode(t, e, !1);
       if (null == r || 0 === r.length || null == r[0])
         throw R.getNotFoundInstance();
       return r[0];
@@ -12435,7 +12457,7 @@
       }
     }
     static decode(t, e, r) {
-      const n = new Array(),
+      const n = [],
         i = Pe.detectMultiple(t, e, r);
       for (const t of i.getPoints()) {
         const e = er.decode(
@@ -12515,7 +12537,7 @@
       this.hints = t;
       const e = null != t && void 0 !== t.get(C.TRY_HARDER),
         r = null == t ? null : t.get(C.POSSIBLE_FORMATS),
-        n = new Array();
+        n = [];
       if (null != r) {
         const i = r.some(
           (t) =>
@@ -12563,7 +12585,7 @@
     }
   }
   var sr;
-  !(function (t) {
+  !((t) => {
     (t[(t.ERROR_CORRECTION = 0)] = "ERROR_CORRECTION"),
       (t[(t.CHARACTER_SET = 1)] = "CHARACTER_SET"),
       (t[(t.DATA_MATRIX_SHAPE = 2)] = "DATA_MATRIX_SHAPE"),
@@ -13131,33 +13153,33 @@
       let n = fr.DEFAULT_BYTE_MODE_ENCODING;
       const i = null !== r && void 0 !== r.get(or.CHARACTER_SET);
       i && (n = r.get(or.CHARACTER_SET).toString());
-      const s = this.chooseMode(t, n),
+      const s = fr.chooseMode(t, n),
         o = new w();
       if (s === _e.BYTE && (i || fr.DEFAULT_BYTE_MODE_ENCODING !== n)) {
         const t = m.getCharacterSetECIByName(n);
-        void 0 !== t && this.appendECI(t, o);
+        void 0 !== t && fr.appendECI(t, o);
       }
-      this.appendModeInfo(s, o);
+      fr.appendModeInfo(s, o);
       const a = new w();
       let l;
       if (
-        (this.appendBytes(t, s, a, n),
+        (fr.appendBytes(t, s, a, n),
         null !== r && void 0 !== r.get(or.QR_VERSION))
       ) {
         const t = Number.parseInt(r.get(or.QR_VERSION).toString(), 10);
         l = Ae.getVersionForNumber(t);
-        const n = this.calculateBitsNeeded(s, o, a, l);
-        if (!this.willFit(n, l, e))
+        const n = fr.calculateBitsNeeded(s, o, a, l);
+        if (!fr.willFit(n, l, e))
           throw new ur("Data too big for requested version");
-      } else l = this.recommendVersion(e, s, o, a);
+      } else l = fr.recommendVersion(e, s, o, a);
       const h = new w();
       h.appendBitArray(o);
       const c = s === _e.BYTE ? a.getSizeInBytes() : t.length;
-      this.appendLengthInfo(c, l, s, h), h.appendBitArray(a);
+      fr.appendLengthInfo(c, l, s, h), h.appendBitArray(a);
       const u = l.getECBlocksForLevel(e),
         d = l.getTotalCodewords() - u.getTotalECCodewords();
-      this.terminateBits(d, h);
-      const g = this.interleaveWithECBytes(
+      fr.terminateBits(d, h);
+      const g = fr.interleaveWithECBytes(
           h,
           l.getTotalCodewords(),
           d,
@@ -13167,16 +13189,16 @@
       f.setECLevel(e), f.setMode(s), f.setVersion(l);
       const A = l.getDimensionForVersion(),
         C = new hr(A, A),
-        E = this.chooseMaskPattern(g, e, l, C);
+        E = fr.chooseMaskPattern(g, e, l, C);
       return (
         f.setMaskPattern(E), dr.buildMatrix(g, e, l, E, C), f.setMatrix(C), f
       );
     }
     static recommendVersion(t, e, r, n) {
-      const i = this.calculateBitsNeeded(e, r, n, Ae.getVersionForNumber(1)),
-        s = this.chooseVersion(i, t),
-        o = this.calculateBitsNeeded(e, r, n, s);
-      return this.chooseVersion(o, t);
+      const i = fr.calculateBitsNeeded(e, r, n, Ae.getVersionForNumber(1)),
+        s = fr.chooseVersion(i, t),
+        o = fr.calculateBitsNeeded(e, r, n, s);
+      return fr.chooseVersion(o, t);
     }
     static calculateBitsNeeded(t, e, r, n) {
       return e.getSize() + t.getCharacterCountBits(n) + r.getSize();
@@ -13185,7 +13207,7 @@
       return t < fr.ALPHANUMERIC_TABLE.length ? fr.ALPHANUMERIC_TABLE[t] : -1;
     }
     static chooseMode(t, e = null) {
-      if (m.SJIS.getName() === e && this.isOnlyDoubleByteKanji(t))
+      if (m.SJIS.getName() === e && fr.isOnlyDoubleByteKanji(t))
         return _e.KANJI;
       let r = !1,
         n = !1;
@@ -13193,7 +13215,7 @@
         const i = t.charAt(e);
         if (fr.isDigit(i)) r = !0;
         else {
-          if (-1 === this.getAlphanumericCode(i.charCodeAt(0))) return _e.BYTE;
+          if (-1 === fr.getAlphanumericCode(i.charCodeAt(0))) return _e.BYTE;
           n = !0;
         }
       }
@@ -13219,7 +13241,7 @@
         s = -1;
       for (let o = 0; o < cr.NUM_MASK_PATTERNS; o++) {
         dr.buildMatrix(t, e, r, o, n);
-        let a = this.calculateMaskPenalty(n);
+        const a = fr.calculateMaskPenalty(n);
         a < i && ((i = a), (s = o));
       }
       return s;
@@ -13272,7 +13294,7 @@
       let i = 0,
         s = 0,
         o = 0;
-      const a = new Array();
+      const a = [];
       for (let l = 0; l < n; ++l) {
         const h = new Int32Array(1),
           c = new Int32Array(1);
@@ -13687,7 +13709,7 @@
   }
   class mr extends m {
     static forName(t) {
-      return this.getCharacterSetECIByName(t);
+      return mr.getCharacterSetECIByName(t);
     }
   }
   class _r {}
@@ -13807,8 +13829,8 @@
       Int32Array.from([327709, 327708, 656318, 0, 327710]),
       Int32Array.from([327711, 656380, 656382, 656381, 0]),
     ];
-  const Or = (function (t) {
-    for (let e of t) g.fill(e, -1);
+  const Or = ((t) => {
+    for (const e of t) g.fill(e, -1);
     return (
       (t[0][4] = 0),
       (t[1][4] = 0),
@@ -13842,10 +13864,10 @@
       let r = this.bitCount,
         n = this.token;
       if (t !== this.mode) {
-        let e = yr[this.mode][t];
+        const e = yr[this.mode][t];
         (n = Rr(n, 65535 & e, e >> 16)), (r += e >> 16);
       }
-      let i = 2 === t ? 4 : 5;
+      const i = 2 === t ? 4 : 5;
       return (n = Rr(n, e, i)), new Mr(n, t, 0, r + i);
     }
     shiftAndAppend(t, e) {
@@ -13862,7 +13884,7 @@
         r = this.mode,
         n = this.bitCount;
       if (4 === this.mode || 2 === this.mode) {
-        let t = yr[r][0];
+        const t = yr[r][0];
         (e = Rr(e, 65535 & t, t >> 16)), (n += t >> 16), (r = 0);
       }
       let i =
@@ -13880,9 +13902,11 @@
       if (0 === this.binaryShiftByteCount) return this;
       let e = this.token;
       return (
-        (e = (function (t, e, r) {
-          return new Tr(t, e, r);
-        })(e, t - this.binaryShiftByteCount, this.binaryShiftByteCount)),
+        (e = ((t, e, r) => new Tr(t, e, r))(
+          e,
+          t - this.binaryShiftByteCount,
+          this.binaryShiftByteCount,
+        )),
         new Mr(e, this.mode, 0, this.bitCount)
       );
     }
@@ -13900,14 +13924,14 @@
       );
     }
     toBitArray(t) {
-      let e = [];
+      const e = [];
       for (
         let r = this.endBinaryShift(t.length).token;
         null !== r;
         r = r.getPrevious()
       )
         e.unshift(r);
-      let r = new w();
+      const r = new w();
       for (const n of e) n.appendTo(r, t);
       return r;
     }
@@ -13930,7 +13954,7 @@
     }
   }
   Mr.INITIAL_STATE = new Mr(Dr, 0, 0, 0);
-  const Br = (function (t) {
+  const Br = ((t) => {
     const e = S.getCharCode(" "),
       r = S.getCharCode("."),
       n = S.getCharCode(",");
@@ -14052,7 +14076,7 @@
     }
     updateStateListForChar(t, e) {
       const r = [];
-      for (let n of t) this.updateStateForChar(n, e, r);
+      for (const n of t) this.updateStateForChar(n, e, r);
       return br.simplifyStates(r);
     }
     updateStateForChar(t, e, r) {
@@ -14060,7 +14084,7 @@
         i = Br[t.getMode()][n] > 0,
         s = null;
       for (let o = 0; o <= 4; o++) {
-        let a = Br[o][n];
+        const a = Br[o][n];
         if (a > 0) {
           if (
             (null == s && (s = t.endBinaryShift(e)),
@@ -14076,27 +14100,27 @@
         }
       }
       if (t.getBinaryShiftByteCount() > 0 || 0 === Br[t.getMode()][n]) {
-        let n = t.addBinaryShiftChar(e);
+        const n = t.addBinaryShiftChar(e);
         r.push(n);
       }
     }
     static updateStateListForPair(t, e, r) {
       const n = [];
-      for (let i of t) this.updateStateForPair(i, e, r, n);
-      return this.simplifyStates(n);
+      for (const i of t) br.updateStateForPair(i, e, r, n);
+      return br.simplifyStates(n);
     }
     static updateStateForPair(t, e, r, n) {
-      let i = t.endBinaryShift(e);
+      const i = t.endBinaryShift(e);
       if (
         (n.push(i.latchAndAppend(4, r)),
         4 !== t.getMode() && n.push(i.shiftAndAppend(4, r)),
         3 === r || 4 === r)
       ) {
-        let t = i.latchAndAppend(2, 16 - r).latchAndAppend(2, 1);
+        const t = i.latchAndAppend(2, 16 - r).latchAndAppend(2, 1);
         n.push(t);
       }
       if (t.getBinaryShiftByteCount() > 0) {
-        let r = t.addBinaryShiftChar(e).addBinaryShiftChar(e + 1);
+        const r = t.addBinaryShiftChar(e).addBinaryShiftChar(e + 1);
         n.push(r);
       }
     }
@@ -14138,7 +14162,7 @@
         )
           throw new o(S.format("Illegal value %s for layers", r));
         (s = Pr.totalBitsInLayer(i, n)), (a = Pr.WORD_SIZE[i]);
-        let t = s - (s % a);
+        const t = s - (s % a);
         if (((l = Pr.stuffBits(h, a)), l.getSize() + c > t))
           throw new o("Data to large for user specified layer");
         if (n && l.getSize() > 64 * a)
@@ -14157,7 +14181,7 @@
             continue;
           (null != l && a === Pr.WORD_SIZE[i]) ||
             ((a = Pr.WORD_SIZE[i]), (l = Pr.stuffBits(h, a)));
-          let e = s - (s % a);
+          const e = s - (s % a);
           if (!(n && l.getSize() > 64 * a) && l.getSize() + c <= e) break;
         }
       }
@@ -14172,18 +14196,18 @@
         for (let t = 0; t < E.length; t++) E[t] = t;
       } else {
         d = C + 1 + 2 * f.truncDivision(f.truncDivision(C, 2) - 1, 15);
-        let t = f.truncDivision(C, 2),
+        const t = f.truncDivision(C, 2),
           e = f.truncDivision(d, 2);
         for (let r = 0; r < t; r++) {
-          let n = r + f.truncDivision(r, 15);
+          const n = r + f.truncDivision(r, 15);
           (E[t - r - 1] = e - n - 1), (E[t + r] = e + n + 1);
         }
       }
-      let m = new T(d);
+      const m = new T(d);
       for (let t = 0, e = 0; t < i; t++) {
-        let r = 4 * (i - t) + (n ? 9 : 12);
+        const r = 4 * (i - t) + (n ? 9 : 12);
         for (let n = 0; n < r; n++) {
-          let i = 2 * n;
+          const i = 2 * n;
           for (let s = 0; s < 2; s++)
             g.get(e + i + s) && m.set(E[2 * t + s], E[2 * t + n]),
               g.get(e + 2 * r + i + s) &&
@@ -14206,7 +14230,7 @@
               m.set(t, f.truncDivision(d, 2) - e),
               m.set(t, f.truncDivision(d, 2) + e);
       }
-      let _ = new Ir();
+      const _ = new Ir();
       return (
         _.setCompact(n),
         _.setSize(d),
@@ -14241,10 +14265,10 @@
       );
     }
     static drawModeMessage(t, e, r, n) {
-      let i = f.truncDivision(r, 2);
+      const i = f.truncDivision(r, 2);
       if (e)
         for (let e = 0; e < 7; e++) {
-          let r = i - 3 + e;
+          const r = i - 3 + e;
           n.get(e) && t.set(r, i - 5),
             n.get(e + 7) && t.set(i + 5, r),
             n.get(20 - e) && t.set(r, i + 5),
@@ -14252,7 +14276,7 @@
         }
       else
         for (let e = 0; e < 10; e++) {
-          let r = i - 5 + e + f.truncDivision(e, 5);
+          const r = i - 5 + e + f.truncDivision(e, 5);
           n.get(e) && t.set(r, i - 7),
             n.get(e + 10) && t.set(i + 7, r),
             n.get(29 - e) && t.set(r, i + 7),
@@ -14260,12 +14284,12 @@
         }
     }
     static generateCheckWords(t, e, r) {
-      let n = t.getSize() / r,
+      const n = t.getSize() / r,
         i = new ar(Pr.getGF(r)),
         s = f.truncDivision(e, r),
         o = Pr.bitsToWords(t, r, s);
       i.encode(o, s - n);
-      let a = e % r,
+      const a = e % r,
         l = new w();
       l.appendBits(0, a);
       for (const t of Array.from(o)) l.appendBits(t, r);
@@ -14300,7 +14324,7 @@
       }
     }
     static stuffBits(t, e) {
-      let r = new w(),
+      const r = new w(),
         n = t.getSize(),
         i = (1 << e) - 2;
       for (let s = 0; s < n; s += e) {
@@ -14348,13 +14372,13 @@
     }
     static encodeLayers(t, e, r, n, i, s, a) {
       if (e !== v.AZTEC) throw new o("Can only encode AZTEC, but got " + e);
-      let l = Pr.encode(S.getBytes(t, i), s, a);
+      const l = Pr.encode(S.getBytes(t, i), s, a);
       return Lr.renderResult(l, r, n);
     }
     static renderResult(t, e, r) {
-      let n = t.getMatrix();
+      const n = t.getMatrix();
       if (null == n) throw new j();
-      let i = n.getWidth(),
+      const i = n.getWidth(),
         s = n.getHeight(),
         o = Math.max(e, i),
         a = Math.max(r, s),

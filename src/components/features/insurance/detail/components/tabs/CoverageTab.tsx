@@ -1,33 +1,33 @@
-import React from "react";
-import { Badge } from "@/components/ui/badge";
 import {
-  Users,
-  UserCheck,
-  Briefcase,
-  MapPin,
-  Car,
-  ShieldCheck,
-  HeartPulse,
   Activity,
-  Heart,
-  UserX,
-  Stethoscope,
-  Building,
-  AlertTriangle,
-  Wallet,
-  DollarSign,
-  Home,
-  Shield,
-  Lock,
   AlertCircle,
-  Cloud,
-  Info,
+  AlertTriangle,
+  Briefcase,
+  Building,
   Calculator,
+  Car,
+  Cloud,
+  DollarSign,
+  Heart,
+  HeartPulse,
+  Home,
+  Info,
+  Lock,
+  MapPin,
+  Shield,
+  ShieldCheck,
+  Stethoscope,
+  UserCheck,
+  Users,
+  UserX,
+  Wallet,
 } from "lucide-react";
-import { CoverageItem } from "../CoverageItem";
-import { MAX_COVERAGE_LIMIT } from "../../constants";
+import type React from "react";
+import { Badge } from "@/components/ui/badge";
 import { formatCurrency } from "@/lib/utils";
+import { MAX_COVERAGE_LIMIT } from "../../constants";
 import { getVehicleTypeText } from "../../utils";
+import { CoverageItem } from "../CoverageItem";
 
 interface CoverageTabProps {
   product: any;

@@ -4,7 +4,7 @@
  * Provides comprehensive rate limiting for OTP endpoints with IP and phone number tracking
  */
 
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 
 // Rate limiting configuration
 interface RateLimitConfig {
@@ -188,7 +188,7 @@ export function createRateLimiter(config: RateLimitConfig) {
       // Implement progressive delay for repeated violations
       const violationCount = Math.floor(record.attempts / config.maxAttempts);
       const blockDuration = Math.min(
-        config.windowMs * Math.pow(2, violationCount),
+        config.windowMs * 2 ** violationCount,
         24 * 60 * 60 * 1000,
       ); // Max 24 hours
 

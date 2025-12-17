@@ -2,10 +2,13 @@
  * React Hook for eKYC SDK integration
  */
 
-import { useEffect, useRef, useCallback } from "react";
-import { EkycSdkManager, EkycSdkManagerOptions } from "@/lib/ekyc/sdk-manager";
-import { EkycSdkConfig } from "@/lib/ekyc/sdk-config";
-import { EkycEventHandlers } from "@/lib/ekyc/sdk-events";
+import { useCallback, useEffect, useRef } from "react";
+import type { EkycSdkConfig } from "@/lib/ekyc/sdk-config";
+import type { EkycEventHandlers } from "@/lib/ekyc/sdk-events";
+import {
+  EkycSdkManager,
+  type EkycSdkManagerOptions,
+} from "@/lib/ekyc/sdk-manager";
 import { useEkycStore } from "@/store/use-ekyc-store";
 
 export interface UseEkycSdkOptions
@@ -122,7 +125,7 @@ export const useEkycSdk = (options: UseEkycSdkOptions): UseEkycSdkReturn => {
   return {
     sdkManager: sdkManagerRef.current,
     isLoading: status === "running",
-    // @ts-ignore
+    // @ts-expect-error
     error: status === "error" ? useEkycStore.getState().error : null,
     restart,
     updateConfig,

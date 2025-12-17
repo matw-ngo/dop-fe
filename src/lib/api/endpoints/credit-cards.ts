@@ -6,21 +6,21 @@
  * for the Vietnamese digital lending platform.
  */
 
+import { vietnameseCreditCards } from "@/data/credit-cards";
 import apiClient from "@/lib/api/client";
 import type {
-  CreditCard,
   CardCategory,
+  CardCategoryInfo,
   CardNetwork,
+  ComparisonResult,
+  CreditCard,
+  CreditCardDetailResponse,
   CreditCardFilters,
+  CreditCardsResponse,
+  PaginationOptions,
   SearchOptions,
   SortOption,
-  PaginationOptions,
-  ComparisonResult,
-  CardCategoryInfo,
-  CreditCardsResponse,
-  CreditCardDetailResponse,
 } from "@/types/credit-card";
-import { vietnameseCreditCards } from "@/data/credit-cards";
 
 // Using mock data, no API client needed
 

@@ -1,11 +1,11 @@
 "use client";
 
+import { useFormWizardStore } from "../store/use-form-wizard-store";
 import type { ProgressIndicatorType } from "../types";
-import { ProgressBar } from "./ProgressBar";
 import { DotsIndicator } from "./DotsIndicator";
 import { NumberedStepper } from "./NumberedStepper";
+import { ProgressBar } from "./ProgressBar";
 import { SidebarNav } from "./SidebarNav";
-import { useFormWizardStore } from "../store/use-form-wizard-store";
 
 interface WizardProgressProps {
   type?: ProgressIndicatorType;

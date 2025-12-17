@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode, useEffect, useRef } from "react";
+import { type ReactNode, useEffect, useRef } from "react";
 import { useThemeUtils } from "@/components/renderer/theme";
 
 interface CreditCardsThemeProviderProps {

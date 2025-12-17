@@ -4,12 +4,12 @@
  */
 
 import {
+  CoveragePeriod,
+  FeeType,
   InsuranceCategory,
   InsuranceType,
-  VehicleType,
-  FeeType,
-  CoveragePeriod,
   SortOption,
+  VehicleType,
 } from "@/types/insurance";
 
 // ============================================================================

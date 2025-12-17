@@ -1,9 +1,9 @@
 "use client";
 
+import { Check, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, Check } from "lucide-react";
-import type { WizardNavigationConfig } from "../types";
 import { useFormWizardStore } from "../store/use-form-wizard-store";
+import type { WizardNavigationConfig } from "../types";
 
 interface WizardNavigationProps {
   config?: WizardNavigationConfig;

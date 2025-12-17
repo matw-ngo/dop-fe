@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import type React from "react";
 import {
   Card,
   CardContent,
@@ -8,8 +8,8 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { cn } from "@/lib/utils";
 import { DEFAULT_PAGE_SIZE } from "@/constants/insurance";
+import { cn } from "@/lib/utils";
 
 interface InsuranceSkeletonProps {
   viewMode?: "grid" | "list" | "compact";

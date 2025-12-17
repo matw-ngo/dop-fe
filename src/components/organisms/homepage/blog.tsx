@@ -1,8 +1,8 @@
 "use client";
 
-import React from "react";
 import Link from "next/link";
-import { BlogConfig } from "@/configs/homepage-config";
+import React from "react";
+import type { BlogConfig } from "@/configs/homepage-config";
 
 interface BlogProps {
   config?: BlogConfig;

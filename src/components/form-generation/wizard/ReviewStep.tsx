@@ -1,5 +1,7 @@
 "use client";
 
+import { Check } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import {
   Card,
   CardContent,
@@ -7,9 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Check } from "lucide-react";
 import { useFormWizardStore } from "../store/use-form-wizard-store";
 
 interface ReviewStepProps {

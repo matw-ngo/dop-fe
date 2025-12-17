@@ -5,15 +5,15 @@ import {
   ConditionOperator,
   type DynamicFormConfig,
   FieldType,
-  StepWizard,
-  ValidationRuleType,
   FormThemeProvider,
   legacyLoanTheme,
+  StepWizard,
+  ValidationRuleType,
 } from "@/components/form-generation";
-import { FormTrackingProvider } from "@/components/form-generation/tracking/TrackingProvider";
-import { LibTrackingAdapter } from "@/components/form-generation/tracking/adapters/LibTrackingAdapter";
 import { allowCustomComponent } from "@/components/form-generation/constants";
 import { registerComponent } from "@/components/form-generation/registry/ComponentRegistry";
+import { LibTrackingAdapter } from "@/components/form-generation/tracking/adapters/LibTrackingAdapter";
+import { FormTrackingProvider } from "@/components/form-generation/tracking/TrackingProvider";
 import { LoanStepHeader } from "./components/LoanStepHeader";
 import {
   CREDIT_HISTORY,

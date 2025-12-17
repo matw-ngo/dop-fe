@@ -1,8 +1,8 @@
 // Phone validation utilities
 export {
-  phoneValidation,
-  formatPhoneNumber,
-  sanitizePhoneNumber,
   ALLOWED_TELCOS,
+  formatPhoneNumber,
   type PhoneValidationResult,
+  phoneValidation,
+  sanitizePhoneNumber,
 } from "./phone-validation";

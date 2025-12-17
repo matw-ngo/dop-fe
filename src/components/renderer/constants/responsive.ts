@@ -1,11 +1,11 @@
 import type {
-  ResponsiveValue,
-  ResponsiveStyles,
-  ResponsiveFieldConfig,
-  ResolvedStyles,
-  MediaQueryConfig,
   Breakpoint,
   BreakpointConfig,
+  MediaQueryConfig,
+  ResolvedStyles,
+  ResponsiveFieldConfig,
+  ResponsiveStyles,
+  ResponsiveValue,
 } from "../types/responsive";
 
 // Default breakpoint values in pixels
@@ -51,7 +51,11 @@ export function getInitialValue<T>(value: ResponsiveValue<T>): T {
   if (isResponsiveValue(value)) {
     return (
       value.initial ??
-      value.sm ?? value.md ?? value.lg ?? value.xl ?? value["2xl"] ??
+      value.sm ??
+      value.md ??
+      value.lg ??
+      value.xl ??
+      value["2xl"] ??
       null
     );
   }

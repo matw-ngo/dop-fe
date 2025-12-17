@@ -1,8 +1,8 @@
-import React from "react";
 import { AlertTriangle, RefreshCw } from "lucide-react";
+import React from "react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 interface ErrorBoundaryState {
   hasError: boolean;

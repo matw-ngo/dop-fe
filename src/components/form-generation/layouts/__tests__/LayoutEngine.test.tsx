@@ -1,12 +1,12 @@
 import { render, screen } from "@testing-library/react";
-import { describe, it, expect } from "vitest";
-import {
-  GridLayout,
-  FlexLayout,
-  StackLayout,
-  DynamicLayout,
-} from "../LayoutEngine";
+import { describe, expect, it } from "vitest";
 import { LayoutType } from "../../types";
+import {
+  DynamicLayout,
+  FlexLayout,
+  GridLayout,
+  StackLayout,
+} from "../LayoutEngine";
 
 describe("LayoutEngine", () => {
   describe("GridLayout", () => {

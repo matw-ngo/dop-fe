@@ -11,10 +11,10 @@ import {
 } from "../types";
 import {
   isEmpty,
-  isValidEmail,
-  isValidUrl,
-  isValidPhone,
   isValidDate,
+  isValidEmail,
+  isValidPhone,
+  isValidUrl,
 } from "../utils/helpers";
 
 // ============================================================================
@@ -306,7 +306,7 @@ export class ValidationEngine {
 
     // Run validators in sequence
     for (const rule of rules) {
-      const result = await this.runValidator(value, rule);
+      const result = await ValidationEngine.runValidator(value, rule);
       if (!result.valid) {
         return result;
       }
@@ -377,7 +377,7 @@ export class ValidationEngine {
     await Promise.all(
       Object.entries(fieldRules).map(async ([fieldName, rules]) => {
         const value = formData[fieldName];
-        const result = await this.validateField(value, rules);
+        const result = await ValidationEngine.validateField(value, rules);
 
         if (!result.valid && result.error) {
           errors[fieldName] = result.error;

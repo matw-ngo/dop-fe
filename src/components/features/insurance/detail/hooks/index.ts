@@ -4,5 +4,8 @@
  * Exports all insurance-related hooks for easy importing
  */
 
-export { useInsuranceFilters, getDefaultFilters } from "./useInsuranceFilters";
-export type { UseInsuranceFiltersReturn, FilterGroup } from "./useInsuranceFilters";
+export type {
+  FilterGroup,
+  UseInsuranceFiltersReturn,
+} from "./useInsuranceFilters";
+export { getDefaultFilters, useInsuranceFilters } from "./useInsuranceFilters";

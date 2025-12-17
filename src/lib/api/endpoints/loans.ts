@@ -1,9 +1,10 @@
 // @ts-nocheck
-import apiClient from "../client";
-import type { paths } from "../v1.d.ts";
-import { useTokenStore, securityUtils } from "@/lib/auth/secure-tokens";
+
+import { securityUtils, useTokenStore } from "@/lib/auth/secure-tokens";
 import { VietnameseFinancialValidator } from "@/lib/loan-products/validation";
 import { VietnameseComplianceEngine } from "@/lib/loan-products/vietnamese-compliance";
+import apiClient from "../client";
+import type { paths } from "../v1.d.ts";
 
 /**
  * Loan Application API endpoints

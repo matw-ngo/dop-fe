@@ -4,16 +4,16 @@
  */
 
 import {
-  VietnameseTelco,
+  ALL_VIETNAMESE_PREFIXES,
   VIETNAMESE_TELCOS,
-  ALL_VIETNAMESE_PREFIXES
-} from './vietnamese-telcos';
+  type VietnameseTelco,
+} from "./vietnamese-telcos";
 
 export interface TelcoDetectionResult {
   telco: VietnameseTelco | null;
   confidence: number; // 0-1
   phoneNumber: string;
-  detectionMethod: 'prefix' | 'pattern' | 'database' | 'ml_hints' | 'unknown';
+  detectionMethod: "prefix" | "pattern" | "database" | "ml_hints" | "unknown";
   alternativeTelcos?: VietnameseTelco[];
   metadata?: {
     prefixMatched?: string;
@@ -37,38 +37,38 @@ const TELCO_PATTERNS: TelcoPattern[] = [
   // Viettel patterns
   {
     regex: /^(03[2-9]|09[6-8]|086|081)/,
-    telco: 'VIETTEL',
+    telco: "VIETTEL",
     confidence: 0.95,
-    description: 'Viettel standard prefixes'
+    description: "Viettel standard prefixes",
   },
   // Mobifone patterns
   {
     regex: /^(090|093|070|079|089)/,
-    telco: 'MOBIFONE',
+    telco: "MOBIFONE",
     confidence: 0.95,
-    description: 'Mobifone standard prefixes'
+    description: "Mobifone standard prefixes",
   },
   // Vinaphone patterns
   {
     regex: /^(091|094|08[3-5]|088)/,
-    telco: 'VINAPHONE',
+    telco: "VINAPHONE",
     confidence: 0.95,
-    description: 'Vinaphone standard prefixes'
+    description: "Vinaphone standard prefixes",
   },
   // Vietnamobile patterns
   {
     regex: /^(092|05[6-8])/,
-    telco: 'VIETNAMOBILE',
-    confidence: 0.90,
-    description: 'Vietnamobile standard prefixes'
+    telco: "VIETNAMOBILE",
+    confidence: 0.9,
+    description: "Vietnamobile standard prefixes",
   },
   // Gmobile patterns
   {
     regex: /^(099|059)/,
-    telco: 'GTEL',
-    confidence: 0.90,
-    description: 'Gmobile standard prefixes'
-  }
+    telco: "GTEL",
+    confidence: 0.9,
+    description: "Gmobile standard prefixes",
+  },
 ];
 
 /**
@@ -77,10 +77,10 @@ const TELCO_PATTERNS: TelcoPattern[] = [
  */
 const PORTING_DATABASE: Record<string, string> = {
   // Example: Some Viettel numbers ported to Mobifone
-  '0971234567': 'MOBIFONE',
-  '0977654321': 'MOBIFONE',
+  "0971234567": "MOBIFONE",
+  "0977654321": "MOBIFONE",
   // Example: Some Mobifone numbers ported to Viettel
-  '0901234567': 'VIETTEL',
+  "0901234567": "VIETTEL",
   // Add more porting data as needed
 };
 
@@ -98,20 +98,20 @@ const detectionStats: DetectionStats = {
   totalDetections: 0,
   correctDetections: 0,
   userCorrections: new Map(),
-  successRates: new Map()
+  successRates: new Map(),
 };
 
 /**
  * Detect telco using prefix matching
  */
 export const detectByPrefix = (phoneNumber: string): TelcoDetectionResult => {
-  const cleanPhone = phoneNumber.replace(/\D/g, '');
+  const cleanPhone = phoneNumber.replace(/\D/g, "");
 
   // Direct prefix matching
   for (const prefix of ALL_VIETNAMESE_PREFIXES) {
     if (cleanPhone.startsWith(prefix)) {
-      const telco = Object.values(VIETNAMESE_TELCOS).find(t =>
-        t.prefixes.includes(prefix)
+      const telco = Object.values(VIETNAMESE_TELCOS).find((t) =>
+        t.prefixes.includes(prefix),
       );
 
       if (telco) {
@@ -119,19 +119,19 @@ export const detectByPrefix = (phoneNumber: string): TelcoDetectionResult => {
           telco,
           confidence: 0.98,
           phoneNumber: cleanPhone,
-          detectionMethod: 'prefix',
+          detectionMethod: "prefix",
           metadata: {
             prefixMatched: prefix,
-            confidenceScore: 0.98
-          }
+            confidenceScore: 0.98,
+          },
         };
       }
     }
   }
 
   // Try with international format
-  if (cleanPhone.startsWith('84')) {
-    const localPhone = '0' + cleanPhone.slice(2);
+  if (cleanPhone.startsWith("84")) {
+    const localPhone = "0" + cleanPhone.slice(2);
     return detectByPrefix(localPhone);
   }
 
@@ -139,7 +139,7 @@ export const detectByPrefix = (phoneNumber: string): TelcoDetectionResult => {
     telco: null,
     confidence: 0,
     phoneNumber: cleanPhone,
-    detectionMethod: 'unknown'
+    detectionMethod: "unknown",
   };
 };
 
@@ -147,7 +147,7 @@ export const detectByPrefix = (phoneNumber: string): TelcoDetectionResult => {
  * Detect telco using advanced pattern matching
  */
 export const detectByPattern = (phoneNumber: string): TelcoDetectionResult => {
-  const cleanPhone = phoneNumber.replace(/\D/g, '');
+  const cleanPhone = phoneNumber.replace(/\D/g, "");
 
   for (const pattern of TELCO_PATTERNS) {
     if (pattern.regex.test(cleanPhone)) {
@@ -157,10 +157,10 @@ export const detectByPattern = (phoneNumber: string): TelcoDetectionResult => {
           telco,
           confidence: pattern.confidence,
           phoneNumber: cleanPhone,
-          detectionMethod: 'pattern',
+          detectionMethod: "pattern",
           metadata: {
-            confidenceScore: pattern.confidence
-          }
+            confidenceScore: pattern.confidence,
+          },
         };
       }
     }
@@ -173,8 +173,10 @@ export const detectByPattern = (phoneNumber: string): TelcoDetectionResult => {
 /**
  * Check porting database for number porting
  */
-export const checkPortingDatabase = (phoneNumber: string): TelcoDetectionResult | null => {
-  const cleanPhone = phoneNumber.replace(/\D/g, '');
+export const checkPortingDatabase = (
+  phoneNumber: string,
+): TelcoDetectionResult | null => {
+  const cleanPhone = phoneNumber.replace(/\D/g, "");
 
   // Check if number exists in porting database
   const portedTo = PORTING_DATABASE[cleanPhone];
@@ -185,11 +187,11 @@ export const checkPortingDatabase = (phoneNumber: string): TelcoDetectionResult 
         telco,
         confidence: 0.99, // High confidence for ported numbers
         phoneNumber: cleanPhone,
-        detectionMethod: 'database',
+        detectionMethod: "database",
         metadata: {
           confidenceScore: 0.99,
-          successRate: 1.0 // Ported numbers are 100% accurate in database
-        }
+          successRate: 1.0, // Ported numbers are 100% accurate in database
+        },
       };
     }
   }
@@ -200,31 +202,38 @@ export const checkPortingDatabase = (phoneNumber: string): TelcoDetectionResult 
 /**
  * Apply ML hints based on historical data
  */
-export const applyMLHints = (phoneNumber: string, baseResult: TelcoDetectionResult): TelcoDetectionResult => {
-  const cleanPhone = phoneNumber.replace(/\D/g, '');
+export const applyMLHints = (
+  phoneNumber: string,
+  baseResult: TelcoDetectionResult,
+): TelcoDetectionResult => {
+  const cleanPhone = phoneNumber.replace(/\D/g, "");
 
   // Get success rates for similar number patterns
   const numberPrefix = cleanPhone.substring(0, 6);
-  const successRate = detectionStats.successRates.get(numberPrefix) || baseResult.confidence;
+  const successRate =
+    detectionStats.successRates.get(numberPrefix) || baseResult.confidence;
 
   // Adjust confidence based on historical success
-  const adjustedConfidence = Math.min(0.99, baseResult.confidence * (0.8 + successRate * 0.2));
+  const adjustedConfidence = Math.min(
+    0.99,
+    baseResult.confidence * (0.8 + successRate * 0.2),
+  );
 
   // Get alternative telcos with lower confidence
   const alternatives = Object.values(VIETNAMESE_TELCOS)
-    .filter(t => t.code !== baseResult.telco?.code)
+    .filter((t) => t.code !== baseResult.telco?.code)
     .slice(0, 2);
 
   return {
     ...baseResult,
     confidence: adjustedConfidence,
-    detectionMethod: 'ml_hints',
+    detectionMethod: "ml_hints",
     alternativeTelcos: alternatives,
     metadata: {
       ...baseResult.metadata,
       confidenceScore: adjustedConfidence,
-      successRate
-    }
+      successRate,
+    },
   };
 };
 
@@ -234,13 +243,14 @@ export const applyMLHints = (phoneNumber: string, baseResult: TelcoDetectionResu
 export const recordUserCorrection = (
   phoneNumber: string,
   correctedTelco: string,
-  originalDetection: string
+  originalDetection: string,
 ): void => {
-  const cleanPhone = phoneNumber.replace(/\D/g, '');
+  const cleanPhone = phoneNumber.replace(/\D/g, "");
   const correctionKey = `${cleanPhone}:${originalDetection}`;
 
   // Increment correction count
-  const currentCorrections = detectionStats.userCorrections.get(correctionKey) || 0;
+  const currentCorrections =
+    detectionStats.userCorrections.get(correctionKey) || 0;
   detectionStats.userCorrections.set(correctionKey, currentCorrections + 1);
 
   // Update success rates
@@ -256,8 +266,11 @@ export const recordUserCorrection = (
 /**
  * Record successful detection
  */
-export const recordSuccessfulDetection = (phoneNumber: string, telcoCode: string): void => {
-  const cleanPhone = phoneNumber.replace(/\D/g, '');
+export const recordSuccessfulDetection = (
+  phoneNumber: string,
+  telcoCode: string,
+): void => {
+  const cleanPhone = phoneNumber.replace(/\D/g, "");
   const numberPrefix = cleanPhone.substring(0, 6);
 
   const currentRate = detectionStats.successRates.get(numberPrefix) || 0.9;
@@ -273,12 +286,13 @@ export const recordSuccessfulDetection = (phoneNumber: string, telcoCode: string
  */
 export const getDetectionStats = () => {
   return {
-    accuracy: detectionStats.totalDetections > 0
-      ? detectionStats.correctDetections / detectionStats.totalDetections
-      : 0,
+    accuracy:
+      detectionStats.totalDetections > 0
+        ? detectionStats.correctDetections / detectionStats.totalDetections
+        : 0,
     totalDetections: detectionStats.totalDetections,
     correctionsByPattern: Object.fromEntries(detectionStats.userCorrections),
-    successRatesByPrefix: Object.fromEntries(detectionStats.successRates)
+    successRatesByPrefix: Object.fromEntries(detectionStats.successRates),
   };
 };
 
@@ -291,7 +305,7 @@ export const detectTelco = (phoneNumber: string): TelcoDetectionResult => {
       telco: null,
       confidence: 0,
       phoneNumber: phoneNumber,
-      detectionMethod: 'unknown'
+      detectionMethod: "unknown",
     };
   }
 
@@ -317,30 +331,35 @@ export const detectTelco = (phoneNumber: string): TelcoDetectionResult => {
   return {
     telco: null,
     confidence: 0,
-    phoneNumber: phoneNumber.replace(/\D/g, ''),
-    detectionMethod: 'unknown'
+    phoneNumber: phoneNumber.replace(/\D/g, ""),
+    detectionMethod: "unknown",
   };
 };
 
 /**
  * Batch detect telcos for multiple phone numbers
  */
-export const batchDetectTelcos = (phoneNumbers: string[]): TelcoDetectionResult[] => {
+export const batchDetectTelcos = (
+  phoneNumbers: string[],
+): TelcoDetectionResult[] => {
   return phoneNumbers.map(detectTelco);
 };
 
 /**
  * Get telco distribution statistics
  */
-export const getTelcoDistribution = (phoneNumbers: string[]): Record<string, number> => {
+export const getTelcoDistribution = (
+  phoneNumbers: string[],
+): Record<string, number> => {
   const distribution: Record<string, number> = {};
 
-  phoneNumbers.forEach(phone => {
+  phoneNumbers.forEach((phone) => {
     const result = detectTelco(phone);
     if (result.telco) {
-      distribution[result.telco.code] = (distribution[result.telco.code] || 0) + 1;
+      distribution[result.telco.code] =
+        (distribution[result.telco.code] || 0) + 1;
     } else {
-      distribution['UNKNOWN'] = (distribution['UNKNOWN'] || 0) + 1;
+      distribution["UNKNOWN"] = (distribution["UNKNOWN"] || 0) + 1;
     }
   });
 
@@ -350,7 +369,10 @@ export const getTelcoDistribution = (phoneNumbers: string[]): Record<string, num
 /**
  * Validate telco detection confidence
  */
-export const isDetectionReliable = (result: TelcoDetectionResult, threshold: number = 0.8): boolean => {
+export const isDetectionReliable = (
+  result: TelcoDetectionResult,
+  threshold: number = 0.8,
+): boolean => {
   return result.confidence >= threshold && result.telco !== null;
 };
 
@@ -360,14 +382,14 @@ export const isDetectionReliable = (result: TelcoDetectionResult, threshold: num
 export const getRecommendation = (result: TelcoDetectionResult): string => {
   if (result.confidence >= 0.95) {
     return `Rất chắc chắn: ${result.telco?.name}`;
-  } else if (result.confidence >= 0.80) {
+  } else if (result.confidence >= 0.8) {
     return `Chắc chắn: ${result.telco?.name}`;
-  } else if (result.confidence >= 0.60) {
+  } else if (result.confidence >= 0.6) {
     return `Có thể là: ${result.telco?.name} (cần xác nhận)`;
   } else if (result.telco) {
     return `Ít khả năng: ${result.telco?.name} (khuyên xác nhận thủ công)`;
   } else {
-    return 'Không xác định được nhà mạng';
+    return "Không xác định được nhà mạng";
   }
 };
 
@@ -383,5 +405,5 @@ export default {
   batchDetectTelcos,
   getTelcoDistribution,
   isDetectionReliable,
-  getRecommendation
+  getRecommendation,
 };

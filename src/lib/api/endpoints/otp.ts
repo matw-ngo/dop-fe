@@ -4,21 +4,20 @@
  * Vietnamese telco support with server-side security features
  */
 
-import apiClient from "../client";
-import type { paths } from "../v1.d.ts";
-
-import {
-  getTelcoByPhoneNumber,
-  sanitizePhoneNumber,
-  formatPhoneNumber,
-  getOTPSettings,
-  VIETNAMESE_TELCOS,
-} from "@/lib/telcos/vietnamese-telcos";
 import { getPhoneMetadata } from "@/lib/telcos/phone-validation";
 import {
-  sanitizeVietnamesePhone,
+  formatPhoneNumber,
+  getOTPSettings,
+  getTelcoByPhoneNumber,
+  sanitizePhoneNumber,
+  VIETNAMESE_TELCOS,
+} from "@/lib/telcos/vietnamese-telcos";
+import {
   sanitizeApplicationData,
+  sanitizeVietnamesePhone,
 } from "@/lib/utils/sanitization";
+import apiClient from "../client";
+import type { paths } from "../v1.d.ts";
 
 // Enhanced OTP request types with security
 export interface OTPRequestOptions {

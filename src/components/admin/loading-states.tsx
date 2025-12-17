@@ -1,7 +1,7 @@
 "use client";
 
-import { Skeleton } from "@/components/ui/skeleton";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export function FlowListSkeleton() {
   return (
@@ -191,7 +191,10 @@ export function FieldListSkeleton() {
   return (
     <div className="space-y-4">
       {Array.from({ length: 5 }).map((_, index) => (
-        <div key={index} className="flex items-center space-x-4 p-4 border rounded-lg">
+        <div
+          key={index}
+          className="flex items-center space-x-4 p-4 border rounded-lg"
+        >
           <Skeleton className="h-4 w-32" />
           <Skeleton className="h-4 w-20" />
           <Skeleton className="h-6 w-16" />

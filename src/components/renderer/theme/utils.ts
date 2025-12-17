@@ -29,7 +29,7 @@ export function generateCSSVariables(
 const appliedProperties: Set<string> = new Set();
 
 // DOM update batching system
-let pendingDOMUpdates: Map<string, string> = new Map();
+const pendingDOMUpdates: Map<string, string> = new Map();
 let rafId: number | null = null;
 
 /**
@@ -54,7 +54,10 @@ function batchDOMUpdates() {
     });
   } catch (error) {
     // Fallback to immediate DOM updates if RAF is not available
-    console.warn("requestAnimationFrame not available, applying updates immediately", error);
+    console.warn(
+      "requestAnimationFrame not available, applying updates immediately",
+      error,
+    );
     const root = document.documentElement;
 
     pendingDOMUpdates.forEach((value, property) => {
@@ -83,95 +86,95 @@ export function applyTheme(
   customizations?: Partial<ThemeColors>,
 ): void {
   // Apply performance monitoring
-  return measureThemeOperation('applyTheme', () => {
+  return measureThemeOperation("applyTheme", () => {
     if (typeof document === "undefined") return;
 
-  // Validate inputs
-  if (!theme || !theme.colors || !theme.colors[mode]) {
-    console.warn("Invalid theme configuration provided to applyTheme");
-    return;
-  }
-
-  const root = document.documentElement;
-
-  // Clear previously applied properties immediately to avoid conflicts
-  appliedProperties.forEach((prop) => {
-    root.style.removeProperty(prop);
-  });
-  appliedProperties.clear();
-
-  // Cancel any pending updates
-  if (rafId !== null) {
-    try {
-      cancelAnimationFrame(rafId);
-    } catch (error) {
-      console.warn("Failed to cancel requestAnimationFrame", error);
+    // Validate inputs
+    if (!theme || !theme.colors || !theme.colors[mode]) {
+      console.warn("Invalid theme configuration provided to applyTheme");
+      return;
     }
-    rafId = null;
-  }
-  pendingDOMUpdates.clear();
 
-  // Get base colors for the mode
-  const baseColors = theme.colors[mode];
+    const root = document.documentElement;
 
-  // Merge with customizations if provided
-  const finalColors = customizations
-    ? { ...baseColors, ...customizations }
-    : baseColors;
-
-  try {
-    // Generate and schedule CSS variable updates
-    const variables = generateCSSVariables(finalColors);
-
-    Object.entries(variables).forEach(([property, value]) => {
-      scheduleDOMUpdate(property, value);
+    // Clear previously applied properties immediately to avoid conflicts
+    appliedProperties.forEach((prop) => {
+      root.style.removeProperty(prop);
     });
+    appliedProperties.clear();
 
-    // Apply radius if specified
-    if (theme.radius) {
-      scheduleDOMUpdate("--radius", theme.radius);
-    }
-
-    // Apply custom fonts if specified
-    if (theme.fonts?.sans) {
-      scheduleDOMUpdate("--font-sans", theme.fonts.sans);
-    }
-    if (theme.fonts?.mono) {
-      scheduleDOMUpdate("--font-mono", theme.fonts.mono);
-    }
-  } catch (error) {
-    console.warn("Error applying theme properties", error);
-  }
-
-  // Apply custom CSS if provided (handled separately for security)
-  if (theme.customCSS) {
-    // Defer custom CSS application to avoid blocking the main thread
-    setTimeout(() => {
+    // Cancel any pending updates
+    if (rafId !== null) {
       try {
-        // Sanitize the custom CSS to prevent injection attacks
-        const sanitizedCSS = sanitizeCSS(theme.customCSS);
-
-        // Remove existing custom theme styles
-        const existingStyle = document.getElementById("custom-theme-styles");
-        if (existingStyle) {
-          existingStyle.remove();
-        }
-
-        // Only add sanitized CSS if it's not empty
-        if (sanitizedCSS) {
-          // Add new custom styles
-          const style = document.createElement("style");
-          style.id = "custom-theme-styles";
-          style.textContent = sanitizedCSS;
-          document.head.appendChild(style);
-        } else {
-          console.warn("Custom CSS was removed due to security concerns");
-        }
+        cancelAnimationFrame(rafId);
       } catch (error) {
-        console.warn("Error applying custom CSS", error);
+        console.warn("Failed to cancel requestAnimationFrame", error);
       }
-    }, 0);
-  }
+      rafId = null;
+    }
+    pendingDOMUpdates.clear();
+
+    // Get base colors for the mode
+    const baseColors = theme.colors[mode];
+
+    // Merge with customizations if provided
+    const finalColors = customizations
+      ? { ...baseColors, ...customizations }
+      : baseColors;
+
+    try {
+      // Generate and schedule CSS variable updates
+      const variables = generateCSSVariables(finalColors);
+
+      Object.entries(variables).forEach(([property, value]) => {
+        scheduleDOMUpdate(property, value);
+      });
+
+      // Apply radius if specified
+      if (theme.radius) {
+        scheduleDOMUpdate("--radius", theme.radius);
+      }
+
+      // Apply custom fonts if specified
+      if (theme.fonts?.sans) {
+        scheduleDOMUpdate("--font-sans", theme.fonts.sans);
+      }
+      if (theme.fonts?.mono) {
+        scheduleDOMUpdate("--font-mono", theme.fonts.mono);
+      }
+    } catch (error) {
+      console.warn("Error applying theme properties", error);
+    }
+
+    // Apply custom CSS if provided (handled separately for security)
+    if (theme.customCSS) {
+      // Defer custom CSS application to avoid blocking the main thread
+      setTimeout(() => {
+        try {
+          // Sanitize the custom CSS to prevent injection attacks
+          const sanitizedCSS = sanitizeCSS(theme.customCSS);
+
+          // Remove existing custom theme styles
+          const existingStyle = document.getElementById("custom-theme-styles");
+          if (existingStyle) {
+            existingStyle.remove();
+          }
+
+          // Only add sanitized CSS if it's not empty
+          if (sanitizedCSS) {
+            // Add new custom styles
+            const style = document.createElement("style");
+            style.id = "custom-theme-styles";
+            style.textContent = sanitizedCSS;
+            document.head.appendChild(style);
+          } else {
+            console.warn("Custom CSS was removed due to security concerns");
+          }
+        } catch (error) {
+          console.warn("Error applying custom CSS", error);
+        }
+      }, 0);
+    }
   });
 }
 

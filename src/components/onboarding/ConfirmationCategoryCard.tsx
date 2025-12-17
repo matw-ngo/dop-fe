@@ -1,15 +1,15 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { ConfirmationFieldRenderer } from "./ConfirmationFieldRenderer";
-import {
-  FieldType,
-  FieldCategory,
-} from "@/components/user-onboarding/constants/field-types";
-import { GroupedField } from "@/utils/confirmationFieldGrouper";
 import { useTranslations } from "next-intl";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  FieldCategory,
+  type FieldType,
+} from "@/components/user-onboarding/constants/field-types";
+import type { GroupedField } from "@/utils/confirmationFieldGrouper";
+import { ConfirmationFieldRenderer } from "./ConfirmationFieldRenderer";
 
 interface ConfirmationCategoryCardProps {
   category: FieldCategory;

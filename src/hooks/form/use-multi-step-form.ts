@@ -1,15 +1,14 @@
 "use client";
 
+import { useCallback, useEffect, useState } from "react";
 // Custom hook for managing multi-step form state
 // Handles navigation, validation, and data persistence
-import {
+import type {
   MultiStepFormActions,
   MultiStepFormConfig,
   MultiStepFormState,
   StepConfig,
 } from "@/components/renderer/types/multi-step-form";
-
-import { useState, useCallback, useEffect } from "react";
 
 interface UseMultiStepFormReturn {
   state: MultiStepFormState;

@@ -6,11 +6,11 @@
  */
 
 import type {
-  VerificationProvider,
   ProviderConfig,
   VerificationOptions,
-  VerificationSession,
+  VerificationProvider,
   VerificationResult,
+  VerificationSession,
 } from "../types";
 import { VerificationStatus } from "../types";
 

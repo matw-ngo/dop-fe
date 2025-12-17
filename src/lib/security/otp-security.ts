@@ -5,14 +5,14 @@
  */
 
 import crypto from "crypto";
-import { NextRequest } from "next/server";
+import type { NextRequest } from "next/server";
 import {
-  sanitizeVietnamesePhone,
   sanitizeApplicationData,
+  sanitizeVietnamesePhone,
 } from "@/lib/utils/sanitization";
 import {
-  generateDeviceFingerprint,
   detectAnomalies,
+  generateDeviceFingerprint,
 } from "./device-fingerprinting";
 import {
   createSecureSession,

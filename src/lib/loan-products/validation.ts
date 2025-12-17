@@ -2,7 +2,10 @@
 // Comprehensive input validation and sanitization for Vietnamese loan calculations
 
 import type { LoanCalculationParams } from "./interest-calculations";
-import type { VietnameseLoanProduct, VietnameseLoanType } from "./vietnamese-loan-products";
+import type {
+  VietnameseLoanProduct,
+  VietnameseLoanType,
+} from "./vietnamese-loan-products";
 
 /**
  * Validation error
@@ -58,45 +61,65 @@ export class VietnameseFinancialValidator {
   static validateAndSanitize(
     params: LoanCalculationParams,
     product?: VietnameseLoanProduct,
-    options: SanitizationOptions = {}
+    options: SanitizationOptions = {},
   ): ValidationResult {
     const errors: ValidationError[] = [];
-    const sanitizedParams = this.sanitizeParameters(params, options);
+    const sanitizedParams = VietnameseFinancialValidator.sanitizeParameters(
+      params,
+      options,
+    );
 
     // Validate principal amount
-    this.validatePrincipal(sanitizedParams.principal, errors);
+    VietnameseFinancialValidator.validatePrincipal(
+      sanitizedParams.principal,
+      errors,
+    );
 
     // Validate loan term
-    this.validateTerm(sanitizedParams.term, errors);
+    VietnameseFinancialValidator.validateTerm(sanitizedParams.term, errors);
 
     // Validate interest rates
-    this.validateInterestRates(sanitizedParams, errors);
+    VietnameseFinancialValidator.validateInterestRates(sanitizedParams, errors);
 
     // Validate fees
-    this.validateFees(sanitizedParams, errors);
+    VietnameseFinancialValidator.validateFees(sanitizedParams, errors);
 
     // Validate dates
-    this.validateDates(sanitizedParams, errors);
+    VietnameseFinancialValidator.validateDates(sanitizedParams, errors);
 
     // Validate rate type and method
-    this.validateRateType(sanitizedParams, errors);
+    VietnameseFinancialValidator.validateRateType(sanitizedParams, errors);
 
     // Validate promotional period
-    this.validatePromotionalPeriod(sanitizedParams, errors);
+    VietnameseFinancialValidator.validatePromotionalPeriod(
+      sanitizedParams,
+      errors,
+    );
 
     // Validate against product constraints if product provided
     if (product) {
-      this.validateProductConstraints(sanitizedParams, product, errors);
+      VietnameseFinancialValidator.validateProductConstraints(
+        sanitizedParams,
+        product,
+        errors,
+      );
     }
 
     // Validate Vietnamese banking limits
-    this.validateVietnameseLimits(sanitizedParams, errors);
+    VietnameseFinancialValidator.validateVietnameseLimits(
+      sanitizedParams,
+      errors,
+    );
 
     // Check for calculation consistency
-    this.validateCalculationConsistency(sanitizedParams, errors);
+    VietnameseFinancialValidator.validateCalculationConsistency(
+      sanitizedParams,
+      errors,
+    );
 
-    const isValid = errors.filter(e => e.severity === "error").length === 0;
-    const hasWarnings = errors.filter(e => e.severity === "warning").length > 0;
+    const isValid = errors.filter((e) => e.severity === "error").length === 0;
+    const hasWarnings =
+      errors.filter((e) => e.severity === "warning").length > 0;
 
     return {
       isValid,
@@ -145,25 +168,39 @@ export class VietnameseFinancialValidator {
     }
 
     // Validate amount limits
-    this.validateAmountLimits(product.amountLimits, errors);
+    VietnameseFinancialValidator.validateAmountLimits(
+      product.amountLimits,
+      errors,
+    );
 
     // Validate term options
-    this.validateTermOptions(product.termOptions, errors);
+    VietnameseFinancialValidator.validateTermOptions(
+      product.termOptions,
+      errors,
+    );
 
     // Validate interest rate
-    this.validateProductInterestRate(product.interestRate, product.loanType, errors);
+    VietnameseFinancialValidator.validateProductInterestRate(
+      product.interestRate,
+      product.loanType,
+      errors,
+    );
 
     // Validate fee structure
-    this.validateFeeStructure(product.fees, errors);
+    VietnameseFinancialValidator.validateFeeStructure(product.fees, errors);
 
     // Validate eligibility criteria
-    this.validateEligibilityCriteria(product.eligibility, errors);
+    VietnameseFinancialValidator.validateEligibilityCriteria(
+      product.eligibility,
+      errors,
+    );
 
     // Validate SBV compliance
-    this.validateSBVCompliance(product, errors);
+    VietnameseFinancialValidator.validateSBVCompliance(product, errors);
 
-    const isValid = errors.filter(e => e.severity === "error").length === 0;
-    const hasWarnings = errors.filter(e => e.severity === "warning").length > 0;
+    const isValid = errors.filter((e) => e.severity === "error").length === 0;
+    const hasWarnings =
+      errors.filter((e) => e.severity === "warning").length > 0;
 
     return {
       isValid,
@@ -178,36 +215,83 @@ export class VietnameseFinancialValidator {
    */
   private static sanitizeParameters(
     params: LoanCalculationParams,
-    options: SanitizationOptions
+    options: SanitizationOptions,
   ): LoanCalculationParams {
     const sanitized: LoanCalculationParams = { ...params };
 
     // Sanitize numeric values
-    sanitized.principal = this.sanitizeNumber(params.principal, 0, Number.MAX_SAFE_INTEGER);
-    sanitized.term = this.sanitizeNumber(params.term, 1, 600); // Max 50 years
-    sanitized.annualRate = this.sanitizeNumber(params.annualRate, 0, 100);
-    sanitized.promotionalRate = params.promotionalRate ?
-      this.sanitizeNumber(params.promotionalRate, 0, 100) : undefined;
-    sanitized.promotionalPeriod = params.promotionalPeriod ?
-      this.sanitizeNumber(params.promotionalPeriod, 0, sanitized.term) : undefined;
+    sanitized.principal = VietnameseFinancialValidator.sanitizeNumber(
+      params.principal,
+      0,
+      Number.MAX_SAFE_INTEGER,
+    );
+    sanitized.term = VietnameseFinancialValidator.sanitizeNumber(
+      params.term,
+      1,
+      600,
+    ); // Max 50 years
+    sanitized.annualRate = VietnameseFinancialValidator.sanitizeNumber(
+      params.annualRate,
+      0,
+      100,
+    );
+    sanitized.promotionalRate = params.promotionalRate
+      ? VietnameseFinancialValidator.sanitizeNumber(
+          params.promotionalRate,
+          0,
+          100,
+        )
+      : undefined;
+    sanitized.promotionalPeriod = params.promotionalPeriod
+      ? VietnameseFinancialValidator.sanitizeNumber(
+          params.promotionalPeriod,
+          0,
+          sanitized.term,
+        )
+      : undefined;
 
     // Sanitize fees
-    sanitized.processingFee = params.processingFee ?
-      this.sanitizeNumber(params.processingFee, 0, 100) : 0;
-    sanitized.processingFeeFixed = params.processingFeeFixed ?
-      this.sanitizeNumber(params.processingFeeFixed, 0, Number.MAX_SAFE_INTEGER) : 0;
-    sanitized.insuranceFee = params.insuranceFee ?
-      this.sanitizeNumber(params.insuranceFee, 0, 100) : 0;
-    sanitized.otherFees = params.otherFees ?
-      this.sanitizeNumber(params.otherFees, 0, Number.MAX_SAFE_INTEGER) : 0;
+    sanitized.processingFee = params.processingFee
+      ? VietnameseFinancialValidator.sanitizeNumber(
+          params.processingFee,
+          0,
+          100,
+        )
+      : 0;
+    sanitized.processingFeeFixed = params.processingFeeFixed
+      ? VietnameseFinancialValidator.sanitizeNumber(
+          params.processingFeeFixed,
+          0,
+          Number.MAX_SAFE_INTEGER,
+        )
+      : 0;
+    sanitized.insuranceFee = params.insuranceFee
+      ? VietnameseFinancialValidator.sanitizeNumber(params.insuranceFee, 0, 100)
+      : 0;
+    sanitized.otherFees = params.otherFees
+      ? VietnameseFinancialValidator.sanitizeNumber(
+          params.otherFees,
+          0,
+          Number.MAX_SAFE_INTEGER,
+        )
+      : 0;
 
     // Sanitize grace period
-    sanitized.gracePeriod = params.gracePeriod ?
-      this.sanitizeNumber(params.gracePeriod, 0, sanitized.term) : 0;
+    sanitized.gracePeriod = params.gracePeriod
+      ? VietnameseFinancialValidator.sanitizeNumber(
+          params.gracePeriod,
+          0,
+          sanitized.term,
+        )
+      : 0;
 
     // Sanitize rate type
-    const validRateTypes: Array<"fixed" | "reducing" | "flat" | "floating"> =
-      ["fixed", "reducing", "flat", "floating"];
+    const validRateTypes: Array<"fixed" | "reducing" | "flat" | "floating"> = [
+      "fixed",
+      "reducing",
+      "flat",
+      "floating",
+    ];
     if (!validRateTypes.includes(sanitized.rateType)) {
       sanitized.rateType = "reducing"; // Default to reducing
     }
@@ -226,7 +310,10 @@ export class VietnameseFinancialValidator {
     }
 
     // Ensure valid date
-    if (!sanitized.firstPaymentDate || isNaN(sanitized.firstPaymentDate.getTime())) {
+    if (
+      !sanitized.firstPaymentDate ||
+      isNaN(sanitized.firstPaymentDate.getTime())
+    ) {
       sanitized.firstPaymentDate = new Date();
     }
 
@@ -234,7 +321,9 @@ export class VietnameseFinancialValidator {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     if (sanitized.firstPaymentDate < today) {
-      sanitized.firstPaymentDate = new Date(today.getTime() + 24 * 60 * 60 * 1000); // Tomorrow
+      sanitized.firstPaymentDate = new Date(
+        today.getTime() + 24 * 60 * 60 * 1000,
+      ); // Tomorrow
     }
 
     return sanitized;
@@ -252,7 +341,10 @@ export class VietnameseFinancialValidator {
   /**
    * Validate principal amount
    */
-  private static validatePrincipal(principal: number, errors: ValidationError[]): void {
+  private static validatePrincipal(
+    principal: number,
+    errors: ValidationError[],
+  ): void {
     if (principal <= 0) {
       errors.push({
         field: "principal",
@@ -263,7 +355,8 @@ export class VietnameseFinancialValidator {
       });
     }
 
-    if (principal < 1000000) { // 1 triệu VND minimum
+    if (principal < 1000000) {
+      // 1 triệu VND minimum
       errors.push({
         field: "principal",
         message: "Principal amount is too small (minimum 1 triệu VND)",
@@ -273,7 +366,8 @@ export class VietnameseFinancialValidator {
       });
     }
 
-    if (principal > 1000000000000) { // 1 nghìn tỷ VND maximum
+    if (principal > 1000000000000) {
+      // 1 nghìn tỷ VND maximum
       errors.push({
         field: "principal",
         message: "Principal amount exceeds maximum limit (1 tỷ VND)",
@@ -298,7 +392,8 @@ export class VietnameseFinancialValidator {
       });
     }
 
-    if (term > 600) { // 50 years maximum
+    if (term > 600) {
+      // 50 years maximum
       errors.push({
         field: "term",
         message: "Loan term exceeds maximum limit (50 years)",
@@ -322,7 +417,10 @@ export class VietnameseFinancialValidator {
   /**
    * Validate interest rates
    */
-  private static validateInterestRates(params: LoanCalculationParams, errors: ValidationError[]): void {
+  private static validateInterestRates(
+    params: LoanCalculationParams,
+    errors: ValidationError[],
+  ): void {
     if (params.annualRate < 0) {
       errors.push({
         field: "annualRate",
@@ -369,7 +467,10 @@ export class VietnameseFinancialValidator {
   /**
    * Validate fees
    */
-  private static validateFees(params: LoanCalculationParams, errors: ValidationError[]): void {
+  private static validateFees(
+    params: LoanCalculationParams,
+    errors: ValidationError[],
+  ): void {
     if (params.processingFee && params.processingFee > 10) {
       errors.push({
         field: "processingFee",
@@ -380,8 +481,7 @@ export class VietnameseFinancialValidator {
       });
     }
 
-    const totalFees = (params.processingFee || 0) +
-                     (params.insuranceFee || 0);
+    const totalFees = (params.processingFee || 0) + (params.insuranceFee || 0);
     if (totalFees > 20) {
       errors.push({
         field: "totalFees",
@@ -392,7 +492,8 @@ export class VietnameseFinancialValidator {
       });
     }
 
-    const totalFeeAmount = (params.processingFeeFixed || 0) + (params.otherFees || 0);
+    const totalFeeAmount =
+      (params.processingFeeFixed || 0) + (params.otherFees || 0);
     if (totalFeeAmount > params.principal * 0.1) {
       errors.push({
         field: "fixedFees",
@@ -407,7 +508,10 @@ export class VietnameseFinancialValidator {
   /**
    * Validate dates
    */
-  private static validateDates(params: LoanCalculationParams, errors: ValidationError[]): void {
+  private static validateDates(
+    params: LoanCalculationParams,
+    errors: ValidationError[],
+  ): void {
     if (params.firstPaymentDate) {
       const today = new Date();
       today.setHours(0, 0, 0, 0);
@@ -422,7 +526,9 @@ export class VietnameseFinancialValidator {
         });
       }
 
-      const maxFutureDate = new Date(today.getTime() + 365 * 24 * 60 * 60 * 1000); // 1 year from now
+      const maxFutureDate = new Date(
+        today.getTime() + 365 * 24 * 60 * 60 * 1000,
+      ); // 1 year from now
       if (params.firstPaymentDate > maxFutureDate) {
         errors.push({
           field: "firstPaymentDate",
@@ -438,7 +544,10 @@ export class VietnameseFinancialValidator {
   /**
    * Validate rate type
    */
-  private static validateRateType(params: LoanCalculationParams, errors: ValidationError[]): void {
+  private static validateRateType(
+    params: LoanCalculationParams,
+    errors: ValidationError[],
+  ): void {
     const validTypes = ["fixed", "reducing", "flat", "floating"];
     if (!validTypes.includes(params.rateType)) {
       errors.push({
@@ -465,7 +574,10 @@ export class VietnameseFinancialValidator {
   /**
    * Validate promotional period
    */
-  private static validatePromotionalPeriod(params: LoanCalculationParams, errors: ValidationError[]): void {
+  private static validatePromotionalPeriod(
+    params: LoanCalculationParams,
+    errors: ValidationError[],
+  ): void {
     if (params.promotionalPeriod !== undefined) {
       if (params.promotionalPeriod <= 0) {
         errors.push({
@@ -480,8 +592,10 @@ export class VietnameseFinancialValidator {
       if (params.promotionalPeriod >= params.term) {
         errors.push({
           field: "promotionalPeriod",
-          message: "Promotional period cannot be equal to or greater than loan term",
-          messageVi: "Thời gian ưu đãi không thể bằng hoặc lớn hơn thời gian vay",
+          message:
+            "Promotional period cannot be equal to or greater than loan term",
+          messageVi:
+            "Thời gian ưu đãi không thể bằng hoặc lớn hơn thời gian vay",
           severity: "error",
           code: "PROMOTIONAL_PERIOD_TOO_LONG",
         });
@@ -490,8 +604,10 @@ export class VietnameseFinancialValidator {
       if (!params.promotionalRate) {
         errors.push({
           field: "promotionalRate",
-          message: "Promotional rate is required when promotional period is specified",
-          messageVi: "Lãi suất ưu đãi là bắt buộc khi chỉ định thời gian ưu đãi",
+          message:
+            "Promotional rate is required when promotional period is specified",
+          messageVi:
+            "Lãi suất ưu đãi là bắt buộc khi chỉ định thời gian ưu đãi",
           severity: "error",
           code: "MISSING_PROMOTIONAL_RATE",
         });
@@ -501,7 +617,8 @@ export class VietnameseFinancialValidator {
     if (params.promotionalRate && !params.promotionalPeriod) {
       errors.push({
         field: "promotionalPeriod",
-        message: "Promotional period is required when promotional rate is specified",
+        message:
+          "Promotional period is required when promotional rate is specified",
         messageVi: "Thời gian ưu đãi là bắt buộc khi chỉ định lãi suất ưu đãi",
         severity: "error",
         code: "MISSING_PROMOTIONAL_PERIOD",
@@ -515,7 +632,7 @@ export class VietnameseFinancialValidator {
   private static validateProductConstraints(
     params: LoanCalculationParams,
     product: VietnameseLoanProduct,
-    errors: ValidationError[]
+    errors: ValidationError[],
   ): void {
     // Validate amount limits
     if (params.principal < product.amountLimits.min) {
@@ -560,8 +677,10 @@ export class VietnameseFinancialValidator {
     }
 
     // Validate available terms
-    if (product.termOptions.availableTerms.length > 0 &&
-        !product.termOptions.availableTerms.includes(params.term)) {
+    if (
+      product.termOptions.availableTerms.length > 0 &&
+      !product.termOptions.availableTerms.includes(params.term)
+    ) {
       errors.push({
         field: "term",
         message: `Loan term is not available for this product. Available terms: ${product.termOptions.availableTerms.join(", ")}`,
@@ -586,25 +705,33 @@ export class VietnameseFinancialValidator {
   /**
    * Validate Vietnamese banking limits
    */
-  private static validateVietnameseLimits(params: LoanCalculationParams, errors: ValidationError[]): void {
+  private static validateVietnameseLimits(
+    params: LoanCalculationParams,
+    errors: ValidationError[],
+  ): void {
     // SBV guidelines for consumer loans
     if (params.annualRate > 20) {
       errors.push({
         field: "annualRate",
         message: "Interest rate exceeds SBV guideline for consumer loans (20%)",
-        messageVi: "Lãi suất vượt quá khuyến nghị của SBV cho vay tiêu dùng (20%)",
+        messageVi:
+          "Lãi suất vượt quá khuyến nghị của SBV cho vay tiêu dùng (20%)",
         severity: "warning",
         code: "EXCEEDS_SBV_GUIDELINE",
       });
     }
 
     // Reasonable APR checks
-    const estimatedAPR = params.annualRate + (params.processingFee || 0) + (params.insuranceFee || 0);
+    const estimatedAPR =
+      params.annualRate +
+      (params.processingFee || 0) +
+      (params.insuranceFee || 0);
     if (estimatedAPR > 35) {
       errors.push({
         field: "estimatedAPR",
         message: "Estimated APR is very high (>35%) - please verify all costs",
-        messageVi: "APR ước tính rất cao (>35%) - vui lòng xác minh tất cả chi phí",
+        messageVi:
+          "APR ước tính rất cao (>35%) - vui lòng xác minh tất cả chi phí",
         severity: "warning",
         code: "HIGH_APR",
       });
@@ -614,13 +741,17 @@ export class VietnameseFinancialValidator {
   /**
    * Validate calculation consistency
    */
-  private static validateCalculationConsistency(params: LoanCalculationParams, errors: ValidationError[]): void {
+  private static validateCalculationConsistency(
+    params: LoanCalculationParams,
+    errors: ValidationError[],
+  ): void {
     // Check for logical inconsistencies
     if (params.gracePeriod && params.gracePeriod >= params.term) {
       errors.push({
         field: "gracePeriod",
         message: "Grace period cannot equal or exceed loan term",
-        messageVi: "Thời gian ân hạn không thể bằng hoặc vượt quá thời gian vay",
+        messageVi:
+          "Thời gian ân hạn không thể bằng hoặc vượt quá thời gian vay",
         severity: "error",
         code: "INVALID_GRACE_PERIOD",
       });
@@ -631,18 +762,24 @@ export class VietnameseFinancialValidator {
       errors.push({
         field: "promotionalRate",
         message: "Promotional rates are uncommon with flat rate calculations",
-        messageVi: "Lãi suất ưu đãi không phổ biến với tính toán lãi suất phẳng",
+        messageVi:
+          "Lãi suất ưu đãi không phổ biến với tính toán lãi suất phẳng",
         severity: "warning",
         code: "UNUSUAL_PROMOTION",
       });
     }
 
     // Validate grace period with rate type
-    if (params.gracePeriod && params.gracePeriod > 0 && params.rateType === "flat") {
+    if (
+      params.gracePeriod &&
+      params.gracePeriod > 0 &&
+      params.rateType === "flat"
+    ) {
       errors.push({
         field: "gracePeriod",
         message: "Grace periods are typically used with reducing balance loans",
-        messageVi: "Thời gian ân hạn thường được sử dụng với vay lãi suất giảm dần",
+        messageVi:
+          "Thời gian ân hạn thường được sử dụng với vay lãi suất giảm dần",
         severity: "info",
         code: "GRACE_PERIOD_INFO",
       });
@@ -652,12 +789,17 @@ export class VietnameseFinancialValidator {
   /**
    * Validate amount limits
    */
-  private static validateAmountLimits(amountLimits: any, errors: ValidationError[]): void {
+  private static validateAmountLimits(
+    amountLimits: any,
+    errors: ValidationError[],
+  ): void {
     if (amountLimits.min >= amountLimits.max) {
       errors.push({
         field: "amountLimits",
-        message: "Minimum amount cannot be greater than or equal to maximum amount",
-        messageVi: "Số tiền tối thiểu không thể lớn hơn hoặc bằng số tiền tối đa",
+        message:
+          "Minimum amount cannot be greater than or equal to maximum amount",
+        messageVi:
+          "Số tiền tối thiểu không thể lớn hơn hoặc bằng số tiền tối đa",
         severity: "error",
         code: "INVALID_AMOUNT_RANGE",
       });
@@ -677,12 +819,16 @@ export class VietnameseFinancialValidator {
   /**
    * Validate term options
    */
-  private static validateTermOptions(termOptions: any, errors: ValidationError[]): void {
+  private static validateTermOptions(
+    termOptions: any,
+    errors: ValidationError[],
+  ): void {
     if (termOptions.min >= termOptions.max) {
       errors.push({
         field: "termOptions",
         message: "Minimum term cannot be greater than or equal to maximum term",
-        messageVi: "Thời gian tối thiểu không thể lớn hơn hoặc bằng thời gian tối đa",
+        messageVi:
+          "Thời gian tối thiểu không thể lớn hơn hoặc bằng thời gian tối đa",
         severity: "error",
         code: "INVALID_TERM_RANGE",
       });
@@ -705,7 +851,7 @@ export class VietnameseFinancialValidator {
   private static validateProductInterestRate(
     interestRate: any,
     loanType: VietnameseLoanType,
-    errors: ValidationError[]
+    errors: ValidationError[],
   ): void {
     if (interestRate.annual < 0 || interestRate.annual > 100) {
       errors.push({
@@ -719,7 +865,10 @@ export class VietnameseFinancialValidator {
 
     // Check promotional rate consistency
     if (interestRate.promotional) {
-      if (!interestRate.promotional.rate || !interestRate.promotional.duration) {
+      if (
+        !interestRate.promotional.rate ||
+        !interestRate.promotional.duration
+      ) {
         errors.push({
           field: "interestRate.promotional",
           message: "Promotional rate must include both rate and duration",
@@ -744,8 +893,14 @@ export class VietnameseFinancialValidator {
   /**
    * Validate fee structure
    */
-  private static validateFeeStructure(fees: any, errors: ValidationError[]): void {
-    if (fees.processingFee && (fees.processingFee < 0 || fees.processingFee > 100)) {
+  private static validateFeeStructure(
+    fees: any,
+    errors: ValidationError[],
+  ): void {
+    if (
+      fees.processingFee &&
+      (fees.processingFee < 0 || fees.processingFee > 100)
+    ) {
       errors.push({
         field: "fees.processingFee",
         message: "Processing fee percentage must be between 0% and 100%",
@@ -755,7 +910,10 @@ export class VietnameseFinancialValidator {
       });
     }
 
-    if (fees.insuranceFee && (fees.insuranceFee < 0 || fees.insuranceFee > 10)) {
+    if (
+      fees.insuranceFee &&
+      (fees.insuranceFee < 0 || fees.insuranceFee > 10)
+    ) {
       errors.push({
         field: "fees.insuranceFee",
         message: "Insurance fee percentage should not exceed 10%",
@@ -769,12 +927,17 @@ export class VietnameseFinancialValidator {
   /**
    * Validate eligibility criteria
    */
-  private static validateEligibilityCriteria(eligibility: any, errors: ValidationError[]): void {
+  private static validateEligibilityCriteria(
+    eligibility: any,
+    errors: ValidationError[],
+  ): void {
     if (eligibility.minAge >= eligibility.maxAgeAtMaturity) {
       errors.push({
         field: "eligibility.ages",
-        message: "Minimum age cannot be greater than or equal to maximum age at maturity",
-        messageVi: "Tuổi tối thiểu không thể lớn hơn hoặc bằng tuổi tối đa tại thời điểm đáo hạn",
+        message:
+          "Minimum age cannot be greater than or equal to maximum age at maturity",
+        messageVi:
+          "Tuổi tối thiểu không thể lớn hơn hoặc bằng tuổi tối đa tại thời điểm đáo hạn",
         severity: "error",
         code: "INVALID_AGE_RANGE",
       });
@@ -790,7 +953,11 @@ export class VietnameseFinancialValidator {
       });
     }
 
-    if (eligibility.maxLoanToValueRatio && (eligibility.maxLoanToValueRatio < 0 || eligibility.maxLoanToValueRatio > 100)) {
+    if (
+      eligibility.maxLoanToValueRatio &&
+      (eligibility.maxLoanToValueRatio < 0 ||
+        eligibility.maxLoanToValueRatio > 100)
+    ) {
       errors.push({
         field: "eligibility.maxLoanToValueRatio",
         message: "LTV ratio must be between 0% and 100%",
@@ -804,7 +971,10 @@ export class VietnameseFinancialValidator {
   /**
    * Validate SBV compliance
    */
-  private static validateSBVCompliance(product: VietnameseLoanProduct, errors: ValidationError[]): void {
+  private static validateSBVCompliance(
+    product: VietnameseLoanProduct,
+    errors: ValidationError[],
+  ): void {
     if (!product.regulatoryCompliance.sbvRegistrationNumber) {
       errors.push({
         field: "regulatoryCompliance.sbvRegistrationNumber",

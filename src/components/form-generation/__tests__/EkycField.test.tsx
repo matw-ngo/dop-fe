@@ -6,22 +6,22 @@
  */
 
 import {
+  act,
+  fireEvent,
   render,
   screen,
-  fireEvent,
   waitFor,
-  act,
 } from "@testing-library/react";
-import { vi, describe, it, expect, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { FormProvider } from "@/components/form-generation/context/FormContext";
-import { EkycField } from "../fields/EkycField";
 import type { EkycFieldConfig } from "@/components/form-generation/types";
-import {
+import { verificationManager } from "@/lib/verification/manager";
+import { VNPTVerificationProvider } from "@/lib/verification/providers/vnpt-provider";
+import type {
   VerificationResult,
   VerificationStatus,
 } from "@/lib/verification/types";
-import { verificationManager } from "@/lib/verification/manager";
-import { VNPTVerificationProvider } from "@/lib/verification/providers/vnpt-provider";
+import { EkycField } from "../fields/EkycField";
 
 // Create mock references that will be assigned after mocking
 let mockVerificationManager: any;

@@ -1,9 +1,9 @@
 "use client";
 
-import { useTranslations } from "next-intl";
 import { RotateCw } from "lucide-react";
-import { useOnboardingFormStore } from "@/store/use-onboarding-form-store";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
+import { useOnboardingFormStore } from "@/store/use-onboarding-form-store";
 import { OnboardingFormContainer } from "../../../components/user-onboarding/components/onboarding-form.container";
 
 export default function UserOnboardingPage() {

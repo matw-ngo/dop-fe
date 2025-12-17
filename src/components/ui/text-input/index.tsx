@@ -1,8 +1,9 @@
-import React from "react";
 import * as LabelPrimitive from "@radix-ui/react-label";
+import React from "react";
 import { cn } from "@/lib/utils";
 
-export interface TextInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface TextInputProps
+  extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   description?: string;
   error?: boolean;
@@ -31,7 +32,7 @@ const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
       id,
       ...props
     },
-    ref
+    ref,
   ) => {
     const inputId = id || `input-${React.useId()}`;
 
@@ -43,7 +44,7 @@ const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
             className={cn(
               "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
               theme === "light" ? "text-[#4d7e70]" : "text-gray-300",
-              labelClassName
+              labelClassName,
             )}
           >
             {label}
@@ -84,7 +85,7 @@ const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
               // Height override for ApplyLoanForm compatibility
               "[&]:h-[60px]",
 
-              className
+              className,
             )}
             ref={ref}
             {...props}
@@ -98,10 +99,12 @@ const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
         </div>
 
         {description && (
-          <p className={cn(
-            "text-xs",
-            theme === "light" ? "text-gray-500" : "text-gray-400"
-          )}>
+          <p
+            className={cn(
+              "text-xs",
+              theme === "light" ? "text-gray-500" : "text-gray-400",
+            )}
+          >
             {description}
           </p>
         )}
@@ -113,7 +116,7 @@ const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
         )}
       </div>
     );
-  }
+  },
 );
 
 TextInput.displayName = "TextInput";

@@ -5,14 +5,14 @@
  * bank comparisons, and goal planning.
  */
 
-import { useState, useCallback, useEffect } from "react";
-import { useFinancialToolsStore } from "@/store/use-financial-tools-store";
+import { useCallback, useEffect, useState } from "react";
 import {
-  getBestSavingsRates,
-  compareSavingsProducts,
   calculateCompoundInterest,
+  compareSavingsProducts,
+  getBestSavingsRates,
 } from "@/lib/financial-data/bank-rates";
 import { calculateRealReturns } from "@/lib/financial-data/market-indicators";
+import { useFinancialToolsStore } from "@/store/use-financial-tools-store";
 
 // Types
 export interface UseSavingsCalculatorOptions {
@@ -308,7 +308,7 @@ export const useSavingsCalculator = (
 
         // Feasibility assessment
         let feasibility: "easy" | "moderate" | "challenging" | "impossible";
-        let recommendations: string[] = [];
+        const recommendations: string[] = [];
 
         if (timeToGoal <= desiredMonths) {
           feasibility = "easy";
@@ -340,10 +340,8 @@ export const useSavingsCalculator = (
           feasibility,
           recommendations,
           requiredRate:
-            (Math.pow(
-              targetAmount / (monthlyContribution * desiredMonths),
-              1 / desiredMonths,
-            ) -
+            ((targetAmount / (monthlyContribution * desiredMonths)) **
+              (1 / desiredMonths) -
               1) *
             12 *
             100,

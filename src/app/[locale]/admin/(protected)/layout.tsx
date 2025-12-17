@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 import { AdminPageWrapper } from "@/components/admin/admin-page-wrapper";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 
@@ -11,9 +11,7 @@ interface ProtectedLayoutProps {
 export default function ProtectedLayout({ children }: ProtectedLayoutProps) {
   return (
     <ProtectedRoute requiredRole="admin">
-      <AdminPageWrapper>
-        {children}
-      </AdminPageWrapper>
+      <AdminPageWrapper>{children}</AdminPageWrapper>
     </ProtectedRoute>
   );
 }

@@ -1,24 +1,24 @@
 "use client";
 
-import { useState, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
+import { CheckCircle2, Edit3, Loader2, ShieldCheck } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { useMemo, useState } from "react";
+import { toast } from "sonner";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { Badge } from "@/components/ui/badge";
-import { toast } from "sonner";
-import { CheckCircle2, Loader2, Edit3, ShieldCheck } from "lucide-react";
-import { useTranslations } from "next-intl";
-import apiClient from "@/lib/api/client";
-import { toCreateLeadRequest } from "@/mappers/onboardingMapper";
-import type { components } from "@/lib/api/v1.d.ts";
-import { ConfirmationCategoryCard } from "./ConfirmationCategoryCard";
-import { useConfirmationFields } from "@/hooks/useConfirmationFields";
-import {
-  FieldType,
+import type {
   FieldCategory,
+  FieldType,
 } from "@/components/user-onboarding/constants/field-types";
 import type { GeneratedStepConfig } from "@/components/user-onboarding/types/field-config";
+import { useConfirmationFields } from "@/hooks/useConfirmationFields";
+import apiClient from "@/lib/api/client";
+import type { components } from "@/lib/api/v1.d.ts";
 import type { MappedFlow } from "@/mappers/flowMapper";
+import { toCreateLeadRequest } from "@/mappers/onboardingMapper";
+import { ConfirmationCategoryCard } from "./ConfirmationCategoryCard";
 
 type CreateLeadResponseBody = components["schemas"]["CreateLeadResponseBody"];
 

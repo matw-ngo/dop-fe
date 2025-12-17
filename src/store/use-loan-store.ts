@@ -4,32 +4,31 @@
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 import type {
-  LoanApplicationData,
-  PersonalInfoData,
-  FinancialInfoData,
-  EmploymentInfoData,
-  DocumentUploadData,
-  LoanDetailsData,
-} from "@/types/forms/loan-form";
+  ApplicantProfile,
+  EligibilityResult,
+} from "@/lib/loan-products/eligibility-rules";
+import type {
+  LoanCalculationParams,
+  LoanCalculationResult,
+} from "@/lib/loan-products/interest-calculations";
 import type {
   VietnameseLoanProduct,
   VietnameseLoanType,
 } from "@/lib/loan-products/vietnamese-loan-products";
 import type {
-  ApplicantProfile,
-  EligibilityResult,
-} from "@/lib/loan-products/eligibility-rules";
-import type {
-  LoanCalculationResult,
-  LoanCalculationParams,
-} from "@/lib/loan-products/interest-calculations";
-
-import type {
-  LoanApplicationStatus,
-  DocumentVerificationStatus,
-  StatusConfig,
   DocumentTypeConfig,
+  DocumentVerificationStatus,
+  LoanApplicationStatus,
+  StatusConfig,
 } from "@/lib/loan-status/vietnamese-status-config";
+import type {
+  DocumentUploadData,
+  EmploymentInfoData,
+  FinancialInfoData,
+  LoanApplicationData,
+  LoanDetailsData,
+  PersonalInfoData,
+} from "@/types/forms/loan-form";
 
 /**
  * Application Summary interface

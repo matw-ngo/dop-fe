@@ -10,10 +10,10 @@
  */
 
 import {
-  VerificationStatus,
+  type VerificationOptions,
   type VerificationResult,
   type VerificationSession,
-  type VerificationOptions,
+  VerificationStatus,
 } from "@/lib/verification/types";
 
 // Mock VNPT Response Data

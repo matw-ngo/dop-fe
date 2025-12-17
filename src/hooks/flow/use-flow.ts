@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { mapApiFlowToFlow } from "@/mappers/flowMapper";
+import apiClient from "@/lib/api/client";
 import type { components } from "@/lib/api/v1.d.ts";
 import type { MappedFlow } from "@/mappers/flowMapper";
-import apiClient from "@/lib/api/client";
+import { mapApiFlowToFlow } from "@/mappers/flowMapper";
 
 const shouldMockFlow =
   process.env.NEXT_PUBLIC_USE_FLOW_MOCK === "true" ||

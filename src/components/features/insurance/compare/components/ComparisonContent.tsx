@@ -1,8 +1,8 @@
-import InsuranceGrid from "@/components/features/insurance/InsuranceGrid";
+import { useLocale, useTranslations } from "next-intl";
 import { InsuranceComparison } from "@/components/features/insurance/InsuranceComparison";
 import ComparisonPanel from "@/components/features/insurance/InsuranceComparisonPanel";
-import { useTranslations, useLocale } from "next-intl";
-import { InsuranceProduct } from "@/types/insurance";
+import InsuranceGrid from "@/components/features/insurance/InsuranceGrid";
+import type { InsuranceProduct } from "@/types/insurance";
 
 interface ComparisonContentProps {
   products: InsuranceProduct[];

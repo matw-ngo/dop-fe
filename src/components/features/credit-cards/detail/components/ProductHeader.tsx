@@ -1,12 +1,12 @@
-import React from "react";
+import { ArrowLeft, Bookmark, Plus, Share2 } from "lucide-react";
 import { useTranslations } from "next-intl";
-import {
-  useCreditCardsStore,
-  useCreditCardComparison,
-} from "@/store/use-credit-cards-store";
+import type React from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Share2, Bookmark, Plus } from "lucide-react";
-import { DetailedCreditCardInfo } from "@/types/credit-card";
+import {
+  useCreditCardComparison,
+  useCreditCardsStore,
+} from "@/store/use-credit-cards-store";
+import type { DetailedCreditCardInfo } from "@/types/credit-card";
 
 interface ProductHeaderProps {
   card: DetailedCreditCardInfo;

@@ -7,7 +7,7 @@
 export interface AdminFlowListItem {
   id: string;
   name: string;
-  status: 'active' | 'inactive' | 'draft' | 'archived';
+  status: "active" | "inactive" | "draft" | "archived";
   stepCount: number;
   createdAt: string;
   updatedAt: string;
@@ -17,7 +17,7 @@ export interface AdminFlowDetail {
   id: string;
   name: string;
   description?: string;
-  status: 'active' | 'inactive' | 'draft' | 'archived';
+  status: "active" | "inactive" | "draft" | "archived";
   createdAt: string;
   updatedAt: string;
   steps: AdminStepListItem[];
@@ -30,7 +30,7 @@ export interface AdminStepListItem {
   hasEkyc: boolean;
   hasOtp: boolean;
   fieldCount: number;
-  status: 'active' | 'inactive' | 'draft';
+  status: "active" | "inactive" | "draft";
 }
 
 export interface AdminStepDetail {
@@ -40,7 +40,7 @@ export interface AdminStepDetail {
   description?: string;
   hasEkyc: boolean;
   hasOtp: boolean;
-  status: 'active' | 'inactive' | 'draft';
+  status: "active" | "inactive" | "draft";
   flowId: string;
   fields: AdminFieldDetail[];
 }
@@ -48,7 +48,19 @@ export interface AdminStepDetail {
 export interface AdminFieldDetail {
   id: string;
   name: string;
-  type: 'text' | 'email' | 'password' | 'number' | 'date' | 'select' | 'checkbox' | 'radio' | 'textarea' | 'file' | 'ekyc' | 'otp';
+  type:
+    | "text"
+    | "email"
+    | "password"
+    | "number"
+    | "date"
+    | "select"
+    | "checkbox"
+    | "radio"
+    | "textarea"
+    | "file"
+    | "ekyc"
+    | "otp";
   visible: boolean;
   required: boolean;
   label?: string;
@@ -64,7 +76,7 @@ export interface AdminFieldDetail {
 export interface UpdateFlowRequest {
   name?: string;
   description?: string;
-  status?: 'active' | 'inactive' | 'draft' | 'archived';
+  status?: "active" | "inactive" | "draft" | "archived";
 }
 
 export interface UpdateStepRequest {
@@ -73,12 +85,24 @@ export interface UpdateStepRequest {
   stepOrder?: number;
   hasEkyc?: boolean;
   hasOtp?: boolean;
-  status?: 'active' | 'inactive' | 'draft';
+  status?: "active" | "inactive" | "draft";
 }
 
 export interface UpdateFieldRequest {
   name?: string;
-  type?: 'text' | 'email' | 'password' | 'number' | 'date' | 'select' | 'checkbox' | 'radio' | 'textarea' | 'file' | 'ekyc' | 'otp';
+  type?:
+    | "text"
+    | "email"
+    | "password"
+    | "number"
+    | "date"
+    | "select"
+    | "checkbox"
+    | "radio"
+    | "textarea"
+    | "file"
+    | "ekyc"
+    | "otp";
   visible?: boolean;
   required?: boolean;
   label?: string;

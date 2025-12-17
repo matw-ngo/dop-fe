@@ -6,23 +6,28 @@
 
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
-import { auditLogger, AuditEventType, AuditSeverity } from "@/lib/security/audit-logging";
-import { loanStatusRateLimiter } from "@/lib/security/status-rate-limiting";
-import { conflictResolutionManager, DataVersion } from "@/lib/security/conflict-resolution";
 import { useTokenStore } from "@/lib/auth/secure-tokens";
-
 import type {
-  LoanApplicationStatus,
+  DocumentTypeConfig,
   DocumentVerificationStatus,
+  LoanApplicationStatus,
   StatusConfig,
-  DocumentTypeConfig
 } from "@/lib/loan-status/vietnamese-status-config";
-
 import {
-  getStatusConfig,
   calculateEstimatedCompletionTime,
-  getNextAllowedStatuses
+  getNextAllowedStatuses,
+  getStatusConfig,
 } from "@/lib/loan-status/vietnamese-status-config";
+import {
+  AuditEventType,
+  AuditSeverity,
+  auditLogger,
+} from "@/lib/security/audit-logging";
+import {
+  conflictResolutionManager,
+  type DataVersion,
+} from "@/lib/security/conflict-resolution";
+import { loanStatusRateLimiter } from "@/lib/security/status-rate-limiting";
 
 /**
  * Timeline milestone interface
@@ -68,8 +73,8 @@ export interface DocumentStatus {
   comments?: string; // Sanitized comments
   securityMetadata: {
     lastScanned: string;
-    scanResult: 'clean' | 'suspicious' | 'malicious';
-    dataClassification: 'public' | 'restricted' | 'confidential';
+    scanResult: "clean" | "suspicious" | "malicious";
+    dataClassification: "public" | "restricted" | "confidential";
     retentionExpires?: string;
   };
 }
@@ -108,7 +113,7 @@ export interface CommunicationEntry {
   status: "sent" | "delivered" | "read" | "failed";
   metadata?: Record<string, any>;
   securityMetadata: {
-    dataClassification: 'public' | 'restricted' | 'confidential';
+    dataClassification: "public" | "restricted" | "confidential";
     retentionExpires?: string;
     lastAudit: string;
     complianceFlags: string[];
@@ -141,7 +146,7 @@ export interface ApplicationStatusData {
   };
   // Security fields
   dataVersion?: DataVersion;
-  securityLevel: 'public' | 'restricted' | 'confidential';
+  securityLevel: "public" | "restricted" | "confidential";
   lastSecurityCheck: string;
   complianceFlags: string[];
 }
@@ -229,7 +234,10 @@ interface LoanStatusTrackingStoreActions {
   setApplicationStatus: (status: ApplicationStatusData | null) => void;
 
   /** Update application status */
-  updateApplicationStatus: (status: LoanApplicationStatus, metadata?: Record<string, any>) => void;
+  updateApplicationStatus: (
+    status: LoanApplicationStatus,
+    metadata?: Record<string, any>,
+  ) => void;
 
   /** Refresh application status */
   refreshApplicationStatus: (applicationId: string) => Promise<void>;
@@ -242,7 +250,10 @@ interface LoanStatusTrackingStoreActions {
   addMilestone: (milestone: TimelineMilestone) => void;
 
   /** Update milestone */
-  updateMilestone: (milestoneId: string, updates: Partial<TimelineMilestone>) => void;
+  updateMilestone: (
+    milestoneId: string,
+    updates: Partial<TimelineMilestone>,
+  ) => void;
 
   /** Refresh timeline */
   refreshTimeline: (applicationId: string) => Promise<void>;
@@ -252,7 +263,11 @@ interface LoanStatusTrackingStoreActions {
   setDocuments: (documents: DocumentStatus[]) => void;
 
   /** Update document status */
-  updateDocumentStatus: (documentId: string, status: DocumentVerificationStatus, metadata?: Record<string, any>) => void;
+  updateDocumentStatus: (
+    documentId: string,
+    status: DocumentVerificationStatus,
+    metadata?: Record<string, any>,
+  ) => void;
 
   /** Add document */
   addDocument: (document: DocumentStatus) => void;
@@ -274,22 +289,29 @@ interface LoanStatusTrackingStoreActions {
   markCommunicationAsRead: (communicationId: string) => void;
 
   /** Send message */
-  sendMessage: (applicationId: string, message: {
-    type: CommunicationEntry["type"];
-    title: string;
-    content: string;
-    priority?: CommunicationEntry["priority"];
-  }) => Promise<void>;
+  sendMessage: (
+    applicationId: string,
+    message: {
+      type: CommunicationEntry["type"];
+      title: string;
+      content: string;
+      priority?: CommunicationEntry["priority"];
+    },
+  ) => Promise<void>;
 
   /** Refresh communications */
   refreshCommunications: (applicationId: string) => Promise<void>;
 
   // Notification preferences actions
   /** Set notification preferences */
-  setNotificationPreferences: (preferences: NotificationPreferences | null) => void;
+  setNotificationPreferences: (
+    preferences: NotificationPreferences | null,
+  ) => void;
 
   /** Update notification preferences */
-  updateNotificationPreferences: (updates: Partial<NotificationPreferences>) => Promise<void>;
+  updateNotificationPreferences: (
+    updates: Partial<NotificationPreferences>,
+  ) => Promise<void>;
 
   // Real-time connection actions
   /** Connect to real-time updates */
@@ -299,7 +321,9 @@ interface LoanStatusTrackingStoreActions {
   disconnectRealTime: () => void;
 
   /** Set connection status */
-  setConnectionStatus: (status: LoanStatusTrackingStoreState["connectionStatus"]) => void;
+  setConnectionStatus: (
+    status: LoanStatusTrackingStoreState["connectionStatus"],
+  ) => void;
 
   // Auto-refresh actions
   /** Enable/disable auto-refresh */
@@ -330,7 +354,10 @@ interface LoanStatusTrackingStoreActions {
   getStatusConfig: () => StatusConfig | null;
 
   /** Get estimated completion time */
-  getEstimatedCompletionTime: () => { hours: number; businessDays: number } | null;
+  getEstimatedCompletionTime: () => {
+    hours: number;
+    businessDays: number;
+  } | null;
 
   /** Get next allowed statuses */
   getNextAllowedStatuses: () => LoanApplicationStatus[];
@@ -348,7 +375,8 @@ interface LoanStatusTrackingStoreActions {
 /**
  * Combined Loan Status Tracking Store Type
  */
-type LoanStatusTrackingStore = LoanStatusTrackingStoreState & LoanStatusTrackingStoreActions;
+type LoanStatusTrackingStore = LoanStatusTrackingStoreState &
+  LoanStatusTrackingStoreActions;
 
 /**
  * Loan Status Tracking Store Implementation
@@ -383,7 +411,7 @@ export const useLoanStatusTrackingStore = create<LoanStatusTrackingStore>()(
         // Security state (never persisted)
         currentUserId: null,
         sessionStartTime: null,
-        securityLevel: 'public',
+        securityLevel: "public",
         dataVersions: new Map(),
         lastSecurityValidation: null,
 
@@ -405,12 +433,16 @@ export const useLoanStatusTrackingStore = create<LoanStatusTrackingStore>()(
                 : null,
             }),
             false,
-            "updateApplicationStatus"
+            "updateApplicationStatus",
           );
         },
 
         refreshApplicationStatus: async (applicationId) => {
-          set({ isLoading: true, error: null }, false, "refreshApplicationStatus");
+          set(
+            { isLoading: true, error: null },
+            false,
+            "refreshApplicationStatus",
+          );
 
           try {
             // This would call the actual API
@@ -421,10 +453,13 @@ export const useLoanStatusTrackingStore = create<LoanStatusTrackingStore>()(
           } catch (error) {
             set(
               {
-                error: error instanceof Error ? error.message : "Failed to refresh application status",
+                error:
+                  error instanceof Error
+                    ? error.message
+                    : "Failed to refresh application status",
               },
               false,
-              "refreshApplicationStatus"
+              "refreshApplicationStatus",
             );
           } finally {
             set({ isLoading: false }, false, "refreshApplicationStatus");
@@ -442,7 +477,7 @@ export const useLoanStatusTrackingStore = create<LoanStatusTrackingStore>()(
               milestones: [...state.milestones, milestone],
             }),
             false,
-            "addMilestone"
+            "addMilestone",
           );
         },
 
@@ -450,29 +485,37 @@ export const useLoanStatusTrackingStore = create<LoanStatusTrackingStore>()(
           set(
             (state) => ({
               milestones: state.milestones.map((milestone) =>
-                milestone.id === milestoneId ? { ...milestone, ...updates } : milestone
+                milestone.id === milestoneId
+                  ? { ...milestone, ...updates }
+                  : milestone,
               ),
             }),
             false,
-            "updateMilestone"
+            "updateMilestone",
           );
         },
 
         refreshTimeline: async (applicationId) => {
-          set({ isLoadingTimeline: true, timelineError: null }, false, "refreshTimeline");
+          set(
+            { isLoadingTimeline: true, timelineError: null },
+            false,
+            "refreshTimeline",
+          );
 
           try {
             // This would call the actual API
             // const response = await loanApi.getApplicationMilestones(applicationId);
             // set({ milestones: response });
-
           } catch (error) {
             set(
               {
-                timelineError: error instanceof Error ? error.message : "Failed to refresh timeline",
+                timelineError:
+                  error instanceof Error
+                    ? error.message
+                    : "Failed to refresh timeline",
               },
               false,
-              "refreshTimeline"
+              "refreshTimeline",
             );
           } finally {
             set({ isLoadingTimeline: false }, false, "refreshTimeline");
@@ -492,14 +535,17 @@ export const useLoanStatusTrackingStore = create<LoanStatusTrackingStore>()(
                   ? {
                       ...doc,
                       status,
-                      verificationDate: status === "da_xac_nhan" ? new Date().toISOString() : doc.verificationDate,
+                      verificationDate:
+                        status === "da_xac_nhan"
+                          ? new Date().toISOString()
+                          : doc.verificationDate,
                       ...metadata,
                     }
-                  : doc
+                  : doc,
               ),
             }),
             false,
-            "updateDocumentStatus"
+            "updateDocumentStatus",
           );
         },
 
@@ -509,7 +555,7 @@ export const useLoanStatusTrackingStore = create<LoanStatusTrackingStore>()(
               documents: [...state.documents, document],
             }),
             false,
-            "addDocument"
+            "addDocument",
           );
         },
 
@@ -519,25 +565,31 @@ export const useLoanStatusTrackingStore = create<LoanStatusTrackingStore>()(
               documents: state.documents.filter((doc) => doc.id !== documentId),
             }),
             false,
-            "removeDocument"
+            "removeDocument",
           );
         },
 
         refreshDocuments: async (applicationId) => {
-          set({ isLoadingDocuments: true, documentsError: null }, false, "refreshDocuments");
+          set(
+            { isLoadingDocuments: true, documentsError: null },
+            false,
+            "refreshDocuments",
+          );
 
           try {
             // This would call the actual API
             // const response = await loanApi.getApplicationDocumentsStatus(applicationId);
             // set({ documents: response });
-
           } catch (error) {
             set(
               {
-                documentsError: error instanceof Error ? error.message : "Failed to refresh documents",
+                documentsError:
+                  error instanceof Error
+                    ? error.message
+                    : "Failed to refresh documents",
               },
               false,
-              "refreshDocuments"
+              "refreshDocuments",
             );
           } finally {
             set({ isLoadingDocuments: false }, false, "refreshDocuments");
@@ -555,7 +607,7 @@ export const useLoanStatusTrackingStore = create<LoanStatusTrackingStore>()(
               communications: [communication, ...state.communications],
             }),
             false,
-            "addCommunication"
+            "addCommunication",
           );
         },
 
@@ -565,11 +617,11 @@ export const useLoanStatusTrackingStore = create<LoanStatusTrackingStore>()(
               communications: state.communications.map((comm) =>
                 comm.id === communicationId
                   ? { ...comm, readAt: new Date().toISOString() }
-                  : comm
+                  : comm,
               ),
             }),
             false,
-            "markCommunicationAsRead"
+            "markCommunicationAsRead",
           );
         },
 
@@ -596,11 +648,13 @@ export const useLoanStatusTrackingStore = create<LoanStatusTrackingStore>()(
             };
 
             get().addCommunication(newCommunication);
-
           } catch (error) {
             // Add to offline queue if offline
             if (get().isOffline) {
-              get().addToOfflineQueue("send_message", { applicationId, message });
+              get().addToOfflineQueue("send_message", {
+                applicationId,
+                message,
+              });
             } else {
               throw error;
             }
@@ -608,41 +662,61 @@ export const useLoanStatusTrackingStore = create<LoanStatusTrackingStore>()(
         },
 
         refreshCommunications: async (applicationId) => {
-          set({ isLoadingCommunications: true, communicationsError: null }, false, "refreshCommunications");
+          set(
+            { isLoadingCommunications: true, communicationsError: null },
+            false,
+            "refreshCommunications",
+          );
 
           try {
             // This would call the actual API
             // const response = await loanApi.getApplicationCommunications(applicationId);
             // set({ communications: response });
-
           } catch (error) {
             set(
               {
-                communicationsError: error instanceof Error ? error.message : "Failed to refresh communications",
+                communicationsError:
+                  error instanceof Error
+                    ? error.message
+                    : "Failed to refresh communications",
               },
               false,
-              "refreshCommunications"
+              "refreshCommunications",
             );
           } finally {
-            set({ isLoadingCommunications: false }, false, "refreshCommunications");
+            set(
+              { isLoadingCommunications: false },
+              false,
+              "refreshCommunications",
+            );
           }
         },
 
         // Notification preferences actions
         setNotificationPreferences: (preferences) => {
-          set({ notificationPreferences: preferences }, false, "setNotificationPreferences");
+          set(
+            { notificationPreferences: preferences },
+            false,
+            "setNotificationPreferences",
+          );
         },
 
         updateNotificationPreferences: async (updates) => {
           try {
             const current = get().notificationPreferences;
-            const updated = { ...current, ...updates } as NotificationPreferences;
+            const updated = {
+              ...current,
+              ...updates,
+            } as NotificationPreferences;
 
             // This would call the actual API
             // await loanApi.updateNotificationPreferences(updated);
 
-            set({ notificationPreferences: updated }, false, "updateNotificationPreferences");
-
+            set(
+              { notificationPreferences: updated },
+              false,
+              "updateNotificationPreferences",
+            );
           } catch (error) {
             console.error("Failed to update notification preferences:", error);
             throw error;
@@ -665,7 +739,11 @@ export const useLoanStatusTrackingStore = create<LoanStatusTrackingStore>()(
               const ws = new WebSocket(wsUrl);
 
               ws.onopen = () => {
-                set({ connectionStatus: "connected", wsConnection: ws }, false, "connectRealTime");
+                set(
+                  { connectionStatus: "connected", wsConnection: ws },
+                  false,
+                  "connectRealTime",
+                );
               };
 
               ws.onmessage = (event) => {
@@ -681,7 +759,11 @@ export const useLoanStatusTrackingStore = create<LoanStatusTrackingStore>()(
                       state.addMilestone(data.milestone);
                       break;
                     case "document_update":
-                      state.updateDocumentStatus(data.documentId, data.status, data.metadata);
+                      state.updateDocumentStatus(
+                        data.documentId,
+                        data.status,
+                        data.metadata,
+                      );
                       break;
                     case "communication_added":
                       state.addCommunication(data.communication);
@@ -701,16 +783,18 @@ export const useLoanStatusTrackingStore = create<LoanStatusTrackingStore>()(
               };
 
               ws.onclose = () => {
-                set({ connectionStatus: "disconnected", wsConnection: null }, false, "connectRealTime");
+                set(
+                  { connectionStatus: "disconnected", wsConnection: null },
+                  false,
+                  "connectRealTime",
+                );
               };
 
               set({ wsConnection: ws }, false, "connectRealTime");
-
             } else {
               // Fallback to SSE
               state.connectSSE(applicationId);
             }
-
           } catch (error) {
             console.error("Failed to connect real-time updates:", error);
             set({ connectionStatus: "error" }, false, "connectRealTime");
@@ -719,10 +803,16 @@ export const useLoanStatusTrackingStore = create<LoanStatusTrackingStore>()(
 
         connectSSE: (applicationId) => {
           try {
-            const eventSource = new EventSource(`/api/v1/loans/applications/${applicationId}/status-stream`);
+            const eventSource = new EventSource(
+              `/api/v1/loans/applications/${applicationId}/status-stream`,
+            );
 
             eventSource.onopen = () => {
-              set({ connectionStatus: "connected", sseConnection: eventSource }, false, "connectSSE");
+              set(
+                { connectionStatus: "connected", sseConnection: eventSource },
+                false,
+                "connectSSE",
+              );
             };
 
             eventSource.onmessage = (event) => {
@@ -739,7 +829,11 @@ export const useLoanStatusTrackingStore = create<LoanStatusTrackingStore>()(
                     state.addMilestone(data.milestone);
                     break;
                   case "document_update":
-                    state.updateDocumentStatus(data.documentId, data.status, data.metadata);
+                    state.updateDocumentStatus(
+                      data.documentId,
+                      data.status,
+                      data.metadata,
+                    );
                     break;
                   case "communication_added":
                     state.addCommunication(data.communication);
@@ -756,7 +850,6 @@ export const useLoanStatusTrackingStore = create<LoanStatusTrackingStore>()(
             };
 
             set({ sseConnection: eventSource }, false, "connectSSE");
-
           } catch (error) {
             console.error("Failed to connect SSE:", error);
             set({ connectionStatus: "error" }, false, "connectSSE");
@@ -776,7 +869,11 @@ export const useLoanStatusTrackingStore = create<LoanStatusTrackingStore>()(
             set({ sseConnection: null }, false, "disconnectRealTime");
           }
 
-          set({ connectionStatus: "disconnected" }, false, "disconnectRealTime");
+          set(
+            { connectionStatus: "disconnected" },
+            false,
+            "disconnectRealTime",
+          );
         },
 
         setConnectionStatus: (status) => {
@@ -791,7 +888,7 @@ export const useLoanStatusTrackingStore = create<LoanStatusTrackingStore>()(
               ...(interval && { refreshInterval: interval }),
             },
             false,
-            "setAutoRefresh"
+            "setAutoRefresh",
           );
         },
 
@@ -823,7 +920,7 @@ export const useLoanStatusTrackingStore = create<LoanStatusTrackingStore>()(
               ],
             }),
             false,
-            "addToOfflineQueue"
+            "addToOfflineQueue",
           );
         },
 
@@ -847,7 +944,6 @@ export const useLoanStatusTrackingStore = create<LoanStatusTrackingStore>()(
 
             // Clear the queue after processing
             set({ offlineQueue: [] }, false, "processOfflineQueue");
-
           } catch (error) {
             console.error("Failed to process offline queue:", error);
           }
@@ -859,18 +955,24 @@ export const useLoanStatusTrackingStore = create<LoanStatusTrackingStore>()(
         },
 
         clearErrors: () => {
-          set({
-            error: null,
-            timelineError: null,
-            documentsError: null,
-            communicationsError: null,
-          }, false, "clearErrors");
+          set(
+            {
+              error: null,
+              timelineError: null,
+              documentsError: null,
+              communicationsError: null,
+            },
+            false,
+            "clearErrors",
+          );
         },
 
         // Utility actions
         getStatusConfig: () => {
           const { applicationStatus } = get();
-          return applicationStatus ? getStatusConfig(applicationStatus.status) : null;
+          return applicationStatus
+            ? getStatusConfig(applicationStatus.status)
+            : null;
         },
 
         getEstimatedCompletionTime: () => {
@@ -879,7 +981,7 @@ export const useLoanStatusTrackingStore = create<LoanStatusTrackingStore>()(
 
           return calculateEstimatedCompletionTime(
             applicationStatus.status,
-            applicationStatus.loanType as any
+            applicationStatus.loanType as any,
           );
         },
 
@@ -892,38 +994,49 @@ export const useLoanStatusTrackingStore = create<LoanStatusTrackingStore>()(
 
         getDocumentsRequiringAction: () => {
           const { documents } = get();
-          return documents.filter(doc =>
-            ["cho_tai_len", "bi_tu_choi", "het_han"].includes(doc.status)
+          return documents.filter((doc) =>
+            ["cho_tai_len", "bi_tu_choi", "het_han"].includes(doc.status),
           );
         },
 
         getUnreadCommunicationsCount: () => {
           const { communications } = get();
-          return communications.filter(comm => !comm.readAt).length;
+          return communications.filter((comm) => !comm.readAt).length;
         },
 
         // Security actions
         validateStoredData: (data: any) => {
           // Validate and sanitize data before storage
-          const allowedFields = ['notificationPreferences', 'autoRefresh', 'refreshInterval'];
+          const allowedFields = [
+            "notificationPreferences",
+            "autoRefresh",
+            "refreshInterval",
+          ];
           const sanitized: any = {};
 
           for (const field of allowedFields) {
-            if (data.hasOwnProperty(field)) {
+            if (Object.hasOwn(data, field)) {
               // Validate field types and values
               switch (field) {
-                case 'autoRefresh':
-                  sanitized[field] = typeof data[field] === 'boolean' ? data[field] : false;
+                case "autoRefresh":
+                  sanitized[field] =
+                    typeof data[field] === "boolean" ? data[field] : false;
                   break;
-                case 'refreshInterval':
-                  sanitized[field] = typeof data[field] === 'number' && data[field] > 0 ? data[field] : 30;
+                case "refreshInterval":
+                  sanitized[field] =
+                    typeof data[field] === "number" && data[field] > 0
+                      ? data[field]
+                      : 30;
                   break;
-                case 'notificationPreferences':
-                  if (data[field] && typeof data[field] === 'object') {
+                case "notificationPreferences":
+                  if (data[field] && typeof data[field] === "object") {
                     sanitized[field] = {
                       channels: data[field]?.channels || {},
-                      frequency: data[field]?.frequency || 'real_time',
-                      urgentOnly: typeof data[field]?.urgentOnly === 'boolean' ? data[field].urgentOnly : false,
+                      frequency: data[field]?.frequency || "real_time",
+                      urgentOnly:
+                        typeof data[field]?.urgentOnly === "boolean"
+                          ? data[field].urgentOnly
+                          : false,
                     };
                   }
                   break;
@@ -938,26 +1051,30 @@ export const useLoanStatusTrackingStore = create<LoanStatusTrackingStore>()(
 
         secureDataCleanup: () => {
           // Clean up sensitive data that should not be in memory
-          set({
-            applicationStatus: null,
-            documents: [],
-            communications: [],
-            wsConnection: null,
-            sseConnection: null,
-            error: null,
-            timelineError: null,
-            documentsError: null,
-            communicationsError: null,
-          }, false, "secureDataCleanup");
+          set(
+            {
+              applicationStatus: null,
+              documents: [],
+              communications: [],
+              wsConnection: null,
+              sseConnection: null,
+              error: null,
+              timelineError: null,
+              documentsError: null,
+              communicationsError: null,
+            },
+            false,
+            "secureDataCleanup",
+          );
 
           // Log cleanup for audit
           auditLogger.logSecurityEvent(
             AuditEventType.SYSTEM_ERROR,
             AuditSeverity.LOW,
             {
-              action: 'secure_data_cleanup',
+              action: "secure_data_cleanup",
               timestamp: new Date().toISOString(),
-            }
+            },
           );
         },
 
@@ -985,7 +1102,7 @@ export const useLoanStatusTrackingStore = create<LoanStatusTrackingStore>()(
               sseConnection: null,
             },
             false,
-            "reset"
+            "reset",
           );
         },
       }),
@@ -1013,7 +1130,7 @@ export const useLoanStatusTrackingStore = create<LoanStatusTrackingStore>()(
               const parsed = JSON.parse(item);
               return validateStoredDataForStorage(parsed);
             } catch (error) {
-              console.error('Secure storage read error:', error);
+              console.error("Secure storage read error:", error);
               return null;
             }
           },
@@ -1023,14 +1140,14 @@ export const useLoanStatusTrackingStore = create<LoanStatusTrackingStore>()(
               const validated = validateStoredDataForStorage(value);
               sessionStorage.setItem(name, JSON.stringify(validated));
             } catch (error) {
-              console.error('Secure storage write error:', error);
+              console.error("Secure storage write error:", error);
             }
           },
           removeItem: (name) => {
             try {
               sessionStorage.removeItem(name);
             } catch (error) {
-              console.error('Secure storage remove error:', error);
+              console.error("Secure storage remove error:", error);
             }
           },
         },
@@ -1045,23 +1162,30 @@ export const useLoanStatusTrackingStore = create<LoanStatusTrackingStore>()(
 /**
  * Selectors for common use cases
  */
-export const useApplicationStatus = () => useLoanStatusTrackingStore((state) => state.applicationStatus);
-export const useMilestones = () => useLoanStatusTrackingStore((state) => state.milestones);
-export const useDocuments = () => useLoanStatusTrackingStore((state) => state.documents);
-export const useCommunications = () => useLoanStatusTrackingStore((state) => state.communications);
-export const useConnectionStatus = () => useLoanStatusTrackingStore((state) => state.connectionStatus);
-export const useLoadingStates = () => useLoanStatusTrackingStore((state) => ({
-  isLoading: state.isLoading,
-  isLoadingTimeline: state.isLoadingTimeline,
-  isLoadingDocuments: state.isLoadingDocuments,
-  isLoadingCommunications: state.isLoadingCommunications,
-}));
-export const useErrors = () => useLoanStatusTrackingStore((state) => ({
-  error: state.error,
-  timelineError: state.timelineError,
-  documentsError: state.documentsError,
-  communicationsError: state.communicationsError,
-}));
+export const useApplicationStatus = () =>
+  useLoanStatusTrackingStore((state) => state.applicationStatus);
+export const useMilestones = () =>
+  useLoanStatusTrackingStore((state) => state.milestones);
+export const useDocuments = () =>
+  useLoanStatusTrackingStore((state) => state.documents);
+export const useCommunications = () =>
+  useLoanStatusTrackingStore((state) => state.communications);
+export const useConnectionStatus = () =>
+  useLoanStatusTrackingStore((state) => state.connectionStatus);
+export const useLoadingStates = () =>
+  useLoanStatusTrackingStore((state) => ({
+    isLoading: state.isLoading,
+    isLoadingTimeline: state.isLoadingTimeline,
+    isLoadingDocuments: state.isLoadingDocuments,
+    isLoadingCommunications: state.isLoadingCommunications,
+  }));
+export const useErrors = () =>
+  useLoanStatusTrackingStore((state) => ({
+    error: state.error,
+    timelineError: state.timelineError,
+    documentsError: state.documentsError,
+    communicationsError: state.communicationsError,
+  }));
 
 /**
  * Hook for loan status tracking store hydration
@@ -1085,25 +1209,36 @@ import React from "react";
  */
 function validateStoredDataForStorage(data: any): any {
   // Validate and sanitize data before storage
-  const allowedFields = ['notificationPreferences', 'autoRefresh', 'refreshInterval'];
+  const allowedFields = [
+    "notificationPreferences",
+    "autoRefresh",
+    "refreshInterval",
+  ];
   const sanitized: any = {};
 
   for (const field of allowedFields) {
-    if (data.hasOwnProperty(field)) {
+    if (Object.hasOwn(data, field)) {
       // Validate field types and values
       switch (field) {
-        case 'autoRefresh':
-          sanitized[field] = typeof data[field] === 'boolean' ? data[field] : false;
+        case "autoRefresh":
+          sanitized[field] =
+            typeof data[field] === "boolean" ? data[field] : false;
           break;
-        case 'refreshInterval':
-          sanitized[field] = typeof data[field] === 'number' && data[field] > 0 ? data[field] : 30;
+        case "refreshInterval":
+          sanitized[field] =
+            typeof data[field] === "number" && data[field] > 0
+              ? data[field]
+              : 30;
           break;
-        case 'notificationPreferences':
-          if (data[field] && typeof data[field] === 'object') {
+        case "notificationPreferences":
+          if (data[field] && typeof data[field] === "object") {
             sanitized[field] = {
               channels: data[field]?.channels || {},
-              frequency: data[field]?.frequency || 'real_time',
-              urgentOnly: typeof data[field]?.urgentOnly === 'boolean' ? data[field].urgentOnly : false,
+              frequency: data[field]?.frequency || "real_time",
+              urgentOnly:
+                typeof data[field]?.urgentOnly === "boolean"
+                  ? data[field].urgentOnly
+                  : false,
             };
           }
           break;

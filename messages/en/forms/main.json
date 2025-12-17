@@ -1,193 +1,193 @@
 {
-    "common": {
-        "firstName": {
-            "label": "First Name",
-            "placeholder": "John",
-            "help": "",
-            "errors": {
-                "required": "First name is required"
-            }
-        },
-        "lastName": {
-            "label": "Last Name",
-            "placeholder": "Doe",
-            "help": "",
-            "errors": {
-                "required": "Last name is required"
-            }
-        },
-        "username": {
-            "label": "Username",
-            "placeholder": "Enter your username",
-            "help": "",
-            "errors": {
-                "required": "Username is required",
-                "minLength": "At least 3 characters"
-            }
-        },
-        "email": {
-            "label": "Email Address",
-            "placeholder": "you@example.com",
-            "help": "",
-            "errors": {
-                "required": "Email is required",
-                "pattern": "Invalid email format"
-            }
-        },
-        "age": {
-            "label": "Age",
-            "placeholder": "Enter your age",
-            "help": "",
-            "errors": {
-                "required": "Age is required",
-                "min": "Must be 18 or older"
-            }
-        },
-        "bio": {
-            "label": "Biography",
-            "placeholder": "Tell us about yourself...",
-            "help": ""
-        },
-        "country": {
-            "label": "Country",
-            "placeholder": "Select your country",
-            "help": "",
-            "errors": {
-                "required": "Please select a country"
-            }
-        },
-        "category": {
-            "label": "Product Category",
-            "placeholder": "Select category",
-            "help": ""
-        },
-        "gender": {
-            "label": "Gender",
-            "placeholder": "",
-            "help": "",
-            "errors": {
-                "required": "Please select gender"
-            }
-        },
-        "terms": {
-            "label": "Terms and Conditions",
-            "placeholder": "",
-            "help": "",
-            "errors": {
-                "custom": "You must accept the terms"
-            }
-        },
-        "interests": {
-            "label": "Interests",
-            "placeholder": "",
-            "help": ""
-        },
-        "notifications": {
-            "label": "Enable Notifications",
-            "placeholder": "",
-            "help": ""
-        },
-        "newsletter": {
-            "label": "Subscribe to Newsletter",
-            "placeholder": "",
-            "help": ""
-        },
-        "birthdate": {
-            "label": "Birth Date",
-            "placeholder": "Select date",
-            "help": "",
-            "errors": {
-                "required": "Birth date is required"
-            }
-        },
-        "appointment": {
-            "label": "Appointment",
-            "placeholder": "Select date and time",
-            "help": ""
-        },
-        "meeting_time": {
-            "label": "Meeting Time",
-            "placeholder": "Select time",
-            "help": ""
-        },
-        "full_name": {
-            "label": "Full Name",
-            "placeholder": "Enter full name",
-            "help": "",
-            "errors": {
-                "required": "Full name is required",
-                "pattern": "Full name must assume alpha characters"
-            }
-        },
-        "national_id": {
-            "label": "National ID (12 digits)",
-            "placeholder": "Enter 12-digit ID",
-            "help": "",
-            "errors": {
-                "required": "National ID is required"
-            }
-        },
-        "province": {
-            "label": "City / Province",
-            "placeholder": "Select province",
-            "help": "",
-            "errors": {
-                "required": "Please select a province"
-            }
-        },
-        "extra_docs": {
-            "label": "Vehicle Registration/Ownership",
-            "placeholder": "",
-            "help": ""
-        },
-        "career_status": {
-            "label": "Employment Status",
-            "placeholder": "Select status",
-            "help": "",
-            "errors": {
-                "required": "Please select employment status"
-            }
-        },
-        "career_type": {
-            "label": "Industry / Career Type",
-            "placeholder": "Select career type",
-            "help": "",
-            "errors": {
-                "required": "Please select career type"
-            }
-        },
-        "income": {
-            "label": "Monthly Income",
-            "placeholder": "Select income range",
-            "help": "",
-            "errors": {
-                "required": "Please select income"
-            }
-        },
-        "having_loan": {
-            "label": "Do you currently have a loan?",
-            "placeholder": "Select...",
-            "help": ""
-        },
-        "credit_status": {
-            "label": "Credit History (Last 3 years)",
-            "placeholder": "Select history...",
-            "help": "",
-            "errors": {
-                "required": "Please select credit history"
-            }
-        }
+  "common": {
+    "firstName": {
+      "label": "First Name",
+      "placeholder": "John",
+      "help": "",
+      "errors": {
+        "required": "First name is required"
+      }
     },
-    "validation": {
-        "required": "This field is required",
-        "email": "Please enter a valid email address",
-        "url": "Please enter a valid URL",
-        "phone": "Please enter a valid phone number",
-        "minLength": "Minimum {min} characters required",
-        "maxLength": "Maximum {max} characters allowed",
-        "min": "Value must be at least {min}",
-        "max": "Value must be at most {max}",
-        "pattern": "Invalid format",
-        "custom": "Invalid value"
+    "lastName": {
+      "label": "Last Name",
+      "placeholder": "Doe",
+      "help": "",
+      "errors": {
+        "required": "Last name is required"
+      }
+    },
+    "username": {
+      "label": "Username",
+      "placeholder": "Enter your username",
+      "help": "",
+      "errors": {
+        "required": "Username is required",
+        "minLength": "At least 3 characters"
+      }
+    },
+    "email": {
+      "label": "Email Address",
+      "placeholder": "you@example.com",
+      "help": "",
+      "errors": {
+        "required": "Email is required",
+        "pattern": "Invalid email format"
+      }
+    },
+    "age": {
+      "label": "Age",
+      "placeholder": "Enter your age",
+      "help": "",
+      "errors": {
+        "required": "Age is required",
+        "min": "Must be 18 or older"
+      }
+    },
+    "bio": {
+      "label": "Biography",
+      "placeholder": "Tell us about yourself...",
+      "help": ""
+    },
+    "country": {
+      "label": "Country",
+      "placeholder": "Select your country",
+      "help": "",
+      "errors": {
+        "required": "Please select a country"
+      }
+    },
+    "category": {
+      "label": "Product Category",
+      "placeholder": "Select category",
+      "help": ""
+    },
+    "gender": {
+      "label": "Gender",
+      "placeholder": "",
+      "help": "",
+      "errors": {
+        "required": "Please select gender"
+      }
+    },
+    "terms": {
+      "label": "Terms and Conditions",
+      "placeholder": "",
+      "help": "",
+      "errors": {
+        "custom": "You must accept the terms"
+      }
+    },
+    "interests": {
+      "label": "Interests",
+      "placeholder": "",
+      "help": ""
+    },
+    "notifications": {
+      "label": "Enable Notifications",
+      "placeholder": "",
+      "help": ""
+    },
+    "newsletter": {
+      "label": "Subscribe to Newsletter",
+      "placeholder": "",
+      "help": ""
+    },
+    "birthdate": {
+      "label": "Birth Date",
+      "placeholder": "Select date",
+      "help": "",
+      "errors": {
+        "required": "Birth date is required"
+      }
+    },
+    "appointment": {
+      "label": "Appointment",
+      "placeholder": "Select date and time",
+      "help": ""
+    },
+    "meeting_time": {
+      "label": "Meeting Time",
+      "placeholder": "Select time",
+      "help": ""
+    },
+    "full_name": {
+      "label": "Full Name",
+      "placeholder": "Enter full name",
+      "help": "",
+      "errors": {
+        "required": "Full name is required",
+        "pattern": "Full name must assume alpha characters"
+      }
+    },
+    "national_id": {
+      "label": "National ID (12 digits)",
+      "placeholder": "Enter 12-digit ID",
+      "help": "",
+      "errors": {
+        "required": "National ID is required"
+      }
+    },
+    "province": {
+      "label": "City / Province",
+      "placeholder": "Select province",
+      "help": "",
+      "errors": {
+        "required": "Please select a province"
+      }
+    },
+    "extra_docs": {
+      "label": "Vehicle Registration/Ownership",
+      "placeholder": "",
+      "help": ""
+    },
+    "career_status": {
+      "label": "Employment Status",
+      "placeholder": "Select status",
+      "help": "",
+      "errors": {
+        "required": "Please select employment status"
+      }
+    },
+    "career_type": {
+      "label": "Industry / Career Type",
+      "placeholder": "Select career type",
+      "help": "",
+      "errors": {
+        "required": "Please select career type"
+      }
+    },
+    "income": {
+      "label": "Monthly Income",
+      "placeholder": "Select income range",
+      "help": "",
+      "errors": {
+        "required": "Please select income"
+      }
+    },
+    "having_loan": {
+      "label": "Do you currently have a loan?",
+      "placeholder": "Select...",
+      "help": ""
+    },
+    "credit_status": {
+      "label": "Credit History (Last 3 years)",
+      "placeholder": "Select history...",
+      "help": "",
+      "errors": {
+        "required": "Please select credit history"
+      }
     }
+  },
+  "validation": {
+    "required": "This field is required",
+    "email": "Please enter a valid email address",
+    "url": "Please enter a valid URL",
+    "phone": "Please enter a valid phone number",
+    "minLength": "Minimum {min} characters required",
+    "maxLength": "Maximum {max} characters allowed",
+    "min": "Value must be at least {min}",
+    "max": "Value must be at most {max}",
+    "pattern": "Invalid format",
+    "custom": "Invalid value"
+  }
 }

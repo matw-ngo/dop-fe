@@ -4,11 +4,18 @@
  * Separate module to avoid circular dependencies in the request handler.
  */
 
-import { TranslationMetrics, getMetrics, initTranslationMonitor } from './translation-monitor';
+import {
+  getMetrics,
+  initTranslationMonitor,
+  TranslationMetrics,
+} from "./translation-monitor";
 
 // Track server-side metrics without requiring client-side modules
 const serverMetrics: {
-  loadTimes: Record<string, Array<{ loadTime: number; size: number; timestamp: number }>>;
+  loadTimes: Record<
+    string,
+    Array<{ loadTime: number; size: number; timestamp: number }>
+  >;
   fileSizes: Record<string, number>;
 } = {
   loadTimes: {},
@@ -19,7 +26,7 @@ export function trackServerLoadTime(
   namespace: string,
   locale: string,
   loadTime: number,
-  size: number
+  size: number,
 ) {
   const key = `${namespace}.${locale}`;
 
@@ -44,11 +51,13 @@ export function getServerMetrics() {
 }
 
 // Initialize monitoring in server environment
-if (typeof window === 'undefined') {
+if (typeof window === "undefined") {
   initTranslationMonitor({
-    enabled: process.env.NODE_ENV === 'production',
+    enabled: process.env.NODE_ENV === "production",
     analytics: {
-      enabled: !!process.env.NEXT_PUBLIC_GA_ID || !!process.env.TRANSLATION_ANALYTICS_ENDPOINT,
+      enabled:
+        !!process.env.NEXT_PUBLIC_GA_ID ||
+        !!process.env.TRANSLATION_ANALYTICS_ENDPOINT,
       gtagId: process.env.NEXT_PUBLIC_GA_ID,
       customEndpoint: process.env.TRANSLATION_ANALYTICS_ENDPOINT,
     },

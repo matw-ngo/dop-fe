@@ -10,16 +10,16 @@
  * - Server and client-side support
  */
 
-import { cache } from 'react';
+import { cache } from "react";
 import {
-  trackLoadTime,
   trackCacheHit,
+  trackLoadTime,
+  trackMissingKey,
   trackTranslationRequest,
-  trackMissingKey
-} from '../translation-monitor';
+} from "../translation-monitor";
 
 // Type definitions
-export type Locale = 'en' | 'vi';
+export type Locale = "en" | "vi";
 export type Namespace = string;
 
 export interface TranslationMessages {
@@ -42,18 +42,21 @@ export interface LoadResult {
 }
 
 // Configuration
-const SUPPORTED_LOCALES: Locale[] = ['en', 'vi'];
-const DEFAULT_LOCALE: Locale = 'vi';
-const DEFAULT_NAMESPACE = ''; // Use empty string for root level in flat structure
-const COMMON_NAMESPACE = 'common'; // For explicit common namespace requests
+const SUPPORTED_LOCALES: Locale[] = ["en", "vi"];
+const DEFAULT_LOCALE: Locale = "vi";
+const DEFAULT_NAMESPACE = ""; // Use empty string for root level in flat structure
+const COMMON_NAMESPACE = "common"; // For explicit common namespace requests
 const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 
 // In-memory cache for loaded translations
-const translationCache = new Map<string, {
-  messages: TranslationMessages;
-  timestamp: number;
-  size: number;
-}>();
+const translationCache = new Map<
+  string,
+  {
+    messages: TranslationMessages;
+    timestamp: number;
+    size: number;
+  }
+>();
 
 // Cache statistics
 let cacheHits = 0;
@@ -83,7 +86,7 @@ function cleanupCache(): void {
       keysToDelete.push(key);
     }
   });
-  keysToDelete.forEach(key => translationCache.delete(key));
+  keysToDelete.forEach((key) => translationCache.delete(key));
 }
 
 /**
@@ -93,11 +96,13 @@ function cleanupCache(): void {
  */
 async function loadTranslationFile(
   locale: string,
-  namespace: string
+  namespace: string,
 ): Promise<TranslationMessages> {
   try {
     // First try: namespace-based directory structure (e.g., messages/common/vi.json)
-    const module = await import(`../../../messages/${namespace}/${locale}.json`);
+    const module = await import(
+      `../../../messages/${namespace}/${locale}.json`
+    );
     return module.default;
   } catch (namespaceError) {
     try {
@@ -106,7 +111,11 @@ async function loadTranslationFile(
       const allMessages = module.default;
 
       // Extract namespace from flat structure if it exists
-      if (namespace && namespace !== DEFAULT_NAMESPACE && allMessages[namespace]) {
+      if (
+        namespace &&
+        namespace !== DEFAULT_NAMESPACE &&
+        allMessages[namespace]
+      ) {
         return allMessages[namespace];
       }
 
@@ -119,11 +128,14 @@ async function loadTranslationFile(
         return module.default;
       } catch (commonError) {
         // Last resort: return empty object
-        console.warn(`Failed to load translations for locale "${locale}" and namespace "${namespace}"`, {
-          namespaceError,
-          rootError,
-          commonError
-        });
+        console.warn(
+          `Failed to load translations for locale "${locale}" and namespace "${namespace}"`,
+          {
+            namespaceError,
+            rootError,
+            commonError,
+          },
+        );
         return {};
       }
     }
@@ -133,91 +145,96 @@ async function loadTranslationFile(
 /**
  * Load translations for a specific locale and namespace with caching
  */
-export const loadTranslations = cache(async (
-  locale: string,
-  namespace: string = DEFAULT_NAMESPACE,
-  options: {
-    enableCache?: boolean;
-    fallbackLocale?: Locale;
-  } = {}
-): Promise<LoadResult> => {
-  const startTime = Date.now();
-  const { enableCache = true, fallbackLocale = DEFAULT_LOCALE } = options;
+export const loadTranslations = cache(
+  async (
+    locale: string,
+    namespace: string = DEFAULT_NAMESPACE,
+    options: {
+      enableCache?: boolean;
+      fallbackLocale?: Locale;
+    } = {},
+  ): Promise<LoadResult> => {
+    const startTime = Date.now();
+    const { enableCache = true, fallbackLocale = DEFAULT_LOCALE } = options;
 
-  // Track translation request
-  trackTranslationRequest(locale, namespace);
+    // Track translation request
+    trackTranslationRequest(locale, namespace);
 
-  // Check cache first
-  const cacheKey = getCacheKey(locale, namespace);
-  let fromCache = false;
-  let messages: TranslationMessages = {};
+    // Check cache first
+    const cacheKey = getCacheKey(locale, namespace);
+    let fromCache = false;
+    let messages: TranslationMessages = {};
 
-  if (enableCache && translationCache.has(cacheKey)) {
-    const cached = translationCache.get(cacheKey)!;
-    if (isCacheValid(cached.timestamp)) {
-      messages = cached.messages;
-      fromCache = true;
-      cacheHits++;
-      trackCacheHit(namespace, locale, true);
-    } else {
-      translationCache.delete(cacheKey);
-    }
-  }
-
-  // Load from disk if not in cache
-  if (!fromCache) {
-    cacheMisses++;
-    trackCacheHit(namespace, locale, false);
-
-    try {
-      messages = await loadTranslationFile(locale, namespace);
-
-      // Cache the result
-      if (enableCache && Object.keys(messages).length > 0) {
-        const size = JSON.stringify(messages).length;
-        translationCache.set(cacheKey, {
-          messages,
-          timestamp: Date.now(),
-          size
-        });
+    if (enableCache && translationCache.has(cacheKey)) {
+      const cached = translationCache.get(cacheKey)!;
+      if (isCacheValid(cached.timestamp)) {
+        messages = cached.messages;
+        fromCache = true;
+        cacheHits++;
+        trackCacheHit(namespace, locale, true);
+      } else {
+        translationCache.delete(cacheKey);
       }
-    } catch (error) {
-      console.error(`Failed to load translations for ${locale}:${namespace}`, error);
-
-      // Try fallback locale
-      if (locale !== fallbackLocale) {
-        return loadTranslations(fallbackLocale, namespace, options);
-      }
-
-      // Return empty object as last resort
-      messages = {};
     }
-  }
 
-  const loadTime = Date.now() - startTime;
+    // Load from disk if not in cache
+    if (!fromCache) {
+      cacheMisses++;
+      trackCacheHit(namespace, locale, false);
 
-  // Track performance
-  trackLoadTime(
-    namespace,
-    locale,
-    loadTime,
-    JSON.stringify(messages).length,
-    typeof window !== 'undefined' ? 'client' : 'server'
-  );
+      try {
+        messages = await loadTranslationFile(locale, namespace);
 
-  // Cleanup expired entries periodically
-  if (cacheMisses % 10 === 0) {
-    cleanupCache();
-  }
+        // Cache the result
+        if (enableCache && Object.keys(messages).length > 0) {
+          const size = JSON.stringify(messages).length;
+          translationCache.set(cacheKey, {
+            messages,
+            timestamp: Date.now(),
+            size,
+          });
+        }
+      } catch (error) {
+        console.error(
+          `Failed to load translations for ${locale}:${namespace}`,
+          error,
+        );
 
-  return {
-    messages,
-    locale,
-    namespace,
-    loadTime,
-    fromCache
-  };
-});
+        // Try fallback locale
+        if (locale !== fallbackLocale) {
+          return loadTranslations(fallbackLocale, namespace, options);
+        }
+
+        // Return empty object as last resort
+        messages = {};
+      }
+    }
+
+    const loadTime = Date.now() - startTime;
+
+    // Track performance
+    trackLoadTime(
+      namespace,
+      locale,
+      loadTime,
+      JSON.stringify(messages).length,
+      typeof window !== "undefined" ? "client" : "server",
+    );
+
+    // Cleanup expired entries periodically
+    if (cacheMisses % 10 === 0) {
+      cleanupCache();
+    }
+
+    return {
+      messages,
+      locale,
+      namespace,
+      loadTime,
+      fromCache,
+    };
+  },
+);
 
 /**
  * Load multiple namespaces for a locale
@@ -230,13 +247,13 @@ export async function loadNamespaceTranslations(
     fallbackLocale?: Locale;
     parallel?: boolean;
     useFlatStructure?: boolean; // New option to optimize for flat file structure
-  } = {}
+  } = {},
 ): Promise<TranslationMessages> {
   const {
     enableCache = true,
     fallbackLocale = DEFAULT_LOCALE,
     parallel = true,
-    useFlatStructure = false
+    useFlatStructure = false,
   } = options;
 
   // Optimization: if using flat structure, load the main file once and extract namespaces
@@ -247,7 +264,9 @@ export async function loadNamespaceTranslations(
       const merged: TranslationMessages = {};
 
       // Extract all requested namespaces from the flat structure
-      const namespaceKeys = namespaces.filter(n => n !== DEFAULT_NAMESPACE && n);
+      const namespaceKeys = namespaces.filter(
+        (n) => n !== DEFAULT_NAMESPACE && n,
+      );
       for (const namespace of namespaces) {
         if (!namespace || namespace === DEFAULT_NAMESPACE) {
           // For empty/default namespace, include all top-level keys that are not other namespaces
@@ -267,25 +286,31 @@ export async function loadNamespaceTranslations(
         return merged;
       }
     } catch (error) {
-      console.error('Failed to load from flat structure, falling back to individual loading', error);
+      console.error(
+        "Failed to load from flat structure, falling back to individual loading",
+        error,
+      );
     }
   }
 
   if (parallel) {
     // Load all namespaces in parallel
     const results = await Promise.all(
-      namespaces.map(namespace =>
+      namespaces.map((namespace) =>
         loadTranslations(locale, namespace, { enableCache, fallbackLocale })
-          .then(result => result.messages)
-          .catch(() => ({}))
-      )
+          .then((result) => result.messages)
+          .catch(() => ({})),
+      ),
     );
 
     // Merge all messages
-    return results.reduce((merged, messages) => ({
-      ...merged,
-      ...messages
-    }), {});
+    return results.reduce(
+      (merged, messages) => ({
+        ...merged,
+        ...messages,
+      }),
+      {},
+    );
   } else {
     // Load namespaces sequentially
     const merged: TranslationMessages = {};
@@ -294,7 +319,7 @@ export async function loadNamespaceTranslations(
       try {
         const result = await loadTranslations(locale, namespace, {
           enableCache,
-          fallbackLocale
+          fallbackLocale,
         });
         Object.assign(merged, result.messages);
       } catch (error) {
@@ -312,20 +337,20 @@ export async function loadNamespaceTranslations(
 export async function preloadTranslations(
   locale: string,
   namespaces: string[],
-  options: { fallbackLocale?: Locale } = {}
+  options: { fallbackLocale?: Locale } = {},
 ): Promise<void> {
   const { fallbackLocale = DEFAULT_LOCALE } = options;
 
   // Load in background without blocking
   Promise.all(
-    namespaces.map(namespace =>
+    namespaces.map((namespace) =>
       loadTranslations(locale, namespace, {
         enableCache: true,
-        fallbackLocale
-      }).catch(error => {
+        fallbackLocale,
+      }).catch((error) => {
         console.error(`Failed to preload ${namespace}:${locale}`, error);
-      })
-    )
+      }),
+    ),
   );
 }
 
@@ -336,13 +361,16 @@ export function getCacheStats() {
   return {
     hits: cacheHits,
     misses: cacheMisses,
-    hitRate: cacheHits + cacheMisses > 0 ? (cacheHits / (cacheHits + cacheMisses)) * 100 : 0,
+    hitRate:
+      cacheHits + cacheMisses > 0
+        ? (cacheHits / (cacheHits + cacheMisses)) * 100
+        : 0,
     size: translationCache.size,
     entries: Array.from(translationCache.entries()).map(([key, value]) => ({
       key,
       size: value.size,
-      age: Date.now() - value.timestamp
-    }))
+      age: Date.now() - value.timestamp,
+    })),
   };
 }
 
@@ -381,14 +409,16 @@ export function getDefaultLocale(): Locale {
  */
 export async function getDynamicRequestConfig({
   locale,
-  namespaces = ['common']
+  namespaces = ["common"],
 }: {
   locale: string;
-  namespaces?: string[]
+  namespaces?: string[];
 }) {
   // Validate locale
   if (!isLocaleSupported(locale)) {
-    console.warn(`Unsupported locale "${locale}", falling back to "${DEFAULT_LOCALE}"`);
+    console.warn(
+      `Unsupported locale "${locale}", falling back to "${DEFAULT_LOCALE}"`,
+    );
     locale = DEFAULT_LOCALE;
   }
 
@@ -397,12 +427,12 @@ export async function getDynamicRequestConfig({
     enableCache: true,
     fallbackLocale: DEFAULT_LOCALE,
     parallel: true,
-    useFlatStructure: true // Optimize for current flat file structure
+    useFlatStructure: true, // Optimize for current flat file structure
   });
 
   return {
     locale,
-    messages
+    messages,
   };
 }
 
@@ -410,14 +440,10 @@ export async function getDynamicRequestConfig({
  * Default export for next-intl integration
  * This can be used directly in src/i18n/request.ts
  */
-export default async function getRequestConfig({
-  locale
-}: {
-  locale: string
-}) {
+export default async function getRequestConfig({ locale }: { locale: string }) {
   return getDynamicRequestConfig({
     locale,
-    namespaces: ['pages', 'components'] // Default namespaces for the app
+    namespaces: ["pages", "components"], // Default namespaces for the app
   });
 }
 
@@ -427,15 +453,17 @@ export default async function getRequestConfig({
  */
 export async function loadClientTranslations(
   locale: string,
-  namespace: string
+  namespace: string,
 ): Promise<TranslationMessages> {
-  if (typeof window === 'undefined') {
-    throw new Error('loadClientTranslations can only be called on the client side');
+  if (typeof window === "undefined") {
+    throw new Error(
+      "loadClientTranslations can only be called on the client side",
+    );
   }
 
   const result = await loadTranslations(locale, namespace, {
     enableCache: true,
-    fallbackLocale: DEFAULT_LOCALE
+    fallbackLocale: DEFAULT_LOCALE,
   });
 
   return result.messages;
@@ -447,7 +475,7 @@ export async function loadClientTranslations(
  */
 export async function batchLoadTranslations(
   locales: Locale[],
-  namespace: string
+  namespace: string,
 ): Promise<Record<Locale, TranslationMessages>> {
   const results = await Promise.all(
     locales.map(async (locale) => {
@@ -458,10 +486,13 @@ export async function batchLoadTranslations(
         console.error(`Failed to batch load ${namespace}:${locale}`, error);
         return [locale, {}] as [Locale, TranslationMessages];
       }
-    })
+    }),
   );
 
-  const result: Record<Locale, TranslationMessages> = {} as Record<Locale, TranslationMessages>;
+  const result: Record<Locale, TranslationMessages> = {} as Record<
+    Locale,
+    TranslationMessages
+  >;
   results.forEach(([locale, messages]) => {
     result[locale] = messages;
   });
@@ -474,23 +505,23 @@ export async function batchLoadTranslations(
  */
 export function validateTranslations(
   messages: TranslationMessages,
-  namespace: string
+  namespace: string,
 ): { valid: boolean; errors: string[] } {
   const errors: string[] = [];
 
-  if (!messages || typeof messages !== 'object') {
+  if (!messages || typeof messages !== "object") {
     errors.push(`Invalid messages structure for namespace "${namespace}"`);
     return { valid: false, errors };
   }
 
   // Basic validation - can be extended with schema validation
-  const validateNested = (obj: any, path: string = ''): void => {
+  const validateNested = (obj: any, path: string = ""): void => {
     for (const [key, value] of Object.entries(obj)) {
       const currentPath = path ? `${path}.${key}` : key;
 
       if (value === null || value === undefined) {
         errors.push(`Null/undefined value at ${currentPath}`);
-      } else if (typeof value === 'object' && !Array.isArray(value)) {
+      } else if (typeof value === "object" && !Array.isArray(value)) {
         validateNested(value, currentPath);
       }
     }
@@ -500,7 +531,7 @@ export function validateTranslations(
 
   return {
     valid: errors.length === 0,
-    errors
+    errors,
   };
 }
 

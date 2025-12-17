@@ -1,5 +1,5 @@
 import type { MappedStep } from "@/mappers/flowMapper";
-import { STEP_PATTERNS, FieldType } from "../constants/field-types";
+import { FieldType, STEP_PATTERNS } from "../constants/field-types";
 import type { StepMetadata } from "../types/field-config";
 
 /**

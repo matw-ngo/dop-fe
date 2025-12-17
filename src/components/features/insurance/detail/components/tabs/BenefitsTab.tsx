@@ -1,25 +1,25 @@
-import React from "react";
-import { Badge } from "@/components/ui/badge";
 import {
   Award,
-  Zap,
-  HeadphonesIcon,
-  Phone,
-  Mail,
-  Globe,
-  Gift,
-  Percent,
-  TrendingUp,
   Check,
+  Gift,
+  Globe,
+  HeadphonesIcon,
+  Mail,
+  Percent,
+  Phone,
   Star,
+  TrendingUp,
+  Zap,
 } from "lucide-react";
-import { ServiceCard } from "../ServiceCard";
+import type React from "react";
+import { Badge } from "@/components/ui/badge";
 import { formatCurrency } from "@/lib/utils";
 import {
-  formatHotlineUrl,
   formatEmailUrl,
+  formatHotlineUrl,
   formatWebsiteUrl,
 } from "../../utils";
+import { ServiceCard } from "../ServiceCard";
 
 interface BenefitsTabProps {
   product: any;

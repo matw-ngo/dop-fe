@@ -1,15 +1,15 @@
 "use client";
 
-import { useParams } from "next/navigation";
-import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { CreditCardDetails } from "@/components/features/credit-card/CreditCardDetails";
 import { CreditCardsThemeProvider } from "@/components/features/credit-card/CreditCardsThemeProvider";
 import { CreditCardComparisonSnackbar } from "@/components/features/credit-cards";
-import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
+import Header from "@/components/layout/header";
+import { Button } from "@/components/ui/button";
 import { useCreditCardsNavbarTheme } from "@/hooks/features/credit-card/useCreditCardsNavbarTheme";
 
 export default function CardDetailsPage() {

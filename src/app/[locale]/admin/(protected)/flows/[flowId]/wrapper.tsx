@@ -1,26 +1,22 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
+import type { ColumnDef } from "@tanstack/react-table";
 import {
   ArrowLeftIcon,
-  PlusIcon,
   EditIcon,
-  Trash2Icon,
+  PlusIcon,
   SettingsIcon,
+  Trash2Icon,
 } from "lucide-react";
-import { DataTable } from "@/components/ui/data-table";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Skeleton } from "@/components/ui/skeleton";
+import Link from "next/link";
+import { useParams, useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { useEffect, useState } from "react";
+import { AdminBreadcrumb } from "@/components/admin/breadcrumb";
+import { EmptyState, ErrorState } from "@/components/admin/error-states";
+import { FlowStatusBadge } from "@/components/admin/flow-status-badge";
+import { FlowDetailSkeleton } from "@/components/admin/loading-states";
+import { StepManagementDialog } from "@/components/admin/step-management-dialog";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -32,25 +28,29 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { FlowStatusBadge } from "@/components/admin/flow-status-badge";
-import { AdminBreadcrumb } from "@/components/admin/breadcrumb";
-import { FlowDetailSkeleton } from "@/components/admin/loading-states";
-import { ErrorState, EmptyState } from "@/components/admin/error-states";
-import { StepManagementDialog } from "@/components/admin/step-management-dialog";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { DataTable } from "@/components/ui/data-table";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   useFlow,
   useFlowSteps,
   useUpdateStep,
 } from "@/hooks/admin/use-admin-flows";
 import {
-  flowSuccessToast,
-  flowErrorToast,
   adminWarningToast,
+  flowErrorToast,
+  flowSuccessToast,
 } from "@/lib/admin/admin-toast";
-import { type ColumnDef } from "@tanstack/react-table";
-import type { FlowDetail, StepListItem, FlowStatus } from "@/types/admin";
 import { useLocalizedPath } from "@/lib/client-utils";
-import { useTranslations } from "next-intl";
+import type { FlowDetail, FlowStatus, StepListItem } from "@/types/admin";
 
 // Fallback data for when API fails
 const createFallbackFlowDetail = (id: string): FlowDetail => ({

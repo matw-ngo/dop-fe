@@ -1,8 +1,8 @@
 import { useMemo } from "react";
 import { multiStepForm } from "@/components/renderer/builders/multi-step-form-builder";
-import type { MappedFlow } from "@/mappers/flowMapper";
-import type { MultiStepFormConfig } from "@/components/renderer/types/multi-step-form";
 import type { RawFieldConfig } from "@/components/renderer/types/data-driven-ui";
+import type { MultiStepFormConfig } from "@/components/renderer/types/multi-step-form";
+import type { MappedFlow } from "@/mappers/flowMapper";
 
 interface GeneratedStepConfig {
   id: string;

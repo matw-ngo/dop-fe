@@ -3,23 +3,22 @@
  * Comprehensive Vietnamese phone number validation with telco detection
  */
 
-import { useState, useCallback, useEffect, useRef } from "react";
-import { debounce } from "@/lib/utils/debounce";
-
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
-  validateVietnamesePhone,
-  validatePhoneTyping,
-  getPhoneSuggestions,
   getPhoneMetadata,
-  PhoneValidationResult,
+  getPhoneSuggestions,
   PHONE_VALIDATION_PRESETS,
+  type PhoneValidationResult,
+  validatePhoneTyping,
+  validateVietnamesePhone,
 } from "@/lib/telcos/phone-validation";
 import {
   detectTelco,
-  recordUserCorrection,
   recordSuccessfulDetection,
+  recordUserCorrection,
 } from "@/lib/telcos/telco-detector";
 import { getTelcoByPhoneNumber } from "@/lib/telcos/vietnamese-telcos";
+import { debounce } from "@/lib/utils/debounce";
 
 export interface UsePhoneValidationOptions {
   preset?: keyof typeof PHONE_VALIDATION_PRESETS;

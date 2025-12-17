@@ -4,10 +4,10 @@
  * These tests ensure the API client functions work as expected
  */
 
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
-  calculateSavings,
   calculateSalary,
+  calculateSavings,
   fetchInterestRates,
   toolsApi,
 } from "./tools";

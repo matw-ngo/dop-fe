@@ -1,5 +1,5 @@
 export const getThemeValue = (theme: any, path: string) => {
-  return path.split('.').reduce((obj, key) => obj?.[key], theme);
+  return path.split(".").reduce((obj, key) => obj?.[key], theme);
 };
 
 export const applyTheme = (theme: any, mode: string) => {
@@ -14,9 +14,9 @@ export const applyTheme = (theme: any, mode: string) => {
   }
 
   // Apply mode (light/dark)
-  if (mode === 'dark') {
-    root.classList.add('dark');
+  if (mode === "dark") {
+    root.classList.add("dark");
   } else {
-    root.classList.remove('dark');
+    root.classList.remove("dark");
   }
 };

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import Hero from "./hero";
 import { HeroConfig } from "@/configs/homepage-config";
+import Hero from "./hero";
 
 const meta: Meta<typeof Hero> = {
   title: "Organisms/Homepage/Hero",

@@ -3,11 +3,15 @@
 // MultiStepFormRenderer component for Data-Driven UI system
 // Renders forms in multiple steps with progress tracking and navigation
 
-import React from "react";
-import { FormRenderer } from "./FormRenderer";
-import { AnimatedStepContainer } from "./AnimatedStepContainer";
+import { CheckCircle2, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
+import type React from "react";
+import {
+  getResponsiveMargin,
+  getResponsivePadding,
+  getResponsiveWidth,
+} from "@/components/renderer/constants/responsive-classnames";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
 import {
   Card,
   CardContent,
@@ -15,17 +19,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
-import { Badge } from "@/components/ui/badge";
-import { CheckCircle2, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
-import { cn } from "@/lib/utils";
-import type { MultiStepFormRendererProps } from "./types/multi-step-form";
 import { useMultiStepForm } from "@/hooks/form/use-multi-step-form";
-import {
-  getResponsiveWidth,
-  getResponsivePadding,
-  getResponsiveMargin,
-} from "@/components/renderer/constants/responsive-classnames";
+import { cn } from "@/lib/utils";
+import { AnimatedStepContainer } from "./AnimatedStepContainer";
+import { FormRenderer } from "./FormRenderer";
+import type { MultiStepFormRendererProps } from "./types/multi-step-form";
 
 export const MultiStepFormRenderer: React.FC<MultiStepFormRendererProps> = ({
   config,

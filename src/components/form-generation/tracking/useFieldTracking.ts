@@ -1,6 +1,6 @@
-import { useCallback, useRef, useEffect } from "react";
-import { useFormTracking } from "./TrackingProvider";
+import { useCallback, useEffect, useRef } from "react";
 import type { FieldTrackingConfig, FieldTrackingEvent } from "../types";
+import { useFormTracking } from "./TrackingProvider";
 
 /**
  * Props for useFieldTracking hook

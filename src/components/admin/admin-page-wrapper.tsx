@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 import { ProtectedRoute } from "@/components/auth/protected-route";
 import type { User } from "@/store/use-auth-store";
 
@@ -14,8 +14,6 @@ export function AdminPageWrapper({
   requiredRole = "admin",
 }: AdminPageWrapperProps) {
   return (
-    <ProtectedRoute requiredRole={requiredRole}>
-      {children}
-    </ProtectedRoute>
+    <ProtectedRoute requiredRole={requiredRole}>{children}</ProtectedRoute>
   );
 }

@@ -1,10 +1,10 @@
 "use client";
 
-import { ReactNode, useEffect } from "react";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { type ReactNode, useEffect } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/lib/auth/auth-context";
 import { getLocalizedRedirect } from "@/lib/client-utils";
-import { Skeleton } from "@/components/ui/skeleton";
 
 interface ProtectedRouteProps {
   children: ReactNode;
@@ -29,18 +29,31 @@ export function ProtectedRoute({
 
     // Check if user is authenticated
     if (!isAuthenticated) {
-      const loginUrl = redirectTo || getLocalizedRedirect("/admin/login", pathname);
+      const loginUrl =
+        redirectTo || getLocalizedRedirect("/admin/login", pathname);
       router.push(loginUrl);
       return;
     }
 
     // Check role requirements
     if (requiredRole && user?.role !== requiredRole) {
-      const unauthorizedUrl = getLocalizedRedirect("/admin/unauthorized", pathname);
+      const unauthorizedUrl = getLocalizedRedirect(
+        "/admin/unauthorized",
+        pathname,
+      );
       router.push(unauthorizedUrl);
       return;
     }
-  }, [isAuthenticated, isLoading, isHydrated, user, requiredRole, pathname, router, redirectTo]);
+  }, [
+    isAuthenticated,
+    isLoading,
+    isHydrated,
+    user,
+    requiredRole,
+    pathname,
+    router,
+    redirectTo,
+  ]);
 
   // Show loading during hydration or authentication check
   if (!isHydrated || isLoading) {

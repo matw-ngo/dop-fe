@@ -1,7 +1,7 @@
-import { renderHook, act } from "@testing-library/react";
-import { describe, it, expect, vi } from "vitest";
-import { useCreditCardFilters } from "./useCreditCardFilters";
+import { act, renderHook } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
 import type { CardCategory } from "@/types/credit-card";
+import { useCreditCardFilters } from "./useCreditCardFilters";
 
 // Mock the constants
 vi.mock("@/constants/credit-cards", () => ({

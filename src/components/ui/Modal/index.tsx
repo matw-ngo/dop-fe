@@ -1,5 +1,5 @@
-import React from "react";
 import { XIcon } from "lucide-react";
+import type React from "react";
 import { cn } from "@/lib/utils";
 
 interface IModalProps {

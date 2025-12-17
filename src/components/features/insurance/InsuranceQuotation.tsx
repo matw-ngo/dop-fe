@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import { Calculator, Check, FileText, Send, Shield } from "lucide-react";
+import type React from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -9,7 +11,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Shield, Calculator, FileText, Send, Check } from "lucide-react";
 
 export interface InsuranceQuoteData {
   fullName: string;

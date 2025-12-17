@@ -1,11 +1,12 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { MultiStepFormRenderer } from "@/components/renderer/MultiStepFormRenderer";
-import { useOnboardingFormConfig } from "../hooks/use-onboarding-form-config";
-import type { MappedFlow } from "@/mappers/flowMapper";
-import { FormSkeleton } from "@/components/feedback/form-skeleton";
 import { ErrorState } from "@/components/feedback/error-state";
+import { FormSkeleton } from "@/components/feedback/form-skeleton";
+import { MultiStepFormRenderer } from "@/components/renderer/MultiStepFormRenderer";
+import type { MappedFlow } from "@/mappers/flowMapper";
+import { useOnboardingFormConfig } from "../hooks/use-onboarding-form-config";
+
 // import { LoanApplicationForm } from "@/components/features/loan/LoanApplicationForm"; // TODO: Implement LoanApplicationForm component
 
 interface OnboardingFormProps {

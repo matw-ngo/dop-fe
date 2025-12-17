@@ -1,5 +1,5 @@
-import React from "react";
 import * as RadixSlider from "@radix-ui/react-slider";
+import React from "react";
 
 export interface ISliderProps {
   step: number;

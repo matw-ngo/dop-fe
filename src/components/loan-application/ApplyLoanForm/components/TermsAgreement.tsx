@@ -1,5 +1,5 @@
-import type React from "react";
 import { useTranslations } from "next-intl";
+import type React from "react";
 import { CSS_CLASSES, URLS } from "../constants";
 import type { TermsAgreementProps } from "../types";
 

@@ -1,7 +1,7 @@
-import React from "react";
+import { Check, CreditCard as CreditCardIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
+import type React from "react";
 import { Button } from "@/components/ui/button";
-import { CreditCard as CreditCardIcon, Check } from "lucide-react";
 import { vietnameseCreditCards } from "@/data/credit-cards";
 
 interface CreditCardComparisonProps {

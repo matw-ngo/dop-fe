@@ -7,11 +7,13 @@
  * bank rate comparisons, and financial health scoring.
  */
 
-import { useState, useCallback, useEffect } from "react";
-import { useFinancialToolsStore } from "@/store/use-financial-tools-store";
-import { calculateFinancialHealthScore } from "@/lib/financial/calculations";
-import { analyzeAffordability } from "@/lib/financial/calculations";
+import { useCallback, useEffect, useState } from "react";
 import { financialAnalysisApi } from "@/lib/api/endpoints/financial-tools";
+import {
+  analyzeAffordability,
+  calculateFinancialHealthScore,
+} from "@/lib/financial/calculations";
+import { useFinancialToolsStore } from "@/store/use-financial-tools-store";
 
 // Types
 export interface UseFinancialComparisonOptions {

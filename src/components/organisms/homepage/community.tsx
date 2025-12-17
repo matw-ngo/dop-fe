@@ -1,8 +1,8 @@
 "use client";
 
-import React from "react";
 import Link from "next/link";
-import { CommunityConfig } from "@/configs/homepage-config";
+import React from "react";
+import type { CommunityConfig } from "@/configs/homepage-config";
 
 interface CommunityProps {
   config?: CommunityConfig;

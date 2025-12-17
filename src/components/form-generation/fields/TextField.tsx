@@ -1,8 +1,8 @@
 "use client";
 
-import type { FieldComponentProps, TextFieldConfig } from "../types";
 import { Input } from "@/components/ui/input";
 import { useFormTheme } from "../themes/ThemeProvider";
+import type { FieldComponentProps, TextFieldConfig } from "../types";
 import { cn } from "../utils/helpers";
 
 export function TextField({
@@ -43,33 +43,37 @@ export function TextField({
   const internalLabel = theme.fieldOptions?.internalLabel;
 
   // Determine if we need a wrapper for adornments or internal label
-  const hasAdornments = options.prefix || options.suffix || options.startAdornment || options.endAdornment;
+  const hasAdornments =
+    options.prefix ||
+    options.suffix ||
+    options.startAdornment ||
+    options.endAdornment;
   const needsWrapper = internalLabel || hasAdornments;
 
   if (needsWrapper) {
     return (
-      <div 
+      <div
         className={cn(
           // Use control styles on the wrapper
           inputClassName,
           "flex items-center relative gap-2",
-          internalLabel ? "pt-5 pb-1 h-[60px]" : ""
+          internalLabel ? "pt-5 pb-1 h-[60px]" : "",
         )}
       >
         {/* Internal Label */}
         {internalLabel && field.label && (
-           <label 
-             htmlFor={field.id}
-             className="absolute top-2 left-4 text-xs font-medium text-[#017848] pointer-events-none"
-           >
-             {field.label}
-           </label>
+          <label
+            htmlFor={field.id}
+            className="absolute top-2 left-4 text-xs font-medium text-[#017848] pointer-events-none"
+          >
+            {field.label}
+          </label>
         )}
 
         {/* Start Adornments */}
         {(options.prefix || options.startAdornment) && (
           <div className="flex items-center shrink-0 text-muted-foreground ml-1">
-             {options.prefix || options.startAdornment}
+            {options.prefix || options.startAdornment}
           </div>
         )}
 
@@ -90,16 +94,16 @@ export function TextField({
           aria-describedby={error ? `${field.id}-error` : undefined}
           className={cn(
             "border-none shadow-none focus-visible:ring-0 px-0 h-auto py-0 bg-transparent w-full",
-            internalLabel && "mt-1" // minimal adjustment to align with label
+            internalLabel && "mt-1", // minimal adjustment to align with label
           )}
         />
 
         {/* End Adornments */}
         {(options.suffix || options.endAdornment) && (
           <div className="flex items-center shrink-0 text-muted-foreground mr-1">
-             {options.suffix || options.endAdornment}
+            {options.suffix || options.endAdornment}
           </div>
-         )}
+        )}
       </div>
     );
   }

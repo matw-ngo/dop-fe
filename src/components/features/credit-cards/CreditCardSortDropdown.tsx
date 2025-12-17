@@ -1,5 +1,24 @@
-import React from "react";
+import {
+  ArrowDown,
+  ArrowUp,
+  ArrowUpDown,
+  Award,
+  Calendar,
+  DollarSign,
+  Star,
+  TrendingDown,
+  TrendingUp,
+} from "lucide-react";
 import { useTranslations } from "next-intl";
+import React from "react";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import {
   Select,
   SelectContent,
@@ -7,27 +26,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-  DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu";
-import {
-  ArrowUpDown,
-  ArrowUp,
-  ArrowDown,
-  Star,
-  TrendingUp,
-  TrendingDown,
-  DollarSign,
-  Calendar,
-  Award,
-} from "lucide-react";
 import { cn } from "@/lib/utils";
-import { SortOption, SortOptionUI } from "@/types/credit-card";
+import type { SortOption, SortOptionUI } from "@/types/credit-card";
 
 export type CreditCardSortOption = SortOption;
 

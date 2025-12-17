@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 
 // Helper function to create localized paths
 function getLocalizedPath(path: string, locale: string = "vi"): string {

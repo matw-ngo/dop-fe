@@ -1,24 +1,28 @@
-import React from "react";
-import { useTranslations } from "next-intl";
-import { Button } from "@/components/ui/button";
 import {
-  Shield,
+  AlertCircle,
+  Car,
   Check,
-  X,
-  Star,
   Clock,
   DollarSign,
-  AlertCircle,
-  Phone,
   Globe,
-  Car,
   Heart,
   Home,
+  Phone,
   Plane,
-  Users,
+  Shield,
+  Star,
   Trash2,
+  Users,
+  X,
 } from "lucide-react";
-import { InsuranceProduct, CoveragePeriod, FeeType } from "@/types/insurance";
+import { useTranslations } from "next-intl";
+import type React from "react";
+import { Button } from "@/components/ui/button";
+import type {
+  CoveragePeriod,
+  FeeType,
+  InsuranceProduct,
+} from "@/types/insurance";
 
 interface InsuranceComparisonProps {
   products: InsuranceProduct[];
@@ -100,7 +104,7 @@ export const InsuranceComparison: React.FC<InsuranceComparisonProps> = ({
   const findBestValue = (metric: string) => {
     if (products.length === 0) return null;
 
-    let bestProduct = products[0];
+    const bestProduct = products[0];
     let bestValue: any = null;
 
     switch (metric) {

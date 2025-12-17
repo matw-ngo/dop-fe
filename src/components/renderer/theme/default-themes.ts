@@ -1,4 +1,4 @@
-import { Theme } from "../types/ui-theme";
+import type { Theme } from "../types/ui-theme";
 
 // Light theme
 export const lightTheme: Theme = {

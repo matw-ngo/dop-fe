@@ -1,9 +1,9 @@
-import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useMemo } from "react";
 import {
-  NavbarConfig,
-  getNavbarConfig,
   fetchNavbarConfigFromServer,
+  getNavbarConfig,
+  type NavbarConfig,
 } from "@/configs/navbar-config";
 
 interface UseNavbarConfigOptions {

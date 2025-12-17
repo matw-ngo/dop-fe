@@ -1,16 +1,22 @@
 "use client";
 
-import { useState, FormEvent, useEffect } from "react";
-import { useRouter, usePathname } from "next/navigation";
-import { useAuth } from "@/lib/auth/auth-context";
+import { usePathname, useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { type FormEvent, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Spinner } from "@/components/ui/spinner";
 import { useToast } from "@/hooks/ui/use-toast";
+import { useAuth } from "@/lib/auth/auth-context";
 import { getLocalizedRedirect } from "@/lib/client-utils";
-import { useTranslations } from "next-intl";
 
 export default function AdminLoginPage() {
   const [username, setUsername] = useState("");
@@ -110,11 +116,7 @@ export default function AdminLoginPage() {
                 required
               />
             </div>
-            <Button 
-              type="submit" 
-              className="w-full" 
-              disabled={isSubmitting}
-            >
+            <Button type="submit" className="w-full" disabled={isSubmitting}>
               {isSubmitting ? (
                 <>
                   <Spinner className="mr-2 size-4" />

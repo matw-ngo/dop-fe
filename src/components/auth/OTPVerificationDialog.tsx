@@ -5,7 +5,25 @@
 
 "use client";
 
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import {
+  AlertCircle,
+  ArrowLeft,
+  ArrowRight,
+  CheckCircle,
+  Clock,
+  Info,
+  Lock,
+  RefreshCw,
+  Shield,
+  Smartphone,
+  User,
+  XCircle,
+} from "lucide-react";
+import type React from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -14,39 +32,19 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Separator } from "@/components/ui/separator";
 import { Progress } from "@/components/ui/progress";
-import { PhoneInput } from "./PhoneInput";
-import { OTPInput } from "./OTPInput";
-import { OTPResend } from "./OTPResend";
-
-import {
-  Shield,
-  Smartphone,
-  Clock,
-  AlertCircle,
-  CheckCircle,
-  XCircle,
-  RefreshCw,
-  ArrowLeft,
-  ArrowRight,
-  User,
-  Lock,
-  Info,
-} from "lucide-react";
-import { cn } from "@/lib/utils";
-
-import {
+import { Separator } from "@/components/ui/separator";
+import { validateVietnamesePhone } from "@/lib/telcos/phone-validation";
+import { detectTelco } from "@/lib/telcos/telco-detector";
+import getPhoneMetadata, {
+  formatPhoneNumber,
   getOTPSettings,
   TELCO_ERROR_MESSAGES,
-  formatPhoneNumber,
 } from "@/lib/telcos/vietnamese-telcos";
-import getPhoneMetadata from "@/lib/telcos/vietnamese-telcos";
-import { detectTelco } from "@/lib/telcos/telco-detector";
-import { validateVietnamesePhone } from "@/lib/telcos/phone-validation";
+import { cn } from "@/lib/utils";
+import { OTPInput } from "./OTPInput";
+import { OTPResend } from "./OTPResend";
+import { PhoneInput } from "./PhoneInput";
 
 export type VerificationStep = "phone" | "otp" | "success" | "error" | "locked";
 

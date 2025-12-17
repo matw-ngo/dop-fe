@@ -4,10 +4,13 @@
 
 "use client";
 
-import React from "react";
+import { Building, Clock, Globe, Home, MapPin } from "lucide-react";
+import type React from "react";
 import { useFormContext } from "react-hook-form";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
   Select,
   SelectContent,
@@ -15,9 +18,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Checkbox } from "@/components/ui/checkbox";
-import { MapPin, Clock, Globe, Home, Building } from "lucide-react";
 
 interface ContactInformationFormProps {
   form: any;

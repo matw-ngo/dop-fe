@@ -1,30 +1,30 @@
 export const themes = {
   default: {
-    name: 'Default Theme',
+    name: "Default Theme",
     colors: {
-      primary: '#007bff',
-      secondary: '#6c757d',
+      primary: "#007bff",
+      secondary: "#6c757d",
     },
   },
   corporate: {
-    name: 'Corporate Theme',
+    name: "Corporate Theme",
     colors: {
-      primary: '#0056b3',
-      secondary: '#495057',
+      primary: "#0056b3",
+      secondary: "#495057",
     },
   },
   creative: {
-    name: 'Creative Theme',
+    name: "Creative Theme",
     colors: {
-      primary: '#e83e8c',
-      secondary: '#fd7e14',
+      primary: "#e83e8c",
+      secondary: "#fd7e14",
     },
   },
   medical: {
-    name: 'Medical Theme',
+    name: "Medical Theme",
     colors: {
-      primary: '#28a745',
-      secondary: '#17a2b8',
+      primary: "#28a745",
+      secondary: "#17a2b8",
     },
   },
 };

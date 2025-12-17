@@ -1,4 +1,4 @@
-import React from "react";
+import type React from "react";
 import { FormLabel } from "@/components/ui/form";
 import { cn } from "@/lib/utils";
 import type { SpecialComponentType } from "../constants/field-components";

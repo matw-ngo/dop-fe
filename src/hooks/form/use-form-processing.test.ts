@@ -1,7 +1,10 @@
 import { renderHook } from "@testing-library/react";
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import type {
+  FieldConfig,
+  RawFieldConfig,
+} from "@/components/renderer/types/data-driven-ui";
 import { useFormProcessing } from "./use-form-processing";
-import type { RawFieldConfig, FieldConfig } from "@/components/renderer/types/data-driven-ui";
 
 describe("useFormProcessing", () => {
   let mockIsRegisteredComponent: ReturnType<typeof vi.fn>;
@@ -12,8 +15,11 @@ describe("useFormProcessing", () => {
     mockIsRegisteredComponent = vi.fn();
     mockMergeWithDefaults = vi.fn();
 
-    vi.mocked(require("@/components/renderer/ComponentRegistry")).isRegisteredComponent = mockIsRegisteredComponent;
-    vi.mocked(require("@/configs/DefaultFieldConfig")).mergeWithDefaults = mockMergeWithDefaults;
+    vi.mocked(
+      require("@/components/renderer/ComponentRegistry"),
+    ).isRegisteredComponent = mockIsRegisteredComponent;
+    vi.mocked(require("@/configs/DefaultFieldConfig")).mergeWithDefaults =
+      mockMergeWithDefaults;
   });
 
   it("should process fields with registered components", () => {
@@ -57,7 +63,9 @@ describe("useFormProcessing", () => {
       },
     ];
 
-    mockIsRegisteredComponent.mockImplementation((component: any) => component === "Input");
+    mockIsRegisteredComponent.mockImplementation(
+      (component: any) => component === "Input",
+    );
 
     const consoleSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
 
@@ -66,7 +74,7 @@ describe("useFormProcessing", () => {
     expect(result.current.processedFields).toHaveLength(1);
     expect(result.current.processedFields[0].fieldName).toBe("firstName");
     expect(consoleSpy).toHaveBeenCalledWith(
-      'Component "CustomComponent" is not registered, skipping field "customField"'
+      'Component "CustomComponent" is not registered, skipping field "customField"',
     );
 
     consoleSpy.mockRestore();
@@ -97,7 +105,9 @@ describe("useFormProcessing", () => {
     ];
 
     mockIsRegisteredComponent.mockReturnValue(true);
-    mockMergeWithDefaults.mockImplementation((_component: any, props: any) => props);
+    mockMergeWithDefaults.mockImplementation(
+      (_component: any, props: any) => props,
+    );
 
     const { result } = renderHook(() => useFormProcessing(mockFields));
 
@@ -124,7 +134,9 @@ describe("useFormProcessing", () => {
     ];
 
     mockIsRegisteredComponent.mockReturnValue(true);
-    mockMergeWithDefaults.mockImplementation((_component: any, props: any) => props);
+    mockMergeWithDefaults.mockImplementation(
+      (_component: any, props: any) => props,
+    );
 
     const { result } = renderHook(() =>
       useFormProcessing(mockFields, {
@@ -132,7 +144,7 @@ describe("useFormProcessing", () => {
           firstName: "John",
           email: "john@example.com",
         },
-      })
+      }),
     );
 
     expect(result.current.computedDefaultValues).toEqual({
@@ -161,14 +173,16 @@ describe("useFormProcessing", () => {
     ];
 
     mockIsRegisteredComponent.mockReturnValue(true);
-    mockMergeWithDefaults.mockImplementation((_component: any, props: any) => props);
+    mockMergeWithDefaults.mockImplementation(
+      (_component: any, props: any) => props,
+    );
 
     const { result } = renderHook(() =>
       useFormProcessing(mockFields, {
         defaultValues: {
           firstName: "John",
         },
-      })
+      }),
     );
 
     expect(result.current.computedDefaultValues).toEqual({
@@ -195,9 +209,13 @@ describe("useFormProcessing", () => {
     ];
 
     mockIsRegisteredComponent.mockReturnValue(true);
-    mockMergeWithDefaults.mockImplementation((_component: any, props: any) => props);
+    mockMergeWithDefaults.mockImplementation(
+      (_component: any, props: any) => props,
+    );
 
-    const { result, rerender } = renderHook(() => useFormProcessing(mockFields));
+    const { result, rerender } = renderHook(() =>
+      useFormProcessing(mockFields),
+    );
 
     const firstResult = result.current.processedFields;
     rerender();
@@ -216,7 +234,9 @@ describe("useFormProcessing", () => {
     ];
 
     mockIsRegisteredComponent.mockReturnValue(true);
-    mockMergeWithDefaults.mockImplementation((_component: any, props: any) => props);
+    mockMergeWithDefaults.mockImplementation(
+      (_component: any, props: any) => props,
+    );
 
     const { result } = renderHook(() => useFormProcessing(mockFields));
 

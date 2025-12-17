@@ -1,5 +1,5 @@
 import { trackEvent } from "@/lib/tracking";
-import type { TrackingBackend, FieldTrackingEvent } from "../../types";
+import type { FieldTrackingEvent, TrackingBackend } from "../../types";
 
 /**
  * Adapter for the existing tracking library

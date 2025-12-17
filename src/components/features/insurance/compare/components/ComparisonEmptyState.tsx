@@ -1,8 +1,8 @@
-import { Button } from "@/components/ui/button";
-import { Shield, Search } from "lucide-react";
+import { Search, Shield } from "lucide-react";
 import Link from "next/link";
-import { useTranslations, useLocale } from "next-intl";
 import { useRouter } from "next/navigation";
+import { useLocale, useTranslations } from "next-intl";
+import { Button } from "@/components/ui/button";
 
 interface ComparisonEmptyStateProps {
   onGoBack?: () => void;
@@ -32,7 +32,11 @@ export function ComparisonEmptyState({ onGoBack }: ComparisonEmptyStateProps) {
             {t("pages.insurance.browseInsurance")}
           </Button>
         </Link>
-        <Button variant="outline" size="lg" onClick={onGoBack || (() => router.back())}>
+        <Button
+          variant="outline"
+          size="lg"
+          onClick={onGoBack || (() => router.back())}
+        >
           {t("common.goBack")}
         </Button>
       </div>
@@ -43,21 +47,10 @@ export function ComparisonEmptyState({ onGoBack }: ComparisonEmptyStateProps) {
           {t("pages.insurance.howToCompare")}
         </h3>
         <ol className="text-left text-sm text-muted-foreground space-y-2">
-          <li>
-            1. {t("pages.insurance.step1")}
-          </li>
-          <li>
-            2.{" "}
-            {t("pages.insurance.step2")}
-          </li>
-          <li>
-            3.{" "}
-            {t("pages.insurance.step3")}
-          </li>
-          <li>
-            4.{" "}
-            {t("pages.insurance.step4")}
-          </li>
+          <li>1. {t("pages.insurance.step1")}</li>
+          <li>2. {t("pages.insurance.step2")}</li>
+          <li>3. {t("pages.insurance.step3")}</li>
+          <li>4. {t("pages.insurance.step4")}</li>
         </ol>
       </div>
     </div>

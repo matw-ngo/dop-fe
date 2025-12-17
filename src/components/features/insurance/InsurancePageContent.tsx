@@ -1,12 +1,12 @@
+import { Loader2, Shield } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { Shield, Loader2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import InsuranceGrid from "@/components/features/insurance/InsuranceGrid";
 import InsuranceFilterPanel from "@/components/features/insurance/InsuranceFilterPanel";
+import InsuranceGrid from "@/components/features/insurance/InsuranceGrid";
 import Pagination from "@/components/features/insurance/InsurancePagination";
-import type { InsuranceProduct } from "@/types/insurance";
 import { useThemeUtils } from "@/components/renderer/theme";
+import { Button } from "@/components/ui/button";
 import { useInsuranceStore } from "@/store/use-insurance-store";
+import type { InsuranceProduct } from "@/types/insurance";
 
 interface InsurancePageContentProps {
   isLoading: boolean;

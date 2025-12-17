@@ -1,9 +1,9 @@
 "use client";
 
-import type { FieldComponentProps, DateFieldConfig } from "../types";
-import { Input } from "@/components/ui/input";
 import { CalendarIcon } from "lucide-react";
+import { Input } from "@/components/ui/input";
 import { useFormTheme } from "../themes/ThemeProvider";
+import type { DateFieldConfig, FieldComponentProps } from "../types";
 import { cn } from "../utils/helpers";
 
 export function DateField({

@@ -1,8 +1,8 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import React from "react";
-import { renderHook, act } from "@testing-library/react";
+import { act, renderHook } from "@testing-library/react";
+import type React from "react";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { darkTheme, lightTheme } from "../default-themes";
 import { ThemeProvider, useTheme } from "../theme-provider";
-import { lightTheme, darkTheme } from "../default-themes";
 
 // Mock localStorage
 const localStorageMock = {
@@ -19,7 +19,7 @@ Object.defineProperty(global, "localStorage", {
 
 // Mock matchMedia
 Object.defineProperty(window, "matchMedia", {
-  value: vi.fn().mockImplementation(query => ({
+  value: vi.fn().mockImplementation((query) => ({
     matches: false,
     media: query,
     onchange: null,
@@ -72,7 +72,6 @@ describe("ThemeProvider CSS Variable Optimization", () => {
     localStorageMock.getItem.mockReturnValue(null);
   });
 
-  
   describe("Initial Render", () => {
     it("should apply all CSS variables on initial render", () => {
       const wrapper = ({ children }: { children: React.ReactNode }) => (
@@ -82,17 +81,23 @@ describe("ThemeProvider CSS Variable Optimization", () => {
       renderHook(() => useTheme(), { wrapper });
 
       // Should set data-theme attribute
-      expect(document.documentElement.setAttribute).toHaveBeenCalledWith("data-theme", "light");
+      expect(document.documentElement.setAttribute).toHaveBeenCalledWith(
+        "data-theme",
+        "light",
+      );
 
       // Should set data-color-scheme attribute
-      expect(document.documentElement.setAttribute).toHaveBeenCalledWith("data-color-scheme", "light");
+      expect(document.documentElement.setAttribute).toHaveBeenCalledWith(
+        "data-color-scheme",
+        "light",
+      );
 
       // Should apply all CSS variables
       expect(mockStyle.setProperty).toHaveBeenCalled();
 
       // Check for key CSS variables
       const setPropertyCalls = mockStyle.setProperty.mock.calls;
-      const cssVars = setPropertyCalls.map(call => call[0]);
+      const cssVars = setPropertyCalls.map((call) => call[0]);
 
       expect(cssVars).toContain("--color-primary-50");
       expect(cssVars).toContain("--color-secondary-50");
@@ -113,11 +118,17 @@ describe("ThemeProvider CSS Variable Optimization", () => {
 
       renderHook(() => useTheme(), { wrapper });
 
-      expect(document.documentElement.setAttribute).toHaveBeenCalledWith("data-theme", "dark");
-      expect(document.documentElement.setAttribute).toHaveBeenCalledWith("data-color-scheme", "dark");
+      expect(document.documentElement.setAttribute).toHaveBeenCalledWith(
+        "data-theme",
+        "dark",
+      );
+      expect(document.documentElement.setAttribute).toHaveBeenCalledWith(
+        "data-color-scheme",
+        "dark",
+      );
       expect(mockStyle.setProperty).toHaveBeenCalledWith(
         "--bg-primary",
-        darkTheme.colors.background.primary
+        darkTheme.colors.background.primary,
       );
     });
   });
@@ -140,8 +151,14 @@ describe("ThemeProvider CSS Variable Optimization", () => {
       });
 
       // Should update data attributes
-      expect(document.documentElement.setAttribute).toHaveBeenCalledWith("data-theme", "dark");
-      expect(document.documentElement.setAttribute).toHaveBeenCalledWith("data-color-scheme", "dark");
+      expect(document.documentElement.setAttribute).toHaveBeenCalledWith(
+        "data-theme",
+        "dark",
+      );
+      expect(document.documentElement.setAttribute).toHaveBeenCalledWith(
+        "data-color-scheme",
+        "dark",
+      );
 
       // Should have updated CSS variables
       expect(mockStyle.setProperty).toHaveBeenCalled();
@@ -149,13 +166,13 @@ describe("ThemeProvider CSS Variable Optimization", () => {
       // Should update background colors that differ between themes
       expect(mockStyle.setProperty).toHaveBeenCalledWith(
         "--bg-primary",
-        darkTheme.colors.background.primary
+        darkTheme.colors.background.primary,
       );
 
       // Should update text colors that differ
       expect(mockStyle.setProperty).toHaveBeenCalledWith(
         "--text-primary",
-        darkTheme.colors.text.primary
+        darkTheme.colors.text.primary,
       );
     });
 
@@ -174,7 +191,10 @@ describe("ThemeProvider CSS Variable Optimization", () => {
       };
 
       const wrapper = ({ children }: { children: React.ReactNode }) => (
-        <ThemeProvider themes={{ light: lightTheme, custom: customTheme }} defaultTheme="light">
+        <ThemeProvider
+          themes={{ light: lightTheme, custom: customTheme }}
+          defaultTheme="light"
+        >
           {children}
         </ThemeProvider>
       );
@@ -192,7 +212,7 @@ describe("ThemeProvider CSS Variable Optimization", () => {
       // Should have updated primary-50
       expect(mockStyle.setProperty).toHaveBeenCalledWith(
         "--color-primary-50",
-        "#custom-color"
+        "#custom-color",
       );
 
       // Should have limited number of updates (only changed properties)
@@ -216,7 +236,7 @@ describe("ThemeProvider CSS Variable Optimization", () => {
 
       // Capture dark theme calls
       const darkThemeCalls = new Map(
-        mockStyle.setProperty.mock.calls.map(([prop, value]) => [prop, value])
+        mockStyle.setProperty.mock.calls.map(([prop, value]) => [prop, value]),
       );
       mockStyle.setProperty.mockClear();
 
@@ -227,15 +247,19 @@ describe("ThemeProvider CSS Variable Optimization", () => {
 
       // Capture light theme calls
       const lightThemeCalls = new Map(
-        mockStyle.setProperty.mock.calls.map(([prop, value]) => [prop, value])
+        mockStyle.setProperty.mock.calls.map(([prop, value]) => [prop, value]),
       );
 
       // Should update properties that are different between themes
       expect(lightThemeCalls.size).toBeGreaterThan(0);
 
       // Background colors should be different
-      expect(lightThemeCalls.get("--bg-primary")).toBe(lightTheme.colors.background.primary);
-      expect(lightThemeCalls.get("--bg-primary")).not.toBe(darkTheme.colors.background.primary);
+      expect(lightThemeCalls.get("--bg-primary")).toBe(
+        lightTheme.colors.background.primary,
+      );
+      expect(lightThemeCalls.get("--bg-primary")).not.toBe(
+        darkTheme.colors.background.primary,
+      );
     });
 
     it("should use toggleTheme to switch between light and dark", () => {
@@ -255,11 +279,17 @@ describe("ThemeProvider CSS Variable Optimization", () => {
       });
 
       // Should switch to dark theme
-      expect(document.documentElement.setAttribute).toHaveBeenCalledWith("data-theme", "dark");
-      expect(document.documentElement.setAttribute).toHaveBeenCalledWith("data-color-scheme", "dark");
+      expect(document.documentElement.setAttribute).toHaveBeenCalledWith(
+        "data-theme",
+        "dark",
+      );
+      expect(document.documentElement.setAttribute).toHaveBeenCalledWith(
+        "data-color-scheme",
+        "dark",
+      );
       expect(mockStyle.setProperty).toHaveBeenCalledWith(
         "--bg-primary",
-        darkTheme.colors.background.primary
+        darkTheme.colors.background.primary,
       );
     });
   });
@@ -330,10 +360,16 @@ describe("ThemeProvider CSS Variable Optimization", () => {
       });
 
       // Should set data-theme attribute
-      expect(document.documentElement.setAttribute).toHaveBeenCalledWith("data-theme", "dark");
+      expect(document.documentElement.setAttribute).toHaveBeenCalledWith(
+        "data-theme",
+        "dark",
+      );
 
       // Should set data-color-scheme attribute
-      expect(document.documentElement.setAttribute).toHaveBeenCalledWith("data-color-scheme", "dark");
+      expect(document.documentElement.setAttribute).toHaveBeenCalledWith(
+        "data-color-scheme",
+        "dark",
+      );
     });
   });
 
@@ -348,7 +384,10 @@ describe("ThemeProvider CSS Variable Optimization", () => {
       const { result } = renderHook(() => useTheme(), { wrapper });
 
       // Should have saved to localStorage
-      expect(localStorageMock.setItem).toHaveBeenCalledWith("test-theme", "light");
+      expect(localStorageMock.setItem).toHaveBeenCalledWith(
+        "test-theme",
+        "light",
+      );
 
       // Clear the mock
       localStorageMock.setItem.mockClear();
@@ -358,7 +397,10 @@ describe("ThemeProvider CSS Variable Optimization", () => {
         result.current.setTheme(darkTheme);
       });
 
-      expect(localStorageMock.setItem).toHaveBeenCalledWith("test-theme", "dark");
+      expect(localStorageMock.setItem).toHaveBeenCalledWith(
+        "test-theme",
+        "dark",
+      );
     });
   });
 });

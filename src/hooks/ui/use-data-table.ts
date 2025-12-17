@@ -1,23 +1,23 @@
-import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import {
-  useReactTable,
+  Column,
+  type ColumnDef,
+  type ColumnFiltersState,
+  type ExpandedState,
   getCoreRowModel,
-  getSortedRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
   getExpandedRowModel,
   getFacetedRowModel,
   getFacetedUniqueValues,
-  ColumnFiltersState,
-  SortingState,
-  VisibilityState,
-  ExpandedState,
-  RowSelectionState,
-  ColumnDef,
-  RowData,
-  Column,
-  Table,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  type RowData,
+  type RowSelectionState,
+  type SortingState,
+  type Table,
+  useReactTable,
+  type VisibilityState,
 } from "@tanstack/react-table";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 // This type is needed to make generic work with table
 declare module "@tanstack/react-table" {

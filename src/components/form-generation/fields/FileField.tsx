@@ -6,11 +6,11 @@
 
 "use client";
 
+import { File as FileIcon, Image as ImageIcon, Upload, X } from "lucide-react";
 import { useState } from "react";
+import { useFormTheme } from "../themes/ThemeProvider";
 import type { FieldComponentProps, FileFieldConfig } from "../types";
 import { cn, formatFileSize } from "../utils/helpers";
-import { Upload, X, File as FileIcon, Image as ImageIcon } from "lucide-react";
-import { useFormTheme } from "../themes/ThemeProvider";
 
 export function FileField({
   field,

@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useMemo } from "react";
 import { useTranslations } from "next-intl";
-import CreditCard from "./CreditCard";
-import { CreditCard as CreditCardType } from "@/types/credit-card";
-import { cn } from "@/lib/utils";
+import type React from "react";
+import { useMemo } from "react";
 import { DEFAULT_PAGE_SIZE } from "@/constants/credit-cards";
+import { cn } from "@/lib/utils";
+import type { CreditCard as CreditCardType } from "@/types/credit-card";
+import CreditCard from "./CreditCard";
 
 interface CreditCardGridProps {
   cards: CreditCardType[];

@@ -4,7 +4,12 @@
  * Page for comparing savings interest rates across Vietnamese banks
  */
 
+import { Info, PiggyBank, Shield, TrendingUp } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
+import { ToolsPageLayout } from "@/components/features/tools/ToolsPageLayout";
+import { ToolsThemeProvider } from "@/components/features/tools/ToolsThemeProvider";
 import { SavingsCalculator } from "@/components/tools";
+import { Badge } from "@/components/ui/badge";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -14,11 +19,6 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useTranslations, useLocale } from "next-intl";
-import { ToolsThemeProvider } from "@/components/features/tools/ToolsThemeProvider";
-import { ToolsPageLayout } from "@/components/features/tools/ToolsPageLayout";
-import { Badge } from "@/components/ui/badge";
-import { TrendingUp, PiggyBank, Shield, Info } from "lucide-react";
 
 export default function SavingsCalculatorPage() {
   const t = useTranslations("pages.savings-calculator");

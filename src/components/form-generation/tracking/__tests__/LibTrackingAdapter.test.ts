@@ -1,6 +1,6 @@
-import { vi, describe, it, expect, beforeEach } from "vitest";
-import { LibTrackingAdapter } from "../adapters/LibTrackingAdapter";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { FieldTrackingEvent } from "../../types";
+import { LibTrackingAdapter } from "../adapters/LibTrackingAdapter";
 
 // Mock the tracking library
 vi.mock("@/lib/tracking", () => ({

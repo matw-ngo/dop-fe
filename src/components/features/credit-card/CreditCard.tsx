@@ -1,32 +1,32 @@
 "use client";
 
-import React from "react";
+import {
+  ArrowLeftRight,
+  CheckCircle,
+  ExternalLink,
+  Gift,
+  Plus,
+  Shield,
+  Smartphone,
+  Star,
+  TrendingUp,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
+import type React from "react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import {
-  Star,
-  Plus,
-  ArrowLeftRight,
-  ExternalLink,
-  CheckCircle,
-  TrendingUp,
-  Gift,
-  Shield,
-  Smartphone,
-} from "lucide-react";
+import { CARD_CATEGORIES, CARD_NETWORKS } from "@/constants/credit-cards";
 import { cn } from "@/lib/utils";
-import { CreditCard as CreditCardType } from "@/types/credit-card";
-import { CARD_NETWORKS, CARD_CATEGORIES } from "@/constants/credit-cards";
+import type { CreditCard as CreditCardType } from "@/types/credit-card";
 
 interface CreditCardProps {
   card: CreditCardType;

@@ -1,11 +1,11 @@
-import type { InsuranceProduct } from "@/types/insurance";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { formatCurrency } from "@/lib/utils";
-import { Shield, Phone, Mail, Globe } from "lucide-react";
+import { Globe, Mail, Phone, Shield } from "lucide-react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { formatCurrency } from "@/lib/utils";
+import type { InsuranceProduct } from "@/types/insurance";
 
 interface ProductSidebarProps {
   product: InsuranceProduct;

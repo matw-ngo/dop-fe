@@ -5,14 +5,14 @@
  */
 
 import React, { useEffect } from "react";
+import type { EkycFieldConfig } from "@/components/form-generation/types";
 import {
   Dialog,
   DialogContent,
-  DialogTitle,
-  DialogHeader,
   DialogDescription,
+  DialogHeader,
+  DialogTitle,
 } from "@/components/ui/dialog";
-import type { EkycFieldConfig } from "@/components/form-generation/types";
 import type { VerificationResult } from "@/lib/verification/types";
 
 interface VerificationModalProps {

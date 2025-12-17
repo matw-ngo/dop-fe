@@ -3,23 +3,32 @@
 
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  AlertCircle,
+  BarChart3,
+  Calculator,
+  Calendar,
+  CheckCircle,
+  Clock,
+  DollarSign,
+  Download,
+  Eye,
+  EyeOff,
+  FileText,
+  HelpCircle,
+  Info,
+  Percent,
+  PieChart,
+  RefreshCw,
+  Settings,
+  Shield,
+  TrendingUp,
+  Zap,
+} from "lucide-react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Slider } from "@/components/ui/slider";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Separator } from "@/components/ui/separator";
-import { Progress } from "@/components/ui/progress";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -27,37 +36,34 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Progress } from "@/components/ui/progress";
 import {
-  Calculator,
-  TrendingUp,
-  DollarSign,
-  Calendar,
-  Percent,
-  FileText,
-  Download,
-  Info,
-  AlertCircle,
-  CheckCircle,
-  BarChart3,
-  PieChart,
-  RefreshCw,
-  Settings,
-  HelpCircle,
-  Clock,
-  Shield,
-  Zap,
-  Eye,
-  EyeOff,
-} from "lucide-react";
-import { cn } from "@/lib/utils";
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
+import { Slider } from "@/components/ui/slider";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
-  VietnameseLoanCalculator,
-  LoanCalculationParams,
-  LoanCalculationResult,
-  formatVND,
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import {
   compareLoanOptions,
+  formatVND,
+  type LoanCalculationParams,
+  type LoanCalculationResult,
+  VietnameseLoanCalculator,
 } from "@/lib/loan-products/interest-calculations";
 import type { InterestRateType } from "@/lib/loan-products/vietnamese-loan-products";
+import { cn } from "@/lib/utils";
 
 interface CalculatorProps {
   /** Initial calculation parameters */
@@ -142,7 +148,7 @@ export function LoanCalculator({
   };
 
   const updateParam = (key: keyof LoanCalculationParams, value: any) => {
-    setParams(prev => ({ ...prev, [key]: value }));
+    setParams((prev) => ({ ...prev, [key]: value }));
   };
 
   const compareProducts = () => {
@@ -164,7 +170,9 @@ export function LoanCalculator({
           <div className="grid grid-cols-2 gap-4">
             <div>
               <Label className="text-xs text-gray-600">Số tiền vay</Label>
-              <div className="text-lg font-bold">{formatVND(params.principal)}</div>
+              <div className="text-lg font-bold">
+                {formatVND(params.principal)}
+              </div>
             </div>
             <div>
               <Label className="text-xs text-gray-600">Trả hàng tháng</Label>
@@ -192,20 +200,12 @@ export function LoanCalculator({
           </p>
         </div>
         <div className="flex items-center space-x-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={calculateLoan}
-          >
+          <Button variant="outline" size="sm" onClick={calculateLoan}>
             <RefreshCw className="h-4 w-4 mr-2" />
             Tính lại
           </Button>
           {showComparison && (
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={compareProducts}
-            >
+            <Button variant="outline" size="sm" onClick={compareProducts}>
               <BarChart3 className="h-4 w-4 mr-2" />
               So sánh
             </Button>
@@ -228,7 +228,8 @@ export function LoanCalculator({
                   type="text"
                   value={params.principal.toLocaleString("vi-VN")}
                   onChange={(e) => {
-                    const value = parseInt(e.target.value.replace(/[^\d]/g, "")) || 0;
+                    const value =
+                      parseInt(e.target.value.replace(/[^\d]/g, "")) || 0;
                     updateParam("principal", value);
                   }}
                   className="text-lg font-medium"
@@ -245,7 +246,11 @@ export function LoanCalculator({
                   {commonAmounts.slice(0, 3).map((amount) => (
                     <Button
                       key={amount.value}
-                      variant={params.principal === amount.value ? "default" : "outline"}
+                      variant={
+                        params.principal === amount.value
+                          ? "default"
+                          : "outline"
+                      }
                       size="sm"
                       onClick={() => updateParam("principal", amount.value)}
                       className="text-xs"
@@ -262,7 +267,9 @@ export function LoanCalculator({
                 <Input
                   type="number"
                   value={params.term}
-                  onChange={(e) => updateParam("term", parseInt(e.target.value) || 0)}
+                  onChange={(e) =>
+                    updateParam("term", parseInt(e.target.value) || 0)
+                  }
                   min={1}
                   max={360}
                 />
@@ -278,7 +285,9 @@ export function LoanCalculator({
                   {commonTerms.slice(0, 4).map((term) => (
                     <Button
                       key={term.value}
-                      variant={params.term === term.value ? "default" : "outline"}
+                      variant={
+                        params.term === term.value ? "default" : "outline"
+                      }
                       size="sm"
                       onClick={() => updateParam("term", term.value)}
                       className="text-xs"
@@ -294,7 +303,9 @@ export function LoanCalculator({
                 <Label>Phương pháp tính lãi</Label>
                 <Select
                   value={params.rateType}
-                  onValueChange={(value: InterestRateType) => updateParam("rateType", value)}
+                  onValueChange={(value: InterestRateType) =>
+                    updateParam("rateType", value)
+                  }
                 >
                   <SelectTrigger>
                     <SelectValue />
@@ -312,9 +323,18 @@ export function LoanCalculator({
                     </TooltipTrigger>
                     <TooltipContent>
                       <div className="space-y-2 text-sm">
-                        <p><strong>Lãi suất giảm dần:</strong> Lãi suất tính trên dư nợ giảm dần</p>
-                        <p><strong>Lãi suất cố định:</strong> Lãi suất không thay đổi trong suốt thời gian vay</p>
-                        <p><strong>Lãi suất phẳng:</strong> Lãi suất tính trên khoản vay ban đầu</p>
+                        <p>
+                          <strong>Lãi suất giảm dần:</strong> Lãi suất tính trên
+                          dư nợ giảm dần
+                        </p>
+                        <p>
+                          <strong>Lãi suất cố định:</strong> Lãi suất không thay
+                          đổi trong suốt thời gian vay
+                        </p>
+                        <p>
+                          <strong>Lãi suất phẳng:</strong> Lãi suất tính trên
+                          khoản vay ban đầu
+                        </p>
                       </div>
                     </TooltipContent>
                   </Tooltip>
@@ -327,7 +347,9 @@ export function LoanCalculator({
                 <Input
                   type="number"
                   value={params.annualRate}
-                  onChange={(e) => updateParam("annualRate", parseFloat(e.target.value) || 0)}
+                  onChange={(e) =>
+                    updateParam("annualRate", parseFloat(e.target.value) || 0)
+                  }
                   min={0}
                   max={30}
                   step={0.1}
@@ -351,7 +373,12 @@ export function LoanCalculator({
                     <Input
                       type="number"
                       value={params.promotionalRate || ""}
-                      onChange={(e) => updateParam("promotionalRate", parseFloat(e.target.value) || undefined)}
+                      onChange={(e) =>
+                        updateParam(
+                          "promotionalRate",
+                          parseFloat(e.target.value) || undefined,
+                        )
+                      }
                       min={0}
                       max={params.annualRate}
                       step={0.1}
@@ -363,7 +390,12 @@ export function LoanCalculator({
                     <Input
                       type="number"
                       value={params.promotionalPeriod || ""}
-                      onChange={(e) => updateParam("promotionalPeriod", parseInt(e.target.value) || undefined)}
+                      onChange={(e) =>
+                        updateParam(
+                          "promotionalPeriod",
+                          parseInt(e.target.value) || undefined,
+                        )
+                      }
                       min={1}
                       max={params.term}
                       placeholder="Không có"
@@ -381,7 +413,12 @@ export function LoanCalculator({
                     <Input
                       type="number"
                       value={params.processingFee || ""}
-                      onChange={(e) => updateParam("processingFee", parseFloat(e.target.value) || 0)}
+                      onChange={(e) =>
+                        updateParam(
+                          "processingFee",
+                          parseFloat(e.target.value) || 0,
+                        )
+                      }
                       min={0}
                       max={5}
                       step={0.1}
@@ -393,7 +430,12 @@ export function LoanCalculator({
                     <Input
                       type="number"
                       value={params.insuranceFee || ""}
-                      onChange={(e) => updateParam("insuranceFee", parseFloat(e.target.value) || 0)}
+                      onChange={(e) =>
+                        updateParam(
+                          "insuranceFee",
+                          parseFloat(e.target.value) || 0,
+                        )
+                      }
                       min={0}
                       max={2}
                       step={0.1}
@@ -405,9 +447,14 @@ export function LoanCalculator({
                   <Label className="text-xs">Phí khác (VND)</Label>
                   <Input
                     type="text"
-                    value={params.otherFees ? params.otherFees.toLocaleString("vi-VN") : ""}
+                    value={
+                      params.otherFees
+                        ? params.otherFees.toLocaleString("vi-VN")
+                        : ""
+                    }
                     onChange={(e) => {
-                      const value = parseInt(e.target.value.replace(/[^\d]/g, "")) || 0;
+                      const value =
+                        parseInt(e.target.value.replace(/[^\d]/g, "")) || 0;
                       updateParam("otherFees", value);
                     }}
                     placeholder="0"
@@ -421,7 +468,9 @@ export function LoanCalculator({
                 <Input
                   type="number"
                   value={params.gracePeriod || 0}
-                  onChange={(e) => updateParam("gracePeriod", parseInt(e.target.value) || 0)}
+                  onChange={(e) =>
+                    updateParam("gracePeriod", parseInt(e.target.value) || 0)
+                  }
                   min={0}
                   max={params.term}
                   placeholder="0"
@@ -445,31 +494,46 @@ export function LoanCalculator({
                     {/* Key Metrics */}
                     <div className="space-y-4">
                       <div className="p-4 bg-blue-50 rounded-lg">
-                        <div className="text-sm text-blue-600 mb-1">Trả hàng tháng</div>
+                        <div className="text-sm text-blue-600 mb-1">
+                          Trả hàng tháng
+                        </div>
                         <div className="text-3xl font-bold text-blue-600">
                           {formatVND(result.monthlyPayment)}
                         </div>
                         {result.promotionalSummary && (
                           <div className="text-xs text-blue-500 mt-2">
-                            Giai đoạn ưu đãi: {formatVND(result.promotionalSummary.promotionalMonthlyPayment)}/tháng
+                            Giai đoạn ưu đãi:{" "}
+                            {formatVND(
+                              result.promotionalSummary
+                                .promotionalMonthlyPayment,
+                            )}
+                            /tháng
                           </div>
                         )}
                       </div>
 
                       <div className="p-4 bg-green-50 rounded-lg">
-                        <div className="text-sm text-green-600 mb-1">Tổng lãi suất</div>
+                        <div className="text-sm text-green-600 mb-1">
+                          Tổng lãi suất
+                        </div>
                         <div className="text-2xl font-bold text-green-600">
                           {formatVND(result.totalInterest)}
                         </div>
                         <div className="text-xs text-green-500 mt-1">
-                          {((result.totalInterest / params.principal) * 100).toFixed(1)}% của khoản vay
+                          {(
+                            (result.totalInterest / params.principal) *
+                            100
+                          ).toFixed(1)}
+                          % của khoản vay
                         </div>
                       </div>
                     </div>
 
                     <div className="space-y-4">
                       <div className="p-4 bg-purple-50 rounded-lg">
-                        <div className="text-sm text-purple-600 mb-1">Tổng thanh toán</div>
+                        <div className="text-sm text-purple-600 mb-1">
+                          Tổng thanh toán
+                        </div>
                         <div className="text-2xl font-bold text-purple-600">
                           {formatVND(result.totalPayable)}
                         </div>
@@ -479,7 +543,9 @@ export function LoanCalculator({
                       </div>
 
                       <div className="p-4 bg-orange-50 rounded-lg">
-                        <div className="text-sm text-orange-600 mb-1">APR hiệu quả</div>
+                        <div className="text-sm text-orange-600 mb-1">
+                          APR hiệu quả
+                        </div>
                         <div className="text-2xl font-bold text-orange-600">
                           {result.effectiveAPR.toFixed(2)}%
                         </div>
@@ -496,11 +562,15 @@ export function LoanCalculator({
                     <div className="space-y-2">
                       <div className="flex justify-between text-sm">
                         <span className="text-gray-600">Khoản vay gốc:</span>
-                        <span className="font-medium">{formatVND(params.principal)}</span>
+                        <span className="font-medium">
+                          {formatVND(params.principal)}
+                        </span>
                       </div>
                       <div className="flex justify-between text-sm">
                         <span className="text-gray-600">Lãi suất:</span>
-                        <span className="font-medium">{formatVND(result.totalInterest)}</span>
+                        <span className="font-medium">
+                          {formatVND(result.totalInterest)}
+                        </span>
                       </div>
                       <div className="flex justify-between text-sm">
                         <span className="text-gray-600">Phí xử lý:</span>
@@ -511,7 +581,9 @@ export function LoanCalculator({
                       <Separator />
                       <div className="flex justify-between font-semibold">
                         <span>Tổng cộng:</span>
-                        <span className="text-lg">{formatVND(result.totalPayable)}</span>
+                        <span className="text-lg">
+                          {formatVND(result.totalPayable)}
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -530,12 +602,13 @@ export function LoanCalculator({
                           size="sm"
                           onClick={() => setShowDetails(!showDetails)}
                         >
-                          {showDetails ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                          {showDetails ? (
+                            <EyeOff className="h-4 w-4" />
+                          ) : (
+                            <Eye className="h-4 w-4" />
+                          )}
                         </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                        >
+                        <Button variant="outline" size="sm">
                           <Download className="h-4 w-4" />
                         </Button>
                       </div>
@@ -554,17 +627,29 @@ export function LoanCalculator({
 
                         {/* Payment Schedule - Show first 6 payments */}
                         <div className="space-y-1 max-h-96 overflow-y-auto">
-                          {result.paymentSchedule.slice(0, 6).map((payment, index) => (
-                            <div key={index} className="grid grid-cols-4 gap-4 text-sm p-2 hover:bg-gray-50 rounded">
-                              <div>{payment.paymentNumber}</div>
-                              <div className="text-right">{formatVND(payment.principal)}</div>
-                              <div className="text-right">{formatVND(payment.interest)}</div>
-                              <div className="text-right font-medium">{formatVND(payment.total)}</div>
-                            </div>
-                          ))}
+                          {result.paymentSchedule
+                            .slice(0, 6)
+                            .map((payment, index) => (
+                              <div
+                                key={index}
+                                className="grid grid-cols-4 gap-4 text-sm p-2 hover:bg-gray-50 rounded"
+                              >
+                                <div>{payment.paymentNumber}</div>
+                                <div className="text-right">
+                                  {formatVND(payment.principal)}
+                                </div>
+                                <div className="text-right">
+                                  {formatVND(payment.interest)}
+                                </div>
+                                <div className="text-right font-medium">
+                                  {formatVND(payment.total)}
+                                </div>
+                              </div>
+                            ))}
                           {result.paymentSchedule.length > 6 && (
                             <div className="text-center text-sm text-gray-500 py-2">
-                              ... và {result.paymentSchedule.length - 6} kỳ còn lại
+                              ... và {result.paymentSchedule.length - 6} kỳ còn
+                              lại
                             </div>
                           )}
                         </div>
@@ -572,7 +657,9 @@ export function LoanCalculator({
                     ) : (
                       <div className="text-center py-8 text-gray-500">
                         <Eye className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                        <p>Nhấn vào biểu tượng mắt để xem lịch trả nợ chi tiết</p>
+                        <p>
+                          Nhấn vào biểu tượng mắt để xem lịch trả nợ chi tiết
+                        </p>
                       </div>
                     )}
                   </CardContent>
@@ -595,39 +682,56 @@ export function LoanCalculator({
                           key={index}
                           className={cn(
                             "p-4 rounded-lg border",
-                            item.ranking === 1 && "border-green-500 bg-green-50"
+                            item.ranking === 1 &&
+                              "border-green-500 bg-green-50",
                           )}
                         >
                           <div className="flex items-center justify-between mb-3">
                             <div className="flex items-center space-x-2">
-                              <div className={cn(
-                                "w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold",
-                                item.ranking === 1 ? "bg-green-100 text-green-600" : "bg-gray-100 text-gray-600"
-                              )}>
+                              <div
+                                className={cn(
+                                  "w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold",
+                                  item.ranking === 1
+                                    ? "bg-green-100 text-green-600"
+                                    : "bg-gray-100 text-gray-600",
+                                )}
+                              >
                                 {item.ranking}
                               </div>
                               <span className="font-medium">{item.name}</span>
                               {item.ranking === 1 && (
-                                <Badge className="bg-green-100 text-green-800">Tốt nhất</Badge>
+                                <Badge className="bg-green-100 text-green-800">
+                                  Tốt nhất
+                                </Badge>
                               )}
                             </div>
                             <div className="text-right">
-                              <div className="text-lg font-bold">{formatVND(item.monthlyPayment)}</div>
-                              <div className="text-sm text-gray-600">/tháng</div>
+                              <div className="text-lg font-bold">
+                                {formatVND(item.monthlyPayment)}
+                              </div>
+                              <div className="text-sm text-gray-600">
+                                /tháng
+                              </div>
                             </div>
                           </div>
                           <div className="grid grid-cols-3 gap-4 text-sm">
                             <div>
                               <span className="text-gray-600">Lãi suất:</span>
-                              <div className="font-medium">{item.effectiveAPR.toFixed(2)}%</div>
+                              <div className="font-medium">
+                                {item.effectiveAPR.toFixed(2)}%
+                              </div>
                             </div>
                             <div>
                               <span className="text-gray-600">Tổng lãi:</span>
-                              <div className="font-medium">{formatVND(item.totalInterest)}</div>
+                              <div className="font-medium">
+                                {formatVND(item.totalInterest)}
+                              </div>
                             </div>
                             <div>
                               <span className="text-gray-600">Tổng trả:</span>
-                              <div className="font-medium">{formatVND(item.totalPayable)}</div>
+                              <div className="font-medium">
+                                {formatVND(item.totalPayable)}
+                              </div>
                             </div>
                           </div>
                         </div>

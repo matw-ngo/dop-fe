@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import type { CommunityConfig } from "@/configs/homepage-config";
 import Community from "./community";
-import { CommunityConfig } from "@/configs/homepage-config";
 
 const meta: Meta<typeof Community> = {
   title: "Organisms/Homepage/Community",

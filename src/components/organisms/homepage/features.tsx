@@ -1,8 +1,8 @@
 "use client";
 
-import React from "react";
 import Link from "next/link";
-import { FeaturesConfig } from "@/configs/homepage-config";
+import React from "react";
+import type { FeaturesConfig } from "@/configs/homepage-config";
 
 interface FeaturesProps {
   config?: FeaturesConfig;

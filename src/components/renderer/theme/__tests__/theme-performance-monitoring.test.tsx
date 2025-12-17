@@ -1,16 +1,16 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   getPerformanceMonitor,
   initializePerformanceMonitoring,
-  measureThemeOperation,
   isPerformanceMonitoringEnabled,
+  measureThemeOperation,
+  type PerformanceMetrics,
   type PerformanceMonitor,
-  type PerformanceMetrics
 } from "@/lib/theme-performance";
 
 // Mock performance.now for consistent test results
 const mockPerformanceNow = vi.fn();
-Object.defineProperty(global, 'performance', {
+Object.defineProperty(global, "performance", {
   value: {
     now: mockPerformanceNow,
     mark: vi.fn(),
@@ -35,7 +35,11 @@ describe("Theme Performance Monitoring", () => {
     });
 
     // Get a fresh monitor instance
-    monitor = getPerformanceMonitor({ enabled: true, warningThreshold: 16, enableWarnings: true });
+    monitor = getPerformanceMonitor({
+      enabled: true,
+      warningThreshold: 16,
+      enableWarnings: true,
+    });
   });
 
   afterEach(() => {
@@ -44,11 +48,11 @@ describe("Theme Performance Monitoring", () => {
 
   describe("Basic Performance Tracking", () => {
     it("should measure theme operation timing", async () => {
-      const result = measureThemeOperation('test-operation', () => {
-        return 'test-result';
+      const result = measureThemeOperation("test-operation", () => {
+        return "test-result";
       });
 
-      expect(result).toBe('test-result');
+      expect(result).toBe("test-result");
 
       const metrics = monitor.getMetrics();
       expect(metrics.lastThemeSwitchTime).toBeGreaterThan(0);
@@ -58,13 +62,13 @@ describe("Theme Performance Monitoring", () => {
 
     it("should track multiple operations", async () => {
       // First operation
-      measureThemeOperation('operation-1', () => {});
+      measureThemeOperation("operation-1", () => {});
 
       // Second operation (faster)
       mockPerformanceNow.mockImplementation(() => {
         return 5; // Faster operation
       });
-      measureThemeOperation('operation-2', () => {});
+      measureThemeOperation("operation-2", () => {});
 
       const metrics = monitor.getMetrics();
       expect(metrics.totalThemeSwitches).toBe(2);
@@ -83,17 +87,17 @@ describe("Theme Performance Monitoring", () => {
         }
       });
 
-      const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+      const consoleSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
 
-      measureThemeOperation('slow-operation', () => {});
+      measureThemeOperation("slow-operation", () => {});
 
       const metrics = monitor.getMetrics();
       expect(metrics.slowOperations).toBe(1);
       expect(consoleSpy).toHaveBeenCalledTimes(1);
       const warningMessage = consoleSpy.mock.calls[0][0];
-      expect(warningMessage).toContain('[Theme Performance Warning]');
-      expect(warningMessage).toContain('slow-operation');
-      expect(warningMessage).toContain('20.00ms');
+      expect(warningMessage).toContain("[Theme Performance Warning]");
+      expect(warningMessage).toContain("slow-operation");
+      expect(warningMessage).toContain("20.00ms");
 
       consoleSpy.mockRestore();
     });
@@ -102,8 +106,8 @@ describe("Theme Performance Monitoring", () => {
   describe("DOM Update Metrics", () => {
     it("should track DOM update timing", () => {
       monitor.startRAFTiming();
-      monitor.trackRAFUpdate('--color-primary', '#000');
-      monitor.trackRAFUpdate('--color-secondary', '#fff');
+      monitor.trackRAFUpdate("--color-primary", "#000");
+      monitor.trackRAFUpdate("--color-secondary", "#fff");
       monitor.endRAFTiming();
 
       const metrics = monitor.getMetrics();
@@ -115,13 +119,13 @@ describe("Theme Performance Monitoring", () => {
     it("should handle multiple RAF batches", () => {
       // First batch
       monitor.startRAFTiming();
-      monitor.trackRAFUpdate('--property-1', 'value1');
+      monitor.trackRAFUpdate("--property-1", "value1");
       monitor.endRAFTiming();
 
       // Second batch
       monitor.startRAFTiming();
-      monitor.trackRAFUpdate('--property-2', 'value2');
-      monitor.trackRAFUpdate('--property-3', 'value3');
+      monitor.trackRAFUpdate("--property-2", "value2");
+      monitor.trackRAFUpdate("--property-3", "value3");
       monitor.endRAFTiming();
 
       const metrics = monitor.getMetrics();
@@ -149,13 +153,13 @@ describe("Theme Performance Monitoring", () => {
 
   describe("Performance History", () => {
     it("should maintain performance history", () => {
-      measureThemeOperation('operation-1', () => {});
-      measureThemeOperation('operation-2', () => {});
+      measureThemeOperation("operation-1", () => {});
+      measureThemeOperation("operation-2", () => {});
 
       const metrics = monitor.getMetrics();
       expect(metrics.performanceHistory).toHaveLength(2);
-      expect(metrics.performanceHistory[0].type).toBe('operation-1');
-      expect(metrics.performanceHistory[1].type).toBe('operation-2');
+      expect(metrics.performanceHistory[0].type).toBe("operation-1");
+      expect(metrics.performanceHistory[1].type).toBe("operation-2");
     });
 
     it("should limit history size", () => {
@@ -169,8 +173,8 @@ describe("Theme Performance Monitoring", () => {
       const metrics = limitedMonitor.getMetrics();
       expect(metrics.performanceHistory).toHaveLength(3);
       // Should keep the most recent 3
-      expect(metrics.performanceHistory[0].type).toBe('operation-2');
-      expect(metrics.performanceHistory[2].type).toBe('operation-4');
+      expect(metrics.performanceHistory[0].type).toBe("operation-2");
+      expect(metrics.performanceHistory[2].type).toBe("operation-4");
     });
   });
 
@@ -183,7 +187,7 @@ describe("Theme Performance Monitoring", () => {
         return callCount === 1 ? 0 : 5;
       });
 
-      measureThemeOperation('fast-operation', () => {});
+      measureThemeOperation("fast-operation", () => {});
       // Add some cache hits to improve the score
       monitor.recordCacheHit();
       monitor.recordCacheHit();
@@ -191,7 +195,7 @@ describe("Theme Performance Monitoring", () => {
 
       const grade = monitor.gradePerformance();
 
-      expect(grade.grade).toBe('A');
+      expect(grade.grade).toBe("A");
       expect(grade.score).toBeGreaterThanOrEqual(90);
     });
 
@@ -203,7 +207,7 @@ describe("Theme Performance Monitoring", () => {
         return callCount === 1 ? 0 : 25;
       });
 
-      measureThemeOperation('slow-operation', () => {});
+      measureThemeOperation("slow-operation", () => {});
       // Add a mix of cache hits and misses to get a C grade
       monitor.recordCacheHit();
       monitor.recordCacheHit();
@@ -212,7 +216,7 @@ describe("Theme Performance Monitoring", () => {
 
       const grade = monitor.gradePerformance();
 
-      expect(grade.grade).toBe('C');
+      expect(grade.grade).toBe("C");
       expect(grade.score).toBeGreaterThanOrEqual(70);
       expect(grade.score).toBeLessThan(80);
     });
@@ -225,10 +229,10 @@ describe("Theme Performance Monitoring", () => {
         return callCount === 1 ? 0 : 100;
       });
 
-      measureThemeOperation('very-slow-operation', () => {});
+      measureThemeOperation("very-slow-operation", () => {});
       const grade = monitor.gradePerformance();
 
-      expect(grade.grade).toBe('F');
+      expect(grade.grade).toBe("F");
       expect(grade.score).toBeLessThan(60);
     });
   });
@@ -237,8 +241,8 @@ describe("Theme Performance Monitoring", () => {
     it("should respect enabled configuration", () => {
       const disabledMonitor = getPerformanceMonitor({ enabled: false });
 
-      const result = measureThemeOperation('test', () => 'result');
-      expect(result).toBe('result');
+      const result = measureThemeOperation("test", () => "result");
+      expect(result).toBe("result");
 
       const metrics = disabledMonitor.getMetrics();
       expect(metrics.totalThemeSwitches).toBe(0); // Should not track when disabled
@@ -246,14 +250,14 @@ describe("Theme Performance Monitoring", () => {
 
     it("should use custom warning threshold", () => {
       const customMonitor = getPerformanceMonitor({ warningThreshold: 50 });
-      const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+      const consoleSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
 
       // Operation under custom threshold (30ms)
       mockPerformanceNow.mockImplementation(() => {
         return 30;
       });
 
-      customMonitor.measureOperation('custom-threshold', () => {});
+      customMonitor.measureOperation("custom-threshold", () => {});
 
       // Should not warn since 30ms < 50ms
       expect(consoleSpy).not.toHaveBeenCalled();
@@ -263,15 +267,15 @@ describe("Theme Performance Monitoring", () => {
 
   describe("Data Export", () => {
     it("should export performance data", () => {
-      measureThemeOperation('export-test', () => {});
+      measureThemeOperation("export-test", () => {});
       monitor.recordCacheHit();
 
       const exported = monitor.exportData();
 
-      expect(exported).toHaveProperty('metrics');
-      expect(exported).toHaveProperty('history');
-      expect(exported).toHaveProperty('config');
-      expect(exported).toHaveProperty('exportTime');
+      expect(exported).toHaveProperty("metrics");
+      expect(exported).toHaveProperty("history");
+      expect(exported).toHaveProperty("config");
+      expect(exported).toHaveProperty("exportTime");
       expect(exported.metrics.totalThemeSwitches).toBe(1);
     });
   });
@@ -291,7 +295,7 @@ describe("Theme Performance Monitoring", () => {
     });
 
     it("should reset metrics", () => {
-      measureThemeOperation('reset-test', () => {});
+      measureThemeOperation("reset-test", () => {});
 
       let metrics = monitor.getMetrics();
       expect(metrics.totalThemeSwitches).toBe(1);
@@ -306,13 +310,15 @@ describe("Theme Performance Monitoring", () => {
 
   describe("Error Handling", () => {
     it("should handle operations that throw errors", () => {
-      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+      const consoleSpy = vi
+        .spyOn(console, "error")
+        .mockImplementation(() => {});
 
       expect(() => {
-        measureThemeOperation('error-operation', () => {
-          throw new Error('Test error');
+        measureThemeOperation("error-operation", () => {
+          throw new Error("Test error");
         });
-      }).toThrow('Test error');
+      }).toThrow("Test error");
 
       const metrics = monitor.getMetrics();
       expect(metrics.performanceHistory).toHaveLength(0); // Should not record failed operations
@@ -327,7 +333,7 @@ describe("Theme Performance Monitoring", () => {
 
       // Should not throw
       expect(() => {
-        measureThemeOperation('no-perf-api', () => {});
+        measureThemeOperation("no-perf-api", () => {});
       }).not.toThrow();
 
       // Restore performance API
@@ -351,14 +357,14 @@ describe("Theme Performance Monitoring", () => {
         callCount++;
         return callCount === 1 ? 0 : 10; // Fast operation
       });
-      measureThemeOperation('report-test', () => {});
+      measureThemeOperation("report-test", () => {});
       monitor.recordCacheHit();
 
       const report = monitor.debugUtils.generateReport();
 
-      expect(report).toContain('Performance Report');
-      expect(report).toContain('Theme Operations: 1');
-      expect(report).toContain('Cache Hit Rate: 100.0%');
+      expect(report).toContain("Performance Report");
+      expect(report).toContain("Theme Operations: 1");
+      expect(report).toContain("Cache Hit Rate: 100.0%");
     });
 
     it("should analyze performance bottlenecks", () => {
@@ -368,14 +374,14 @@ describe("Theme Performance Monitoring", () => {
         callCount++;
         return callCount === 1 ? 0 : 50; // Slow operation (50ms)
       });
-      measureThemeOperation('slow-op-1', () => {});
+      measureThemeOperation("slow-op-1", () => {});
 
       callCount = 0;
       mockPerformanceNow.mockImplementation(() => {
         callCount++;
         return callCount === 1 ? 0 : 60; // Another slow operation (60ms)
       });
-      measureThemeOperation('slow-op-2', () => {});
+      measureThemeOperation("slow-op-2", () => {});
 
       const analysis = monitor.debugUtils.analyzeBottlenecks();
 

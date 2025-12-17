@@ -3,11 +3,17 @@
  * Catches JavaScript errors in child component tree and displays fallback UI
  */
 
-import React, { Component, ErrorInfo, ReactNode } from 'react';
-import { Button } from '../button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../card';
-import { AlertTriangle, RefreshCw } from 'lucide-react';
-import { Alert, AlertDescription } from '../alert';
+import { AlertTriangle, RefreshCw } from "lucide-react";
+import React, { Component, type ErrorInfo, type ReactNode } from "react";
+import { Alert, AlertDescription } from "../alert";
+import { Button } from "../button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../card";
 
 interface Props {
   children: ReactNode;
@@ -41,10 +47,10 @@ export class ErrorBoundary extends Component<Props, State> {
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     // Log error to console in development
-    console.error('Error Boundary caught an error:', error, errorInfo);
+    console.error("Error Boundary caught an error:", error, errorInfo);
 
     // Log to monitoring service in production
-    if (process.env.NODE_ENV === 'production') {
+    if (process.env.NODE_ENV === "production") {
       this.logErrorToService(error, errorInfo);
     }
 
@@ -65,22 +71,23 @@ export class ErrorBoundary extends Component<Props, State> {
         stack: error.stack,
         componentStack: errorInfo.componentStack,
         timestamp: new Date().toISOString(),
-        userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : 'server',
-        url: typeof window !== 'undefined' ? window.location.href : 'server',
+        userAgent:
+          typeof navigator !== "undefined" ? navigator.userAgent : "server",
+        url: typeof window !== "undefined" ? window.location.href : "server",
       };
 
       // Send to monitoring service
-      fetch('/api/v1/errors/log', {
-        method: 'POST',
+      fetch("/api/v1/errors/log", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(errorData),
       }).catch((loggingError) => {
-        console.error('Failed to log error:', loggingError);
+        console.error("Failed to log error:", loggingError);
       });
     } catch (loggingError) {
-      console.error('Error logging service failed:', loggingError);
+      console.error("Error logging service failed:", loggingError);
     }
   }
 
@@ -93,7 +100,7 @@ export class ErrorBoundary extends Component<Props, State> {
   };
 
   handleReload = () => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       window.location.reload();
     }
   };
@@ -113,14 +120,17 @@ export class ErrorBoundary extends Component<Props, State> {
               <div className="mx-auto w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mb-4">
                 <AlertTriangle className="w-6 h-6 text-red-600" />
               </div>
-              <CardTitle className="text-red-900">Something went wrong</CardTitle>
+              <CardTitle className="text-red-900">
+                Something went wrong
+              </CardTitle>
               <CardDescription>
-                An unexpected error occurred. Please try again or contact support if the problem persists.
+                An unexpected error occurred. Please try again or contact
+                support if the problem persists.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               {/* Show error details in development */}
-              {process.env.NODE_ENV === 'development' && this.state.error && (
+              {process.env.NODE_ENV === "development" && this.state.error && (
                 <Alert variant="destructive">
                   <AlertTriangle className="h-4 w-4" />
                   <AlertDescription>
@@ -129,7 +139,9 @@ export class ErrorBoundary extends Component<Props, State> {
                     </div>
                     {this.state.error.stack && (
                       <details className="mt-2">
-                        <summary className="cursor-pointer">Stack trace</summary>
+                        <summary className="cursor-pointer">
+                          Stack trace
+                        </summary>
                         <pre className="mt-2 text-xs overflow-auto max-h-32 bg-red-50 p-2 rounded">
                           {this.state.error.stack}
                         </pre>
@@ -148,10 +160,7 @@ export class ErrorBoundary extends Component<Props, State> {
                   <RefreshCw className="w-4 h-4 mr-2" />
                   Try Again
                 </Button>
-                <Button
-                  onClick={this.handleReload}
-                  className="flex-1"
-                >
+                <Button onClick={this.handleReload} className="flex-1">
                   Reload Page
                 </Button>
               </div>
@@ -177,7 +186,7 @@ export class ErrorBoundary extends Component<Props, State> {
  */
 export const withErrorBoundary = <P extends object>(
   Component: React.ComponentType<P>,
-  errorBoundaryProps?: Omit<Props, 'children'>
+  errorBoundaryProps?: Omit<Props, "children">,
 ) => {
   const WrappedComponent = (props: P) => (
     <ErrorBoundary {...errorBoundaryProps}>
@@ -197,27 +206,28 @@ export const useErrorHandler = () => {
   const [error, setError] = React.useState<Error | null>(null);
 
   const handleError = React.useCallback((error: Error) => {
-    console.error('Async error caught:', error);
+    console.error("Async error caught:", error);
     setError(error);
 
     // Log to monitoring service in production
-    if (process.env.NODE_ENV === 'production') {
+    if (process.env.NODE_ENV === "production") {
       const errorData = {
         message: error.message,
         stack: error.stack,
         timestamp: new Date().toISOString(),
-        userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : 'server',
-        url: typeof window !== 'undefined' ? window.location.href : 'server',
+        userAgent:
+          typeof navigator !== "undefined" ? navigator.userAgent : "server",
+        url: typeof window !== "undefined" ? window.location.href : "server",
       };
 
-      fetch('/api/v1/errors/log', {
-        method: 'POST',
+      fetch("/api/v1/errors/log", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(errorData),
       }).catch((loggingError) => {
-        console.error('Failed to log async error:', loggingError);
+        console.error("Failed to log async error:", loggingError);
       });
     }
   }, []);
@@ -251,20 +261,12 @@ export const AsyncErrorHandler: React.FC<{
           <span>{error.message}</span>
           <div className="flex gap-2 ml-4">
             {onRetry && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={onRetry}
-              >
+              <Button variant="outline" size="sm" onClick={onRetry}>
                 Retry
               </Button>
             )}
             {onDismiss && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={onDismiss}
-              >
+              <Button variant="outline" size="sm" onClick={onDismiss}>
                 Dismiss
               </Button>
             )}

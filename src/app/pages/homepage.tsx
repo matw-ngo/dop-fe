@@ -1,15 +1,15 @@
 "use client";
 
 import React from "react";
-import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
-import Hero from "@/components/organisms/homepage/hero";
-import Stats from "@/components/organisms/homepage/stats";
-import Features from "@/components/organisms/homepage/features";
+import Header from "@/components/layout/header";
 import Blog from "@/components/organisms/homepage/blog";
 import Community from "@/components/organisms/homepage/community";
+import Features from "@/components/organisms/homepage/features";
+import Hero from "@/components/organisms/homepage/hero";
 import OnboardingCard from "@/components/organisms/homepage/onboarding-card";
-import { HomepageConfig } from "@/configs/homepage-config";
+import Stats from "@/components/organisms/homepage/stats";
+import type { HomepageConfig } from "@/configs/homepage-config";
 
 interface HomepageProps {
   config: HomepageConfig;

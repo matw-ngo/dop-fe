@@ -1,21 +1,21 @@
-import React from "react";
+import {
+  Ambulance,
+  Banknote,
+  Clock,
+  FileCheck,
+  FileSearch,
+  FileSignature,
+  FileText,
+  MessageCircle,
+  Phone,
+  Route,
+  TrendingUp,
+} from "lucide-react";
+import type React from "react";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import {
-  Route,
-  Phone,
-  FileText,
-  FileSearch,
-  FileCheck,
-  Banknote,
-  FileSignature,
-  MessageCircle,
-  Clock,
-  TrendingUp,
-  Ambulance,
-} from "lucide-react";
-import { ClaimMethodCard } from "../ClaimMethodCard";
 import { getApprovalRateLevel } from "../../utils";
+import { ClaimMethodCard } from "../ClaimMethodCard";
 
 interface ClaimsTabProps {
   product: any;

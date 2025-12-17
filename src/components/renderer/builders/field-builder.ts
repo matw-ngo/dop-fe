@@ -2,25 +2,25 @@
 // Use these helpers to create field configurations with full TypeScript support
 
 import type {
-  TypedFieldConfig,
-  ComponentPropsMap,
-  InputProps,
-  TextareaProps,
-  SelectProps,
-  RadioGroupProps,
+  BadgeProps,
   CheckboxProps,
-  SwitchProps,
-  SliderProps,
+  ComponentPropsMap,
+  ConfirmationProps,
   DatePickerProps,
   DateRangePickerProps,
-  ToggleGroupProps,
-  InputOTPProps,
-  BadgeProps,
-  SeparatorProps,
   EkycProps,
-  ConfirmationProps,
+  InputOTPProps,
+  InputProps,
+  RadioGroupProps,
+  SelectProps,
+  SeparatorProps,
+  SliderProps,
+  SwitchProps,
+  TextareaProps,
+  ToggleGroupProps,
+  TypedFieldConfig,
 } from "../types/component-props";
-import type { RawFieldConfig, FieldCondition } from "../types/data-driven-ui";
+import type { FieldCondition, RawFieldConfig } from "../types/data-driven-ui";
 
 /**
  * Generic field builder with type safety

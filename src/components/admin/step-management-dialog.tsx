@@ -1,18 +1,16 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import type { ColumnDef } from "@tanstack/react-table";
+import { EditIcon, SaveIcon, SettingsIcon, Trash2Icon } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
-import { SaveIcon, EditIcon, Trash2Icon, SettingsIcon } from "lucide-react";
-import { DataTable } from "@/components/ui/data-table";
-import { Button } from "@/components/ui/button";
+import { useTranslations } from "next-intl";
+import { useEffect, useState } from "react";
+import { EmptyState, ErrorState } from "@/components/admin/error-states";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+  FieldRequirementToggle,
+  FieldVisibilityToggleComponent,
+} from "@/components/admin/field-visibility-toggle";
+import { StepDetailSkeleton } from "@/components/admin/loading-states";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -24,6 +22,16 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { DataTable } from "@/components/ui/data-table";
 import {
   Dialog,
   DialogContent,
@@ -34,22 +42,14 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import {
-  FieldVisibilityToggleComponent,
-  FieldRequirementToggle,
-} from "@/components/admin/field-visibility-toggle";
-import { StepDetailSkeleton } from "@/components/admin/loading-states";
-import { ErrorState, EmptyState } from "@/components/admin/error-states";
-import {
-  useStep,
-  useUpdateStep,
   useBulkUpdateFields,
   useFlowSteps,
+  useStep,
+  useUpdateStep,
 } from "@/hooks/admin/use-admin-flows";
-import { useAdminFlowStore } from "@/store/use-admin-flow-store";
-import { type ColumnDef } from "@tanstack/react-table";
-import type { StepDetail, FieldListItem, StepListItem } from "@/types/admin";
-import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
+import { useAdminFlowStore } from "@/store/use-admin-flow-store";
+import type { FieldListItem, StepDetail, StepListItem } from "@/types/admin";
 
 interface StepManagementDialogProps {
   flowId: string;

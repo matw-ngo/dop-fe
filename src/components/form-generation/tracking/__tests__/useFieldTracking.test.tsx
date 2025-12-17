@@ -1,8 +1,8 @@
-import { renderHook, act } from "@testing-library/react";
-import { vi, describe, it, expect, beforeEach } from "vitest";
+import { act, renderHook } from "@testing-library/react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import type { FieldTrackingConfig } from "../../types";
 import { FormTrackingProvider } from "../TrackingProvider";
 import { useFieldTracking } from "../useFieldTracking";
-import type { FieldTrackingConfig } from "../../types";
 
 // Mock tracking backend
 const mockTrackEvent = vi.fn();

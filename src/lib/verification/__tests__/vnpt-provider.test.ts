@@ -10,15 +10,15 @@
  * - Cleanup and resource management
  */
 
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { VNPTVerificationProvider } from "../providers/vnpt-provider";
 import type {
-  VerificationOptions,
   ProviderConfig,
+  VerificationOptions,
   VerificationResult,
   VerificationSession,
 } from "../types";
 import { VerificationStatus } from "../types";
-import { VNPTVerificationProvider } from "../providers/vnpt-provider";
 
 // Mock external dependencies
 const mockSdkManager = {

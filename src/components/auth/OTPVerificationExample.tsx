@@ -5,7 +5,18 @@
 
 "use client";
 
-import React, { useState } from "react";
+import {
+  AlertCircle,
+  CheckCircle,
+  Info,
+  Settings,
+  Shield,
+  Smartphone,
+} from "lucide-react";
+import type React from "react";
+import { useState } from "react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -14,27 +25,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
-
-import { OTPVerificationDialog } from "./OTPVerificationDialog";
-import { PhoneInput } from "./PhoneInput";
-import { OTPInput } from "./OTPInput";
-import { OTPResend } from "./OTPResend";
-
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useOTPVerification } from "@/hooks/use-otp-verification";
 import { usePhoneValidation } from "@/hooks/use-phone-validation";
-
-import {
-  Smartphone,
-  Shield,
-  CheckCircle,
-  AlertCircle,
-  Info,
-  Settings,
-} from "lucide-react";
+import { OTPInput } from "./OTPInput";
+import { OTPResend } from "./OTPResend";
+import { OTPVerificationDialog } from "./OTPVerificationDialog";
+import { PhoneInput } from "./PhoneInput";
 
 export const OTPVerificationExample: React.FC = () => {
   // Dialog state

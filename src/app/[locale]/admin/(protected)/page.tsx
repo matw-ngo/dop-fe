@@ -1,7 +1,23 @@
 "use client";
 
+import {
+  ActivityIcon,
+  AlertTriangleIcon,
+  ArrowRightIcon,
+  CheckCircleIcon,
+  ClockIcon,
+  CreditCardIcon,
+  DollarSignIcon,
+  FileCheckIcon,
+  FileTextIcon,
+  LayoutDashboardIcon,
+  SettingsIcon,
+  TrendingUpIcon,
+  UserPlusIcon,
+  UsersIcon,
+} from "lucide-react";
 import Link from "next/link";
-import { useAuth } from "@/lib/auth/auth-context";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,26 +26,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  LayoutDashboardIcon,
-  FileTextIcon,
-  UsersIcon,
-  SettingsIcon,
-  ArrowRightIcon,
-  TrendingUpIcon,
-  ActivityIcon,
-  CreditCardIcon,
-  ClockIcon,
-  CheckCircleIcon,
-  AlertTriangleIcon,
-  DollarSignIcon,
-  UserPlusIcon,
-  FileCheckIcon,
-} from "lucide-react";
-import { useTranslations } from "next-intl";
-import { useLocalizedPath } from "@/lib/client-utils";
-import { useAdminAccess } from "@/hooks/use-auth-guards";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useAdminAccess } from "@/hooks/use-auth-guards";
+import { useAuth } from "@/lib/auth/auth-context";
+import { useLocalizedPath } from "@/lib/client-utils";
 
 export default function AdminDashboard() {
   const { user } = useAuth();

@@ -90,7 +90,10 @@ export const InButton: Story = {
         <Spinner size="sm" color="white" />
         Loading...
       </button>
-      <button className="w-full px-4 py-2 bg-gray-600 text-white rounded-md flex items-center justify-center gap-2" disabled>
+      <button
+        className="w-full px-4 py-2 bg-gray-600 text-white rounded-md flex items-center justify-center gap-2"
+        disabled
+      >
         <Spinner size="sm" />
         Processing...
       </button>
@@ -105,7 +108,9 @@ export const OnCard: Story = {
       <div className="flex flex-col items-center space-y-4">
         <Spinner size="lg" />
         <h3 className="text-lg font-semibold">Loading Data</h3>
-        <p className="text-sm text-gray-500 text-center">Please wait while we fetch your data...</p>
+        <p className="text-sm text-gray-500 text-center">
+          Please wait while we fetch your data...
+        </p>
       </div>
     </div>
   ),
@@ -168,7 +173,9 @@ export const Interactive: Story = {
         </button>
         {loading && (
           <div className="p-4 border rounded-lg">
-            <p className="text-sm text-gray-600">Simulating data load... This will take 3 seconds.</p>
+            <p className="text-sm text-gray-600">
+              Simulating data load... This will take 3 seconds.
+            </p>
           </div>
         )}
       </div>

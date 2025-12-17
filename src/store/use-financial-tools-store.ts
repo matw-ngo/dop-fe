@@ -9,22 +9,22 @@ import React from "react";
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 import type {
-  FinancialHealthScore,
   AffordabilityAnalysis,
+  FinancialHealthScore,
   LoanCalculationParams,
   LoanCalculationResult,
 } from "@/lib/financial/calculations";
 import type {
-  ISalary,
-  ILoanParams,
-  ILoanResult,
-  ISavingsParams,
-  ISavingsResult,
-} from "@/types/tools";
-import type {
   TaxCalculationParams,
   TaxCalculationResult,
 } from "@/lib/financial-data/tax-brackets";
+import type {
+  ILoanParams,
+  ILoanResult,
+  ISalary,
+  ISavingsParams,
+  ISavingsResult,
+} from "@/types/tools";
 
 // Type adapter functions for backward compatibility
 const adaptLoanParams = (params: ILoanParams): LoanCalculationParams => ({

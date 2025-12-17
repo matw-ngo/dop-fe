@@ -8,10 +8,10 @@
  * - Edge cases and error data
  */
 
-import type { VerificationResult } from "@/lib/verification/types";
 import { vi } from "vitest";
 import type { DynamicFormConfig } from "@/components/form-generation/types";
 import { FieldType } from "@/components/form-generation/types";
+import type { VerificationResult } from "@/lib/verification/types";
 
 // Sample verification results
 export const sampleVerificationResults = {

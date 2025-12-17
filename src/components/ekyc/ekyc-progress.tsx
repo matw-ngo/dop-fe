@@ -5,21 +5,21 @@
 
 "use client";
 
-import React from "react";
-import { Progress } from "@/components/ui/progress";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
+  AlertCircle,
+  Camera,
   CheckCircle,
   Circle,
   Clock,
-  AlertCircle,
-  RefreshCw,
   FileText,
-  User,
+  RefreshCw,
   Shield,
-  Camera,
+  User,
 } from "lucide-react";
+import type React from "react";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 import { useEkycStore } from "@/store/use-ekyc-store";
 

@@ -17,7 +17,9 @@ export function useSafeTranslations() {
         return tRaw(key, values);
       } catch (error) {
         // Return key as fallback for missing translations
-        console.warn(`Translation key "${key}" not found, using key as fallback`);
+        console.warn(
+          `Translation key "${key}" not found, using key as fallback`,
+        );
         return key;
       }
     };

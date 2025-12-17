@@ -7,16 +7,16 @@
  * - Handle loading states gracefully
  */
 
-import { useState, useEffect, useCallback, useRef } from 'react';
-import { useLocale } from 'next-intl';
+import { useLocale } from "next-intl";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
+  type Locale,
   loadClientTranslations,
   loadNamespaceTranslations,
+  type Namespace,
   preloadTranslations,
   type TranslationMessages,
-  type Namespace,
-  type Locale
-} from './dynamic-loader';
+} from "./dynamic-loader";
 
 /**
  * Hook state interface
@@ -37,7 +37,7 @@ export function useDynamicTranslations(
     preload?: boolean;
     retryCount?: number;
     retryDelay?: number;
-  } = {}
+  } = {},
 ) {
   const { preload = false, retryCount = 3, retryDelay = 1000 } = options;
   const locale = useLocale();
@@ -46,7 +46,7 @@ export function useDynamicTranslations(
     translations: {},
     isLoading: !preload,
     error: null,
-    isLoaded: false
+    isLoaded: false,
   });
 
   const retryTimeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
@@ -57,7 +57,7 @@ export function useDynamicTranslations(
       return state.translations;
     }
 
-    setState(prev => ({ ...prev, isLoading: true, error: null }));
+    setState((prev) => ({ ...prev, isLoading: true, error: null }));
 
     try {
       const translations = await loadClientTranslations(locale, namespace);
@@ -66,12 +66,15 @@ export function useDynamicTranslations(
         translations,
         isLoading: false,
         error: null,
-        isLoaded: true
+        isLoaded: true,
       });
 
       return translations;
     } catch (error) {
-      const err = error instanceof Error ? error : new Error('Failed to load translations');
+      const err =
+        error instanceof Error
+          ? error
+          : new Error("Failed to load translations");
 
       // Retry logic
       if (retryCountRef.current < retryCount) {
@@ -80,17 +83,17 @@ export function useDynamicTranslations(
           loadTranslations();
         }, retryDelay * retryCountRef.current);
 
-        setState(prev => ({
+        setState((prev) => ({
           ...prev,
           isLoading: true,
-          error: err
+          error: err,
         }));
       } else {
-        setState(prev => ({
+        setState((prev) => ({
           ...prev,
           isLoading: false,
           error: err,
-          isLoaded: false
+          isLoaded: false,
         }));
       }
 
@@ -117,7 +120,7 @@ export function useDynamicTranslations(
   return {
     ...state,
     reload: loadTranslations,
-    clearError: () => setState(prev => ({ ...prev, error: null }))
+    clearError: () => setState((prev) => ({ ...prev, error: null })),
   };
 }
 
@@ -129,7 +132,7 @@ export function useMultipleNamespaces(
   options: {
     preload?: boolean;
     lazy?: boolean;
-  } = {}
+  } = {},
 ) {
   const { preload = false, lazy = false } = options;
   const locale = useLocale();
@@ -143,53 +146,62 @@ export function useMultipleNamespaces(
     translations: {},
     isLoading: !lazy,
     errors: {},
-    loadedNamespaces: new Set()
+    loadedNamespaces: new Set(),
   });
 
-  const loadNamespace = useCallback(async (ns: Namespace) => {
-    if (state.loadedNamespaces.has(ns)) {
-      return state.translations[ns];
-    }
+  const loadNamespace = useCallback(
+    async (ns: Namespace) => {
+      if (state.loadedNamespaces.has(ns)) {
+        return state.translations[ns];
+      }
 
-    setState(prev => ({
-      ...prev,
-      isLoading: true,
-      errors: { ...prev.errors, [ns]: null }
-    }));
-
-    try {
-      const translations = await loadClientTranslations(locale, ns);
-
-      setState(prev => ({
-        translations: { ...prev.translations, [ns]: translations },
-        isLoading: false,
-        errors: { ...prev.errors, [ns]: null },
-        loadedNamespaces: new Set([...prev.loadedNamespaces, ns])
-      }));
-
-      return translations;
-    } catch (error) {
-      const err = error instanceof Error ? error : new Error(`Failed to load namespace "${ns}"`);
-
-      setState(prev => ({
+      setState((prev) => ({
         ...prev,
-        isLoading: false,
-        errors: { ...prev.errors, [ns]: err }
+        isLoading: true,
+        errors: { ...prev.errors, [ns]: null },
       }));
 
-      throw err;
-    }
-  }, [locale, state.loadedNamespaces, state.translations]);
+      try {
+        const translations = await loadClientTranslations(locale, ns);
+
+        setState((prev) => ({
+          translations: { ...prev.translations, [ns]: translations },
+          isLoading: false,
+          errors: { ...prev.errors, [ns]: null },
+          loadedNamespaces: new Set([...prev.loadedNamespaces, ns]),
+        }));
+
+        return translations;
+      } catch (error) {
+        const err =
+          error instanceof Error
+            ? error
+            : new Error(`Failed to load namespace "${ns}"`);
+
+        setState((prev) => ({
+          ...prev,
+          isLoading: false,
+          errors: { ...prev.errors, [ns]: err },
+        }));
+
+        throw err;
+      }
+    },
+    [locale, state.loadedNamespaces, state.translations],
+  );
 
   const loadAll = useCallback(async () => {
     const results = await Promise.allSettled(
-      namespaces.map(ns => loadNamespace(ns))
+      namespaces.map((ns) => loadNamespace(ns)),
     );
 
     // Handle any rejections silently
     results.forEach((result, index) => {
-      if (result.status === 'rejected') {
-        console.error(`Failed to load namespace "${namespaces[index]}":`, result.reason);
+      if (result.status === "rejected") {
+        console.error(
+          `Failed to load namespace "${namespaces[index]}":`,
+          result.reason,
+        );
       }
     });
 
@@ -209,7 +221,7 @@ export function useMultipleNamespaces(
     loadAll,
     getTranslations: (ns: Namespace) => state.translations[ns] || {},
     isLoaded: (ns: Namespace) => state.loadedNamespaces.has(ns),
-    hasError: (ns: Namespace) => !!state.errors[ns]
+    hasError: (ns: Namespace) => !!state.errors[ns],
   };
 }
 
@@ -219,15 +231,18 @@ export function useMultipleNamespaces(
 export function usePreloadTranslations() {
   const locale = useLocale();
 
-  return useCallback(async (namespaces: Namespace[], options?: { fallbackLocale?: Locale }) => {
-    try {
-      await preloadTranslations(locale, namespaces, options);
-      return true;
-    } catch (error) {
-      console.error('Failed to preload translations:', error);
-      return false;
-    }
-  }, [locale]);
+  return useCallback(
+    async (namespaces: Namespace[], options?: { fallbackLocale?: Locale }) => {
+      try {
+        await preloadTranslations(locale, namespaces, options);
+        return true;
+      } catch (error) {
+        console.error("Failed to preload translations:", error);
+        return false;
+      }
+    },
+    [locale],
+  );
 }
 
 /**
@@ -239,11 +254,13 @@ export function useConditionalTranslations(
   condition: boolean,
   options: {
     delay?: number;
-  } = {}
+  } = {},
 ) {
   const { delay = 0 } = options;
   const [shouldLoad, setShouldLoad] = useState(condition);
-  const dynamicHook = useDynamicTranslations(namespace, { preload: shouldLoad });
+  const dynamicHook = useDynamicTranslations(namespace, {
+    preload: shouldLoad,
+  });
 
   useEffect(() => {
     if (condition && !shouldLoad) {
@@ -269,9 +286,9 @@ export function useLazyTranslations(
   options: {
     rootMargin?: string;
     threshold?: number;
-  } = {}
+  } = {},
 ) {
-  const { rootMargin = '50px', threshold = 0.1 } = options;
+  const { rootMargin = "50px", threshold = 0.1 } = options;
   const [isVisible, setIsVisible] = useState(false);
   const dynamicHook = useDynamicTranslations(namespace, { preload: isVisible });
 
@@ -287,7 +304,7 @@ export function useLazyTranslations(
           observer.disconnect();
         }
       },
-      { rootMargin, threshold }
+      { rootMargin, threshold },
     );
 
     observer.observe(elementRef.current);
@@ -300,7 +317,7 @@ export function useLazyTranslations(
   return {
     ...dynamicHook,
     isVisible,
-    ref: elementRef
+    ref: elementRef,
   };
 }
 
@@ -309,32 +326,46 @@ export function useLazyTranslations(
  */
 export function useTranslationMetrics() {
   const [metrics, setMetrics] = useState({
-    loadTimes: [] as Array<{ namespace: string; loadTime: number; timestamp: number }>,
-    errors: [] as Array<{ namespace: string; error: string; timestamp: number }>,
+    loadTimes: [] as Array<{
+      namespace: string;
+      loadTime: number;
+      timestamp: number;
+    }>,
+    errors: [] as Array<{
+      namespace: string;
+      error: string;
+      timestamp: number;
+    }>,
     cacheHits: 0,
-    cacheMisses: 0
+    cacheMisses: 0,
   });
 
   const recordLoadTime = useCallback((namespace: string, loadTime: number) => {
-    setMetrics(prev => ({
+    setMetrics((prev) => ({
       ...prev,
-      loadTimes: [...prev.loadTimes, { namespace, loadTime, timestamp: Date.now() }]
+      loadTimes: [
+        ...prev.loadTimes,
+        { namespace, loadTime, timestamp: Date.now() },
+      ],
     }));
   }, []);
 
   const recordError = useCallback((namespace: string, error: Error) => {
-    setMetrics(prev => ({
+    setMetrics((prev) => ({
       ...prev,
-      errors: [...prev.errors, { namespace, error: error.message, timestamp: Date.now() }]
+      errors: [
+        ...prev.errors,
+        { namespace, error: error.message, timestamp: Date.now() },
+      ],
     }));
   }, []);
 
   const recordCacheHit = useCallback(() => {
-    setMetrics(prev => ({ ...prev, cacheHits: prev.cacheHits + 1 }));
+    setMetrics((prev) => ({ ...prev, cacheHits: prev.cacheHits + 1 }));
   }, []);
 
   const recordCacheMiss = useCallback(() => {
-    setMetrics(prev => ({ ...prev, cacheMisses: prev.cacheMisses + 1 }));
+    setMetrics((prev) => ({ ...prev, cacheMisses: prev.cacheMisses + 1 }));
   }, []);
 
   const reset = useCallback(() => {
@@ -342,7 +373,7 @@ export function useTranslationMetrics() {
       loadTimes: [],
       errors: [],
       cacheHits: 0,
-      cacheMisses: 0
+      cacheMisses: 0,
     });
   }, []);
 
@@ -352,7 +383,7 @@ export function useTranslationMetrics() {
     recordError,
     recordCacheHit,
     recordCacheMiss,
-    reset
+    reset,
   };
 }
 
@@ -362,5 +393,5 @@ export default {
   usePreloadTranslations,
   useConditionalTranslations,
   useLazyTranslations,
-  useTranslationMetrics
+  useTranslationMetrics,
 };

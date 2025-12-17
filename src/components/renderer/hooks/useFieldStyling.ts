@@ -1,15 +1,15 @@
 import React from "react";
+import { cn } from "@/lib/utils";
 import type { FieldConfig } from "../types/data-driven-ui";
 import type {
   ComponentVariant,
-  ResponsiveValue,
   LayoutProps,
+  ResponsiveValue,
 } from "../types/ui-theme";
-import { cn } from "@/lib/utils";
 import {
+  generateAnimationClasses,
   generateLayoutClasses,
   generateVariantClasses,
-  generateAnimationClasses,
 } from "../utils/field-styling";
 
 export interface FieldStyling {

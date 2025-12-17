@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { SelectGroup, ISelectBoxOption } from "./index";
 import React from "react";
+import { type ISelectBoxOption, SelectGroup } from "./index";
 
 const meta: Meta<typeof SelectGroup> = {
   title: "UI/SelectGroup/Legacy",

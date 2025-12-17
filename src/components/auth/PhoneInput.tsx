@@ -5,31 +5,32 @@
 
 "use client";
 
-import React, { useState, useCallback, useRef, useEffect } from "react";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { AlertCircle, Check, Globe, Phone, Shield } from "lucide-react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Phone, AlertCircle, Check, Globe, Shield } from "lucide-react";
-import { cn } from "@/lib/utils";
-
 import {
-  validateVietnamesePhone,
-  validatePhoneTyping,
   formatPhoneTyping,
-  getPhoneSuggestions,
   getPhoneMetadata,
+  getPhoneSuggestions,
+  validatePhoneTyping,
+  validateVietnamesePhone,
 } from "@/lib/telcos/phone-validation";
-import { TELCO_ERROR_MESSAGES } from "@/lib/telcos/vietnamese-telcos";
 import { detectTelco, getRecommendation } from "@/lib/telcos/telco-detector";
-import { VIETNAMESE_TELCOS } from "@/lib/telcos/vietnamese-telcos";
+import {
+  TELCO_ERROR_MESSAGES,
+  VIETNAMESE_TELCOS,
+} from "@/lib/telcos/vietnamese-telcos";
+import { cn } from "@/lib/utils";
 
 export interface PhoneInputProps {
   value?: string;

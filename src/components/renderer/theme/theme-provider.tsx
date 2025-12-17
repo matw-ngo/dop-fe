@@ -1,14 +1,9 @@
 "use client";
 
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-import { lightTheme, darkTheme } from "./default-themes";
-import { Theme, ThemeContextValue } from "../types/ui-theme";
+import type React from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
+import type { Theme, ThemeContextValue } from "../types/ui-theme";
+import { darkTheme, lightTheme } from "./default-themes";
 
 type ThemeName = "light" | "dark" | string;
 

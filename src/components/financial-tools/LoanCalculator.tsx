@@ -5,7 +5,24 @@
  * with support for multiple interest rate types, loan products, and regulatory compliance.
  */
 
-import React, { useState, useEffect, useCallback } from "react";
+import {
+  AlertCircle,
+  Briefcase,
+  Calculator,
+  Car,
+  CheckCircle,
+  CreditCard,
+  DollarSign,
+  Home,
+  Info,
+  PiggyBank,
+  TrendingUp,
+} from "lucide-react";
+import type React from "react";
+import { useCallback, useEffect, useState } from "react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -13,7 +30,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -23,44 +39,29 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Separator } from "@/components/ui/separator";
 import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import {
-  Calculator,
-  DollarSign,
-  TrendingUp,
-  AlertCircle,
-  CheckCircle,
-  Info,
-  PiggyBank,
-  Home,
-  Car,
-  CreditCard,
-  Briefcase,
-} from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 // Import calculation functions
 import {
   calculateLoanDetails,
-  LoanCalculationParams,
-  LoanCalculationResult,
   formatLoanResults,
-  InterestRateType,
-  LoanType,
+  type InterestRateType,
+  type LoanCalculationParams,
+  type LoanCalculationResult,
+  type LoanType,
 } from "@/lib/financial/calculations";
 import {
-  calculateHomeLoan,
-  calculateAutoLoan,
-  calculateConsumerLoan,
-  calculateBusinessLoan,
   assessLoanEligibility,
+  calculateAutoLoan,
+  calculateBusinessLoan,
+  calculateConsumerLoan,
+  calculateHomeLoan,
 } from "@/lib/financial/loan-calculations";
-import { VIETNAMESE_LOAN_TYPES } from "@/lib/financial-data/vietnamese-financial-data";
 import { validateLoanCalculationParams } from "@/lib/financial/validation";
+import { VIETNAMESE_LOAN_TYPES } from "@/lib/financial-data/vietnamese-financial-data";
 
 // Types
 interface LoanFormData {

@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
+import type React from "react";
+import { useEffect, useRef, useState } from "react";
 
 // Type declaration for gtag
 declare global {
@@ -13,9 +14,19 @@ declare global {
     ) => void;
   }
 }
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+
+import {
+  Car,
+  Clock,
+  Heart,
+  Home,
+  Plane,
+  Search,
+  Shield,
+  TrendingUp,
+} from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Command,
   CommandEmpty,
@@ -24,28 +35,19 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
+import { Input } from "@/components/ui/input";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
 import {
-  Search,
-  Clock,
-  TrendingUp,
-  Shield,
-  Heart,
-  Car,
-  Plane,
-  Home,
-} from "lucide-react";
-import { INSURANCE_PRODUCTS } from "@/data/insurance-products";
-import {
+  ANALYTICS_EVENTS,
   INSURANCE_CATEGORIES,
   SEARCH_SUGGESTIONS,
-  ANALYTICS_EVENTS,
 } from "@/constants/insurance";
+import { INSURANCE_PRODUCTS } from "@/data/insurance-products";
+import { cn } from "@/lib/utils";
 import { InsuranceCategory } from "@/types/insurance";
 
 export interface InsuranceSearchBarProps {

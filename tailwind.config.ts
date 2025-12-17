@@ -278,7 +278,7 @@ const config: Config = {
     require("@tailwindcss/typography"),
     require("@tailwindcss/aspect-ratio"),
     // Custom plugin for renderer variants
-    function ({ addUtilities, theme }: any) {
+    ({ addUtilities, theme }: any) => {
       const newUtilities = {
         ".field-container": {
           position: "relative",

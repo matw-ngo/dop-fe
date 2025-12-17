@@ -1,12 +1,18 @@
-import { Metadata } from "next";
-import { useTranslations } from "next-intl";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertTriangle, ArrowLeft } from "lucide-react";
-import { getLocalizedRedirect } from "@/lib/client-utils";
+import type { Metadata } from "next";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { Suspense } from "react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { getLocalizedRedirect } from "@/lib/client-utils";
 
 export const metadata: Metadata = {
   title: "Unauthorized Access | DOP-FE",
@@ -26,31 +32,23 @@ function UnauthorizedPageContent() {
           <CardTitle className="text-2xl font-bold text-destructive">
             {t("unauthorized")}
           </CardTitle>
-          <CardDescription>
-            {t("unauthorizedDescription")}
-          </CardDescription>
+          <CardDescription>{t("unauthorizedDescription")}</CardDescription>
         </CardHeader>
 
         <CardContent className="space-y-4">
           <Alert>
             <AlertTriangle className="h-4 w-4" />
             <AlertTitle>{t("accessDenied")}</AlertTitle>
-            <AlertDescription>
-              {t("accessDeniedDescription")}
-            </AlertDescription>
+            <AlertDescription>{t("accessDeniedDescription")}</AlertDescription>
           </Alert>
 
           <div className="space-y-3">
             <Button asChild className="w-full">
-              <Link href="/admin">
-                {t("backToDashboard")}
-              </Link>
+              <Link href="/admin">{t("backToDashboard")}</Link>
             </Button>
 
             <Button variant="outline" asChild className="w-full">
-              <Link href="/admin/login">
-                {t("loginAsDifferentUser")}
-              </Link>
+              <Link href="/admin/login">{t("loginAsDifferentUser")}</Link>
             </Button>
 
             <Button variant="ghost" asChild className="w-full">
@@ -64,10 +62,7 @@ function UnauthorizedPageContent() {
           <div className="text-center text-sm text-muted-foreground">
             <p>
               {t("needHelp")}{" "}
-              <Link
-                href="/support"
-                className="text-primary hover:underline"
-              >
+              <Link href="/support" className="text-primary hover:underline">
                 {t("contactSupport")}
               </Link>
             </p>

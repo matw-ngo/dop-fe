@@ -4,12 +4,12 @@
  */
 
 import type {
-  CreditCard,
-  CardNetwork,
-  CardCategory,
   AnnualFeeType,
-  InterestRateType,
+  CardCategory,
+  CardNetwork,
+  CreditCard,
   CreditLimitTier,
+  InterestRateType,
 } from "@/types/credit-card";
 
 // ============================================================================

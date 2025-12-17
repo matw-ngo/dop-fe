@@ -10,7 +10,7 @@
  * - Security error scenarios
  */
 
-import { test, expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 
 test.describe("eKYC Error Scenarios", () => {
   test.beforeEach(async ({ page }) => {

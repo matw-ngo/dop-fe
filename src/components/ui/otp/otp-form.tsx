@@ -1,7 +1,7 @@
-import React, { useRef, useEffect } from "react";
-import { Button } from "../button";
-import { useOtpFormTranslations } from "@/hooks/use-otp-form-translations";
+import React, { useEffect, useRef } from "react";
 import { useLocalizedOtpTypes } from "@/hooks/use-localized-telcos";
+import { useOtpFormTranslations } from "@/hooks/use-otp-form-translations";
+import { Button } from "../button";
 
 // ============================================================================
 // TYPE DEFINITIONS

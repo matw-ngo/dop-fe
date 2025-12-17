@@ -15,20 +15,20 @@ export function initThemeSystem() {
   initialized = true;
 
   // In development, log initialization
-  if (process.env.NODE_ENV === 'development') {
-    console.debug('Theme system initialized');
+  if (process.env.NODE_ENV === "development") {
+    console.debug("Theme system initialized");
   }
 }
 
 // Auto-initialize in browser environments
-if (typeof window !== 'undefined') {
+if (typeof window !== "undefined") {
   // Initialize after a short delay to not block initial render
   const initTimeout = setTimeout(() => {
     initThemeSystem();
   }, 100);
 
   // Cleanup on page unload
-  window.addEventListener('beforeunload', () => {
+  window.addEventListener("beforeunload", () => {
     clearTimeout(initTimeout);
   });
 }

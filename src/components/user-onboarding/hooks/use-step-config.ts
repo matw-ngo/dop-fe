@@ -1,11 +1,11 @@
+import { CheckCircle } from "lucide-react";
 import { useMemo } from "react";
-import type { MappedStep, MappedFlow } from "@/mappers/flowMapper";
+import { createConfirmationField } from "@/components/renderer/builders/field-builder";
+import type { RawFieldConfig } from "@/components/renderer/types/data-driven-ui";
+import type { MappedFlow, MappedStep } from "@/mappers/flowMapper";
+import { FIELD_VARIANTS, LAYOUT_CONFIG } from "../constants/ui-themes";
 import { generateFieldsForStep, sortFields } from "../utils/field-generation";
 import { getStepMetadata, getStepNavigation } from "../utils/step-helpers";
-import { createConfirmationField } from "@/components/renderer/builders/field-builder";
-import { CheckCircle } from "lucide-react";
-import { FIELD_VARIANTS, LAYOUT_CONFIG } from "../constants/ui-themes";
-import type { RawFieldConfig } from "@/components/renderer/types/data-driven-ui";
 
 interface GeneratedStepConfig {
   id: string;

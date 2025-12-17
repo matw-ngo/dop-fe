@@ -3,7 +3,7 @@
 import { useMemo } from "react";
 import { useThemeUtils } from "@/components/renderer/theme";
 import { baseInsuranceNavbarConfig } from "@/configs/insurance-navbar-config";
-import { NavbarConfig } from "@/configs/navbar-config";
+import type { NavbarConfig } from "@/configs/navbar-config";
 
 /**
  * Hook to get theme-aware insurance navbar configuration

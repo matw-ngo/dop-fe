@@ -1,16 +1,21 @@
 "use client";
 
-import React from "react";
-import { motion, AnimatePresence, Variants, Transition } from "framer-motion";
 import {
-  AnimationConfig,
-  TransitionConfig,
-  StaggerConfig,
-  AnimationType,
-  AnimationDirection,
+  AnimatePresence,
+  motion,
+  type Transition,
+  type Variants,
+} from "framer-motion";
+import type React from "react";
+import {
   ANIMATION_PRESETS,
-  TRANSITION_PRESETS,
+  type AnimationConfig,
+  type AnimationDirection,
+  AnimationType,
   STAGGER_PRESETS,
+  type StaggerConfig,
+  TRANSITION_PRESETS,
+  type TransitionConfig,
 } from "./transition-types";
 
 // Animation variant properties interface

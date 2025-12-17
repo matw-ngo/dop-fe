@@ -6,9 +6,9 @@
 
 "use client";
 
-import React, { useState, useEffect, useMemo, useCallback } from "react";
-import { useTracking } from "../useTracking";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { trackSavingsCalculator } from "../events";
+import { useTracking } from "../useTracking";
 
 // This would be added to the existing SavingsCalculator component
 

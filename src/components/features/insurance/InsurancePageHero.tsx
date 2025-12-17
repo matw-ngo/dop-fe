@@ -1,5 +1,5 @@
+import { Heart, Shield } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { Shield, Heart } from "lucide-react";
 import { useThemeUtils } from "@/components/renderer/theme";
 
 interface InsurancePageHeroProps {

@@ -6,8 +6,8 @@
  * A shorter, more convenient wrapper for the translation management CLI.
  */
 
-const { spawn } = require('child_process');
-const path = require('path');
+const { spawn } = require("child_process");
+const path = require("path");
 
 // Get the command from command line arguments
 const args = process.argv.slice(2);
@@ -46,12 +46,12 @@ Or use npm scripts:
 }
 
 // Run the main CLI with the provided arguments
-const cliPath = path.join(__dirname, 'translation-cli.js');
-const child = spawn('node', [cliPath, ...args], {
-  stdio: 'inherit',
-  shell: true
+const cliPath = path.join(__dirname, "translation-cli.js");
+const child = spawn("node", [cliPath, ...args], {
+  stdio: "inherit",
+  shell: true,
 });
 
-child.on('exit', (code) => {
+child.on("exit", (code) => {
   process.exit(code);
 });

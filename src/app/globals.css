@@ -12,7 +12,7 @@
   --color-foreground: var(--foreground, #000000);
 
   /* Font definitions */
-  --font-sans: var(--font-geist-sans, ui-sans-serif, system-ui), 'Lexend Deca';
+  --font-sans: var(--font-geist-sans, ui-sans-serif, system-ui), "Lexend Deca";
   --font-mono: var(--font-geist-mono, ui-monospace);
 
   /* Define complete color palette for primary */

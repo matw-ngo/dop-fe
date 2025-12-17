@@ -5,11 +5,11 @@
  * using an iterative approach to find the gross salary that produces the desired net.
  */
 
+import { ALLOWANCES, REGIONAL_MINIMUM_WAGES } from "@/lib/constants/tools";
 import {
   calculateGrossToNet,
   type SalaryGrossToNetResult,
 } from "./salary-gross-to-net";
-import { ALLOWANCES, REGIONAL_MINIMUM_WAGES } from "@/lib/constants/tools";
 
 // Type definition for the return value
 export interface SalaryNetToGrossResult {

@@ -4,8 +4,8 @@
 // Simplifies the shadcn/ui RadioGroup component API for backend configuration
 
 import React from "react";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 export interface RadioOption {
   value: string;

@@ -15,7 +15,7 @@ const themeCache: ThemeCache = {};
 // Cache configuration
 const CACHE_MAX_AGE = 5 * 60 * 1000; // 5 minutes
 const CACHE_MAX_SIZE = 20; // Maximum number of themes to cache
-const PRELOAD_THEMES = ['default', 'corporate']; // Critical themes to preload
+const PRELOAD_THEMES = ["default", "corporate"]; // Critical themes to preload
 
 // Performance metrics
 let cacheHits = 0;
@@ -26,7 +26,10 @@ export function getThemeCacheMetrics() {
   return {
     cacheHits,
     cacheMisses,
-    hitRate: cacheHits + cacheMisses > 0 ? (cacheHits / (cacheHits + cacheMisses)) * 100 : 0,
+    hitRate:
+      cacheHits + cacheMisses > 0
+        ? (cacheHits / (cacheHits + cacheMisses)) * 100
+        : 0,
     cacheSize: Object.keys(themeCache).length,
     cacheMemorySize: new Blob([JSON.stringify(themeCache)]).size,
   };
@@ -99,8 +102,8 @@ export async function loadTheme(themeId: string): Promise<ThemeConfig> {
   }
 
   // Validate theme ID
-  if (!themeId || typeof themeId !== 'string') {
-    throw new Error('Invalid theme ID');
+  if (!themeId || typeof themeId !== "string") {
+    throw new Error("Invalid theme ID");
   }
 
   try {
@@ -114,8 +117,8 @@ export async function loadTheme(themeId: string): Promise<ThemeConfig> {
     const possibleExports = [
       `${themeId}Theme`, // e.g., "corporate" -> corporateTheme
       themeId, // e.g., "corporate" -> corporate
-      'theme',
-      'defaultTheme',
+      "theme",
+      "defaultTheme",
     ];
 
     for (const exportName of possibleExports) {
@@ -146,8 +149,10 @@ export async function loadTheme(themeId: string): Promise<ThemeConfig> {
   } catch (error) {
     // Provide more helpful error messages
     if (error instanceof Error) {
-      if (error.message.includes('Cannot find module')) {
-        throw new Error(`Theme not found: ${themeId}. Available themes: corporate, creative, default, finance, medical`);
+      if (error.message.includes("Cannot find module")) {
+        throw new Error(
+          `Theme not found: ${themeId}. Available themes: corporate, creative, default, finance, medical`,
+        );
       }
       throw new Error(`Failed to load theme "${themeId}": ${error.message}`);
     }
@@ -157,22 +162,24 @@ export async function loadTheme(themeId: string): Promise<ThemeConfig> {
 
 // Preload critical themes
 export async function preloadThemes(themeIds: string[] = PRELOAD_THEMES) {
-  const promises = themeIds.map(id =>
-    loadTheme(id).catch(error => {
+  const promises = themeIds.map((id) =>
+    loadTheme(id).catch((error) => {
       console.warn(`Failed to preload theme ${id}:`, error);
       return null;
-    })
+    }),
   );
 
   const results = await Promise.allSettled(promises);
-  const loaded = results.filter(r => r.status === 'fulfilled').length;
-  const failed = results.filter(r => r.status === 'rejected').length;
+  const loaded = results.filter((r) => r.status === "fulfilled").length;
+  const failed = results.filter((r) => r.status === "rejected").length;
 
   return {
     requested: themeIds.length,
     loaded,
     failed,
-    themes: results.map(r => r.status === 'fulfilled' && r.value ? (r.value as ThemeConfig).id : null),
+    themes: results.map((r) =>
+      r.status === "fulfilled" && r.value ? (r.value as ThemeConfig).id : null,
+    ),
   };
 }
 
@@ -194,7 +201,7 @@ export async function loadThemes(themeIds: string[]): Promise<ThemeConfig[]> {
   }
 
   // Load remaining themes in parallel
-  const loadPromises = toLoad.map(id => loadTheme(id));
+  const loadPromises = toLoad.map((id) => loadTheme(id));
   const loaded = await Promise.all(loadPromises);
 
   return [...cached, ...loaded];
@@ -202,17 +209,20 @@ export async function loadThemes(themeIds: string[]): Promise<ThemeConfig[]> {
 
 // Get list of available theme IDs
 export function getAvailableThemes(): string[] {
-  return ['corporate', 'creative', 'default', 'finance', 'medical'];
+  return ["corporate", "creative", "default", "finance", "medical"];
 }
 
 // Check if a theme is cached
 export function isThemeCached(themeId: string): boolean {
-  return themeId in themeCache && Date.now() - themeCache[themeId].loadTime <= CACHE_MAX_AGE;
+  return (
+    themeId in themeCache &&
+    Date.now() - themeCache[themeId].loadTime <= CACHE_MAX_AGE
+  );
 }
 
 // Clear theme cache
 export function clearThemeCache() {
-  Object.keys(themeCache).forEach(key => delete themeCache[key]);
+  Object.keys(themeCache).forEach((key) => delete themeCache[key]);
   cacheHits = 0;
   cacheMisses = 0;
 }

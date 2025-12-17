@@ -1,7 +1,11 @@
 "use client";
 
 import { Download, Monitor, Moon, Palette, Settings, Sun } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useTheme } from "@/components/renderer/theme";
+import { themes, userGroups } from "@/components/renderer/theme/themes";
+import type { ThemeMode } from "@/components/renderer/theme/types";
+import { exportThemeAsCSS } from "@/components/renderer/theme/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -30,10 +34,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useTheme } from "@/components/renderer/theme";
-import { themes, userGroups } from "@/components/renderer/theme/themes";
-import type { ThemeMode } from "@/components/renderer/theme/types";
-import { exportThemeAsCSS } from "@/components/renderer/theme/utils";
 import { ThemeCustomizer } from "./theme-customizer";
 
 export function ThemeSelector() {

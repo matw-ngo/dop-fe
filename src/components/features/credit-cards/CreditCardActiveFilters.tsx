@@ -1,16 +1,16 @@
-import React from "react";
+import { X } from "lucide-react";
 import { useTranslations } from "next-intl";
+import type React from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { X } from "lucide-react";
-import { CreditCardFilters } from "@/types/credit-card";
 import {
   CARD_CATEGORIES,
   CARD_NETWORKS,
-  REWARDS_TYPES,
   CREDIT_LIMIT_TIERS,
+  REWARDS_TYPES,
 } from "@/constants/credit-cards";
 import { cn } from "@/lib/utils";
+import type { CreditCardFilters } from "@/types/credit-card";
 
 interface CreditCardActiveFiltersProps {
   filters: CreditCardFilters;
@@ -60,13 +60,14 @@ export const CreditCardActiveFilters: React.FC<
         return CARD_NETWORKS[value as keyof typeof CARD_NETWORKS]?.name;
       case "rewardsTypes":
         return REWARDS_TYPES[value as keyof typeof REWARDS_TYPES]?.name;
-      case "creditLimitRange":
+      case "creditLimitRange": {
         const tier = CREDIT_LIMIT_TIERS.find(
           (t) =>
             t.value.min === filters.creditLimitRange.min &&
             t.value.max === filters.creditLimitRange.max,
         );
         return tier?.label;
+      }
       default:
         return value;
     }

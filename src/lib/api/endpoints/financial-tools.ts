@@ -9,9 +9,9 @@
 import { createClient } from "@/lib/api/client";
 import type {
   LoanCalculationParams,
+  MarketIndicator,
   TaxCalculationParams,
   VietnameseBank,
-  MarketIndicator,
 } from "@/lib/financial-data/vietnamese-financial-data";
 
 // Create API client

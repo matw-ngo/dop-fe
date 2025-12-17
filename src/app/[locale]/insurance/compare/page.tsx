@@ -1,15 +1,15 @@
 "use client";
 
-import React from "react";
 import { useLocale } from "next-intl";
-import Header from "@/components/layout/header";
+import React from "react";
 import Footer from "@/components/layout/footer";
+import Header from "@/components/layout/header";
 import { getInsuranceNavbarConfig } from "@/configs/insurance-navbar-config";
-import { useComparisonData } from "../../../../components/features/insurance/compare/hooks/useComparisonData";
-import { ComparisonHeader } from "../../../../components/features/insurance/compare/components/ComparisonHeader";
-import { ComparisonEmptyState } from "../../../../components/features/insurance/compare/components/ComparisonEmptyState";
 import { ComparisonContent } from "../../../../components/features/insurance/compare/components/ComparisonContent";
+import { ComparisonEmptyState } from "../../../../components/features/insurance/compare/components/ComparisonEmptyState";
+import { ComparisonHeader } from "../../../../components/features/insurance/compare/components/ComparisonHeader";
 import { ComparisonLoading } from "../../../../components/features/insurance/compare/components/ComparisonLoading";
+import { useComparisonData } from "../../../../components/features/insurance/compare/hooks/useComparisonData";
 
 export default function InsuranceComparePage() {
   const locale = useLocale();
@@ -46,7 +46,9 @@ export default function InsuranceComparePage() {
           {productIds.length > 0 ? (
             <ComparisonContent
               products={products}
-              onRemoveProduct={(productId) => handleRemoveProduct(productId, locale)}
+              onRemoveProduct={(productId) =>
+                handleRemoveProduct(productId, locale)
+              }
               onClearAll={handleClearAll}
             />
           ) : (

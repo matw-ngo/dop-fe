@@ -1,15 +1,15 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { ChevronDown, Menu, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import { ThemeSwitcher } from "@/components/theme/theme-switcher";
 import {
   getNavbarConfig,
-  NavbarConfig,
-  NavbarItem,
+  type NavbarConfig,
+  type NavbarItem,
 } from "@/configs/navbar-config";
-import { ChevronDown, Menu, X } from "lucide-react";
-import { ThemeSwitcher } from "@/components/theme/theme-switcher";
 
 interface HeaderProps {
   company?: string;

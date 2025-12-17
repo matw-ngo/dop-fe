@@ -1,74 +1,72 @@
 /**
  * Form Generation Library - Usage Example
- * 
+ *
  * This file demonstrates how to use the form generation library
  */
 
 import {
-    DynamicForm,
-    FormConfigMapper,
-    registerComponent,
-    type ApiFormConfig,
-    type DynamicFormConfig,
-} from './index';
+  type ApiFormConfig,
+  DynamicForm,
+  type DynamicFormConfig,
+  FormConfigMapper,
+  registerComponent,
+} from "./index";
 
 // ============================================================================
 // Example 1: Simple Contact Form
 // ============================================================================
 
 export const contactFormApiResponse: ApiFormConfig = {
-    id: 'contact-form',
-    i18n: {
-        namespace: 'contact',
-    },
-    fields: [
+  id: "contact-form",
+  i18n: {
+    namespace: "contact",
+  },
+  fields: [
+    {
+      id: "full_name",
+      name: "fullName",
+      type: "text",
+      label: "Full Name",
+      placeholder: "John Doe",
+      validation: [
+        { type: "required", message: "Name is required" },
         {
-            id: 'full_name',
-            name: 'fullName',
-            type: 'text',
-            label: 'Full Name',
-            placeholder: 'John Doe',
-            validation: [
-                { type: 'required', message: 'Name is required' },
-                { type: 'minLength', value: 2, message: 'Name must be at least 2 characters' },
-            ],
+          type: "minLength",
+          value: 2,
+          message: "Name must be at least 2 characters",
         },
-        {
-            id: 'email',
-            name: 'email',
-            type: 'email',
-            label: 'Email',
-            placeholder: 'john@example.com',
-            validation: [
-                { type: 'required' },
-                { type: 'email' },
-            ],
-        },
-        {
-            id: 'message',
-            name: 'message',
-            type: 'textarea',
-            label: 'Message',
-            placeholder: 'Your message here...',
-            options: {
-                rows: 5,
-                maxLength: 500,
-                showCount: true,
-            },
-            validation: [
-                { type: 'required' },
-                { type: 'maxLength', value: 500 },
-            ],
-        },
-    ],
-    layout: {
-        type: 'stack',
-        gap: 'md',
+      ],
     },
-    submitButton: {
-        label: 'Send Message',
-        position: 'right',
+    {
+      id: "email",
+      name: "email",
+      type: "email",
+      label: "Email",
+      placeholder: "john@example.com",
+      validation: [{ type: "required" }, { type: "email" }],
     },
+    {
+      id: "message",
+      name: "message",
+      type: "textarea",
+      label: "Message",
+      placeholder: "Your message here...",
+      options: {
+        rows: 5,
+        maxLength: 500,
+        showCount: true,
+      },
+      validation: [{ type: "required" }, { type: "maxLength", value: 500 }],
+    },
+  ],
+  layout: {
+    type: "stack",
+    gap: "md",
+  },
+  submitButton: {
+    label: "Send Message",
+    position: "right",
+  },
 };
 
 // ============================================================================
@@ -76,100 +74,104 @@ export const contactFormApiResponse: ApiFormConfig = {
 // ============================================================================
 
 export const loanFormApiResponse: ApiFormConfig = {
-    id: 'loan-application',
-    i18n: {
-        namespace: 'loan',
+  id: "loan-application",
+  i18n: {
+    namespace: "loan",
+  },
+  sections: [
+    {
+      id: "personal-info",
+      title: "Personal Information",
+      description: "Tell us about yourself",
+      layout: "grid",
+      columns: 2,
+      fields: [
+        {
+          id: "first_name",
+          name: "firstName",
+          type: "text",
+          label: "First Name",
+          validation: [{ type: "required" }],
+        },
+        {
+          id: "last_name",
+          name: "lastName",
+          type: "text",
+          label: "Last Name",
+          validation: [{ type: "required" }],
+        },
+        {
+          id: "email",
+          name: "email",
+          type: "email",
+          label: "Email",
+          validation: [{ type: "required" }, { type: "email" }],
+        },
+        {
+          id: "phone",
+          name: "phone",
+          type: "tel",
+          label: "Phone Number",
+          validation: [{ type: "required" }, { type: "phone" }],
+        },
+      ],
     },
-    sections: [
+    {
+      id: "loan-details",
+      title: "Loan Details",
+      layout: "grid",
+      columns: 2,
+      fields: [
         {
-            id: 'personal-info',
-            title: 'Personal Information',
-            description: 'Tell us about yourself',
-            layout: 'grid',
-            columns: 2,
-            fields: [
-                {
-                    id: 'first_name',
-                    name: 'firstName',
-                    type: 'text',
-                    label: 'First Name',
-                    validation: [{ type: 'required' }],
-                },
-                {
-                    id: 'last_name',
-                    name: 'lastName',
-                    type: 'text',
-                    label: 'Last Name',
-                    validation: [{ type: 'required' }],
-                },
-                {
-                    id: 'email',
-                    name: 'email',
-                    type: 'email',
-                    label: 'Email',
-                    validation: [{ type: 'required' }, { type: 'email' }],
-                },
-                {
-                    id: 'phone',
-                    name: 'phone',
-                    type: 'tel',
-                    label: 'Phone Number',
-                    validation: [{ type: 'required' }, { type: 'phone' }],
-                },
-            ],
+          id: "loan_amount",
+          name: "loanAmount",
+          type: "currency",
+          label: "Loan Amount",
+          options: {
+            currency: "VND",
+            showSymbol: true,
+          },
+          validation: [
+            { type: "required" },
+            { type: "min", value: 10000000, message: "Minimum 10,000,000 VND" },
+            {
+              type: "max",
+              value: 500000000,
+              message: "Maximum 500,000,000 VND",
+            },
+          ],
         },
         {
-            id: 'loan-details',
-            title: 'Loan Details',
-            layout: 'grid',
-            columns: 2,
-            fields: [
-                {
-                    id: 'loan_amount',
-                    name: 'loanAmount',
-                    type: 'currency',
-                    label: 'Loan Amount',
-                    options: {
-                        currency: 'VND',
-                        showSymbol: true,
-                    },
-                    validation: [
-                        { type: 'required' },
-                        { type: 'min', value: 10000000, message: 'Minimum 10,000,000 VND' },
-                        { type: 'max', value: 500000000, message: 'Maximum 500,000,000 VND' },
-                    ],
-                },
-                {
-                    id: 'loan_term',
-                    name: 'loanTerm',
-                    type: 'select',
-                    label: 'Loan Term',
-                    options: {
-                        choices: [
-                            { label: '6 months', value: 6 },
-                            { label: '12 months', value: 12 },
-                            { label: '24 months', value: 24 },
-                            { label: '36 months', value: 36 },
-                        ],
-                    },
-                    validation: [{ type: 'required' }],
-                },
-                {
-                    id: 'loan_purpose',
-                    name: 'loanPurpose',
-                    type: 'textarea',
-                    label: 'Purpose',
-                    placeholder: 'Why do you need this loan?',
-                    options: {
-                        rows: 3,
-                    },
-                    layout: {
-                        colSpan: 2, // Spans full width
-                    },
-                },
+          id: "loan_term",
+          name: "loanTerm",
+          type: "select",
+          label: "Loan Term",
+          options: {
+            choices: [
+              { label: "6 months", value: 6 },
+              { label: "12 months", value: 12 },
+              { label: "24 months", value: 24 },
+              { label: "36 months", value: 36 },
             ],
+          },
+          validation: [{ type: "required" }],
         },
-    ],
+        {
+          id: "loan_purpose",
+          name: "loanPurpose",
+          type: "textarea",
+          label: "Purpose",
+          placeholder: "Why do you need this loan?",
+          options: {
+            rows: 3,
+          },
+          layout: {
+            colSpan: 2, // Spans full width
+          },
+        },
+      ],
+    },
+  ],
 };
 
 // ============================================================================
@@ -177,66 +179,66 @@ export const loanFormApiResponse: ApiFormConfig = {
 // ============================================================================
 
 export const surveyFormApiResponse: ApiFormConfig = {
-    id: 'survey-form',
-    fields: [
+  id: "survey-form",
+  fields: [
+    {
+      id: "has_job",
+      name: "hasJob",
+      type: "radio",
+      label: "Are you currently employed?",
+      options: {
+        choices: [
+          { label: "Yes", value: "yes" },
+          { label: "No", value: "no" },
+        ],
+        layout: "horizontal",
+      },
+      validation: [{ type: "required" }],
+    },
+    {
+      id: "company",
+      name: "company",
+      type: "text",
+      label: "Company Name",
+      dependencies: [
         {
-            id: 'has_job',
-            name: 'hasJob',
-            type: 'radio',
-            label: 'Are you currently employed?',
-            options: {
-                choices: [
-                    { label: 'Yes', value: 'yes' },
-                    { label: 'No', value: 'no' },
-                ],
-                layout: 'horizontal',
+          conditions: [
+            {
+              fieldId: "hasJob",
+              operator: "equals",
+              value: "yes",
             },
-            validation: [{ type: 'required' }],
+          ],
+          action: "show",
+          logic: "and",
         },
+      ],
+      validation: [{ type: "required" }],
+    },
+    {
+      id: "monthly_income",
+      name: "monthlyIncome",
+      type: "currency",
+      label: "Monthly Income",
+      options: {
+        currency: "VND",
+        showSymbol: true,
+      },
+      dependencies: [
         {
-            id: 'company',
-            name: 'company',
-            type: 'text',
-            label: 'Company Name',
-            dependencies: [
-                {
-                    conditions: [
-                        {
-                            fieldId: 'hasJob',
-                            operator: 'equals',
-                            value: 'yes',
-                        },
-                    ],
-                    action: 'show',
-                    logic: 'and',
-                },
-            ],
-            validation: [{ type: 'required' }],
-        },
-        {
-            id: 'monthly_income',
-            name: 'monthlyIncome',
-            type: 'currency',
-            label: 'Monthly Income',
-            options: {
-                currency: 'VND',
-                showSymbol: true,
+          conditions: [
+            {
+              fieldId: "hasJob",
+              operator: "equals",
+              value: "yes",
             },
-            dependencies: [
-                {
-                    conditions: [
-                        {
-                            fieldId: 'hasJob',
-                            operator: 'equals',
-                            value: 'yes',
-                        },
-                    ],
-                    action: 'show',
-                },
-            ],
-            validation: [{ type: 'required' }],
+          ],
+          action: "show",
         },
-    ],
+      ],
+      validation: [{ type: "required" }],
+    },
+  ],
 };
 
 // ============================================================================
@@ -244,67 +246,61 @@ export const surveyFormApiResponse: ApiFormConfig = {
 // ============================================================================
 
 export const registrationFormApiResponse: ApiFormConfig = {
-    id: 'registration',
-    sections: [
+  id: "registration",
+  sections: [
+    {
+      id: "step-1",
+      title: "Step 1: Account Information",
+      collapsible: true,
+      fields: [
         {
-            id: 'step-1',
-            title: 'Step 1: Account Information',
-            collapsible: true,
-            fields: [
-                {
-                    id: 'username',
-                    name: 'username',
-                    type: 'text',
-                    label: 'Username',
-                    validation: [
-                        { type: 'required' },
-                        { type: 'minLength', value: 3 },
-                    ],
-                },
-                {
-                    id: 'email',
-                    name: 'email',
-                    type: 'email',
-                    label: 'Email',
-                    validation: [{ type: 'required' }, { type: 'email' }],
-                },
-                {
-                    id: 'password',
-                    name: 'password',
-                    type: 'password',
-                    label: 'Password',
-                    validation: [
-                        { type: 'required' },
-                        { type: 'minLength', value: 8 },
-                    ],
-                },
-            ],
+          id: "username",
+          name: "username",
+          type: "text",
+          label: "Username",
+          validation: [{ type: "required" }, { type: "minLength", value: 3 }],
         },
         {
-            id: 'step-2',
-            title: 'Step 2: Personal Details',
-            collapsible: true,
-            defaultCollapsed: true,
-            fields: [
-                {
-                    id: 'full_name',
-                    name: 'fullName',
-                    type: 'text',
-                    label: 'Full Name',
-                    validation: [{ type: 'required' }],
-                },
-                {
-                    id: 'date_of_birth',
-                    name: 'dateOfBirth',
-                    type: 'date',
-                    label: 'Date of Birth',
-                    options: {
-                        maxDate: new Date().toISOString(),
-                    },
-                },
-            ],
+          id: "email",
+          name: "email",
+          type: "email",
+          label: "Email",
+          validation: [{ type: "required" }, { type: "email" }],
         },
-    ],
+        {
+          id: "password",
+          name: "password",
+          type: "password",
+          label: "Password",
+          validation: [{ type: "required" }, { type: "minLength", value: 8 }],
+        },
+      ],
+    },
+    {
+      id: "step-2",
+      title: "Step 2: Personal Details",
+      collapsible: true,
+      defaultCollapsed: true,
+      fields: [
+        {
+          id: "full_name",
+          name: "fullName",
+          type: "text",
+          label: "Full Name",
+          validation: [{ type: "required" }],
+        },
+        {
+          id: "date_of_birth",
+          name: "dateOfBirth",
+          type: "date",
+          label: "Date of Birth",
+          options: {
+            maxDate: new Date().toISOString(),
+          },
+        },
+      ],
+    },
+  ],
 };
 
 // ============================================================================
@@ -315,54 +311,51 @@ export const registrationFormApiResponse: ApiFormConfig = {
  * Example React Component
  */
 export function ContactFormExample() {
-    const config = FormConfigMapper.mapApiToFormConfig(contactFormApiResponse);
+  const config = FormConfigMapper.mapApiToFormConfig(contactFormApiResponse);
 
-    const handleSubmit = async (data: Record<string, any>) => {
-        console.log('Form submitted:', data);
+  const handleSubmit = async (data: Record<string, any>) => {
+    console.log("Form submitted:", data);
 
-        // Send to API
-        const response = await fetch('/api/contact', {
-            method: 'POST',
-            body: JSON.stringify(data),
-        });
+    // Send to API
+    const response = await fetch("/api/contact", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
 
-        if (response.ok) {
-            alert('Thank you for contacting us!');
-        }
-    };
+    if (response.ok) {
+      alert("Thank you for contacting us!");
+    }
+  };
 
-    return (
-        <div className="max-w-2xl mx-auto p-6">
-            <h1 className="text-2xl font-bold mb-6">Contact Us</h1>
-            <DynamicForm
-                config={config}
-                onSubmit={handleSubmit}
-            />
-        </div>
-    );
+  return (
+    <div className="max-w-2xl mx-auto p-6">
+      <h1 className="text-2xl font-bold mb-6">Contact Us</h1>
+      <DynamicForm config={config} onSubmit={handleSubmit} />
+    </div>
+  );
 }
 
 /**
  * Example with custom field component
  */
 export function LoanFormExample() {
-    // Register custom currency component if not already registered
-    // registerComponent('currency-input', MyCurrencyComponent);
+  // Register custom currency component if not already registered
+  // registerComponent('currency-input', MyCurrencyComponent);
 
-    const config = FormConfigMapper.mapApiToFormConfig(loanFormApiResponse);
+  const config = FormConfigMapper.mapApiToFormConfig(loanFormApiResponse);
 
-    return (
-        <div className="max-w-4xl mx-auto p-6">
-            <h1 className="text-3xl font-bold mb-8">Loan Application</h1>
-            <DynamicForm
-                config={config}
-                onSubmit={async (data) => {
-                    console.log('Loan application:', data);
-                }}
-                onChange={(fieldName, value, formData) => {
-                    console.log(`Field ${fieldName} changed:`, value);
-                }}
-            />
-        </div>
-    );
+  return (
+    <div className="max-w-4xl mx-auto p-6">
+      <h1 className="text-3xl font-bold mb-8">Loan Application</h1>
+      <DynamicForm
+        config={config}
+        onSubmit={async (data) => {
+          console.log("Loan application:", data);
+        }}
+        onChange={(fieldName, value, formData) => {
+          console.log(`Field ${fieldName} changed:`, value);
+        }}
+      />
+    </div>
+  );
 }

@@ -5,7 +5,33 @@
 
 "use client";
 
-import React, { useState } from "react";
+import {
+  AlertCircle,
+  AlertTriangle,
+  Calendar,
+  Camera,
+  CheckCircle,
+  Copy,
+  Download,
+  Edit,
+  Eye,
+  EyeOff,
+  FileDown,
+  FileText,
+  Info,
+  Mail,
+  MapPin,
+  Phone,
+  RefreshCw,
+  Shield,
+  User,
+} from "lucide-react";
+import type React from "react";
+import { useState } from "react";
+import { toast } from "sonner";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -13,41 +39,19 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Progress } from "@/components/ui/progress";
+import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
-  CheckCircle,
-  AlertCircle,
-  AlertTriangle,
-  User,
-  FileText,
-  Shield,
-  Camera,
-  Download,
-  Eye,
-  EyeOff,
-  Edit,
-  Calendar,
-  MapPin,
-  Phone,
-  Mail,
-  Info,
-  RefreshCw,
-  Copy,
-  FileDown,
-} from "lucide-react";
-import { EkycFullResult, getEkycSummary } from "@/lib/ekyc/ekyc-data-mapper";
-import { useEkycStore } from "@/store/use-ekyc-store";
-import {
-  VietnameseDocumentType,
   getDocumentTypeById,
+  VietnameseDocumentType,
 } from "@/lib/ekyc/document-types";
-import { toast } from "sonner";
+import {
+  type EkycFullResult,
+  getEkycSummary,
+} from "@/lib/ekyc/ekyc-data-mapper";
 import { cn } from "@/lib/utils";
+import { useEkycStore } from "@/store/use-ekyc-store";
 
 interface eKYCResultDisplayProps {
   result?: EkycFullResult;

@@ -5,25 +5,26 @@
 
 "use client";
 
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import {
+  AlertTriangle,
+  Clock,
+  Info,
+  RefreshCw,
+  Send,
+  Smartphone,
+} from "lucide-react";
+import type React from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { Badge } from "@/components/ui/badge";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import {
-  Clock,
-  RefreshCw,
-  Send,
-  AlertTriangle,
-  Info,
-  Smartphone,
-} from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export interface OTPResendProps {

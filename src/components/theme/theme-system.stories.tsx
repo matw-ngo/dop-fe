@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { ThemeSelector } from "./theme-selector";
-import { ThemeCustomizer } from "./theme-customizer";
+import { AlertTriangle, CheckCircle, Info, Palette } from "lucide-react";
 import { useTheme } from "@/components/renderer/theme";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -12,16 +13,15 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Badge } from "@/components/ui/badge";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Progress } from "@/components/ui/progress";
-import { Info, AlertTriangle, CheckCircle, Palette } from "lucide-react";
 import {
-  DefaultThemeWrapper,
   CorporateThemeWrapper,
   CreativeThemeWrapper,
+  DefaultThemeWrapper,
   MedicalThemeWrapper,
 } from "./storybook-theme-wrappers";
+import { ThemeCustomizer } from "./theme-customizer";
+import { ThemeSelector } from "./theme-selector";
 
 // Demo component to showcase all theme features
 function ThemeShowcase() {

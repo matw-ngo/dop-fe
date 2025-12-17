@@ -1,9 +1,9 @@
 "use client";
 
 import React from "react";
-import { ConfirmationStep } from "@/components/onboarding/ConfirmationStep";
 import { useFormContext } from "react-hook-form";
-import { FieldType } from "@/components/user-onboarding/constants/field-types";
+import { ConfirmationStep } from "@/components/onboarding/ConfirmationStep";
+import type { FieldType } from "@/components/user-onboarding/constants/field-types";
 import type { GeneratedStepConfig } from "@/components/user-onboarding/types/field-config";
 import type { MappedFlow } from "@/mappers/flowMapper";
 

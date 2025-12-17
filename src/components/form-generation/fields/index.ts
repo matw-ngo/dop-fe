@@ -6,16 +6,16 @@
  */
 
 import { memo } from "react";
-import { TextField } from "./TextField";
-import { TextAreaField } from "./TextAreaField";
-import { NumberField } from "./NumberField";
-import { SelectField } from "./SelectField";
 import { CheckboxField } from "./CheckboxField";
-import { RadioField } from "./RadioField";
 import { DateField } from "./DateField";
-import { SwitchField } from "./SwitchField";
-import { FileField } from "./FileField";
 import { EkycField } from "./EkycField";
+import { FileField } from "./FileField";
+import { NumberField } from "./NumberField";
+import { RadioField } from "./RadioField";
+import { SelectField } from "./SelectField";
+import { SwitchField } from "./SwitchField";
+import { TextAreaField } from "./TextAreaField";
+import { TextField } from "./TextField";
 
 // Memoize all field components to prevent unnecessary re-renders
 export const MemoizedTextField = memo(TextField);

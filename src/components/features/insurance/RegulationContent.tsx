@@ -1,23 +1,26 @@
 "use client";
 
-import { useState } from "react";
-import { useTranslations } from "next-intl";
 import {
-  FileText,
+  AlertTriangle,
+  BookOpen,
+  Building,
+  Calendar,
+  CheckCircle,
   ChevronDown,
   ChevronUp,
-  Search,
   Download,
-  Calendar,
-  Building,
-  AlertTriangle,
-  CheckCircle,
-  Info,
-  BookOpen,
-  Gavel,
-  Shield,
   ExternalLink,
+  FileText,
+  Gavel,
+  Info,
+  Search,
+  Shield,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { useState } from "react";
+import { toast } from "sonner";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -26,15 +29,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
 import {
   Table,
   TableBody,
@@ -43,7 +44,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { toast } from "sonner";
 
 // Regulation data structure
 const regulationsData = {

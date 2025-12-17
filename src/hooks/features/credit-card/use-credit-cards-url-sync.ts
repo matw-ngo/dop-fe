@@ -3,13 +3,17 @@
  * Extracted to improve component readability and reusability
  */
 
-import { useEffect } from "react";
-import { useLocale } from "next-intl";
 import { useSearchParams } from "next/navigation";
-import type { CreditCardFilters, SortOption } from "@/types/credit-card";
+import { useLocale } from "next-intl";
+import { useEffect } from "react";
 import { DEFAULT_PAGE_SIZE } from "@/constants/credit-cards";
 import type { CreditCardsStore } from "@/store/use-credit-cards-store";
-import type { CardCategory, CardNetwork } from "@/types/credit-card";
+import type {
+  CardCategory,
+  CardNetwork,
+  CreditCardFilters,
+  SortOption,
+} from "@/types/credit-card";
 
 // Default filters with proper typing for URL initialization
 const DEFAULT_FILTERS_FOR_URL: CreditCardFilters = {

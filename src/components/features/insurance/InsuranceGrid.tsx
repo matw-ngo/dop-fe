@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useMemo } from "react";
 import { useTranslations } from "next-intl";
-import InsuranceProductCard from "./InsuranceProduct";
-import { InsuranceProduct } from "@/types/insurance";
+import type React from "react";
+import { useMemo } from "react";
 import { cn, getGapClass } from "@/lib/utils";
+import type { InsuranceProduct } from "@/types/insurance";
+import InsuranceProductCard from "./InsuranceProduct";
 
 interface InsuranceGridProps {
   products: InsuranceProduct[];

@@ -5,32 +5,40 @@
  * auto loans, consumer loans, and business loans with Vietnamese market specifics.
  */
 
-import { LoanCalculationParams, LoanCalculationResult, calculateLoanDetails } from './calculations';
-import { VIETNAMESE_LOAN_TYPES, LOAN_PROCESSING_FEES, EARLY_REPAYMENT_PENALTIES } from '../financial-data/vietnamese-financial-data';
+import {
+  EARLY_REPAYMENT_PENALTIES,
+  LOAN_PROCESSING_FEES,
+  VIETNAMESE_LOAN_TYPES,
+} from "../financial-data/vietnamese-financial-data";
+import {
+  calculateLoanDetails,
+  type LoanCalculationParams,
+  type LoanCalculationResult,
+} from "./calculations";
 
 export interface VietnameseLoanSpecifics {
   loanType: string;
-  collateralType: 'real_estate' | 'vehicle' | 'deposits' | 'guarantee' | 'none';
+  collateralType: "real_estate" | "vehicle" | "deposits" | "guarantee" | "none";
   collateralValue?: number;
   ltvRatio?: number; // Loan-to-Value ratio
-  disbursementMethod: 'lump_sum' | 'installment' | 'flexible';
-  interestPaymentMethod: 'monthly' | 'quarterly' | 'bulleted';
+  disbursementMethod: "lump_sum" | "installment" | "flexible";
+  interestPaymentMethod: "monthly" | "quarterly" | "bulleted";
   gracePeriod?: number; // in months
   fixedRatePeriod?: number; // in months
-  floatingRateIndex?: 'sbv_base' | 'interbank' | 'custom';
+  floatingRateIndex?: "sbv_base" | "interbank" | "custom";
   floatingRateSpread?: number;
 }
 
 export interface HomeLoanParams extends VietnameseLoanSpecifics {
-  propertyType: 'apartment' | 'house' | 'land' | 'under_construction';
-  propertyLocation: 'hanoi' | 'hcmc' | 'other';
+  propertyType: "apartment" | "house" | "land" | "under_construction";
+  propertyLocation: "hanoi" | "hcmc" | "other";
   isPrimaryResidence: boolean;
   hasExistingMortgage?: boolean;
   constructionProgress?: number; // for under construction properties
 }
 
 export interface AutoLoanParams extends VietnameseLoanSpecifics {
-  vehicleType: 'new_car' | 'used_car' | 'motorcycle';
+  vehicleType: "new_car" | "used_car" | "motorcycle";
   vehicleBrand?: string;
   vehicleModel?: string;
   vehicleYear?: number;
@@ -40,15 +48,21 @@ export interface AutoLoanParams extends VietnameseLoanSpecifics {
 }
 
 export interface ConsumerLoanParams extends VietnameseLoanSpecifics {
-  purpose: 'debt_consolidation' | 'home_improvement' | 'education' | 'medical' | 'travel' | 'other';
-  employmentType: 'permanent' | 'contract' | 'freelancer' | 'business_owner';
+  purpose:
+    | "debt_consolidation"
+    | "home_improvement"
+    | "education"
+    | "medical"
+    | "travel"
+    | "other";
+  employmentType: "permanent" | "contract" | "freelancer" | "business_owner";
   monthlyIncome: number;
   creditScore?: number;
   hasGuarantor?: boolean;
 }
 
 export interface BusinessLoanParams extends VietnameseLoanSpecifics {
-  businessType: 'sole_proprietor' | 'partnership' | 'llc' | 'corporation';
+  businessType: "sole_proprietor" | "partnership" | "llc" | "corporation";
   businessAge: number; // in years
   annualRevenue: number;
   profitability: number; // profit margin percentage
@@ -60,9 +74,9 @@ export interface LoanComparisonResult {
   loan1: LoanCalculationResult;
   loan2: LoanCalculationResult;
   comparison: {
-    cheaperMonthlyPayment: 'loan1' | 'loan2' | 'equal';
-    cheaperTotalInterest: 'loan1' | 'loan2' | 'equal';
-    lowerEffectiveRate: 'loan1' | 'loan2' | 'equal';
+    cheaperMonthlyPayment: "loan1" | "loan2" | "equal";
+    cheaperTotalInterest: "loan1" | "loan2" | "equal";
+    lowerEffectiveRate: "loan1" | "loan2" | "equal";
     savings: {
       monthlyPaymentDifference: number;
       totalInterestDifference: number;
@@ -80,16 +94,23 @@ export const calculateHomeLoan = (
   principal: number,
   annualRate: number,
   termInMonths: number,
-  specifics: HomeLoanParams
+  specifics: HomeLoanParams,
 ): LoanCalculationResult & { homeLoanDetails: HomeLoanParams } => {
   // Adjust LTV ratio based on property type and location
   let maxLTV = 0.8; // 80% default
-  if (specifics.propertyType === 'apartment' && specifics.isPrimaryResidence) {
-    maxLTV = specifics.propertyLocation === 'hanoi' || specifics.propertyLocation === 'hcmc' ? 0.8 : 0.75;
-  } else if (specifics.propertyType === 'land') {
+  if (specifics.propertyType === "apartment" && specifics.isPrimaryResidence) {
+    maxLTV =
+      specifics.propertyLocation === "hanoi" ||
+      specifics.propertyLocation === "hcmc"
+        ? 0.8
+        : 0.75;
+  } else if (specifics.propertyType === "land") {
     maxLTV = 0.6;
-  } else if (specifics.propertyType === 'under_construction') {
-    maxLTV = specifics.constructionProgress && specifics.constructionProgress > 50 ? 0.7 : 0.6;
+  } else if (specifics.propertyType === "under_construction") {
+    maxLTV =
+      specifics.constructionProgress && specifics.constructionProgress > 50
+        ? 0.7
+        : 0.6;
   }
 
   // Calculate required collateral value
@@ -111,12 +132,15 @@ export const calculateHomeLoan = (
     principal,
     annualRate: adjustedRate,
     termInMonths,
-    rateType: specifics.loanType === 'fixed' ? 'fixed' : 'reducing_balance',
+    rateType: specifics.loanType === "fixed" ? "fixed" : "reducing_balance",
     promotionalPeriod: specifics.fixedRatePeriod,
     promotionalRate: specifics.fixedRatePeriod ? annualRate : undefined,
     hasInsurance: true,
     insuranceRate: 0.3, // Home insurance typically 0.3%
-    processingFee: LOAN_PROCESSING_FEES.assessment + LOAN_PROCESSING_FEES.appraisal + LOAN_PROCESSING_FEES.legal,
+    processingFee:
+      LOAN_PROCESSING_FEES.assessment +
+      LOAN_PROCESSING_FEES.appraisal +
+      LOAN_PROCESSING_FEES.legal,
     earlyRepaymentPenalty: EARLY_REPAYMENT_PENALTIES.fixedRate,
   };
 
@@ -139,7 +163,7 @@ export const calculateAutoLoan = (
   principal: number,
   annualRate: number,
   termInMonths: number,
-  specifics: AutoLoanParams
+  specifics: AutoLoanParams,
 ): LoanCalculationResult & { autoLoanDetails: AutoLoanParams } => {
   // Adjust LTV ratio for vehicles
   let maxLTV = specifics.isNewCar ? 0.8 : 0.7; // Lower LTV for used cars
@@ -158,7 +182,10 @@ export const calculateAutoLoan = (
     adjustedRate += 2.0; // Higher rate for used cars
   }
 
-  if (specifics.vehicleBrand && ['luxury', 'premium'].includes(specifics.vehicleBrand.toLowerCase())) {
+  if (
+    specifics.vehicleBrand &&
+    ["luxury", "premium"].includes(specifics.vehicleBrand.toLowerCase())
+  ) {
     adjustedRate += 0.5; // Slightly higher for luxury brands
   }
 
@@ -167,7 +194,7 @@ export const calculateAutoLoan = (
     principal,
     annualRate: adjustedRate,
     termInMonths,
-    rateType: 'reducing_balance',
+    rateType: "reducing_balance",
     hasInsurance: specifics.hasComprehensiveInsurance,
     insuranceRate: specifics.hasComprehensiveInsurance ? 1.5 : 0, // Comprehensive insurance
     processingFee: LOAN_PROCESSING_FEES.assessment + LOAN_PROCESSING_FEES.legal,
@@ -193,21 +220,25 @@ export const calculateConsumerLoan = (
   principal: number,
   annualRate: number,
   termInMonths: number,
-  specifics: ConsumerLoanParams
+  specifics: ConsumerLoanParams,
 ): LoanCalculationResult & { consumerLoanDetails: ConsumerLoanParams } => {
   // Adjust interest rate based on risk factors
   let adjustedRate = annualRate;
 
   // Adjust for employment type
-  if (specifics.employmentType === 'freelancer' || specifics.employmentType === 'business_owner') {
+  if (
+    specifics.employmentType === "freelancer" ||
+    specifics.employmentType === "business_owner"
+  ) {
     adjustedRate += 2.0;
-  } else if (specifics.employmentType === 'contract') {
+  } else if (specifics.employmentType === "contract") {
     adjustedRate += 1.0;
   }
 
   // Adjust for income level
   const incomeRatio = principal / specifics.monthlyIncome;
-  if (incomeRatio > 10) { // Loan amount more than 10x monthly income
+  if (incomeRatio > 10) {
+    // Loan amount more than 10x monthly income
     adjustedRate += 1.5;
   } else if (incomeRatio > 7) {
     adjustedRate += 1.0;
@@ -234,7 +265,7 @@ export const calculateConsumerLoan = (
     principal,
     annualRate: adjustedRate,
     termInMonths,
-    rateType: 'flat_rate', // Consumer loans often use flat rate
+    rateType: "flat_rate", // Consumer loans often use flat rate
     hasInsurance: false,
     processingFee: LOAN_PROCESSING_FEES.assessment,
     earlyRepaymentPenalty: EARLY_REPAYMENT_PENALTIES.fixedRate,
@@ -255,7 +286,7 @@ export const calculateBusinessLoan = (
   principal: number,
   annualRate: number,
   termInMonths: number,
-  specifics: BusinessLoanParams
+  specifics: BusinessLoanParams,
 ): LoanCalculationResult & { businessLoanDetails: BusinessLoanParams } => {
   // Adjust interest rate based on business risk factors
   let adjustedRate = annualRate;
@@ -276,12 +307,16 @@ export const calculateBusinessLoan = (
 
   // Adjust for revenue
   const revenuePerEmployee = specifics.annualRevenue / 50; // Assume 50 employees average
-  if (revenuePerEmployee < 1000000000) { // Less than 1 tỷ/nhân viên/năm
+  if (revenuePerEmployee < 1000000000) {
+    // Less than 1 tỷ/nhân viên/năm
     adjustedRate += 1.0;
   }
 
   // Adjust for business type
-  if (specifics.businessType === 'sole_proprietor' || specifics.businessType === 'partnership') {
+  if (
+    specifics.businessType === "sole_proprietor" ||
+    specifics.businessType === "partnership"
+  ) {
     adjustedRate += 0.5; // Higher risk than corporations
   }
 
@@ -290,7 +325,7 @@ export const calculateBusinessLoan = (
     principal,
     annualRate: adjustedRate,
     termInMonths,
-    rateType: 'reducing_balance',
+    rateType: "reducing_balance",
     hasInsurance: false,
     processingFee: LOAN_PROCESSING_FEES.assessment + LOAN_PROCESSING_FEES.legal,
     earlyRepaymentPenalty: EARLY_REPAYMENT_PENALTIES.fixedRate,
@@ -317,42 +352,58 @@ export const calculateBusinessLoan = (
  */
 export const compareLoanOptions = (
   loan1: LoanCalculationResult,
-  loan2: LoanCalculationResult
+  loan2: LoanCalculationResult,
 ): LoanComparisonResult => {
   const monthlyPaymentDiff = loan2.monthlyPayment - loan1.monthlyPayment;
   const totalInterestDiff = loan2.totalInterest - loan1.totalInterest;
   const totalCostDiff = loan2.totalCosts - loan1.totalCosts;
 
-  const cheaperMonthlyPayment = monthlyPaymentDiff < 0 ? 'loan2' : monthlyPaymentDiff > 0 ? 'loan1' : 'equal';
-  const cheaperTotalInterest = totalInterestDiff < 0 ? 'loan2' : totalInterestDiff > 0 ? 'loan1' : 'equal';
-  const lowerEffectiveRate = loan2.effectiveInterestRate < loan1.effectiveInterestRate ? 'loan2' :
-                            loan2.effectiveInterestRate > loan1.effectiveInterestRate ? 'loan1' : 'equal';
+  const cheaperMonthlyPayment =
+    monthlyPaymentDiff < 0
+      ? "loan2"
+      : monthlyPaymentDiff > 0
+        ? "loan1"
+        : "equal";
+  const cheaperTotalInterest =
+    totalInterestDiff < 0 ? "loan2" : totalInterestDiff > 0 ? "loan1" : "equal";
+  const lowerEffectiveRate =
+    loan2.effectiveInterestRate < loan1.effectiveInterestRate
+      ? "loan2"
+      : loan2.effectiveInterestRate > loan1.effectiveInterestRate
+        ? "loan1"
+        : "equal";
 
   const recommendations: string[] = [];
   const reasoning: string[] = [];
 
   // Analyze which loan is better
-  let recommendation = '';
+  let recommendation = "";
   const score1 = calculateLoanScore(loan1);
   const score2 = calculateLoanScore(loan2);
 
   if (score1 > score2 + 10) {
-    recommendation = 'Option 1 is significantly better';
-    reasoning.push('Option 1 has better overall terms and lower total cost');
+    recommendation = "Option 1 is significantly better";
+    reasoning.push("Option 1 has better overall terms and lower total cost");
   } else if (score2 > score1 + 10) {
-    recommendation = 'Option 2 is significantly better';
-    reasoning.push('Option 2 has better overall terms and lower total cost');
+    recommendation = "Option 2 is significantly better";
+    reasoning.push("Option 2 has better overall terms and lower total cost");
   } else {
-    recommendation = 'Both options are comparable';
-    reasoning.push('Both options have similar terms - consider other factors like customer service and convenience');
+    recommendation = "Both options are comparable";
+    reasoning.push(
+      "Both options have similar terms - consider other factors like customer service and convenience",
+    );
   }
 
   if (Math.abs(monthlyPaymentDiff) > 1000000) {
-    reasoning.push(`Monthly payment difference: ${Math.abs(monthlyPaymentDiff).toLocaleString('vi-VN')} VND`);
+    reasoning.push(
+      `Monthly payment difference: ${Math.abs(monthlyPaymentDiff).toLocaleString("vi-VN")} VND`,
+    );
   }
 
   if (Math.abs(totalInterestDiff) > 10000000) {
-    reasoning.push(`Total interest difference: ${Math.abs(totalInterestDiff).toLocaleString('vi-VN')} VND`);
+    reasoning.push(
+      `Total interest difference: ${Math.abs(totalInterestDiff).toLocaleString("vi-VN")} VND`,
+    );
   }
 
   return {
@@ -391,7 +442,7 @@ function calculateLoanScore(loan: LoanCalculationResult): number {
   score += Math.max(0, (1 - paymentRatio * 100) * 10);
 
   // Flexible terms are better
-  if (loan.loanParams.loanType === 'reducing_balance') score += 10;
+  if (loan.loanParams.loanType === "reducing_balance") score += 10;
   if (loan.loanParams.promotionalPeriod) score += 5;
 
   return Math.max(0, Math.min(100, score));
@@ -406,13 +457,13 @@ export const assessLoanEligibility = (
   monthlyIncome: number,
   monthlyDebts: number,
   creditScore: number = 650,
-  hasCollateral: boolean = true
+  hasCollateral: boolean = true,
 ): {
   eligible: boolean;
   probability: number; // 0-100%
   factors: Array<{
     factor: string;
-    impact: 'positive' | 'negative' | 'neutral';
+    impact: "positive" | "negative" | "neutral";
     weight: number;
     score: number;
   }>;
@@ -424,7 +475,8 @@ export const assessLoanEligibility = (
   let totalWeight = 0;
 
   // Income assessment
-  const debtToIncome = ((monthlyDebts + (principal * 0.01)) / monthlyIncome) * 100;
+  const debtToIncome =
+    ((monthlyDebts + principal * 0.01) / monthlyIncome) * 100;
   let incomeScore = 0;
   if (debtToIncome < 30) incomeScore = 100;
   else if (debtToIncome < 40) incomeScore = 80;
@@ -432,8 +484,13 @@ export const assessLoanEligibility = (
   else incomeScore = 30;
 
   factors.push({
-    factor: 'Debt-to-Income Ratio',
-    impact: debtToIncome < 40 ? 'positive' : debtToIncome < 50 ? 'neutral' : 'negative',
+    factor: "Debt-to-Income Ratio",
+    impact:
+      debtToIncome < 40
+        ? "positive"
+        : debtToIncome < 50
+          ? "neutral"
+          : "negative",
     weight: 0.3,
     score: incomeScore,
   });
@@ -450,8 +507,13 @@ export const assessLoanEligibility = (
   else creditScoreScore = 20;
 
   factors.push({
-    factor: 'Credit Score',
-    impact: creditScore >= 650 ? 'positive' : creditScore >= 600 ? 'neutral' : 'negative',
+    factor: "Credit Score",
+    impact:
+      creditScore >= 650
+        ? "positive"
+        : creditScore >= 600
+          ? "neutral"
+          : "negative",
     weight: 0.25,
     score: creditScoreScore,
   });
@@ -462,8 +524,8 @@ export const assessLoanEligibility = (
   // Collateral assessment
   const collateralScore = hasCollateral ? 90 : 50;
   factors.push({
-    factor: 'Collateral Availability',
-    impact: hasCollateral ? 'positive' : 'negative',
+    factor: "Collateral Availability",
+    impact: hasCollateral ? "positive" : "negative",
     weight: 0.2,
     score: collateralScore,
   });
@@ -480,8 +542,13 @@ export const assessLoanEligibility = (
   else loanAmountScore = 40;
 
   factors.push({
-    factor: 'Loan Amount Reasonableness',
-    impact: loanToIncome < 5 ? 'positive' : loanToIncome < 10 ? 'neutral' : 'negative',
+    factor: "Loan Amount Reasonableness",
+    impact:
+      loanToIncome < 5
+        ? "positive"
+        : loanToIncome < 10
+          ? "neutral"
+          : "negative",
     weight: 0.15,
     score: loanAmountScore,
   });
@@ -491,13 +558,18 @@ export const assessLoanEligibility = (
 
   // Loan type specific factors
   let loanTypeScore = 70; // Default score
-  if (loanType === 'home' && hasCollateral) loanTypeScore = 90;
-  if (loanType === 'consumer' && !hasCollateral) loanTypeScore = 60;
-  if (loanType === 'business') loanTypeScore = 65;
+  if (loanType === "home" && hasCollateral) loanTypeScore = 90;
+  if (loanType === "consumer" && !hasCollateral) loanTypeScore = 60;
+  if (loanType === "business") loanTypeScore = 65;
 
   factors.push({
-    factor: 'Loan Type Risk',
-    impact: loanTypeScore >= 70 ? 'positive' : loanTypeScore >= 50 ? 'neutral' : 'negative',
+    factor: "Loan Type Risk",
+    impact:
+      loanTypeScore >= 70
+        ? "positive"
+        : loanTypeScore >= 50
+          ? "neutral"
+          : "negative",
     weight: 0.1,
     score: loanTypeScore,
   });
@@ -513,23 +585,23 @@ export const assessLoanEligibility = (
   const requiredDocuments = [];
 
   if (!eligible) {
-    recommendations.push('Cải thiện điểm tín dụng');
-    recommendations.push('Tăng thu nhập hoặc giảm nợ hiện tại');
-    recommendations.push('Cung cấp tài sản đảm bảo');
+    recommendations.push("Cải thiện điểm tín dụng");
+    recommendations.push("Tăng thu nhập hoặc giảm nợ hiện tại");
+    recommendations.push("Cung cấp tài sản đảm bảo");
   }
 
-  if (loanType === 'home') {
-    requiredDocuments.push('Giấy chứng nhận quyền sử dụng đất');
-    requiredDocuments.push('Hợp đồng mua bán nhà đất');
-    requiredDocuments.push('Hộ khẩu, CMND/CCCD');
-  } else if (loanType === 'consumer') {
-    requiredDocuments.push('Hợp đồng lao động');
-    requiredDocuments.push('Sao kê lương 3 tháng gần nhất');
-    requiredDocuments.push('Hộ khẩu, CMND/CCCD');
-  } else if (loanType === 'business') {
-    requiredDocuments.push('Giấy phép kinh doanh');
-    requiredDocuments.push('Báo cáo tài chính 2 năm gần nhất');
-    requiredDocuments.push('Kế hoạch kinh doanh/vay vốn');
+  if (loanType === "home") {
+    requiredDocuments.push("Giấy chứng nhận quyền sử dụng đất");
+    requiredDocuments.push("Hợp đồng mua bán nhà đất");
+    requiredDocuments.push("Hộ khẩu, CMND/CCCD");
+  } else if (loanType === "consumer") {
+    requiredDocuments.push("Hợp đồng lao động");
+    requiredDocuments.push("Sao kê lương 3 tháng gần nhất");
+    requiredDocuments.push("Hộ khẩu, CMND/CCCD");
+  } else if (loanType === "business") {
+    requiredDocuments.push("Giấy phép kinh doanh");
+    requiredDocuments.push("Báo cáo tài chính 2 năm gần nhất");
+    requiredDocuments.push("Kế hoạch kinh doanh/vay vốn");
   }
 
   return {

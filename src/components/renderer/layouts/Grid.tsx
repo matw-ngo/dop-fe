@@ -1,8 +1,9 @@
 "use client";
 
-import React, { forwardRef } from "react";
-import { useThemeUtils } from "@/components/renderer/theme/use-theme";
+import type React from "react";
+import { forwardRef } from "react";
 import { cn } from "@/components/renderer/component-variants/create-variant";
+import { useThemeUtils } from "@/components/renderer/theme/use-theme";
 import type { LayoutProps, ResponsiveValue } from "@/types/ui-theme";
 
 export interface GridProps extends React.HTMLAttributes<HTMLDivElement> {

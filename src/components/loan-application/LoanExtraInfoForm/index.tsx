@@ -1,11 +1,5 @@
 "use client";
-import s from "./style.module.scss";
-import { VN_PROVINCES } from "@app/helpers/location";
 import { FULL_NAME_REGEX, ValidationConfig } from "@app/configs/constants";
-import React, { useEffect, useMemo } from "react";
-import { useLoanStore } from "@app/states/zu-store";
-import { validProvinceCodeNID12 } from "@app/helpers/validate";
-import { ActionContext } from "@app/states/zu-action";
 import {
   CREDIT_HISTORY,
   CREDIT_STATUSES,
@@ -14,11 +8,17 @@ import {
   GENDERS,
   INCOME_AMOUNT,
 } from "@app/configs/data";
-import { off } from "process";
+import { VN_PROVINCES } from "@app/helpers/location";
 import { EventType, eventTracking } from "@app/helpers/user-tracking";
-import { cn } from "@/lib/utils";
+import { validProvinceCodeNID12 } from "@app/helpers/validate";
+import { ActionContext } from "@app/states/zu-action";
+import { useLoanStore } from "@app/states/zu-store";
 import { DollarSign, User } from "lucide-react";
+import { off } from "process";
+import React, { useEffect, useMemo } from "react";
 import { Button, SelectGroup, TextInput } from "@/components/ui";
+import { cn } from "@/lib/utils";
+import s from "./style.module.scss";
 
 const provinceList = VN_PROVINCES.map((x) => ({
   label: x.label,
@@ -74,7 +74,7 @@ export const LoanExtraInfoForm = () => {
   };
 
   const locationValidation = () => {
-    let province = userData.province;
+    const province = userData.province;
     let valid = 1;
     if (!province || !province.trim()) {
       setUserLoanValidate(
@@ -90,7 +90,7 @@ export const LoanExtraInfoForm = () => {
     return valid;
   };
   const fullNameValidation = () => {
-    let fullName = userData.full_name;
+    const fullName = userData.full_name;
     if (!fullName) {
       setUserLoanValidate("full_name", false, "Họ tên không hợp lệ");
       return 0;
@@ -108,8 +108,8 @@ export const LoanExtraInfoForm = () => {
     return 1;
   };
   const nationalIdValidation = () => {
-    let id = userData.national_id;
-    let validateRegex = new RegExp(/^[0-9]{3}[0-3][0-9]{8}$/);
+    const id = userData.national_id;
+    const validateRegex = new RegExp(/^[0-9]{3}[0-3][0-9]{8}$/);
     if (!id || !id.trim()) {
       setUserLoanValidate("national_id", false, "Vui lòng nhập số CCCD");
       return 0;
@@ -150,7 +150,7 @@ export const LoanExtraInfoForm = () => {
     return 1;
   };
   const empStatusValidation = () => {
-    let cs = userData.career_status;
+    const cs = userData.career_status;
     let valid = 1;
     if (!cs || !cs.trim()) {
       setUserLoanValidate(
@@ -166,7 +166,7 @@ export const LoanExtraInfoForm = () => {
     return valid;
   };
   const incomeAmountValidation = () => {
-    let ic = userData.income;
+    const ic = userData.income;
     let valid = 1;
     if (
       (userData.career_status === "employed" ||
@@ -186,7 +186,7 @@ export const LoanExtraInfoForm = () => {
     return valid;
   };
   const empTypeValidation = () => {
-    let ic = userData.career_type;
+    const ic = userData.career_type;
     let valid = 1;
     if (userData.career_status === "employed" && (!ic || !ic.trim())) {
       setUserLoanValidate(
@@ -202,7 +202,7 @@ export const LoanExtraInfoForm = () => {
     return valid;
   };
   const creditHistoryValidation = () => {
-    let ic = userData.credit_status;
+    const ic = userData.credit_status;
     let valid = 1;
     if (ic >= 0) {
       setUserLoanValidate("credit_status", true, "");
@@ -218,12 +218,12 @@ export const LoanExtraInfoForm = () => {
     return valid;
   };
   const step1Validation = () => {
-    let result =
+    const result =
       locationValidation() * nationalIdValidation() * fullNameValidation();
     return result != 0;
   };
   const step2Validation = () => {
-    let result =
+    const result =
       incomeAmountValidation() * empStatusValidation() * empTypeValidation();
     return result != 0;
   };

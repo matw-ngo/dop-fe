@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
-import { describe, it, expect, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
+import { FieldType, type FormField } from "../../types";
 import { FieldFactory } from "../FieldFactory";
-import { FieldType, FormField } from "../../types";
 
 // Mock dependent components and hooks
 vi.mock("../../fields/TextField", () => ({

@@ -5,11 +5,11 @@
 
 import {
   ALL_VIETNAMESE_PREFIXES,
+  formatPhoneNumber,
+  getTelcoByPhoneNumber,
   isValidVietnamesePhoneNumber,
   sanitizePhoneNumber,
-  formatPhoneNumber,
-  getTelcoByPhoneNumber
-} from './vietnamese-telcos';
+} from "./vietnamese-telcos";
 
 export interface PhoneValidationResult {
   isValid: boolean;
@@ -33,61 +33,65 @@ export interface PhoneValidationRule {
 const VIETNAMESE_PHONE_RULES: PhoneValidationRule[] = [
   {
     test: (phone) => phone.length >= 9,
-    message: 'Số điện thoại quá ngắn',
-    suggestion: 'Số điện thoại Việt Nam có 10-11 số'
+    message: "Số điện thoại quá ngắn",
+    suggestion: "Số điện thoại Việt Nam có 10-11 số",
   },
   {
     test: (phone) => phone.length <= 11,
-    message: 'Số điện thoại quá dài',
-    suggestion: 'Số điện thoại Việt Nam có 10-11 số'
+    message: "Số điện thoại quá dài",
+    suggestion: "Số điện thoại Việt Nam có 10-11 số",
   },
   {
     test: (phone) => /^(\+84|0|84)/.test(phone),
-    message: 'Số điện thoại phải bắt đầu bằng +84, 84, hoặc 0',
-    suggestion: 'Ví dụ: 0912345678, +84912345678, hoặc 84912345678'
+    message: "Số điện thoại phải bắt đầu bằng +84, 84, hoặc 0",
+    suggestion: "Ví dụ: 0912345678, +84912345678, hoặc 84912345678",
   },
   {
     test: (phone) => {
-      const cleanPhone = phone.replace(/\D/g, '');
-      return ALL_VIETNAMESE_PREFIXES.some(prefix => {
-        if (cleanPhone.startsWith('84')) {
-          return cleanPhone.startsWith('84' + prefix.slice(1));
+      const cleanPhone = phone.replace(/\D/g, "");
+      return ALL_VIETNAMESE_PREFIXES.some((prefix) => {
+        if (cleanPhone.startsWith("84")) {
+          return cleanPhone.startsWith("84" + prefix.slice(1));
         }
         return cleanPhone.startsWith(prefix);
       });
     },
-    message: 'Đầu số điện thoại không hợp lệ',
-    suggestion: 'Vui lòng sử dụng đầu số của các nhà mạng Việt Nam (09x, 03x, 05x, 07x, 08x)'
+    message: "Đầu số điện thoại không hợp lệ",
+    suggestion:
+      "Vui lòng sử dụng đầu số của các nhà mạng Việt Nam (09x, 03x, 05x, 07x, 08x)",
   },
   {
     test: (phone) => {
-      const cleanPhone = phone.replace(/\D/g, '');
-      if (cleanPhone.startsWith('84')) {
+      const cleanPhone = phone.replace(/\D/g, "");
+      if (cleanPhone.startsWith("84")) {
         return cleanPhone.length === 11;
       }
       return cleanPhone.length === 10;
     },
-    message: 'Độ dài số điện thoại không hợp lệ',
-    suggestion: 'Số điện thoại Việt Nam có 10 số (đầu số 0) hoặc 11 số (đầu số +84)'
-  }
+    message: "Độ dài số điện thoại không hợp lệ",
+    suggestion:
+      "Số điện thoại Việt Nam có 10 số (đầu số 0) hoặc 11 số (đầu số +84)",
+  },
 ];
 
 /**
  * Validate Vietnamese phone number format
  */
-export const validateVietnamesePhone = (input: string): PhoneValidationResult => {
+export const validateVietnamesePhone = (
+  input: string,
+): PhoneValidationResult => {
   if (!input || input.trim().length === 0) {
     return {
       isValid: false,
       isComplete: false,
-      phoneNumber: '',
-      formattedNumber: '',
-      error: 'Vui lòng nhập số điện thoại'
+      phoneNumber: "",
+      formattedNumber: "",
+      error: "Vui lòng nhập số điện thoại",
     };
   }
 
   const sanitized = sanitizePhoneNumber(input);
-  const cleanPhone = input.replace(/\D/g, '');
+  const cleanPhone = input.replace(/\D/g, "");
 
   // Basic validation checks
   for (const rule of VIETNAMESE_PHONE_RULES) {
@@ -98,7 +102,7 @@ export const validateVietnamesePhone = (input: string): PhoneValidationResult =>
         phoneNumber: sanitized,
         formattedNumber: formatPhoneNumber(sanitized),
         error: rule.message,
-        suggestion: rule.suggestion
+        suggestion: rule.suggestion,
       };
     }
   }
@@ -113,8 +117,8 @@ export const validateVietnamesePhone = (input: string): PhoneValidationResult =>
       isComplete: false,
       phoneNumber: sanitized,
       formattedNumber: formatPhoneNumber(sanitized),
-      error: 'Số điện thoại không thuộc nhà mạng Việt Nam',
-      suggestion: 'Vui lòng kiểm tra lại số điện thoại'
+      error: "Số điện thoại không thuộc nhà mạng Việt Nam",
+      suggestion: "Vui lòng kiểm tra lại số điện thoại",
     };
   }
 
@@ -123,7 +127,7 @@ export const validateVietnamesePhone = (input: string): PhoneValidationResult =>
     isComplete: sanitized.length >= 10,
     phoneNumber: sanitized,
     formattedNumber: formatPhoneNumber(sanitized),
-    telco: telco?.name
+    telco: telco?.name,
   };
 };
 
@@ -135,14 +139,14 @@ export const validatePhoneTyping = (input: string): PhoneValidationResult => {
     return {
       isValid: false,
       isComplete: false,
-      phoneNumber: '',
-      formattedNumber: '',
-      error: undefined
+      phoneNumber: "",
+      formattedNumber: "",
+      error: undefined,
     };
   }
 
   const sanitized = sanitizePhoneNumber(input);
-  const cleanPhone = input.replace(/\D/g, '');
+  const cleanPhone = input.replace(/\D/g, "");
 
   // For typing validation, we're more lenient
   if (cleanPhone.length < 3) {
@@ -151,14 +155,14 @@ export const validatePhoneTyping = (input: string): PhoneValidationResult => {
       isComplete: false,
       phoneNumber: sanitized,
       formattedNumber: formatPhoneNumber(sanitized),
-      error: undefined
+      error: undefined,
     };
   }
 
   // Check if prefix matches any Vietnamese telco
-  const hasValidPrefix = ALL_VIETNAMESE_PREFIXES.some(prefix => {
-    if (cleanPhone.startsWith('84')) {
-      return cleanPhone.startsWith('84' + prefix.slice(1));
+  const hasValidPrefix = ALL_VIETNAMESE_PREFIXES.some((prefix) => {
+    if (cleanPhone.startsWith("84")) {
+      return cleanPhone.startsWith("84" + prefix.slice(1));
     }
     return cleanPhone.startsWith(prefix);
   });
@@ -169,13 +173,14 @@ export const validatePhoneTyping = (input: string): PhoneValidationResult => {
       isComplete: false,
       phoneNumber: sanitized,
       formattedNumber: formatPhoneNumber(sanitized),
-      error: 'Đầu số không hợp lệ',
-      suggestion: 'Ví dụ: 09x, 03x, 05x, 07x, 08x'
+      error: "Đầu số không hợp lệ",
+      suggestion: "Ví dụ: 09x, 03x, 05x, 07x, 08x",
     };
   }
 
-  const isValid = cleanPhone.length === 10 ||
-    (cleanPhone.startsWith('84') && cleanPhone.length === 11);
+  const isValid =
+    cleanPhone.length === 10 ||
+    (cleanPhone.startsWith("84") && cleanPhone.length === 11);
 
   const telco = getTelcoByPhoneNumber(sanitized);
 
@@ -184,7 +189,7 @@ export const validatePhoneTyping = (input: string): PhoneValidationResult => {
     isComplete: isValid,
     phoneNumber: sanitized,
     formattedNumber: formatPhoneNumber(sanitized),
-    telco: telco?.name
+    telco: telco?.name,
   };
 };
 
@@ -192,10 +197,10 @@ export const validatePhoneTyping = (input: string): PhoneValidationResult => {
  * Format phone number as user types
  */
 export const formatPhoneTyping = (input: string): string => {
-  const clean = input.replace(/\D/g, '');
+  const clean = input.replace(/\D/g, "");
 
-  if (clean.startsWith('84')) {
-    if (clean.length <= 2) return '+84';
+  if (clean.startsWith("84")) {
+    if (clean.length <= 2) return "+84";
     if (clean.length <= 5) return `+84 ${clean.slice(2)}`;
     if (clean.length <= 8) return `+84 ${clean.slice(2, 5)} ${clean.slice(5)}`;
     return `+84 ${clean.slice(2, 5)} ${clean.slice(5, 8)} ${clean.slice(8, 11)}`;
@@ -210,14 +215,14 @@ export const formatPhoneTyping = (input: string): string => {
  * Get phone number input suggestions
  */
 export const getPhoneSuggestions = (partialPhone: string): string[] => {
-  const clean = partialPhone.replace(/\D/g, '');
+  const clean = partialPhone.replace(/\D/g, "");
 
   if (clean.length < 3) return [];
 
   const suggestions: string[] = [];
 
   // Generate suggestions based on telco prefixes
-  ALL_VIETNAMESE_PREFIXES.forEach(prefix => {
+  ALL_VIETNAMESE_PREFIXES.forEach((prefix) => {
     if (prefix.startsWith(clean) || clean.startsWith(prefix)) {
       // Add examples for this prefix
       const exampleNumber = `${prefix}123456`;
@@ -232,19 +237,22 @@ export const getPhoneSuggestions = (partialPhone: string): string[] => {
  * Check if phone number format is international
  */
 export const isInternationalFormat = (phoneNumber: string): boolean => {
-  const clean = phoneNumber.replace(/\D/g, '');
-  return clean.startsWith('84') && !phoneNumber.startsWith('0');
+  const clean = phoneNumber.replace(/\D/g, "");
+  return clean.startsWith("84") && !phoneNumber.startsWith("0");
 };
 
 /**
  * Convert phone number between formats
  */
-export const convertPhoneFormat = (phoneNumber: string, toInternational: boolean = true): string => {
-  const clean = phoneNumber.replace(/\D/g, '');
+export const convertPhoneFormat = (
+  phoneNumber: string,
+  toInternational: boolean = true,
+): string => {
+  const clean = phoneNumber.replace(/\D/g, "");
 
-  if (toInternational && clean.startsWith('0')) {
+  if (toInternational && clean.startsWith("0")) {
     return `+84${clean.slice(1)}`;
-  } else if (!toInternational && clean.startsWith('84')) {
+  } else if (!toInternational && clean.startsWith("84")) {
     return `0${clean.slice(2)}`;
   }
 
@@ -255,7 +263,7 @@ export const convertPhoneFormat = (phoneNumber: string, toInternational: boolean
  * Extract phone number metadata
  */
 export const getPhoneMetadata = (phoneNumber: string) => {
-  const clean = phoneNumber.replace(/\D/g, '');
+  const clean = phoneNumber.replace(/\D/g, "");
   const telco = getTelcoByPhoneNumber(phoneNumber);
 
   return {
@@ -268,8 +276,10 @@ export const getPhoneMetadata = (phoneNumber: string) => {
     isInternational: isInternationalFormat(phoneNumber),
     isValid: isValidVietnamesePhoneNumber(phoneNumber),
     length: clean.length,
-    countryCode: clean.startsWith('84') ? '+84' : '+84',
-    prefix: telco ? ALL_VIETNAMESE_PREFIXES.find(p => clean.includes(p)) : undefined
+    countryCode: clean.startsWith("84") ? "+84" : "+84",
+    prefix: telco
+      ? ALL_VIETNAMESE_PREFIXES.find((p) => clean.includes(p))
+      : undefined,
   };
 };
 
@@ -281,21 +291,21 @@ export const PHONE_VALIDATION_PRESETS = {
     allowPartial: true,
     minLength: 3,
     maxLength: 15,
-    requireVietnamese: false
+    requireVietnamese: false,
   },
   STANDARD: {
     allowPartial: false,
     minLength: 10,
     maxLength: 11,
-    requireVietnamese: true
+    requireVietnamese: true,
   },
   STRICT: {
     allowPartial: false,
     minLength: 10,
     maxLength: 11,
     requireVietnamese: true,
-    requireKnownTelco: true
-  }
+    requireKnownTelco: true,
+  },
 };
 
 /**
@@ -303,7 +313,7 @@ export const PHONE_VALIDATION_PRESETS = {
  */
 export const validatePhoneWithPreset = (
   input: string,
-  preset: keyof typeof PHONE_VALIDATION_PRESETS = 'STANDARD'
+  preset: keyof typeof PHONE_VALIDATION_PRESETS = "STANDARD",
 ): PhoneValidationResult => {
   const config = PHONE_VALIDATION_PRESETS[preset];
   const result = validateVietnamesePhone(input);
@@ -312,17 +322,21 @@ export const validatePhoneWithPreset = (
     const typingResult = validatePhoneTyping(input);
     return {
       ...typingResult,
-      isValid: typingResult.phoneNumber.length >= config.minLength && typingResult.phoneNumber.length <= config.maxLength
+      isValid:
+        typingResult.phoneNumber.length >= config.minLength &&
+        typingResult.phoneNumber.length <= config.maxLength,
     };
   }
 
   return {
     ...result,
-    isValid: result.isValid &&
+    isValid:
+      result.isValid &&
       result.phoneNumber.length >= config.minLength &&
       result.phoneNumber.length <= config.maxLength &&
-      (!config.requireVietnamese || isValidVietnamesePhoneNumber(result.phoneNumber)) &&
-      (!config.requireKnownTelco || !!result.telco)
+      (!config.requireVietnamese ||
+        isValidVietnamesePhoneNumber(result.phoneNumber)) &&
+      (!config.requireKnownTelco || !!result.telco),
   };
 };
 
@@ -335,5 +349,5 @@ export default {
   convertPhoneFormat,
   getPhoneMetadata,
   validatePhoneWithPreset,
-  PHONE_VALIDATION_PRESETS
+  PHONE_VALIDATION_PRESETS,
 };

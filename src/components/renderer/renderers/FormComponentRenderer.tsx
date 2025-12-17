@@ -1,5 +1,10 @@
-import React from "react";
-import { Controller, Control, FieldPath, FieldValues } from "react-hook-form";
+import type React from "react";
+import {
+  type Control,
+  Controller,
+  FieldPath,
+  FieldValues,
+} from "react-hook-form";
 import {
   FormControl,
   FormDescription,

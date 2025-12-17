@@ -1,22 +1,29 @@
 "use client";
 
+import { useState } from "react";
+import type {
+  DynamicFormConfig,
+  FieldComponentProps,
+} from "@/components/form-generation";
 import {
+  allowCustomComponent,
   ConditionOperator,
   FieldType,
+  registerComponent,
   StepWizard,
   ValidationRuleType,
-  registerComponent,
-  allowCustomComponent,
 } from "@/components/form-generation";
-import { legacyLoanTheme, FormThemeProvider } from "@/components/form-generation/themes";
-import type { DynamicFormConfig, FieldComponentProps } from "@/components/form-generation";
-import { useState } from "react";
+import {
+  FormThemeProvider,
+  legacyLoanTheme,
+} from "@/components/form-generation/themes";
 
 // Define the custom component
 const SectionHeader = ({ field }: FieldComponentProps) => {
   return (
     <div className="flex items-center gap-2 mb-4">
-      <div className="h-6 w-1 bg-[#017848] rounded-full"></div> {/* Green accent from theme */}
+      <div className="h-6 w-1 bg-[#017848] rounded-full"></div>{" "}
+      {/* Green accent from theme */}
       <h3 className="text-xl font-bold text-[#003e2c]">{field.label}</h3>
     </div>
   );
@@ -53,7 +60,7 @@ export default function WizardTestPage() {
               componentName: "SectionHeader", // Assuming a custom component or just use a label
             },
             i18n: {
-              enabled: false
+              enabled: false,
             },
             layout: {
               // We might need to adjust this if there isn't a dedicated header type,
@@ -62,7 +69,7 @@ export default function WizardTestPage() {
               // I'll skip a specific header field for now and rely on standard fields,
               // or maybe just use 'Group' if supported, but flat list is safer.
               // Let's just put fields directly.
-              hidden: { xs: true, sm: true, md: true, lg: true, xl: true } // Hide this dummy field, effectively.
+              hidden: { xs: true, sm: true, md: true, lg: true, xl: true }, // Hide this dummy field, effectively.
             },
             // better to just not include it if not needed, but let's stick to the main fields.
           },
@@ -84,7 +91,7 @@ export default function WizardTestPage() {
               },
             ],
             i18n: {
-              enabled: false
+              enabled: false,
             },
           },
           {
@@ -105,7 +112,7 @@ export default function WizardTestPage() {
               },
             ],
             i18n: {
-              enabled: false
+              enabled: false,
             },
           },
           {
@@ -129,7 +136,7 @@ export default function WizardTestPage() {
               },
             ],
             i18n: {
-              enabled: false
+              enabled: false,
             },
           },
           {
@@ -150,7 +157,7 @@ export default function WizardTestPage() {
               },
             ],
             i18n: {
-              enabled: false
+              enabled: false,
             },
           },
         ],
@@ -178,7 +185,7 @@ export default function WizardTestPage() {
               },
             ],
             i18n: {
-              enabled: false
+              enabled: false,
             },
           },
           // Conditional fields for "Đi làm hưởng lương"
@@ -202,7 +209,7 @@ export default function WizardTestPage() {
             ],
             validation: [{ type: ValidationRuleType.REQUIRED }],
             i18n: {
-              enabled: false
+              enabled: false,
             },
           },
           {
@@ -225,7 +232,7 @@ export default function WizardTestPage() {
             ],
             validation: [{ type: ValidationRuleType.REQUIRED }],
             i18n: {
-              enabled: false
+              enabled: false,
             },
           },
           // Conditional field for "Kinh doanh/Lao động tự do"
@@ -249,7 +256,7 @@ export default function WizardTestPage() {
             ],
             validation: [{ type: ValidationRuleType.REQUIRED }],
             i18n: {
-              enabled: false
+              enabled: false,
             },
           },
           // Conditional income field shared by salaried and self-employed
@@ -265,7 +272,7 @@ export default function WizardTestPage() {
                 { label: "5 - 10 triệu", value: "5-10m" },
                 { label: "10 - 20 triệu", value: "10-20m" },
                 { label: "Trên 20 triệu", value: ">20m" },
-              ]
+              ],
             },
             dependencies: [
               {
@@ -281,7 +288,7 @@ export default function WizardTestPage() {
             ],
             validation: [{ type: ValidationRuleType.REQUIRED }],
             i18n: {
-              enabled: false
+              enabled: false,
             },
           },
         ],
@@ -312,7 +319,7 @@ export default function WizardTestPage() {
               },
             ],
             i18n: {
-              enabled: false
+              enabled: false,
             },
           },
           {
@@ -337,7 +344,7 @@ export default function WizardTestPage() {
               },
             ],
             i18n: {
-              enabled: false
+              enabled: false,
             },
           },
         ],

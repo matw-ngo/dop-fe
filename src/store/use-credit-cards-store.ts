@@ -5,21 +5,21 @@
  * comparison, search, and UI preferences for the credit cards comparison feature.
  */
 
+import { useEffect, useMemo, useState } from "react";
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
-import { useState, useEffect, useMemo } from "react";
 import { useShallow } from "zustand/shallow";
+import { vietnameseCreditCards } from "@/data/credit-cards";
 import type {
-  CreditCard,
   CardCategory,
   CardNetwork,
-  CreditCardFilters,
-  SortOption,
-  PaginationOptions,
   ComparisonState,
+  CreditCard,
+  CreditCardFilters,
+  PaginationOptions,
+  SortOption,
 } from "@/types/credit-card";
-import { vietnameseCreditCards } from "@/data/credit-cards";
 
 // ============================================================================
 // Store Types

@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { NextIntlClientProvider } from "next-intl";
+import type { MappedFlow } from "@/mappers/flowMapper";
 import { OnboardingForm } from "./onboarding-form";
 import { OnboardingFormContainer } from "./onboarding-form.container";
-import type { MappedFlow } from "@/mappers/flowMapper";
 
 const MOCK_DEFAULT_FLOW: MappedFlow = {
   id: "flow-1",

@@ -1,18 +1,18 @@
-import React from "react";
-import { useTranslations } from "next-intl";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import {
-  User,
+  Briefcase,
+  Building,
+  Calendar,
+  CreditCard,
   DollarSign,
   FileText,
   MapPin,
-  Briefcase,
-  Calendar,
-  Building,
-  CreditCard,
+  User,
 } from "lucide-react";
-import { DetailedCreditCardInfo } from "@/types/credit-card";
+import { useTranslations } from "next-intl";
+import type React from "react";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import type { DetailedCreditCardInfo } from "@/types/credit-card";
 
 interface RequirementsTabProps {
   card: DetailedCreditCardInfo;

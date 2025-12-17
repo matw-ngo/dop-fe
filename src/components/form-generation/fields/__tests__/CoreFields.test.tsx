@@ -1,10 +1,10 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { describe, it, expect, vi } from "vitest";
-import { TextField } from "../../fields/TextField";
-import { SelectField } from "../../fields/SelectField";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
 import { CheckboxField } from "../../fields/CheckboxField";
 import { DateField } from "../../fields/DateField";
-import { FormField, FieldType } from "../../types";
+import { SelectField } from "../../fields/SelectField";
+import { TextField } from "../../fields/TextField";
+import { FieldType, type FormField } from "../../types";
 
 // Mock UI components to isolate field logic
 vi.mock("@/components/ui/input", () => ({

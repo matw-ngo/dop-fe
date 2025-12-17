@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { ErrorState } from "./error-state";
 import { Card } from "@/components/ui/card";
+import { ErrorState } from "./error-state";
 
 // Mock translation function for Storybook
 const t = (key: string) => {

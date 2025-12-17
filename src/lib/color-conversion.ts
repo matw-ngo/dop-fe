@@ -29,7 +29,9 @@ export function hexToOklchFormat(hex: string): string {
  * @param hexColors - Object with hex color values
  * @returns Object with OKLCH color values
  */
-export function convertHexObjectToOklch(hexColors: Record<string, string>): Record<string, string> {
+export function convertHexObjectToOklch(
+  hexColors: Record<string, string>,
+): Record<string, string> {
   const result: Record<string, string> = {};
 
   for (const [key, value] of Object.entries(hexColors)) {

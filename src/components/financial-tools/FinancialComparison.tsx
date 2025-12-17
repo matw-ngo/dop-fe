@@ -5,7 +5,31 @@
  * affordability analysis, and ROI calculations for the Vietnamese market.
  */
 
-import React, { useState, useEffect, useCallback } from "react";
+import {
+  AlertCircle,
+  ArrowRight,
+  BarChart3,
+  Briefcase,
+  Calculator,
+  Car,
+  CheckCircle,
+  CreditCard,
+  DollarSign,
+  Heart,
+  Home,
+  Info,
+  PiggyBank,
+  Scale,
+  Shield,
+  Star,
+  Target,
+  TrendingUp,
+} from "lucide-react";
+import type React from "react";
+import { useCallback, useEffect, useState } from "react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -13,9 +37,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Progress } from "@/components/ui/progress";
 import {
   Select,
   SelectContent,
@@ -23,12 +48,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Slider } from "@/components/ui/slider";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Progress } from "@/components/ui/progress";
+import { Slider } from "@/components/ui/slider";
 import {
   Table,
   TableBody,
@@ -37,45 +58,26 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Checkbox } from "@/components/ui/checkbox";
-import {
-  Calculator,
-  TrendingUp,
-  BarChart3,
-  Target,
-  Heart,
-  AlertCircle,
-  CheckCircle,
-  Info,
-  Star,
-  ArrowRight,
-  Shield,
-  PiggyBank,
-  Home,
-  Car,
-  CreditCard,
-  Briefcase,
-  Scale,
-  DollarSign,
-} from "lucide-react";
-
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 // Import calculation functions
 import {
-  calculateLoanDetails,
   analyzeAffordability,
+  calculateFinancialHealthScore,
+  calculateLoanDetails,
 } from "@/lib/financial/calculations";
 import {
-  compareLoanOptions,
   assessLoanEligibility,
+  compareLoanOptions,
 } from "@/lib/financial/loan-calculations";
-import { calculateFinancialHealthScore } from "@/lib/financial/calculations";
 import {
   getBestLoanRates,
   getBestSavingsRates,
 } from "@/lib/financial-data/bank-rates";
-import { VietnameseBank } from "@/lib/financial-data/vietnamese-financial-data";
-import { VIETNAMESE_LOAN_TYPES } from "@/lib/financial-data/vietnamese-financial-data";
 import { getMarketRiskAssessment } from "@/lib/financial-data/market-indicators";
+import {
+  VIETNAMESE_LOAN_TYPES,
+  type VietnameseBank,
+} from "@/lib/financial-data/vietnamese-financial-data";
 
 // Types
 interface LoanComparisonData {

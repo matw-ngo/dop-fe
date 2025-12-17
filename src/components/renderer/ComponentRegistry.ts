@@ -1,27 +1,27 @@
 // Component Registry for Data-Driven UI system
 // Maps string component names to actual React components
 
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Switch } from "@/components/ui/switch";
-import { Slider } from "@/components/ui/slider";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
-import { CustomSelect } from "@/components/wrappers/CustomSelect";
-import { CustomRadioGroup } from "@/components/wrappers/CustomRadioGroup";
+import { Separator } from "@/components/ui/separator";
+import { Slider } from "@/components/ui/slider";
+import { Switch } from "@/components/ui/switch";
+import { Textarea } from "@/components/ui/textarea";
+import { CustomConfirmation } from "@/components/wrappers/CustomConfirmation";
 import { CustomDatePicker } from "@/components/wrappers/CustomDatePicker";
 import { CustomDateRangePicker } from "@/components/wrappers/CustomDateRangePicker";
-import { CustomToggleGroup } from "@/components/wrappers/CustomToggleGroup";
-import { CustomInputOTP } from "@/components/wrappers/CustomInputOTP";
 import { CustomEkyc } from "@/components/wrappers/CustomEkyc";
-import { CustomConfirmation } from "@/components/wrappers/CustomConfirmation";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
+import { CustomInputOTP } from "@/components/wrappers/CustomInputOTP";
+import { CustomRadioGroup } from "@/components/wrappers/CustomRadioGroup";
+import { CustomSelect } from "@/components/wrappers/CustomSelect";
+import { CustomToggleGroup } from "@/components/wrappers/CustomToggleGroup";
 
 // Layout components
-import { Container, Grid, Flex, Stack, VStack, HStack } from "./layouts";
+import { Container, Flex, Grid, HStack, Stack, VStack } from "./layouts";
 
 /**
  * Registry of components that can be rendered dynamically

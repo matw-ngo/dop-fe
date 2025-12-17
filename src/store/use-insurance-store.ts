@@ -5,27 +5,27 @@
  * comparison, search, and UI preferences for the insurance products comparison feature.
  */
 
+import { useEffect, useMemo, useState } from "react";
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
-import { useState, useEffect, useMemo } from "react";
 import { useShallow } from "zustand/shallow";
 import {
-  InsuranceProduct,
-  InsuranceCategory,
-  InsuranceCategoryInfo,
-  InsuranceType,
-  FeeType,
-  CoveragePeriod,
-  InsuranceFilters,
-  SortOption,
-  PaginationOptions,
-  ComparisonState,
-} from "@/types/insurance";
-import {
-  INSURANCE_PRODUCTS,
   INSURANCE_CATEGORIES,
+  INSURANCE_PRODUCTS,
 } from "@/data/insurance-products";
+import {
+  type ComparisonState,
+  CoveragePeriod,
+  FeeType,
+  InsuranceCategory,
+  type InsuranceCategoryInfo,
+  type InsuranceFilters,
+  type InsuranceProduct,
+  InsuranceType,
+  type PaginationOptions,
+  SortOption,
+} from "@/types/insurance";
 
 // ============================================================================
 // Store Types

@@ -5,170 +5,162 @@
  * Usage: node scripts/extract-credit-card-keys.js
  */
 
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
 // Configuration
-const MESSAGES_DIR = path.join(process.cwd(), 'messages');
-const OUTPUT_DIR = path.join(MESSAGES_DIR, 'vi/features/credit-cards');
-const OUTPUT_DIR_EN = path.join(MESSAGES_DIR, 'en/features/credit-cards');
+const MESSAGES_DIR = path.join(process.cwd(), "messages");
+const OUTPUT_DIR = path.join(MESSAGES_DIR, "vi/features/credit-cards");
+const OUTPUT_DIR_EN = path.join(MESSAGES_DIR, "en/features/credit-cards");
 
 // Categories for organizing keys
 const CATEGORIES = {
-  main: [
-    'creditCards',
-    'creditCardsDescription',
-    'loading',
-    'error',
-    'retry',
-  ],
+  main: ["creditCards", "creditCardsDescription", "loading", "error", "retry"],
   listing: [
     // Search
-    'searchCreditCards',
-    'searchPlaceholder',
+    "searchCreditCards",
+    "searchPlaceholder",
 
     // Results
-    'showingResults',
-    'noResults',
-    'noResultsDescription',
+    "showingResults",
+    "noResults",
+    "noResultsDescription",
 
     // Filters
-    'filters.',
-    'clearAll',
-    'networks.',
-    'categories.',
-    'rewardsTypes.',
-    'annualFeeRange.',
-    'incomeRequired.',
+    "filters.",
+    "clearAll",
+    "networks.",
+    "categories.",
+    "rewardsTypes.",
+    "annualFeeRange.",
+    "incomeRequired.",
 
     // Sort
-    'sortBy.',
-    'recommended',
-    'annualFeeLow',
-    'cashbackHigh',
+    "sortBy.",
+    "recommended",
+    "annualFeeLow",
+    "cashbackHigh",
 
     // Pagination
-    'showing',
-    'previous',
-    'next',
-    'page',
-    'of',
+    "showing",
+    "previous",
+    "next",
+    "page",
+    "of",
 
     // Grid view
-    'cardsSelected',
-    'compareCards',
-    'viewDetails',
-    'applyNow',
+    "cardsSelected",
+    "compareCards",
+    "viewDetails",
+    "applyNow",
   ],
   detail: [
     // Page header
-    'cardDetails',
-    'cardDetailsDescription',
-    'backToCards',
+    "cardDetails",
+    "cardDetailsDescription",
+    "backToCards",
 
     // Overview
-    'overview',
-    'cardProvider',
-    'cardNetwork',
-    'annualFee',
-    'interestRate',
+    "overview",
+    "cardProvider",
+    "cardNetwork",
+    "annualFee",
+    "interestRate",
 
     // Benefits
-    'benefits.',
-    'welcomeBonus',
-    'travelBenefits',
-    'lifestyleBenefits',
-    'diningPrivileges',
-    'shoppingPrivileges',
-    'entertainmentPrivileges',
-    'welBenefit',
-    'travelBenefit',
-    'lifestyleBenefit',
-    'diningBenefit',
-    'shoppingBenefit',
-    'entertainmentBenefit',
+    "benefits.",
+    "welcomeBonus",
+    "travelBenefits",
+    "lifestyleBenefits",
+    "diningPrivileges",
+    "shoppingPrivileges",
+    "entertainmentPrivileges",
+    "welBenefit",
+    "travelBenefit",
+    "lifestyleBenefit",
+    "diningBenefit",
+    "shoppingBenefit",
+    "entertainmentBenefit",
 
     // Fees
-    'fees.',
-    'primaryFee',
-    'supplementaryFee',
-    'replacementFee',
-    'lateFee',
-    'overLimitFee',
-    'cashAdvanceFee',
-    'foreignTransactionFee',
+    "fees.",
+    "primaryFee",
+    "supplementaryFee",
+    "replacementFee",
+    "lateFee",
+    "overLimitFee",
+    "cashAdvanceFee",
+    "foreignTransactionFee",
 
     // Features
-    'features.',
-    'installmentPlans',
-    'insuranceCoverage',
-    'emergencyAssistance',
-    'conciergeService',
-    'mobilePayment',
-    'contactlessPayment',
+    "features.",
+    "installmentPlans",
+    "insuranceCoverage",
+    "emergencyAssistance",
+    "conciergeService",
+    "mobilePayment",
+    "contactlessPayment",
 
     // Requirements
-    'requirements.',
-    'minimumIncome',
-    'minimumAge',
-    'documentsRequired',
-    'creditScore',
-    'employmentStatus',
+    "requirements.",
+    "minimumIncome",
+    "minimumAge",
+    "documentsRequired",
+    "creditScore",
+    "employmentStatus",
 
     // Reviews
-    'reviews.',
-    'customerRating',
-    'recommendedBy',
-    'userReviews',
-    'expertReview',
+    "reviews.",
+    "customerRating",
+    "recommendedBy",
+    "userReviews",
+    "expertReview",
 
     // Apply section
-    'howToApply',
-    'applyOnline',
-    'applyAtBranch',
-    'requiredDocuments',
+    "howToApply",
+    "applyOnline",
+    "applyAtBranch",
+    "requiredDocuments",
   ],
   comparison: [
     // Comparison page
-    'comparison.',
-    'comparisonTitle',
-    'comparisonSubtitle',
-    'maxCardsToCompare',
+    "comparison.",
+    "comparisonTitle",
+    "comparisonSubtitle",
+    "maxCardsToCompare",
 
     // Comparison actions
-    'addToCompare',
-    'removeFromCompare',
-    'clearAllComparisons',
-    'compareSelected',
+    "addToCompare",
+    "removeFromCompare",
+    "clearAllComparisons",
+    "compareSelected",
 
     // Comparison criteria
-    'criteria',
-    'annualFeeComparison',
-    'cashbackRate',
-    'welcomeBonusComparison',
-    'travelBenefitsComparison',
-    'diningBenefitsComparison',
+    "criteria",
+    "annualFeeComparison",
+    "cashbackRate",
+    "welcomeBonusComparison",
+    "travelBenefitsComparison",
+    "diningBenefitsComparison",
 
     // Export
-    'exportComparison',
-    'downloadPDF',
-    'shareComparison',
+    "exportComparison",
+    "downloadPDF",
+    "shareComparison",
 
     // Empty states
-    'noCardsSelected',
-    'selectCardsToCompare',
+    "noCardsSelected",
+    "selectCardsToCompare",
   ],
 };
 
 // Empty states category
-const EMPTY_STATES = [
-  'emptyState.',
-];
+const EMPTY_STATES = ["emptyState."];
 
 // Helper function to check if key matches any pattern in array
 function matchesPattern(key, patterns) {
-  return patterns.some(pattern => {
-    if (pattern.endsWith('.')) {
+  return patterns.some((pattern) => {
+    if (pattern.endsWith(".")) {
       return key.startsWith(pattern);
     }
     return key === pattern;
@@ -179,39 +171,44 @@ function matchesPattern(key, patterns) {
 function categorizeKey(key) {
   // Check main category first
   if (matchesPattern(key, CATEGORIES.main)) {
-    return 'main';
+    return "main";
   }
 
   // Check empty states
   if (matchesPattern(key, EMPTY_STATES)) {
-    return 'listing'; // Empty states belong to listing
+    return "listing"; // Empty states belong to listing
   }
 
   // Check specific categories
   if (matchesPattern(key, CATEGORIES.listing)) {
-    return 'listing';
+    return "listing";
   }
 
   if (matchesPattern(key, CATEGORIES.detail)) {
-    return 'detail';
+    return "detail";
   }
 
   if (matchesPattern(key, CATEGORIES.comparison)) {
-    return 'comparison';
+    return "comparison";
   }
 
   // Check for nested comparison keys
-  if (key.includes('compare') || key.includes('comparison')) {
-    return 'comparison';
+  if (key.includes("compare") || key.includes("comparison")) {
+    return "comparison";
   }
 
   // Check for detail-specific keys
-  if (key.includes('benefit') || key.includes('fee') || key.includes('feature') || key.includes('requirement')) {
-    return 'detail';
+  if (
+    key.includes("benefit") ||
+    key.includes("fee") ||
+    key.includes("feature") ||
+    key.includes("requirement")
+  ) {
+    return "detail";
   }
 
   // Default to listing for general keys
-  return 'listing';
+  return "listing";
 }
 
 // Load translations from file
@@ -222,12 +219,12 @@ function loadTranslations(locale) {
     return {};
   }
 
-  const content = fs.readFileSync(filePath, 'utf-8');
+  const content = fs.readFileSync(filePath, "utf-8");
   const translations = JSON.parse(content);
 
   // Extract pages.creditCard namespace
-  const creditCardKeys = translations['pages']?.['creditCard'] || {};
-  const creditCardStandalone = translations['creditCard'] || {};
+  const creditCardKeys = translations["pages"]?.["creditCard"] || {};
+  const creditCardStandalone = translations["creditCard"] || {};
 
   // Merge both sources
   const allKeys = { ...creditCardKeys, ...creditCardStandalone };
@@ -246,19 +243,25 @@ function saveCategorizedTranslations(categorized, locale, outputDir) {
   Object.entries(categorized).forEach(([category, translations]) => {
     if (Object.keys(translations).length > 0) {
       const filePath = path.join(outputDir, `${category}.json`);
-      fs.writeFileSync(filePath, JSON.stringify(translations, null, 2), 'utf-8');
-      console.log(`✅ Saved ${locale}/${category}.json with ${Object.keys(translations).length} keys`);
+      fs.writeFileSync(
+        filePath,
+        JSON.stringify(translations, null, 2),
+        "utf-8",
+      );
+      console.log(
+        `✅ Saved ${locale}/${category}.json with ${Object.keys(translations).length} keys`,
+      );
     }
   });
 }
 
 // Main extraction function
 function extractKeys() {
-  console.log('🔍 Extracting credit-cards translation keys...\n');
+  console.log("🔍 Extracting credit-cards translation keys...\n");
 
-  const locales = ['vi', 'en'];
+  const locales = ["vi", "en"];
 
-  locales.forEach(locale => {
+  locales.forEach((locale) => {
     console.log(`\n📂 Processing ${locale.toUpperCase()} translations:`);
 
     // Load existing translations
@@ -277,7 +280,7 @@ function extractKeys() {
 
     const uncategorized = [];
 
-    allKeys.forEach(key => {
+    allKeys.forEach((key) => {
       const category = categorizeKey(key);
       if (categorized[category]) {
         categorized[category][key] = translations[key];
@@ -287,7 +290,7 @@ function extractKeys() {
     });
 
     // Print statistics
-    console.log('\n📊 Categorization results:');
+    console.log("\n📊 Categorization results:");
     Object.entries(categorized).forEach(([cat, keys]) => {
       console.log(`  ${cat}: ${Object.keys(keys).length} keys`);
     });
@@ -296,43 +299,47 @@ function extractKeys() {
       console.log(`  ⚠️  Uncategorized: ${uncategorized.length} keys`);
 
       // Save uncategorized keys for review
-      const outputDir = locale === 'vi' ? OUTPUT_DIR : OUTPUT_DIR_EN;
+      const outputDir = locale === "vi" ? OUTPUT_DIR : OUTPUT_DIR_EN;
       if (!fs.existsSync(outputDir)) {
         fs.mkdirSync(outputDir, { recursive: true });
       }
 
-      const uncategorizedPath = path.join(outputDir, 'uncategorized.json');
+      const uncategorizedPath = path.join(outputDir, "uncategorized.json");
       fs.writeFileSync(
         uncategorizedPath,
         JSON.stringify(uncategorized, null, 2),
-        'utf-8'
+        "utf-8",
       );
       console.log(`    Saved to: ${uncategorizedPath}`);
     }
 
     // Save categorized translations
-    const outputDir = locale === 'vi' ? OUTPUT_DIR : OUTPUT_DIR_EN;
+    const outputDir = locale === "vi" ? OUTPUT_DIR : OUTPUT_DIR_EN;
     saveCategorizedTranslations(categorized, locale, outputDir);
 
     // Show sample keys for each category
-    console.log('\n📝 Sample keys by category:');
+    console.log("\n📝 Sample keys by category:");
     Object.entries(categorized).forEach(([cat, keys]) => {
       const sampleKeys = Object.keys(keys).slice(0, 3);
-      console.log(`  ${cat}: ${sampleKeys.join(', ')}${Object.keys(keys).length > 3 ? '...' : ''}`);
+      console.log(
+        `  ${cat}: ${sampleKeys.join(", ")}${Object.keys(keys).length > 3 ? "..." : ""}`,
+      );
     });
   });
 
-  console.log('\n✅ Extraction complete!');
-  console.log('\nNext steps:');
-  console.log('1. Review uncategorized.json files and manually categorize any remaining keys');
-  console.log('2. Check that all translations are present in both locales');
-  console.log('3. Update component imports to use new namespaces');
-  console.log('4. Test all components thoroughly');
+  console.log("\n✅ Extraction complete!");
+  console.log("\nNext steps:");
+  console.log(
+    "1. Review uncategorized.json files and manually categorize any remaining keys",
+  );
+  console.log("2. Check that all translations are present in both locales");
+  console.log("3. Update component imports to use new namespaces");
+  console.log("4. Test all components thoroughly");
 }
 
 // Create sample files with proper structure
 function createSampleFiles() {
-  console.log('\n📁 Creating sample file structure...');
+  console.log("\n📁 Creating sample file structure...");
 
   const samples = {
     main: {
@@ -340,23 +347,23 @@ function createSampleFiles() {
       description: "Compare and find the best credit cards for your needs",
       loading: "Loading...",
       error: "Failed to load credit cards",
-      retry: "Retry"
+      retry: "Retry",
     },
     listing: {
       title: "Credit Cards",
       search: {
         placeholder: "Search credit cards...",
-        noResults: "No cards found"
+        noResults: "No cards found",
       },
       filters: {
         title: "Filters",
-        clearAll: "Clear all"
+        clearAll: "Clear all",
       },
       pagination: {
         showing: "Showing {start}-{end} of {total} cards",
         previous: "Previous",
-        next: "Next"
-      }
+        next: "Next",
+      },
     },
     detail: {
       title: "Card Details",
@@ -364,20 +371,20 @@ function createSampleFiles() {
       back: "Back to cards",
       benefits: {
         title: "Benefits",
-        welcome: "Welcome Bonus"
+        welcome: "Welcome Bonus",
       },
       fees: {
         title: "Fees",
-        annual: "Annual Fee"
-      }
+        annual: "Annual Fee",
+      },
     },
     comparison: {
       title: "Compare Cards",
       subtitle: "Select cards to compare",
       add: "Add to Compare",
       remove: "Remove",
-      export: "Export"
-    }
+      export: "Export",
+    },
   };
 
   // Create sample for Vietnamese
@@ -389,8 +396,10 @@ function createSampleFiles() {
   Object.entries(samples).forEach(([category, content]) => {
     const filePath = path.join(sampleDirVi, `${category}.json`);
     if (!fs.existsSync(filePath)) {
-      fs.writeFileSync(filePath, JSON.stringify(content, null, 2), 'utf-8');
-      console.log(`  Created sample: vi/features/credit-cards/${category}.json`);
+      fs.writeFileSync(filePath, JSON.stringify(content, null, 2), "utf-8");
+      console.log(
+        `  Created sample: vi/features/credit-cards/${category}.json`,
+      );
     }
   });
 
@@ -403,8 +412,10 @@ function createSampleFiles() {
   Object.entries(samples).forEach(([category, content]) => {
     const filePath = path.join(sampleDirEn, `${category}.json`);
     if (!fs.existsSync(filePath)) {
-      fs.writeFileSync(filePath, JSON.stringify(content, null, 2), 'utf-8');
-      console.log(`  Created sample: en/features/credit-cards/${category}.json`);
+      fs.writeFileSync(filePath, JSON.stringify(content, null, 2), "utf-8");
+      console.log(
+        `  Created sample: en/features/credit-cards/${category}.json`,
+      );
     }
   });
 }
@@ -421,5 +432,5 @@ if (require.main === module) {
 module.exports = {
   extractKeys,
   categorizeKey,
-  CATEGORIES
+  CATEGORIES,
 };

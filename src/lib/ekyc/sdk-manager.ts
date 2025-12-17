@@ -2,10 +2,14 @@
  * SDK Manager - Main orchestrator for VNPT eKYC SDK integration
  */
 
-import { EkycSdkLoader, SdkAssets } from "./sdk-loader";
-import { EkycSdkConfig, createDefaultEkycConfig } from "./sdk-config";
-import { EkycEventManager, EkycEventHandlers, EkycResult } from "./sdk-events";
 import { EkycConfigManager } from "./config-manager";
+import { createDefaultEkycConfig, type EkycSdkConfig } from "./sdk-config";
+import {
+  type EkycEventHandlers,
+  EkycEventManager,
+  EkycResult,
+} from "./sdk-events";
+import { EkycSdkLoader, type SdkAssets } from "./sdk-loader";
 
 // Extend global window interface
 declare global {

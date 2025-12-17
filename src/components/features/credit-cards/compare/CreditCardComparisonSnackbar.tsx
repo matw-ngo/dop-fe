@@ -1,22 +1,19 @@
 "use client";
 
-import React, { useState, useCallback } from "react";
-import { CreditCardsThemeProvider } from "@/components/features/credit-card/CreditCardsThemeProvider";
-import { useTranslations } from "next-intl";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import {
-  X,
   ArrowRight,
-  CreditCard,
-  Trash2,
   ChevronDown,
   ChevronUp,
+  CreditCard,
+  Trash2,
+  X,
 } from "lucide-react";
-import { useCreditCardsStore } from "@/store/use-credit-cards-store";
-import { useLocale } from "next-intl";
-import { cn } from "@/lib/utils";
+import Link from "next/link";
+import { useLocale, useTranslations } from "next-intl";
+import React, { useCallback, useState } from "react";
+import { CreditCardsThemeProvider } from "@/components/features/credit-card/CreditCardsThemeProvider";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,6 +21,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { cn } from "@/lib/utils";
+import { useCreditCardsStore } from "@/store/use-credit-cards-store";
 
 interface CreditCardComparisonSnackbarProps {
   onClose?: () => void;

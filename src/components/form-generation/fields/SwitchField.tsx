@@ -1,9 +1,9 @@
 "use client";
 
-import type { FieldComponentProps } from "../types";
-import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 import { useFormTheme } from "../themes/ThemeProvider";
+import type { FieldComponentProps } from "../types";
 import { cn } from "../utils/helpers";
 
 export function SwitchField({

@@ -1,4 +1,5 @@
 "use client";
+
 /**
  * Gross to Net Salary Calculator Component
  *
@@ -6,8 +7,19 @@
  * gross salary to net salary with detailed tax and insurance breakdowns.
  */
 
-import React, { useState, useEffect, useMemo } from "react";
+import {
+  Calculator,
+  DollarSign,
+  Info,
+  RotateCcw,
+  TrendingDown,
+  Users,
+} from "lucide-react";
 import { useTranslations } from "next-intl";
+import type React from "react";
+import { useEffect, useMemo, useState } from "react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -15,7 +27,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -25,9 +36,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Table,
   TableBody,
@@ -36,23 +45,16 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Calculator,
-  DollarSign,
-  Users,
-  TrendingDown,
-  RotateCcw,
-  Info,
-} from "lucide-react";
-import { useFinancialToolsStore } from "@/store/use-financial-tools-store";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { calculateGrossToNet } from "@/lib/calculators/salary-gross-to-net";
 import { ALLOWANCES, REGIONAL_MINIMUM_WAGES } from "@/lib/constants/tools";
-import { formatCurrency } from "@/lib/utils";
 import { formatPercentage } from "@/lib/financial-data/market-indicators";
+import { formatCurrency } from "@/lib/utils";
+import { useFinancialToolsStore } from "@/store/use-financial-tools-store";
 import {
+  CalculatorAsyncErrorHandler,
   CalculatorErrorBoundary,
   useCalculatorErrorHandler,
-  CalculatorAsyncErrorHandler,
 } from "./ErrorBoundary";
 
 // Vietnamese regions

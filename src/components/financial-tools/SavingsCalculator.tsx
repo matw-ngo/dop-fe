@@ -5,7 +5,26 @@
  * interest rate comparison, compound interest calculations, and goal planning.
  */
 
-import React, { useState, useEffect, useCallback } from "react";
+import {
+  AlertCircle,
+  ArrowRight,
+  BarChart3,
+  Building,
+  Calculator,
+  Calendar,
+  CheckCircle,
+  DollarSign,
+  Info,
+  PiggyBank,
+  Star,
+  Target,
+  TrendingUp,
+} from "lucide-react";
+import type React from "react";
+import { useCallback, useEffect, useState } from "react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -13,9 +32,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Progress } from "@/components/ui/progress";
 import {
   Select,
   SelectContent,
@@ -23,13 +42,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Separator } from "@/components/ui/separator";
 import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import { Progress } from "@/components/ui/progress";
 import {
   Table,
   TableBody,
@@ -38,40 +53,23 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Calculator,
-  TrendingUp,
-  PiggyBank,
-  Target,
-  Building,
-  Info,
-  AlertCircle,
-  CheckCircle,
-  Star,
-  ArrowRight,
-  Calendar,
-  DollarSign,
-  BarChart3,
-} from "lucide-react";
-
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 // Import calculation functions
 import {
   calculateCompoundInterest,
   calculateSimpleInterest,
-} from "@/lib/financial-data/bank-rates";
-import {
-  formatVND,
-  VietnameseBank,
-} from "@/lib/financial-data/vietnamese-financial-data";
-import {
+  compareSavingsProducts,
   getAllSavingsProducts,
   getBestSavingsRates,
-  compareSavingsProducts,
 } from "@/lib/financial-data/bank-rates";
 import {
-  calculateRealReturns,
   calculatePurchasingPowerImpact,
+  calculateRealReturns,
 } from "@/lib/financial-data/market-indicators";
+import {
+  formatVND,
+  type VietnameseBank,
+} from "@/lib/financial-data/vietnamese-financial-data";
 
 // Types
 interface SavingsFormData {
@@ -229,7 +227,7 @@ const SavingsCalculator: React.FC = () => {
     nominalRate: number,
     frequency: number = 12,
   ): number => {
-    return (Math.pow(1 + nominalRate / 100 / frequency, frequency) - 1) * 100;
+    return ((1 + nominalRate / 100 / frequency) ** frequency - 1) * 100;
   };
 
   // Calculate savings
@@ -418,7 +416,7 @@ const SavingsCalculator: React.FC = () => {
 
     // Calculate required rate using formula for future value of annuity
     const monthlyRate = 0.006; // Assume 7.2% annual rate
-    let requiredRate = 0.06; // Default 6%
+    const requiredRate = 0.06; // Default 6%
 
     // Time calculation with compound interest
     const timeWithInterest =
@@ -428,7 +426,7 @@ const SavingsCalculator: React.FC = () => {
 
     // Feasibility assessment
     let feasibility: "easy" | "moderate" | "challenging" | "impossible";
-    let recommendations: string[] = [];
+    const recommendations: string[] = [];
 
     if (timeToGoal <= desiredMonths) {
       feasibility = "easy";

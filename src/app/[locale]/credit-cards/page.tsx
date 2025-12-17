@@ -1,27 +1,25 @@
 "use client";
 
-import React, { useState } from "react";
 import { useLocale } from "next-intl";
-import Header from "@/components/layout/header";
-import Footer from "@/components/layout/footer";
-import { useCreditCardsStoreLegacy } from "@/store/use-credit-cards-store";
-import type { CreditCardFilters, SortOption } from "@/types/credit-card";
-import { useCreditCardsPageState } from "../../../hooks/features/credit-card/useCreditCardsPageState";
-import { useCreditCardsNavbarTheme } from "@/hooks/features/credit-card/useCreditCardsNavbarTheme";
-
-import CreditCardsPageHero from "@/components/features/credit-card/CreditCardsPageHero";
+import React, { useState } from "react";
 import { CreditCardsPageControls } from "@/components/features/credit-card/CreditCardsPageControls";
+import CreditCardsPageHero from "@/components/features/credit-card/CreditCardsPageHero";
 import { CreditCardsPageResults } from "@/components/features/credit-card/CreditCardsPageResults";
-import CreditCardFilterPanel from "@/components/features/credit-cards/CreditCardFilterPanel";
 import { CreditCardsThemeProvider } from "@/components/features/credit-card/CreditCardsThemeProvider";
 import { CreditCardComparisonSnackbar } from "@/components/features/credit-cards";
-
+import CreditCardFilterPanel from "@/components/features/credit-cards/CreditCardFilterPanel";
+import Footer from "@/components/layout/footer";
+import Header from "@/components/layout/header";
 // Import custom hooks
 import {
   useCreditCardsUrlInit,
   useCreditCardsUrlSync,
   useItemsPerPageFromUrl,
 } from "@/hooks/features/credit-card/use-credit-cards-url-sync";
+import { useCreditCardsNavbarTheme } from "@/hooks/features/credit-card/useCreditCardsNavbarTheme";
+import { useCreditCardsStoreLegacy } from "@/store/use-credit-cards-store";
+import type { CreditCardFilters, SortOption } from "@/types/credit-card";
+import { useCreditCardsPageState } from "../../../hooks/features/credit-card/useCreditCardsPageState";
 
 export default function CreditCardsPage() {
   const locale = useLocale();

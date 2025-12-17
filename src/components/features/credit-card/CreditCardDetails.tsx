@@ -1,7 +1,7 @@
-import React from "react";
-import { Button } from "@/components/ui/button";
-import { CreditCard as CreditCardIcon, Check, X } from "lucide-react";
+import { Check, CreditCard as CreditCardIcon, X } from "lucide-react";
 import { useTranslations } from "next-intl";
+import type React from "react";
+import { Button } from "@/components/ui/button";
 import { getDetailedCardInfo } from "@/data/mock-credit-cards";
 
 interface CreditCardDetailsProps {

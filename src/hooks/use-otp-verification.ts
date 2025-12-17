@@ -3,20 +3,20 @@
  * Manages OTP verification flow with Vietnamese telco support
  */
 
-import { useState, useCallback, useRef, useEffect } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 
 import { otpApi } from "@/lib/api/endpoints/otp";
-import { useAuthStore } from "@/store/use-auth-store";
+import {
+  getPhoneMetadata,
+  validateVietnamesePhone,
+} from "@/lib/telcos/phone-validation";
 
 import {
   getOTPSettings,
   TELCO_ERROR_MESSAGES,
 } from "@/lib/telcos/vietnamese-telcos";
-import {
-  getPhoneMetadata,
-  validateVietnamesePhone,
-} from "@/lib/telcos/phone-validation";
+import { useAuthStore } from "@/store/use-auth-store";
 
 export interface OTPVerificationState {
   phoneNumber: string;

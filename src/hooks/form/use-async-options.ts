@@ -3,7 +3,7 @@
 // Hook for managing asynchronous field options
 // Uses React Query for data fetching, caching, and state management
 
-import { useQuery, useQueries } from "@tanstack/react-query";
+import { useQueries, useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 
 interface AsyncOptionsConfig<T = any> {

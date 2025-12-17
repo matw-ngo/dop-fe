@@ -28,12 +28,9 @@ const statusConfig = {
 
 export function FlowStatusBadge({ status, className }: FlowStatusBadgeProps) {
   const config = statusConfig[status];
-  
+
   return (
-    <Badge
-      variant={config.variant}
-      className={cn("capitalize", className)}
-    >
+    <Badge variant={config.variant} className={cn("capitalize", className)}>
       {config.label}
     </Badge>
   );

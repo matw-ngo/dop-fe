@@ -1,5 +1,9 @@
-import { VariantFactoryConfig } from "./variant-types";
-import { COMMON_SIZES, COMMON_COLORS, COMMON_STATES } from "./variant-types";
+import {
+  COMMON_COLORS,
+  COMMON_SIZES,
+  COMMON_STATES,
+  type VariantFactoryConfig,
+} from "./variant-types";
 
 // Input-specific size configurations
 export const INPUT_SIZES = {

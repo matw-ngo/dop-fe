@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useLocale } from "next-intl";
+import { useEffect, useState } from "react";
 import { useInsuranceStore } from "@/store/use-insurance-store";
-import { InsuranceProduct } from "@/types/insurance";
+import type { InsuranceProduct } from "@/types/insurance";
 
 export function useComparisonData() {
   const searchParams = useSearchParams();

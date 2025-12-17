@@ -18,8 +18,8 @@
  */
 
 import { useEffect, useState } from "react";
-import { useEkycStore } from "@/store/use-ekyc-store";
 import type { OnboardingFormData } from "@/lib/ekyc/ekyc-data-mapper";
+import { useEkycStore } from "@/store/use-ekyc-store";
 
 export interface UseEkycAutofillReturn {
   /** Mapped form data from eKYC */

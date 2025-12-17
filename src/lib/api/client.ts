@@ -1,7 +1,7 @@
 import createClient from "openapi-fetch";
-import type { paths } from "./v1.d.ts";
 import { toast } from "sonner";
-import { useTokenStore, securityUtils } from "@/lib/auth/secure-tokens";
+import { securityUtils, useTokenStore } from "@/lib/auth/secure-tokens";
+import type { paths } from "./v1.d.ts";
 
 // API Configuration based on environment
 const getApiConfig = () => {
@@ -176,7 +176,7 @@ export const withRetry = async <T>(
       }
 
       // Exponential backoff
-      const backoffDelay = delay * Math.pow(2, i);
+      const backoffDelay = delay * 2 ** i;
       await new Promise((resolve) => setTimeout(resolve, backoffDelay));
     }
   }

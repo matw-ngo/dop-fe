@@ -663,7 +663,7 @@ export class LoanStatusRateLimiter {
         intervals.length;
       const variance =
         intervals.reduce(
-          (sum, interval) => sum + Math.pow(interval - avgInterval, 2),
+          (sum, interval) => sum + (interval - avgInterval) ** 2,
           0,
         ) / intervals.length;
       const coefficientOfVariation = Math.sqrt(variance) / avgInterval;
@@ -722,7 +722,7 @@ export class LoanStatusRateLimiter {
   private calculateBackoffDelay(attemptCount: number): number {
     let delay =
       this.backoffConfig.initialDelayMs *
-      Math.pow(this.backoffConfig.multiplier, attemptCount - 1);
+      this.backoffConfig.multiplier ** (attemptCount - 1);
     delay = Math.min(delay, this.backoffConfig.maxDelayMs);
 
     // Add jitter if enabled

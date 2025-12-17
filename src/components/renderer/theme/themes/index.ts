@@ -1,13 +1,13 @@
-import type { ThemeConfig } from "../types";
 import {
+  clearThemeCache,
+  getAvailableThemes,
+  getThemeCacheMetrics,
+  isThemeCached,
   loadTheme,
   loadThemes,
   preloadThemes,
-  getAvailableThemes,
-  isThemeCached,
-  getThemeCacheMetrics,
-  clearThemeCache
 } from "../lazy-loader";
+import type { ThemeConfig } from "../types";
 
 // Lazy load theme function
 export const getTheme = loadTheme;
@@ -36,23 +36,23 @@ export type ThemeGetter = typeof getTheme;
 // Legacy exports for backward compatibility (deprecated)
 // These still use lazy loading under the hood
 export async function getCorporateTheme(): Promise<ThemeConfig> {
-  return loadTheme('corporate');
+  return loadTheme("corporate");
 }
 
 export async function getCreativeTheme(): Promise<ThemeConfig> {
-  return loadTheme('creative');
+  return loadTheme("creative");
 }
 
 export async function getDefaultTheme(): Promise<ThemeConfig> {
-  return loadTheme('default');
+  return loadTheme("default");
 }
 
 export async function getFinanceTheme(): Promise<ThemeConfig> {
-  return loadTheme('finance');
+  return loadTheme("finance");
 }
 
 export async function getMedicalTheme(): Promise<ThemeConfig> {
-  return loadTheme('medical');
+  return loadTheme("medical");
 }
 
 // Theme metadata (lightweight, can be loaded synchronously)
@@ -70,53 +70,53 @@ export interface ThemeMetadata {
 // Lightweight theme metadata for immediate access
 export const themeMetadata: Record<string, ThemeMetadata> = {
   corporate: {
-    id: 'corporate',
-    name: 'Corporate',
-    description: 'Professional business theme',
-    group: 'business',
+    id: "corporate",
+    name: "Corporate",
+    description: "Professional business theme",
+    group: "business",
     preview: {
-      light: '#0f172a',
-      dark: '#f8fafc',
+      light: "#0f172a",
+      dark: "#f8fafc",
     },
   },
   creative: {
-    id: 'creative',
-    name: 'Creative',
-    description: 'Vibrant artistic theme',
-    group: 'creative',
+    id: "creative",
+    name: "Creative",
+    description: "Vibrant artistic theme",
+    group: "creative",
     preview: {
-      light: '#7c3aed',
-      dark: '#c4b5fd',
+      light: "#7c3aed",
+      dark: "#c4b5fd",
     },
   },
   default: {
-    id: 'default',
-    name: 'Default',
-    description: 'Default system theme',
-    group: 'system',
+    id: "default",
+    name: "Default",
+    description: "Default system theme",
+    group: "system",
     preview: {
-      light: '#0ea5e9',
-      dark: '#38bdf8',
+      light: "#0ea5e9",
+      dark: "#38bdf8",
     },
   },
   finance: {
-    id: 'finance',
-    name: 'Finance',
-    description: 'Professional finance theme',
-    group: 'business',
+    id: "finance",
+    name: "Finance",
+    description: "Professional finance theme",
+    group: "business",
     preview: {
-      light: '#059669',
-      dark: '#34d399',
+      light: "#059669",
+      dark: "#34d399",
     },
   },
   medical: {
-    id: 'medical',
-    name: 'Medical',
-    description: 'Clean medical theme',
-    group: 'medical',
+    id: "medical",
+    name: "Medical",
+    description: "Clean medical theme",
+    group: "medical",
     preview: {
-      light: '#dc2626',
-      dark: '#f87171',
+      light: "#dc2626",
+      dark: "#f87171",
     },
   },
 };
@@ -134,10 +134,11 @@ export function getAllThemeMetadata(): ThemeMetadata[] {
 // Search themes by metadata
 export function searchThemes(query: string): ThemeMetadata[] {
   const lowerQuery = query.toLowerCase();
-  return getAllThemeMetadata().filter(theme =>
-    theme.name.toLowerCase().includes(lowerQuery) ||
-    theme.description?.toLowerCase().includes(lowerQuery) ||
-    theme.group.toLowerCase().includes(lowerQuery)
+  return getAllThemeMetadata().filter(
+    (theme) =>
+      theme.name.toLowerCase().includes(lowerQuery) ||
+      theme.description?.toLowerCase().includes(lowerQuery) ||
+      theme.group.toLowerCase().includes(lowerQuery),
   );
 }
 
@@ -158,8 +159,8 @@ export function getThemesByGroup(): Record<string, ThemeMetadata[]> {
 // Initialize theme preloading (call this early in app startup)
 export function initializeThemes() {
   // Preload critical themes in the background
-  preloadThemes().catch(error => {
-    console.warn('Failed to preload themes:', error);
+  preloadThemes().catch((error) => {
+    console.warn("Failed to preload themes:", error);
   });
 }
 

@@ -4,7 +4,13 @@
  * Page for calculating gross salary from desired net salary in Vietnam
  */
 
+import { Lightbulb, Target, TrendingUp } from "lucide-react";
+import type { Metadata } from "next";
+import { useLocale, useTranslations } from "next-intl";
+import { ToolsPageLayout } from "@/components/features/tools/ToolsPageLayout";
+import { ToolsThemeProvider } from "@/components/features/tools/ToolsThemeProvider";
 import { NetToGrossCalculator } from "@/components/tools";
+import { Badge } from "@/components/ui/badge";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -14,11 +20,6 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Metadata } from "next";
-import { useTranslations, useLocale } from "next-intl";
-import { ToolsThemeProvider } from "@/components/features/tools/ToolsThemeProvider";
-import { ToolsPageLayout } from "@/components/features/tools/ToolsPageLayout";
 import {
   Table,
   TableBody,
@@ -27,8 +28,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
-import { Lightbulb, TrendingUp, Target } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export const metadata: Metadata = {
   title: "Tính lương Net sang Gross | Công cụ tính lương",

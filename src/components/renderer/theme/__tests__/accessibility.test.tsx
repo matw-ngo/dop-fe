@@ -11,16 +11,20 @@
  * @version 1.0.0
  */
 
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { ThemeProvider, useTheme } from "..";
-import { ThemeSwitcher } from "@/components/theme/theme-switcher";
-import { ThemeSelector } from "@/components/theme/theme-selector";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { converter, formatCss } from "culori";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { ThemeCustomizer } from "@/components/theme/theme-customizer";
+import { ThemeSelector } from "@/components/theme/theme-selector";
+import { ThemeSwitcher } from "@/components/theme/theme-switcher";
+import {
+  announce,
+  colorContrast,
+  keyboardNavigation,
+} from "@/lib/utils/accessibility";
+import { ThemeProvider, useTheme } from "..";
 import { themes, userGroups } from "../themes";
 import { applyTheme } from "../utils";
-import { colorContrast, keyboardNavigation, announce } from "@/lib/utils/accessibility";
-import { converter, formatCss } from "culori";
 
 // Mock next-themes
 vi.mock("next-themes", () => ({
@@ -36,7 +40,8 @@ Object.defineProperty(HTMLElement.prototype, "offsetParent", {
 
 // Test components
 function TestThemeComponent() {
-  const { currentTheme, userGroup, setTheme, setUserGroup, canCustomize } = useTheme();
+  const { currentTheme, userGroup, setTheme, setUserGroup, canCustomize } =
+    useTheme();
 
   return (
     <div>
@@ -44,7 +49,9 @@ function TestThemeComponent() {
       <div data-testid="user-group">{userGroup}</div>
       <div data-testid="can-customize">{canCustomize.toString()}</div>
       <button onClick={() => setTheme("corporate")}>Switch to Corporate</button>
-      <button onClick={() => setUserGroup("creative")}>Switch to Creative</button>
+      <button onClick={() => setUserGroup("creative")}>
+        Switch to Creative
+      </button>
     </div>
   );
 }
@@ -66,8 +73,8 @@ describe("Theme System Accessibility", () => {
 
   afterEach(() => {
     // Clean up any announcements
-    const announcements = document.querySelectorAll('[aria-live]');
-    announcements.forEach(el => el.remove());
+    const announcements = document.querySelectorAll("[aria-live]");
+    announcements.forEach((el) => el.remove());
   });
 
   describe("WCAG AA Color Contrast", () => {
@@ -76,10 +83,22 @@ describe("Theme System Accessibility", () => {
 
       // Check text contrast against backgrounds
       const contrasts = [
-        { text: lightTheme.text?.primary || "", bg: lightTheme.background?.primary || "" },
-        { text: lightTheme.text?.secondary || "", bg: lightTheme.background?.primary || "" },
-        { text: lightTheme.text?.muted || "", bg: lightTheme.background?.primary || "" },
-        { text: lightTheme.text?.disabled || "", bg: lightTheme.background?.primary || "" },
+        {
+          text: lightTheme.text?.primary || "",
+          bg: lightTheme.background?.primary || "",
+        },
+        {
+          text: lightTheme.text?.secondary || "",
+          bg: lightTheme.background?.primary || "",
+        },
+        {
+          text: lightTheme.text?.muted || "",
+          bg: lightTheme.background?.primary || "",
+        },
+        {
+          text: lightTheme.text?.disabled || "",
+          bg: lightTheme.background?.primary || "",
+        },
         { text: lightTheme.text?.primary || "", bg: lightTheme.card || "" },
         { text: lightTheme.text?.secondary || "", bg: lightTheme.card || "" },
       ];
@@ -89,8 +108,9 @@ describe("Theme System Accessibility", () => {
           const textColor = oklchToHex(text);
           const bgColor = oklchToHex(bg);
           const ratio = colorContrast.getContrastRatio(textColor, bgColor);
-          expect(ratio).toBeGreaterThanOrEqual(4.5,
-            `Insufficient contrast for text color ${index}: ${ratio.toFixed(2)} < 4.5`
+          expect(ratio).toBeGreaterThanOrEqual(
+            4.5,
+            `Insufficient contrast for text color ${index}: ${ratio.toFixed(2)} < 4.5`,
           );
         }
       });
@@ -101,10 +121,22 @@ describe("Theme System Accessibility", () => {
 
       // Check text contrast against backgrounds
       const contrasts = [
-        { text: darkTheme.text?.primary || "", bg: darkTheme.background?.primary || "" },
-        { text: darkTheme.text?.secondary || "", bg: darkTheme.background?.primary || "" },
-        { text: darkTheme.text?.muted || "", bg: darkTheme.background?.primary || "" },
-        { text: darkTheme.text?.disabled || "", bg: darkTheme.background?.primary || "" },
+        {
+          text: darkTheme.text?.primary || "",
+          bg: darkTheme.background?.primary || "",
+        },
+        {
+          text: darkTheme.text?.secondary || "",
+          bg: darkTheme.background?.primary || "",
+        },
+        {
+          text: darkTheme.text?.muted || "",
+          bg: darkTheme.background?.primary || "",
+        },
+        {
+          text: darkTheme.text?.disabled || "",
+          bg: darkTheme.background?.primary || "",
+        },
         { text: darkTheme.text?.primary || "", bg: darkTheme.card || "" },
         { text: darkTheme.text?.secondary || "", bg: darkTheme.card || "" },
       ];
@@ -114,8 +146,9 @@ describe("Theme System Accessibility", () => {
           const textColor = oklchToHex(text);
           const bgColor = oklchToHex(bg);
           const ratio = colorContrast.getContrastRatio(textColor, bgColor);
-          expect(ratio).toBeGreaterThanOrEqual(4.5,
-            `Insufficient contrast for dark mode text color ${index}: ${ratio.toFixed(2)} < 4.5`
+          expect(ratio).toBeGreaterThanOrEqual(
+            4.5,
+            `Insufficient contrast for dark mode text color ${index}: ${ratio.toFixed(2)} < 4.5`,
           );
         }
       });
@@ -130,8 +163,9 @@ describe("Theme System Accessibility", () => {
         const primaryColor = oklchToHex(lightTheme.primary);
         const bgColor = oklchToHex(lightTheme.background.primary);
         const ratio = colorContrast.getContrastRatio(primaryColor, bgColor);
-        expect(ratio).toBeGreaterThanOrEqual(3,
-          `Insufficient contrast for primary button in light mode: ${ratio.toFixed(2)} < 3`
+        expect(ratio).toBeGreaterThanOrEqual(
+          3,
+          `Insufficient contrast for primary button in light mode: ${ratio.toFixed(2)} < 3`,
         );
       }
 
@@ -140,8 +174,9 @@ describe("Theme System Accessibility", () => {
         const primaryColor = oklchToHex(darkTheme.primary);
         const bgColor = oklchToHex(darkTheme.background.primary);
         const ratio = colorContrast.getContrastRatio(primaryColor, bgColor);
-        expect(ratio).toBeGreaterThanOrEqual(3,
-          `Insufficient contrast for primary button in dark mode: ${ratio.toFixed(2)} < 3`
+        expect(ratio).toBeGreaterThanOrEqual(
+          3,
+          `Insufficient contrast for primary button in dark mode: ${ratio.toFixed(2)} < 3`,
         );
       }
     });
@@ -156,8 +191,9 @@ describe("Theme System Accessibility", () => {
           const textHex = oklchToHex(lightColors.text.primary);
           const bgHex = oklchToHex(lightColors.background.primary);
           const ratio = colorContrast.getContrastRatio(textHex, bgHex);
-          expect(ratio).toBeGreaterThanOrEqual(4.5,
-            `${themeId} light mode text contrast: ${ratio.toFixed(2)}`
+          expect(ratio).toBeGreaterThanOrEqual(
+            4.5,
+            `${themeId} light mode text contrast: ${ratio.toFixed(2)}`,
           );
         }
 
@@ -165,8 +201,9 @@ describe("Theme System Accessibility", () => {
           const textHex = oklchToHex(darkColors.text.primary);
           const bgHex = oklchToHex(darkColors.background.primary);
           const ratio = colorContrast.getContrastRatio(textHex, bgHex);
-          expect(ratio).toBeGreaterThanOrEqual(4.5,
-            `${themeId} dark mode text contrast: ${ratio.toFixed(2)}`
+          expect(ratio).toBeGreaterThanOrEqual(
+            4.5,
+            `${themeId} dark mode text contrast: ${ratio.toFixed(2)}`,
           );
         }
       });
@@ -179,8 +216,9 @@ describe("Theme System Accessibility", () => {
         const textColor = oklchToHex(lightTheme.text.primary);
         const bgColor = oklchToHex(lightTheme.background.primary);
         const ratio = colorContrast.getContrastRatio(textColor, bgColor);
-        expect(colorContrast.meetsWCAG_AAA(textColor, bgColor, true)).toBe(true,
-          "Large text should meet AAA standards"
+        expect(colorContrast.meetsWCAG_AAA(textColor, bgColor, true)).toBe(
+          true,
+          "Large text should meet AAA standards",
         );
       }
     });
@@ -191,7 +229,7 @@ describe("Theme System Accessibility", () => {
       render(
         <ThemeProvider defaultUserGroup="system">
           <ThemeSwitcher />
-        </ThemeProvider>
+        </ThemeProvider>,
       );
 
       const themeSwitcher = screen.getByRole("button");
@@ -203,7 +241,7 @@ describe("Theme System Accessibility", () => {
       render(
         <ThemeProvider defaultUserGroup="system">
           <ThemeSelector />
-        </ThemeProvider>
+        </ThemeProvider>,
       );
 
       // Check for group selector
@@ -223,7 +261,7 @@ describe("Theme System Accessibility", () => {
       render(
         <ThemeProvider defaultUserGroup="business">
           <ThemeCustomizer />
-        </ThemeProvider>
+        </ThemeProvider>,
       );
 
       // Check for tab list
@@ -233,14 +271,14 @@ describe("Theme System Accessibility", () => {
 
       // Check for tabs
       const tabs = screen.getAllByRole("tab");
-      tabs.forEach(tab => {
+      tabs.forEach((tab) => {
         expect(tab).toHaveAttribute("aria-selected");
         expect(tab).toHaveAttribute("aria-controls");
       });
 
       // Check for color inputs
       const colorInputs = screen.getAllByRole("textbox");
-      colorInputs.forEach(input => {
+      colorInputs.forEach((input) => {
         expect(input).toHaveAttribute("aria-label");
       });
     });
@@ -251,7 +289,7 @@ describe("Theme System Accessibility", () => {
       render(
         <ThemeProvider defaultUserGroup="system">
           <TestThemeComponent />
-        </ThemeProvider>
+        </ThemeProvider>,
       );
 
       const switchButton = screen.getByText("Switch to Corporate");
@@ -271,7 +309,7 @@ describe("Theme System Accessibility", () => {
       render(
         <ThemeProvider defaultUserGroup="system">
           <ThemeSwitcher />
-        </ThemeProvider>
+        </ThemeProvider>,
       );
 
       const switcher = screen.getByRole("button");
@@ -293,7 +331,7 @@ describe("Theme System Accessibility", () => {
       render(
         <ThemeProvider defaultUserGroup="system">
           <ThemeSelector />
-        </ThemeProvider>
+        </ThemeProvider>,
       );
 
       // Test arrow key navigation
@@ -316,12 +354,12 @@ describe("Theme System Accessibility", () => {
       const { container } = render(
         <ThemeProvider defaultUserGroup="business">
           <ThemeCustomizer />
-        </ThemeProvider>
+        </ThemeProvider>,
       );
 
       // Find all focusable elements
       const focusableElements = container.querySelectorAll(
-        'button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        'button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
       );
 
       // Should have focusable elements
@@ -341,12 +379,12 @@ describe("Theme System Accessibility", () => {
 
       keyboardNavigation.handleKeyboardInteraction(
         new KeyboardEvent("keydown", { key: "Tab" }),
-        mockActions
+        mockActions,
       );
 
       keyboardNavigation.handleKeyboardInteraction(
         new KeyboardEvent("keydown", { key: "Escape" }),
-        mockActions
+        mockActions,
       );
 
       expect(mockActions.onTab).toHaveBeenCalled();
@@ -358,7 +396,7 @@ describe("Theme System Accessibility", () => {
         <ThemeProvider defaultUserGroup="system">
           <ThemeSwitcher />
           <ThemeSelector />
-        </ThemeProvider>
+        </ThemeProvider>,
       );
 
       const interactiveElements = screen.getAllByRole("button");
@@ -367,7 +405,7 @@ describe("Theme System Accessibility", () => {
       expect(interactiveElements.length).toBeGreaterThan(0);
 
       // Check that all interactive elements are focusable
-      interactiveElements.forEach(element => {
+      interactiveElements.forEach((element) => {
         expect(element).toHaveAttribute("tabindex");
       });
     });
@@ -396,21 +434,24 @@ describe("Theme System Accessibility", () => {
       // Test announcement
       announce("Theme changed to dark mode", "polite");
 
-      expect(announceSpy).toHaveBeenCalledWith("Theme changed to dark mode", "polite");
+      expect(announceSpy).toHaveBeenCalledWith(
+        "Theme changed to dark mode",
+        "polite",
+      );
     });
 
     it("should have proper labels for color inputs", () => {
       render(
         <ThemeProvider defaultUserGroup="business">
           <ThemeCustomizer />
-        </ThemeProvider>
+        </ThemeProvider>,
       );
 
       // Find color input fields
       const colorInputs = screen.getAllByRole("textbox");
 
       // Each color input should have a corresponding label
-      colorInputs.forEach(input => {
+      colorInputs.forEach((input) => {
         const label = screen.getByText(input.getAttribute("aria-label") || "");
         expect(label).toBeInTheDocument();
       });
@@ -420,16 +461,16 @@ describe("Theme System Accessibility", () => {
       render(
         <ThemeProvider defaultUserGroup="system">
           <ThemeSelector />
-        </ThemeProvider>
+        </ThemeProvider>,
       );
 
       // Check for color swatches
-      const colorSwatches = screen.getAllByRole("img", { hidden: true }).filter(
-        el => el.getAttribute("aria-label")?.includes("color")
-      );
+      const colorSwatches = screen
+        .getAllByRole("img", { hidden: true })
+        .filter((el) => el.getAttribute("aria-label")?.includes("color"));
 
       // Visual indicators should have text alternatives
-      colorSwatches.forEach(swatch => {
+      colorSwatches.forEach((swatch) => {
         expect(swatch).toHaveAttribute("aria-label");
       });
     });
@@ -440,7 +481,7 @@ describe("Theme System Accessibility", () => {
       render(
         <ThemeProvider defaultUserGroup="system">
           <TestThemeComponent />
-        </ThemeProvider>
+        </ThemeProvider>,
       );
 
       // Check that data attributes are set
@@ -455,7 +496,7 @@ describe("Theme System Accessibility", () => {
       render(
         <ThemeProvider defaultUserGroup="system">
           <TestThemeComponent />
-        </ThemeProvider>
+        </ThemeProvider>,
       );
 
       const switchButton = screen.getByText("Switch to Corporate");
@@ -472,7 +513,7 @@ describe("Theme System Accessibility", () => {
       render(
         <ThemeProvider defaultUserGroup="system">
           <TestThemeComponent />
-        </ThemeProvider>
+        </ThemeProvider>,
       );
 
       const html = document.documentElement;
@@ -501,8 +542,9 @@ describe("Theme System Accessibility", () => {
       const bgColor = customColors.background;
       const ratio = colorContrast.getContrastRatio(textColor, bgColor);
 
-      expect(ratio).toBeGreaterThanOrEqual(4.5,
-        `Custom color scheme has insufficient contrast: ${ratio.toFixed(2)} < 4.5`
+      expect(ratio).toBeGreaterThanOrEqual(
+        4.5,
+        `Custom color scheme has insufficient contrast: ${ratio.toFixed(2)} < 4.5`,
       );
     });
 
@@ -512,14 +554,14 @@ describe("Theme System Accessibility", () => {
       render(
         <ThemeProvider defaultUserGroup="business">
           <ThemeCustomizer />
-        </ThemeProvider>
+        </ThemeProvider>,
       );
 
       // Attempt to set custom colors with poor contrast
       const colorInput = screen.getByDisplayValue(/primary/i);
 
       fireEvent.change(colorInput, {
-        target: { value: "#ffffff" } // White on white background
+        target: { value: "#ffffff" }, // White on white background
       });
 
       // Should have warning in console (implementation-dependent)
@@ -532,7 +574,7 @@ describe("Theme System Accessibility", () => {
       // Simulate high contrast mode
       Object.defineProperty(window, "matchMedia", {
         writable: true,
-        value: vi.fn().mockImplementation(query => ({
+        value: vi.fn().mockImplementation((query) => ({
           matches: query === "(-ms-high-contrast: active)",
           media: query,
           onchange: null,
@@ -547,7 +589,7 @@ describe("Theme System Accessibility", () => {
       render(
         <ThemeProvider defaultUserGroup="system">
           <TestThemeComponent />
-        </ThemeProvider>
+        </ThemeProvider>,
       );
 
       // Check that theme works in high contrast mode
@@ -559,7 +601,7 @@ describe("Theme System Accessibility", () => {
       // Simulate prefers-reduced-motion
       Object.defineProperty(window, "matchMedia", {
         writable: true,
-        value: vi.fn().mockImplementation(query => ({
+        value: vi.fn().mockImplementation((query) => ({
           matches: query === "(prefers-reduced-motion: reduce)",
           media: query,
           onchange: null,
@@ -574,7 +616,7 @@ describe("Theme System Accessibility", () => {
       render(
         <ThemeProvider defaultUserGroup="system">
           <TestThemeComponent />
-        </ThemeProvider>
+        </ThemeProvider>,
       );
 
       // Check that reduced motion is respected
@@ -615,13 +657,19 @@ export function generateAccessibilityReport() {
     if (lightColors.text?.primary && lightColors.background?.primary) {
       const textHex = oklchToHex(lightColors.text.primary);
       const bgHex = oklchToHex(lightColors.background.primary);
-      report.contrastTests.lightMode[themeId] = colorContrast.getContrastRatio(textHex, bgHex);
+      report.contrastTests.lightMode[themeId] = colorContrast.getContrastRatio(
+        textHex,
+        bgHex,
+      );
     }
 
     if (darkColors.text?.primary && darkColors.background?.primary) {
       const textHex = oklchToHex(darkColors.text.primary);
       const bgHex = oklchToHex(darkColors.background.primary);
-      report.contrastTests.darkMode[themeId] = colorContrast.getContrastRatio(textHex, bgHex);
+      report.contrastTests.darkMode[themeId] = colorContrast.getContrastRatio(
+        textHex,
+        bgHex,
+      );
     }
   });
 

@@ -5,16 +5,16 @@
 
 import React from "react";
 import { useFormContext } from "react-hook-form";
-import type { FieldConfig } from "./types/data-driven-ui";
-import type { ComponentVariant, LayoutProps } from "./types/ui-theme";
+import { useComponentResolution } from "./hooks/useComponentResolution";
+import { useFieldStyling } from "./hooks/useFieldStyling";
 
 // Import extracted utilities and hooks
 import { useFieldTranslations } from "./hooks/useFieldTranslations";
-import { useFieldStyling } from "./hooks/useFieldStyling";
-import { useComponentResolution } from "./hooks/useComponentResolution";
-import { mergeComponentProps } from "./utils/field-utils";
-import { SpecialComponentRenderer } from "./renderers/SpecialComponentRenderer";
 import { FormComponentRenderer } from "./renderers/FormComponentRenderer";
+import { SpecialComponentRenderer } from "./renderers/SpecialComponentRenderer";
+import type { FieldConfig } from "./types/data-driven-ui";
+import type { ComponentVariant, LayoutProps } from "./types/ui-theme";
+import { mergeComponentProps } from "./utils/field-utils";
 
 // ============================================================================
 // TYPES

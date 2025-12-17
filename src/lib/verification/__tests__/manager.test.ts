@@ -12,16 +12,16 @@
  * - Health checks
  */
 
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { VerificationManager } from "../manager";
 import type {
-  VerificationProvider,
   ProviderConfig,
   VerificationOptions,
-  VerificationSession,
+  VerificationProvider,
   VerificationResult,
+  VerificationSession,
 } from "../types";
 import { VerificationStatus } from "../types";
-import { VerificationManager } from "../manager";
 
 // Test timeout for async operations
 const TEST_TIMEOUT = 10000;
@@ -716,7 +716,7 @@ describe(
         const noHealthCheckProvider = new MockVerificationProvider(
           "noHealthCheck",
         );
-        // @ts-ignore - intentionally removing healthCheck for testing
+        // @ts-expect-error - intentionally removing healthCheck for testing
         (noHealthCheckProvider as any).healthCheck = undefined;
 
         await manager.registerProvider(

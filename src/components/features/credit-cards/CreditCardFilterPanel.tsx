@@ -1,74 +1,74 @@
 "use client";
 
-import React, { useState, useMemo, useCallback } from "react";
+import {
+  Award,
+  Building,
+  Car,
+  CheckCircle,
+  ChevronDown,
+  ChevronUp,
+  Clock,
+  CreditCard,
+  DollarSign,
+  Filter,
+  Fuel,
+  Globe,
+  Heart,
+  HelpCircle,
+  Home,
+  MapPin,
+  Music,
+  Percent,
+  PiggyBank,
+  Plane,
+  RotateCcw,
+  Shield,
+  ShoppingBag,
+  Smartphone,
+  Star,
+  Users,
+  Utensils,
+  Wallet,
+} from "lucide-react";
 import { useTranslations } from "next-intl";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Slider } from "@/components/ui/slider";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
+import React, { useCallback, useMemo, useState } from "react";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Slider } from "@/components/ui/slider";
 import {
-  ChevronDown,
-  ChevronUp,
-  RotateCcw,
-  Filter,
-  CreditCard,
-  Building,
-  Star,
-  Percent,
-  DollarSign,
-  MapPin,
-  Shield,
-  Smartphone,
-  Plane,
-  Car,
-  ShoppingBag,
-  Utensils,
-  Fuel,
-  Music,
-  Heart,
-  Home,
-  Users,
-  HelpCircle,
-  Clock,
-  CheckCircle,
-  Wallet,
-  PiggyBank,
-  Award,
-  Globe,
-} from "lucide-react";
-import { cn } from "@/lib/utils";
-import {
-  CreditCardFilters,
-  CardCategory,
-  CardNetwork,
-} from "@/types/credit-card";
-import {
-  DEFAULT_FILTERS,
+  ALL_PROVINCES,
+  ANNUAL_FEE_RANGES,
   CARD_CATEGORIES,
   CARD_NETWORKS,
-  REWARDS_TYPES,
-  ANNUAL_FEE_RANGES,
-  INTEREST_RATE_RANGES,
   CREDIT_LIMIT_TIERS,
-  INCOME_REQUIREMENT_RANGES,
-  PROVINCE_GROUPS,
-  ALL_PROVINCES,
+  DEFAULT_FILTERS,
   EMPLOYMENT_TYPES,
+  INCOME_REQUIREMENT_RANGES,
+  INTEREST_RATE_RANGES,
+  PROVINCE_GROUPS,
+  REWARDS_TYPES,
 } from "@/constants/credit-cards";
+import { cn } from "@/lib/utils";
+import type {
+  CardCategory,
+  CardNetwork,
+  CreditCardFilters,
+} from "@/types/credit-card";
 
 interface FilterPanelProps {
   filters: CreditCardFilters;

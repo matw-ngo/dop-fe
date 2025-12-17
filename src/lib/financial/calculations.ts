@@ -6,8 +6,8 @@
  * financial analysis tools.
  */
 
-import { formatVND } from "../financial-data/vietnamese-financial-data";
 import { calculatePersonalIncomeTax } from "../financial-data/tax-brackets";
+import { formatVND } from "../financial-data/vietnamese-financial-data";
 
 // Type definitions
 export type InterestRateType =
@@ -123,8 +123,8 @@ export const calculateReducingBalancePayment = (
   if (adjustedRate === 0) return principal / adjustedTerm;
 
   return (
-    (principal * (adjustedRate * Math.pow(1 + adjustedRate, adjustedTerm))) /
-    (Math.pow(1 + adjustedRate, adjustedTerm) - 1)
+    (principal * (adjustedRate * (1 + adjustedRate) ** adjustedTerm)) /
+    ((1 + adjustedRate) ** adjustedTerm - 1)
   );
 };
 
@@ -323,16 +323,16 @@ export const calculateAPR = (
 
   // Iterative solution for APR
   let apr = monthlyRate * 12 * 100;
-  let tolerance = 0.0001;
-  let maxIterations = 100;
+  const tolerance = 0.0001;
+  const maxIterations = 100;
   let iteration = 0;
 
   while (iteration < maxIterations) {
     const testPayment =
       (financedAmount *
         (apr / 100 / 12) *
-        Math.pow(1 + apr / 100 / 12, termInMonths)) /
-      (Math.pow(1 + apr / 100 / 12, termInMonths) - 1);
+        (1 + apr / 100 / 12) ** termInMonths) /
+      ((1 + apr / 100 / 12) ** termInMonths - 1);
 
     if (Math.abs(testPayment - monthlyPayment) < tolerance) {
       break;

@@ -1,8 +1,8 @@
 // @ts-nocheck
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { authApi, socialAuthApi } from "../endpoints/auth";
 import { useAuthStore } from "@/store/use-auth-store";
+import { authApi, socialAuthApi } from "../endpoints/auth";
 import type { paths } from "../v1.d.ts";
 
 /**
@@ -161,7 +161,7 @@ export function useChangePassword() {
       });
     },
     onError: (error: any) => {
-      let message = "Đổi mật khẩu thất bại";
+      const message = "Đổi mật khẩu thất bại";
       let description = "Vui lòng thử lại sau";
 
       if (error?.response?.status === 400) {

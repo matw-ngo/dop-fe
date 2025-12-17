@@ -1,31 +1,29 @@
-import React from "react";
-import { useTranslations } from "next-intl";
-import {
-  FormProvider,
-  useForm,
-  Form,
-  UseFormReturn,
-  FieldErrors,
-} from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslations } from "next-intl";
+import React from "react";
+import {
+  FieldErrors,
+  Form,
+  FormProvider,
+  UseFormReturn,
+  useForm,
+} from "react-hook-form";
 import { toast } from "sonner";
-import { trackLoanApplication } from "@/lib/tracking/events";
+import { Button, Modal, OtpContainer, TextInput } from "@/components/ui";
 import { useLoanPurposes } from "@/hooks/use-loan-purposes";
 import { usePhoneValidationMessages } from "@/hooks/use-phone-validation-messages";
-
-import { Modal, TextInput, Button, OtpContainer } from "@/components/ui";
+import { trackLoanApplication } from "@/lib/tracking/events";
 import { ALLOWED_TELCOS, phoneValidation } from "@/lib/utils/phone-validation";
-
+import { AmountField } from "./components/AmountField";
+import { PeriodField } from "./components/PeriodField";
+import { PurposeField } from "./components/PurposeField";
+import { SubmitButton } from "./components/SubmitButton";
+import { TermsAgreement } from "./components/TermsAgreement";
+import { CSS_CLASSES, LOAN_AMOUNT, LOAN_PERIOD } from "./constants";
 import {
   createLoanApplicationSchema,
   type LoanApplicationFormData,
 } from "./schema";
-import { CSS_CLASSES, LOAN_AMOUNT, LOAN_PERIOD } from "./constants";
-import { AmountField } from "./components/AmountField";
-import { PeriodField } from "./components/PeriodField";
-import { PurposeField } from "./components/PurposeField";
-import { TermsAgreement } from "./components/TermsAgreement";
-import { SubmitButton } from "./components/SubmitButton";
 
 const ApplyLoanForm: React.FC = () => {
   const t = useTranslations("features.loan-application");

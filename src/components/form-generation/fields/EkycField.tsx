@@ -5,25 +5,25 @@
  * and handles the verification workflow integration with forms.
  */
 
-import React, { useState, useCallback, useEffect, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useFormContext } from "@/components/form-generation/context/FormContext";
 import type {
   EkycFieldConfig,
   FieldComponentProps,
 } from "@/components/form-generation/types";
-import {
-  VerificationResult,
-  EkycRenderProps,
-  VerificationStatus,
-} from "@/lib/verification/types";
 import { verificationManager } from "@/lib/verification/manager";
 import { VNPTVerificationProvider } from "@/lib/verification/providers/vnpt-provider";
+import {
+  type EkycRenderProps,
+  type VerificationResult,
+  VerificationStatus,
+} from "@/lib/verification/types";
 
 // Import sub-components
 import { VerificationButton } from "./ekyc/VerificationButton";
-import { VerificationResult as ResultDisplay } from "./ekyc/VerificationResult";
-import { VerificationModal } from "./ekyc/VerificationModal";
 import { VerificationInline } from "./ekyc/VerificationInline";
+import { VerificationModal } from "./ekyc/VerificationModal";
+import { VerificationResult as ResultDisplay } from "./ekyc/VerificationResult";
 
 // ============================================================================
 // Main EkycField Component
@@ -192,7 +192,7 @@ export function EkycField({
       const mapping = ekycField.verification.autofillMapping;
 
       for (const [targetFieldId, sourcePath] of Object.entries(mapping)) {
-        let value: any = undefined;
+        let value: any;
 
         // Extract value from verification result using the path
         if (typeof sourcePath === "string") {

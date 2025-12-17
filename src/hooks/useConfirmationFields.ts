@@ -1,15 +1,15 @@
-import { useMemo } from "react";
 import { useTranslations } from "next-intl";
+import { useMemo } from "react";
 import {
-  groupFieldsByCategory,
-  calculateCompletionPercentage,
-} from "@/utils/confirmationFieldGrouper";
-import {
+  type FieldCategory,
   FieldType,
-  FieldCategory,
 } from "@/components/user-onboarding/constants/field-types";
 import type { GeneratedStepConfig } from "@/components/user-onboarding/types/field-config";
 import type { MappedFlow } from "@/mappers/flowMapper";
+import {
+  calculateCompletionPercentage,
+  groupFieldsByCategory,
+} from "@/utils/confirmationFieldGrouper";
 
 interface UseConfirmationFieldsProps {
   formData: Record<string, any>;

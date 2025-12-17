@@ -1,17 +1,17 @@
 "use client";
 
-import type { InsuranceProduct } from "@/types/insurance";
-import Header from "@/components/layout/header";
-import Footer from "@/components/layout/footer";
-import { useInsuranceNavbarTheme } from "@/hooks/features/insurance/useInsuranceNavbarTheme";
 import { Suspense } from "react";
 import { InsuranceDetails } from "@/components/features/insurance";
 import {
   ProductHeader,
   ProductSidebar,
 } from "@/components/features/insurance/detail/components";
-import { InsuranceThemeProvider } from "@/components/features/insurance/InsuranceThemeProvider";
 import ComparisonSnackbar from "@/components/features/insurance/InsuranceComparisonSnackbar";
+import { InsuranceThemeProvider } from "@/components/features/insurance/InsuranceThemeProvider";
+import Footer from "@/components/layout/footer";
+import Header from "@/components/layout/header";
+import { useInsuranceNavbarTheme } from "@/hooks/features/insurance/useInsuranceNavbarTheme";
+import type { InsuranceProduct } from "@/types/insurance";
 
 interface ProductPageClientProps {
   product: InsuranceProduct;

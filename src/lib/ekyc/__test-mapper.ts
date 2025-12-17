@@ -8,10 +8,10 @@
 import { readFileSync } from "fs";
 import { join } from "path";
 import {
-  mapEkycToFormData,
-  isEkycResultValid,
-  getEkycSummary,
   type EkycFullResult,
+  getEkycSummary,
+  isEkycResultValid,
+  mapEkycToFormData,
 } from "./ekyc-data-mapper";
 
 // Load log.json

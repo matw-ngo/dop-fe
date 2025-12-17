@@ -10,9 +10,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import {
+  CalculatorAsyncErrorHandler,
   CalculatorErrorBoundary,
   useCalculatorErrorHandler,
-  CalculatorAsyncErrorHandler,
 } from "./ErrorBoundary";
 
 // Demo component that can throw errors

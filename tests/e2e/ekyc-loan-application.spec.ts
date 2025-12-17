@@ -10,7 +10,7 @@
  * - Accessibility compliance (screen readers)
  */
 
-import { test, expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 
 test.describe.configure({ mode: "parallel" });
 
@@ -537,13 +537,11 @@ test.describe("Performance Testing", () => {
     const uploadStartTime = Date.now();
 
     await page.getByRole("button", { name: "Verify Identity Now" }).click();
-    await page
-      .getByLabel("Upload ID Document")
-      .setInputFiles({
-        name: "large-image.jpg",
-        mimeType: "image/jpeg",
-        buffer: largeFile,
-      });
+    await page.getByLabel("Upload ID Document").setInputFiles({
+      name: "large-image.jpg",
+      mimeType: "image/jpeg",
+      buffer: largeFile,
+    });
 
     // Should show progress indicator
     await expect(page.getByText("Uploading...")).toBeVisible();

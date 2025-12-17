@@ -1,7 +1,7 @@
-import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
+import { Badge } from "@/components/ui/badge";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -10,7 +10,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 
 interface ComparisonHeaderProps {
   locale: string;
@@ -18,7 +18,11 @@ interface ComparisonHeaderProps {
   onClearAll: () => void;
 }
 
-export function ComparisonHeader({ locale, productCount, onClearAll }: ComparisonHeaderProps) {
+export function ComparisonHeader({
+  locale,
+  productCount,
+  onClearAll,
+}: ComparisonHeaderProps) {
   const t = useTranslations();
 
   return (
@@ -40,9 +44,7 @@ export function ComparisonHeader({ locale, productCount, onClearAll }: Compariso
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>
-                {t("pages.insurance.compare")}
-              </BreadcrumbPage>
+              <BreadcrumbPage>{t("pages.insurance.compare")}</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
@@ -60,8 +62,7 @@ export function ComparisonHeader({ locale, productCount, onClearAll }: Compariso
                 {t("pages.insurance.compareProducts")}
               </h1>
               <p className="text-muted-foreground">
-                {t("pages.insurance.compareDescription")
-                }
+                {t("pages.insurance.compareDescription")}
               </p>
             </div>
           </div>

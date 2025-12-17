@@ -1,9 +1,9 @@
 // Vietnamese Loan Interest Calculations
 // Comprehensive calculation engine for Vietnamese loan products
 
-import type { InterestRateType } from "./vietnamese-loan-products";
 import { VietnameseFinancialValidator } from "./validation";
 import { VietnameseComplianceEngine } from "./vietnamese-compliance";
+import type { InterestRateType } from "./vietnamese-loan-products";
 
 /**
  * Loan calculation parameters
@@ -108,7 +108,9 @@ export class VietnameseLoanCalculator {
   /**
    * Calculate loan using flat rate method (Lãi suất phẳng)
    */
-  static calculateFlatRate(params: LoanCalculationParams): LoanCalculationResult {
+  static calculateFlatRate(
+    params: LoanCalculationParams,
+  ): LoanCalculationResult {
     const { principal, term, annualRate, calculationMethod } = params;
     const monthlyRate = annualRate / 100 / 12;
 
@@ -156,9 +158,12 @@ export class VietnameseLoanCalculator {
       });
     }
 
-    const totalFees = this.calculateTotalFees(params);
+    const totalFees = VietnameseLoanCalculator.calculateTotalFees(params);
     const totalPayable = principal + totalInterest + totalFees;
-    const effectiveAPR = this.calculateEffectiveAPR(params, monthlyPayment);
+    const effectiveAPR = VietnameseLoanCalculator.calculateEffectiveAPR(
+      params,
+      monthlyPayment,
+    );
 
     return {
       monthlyPayment: Math.round(monthlyPayment),
@@ -171,8 +176,11 @@ export class VietnameseLoanCalculator {
         averageMonthlyPayment: Math.round(monthlyPayment),
         totalPayments: term,
         firstPaymentDate: paymentSchedule[0]?.paymentDate || currentDate,
-        lastPaymentDate: paymentSchedule[paymentSchedule.length - 1]?.paymentDate || currentDate,
-        breakEvenPoint: this.calculateBreakEvenPoint(paymentSchedule),
+        lastPaymentDate:
+          paymentSchedule[paymentSchedule.length - 1]?.paymentDate ||
+          currentDate,
+        breakEvenPoint:
+          VietnameseLoanCalculator.calculateBreakEvenPoint(paymentSchedule),
       },
     };
   }
@@ -180,7 +188,9 @@ export class VietnameseLoanCalculator {
   /**
    * Calculate loan using reducing balance method (Lãi suất giảm dần)
    */
-  static calculateReducingBalance(params: LoanCalculationParams): LoanCalculationResult {
+  static calculateReducingBalance(
+    params: LoanCalculationParams,
+  ): LoanCalculationResult {
     const { principal, term, annualRate, calculationMethod } = params;
     const monthlyRate = annualRate / 100 / 12;
 
@@ -189,8 +199,9 @@ export class VietnameseLoanCalculator {
     if (monthlyRate === 0) {
       monthlyPayment = principal / term;
     } else {
-      monthlyPayment = principal * (monthlyRate * Math.pow(1 + monthlyRate, term)) /
-                      (Math.pow(1 + monthlyRate, term) - 1);
+      monthlyPayment =
+        (principal * (monthlyRate * (1 + monthlyRate) ** term)) /
+        ((1 + monthlyRate) ** term - 1);
     }
 
     const paymentSchedule: MonthlyPayment[] = [];
@@ -204,7 +215,7 @@ export class VietnameseLoanCalculator {
       const paymentDate = new Date(currentDate);
       paymentDate.setMonth(paymentDate.getMonth() + i - 1);
 
-      let currentMonthlyInterest = remainingBalance * monthlyRate;
+      const currentMonthlyInterest = remainingBalance * monthlyRate;
       let currentMonthlyPrincipal = monthlyPayment - currentMonthlyInterest;
       let currentMonthlyPayment = monthlyPayment;
 
@@ -221,7 +232,8 @@ export class VietnameseLoanCalculator {
       // Ensure we don't overpay the principal
       if (currentMonthlyPrincipal > remainingBalance) {
         currentMonthlyPrincipal = remainingBalance;
-        currentMonthlyPayment = currentMonthlyInterest + currentMonthlyPrincipal;
+        currentMonthlyPayment =
+          currentMonthlyInterest + currentMonthlyPrincipal;
       }
 
       remainingBalance -= currentMonthlyPrincipal;
@@ -240,10 +252,16 @@ export class VietnameseLoanCalculator {
       });
     }
 
-    const actualTotalInterest = paymentSchedule.reduce((sum, payment) => sum + payment.interest, 0);
-    const totalFees = this.calculateTotalFees(params);
+    const actualTotalInterest = paymentSchedule.reduce(
+      (sum, payment) => sum + payment.interest,
+      0,
+    );
+    const totalFees = VietnameseLoanCalculator.calculateTotalFees(params);
     const totalPayable = principal + actualTotalInterest + totalFees;
-    const effectiveAPR = this.calculateEffectiveAPR(params, monthlyPayment);
+    const effectiveAPR = VietnameseLoanCalculator.calculateEffectiveAPR(
+      params,
+      monthlyPayment,
+    );
 
     return {
       monthlyPayment: Math.round(monthlyPayment),
@@ -256,8 +274,11 @@ export class VietnameseLoanCalculator {
         averageMonthlyPayment: Math.round(monthlyPayment),
         totalPayments: term,
         firstPaymentDate: paymentSchedule[0]?.paymentDate || currentDate,
-        lastPaymentDate: paymentSchedule[paymentSchedule.length - 1]?.paymentDate || currentDate,
-        breakEvenPoint: this.calculateBreakEvenPoint(paymentSchedule),
+        lastPaymentDate:
+          paymentSchedule[paymentSchedule.length - 1]?.paymentDate ||
+          currentDate,
+        breakEvenPoint:
+          VietnameseLoanCalculator.calculateBreakEvenPoint(paymentSchedule),
       },
     };
   }
@@ -265,15 +286,22 @@ export class VietnameseLoanCalculator {
   /**
    * Calculate loan with promotional period
    */
-  static calculateWithPromotionalPeriod(params: LoanCalculationParams): LoanCalculationResult {
-    if (!params.promotionalRate || !params.promotionalPeriod || params.promotionalPeriod >= params.term) {
+  static calculateWithPromotionalPeriod(
+    params: LoanCalculationParams,
+  ): LoanCalculationResult {
+    if (
+      !params.promotionalRate ||
+      !params.promotionalPeriod ||
+      params.promotionalPeriod >= params.term
+    ) {
       // No promotional period or invalid parameters, use regular calculation
       return params.rateType === "flat"
-        ? this.calculateFlatRate(params)
-        : this.calculateReducingBalance(params);
+        ? VietnameseLoanCalculator.calculateFlatRate(params)
+        : VietnameseLoanCalculator.calculateReducingBalance(params);
     }
 
-    const { term, promotionalPeriod, principal, annualRate, promotionalRate } = params;
+    const { term, promotionalPeriod, principal, annualRate, promotionalRate } =
+      params;
 
     // For flat rate with promotional period:
     // Calculate interest separately for each period
@@ -282,18 +310,26 @@ export class VietnameseLoanCalculator {
       const promotionalMonthlyRate = promotionalRate / 100 / 12;
 
       // Promotional period: interest on original principal with promotional rate
-      const promotionalInterest = principal * promotionalMonthlyRate * promotionalPeriod;
-      const promotionalMonthlyInterest = promotionalInterest / promotionalPeriod;
+      const promotionalInterest =
+        principal * promotionalMonthlyRate * promotionalPeriod;
+      const promotionalMonthlyInterest =
+        promotionalInterest / promotionalPeriod;
       const promotionalMonthlyPrincipal = principal / term; // Principal spread over entire term
-      const promotionalMonthlyPayment = promotionalMonthlyInterest + promotionalMonthlyPrincipal;
+      const promotionalMonthlyPayment =
+        promotionalMonthlyInterest + promotionalMonthlyPrincipal;
 
       // Post-promotional period: remaining principal with regular rate
       const remainingTerm = term - promotionalPeriod;
-      const remainingPrincipal = principal - (promotionalMonthlyPrincipal * promotionalPeriod);
-      const postPromotionalInterest = remainingPrincipal * monthlyRate * remainingTerm;
-      const postPromotionalMonthlyInterest = postPromotionalInterest / remainingTerm;
-      const postPromotionalMonthlyPrincipal = remainingPrincipal / remainingTerm;
-      const postPromotionalMonthlyPayment = postPromotionalMonthlyInterest + postPromotionalMonthlyPrincipal;
+      const remainingPrincipal =
+        principal - promotionalMonthlyPrincipal * promotionalPeriod;
+      const postPromotionalInterest =
+        remainingPrincipal * monthlyRate * remainingTerm;
+      const postPromotionalMonthlyInterest =
+        postPromotionalInterest / remainingTerm;
+      const postPromotionalMonthlyPrincipal =
+        remainingPrincipal / remainingTerm;
+      const postPromotionalMonthlyPayment =
+        postPromotionalMonthlyInterest + postPromotionalMonthlyPrincipal;
 
       const paymentSchedule: MonthlyPayment[] = [];
       let remainingBalance = principal;
@@ -326,7 +362,9 @@ export class VietnameseLoanCalculator {
       // Generate post-promotional period schedule
       for (let i = 1; i <= remainingTerm; i++) {
         const paymentDate = new Date(currentDate);
-        paymentDate.setMonth(paymentDate.getMonth() + promotionalPeriod + i - 1);
+        paymentDate.setMonth(
+          paymentDate.getMonth() + promotionalPeriod + i - 1,
+        );
 
         remainingBalance -= postPromotionalMonthlyPrincipal;
         cumulativeInterest += postPromotionalMonthlyInterest;
@@ -345,9 +383,12 @@ export class VietnameseLoanCalculator {
       }
 
       const totalInterest = promotionalInterest + postPromotionalInterest;
-      const totalFees = this.calculateTotalFees(params);
+      const totalFees = VietnameseLoanCalculator.calculateTotalFees(params);
       const totalPayable = principal + totalInterest + totalFees;
-      const effectiveAPR = this.calculateEffectiveAPR(params, postPromotionalMonthlyPayment);
+      const effectiveAPR = VietnameseLoanCalculator.calculateEffectiveAPR(
+        params,
+        postPromotionalMonthlyPayment,
+      );
 
       return {
         monthlyPayment: Math.round(postPromotionalMonthlyPayment),
@@ -357,16 +398,28 @@ export class VietnameseLoanCalculator {
         effectiveAPR,
         paymentSchedule,
         summary: {
-          averageMonthlyPayment: Math.round((promotionalMonthlyPayment * promotionalPeriod + postPromotionalMonthlyPayment * remainingTerm) / term),
+          averageMonthlyPayment: Math.round(
+            (promotionalMonthlyPayment * promotionalPeriod +
+              postPromotionalMonthlyPayment * remainingTerm) /
+              term,
+          ),
           totalPayments: term,
           firstPaymentDate: paymentSchedule[0]?.paymentDate || currentDate,
-          lastPaymentDate: paymentSchedule[paymentSchedule.length - 1]?.paymentDate || currentDate,
-          breakEvenPoint: this.calculateBreakEvenPoint(paymentSchedule),
+          lastPaymentDate:
+            paymentSchedule[paymentSchedule.length - 1]?.paymentDate ||
+            currentDate,
+          breakEvenPoint:
+            VietnameseLoanCalculator.calculateBreakEvenPoint(paymentSchedule),
         },
         promotionalSummary: {
           promotionalMonthlyPayment: Math.round(promotionalMonthlyPayment),
-          postPromotionalMonthlyPayment: Math.round(postPromotionalMonthlyPayment),
-          promotionalSavings: Math.round((postPromotionalMonthlyPayment - promotionalMonthlyPayment) * promotionalPeriod),
+          postPromotionalMonthlyPayment: Math.round(
+            postPromotionalMonthlyPayment,
+          ),
+          promotionalSavings: Math.round(
+            (postPromotionalMonthlyPayment - promotionalMonthlyPayment) *
+              promotionalPeriod,
+          ),
         },
       };
     }
@@ -387,8 +440,11 @@ export class VietnameseLoanCalculator {
     if (promotionalMonthlyRate === 0) {
       promotionalMonthlyPayment = principal / term;
     } else {
-      promotionalMonthlyPayment = principal * (promotionalMonthlyRate * Math.pow(1 + promotionalMonthlyRate, promotionalPeriod)) /
-                              (Math.pow(1 + promotionalMonthlyRate, promotionalPeriod) - 1);
+      promotionalMonthlyPayment =
+        (principal *
+          (promotionalMonthlyRate *
+            (1 + promotionalMonthlyRate) ** promotionalPeriod)) /
+        ((1 + promotionalMonthlyRate) ** promotionalPeriod - 1);
     }
 
     for (let i = 1; i <= promotionalPeriod; i++) {
@@ -396,7 +452,8 @@ export class VietnameseLoanCalculator {
       paymentDate.setMonth(paymentDate.getMonth() + i - 1);
 
       const currentMonthlyInterest = remainingBalance * promotionalMonthlyRate;
-      let currentMonthlyPrincipal = promotionalMonthlyPayment - currentMonthlyInterest;
+      let currentMonthlyPrincipal =
+        promotionalMonthlyPayment - currentMonthlyInterest;
       let currentMonthlyPayment = promotionalMonthlyPayment;
 
       // During grace period, only pay interest
@@ -408,7 +465,8 @@ export class VietnameseLoanCalculator {
       // Ensure we don't overpay the principal
       if (currentMonthlyPrincipal > remainingBalance) {
         currentMonthlyPrincipal = remainingBalance;
-        currentMonthlyPayment = currentMonthlyInterest + currentMonthlyPrincipal;
+        currentMonthlyPayment =
+          currentMonthlyInterest + currentMonthlyPrincipal;
       }
 
       remainingBalance -= currentMonthlyPrincipal;
@@ -434,8 +492,10 @@ export class VietnameseLoanCalculator {
     if (monthlyRate === 0) {
       postPromotionalMonthlyPayment = remainingBalance / remainingTerm;
     } else {
-      postPromotionalMonthlyPayment = remainingBalance * (monthlyRate * Math.pow(1 + monthlyRate, remainingTerm)) /
-                                   (Math.pow(1 + monthlyRate, remainingTerm) - 1);
+      postPromotionalMonthlyPayment =
+        (remainingBalance *
+          (monthlyRate * (1 + monthlyRate) ** remainingTerm)) /
+        ((1 + monthlyRate) ** remainingTerm - 1);
     }
 
     for (let i = 1; i <= remainingTerm; i++) {
@@ -443,13 +503,15 @@ export class VietnameseLoanCalculator {
       paymentDate.setMonth(paymentDate.getMonth() + promotionalPeriod + i - 1);
 
       const currentMonthlyInterest = remainingBalance * monthlyRate;
-      let currentMonthlyPrincipal = postPromotionalMonthlyPayment - currentMonthlyInterest;
+      let currentMonthlyPrincipal =
+        postPromotionalMonthlyPayment - currentMonthlyInterest;
       let currentMonthlyPayment = postPromotionalMonthlyPayment;
 
       // Ensure we don't overpay the principal
       if (currentMonthlyPrincipal > remainingBalance) {
         currentMonthlyPrincipal = remainingBalance;
-        currentMonthlyPayment = currentMonthlyInterest + currentMonthlyPrincipal;
+        currentMonthlyPayment =
+          currentMonthlyInterest + currentMonthlyPrincipal;
       }
 
       remainingBalance -= currentMonthlyPrincipal;
@@ -468,10 +530,16 @@ export class VietnameseLoanCalculator {
       });
     }
 
-    const actualTotalInterest = paymentSchedule.reduce((sum, payment) => sum + payment.interest, 0);
-    const totalFees = this.calculateTotalFees(params);
+    const actualTotalInterest = paymentSchedule.reduce(
+      (sum, payment) => sum + payment.interest,
+      0,
+    );
+    const totalFees = VietnameseLoanCalculator.calculateTotalFees(params);
     const totalPayable = principal + actualTotalInterest + totalFees;
-    const effectiveAPR = this.calculateEffectiveAPR(params, postPromotionalMonthlyPayment);
+    const effectiveAPR = VietnameseLoanCalculator.calculateEffectiveAPR(
+      params,
+      postPromotionalMonthlyPayment,
+    );
 
     return {
       monthlyPayment: Math.round(postPromotionalMonthlyPayment),
@@ -481,16 +549,28 @@ export class VietnameseLoanCalculator {
       effectiveAPR,
       paymentSchedule,
       summary: {
-        averageMonthlyPayment: Math.round((promotionalMonthlyPayment * promotionalPeriod + postPromotionalMonthlyPayment * remainingTerm) / term),
+        averageMonthlyPayment: Math.round(
+          (promotionalMonthlyPayment * promotionalPeriod +
+            postPromotionalMonthlyPayment * remainingTerm) /
+            term,
+        ),
         totalPayments: term,
         firstPaymentDate: paymentSchedule[0]?.paymentDate || currentDate,
-        lastPaymentDate: paymentSchedule[paymentSchedule.length - 1]?.paymentDate || currentDate,
-        breakEvenPoint: this.calculateBreakEvenPoint(paymentSchedule),
+        lastPaymentDate:
+          paymentSchedule[paymentSchedule.length - 1]?.paymentDate ||
+          currentDate,
+        breakEvenPoint:
+          VietnameseLoanCalculator.calculateBreakEvenPoint(paymentSchedule),
       },
       promotionalSummary: {
         promotionalMonthlyPayment: Math.round(promotionalMonthlyPayment),
-        postPromotionalMonthlyPayment: Math.round(postPromotionalMonthlyPayment),
-        promotionalSavings: Math.round((postPromotionalMonthlyPayment - promotionalMonthlyPayment) * promotionalPeriod),
+        postPromotionalMonthlyPayment: Math.round(
+          postPromotionalMonthlyPayment,
+        ),
+        promotionalSavings: Math.round(
+          (postPromotionalMonthlyPayment - promotionalMonthlyPayment) *
+            promotionalPeriod,
+        ),
       },
     };
   }
@@ -502,7 +582,7 @@ export class VietnameseLoanCalculator {
     params: LoanCalculationParams,
     paymentsMade: number,
     earlyRepaymentAmount: number,
-    earlyRepaymentFee: number = 2
+    earlyRepaymentFee: number = 2,
   ): {
     remainingBalance: number;
     savingsAmount: number;
@@ -511,11 +591,15 @@ export class VietnameseLoanCalculator {
     newTerm?: number;
   } {
     // Calculate the loan normally first
-    const originalResult = params.rateType === "flat"
-      ? this.calculateFlatRate(params)
-      : this.calculateReducingBalance(params);
+    const originalResult =
+      params.rateType === "flat"
+        ? VietnameseLoanCalculator.calculateFlatRate(params)
+        : VietnameseLoanCalculator.calculateReducingBalance(params);
 
-    if (paymentsMade >= params.term || paymentsMade >= originalResult.paymentSchedule.length) {
+    if (
+      paymentsMade >= params.term ||
+      paymentsMade >= originalResult.paymentSchedule.length
+    ) {
       return {
         remainingBalance: 0,
         savingsAmount: 0,
@@ -524,7 +608,8 @@ export class VietnameseLoanCalculator {
       };
     }
 
-    const remainingBalanceBeforeRepayment = originalResult.paymentSchedule[paymentsMade - 1]?.remainingBalance || 0;
+    const remainingBalanceBeforeRepayment =
+      originalResult.paymentSchedule[paymentsMade - 1]?.remainingBalance || 0;
     const feeAmount = (earlyRepaymentAmount * earlyRepaymentFee) / 100;
 
     // Calculate remaining interest without early repayment
@@ -533,15 +618,23 @@ export class VietnameseLoanCalculator {
       .reduce((sum, payment) => sum + payment.interest, 0);
 
     // New balance after early repayment
-    const newBalance = Math.max(0, remainingBalanceBeforeRepayment - earlyRepaymentAmount + feeAmount);
+    const newBalance = Math.max(
+      0,
+      remainingBalanceBeforeRepayment - earlyRepaymentAmount + feeAmount,
+    );
 
     // Calculate new term for the remaining balance (keeping same payment)
-    const newTerm = this.calculateNewTerm(newBalance, originalResult.monthlyPayment, params.annualRate, params.rateType);
+    const newTerm = VietnameseLoanCalculator.calculateNewTerm(
+      newBalance,
+      originalResult.monthlyPayment,
+      params.annualRate,
+      params.rateType,
+    );
 
     // Calculate interest with new balance and term
     let newInterest = 0;
     if (newTerm && newTerm > 0) {
-      const newResult = this.calculateLoan({
+      const newResult = VietnameseLoanCalculator.calculateLoan({
         ...params,
         principal: newBalance,
         term: newTerm,
@@ -568,7 +661,7 @@ export class VietnameseLoanCalculator {
     monthlyIncome: number,
     monthlyExpenses: number,
     existingDebtPayments: number,
-    maxDebtToIncomeRatio: number = 50
+    maxDebtToIncomeRatio: number = 50,
   ): {
     maxMonthlyPayment: number;
     maxLoanAmount: number;
@@ -579,8 +672,9 @@ export class VietnameseLoanCalculator {
     riskLevel: "low" | "medium" | "high";
   } {
     const availableIncome = monthlyIncome - monthlyExpenses;
-    const maxMonthlyPayment = (monthlyIncome * maxDebtToIncomeRatio) / 100 - existingDebtPayments;
-    const currentDTI = ((existingDebtPayments) / monthlyIncome) * 100;
+    const maxMonthlyPayment =
+      (monthlyIncome * maxDebtToIncomeRatio) / 100 - existingDebtPayments;
+    const currentDTI = (existingDebtPayments / monthlyIncome) * 100;
 
     // Estimate max loan amount (using conservative 12% annual rate, 5-year term)
     const estimatedMonthlyRate = 0.12 / 12;
@@ -588,8 +682,10 @@ export class VietnameseLoanCalculator {
     let maxLoanAmount = 0;
 
     if (estimatedMonthlyRate > 0) {
-      maxLoanAmount = maxMonthlyPayment * (Math.pow(1 + estimatedMonthlyRate, estimatedTerm) - 1) /
-                     (estimatedMonthlyRate * Math.pow(1 + estimatedMonthlyRate, estimatedTerm));
+      maxLoanAmount =
+        (maxMonthlyPayment *
+          ((1 + estimatedMonthlyRate) ** estimatedTerm - 1)) /
+        (estimatedMonthlyRate * (1 + estimatedMonthlyRate) ** estimatedTerm);
     } else {
       maxLoanAmount = maxMonthlyPayment * estimatedTerm;
     }
@@ -624,8 +720,8 @@ export class VietnameseLoanCalculator {
     const validation = VietnameseFinancialValidator.validateAndSanitize(params);
     if (!validation.isValid) {
       const errorMessages = validation.errors
-        .filter(e => e.severity === "error")
-        .map(e => e.message)
+        .filter((e) => e.severity === "error")
+        .map((e) => e.message)
         .join("; ");
       throw new Error(`Invalid calculation parameters: ${errorMessages}`);
     }
@@ -633,17 +729,25 @@ export class VietnameseLoanCalculator {
     // Use sanitized parameters
     const sanitizedParams = validation.sanitizedParams!;
 
-    if (sanitizedParams.promotionalRate && sanitizedParams.promotionalPeriod && sanitizedParams.promotionalPeriod < sanitizedParams.term) {
-      return this.calculateWithPromotionalPeriod(sanitizedParams);
+    if (
+      sanitizedParams.promotionalRate &&
+      sanitizedParams.promotionalPeriod &&
+      sanitizedParams.promotionalPeriod < sanitizedParams.term
+    ) {
+      return VietnameseLoanCalculator.calculateWithPromotionalPeriod(
+        sanitizedParams,
+      );
     }
 
     switch (sanitizedParams.rateType) {
       case "flat":
-        return this.calculateFlatRate(sanitizedParams);
+        return VietnameseLoanCalculator.calculateFlatRate(sanitizedParams);
       case "reducing":
       case "fixed":
       default:
-        return this.calculateReducingBalance(sanitizedParams);
+        return VietnameseLoanCalculator.calculateReducingBalance(
+          sanitizedParams,
+        );
     }
   }
 
@@ -677,8 +781,11 @@ export class VietnameseLoanCalculator {
   /**
    * Calculate Effective APR
    */
-  private static calculateEffectiveAPR(params: LoanCalculationParams, monthlyPayment: number): number {
-    const totalFees = this.calculateTotalFees(params);
+  private static calculateEffectiveAPR(
+    params: LoanCalculationParams,
+    monthlyPayment: number,
+  ): number {
+    const totalFees = VietnameseLoanCalculator.calculateTotalFees(params);
     const effectivePrincipal = params.principal - totalFees;
 
     // Use iterative method to find APR that solves for the payment
@@ -686,18 +793,22 @@ export class VietnameseLoanCalculator {
     let highRate = 100; // 100% annual rate as upper bound
     let apr = params.annualRate; // Start with nominal rate
 
-    for (let i = 0; i < 100; i++) { // Maximum 100 iterations
+    for (let i = 0; i < 100; i++) {
+      // Maximum 100 iterations
       const monthlyRate = apr / 100 / 12;
       let calculatedPayment: number;
 
       if (monthlyRate === 0) {
         calculatedPayment = effectivePrincipal / params.term;
       } else {
-        calculatedPayment = effectivePrincipal * (monthlyRate * Math.pow(1 + monthlyRate, params.term)) /
-                          (Math.pow(1 + monthlyRate, params.term) - 1);
+        calculatedPayment =
+          (effectivePrincipal *
+            (monthlyRate * (1 + monthlyRate) ** params.term)) /
+          ((1 + monthlyRate) ** params.term - 1);
       }
 
-      if (Math.abs(calculatedPayment - monthlyPayment) < 1) { // Within 1 VND
+      if (Math.abs(calculatedPayment - monthlyPayment) < 1) {
+        // Within 1 VND
         break;
       }
 
@@ -716,10 +827,13 @@ export class VietnameseLoanCalculator {
   /**
    * Calculate break-even point (when cumulative principal payments exceed half of original principal)
    */
-  private static calculateBreakEvenPoint(paymentSchedule: MonthlyPayment[]): number | undefined {
+  private static calculateBreakEvenPoint(
+    paymentSchedule: MonthlyPayment[],
+  ): number | undefined {
     if (paymentSchedule.length === 0) return undefined;
 
-    const originalPrincipal = paymentSchedule[0].remainingBalance + paymentSchedule[0].principal;
+    const originalPrincipal =
+      paymentSchedule[0].remainingBalance + paymentSchedule[0].principal;
     const halfPrincipal = originalPrincipal / 2;
 
     // Find the point where cumulative principal payments exceed half of the original principal
@@ -738,7 +852,7 @@ export class VietnameseLoanCalculator {
     balance: number,
     payment: number,
     annualRate: number,
-    rateType: InterestRateType
+    rateType: InterestRateType,
   ): number | undefined {
     if (balance <= 0 || payment <= 0) return undefined;
 
@@ -759,11 +873,12 @@ export class VietnameseLoanCalculator {
       // Solve for n in: payment = balance * r * (1+r)^n / [(1+r)^n - 1]
       // This requires iterative solution
       let n = 1;
-      let maxN = 360; // 30 years maximum
+      const maxN = 360; // 30 years maximum
 
       while (n <= maxN) {
-        const calculatedPayment = balance * (monthlyRate * Math.pow(1 + monthlyRate, n)) /
-                                 (Math.pow(1 + monthlyRate, n) - 1);
+        const calculatedPayment =
+          (balance * (monthlyRate * (1 + monthlyRate) ** n)) /
+          ((1 + monthlyRate) ** n - 1);
         if (calculatedPayment <= payment) {
           return n;
         }
@@ -798,7 +913,7 @@ export function quickMonthlyPaymentCalculation(
   principal: number,
   annualRate: number,
   term: number,
-  rateType: InterestRateType = "reducing"
+  rateType: InterestRateType = "reducing",
 ): number {
   const params: LoanCalculationParams = {
     principal,
@@ -819,7 +934,7 @@ export function compareLoanOptions(
   options: Array<{
     name: string;
     params: LoanCalculationParams;
-  }>
+  }>,
 ): Array<{
   name: string;
   monthlyPayment: number;
@@ -828,7 +943,7 @@ export function compareLoanOptions(
   effectiveAPR: number;
   ranking: number;
 }> {
-  const results = options.map(option => ({
+  const results = options.map((option) => ({
     name: option.name,
     ...VietnameseLoanCalculator.calculateLoan(option.params),
   }));
@@ -845,10 +960,13 @@ export function compareLoanOptions(
 /**
  * Generate loan summary in Vietnamese
  */
-export function generateVietnameseLoanSummary(result: LoanCalculationResult): string {
-  const originalPrincipal = result.paymentSchedule[0] ?
-    result.paymentSchedule[0].remainingBalance + result.paymentSchedule[0].principal :
-    0;
+export function generateVietnameseLoanSummary(
+  result: LoanCalculationResult,
+): string {
+  const originalPrincipal = result.paymentSchedule[0]
+    ? result.paymentSchedule[0].remainingBalance +
+      result.paymentSchedule[0].principal
+    : 0;
 
   const lines = [
     "TÓM TẮT VAY VỐN",
@@ -874,7 +992,7 @@ export function generateVietnameseLoanSummary(result: LoanCalculationResult): st
       "==================",
       `Trả hàng tháng ưu đãi: ${formatVND(result.promotionalSummary.promotionalMonthlyPayment)}`,
       `Trả hàng tháng sau ưu đãi: ${formatVND(result.promotionalSummary.postPromotionalMonthlyPayment)}`,
-      `Tiết kiệm trong giai đoạn ưu đãi: ${formatVND(result.promotionalSummary.promotionalSavings)}`
+      `Tiết kiệm trong giai đoạn ưu đãi: ${formatVND(result.promotionalSummary.promotionalSavings)}`,
     );
   }
 

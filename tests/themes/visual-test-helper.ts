@@ -54,7 +54,7 @@ export const DEFAULT_CONFIG: VisualTestConfig = {
 export async function compareScreenshots(
   baselinePath: string,
   currentPath: string,
-  config: Partial<VisualTestConfig> = {}
+  config: Partial<VisualTestConfig> = {},
 ): Promise<ComparisonResult> {
   const finalConfig = { ...DEFAULT_CONFIG, ...config };
 
@@ -92,7 +92,7 @@ export async function compareScreenshots(
       {
         threshold: finalConfig.threshold,
         includeAA: true,
-      }
+      },
     );
 
     const totalPixels = baselineImage.width * baselineImage.height;
@@ -111,7 +111,7 @@ export async function compareScreenshots(
 
       diffImagePath = path.join(
         finalConfig.diffDir,
-        `${path.basename(currentPath, ".png")}-diff.png`
+        `${path.basename(currentPath, ".png")}-diff.png`,
       );
 
       await writePNG(diffImage, diffImagePath);
@@ -138,7 +138,7 @@ export async function compareScreenshots(
  */
 export async function updateBaseline(
   currentPath: string,
-  baselinePath: string
+  baselinePath: string,
 ): Promise<void> {
   await ensureDirectoryExists(path.dirname(baselinePath));
   fs.copyFileSync(currentPath, baselinePath);
@@ -180,7 +180,7 @@ function compareImages(
   diff: Uint8Array,
   width: number,
   height: number,
-  options: { threshold: number; includeAA: boolean }
+  options: { threshold: number; includeAA: boolean },
 ): number {
   let diffCount = 0;
   const threshold = Math.floor(options.threshold * 255);
@@ -246,9 +246,9 @@ export function generateVisualTestReport(
     theme: string;
     mode: string;
     result: ComparisonResult;
-  }>
+  }>,
 ): string {
-  const passedTests = results.filter(r => r.result.passed).length;
+  const passedTests = results.filter((r) => r.result.passed).length;
   const totalTests = results.length;
   const passRate = ((passedTests / totalTests) * 100).toFixed(1);
 
@@ -260,11 +260,11 @@ export function generateVisualTestReport(
 
   report += `## Failed Tests\n\n`;
 
-  const failedTests = results.filter(r => !r.result.passed);
+  const failedTests = results.filter((r) => !r.result.passed);
   if (failedTests.length === 0) {
     report += `✅ All visual tests passed!\n\n`;
   } else {
-    failedTests.forEach(test => {
+    failedTests.forEach((test) => {
       report += `### ${test.testName}\n`;
       report += `- **Theme**: ${test.theme}\n`;
       report += `- **Mode**: ${test.mode}\n`;
@@ -284,7 +284,7 @@ export function generateVisualTestReport(
 
   // Group results by theme
   const resultsByTheme = new Map<string, typeof results>();
-  results.forEach(r => {
+  results.forEach((r) => {
     if (!resultsByTheme.has(r.theme)) {
       resultsByTheme.set(r.theme, []);
     }
@@ -292,14 +292,14 @@ export function generateVisualTestReport(
   });
 
   resultsByTheme.forEach((themeResults, theme) => {
-    const themePassed = themeResults.filter(r => r.result.passed).length;
+    const themePassed = themeResults.filter((r) => r.result.passed).length;
     const themeTotal = themeResults.length;
     const themePassRate = ((themePassed / themeTotal) * 100).toFixed(1);
 
     report += `### ${theme}\n`;
     report += `- Tests: ${themePassed}/${themeTotal} (${themePassRate}%)\n`;
-    report += `- Light: ${themeResults.filter(r => r.mode === "light" && r.result.passed).length}/${themeResults.filter(r => r.mode === "light").length}\n`;
-    report += `- Dark: ${themeResults.filter(r => r.mode === "dark" && r.result.passed).length}/${themeResults.filter(r => r.mode === "dark").length}\n\n`;
+    report += `- Light: ${themeResults.filter((r) => r.mode === "light" && r.result.passed).length}/${themeResults.filter((r) => r.mode === "light").length}\n`;
+    report += `- Dark: ${themeResults.filter((r) => r.mode === "dark" && r.result.passed).length}/${themeResults.filter((r) => r.mode === "dark").length}\n\n`;
   });
 
   return report;

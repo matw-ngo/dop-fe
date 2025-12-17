@@ -6,10 +6,10 @@
 
 "use client";
 
-import { createContext, useContext, useMemo, useState } from "react";
 import type { ReactNode } from "react";
-import type { FormTheme } from "./types";
+import { createContext, useContext, useMemo, useState } from "react";
 import { defaultTheme } from "./default";
+import type { FormTheme } from "./types";
 
 interface ThemeContextValue {
   theme: FormTheme;

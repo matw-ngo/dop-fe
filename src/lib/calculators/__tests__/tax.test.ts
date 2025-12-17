@@ -11,7 +11,7 @@
  * - Above 80,000,000: 35%
  */
 
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import { calculateTax } from "../tax";
 
 describe("Vietnamese Personal Income Tax Calculator", () => {

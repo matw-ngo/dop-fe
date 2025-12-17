@@ -48,7 +48,13 @@ export interface PerformanceEntry {
   /** Timestamp of the operation */
   timestamp: number;
   /** Type of operation */
-  type: 'theme-switch' | 'dom-update' | 'cache-hit' | 'cache-miss' | 'validation' | string;
+  type:
+    | "theme-switch"
+    | "dom-update"
+    | "cache-hit"
+    | "cache-miss"
+    | "validation"
+    | string;
   /** Duration in milliseconds */
   duration: number;
   /** Additional metadata */
@@ -77,8 +83,8 @@ const DEFAULT_CONFIG: PerformanceConfig = {
   enabled: true,
   slowOperationThreshold: 16, // 60fps target
   maxHistorySize: 100,
-  enableWarnings: process.env.NODE_ENV === 'development',
-  enableDebugLogging: process.env.NODE_ENV === 'development',
+  enableWarnings: process.env.NODE_ENV === "development",
+  enableDebugLogging: process.env.NODE_ENV === "development",
   reportInterval: null,
 };
 
@@ -102,7 +108,10 @@ class PerformanceMonitor {
   public debugUtils: {
     generateReport: () => string;
     getRecentOperations: (limit?: number) => PerformanceEntry[];
-    analyzeBottlenecks: () => { bottlenecks: PerformanceEntry[]; recommendations: string[] };
+    analyzeBottlenecks: () => {
+      bottlenecks: PerformanceEntry[];
+      recommendations: string[];
+    };
   };
 
   constructor(config: Partial<PerformanceConfig> = {}) {
@@ -136,8 +145,8 @@ class PerformanceMonitor {
         const metrics = this.getMetrics();
         const summary = this.getPerformanceSummary();
 
-        let report = 'Performance Report\n';
-        report += '==================\n\n';
+        let report = "Performance Report\n";
+        report += "==================\n\n";
         report += `Theme Operations: ${metrics.totalThemeSwitches}\n`;
         report += `Average Time: ${metrics.averageThemeSwitchTime.toFixed(2)}ms\n`;
         report += `Cache Hit Rate: ${metrics.cacheHitRate.toFixed(1)}%\n`;
@@ -145,8 +154,8 @@ class PerformanceMonitor {
         report += `Performance Grade: ${summary.grade}\n`;
 
         if (summary.issues.length > 0) {
-          report += '\nIssues:\n';
-          summary.issues.forEach(issue => report += `- ${issue}\n`);
+          report += "\nIssues:\n";
+          summary.issues.forEach((issue) => (report += `- ${issue}\n`));
         }
 
         return report;
@@ -159,27 +168,27 @@ class PerformanceMonitor {
         const threshold = this.config.slowOperationThreshold || 16;
 
         const bottlenecks = history
-          .filter(entry => entry.duration > threshold)
+          .filter((entry) => entry.duration > threshold)
           .sort((a, b) => b.duration - a.duration);
 
         const recommendations = [];
 
         if (bottlenecks.length > 0) {
-          recommendations.push('Consider optimizing slow operations');
-          recommendations.push('Check for expensive theme calculations');
+          recommendations.push("Consider optimizing slow operations");
+          recommendations.push("Check for expensive theme calculations");
         }
 
         if (this.metrics.cacheHitRate < 80) {
-          recommendations.push('Improve caching strategy');
+          recommendations.push("Improve caching strategy");
         }
 
         return { bottlenecks, recommendations };
-      }
+      },
     };
   }
 
   private setupPeriodicReporting(): void {
-    if (this.config.reportInterval && typeof window !== 'undefined') {
+    if (this.config.reportInterval && typeof window !== "undefined") {
       setInterval(() => {
         this.generatePerformanceReport();
       }, this.config.reportInterval);
@@ -190,7 +199,7 @@ class PerformanceMonitor {
    * Start timing a performance operation
    */
   startMark(name: string): void {
-    if (typeof window !== 'undefined' && 'performance' in window) {
+    if (typeof window !== "undefined" && "performance" in window) {
       this.performanceMarks.set(name, performance.now());
     }
   }
@@ -198,8 +207,12 @@ class PerformanceMonitor {
   /**
    * End timing a performance operation and record the duration
    */
-  endMark(name: string, type: PerformanceEntry['type'], metadata?: Record<string, any>): number {
-    if (typeof window !== 'undefined' && 'performance' in window) {
+  endMark(
+    name: string,
+    type: PerformanceEntry["type"],
+    metadata?: Record<string, any>,
+  ): number {
+    if (typeof window !== "undefined" && "performance" in window) {
       const endTime = performance.now();
       const startTime = this.performanceMarks.get(name);
 
@@ -215,13 +228,18 @@ class PerformanceMonitor {
         });
 
         // Check for slow operations
-        const threshold = this.config.warningThreshold || this.config.slowOperationThreshold || 16;
+        const threshold =
+          this.config.warningThreshold ||
+          this.config.slowOperationThreshold ||
+          16;
         if (duration > threshold) {
           this.handleSlowOperation(name, duration, type);
         }
 
         if (this.config.enableDebugLogging) {
-          console.debug(`[Theme Performance] ${name}: ${duration.toFixed(2)}ms`);
+          console.debug(
+            `[Theme Performance] ${name}: ${duration.toFixed(2)}ms`,
+          );
         }
 
         return duration;
@@ -244,13 +262,17 @@ class PerformanceMonitor {
 
     // Update specific metrics based on entry type
     // Check if it's a theme switch (either type is 'theme-switch' or it's a custom operation name)
-    if (entry.type === 'theme-switch' || (entry.metadata?.operationName && entry.type === entry.metadata.operationName)) {
+    if (
+      entry.type === "theme-switch" ||
+      (entry.metadata?.operationName &&
+        entry.type === entry.metadata.operationName)
+    ) {
       this.updateThemeSwitchMetrics(entry.duration);
-    } else if (entry.type === 'dom-update') {
+    } else if (entry.type === "dom-update") {
       this.updateDOMUpdateMetrics(entry.duration, entry.metadata?.count || 1);
-    } else if (entry.type === 'cache-hit') {
+    } else if (entry.type === "cache-hit") {
       this.updateCacheStats(true);
-    } else if (entry.type === 'cache-miss') {
+    } else if (entry.type === "cache-miss") {
       this.updateCacheStats(false);
     }
   }
@@ -260,8 +282,12 @@ class PerformanceMonitor {
     this.metrics.totalThemeSwitches++;
 
     // Calculate rolling average
-    const totalTime = this.metrics.averageThemeSwitchTime * (this.metrics.totalThemeSwitches - 1) + duration;
-    this.metrics.averageThemeSwitchTime = totalTime / this.metrics.totalThemeSwitches;
+    const totalTime =
+      this.metrics.averageThemeSwitchTime *
+        (this.metrics.totalThemeSwitches - 1) +
+      duration;
+    this.metrics.averageThemeSwitchTime =
+      totalTime / this.metrics.totalThemeSwitches;
   }
 
   private updateDOMUpdateMetrics(duration: number, count: number): void {
@@ -271,8 +297,11 @@ class PerformanceMonitor {
     domUpdateMetrics.totalUpdates++;
 
     // Calculate rolling average
-    const totalTime = domUpdateMetrics.averageUpdateTime * (domUpdateMetrics.totalUpdates - 1) + duration;
-    domUpdateMetrics.averageUpdateTime = totalTime / domUpdateMetrics.totalUpdates;
+    const totalTime =
+      domUpdateMetrics.averageUpdateTime * (domUpdateMetrics.totalUpdates - 1) +
+      duration;
+    domUpdateMetrics.averageUpdateTime =
+      totalTime / domUpdateMetrics.totalUpdates;
   }
 
   private updateCacheStats(hit: boolean): void {
@@ -284,20 +313,26 @@ class PerformanceMonitor {
     }
 
     // Update hit rate
-    this.metrics.cacheHitRate = this.cacheStats.total > 0
-      ? (this.cacheStats.hits / this.cacheStats.total) * 100
-      : 0;
+    this.metrics.cacheHitRate =
+      this.cacheStats.total > 0
+        ? (this.cacheStats.hits / this.cacheStats.total) * 100
+        : 0;
   }
 
-  private handleSlowOperation(name: string, duration: number, type: PerformanceEntry['type']): void {
+  private handleSlowOperation(
+    name: string,
+    duration: number,
+    type: PerformanceEntry["type"],
+  ): void {
     this.metrics.slowOperations++;
 
-    const threshold = this.config.warningThreshold || this.config.slowOperationThreshold || 16;
+    const threshold =
+      this.config.warningThreshold || this.config.slowOperationThreshold || 16;
 
     if (this.config.enableWarnings) {
       console.warn(
         `[Theme Performance Warning] Slow ${type} detected: ${name} took ${duration.toFixed(2)}ms ` +
-        `(threshold: ${threshold}ms)`
+          `(threshold: ${threshold}ms)`,
       );
 
       // Provide optimization suggestions
@@ -305,27 +340,33 @@ class PerformanceMonitor {
     }
   }
 
-  private suggestOptimizations(type: PerformanceEntry['type'], duration: number): void {
+  private suggestOptimizations(
+    type: PerformanceEntry["type"],
+    duration: number,
+  ): void {
     const suggestions = {
-      'theme-switch': [
-        'Consider reducing the number of CSS variables',
-        'Batch multiple theme changes together',
-        'Check for expensive custom CSS operations',
+      "theme-switch": [
+        "Consider reducing the number of CSS variables",
+        "Batch multiple theme changes together",
+        "Check for expensive custom CSS operations",
       ],
-      'dom-update': [
-        'Reduce the number of DOM property updates',
-        'Consider using CSS classes instead of inline styles',
-        'Check for layout thrashing',
+      "dom-update": [
+        "Reduce the number of DOM property updates",
+        "Consider using CSS classes instead of inline styles",
+        "Check for layout thrashing",
       ],
-      'validation': [
-        'Implement result caching for validations',
-        'Consider debouncing rapid validations',
+      validation: [
+        "Implement result caching for validations",
+        "Consider debouncing rapid validations",
       ],
     };
 
     const typeSuggestions = suggestions[type] || [];
     if (typeSuggestions.length > 0) {
-      console.log('[Theme Performance] Optimization suggestions:', typeSuggestions);
+      console.log(
+        "[Theme Performance] Optimization suggestions:",
+        typeSuggestions,
+      );
     }
   }
 
@@ -352,7 +393,7 @@ class PerformanceMonitor {
       const duration = performance.now() - this.rafTiming.startTime;
       this.recordPerformanceEntry({
         timestamp: Date.now(),
-        type: 'dom-update',
+        type: "dom-update",
         duration,
         metadata: {
           count: this.rafTiming.updateCount,
@@ -389,7 +430,7 @@ class PerformanceMonitor {
    * Grade performance based on current metrics
    */
   gradePerformance(): {
-    grade: 'A' | 'B' | 'C' | 'D' | 'F';
+    grade: "A" | "B" | "C" | "D" | "F";
     score: number;
     issues: string[];
     recommendations: string[];
@@ -398,7 +439,8 @@ class PerformanceMonitor {
     let score = 100;
 
     // Calculate score based on metrics
-    const threshold = this.config.warningThreshold || this.config.slowOperationThreshold || 16;
+    const threshold =
+      this.config.warningThreshold || this.config.slowOperationThreshold || 16;
 
     if (this.metrics.lastThemeSwitchTime > threshold) {
       // Deduct more points for slow operations
@@ -418,18 +460,18 @@ class PerformanceMonitor {
     score = Math.max(0, Math.min(100, score));
 
     // Calculate grade based on score
-    let grade: 'A' | 'B' | 'C' | 'D' | 'F';
-    if (score >= 90) grade = 'A';
-    else if (score >= 80) grade = 'B';
-    else if (score >= 70) grade = 'C';
-    else if (score >= 60) grade = 'D';
-    else grade = 'F';
+    let grade: "A" | "B" | "C" | "D" | "F";
+    if (score >= 90) grade = "A";
+    else if (score >= 80) grade = "B";
+    else if (score >= 70) grade = "C";
+    else if (score >= 60) grade = "D";
+    else grade = "F";
 
     return {
       grade,
       score: Math.round(score),
       issues: summary.issues,
-      recommendations: summary.recommendations
+      recommendations: summary.recommendations,
     };
   }
 
@@ -437,7 +479,7 @@ class PerformanceMonitor {
    * Get performance summary for reporting
    */
   getPerformanceSummary(): {
-    grade: 'A' | 'B' | 'C' | 'D' | 'F';
+    grade: "A" | "B" | "C" | "D" | "F";
     issues: string[];
     recommendations: string[];
   } {
@@ -447,39 +489,45 @@ class PerformanceMonitor {
 
     // Check theme switch performance
     if (this.metrics.lastThemeSwitchTime > this.config.slowOperationThreshold) {
-      issues.push(`Theme switch is slow (${this.metrics.lastThemeSwitchTime.toFixed(2)}ms)`);
-      recommendations.push('Optimize theme switching performance');
+      issues.push(
+        `Theme switch is slow (${this.metrics.lastThemeSwitchTime.toFixed(2)}ms)`,
+      );
+      recommendations.push("Optimize theme switching performance");
       score -= 20;
     }
 
     // Check cache efficiency
     if (this.metrics.cacheHitRate < 80) {
-      issues.push(`Low cache hit rate (${this.metrics.cacheHitRate.toFixed(1)}%)`);
-      recommendations.push('Improve caching strategy');
+      issues.push(
+        `Low cache hit rate (${this.metrics.cacheHitRate.toFixed(1)}%)`,
+      );
+      recommendations.push("Improve caching strategy");
       score -= 15;
     }
 
     // Check for slow operations
     if (this.metrics.slowOperations > this.metrics.totalThemeSwitches * 0.1) {
-      issues.push('Multiple slow operations detected');
-      recommendations.push('Review performance bottlenecks');
+      issues.push("Multiple slow operations detected");
+      recommendations.push("Review performance bottlenecks");
       score -= 25;
     }
 
     // Check DOM update performance
     if (this.metrics.domUpdateMetrics.averageUpdateTime > 5) {
-      issues.push(`DOM updates are slow (${this.metrics.domUpdateMetrics.averageUpdateTime.toFixed(2)}ms average)`);
-      recommendations.push('Optimize DOM update batching');
+      issues.push(
+        `DOM updates are slow (${this.metrics.domUpdateMetrics.averageUpdateTime.toFixed(2)}ms average)`,
+      );
+      recommendations.push("Optimize DOM update batching");
       score -= 15;
     }
 
     // Determine grade
-    let grade: 'A' | 'B' | 'C' | 'D' | 'F';
-    if (score >= 90) grade = 'A';
-    else if (score >= 80) grade = 'B';
-    else if (score >= 70) grade = 'C';
-    else if (score >= 60) grade = 'D';
-    else grade = 'F';
+    let grade: "A" | "B" | "C" | "D" | "F";
+    if (score >= 90) grade = "A";
+    else if (score >= 80) grade = "B";
+    else if (score >= 70) grade = "C";
+    else if (score >= 60) grade = "D";
+    else grade = "F";
 
     return { grade, issues, recommendations };
   }
@@ -489,7 +537,7 @@ class PerformanceMonitor {
    */
   generatePerformanceReport(): {
     timestamp: string;
-    grade: 'A' | 'B' | 'C' | 'D' | 'F';
+    grade: "A" | "B" | "C" | "D" | "F";
     metrics: {
       themeSwitch: {
         lastTime: string;
@@ -540,14 +588,14 @@ class PerformanceMonitor {
     };
 
     if (summary.issues.length > 0 || this.config.enableDebugLogging) {
-      console.group('[Theme Performance Report]');
-      console.log('Grade:', summary.grade);
-      console.log('Metrics:', report.metrics);
+      console.group("[Theme Performance Report]");
+      console.log("Grade:", summary.grade);
+      console.log("Metrics:", report.metrics);
       if (summary.issues.length > 0) {
-        console.warn('Issues:', summary.issues);
+        console.warn("Issues:", summary.issues);
       }
       if (summary.recommendations.length > 0) {
-        console.info('Recommendations:', summary.recommendations);
+        console.info("Recommendations:", summary.recommendations);
       }
       console.groupEnd();
     }
@@ -590,7 +638,7 @@ class PerformanceMonitor {
     this.performanceMarks.clear();
 
     if (this.config.enableDebugLogging) {
-      console.log('[Theme Performance] Metrics reset');
+      console.log("[Theme Performance] Metrics reset");
     }
   }
 
@@ -609,7 +657,9 @@ let performanceMonitor: PerformanceMonitor | null = null;
 /**
  * Get or create the performance monitor instance
  */
-export function getPerformanceMonitor(config?: Partial<PerformanceConfig>): PerformanceMonitor {
+export function getPerformanceMonitor(
+  config?: Partial<PerformanceConfig>,
+): PerformanceMonitor {
   if (!performanceMonitor) {
     performanceMonitor = new PerformanceMonitor(config);
   } else if (config) {
@@ -621,7 +671,9 @@ export function getPerformanceMonitor(config?: Partial<PerformanceConfig>): Perf
 /**
  * Initialize performance monitoring with custom configuration
  */
-export function initializePerformanceMonitoring(config?: Partial<PerformanceConfig>): PerformanceMonitor {
+export function initializePerformanceMonitoring(
+  config?: Partial<PerformanceConfig>,
+): PerformanceMonitor {
   performanceMonitor = new PerformanceMonitor(config);
   return performanceMonitor;
 }
@@ -632,7 +684,7 @@ export function initializePerformanceMonitoring(config?: Partial<PerformanceConf
 export function measureThemeOperation<T>(
   name: string,
   operation: () => T,
-  type: PerformanceEntry['type'] = 'theme-switch'
+  type: PerformanceEntry["type"] = "theme-switch",
 ): T {
   const monitor = getPerformanceMonitor();
 
@@ -646,7 +698,9 @@ export function measureThemeOperation<T>(
   try {
     const result = operation();
     // Use name as the type for tracking specific operations
-    monitor.endMark(name, type === 'theme-switch' ? name : type, { operationName: name });
+    monitor.endMark(name, type === "theme-switch" ? name : type, {
+      operationName: name,
+    });
     return result;
   } catch (error) {
     // Remove the mark and don't record failed operations
@@ -658,7 +712,9 @@ export function measureThemeOperation<T>(
 /**
  * Check if performance monitoring is enabled
  */
-export function isPerformanceMonitoringEnabled(monitor?: PerformanceMonitor): boolean {
+export function isPerformanceMonitoringEnabled(
+  monitor?: PerformanceMonitor,
+): boolean {
   if (monitor) {
     return monitor.config.enabled !== false;
   }
@@ -673,7 +729,7 @@ export const debugUtils = {
    * Enable performance monitoring in development
    */
   enableDevelopmentMode(): void {
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.NODE_ENV === "development") {
       initializePerformanceMonitoring({
         enableWarnings: true,
         enableDebugLogging: true,
@@ -690,15 +746,18 @@ export const debugUtils = {
     const history = monitor.getMetrics().performanceHistory;
 
     if (history.length === 0) {
-      console.log('[Theme Performance] No performance data available');
+      console.log("[Theme Performance] No performance data available");
       return;
     }
 
-    console.group('[Theme Performance Timeline]');
+    console.group("[Theme Performance Timeline]");
     history.forEach((entry) => {
       const time = new Date(entry.timestamp).toLocaleTimeString();
       const duration = entry.duration.toFixed(2);
-      console.log(`${time} | ${entry.type.padEnd(12)} | ${duration}ms`, entry.metadata || '');
+      console.log(
+        `${time} | ${entry.type.padEnd(12)} | ${duration}ms`,
+        entry.metadata || "",
+      );
     });
     console.groupEnd();
   },
@@ -710,28 +769,35 @@ export const debugUtils = {
     const monitor = getPerformanceMonitor();
     const metrics = monitor.getMetrics();
 
-    console.group('[Theme Performance Bottleneck Analysis]');
+    console.group("[Theme Performance Bottleneck Analysis]");
 
     // Find slowest operations
     const slowOperations = metrics.performanceHistory
-      .filter(entry => entry.duration > monitor['config'].slowOperationThreshold)
+      .filter(
+        (entry) => entry.duration > monitor["config"].slowOperationThreshold,
+      )
       .sort((a, b) => b.duration - a.duration)
       .slice(0, 5);
 
     if (slowOperations.length > 0) {
-      console.log('Top 5 slowest operations:');
+      console.log("Top 5 slowest operations:");
       slowOperations.forEach((entry, index) => {
-        console.log(`${index + 1}. ${entry.type}: ${entry.duration.toFixed(2)}ms`);
+        console.log(
+          `${index + 1}. ${entry.type}: ${entry.duration.toFixed(2)}ms`,
+        );
       });
     }
 
     // Operation frequency analysis
-    const operationCounts = metrics.performanceHistory.reduce((acc, entry) => {
-      acc[entry.type] = (acc[entry.type] || 0) + 1;
-      return acc;
-    }, {} as Record<string, number>);
+    const operationCounts = metrics.performanceHistory.reduce(
+      (acc, entry) => {
+        acc[entry.type] = (acc[entry.type] || 0) + 1;
+        return acc;
+      },
+      {} as Record<string, number>,
+    );
 
-    console.log('Operation frequency:', operationCounts);
+    console.log("Operation frequency:", operationCounts);
 
     console.groupEnd();
   },

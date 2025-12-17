@@ -1,9 +1,9 @@
 "use client";
 
 import { Suspense } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ApplyLoanForm } from "@/components/loan-application/ApplyLoanForm";
 import { useThemeUtils } from "@/components/renderer/theme";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 function DemoContent() {
   const { theme } = useThemeUtils();

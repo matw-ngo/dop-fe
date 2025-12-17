@@ -1,6 +1,6 @@
-import React from "react";
-import { Skeleton } from "@/components/ui/skeleton";
+import type React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export const FilterShimmer: React.FC = () => {
   return (

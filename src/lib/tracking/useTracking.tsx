@@ -1,15 +1,15 @@
-import { useEffect, useCallback, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import {
+  type EventType,
+  hasUserConsent,
+  initializeSession,
+  isDNTEnabled,
+  setUserConsent,
   trackEvent,
-  trackSavingsCalculator,
+  trackGeneric,
   trackLoanCalculator,
   trackSalaryCalculator,
-  trackGeneric,
-  initializeSession,
-  hasUserConsent,
-  setUserConsent,
-  isDNTEnabled,
-  EventType,
+  trackSavingsCalculator,
 } from "./index";
 
 /**

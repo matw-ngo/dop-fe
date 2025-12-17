@@ -1,29 +1,29 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import Header from "@/components/layout/header";
-import Footer from "@/components/layout/footer";
-import { useInsuranceNavbarTheme } from "@/hooks/features/insurance/useInsuranceNavbarTheme";
-import InsurancePageHero from "@/components/features/insurance/InsurancePageHero";
-import InsurancePageControls from "@/components/features/insurance/InsurancePageControls";
+import ComparisonSnackbar from "@/components/features/insurance/InsuranceComparisonSnackbar";
 import InsurancePageContent from "@/components/features/insurance/InsurancePageContent";
-import {
-  useInsurancePageState,
-  type UseInsurancePageStateReturn,
-} from "@/hooks/features/insurance/useInsurancePageState";
-import { useInsurancePageHandlers } from "@/hooks/features/insurance/useInsurancePageHandlers";
-import { useInsurancePageComputed } from "@/hooks/features/insurance/useInsurancePageComputed";
+import InsurancePageControls from "@/components/features/insurance/InsurancePageControls";
+import InsurancePageHero from "@/components/features/insurance/InsurancePageHero";
+import { InsuranceThemeProvider } from "@/components/features/insurance/InsuranceThemeProvider";
+import Footer from "@/components/layout/footer";
+import Header from "@/components/layout/header";
 import { useInsuranceUrlSyncFull } from "@/hooks/features/insurance/use-insurance-url-sync";
+import { useInsuranceNavbarTheme } from "@/hooks/features/insurance/useInsuranceNavbarTheme";
+import { useInsurancePageComputed } from "@/hooks/features/insurance/useInsurancePageComputed";
+import { useInsurancePageHandlers } from "@/hooks/features/insurance/useInsurancePageHandlers";
 import {
-  useInsuranceSearch,
-  useInsuranceUI,
+  type UseInsurancePageStateReturn,
+  useInsurancePageState,
+} from "@/hooks/features/insurance/useInsurancePageState";
+import {
+  useFilteredInsuranceProducts,
   useInsuranceActions,
   useInsuranceFilters,
-  useFilteredInsuranceProducts,
   useInsuranceGetters,
+  useInsuranceSearch,
+  useInsuranceUI,
 } from "@/store/use-insurance-store";
-import { InsuranceThemeProvider } from "@/components/features/insurance/InsuranceThemeProvider";
-import ComparisonSnackbar from "@/components/features/insurance/InsuranceComparisonSnackbar";
 
 /**
  * Insurance listing page with filtering, search, and pagination

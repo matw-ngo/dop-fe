@@ -1,9 +1,9 @@
-import React from "react";
+import { ArrowRight, CreditCard, Filter, Search } from "lucide-react";
 import { useTranslations } from "next-intl";
+import type React from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { CreditCard, Search, Filter, ArrowRight } from "lucide-react";
 
 interface EmptyStateProps {
   type: "no-results" | "no-comparison" | "no-filters" | "error";

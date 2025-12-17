@@ -1,11 +1,10 @@
 import React from "react";
 import { Progress } from "@/components/ui/progress";
-import { formatCurrency } from "@/lib/utils";
-import { cn } from "@/lib/utils";
+import { cn, formatCurrency } from "@/lib/utils";
 import type { CoverageItemProps } from "../types";
 import {
-  getCoverageProgress,
   getColorClass,
+  getCoverageProgress,
   getProgressColorClass,
 } from "../utils";
 

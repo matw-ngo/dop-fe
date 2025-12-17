@@ -3,19 +3,19 @@
  * Extracted to improve component readability and reusability
  */
 
-import { useEffect } from "react";
-import { useLocale } from "next-intl";
 import { useSearchParams } from "next/navigation";
-import type {
-  InsuranceFilters,
-  SortOption,
-  PaginationOptions,
-  InsuranceCategory,
-  InsuranceType,
-  FeeType,
-  CoveragePeriod,
-} from "@/types/insurance";
+import { useLocale } from "next-intl";
+import { useEffect } from "react";
 import { DEFAULT_PAGE_SIZE } from "@/constants/insurance";
+import type {
+  CoveragePeriod,
+  FeeType,
+  InsuranceCategory,
+  InsuranceFilters,
+  InsuranceType,
+  PaginationOptions,
+  SortOption,
+} from "@/types/insurance";
 
 // Default filters with proper typing for URL initialization
 const DEFAULT_FILTERS_FOR_URL: InsuranceFilters = {

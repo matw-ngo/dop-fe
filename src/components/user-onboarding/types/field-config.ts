@@ -1,9 +1,9 @@
-import type { MappedStep } from "@/mappers/flowMapper";
 import type {
-  ComponentVariant,
   AnimationVariant,
+  ComponentVariant,
 } from "@/components/renderer/types/ui-theme";
-import { FieldType, FieldCategory } from "../constants/field-types";
+import type { MappedStep } from "@/mappers/flowMapper";
+import type { FieldCategory, FieldType } from "../constants/field-types";
 
 /**
  * Field validation configuration

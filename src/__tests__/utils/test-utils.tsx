@@ -9,10 +9,11 @@
  * - Mock environment setup
  */
 
-import React, { ReactNode, ReactElement } from "react";
-import { render, RenderOptions, waitFor } from "@testing-library/react";
+import { type RenderOptions, render, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { vi, expect } from "vitest";
+import type React from "react";
+import type { ReactElement, ReactNode } from "react";
+import { expect, vi } from "vitest";
 import { FormProvider } from "@/components/form-generation/context/FormContext";
 import { DynamicForm } from "@/components/form-generation/DynamicForm";
 import type {

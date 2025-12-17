@@ -1,9 +1,9 @@
+import { useTranslations } from "next-intl";
 import React, { useCallback, useMemo } from "react";
 import { Grid } from "react-window";
-import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import "react-window/dist/styles.css";
-import { CreditCard } from "@/types/credit-card";
+import type { CreditCard } from "@/types/credit-card";
 import CreditCardComponent from "../../credit-card/CreditCard";
 
 interface VirtualizedCardGridProps {

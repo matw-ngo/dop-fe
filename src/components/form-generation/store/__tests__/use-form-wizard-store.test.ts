@@ -1,11 +1,11 @@
-import { describe, it, expect, beforeEach, vi } from "vitest";
 import { act } from "@testing-library/react";
-import { useFormWizardStore } from "../use-form-wizard-store";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
-  FormStep,
   FieldType,
+  type FormStep,
   ValidationRuleType,
 } from "@/components/form-generation/types";
+import { useFormWizardStore } from "../use-form-wizard-store";
 
 // Mock step configuration
 const mockSteps: FormStep[] = [

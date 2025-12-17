@@ -7,7 +7,7 @@
  * - Generate final reports
  */
 
-import { writeFileSync, mkdirSync } from "fs";
+import { mkdirSync, writeFileSync } from "fs";
 import { join } from "path";
 
 // Generate test report

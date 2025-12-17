@@ -1,5 +1,5 @@
-import type { EventType } from "./types";
 import { STORAGE_KEYS } from "./config";
+import type { EventType } from "./types";
 
 /**
  * Privacy-aware utilities for tracking

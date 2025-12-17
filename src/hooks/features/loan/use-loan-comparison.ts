@@ -1,12 +1,15 @@
 // Loan Comparison Hook
 // Custom hook for loan product comparison functionality
 
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useCallback, useEffect, useMemo } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import type { VietnameseLoanProduct } from "@/lib/loan-products/vietnamese-loan-products";
-import type { LoanCalculationParams, LoanCalculationResult } from "@/lib/loan-products/interest-calculations";
-import { VietnameseLoanCalculator } from "@/lib/loan-products/interest-calculations";
 import { loanProductApi } from "@/lib/api/endpoints/loans";
+import type {
+  LoanCalculationParams,
+  LoanCalculationResult,
+} from "@/lib/loan-products/interest-calculations";
+import { VietnameseLoanCalculator } from "@/lib/loan-products/interest-calculations";
+import type { VietnameseLoanProduct } from "@/lib/loan-products/vietnamese-loan-products";
 import { useLoanProductStore } from "@/store/use-loan-product-store";
 
 interface UseLoanComparisonOptions {
@@ -40,7 +43,7 @@ interface ComparisonData {
 export function useLoanComparison(
   loanAmount: number,
   loanTerm: number,
-  options: UseLoanComparisonOptions = {}
+  options: UseLoanComparisonOptions = {},
 ) {
   const {
     autoCalculate = true,
@@ -53,20 +56,31 @@ export function useLoanComparison(
   const store = useLoanProductStore();
 
   // Get selected products from store
-  const selectedProducts = useLoanProductStore((state) => state.selectedProducts);
+  const selectedProducts = useLoanProductStore(
+    (state) => state.selectedProducts,
+  );
 
   // Select products
-  const selectProduct = useCallback((product: VietnameseLoanProduct) => {
-    store.selectProduct(product);
-  }, [store]);
+  const selectProduct = useCallback(
+    (product: VietnameseLoanProduct) => {
+      store.selectProduct(product);
+    },
+    [store],
+  );
 
-  const deselectProduct = useCallback((productId: string) => {
-    store.deselectProduct(productId);
-  }, [store]);
+  const deselectProduct = useCallback(
+    (productId: string) => {
+      store.deselectProduct(productId);
+    },
+    [store],
+  );
 
-  const toggleProductSelection = useCallback((product: VietnameseLoanProduct) => {
-    store.toggleProductSelection(product);
-  }, [store]);
+  const toggleProductSelection = useCallback(
+    (product: VietnameseLoanProduct) => {
+      store.toggleProductSelection(product);
+    },
+    [store],
+  );
 
   const clearSelections = useCallback(() => {
     store.clearSelections();
@@ -80,19 +94,31 @@ export function useLoanComparison(
       const params: LoanCalculationParams = {
         principal: loanAmount,
         term: loanTerm,
-        annualRate: includePromotions && product.interestRate.promotional
-          ? product.interestRate.promotional.rate
-          : product.interestRate.annual,
+        annualRate:
+          includePromotions && product.interestRate.promotional
+            ? product.interestRate.promotional.rate
+            : product.interestRate.annual,
         rateType: product.interestRate.type,
         calculationMethod: product.interestRate.calculationMethod,
         processingFee: includeFees ? product.fees.processingFee : 0,
         processingFeeFixed: includeFees ? product.fees.processingFeeFixed : 0,
         insuranceFee: includeFees ? product.fees.insuranceFee : 0,
         otherFees: includeFees
-          ? product.fees.otherFees?.reduce((sum, fee) => sum + (fee.type === "fixed" ? fee.amount : (loanAmount * fee.amount) / 100), 0)
+          ? product.fees.otherFees?.reduce(
+              (sum, fee) =>
+                sum +
+                (fee.type === "fixed"
+                  ? fee.amount
+                  : (loanAmount * fee.amount) / 100),
+              0,
+            )
           : 0,
-        promotionalRate: includePromotions ? product.interestRate.promotional?.rate : undefined,
-        promotionalPeriod: includePromotions ? product.interestRate.promotional?.duration : undefined,
+        promotionalRate: includePromotions
+          ? product.interestRate.promotional?.rate
+          : undefined,
+        promotionalPeriod: includePromotions
+          ? product.interestRate.promotional?.duration
+          : undefined,
       };
 
       const calculation = VietnameseLoanCalculator.calculateLoan(params);
@@ -106,7 +132,14 @@ export function useLoanComparison(
         effectiveAPR: calculation.effectiveAPR,
       };
     });
-  }, [selectedProducts, loanAmount, loanTerm, autoCalculate, includeFees, includePromotions]);
+  }, [
+    selectedProducts,
+    loanAmount,
+    loanTerm,
+    autoCalculate,
+    includeFees,
+    includePromotions,
+  ]);
 
   // Ranked comparison data
   const rankedComparisonData = useMemo(() => {
@@ -137,7 +170,8 @@ export function useLoanComparison(
       monthlyPayment: worst.monthlyPayment - best.monthlyPayment,
       totalInterest: worst.totalInterest - best.totalInterest,
       totalPayable: worst.totalPayable - best.totalPayable,
-      percentage: ((worst.totalPayable - best.totalPayable) / worst.totalPayable) * 100,
+      percentage:
+        ((worst.totalPayable - best.totalPayable) / worst.totalPayable) * 100,
     };
   }, [rankedComparisonData]);
 
@@ -152,7 +186,7 @@ export function useLoanComparison(
         totalPayable: acc.totalPayable + item.totalPayable,
         effectiveAPR: acc.effectiveAPR + item.effectiveAPR,
       }),
-      { monthlyPayment: 0, totalInterest: 0, totalPayable: 0, effectiveAPR: 0 }
+      { monthlyPayment: 0, totalInterest: 0, totalPayable: 0, effectiveAPR: 0 },
     );
 
     const count = comparisonData.length;
@@ -183,22 +217,21 @@ export function useLoanComparison(
   });
 
   // Save comparison
-  const saveComparison = useCallback(async (
-    name: string,
-    notes?: string,
-    isPublic = false
-  ) => {
-    const productIds = selectedProducts.map(p => p.id);
+  const saveComparison = useCallback(
+    async (name: string, notes?: string, isPublic = false) => {
+      const productIds = selectedProducts.map((p) => p.id);
 
-    return saveComparisonMutation.mutateAsync({
-      name,
-      productIds,
-      loanAmount,
-      loanTerm,
-      notes,
-      isPublic,
-    });
-  }, [selectedProducts, loanAmount, loanTerm, saveComparisonMutation]);
+      return saveComparisonMutation.mutateAsync({
+        name,
+        productIds,
+        loanAmount,
+        loanTerm,
+        notes,
+        isPublic,
+      });
+    },
+    [selectedProducts, loanAmount, loanTerm, saveComparisonMutation],
+  );
 
   // Get saved comparisons query
   const { data: savedComparisons, isLoading: isLoadingSaved } = useQuery({

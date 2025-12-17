@@ -27,23 +27,23 @@ export interface VietnameseBank {
  * Interest Rate Types
  */
 export type InterestRateType =
-  | "fixed"           // Lãi suất cố định
-  | "reducing"        // Lãi suất giảm dần
-  | "flat"            // Lãi suất phẳng
-  | "floating";       // Lãi suất thả nổi
+  | "fixed" // Lãi suất cố định
+  | "reducing" // Lãi suất giảm dần
+  | "flat" // Lãi suất phẳng
+  | "floating"; // Lãi suất thả nổi
 
 /**
  * Loan Types in Vietnamese Market
  */
 export type VietnameseLoanType =
-  | "home_loan"       // Vay mua nhà
-  | "auto_loan"       // Vay mua xe
-  | "consumer_loan"   // Vay tiêu dùng
-  | "business_loan"   // Vay kinh doanh
-  | "student_loan"    // Vay sinh viên
-  | "refinancing"     // Vay tái cấp vốn
-  | "credit_card"     // Vay thẻ tín dụng
-  | "mortgage_loan";  // Vay thế chấp
+  | "home_loan" // Vay mua nhà
+  | "auto_loan" // Vay mua xe
+  | "consumer_loan" // Vay tiêu dùng
+  | "business_loan" // Vay kinh doanh
+  | "student_loan" // Vay sinh viên
+  | "refinancing" // Vay tái cấp vốn
+  | "credit_card" // Vay thẻ tín dụng
+  | "mortgage_loan"; // Vay thế chấp
 
 /**
  * Fee Structure
@@ -91,7 +91,9 @@ export interface EligibilityCriteria {
     years: number;
   };
   /** Required employment types */
-  employmentTypes?: Array<"formal" | "informal" | "self_employed" | "business_owner">;
+  employmentTypes?: Array<
+    "formal" | "informal" | "self_employed" | "business_owner"
+  >;
   /** Credit score requirements */
   minCreditScore?: number;
   /** Debt-to-income ratio maximum */
@@ -392,9 +394,11 @@ export const vietnameseLoanProducts: VietnameseLoanProduct[] = [
     id: "vcb-home-loan-1",
     nameVi: "Vay mua nhà - Bất động sản",
     nameEn: "Home Loan - Real Estate",
-    descriptionVi: "Gói vay mua nhà, đất đai, căn hộ với lãi suất ưu đãi và thời gian vay lên đến 35 năm.",
-    descriptionEn: "Home loan package for purchasing houses, land, and apartments with preferential interest rates and terms up to 35 years.",
-    bank: vietnameseBanks.find(bank => bank.code === "VCB")!,
+    descriptionVi:
+      "Gói vay mua nhà, đất đai, căn hộ với lãi suất ưu đãi và thời gian vay lên đến 35 năm.",
+    descriptionEn:
+      "Home loan package for purchasing houses, land, and apartments with preferential interest rates and terms up to 35 years.",
+    bank: vietnameseBanks.find((bank) => bank.code === "VCB")!,
     loanType: "home_loan",
     active: true,
     amountLimits: {
@@ -495,7 +499,11 @@ export const vietnameseLoanProducts: VietnameseLoanProduct[] = [
       creditCheckRequired: true,
     },
     specialConditions: {
-      targetProfessions: ["Government employees", "Teachers", "Healthcare workers"],
+      targetProfessions: [
+        "Government employees",
+        "Teachers",
+        "Healthcare workers",
+      ],
       targetProfessionsVi: ["Công chức", "Giáo viên", "Nhân viên y tế"],
     },
     regulatoryCompliance: {
@@ -522,9 +530,11 @@ export const vietnameseLoanProducts: VietnameseLoanProduct[] = [
     id: "tcb-consumer-loan-1",
     nameVi: "Vay tiêu dùng không tài sản đảm bảo",
     nameEn: "Unsecured Consumer Loan",
-    descriptionVi: "Gói vay tiêu dùng nhanh chóng, không cần tài sản đảm bảo, giải ngân trong 24 giờ.",
-    descriptionEn: "Fast consumer loan without collateral requirements, disbursed within 24 hours.",
-    bank: vietnameseBanks.find(bank => bank.code === "TCB")!,
+    descriptionVi:
+      "Gói vay tiêu dùng nhanh chóng, không cần tài sản đảm bảo, giải ngân trong 24 giờ.",
+    descriptionEn:
+      "Fast consumer loan without collateral requirements, disbursed within 24 hours.",
+    bank: vietnameseBanks.find((bank) => bank.code === "TCB")!,
     loanType: "consumer_loan",
     active: true,
     amountLimits: {
@@ -622,7 +632,10 @@ export const vietnameseLoanProducts: VietnameseLoanProduct[] = [
     },
     specialConditions: {
       targetProfessions: ["Techcombank customers", "Salary account holders"],
-      targetProfessionsVi: ["Khách hàng Techcombank", "Người có tài khoản lương"],
+      targetProfessionsVi: [
+        "Khách hàng Techcombank",
+        "Người có tài khoản lương",
+      ],
     },
     regulatoryCompliance: {
       sbvRegistrationNumber: "TCB/QLNH/2024/23456",
@@ -648,9 +661,11 @@ export const vietnameseLoanProducts: VietnameseLoanProduct[] = [
     id: "vpb-auto-loan-1",
     nameVi: "Vay mua ô tô",
     nameEn: "Car Loan",
-    descriptionVi: "Gói vay mua ô tô mới và cũ với lãi suất cạnh tranh, hỗ trợ lên đến 85% giá trị xe.",
-    descriptionEn: "Car loan package for new and used vehicles with competitive interest rates, supporting up to 85% of vehicle value.",
-    bank: vietnameseBanks.find(bank => bank.code === "VPB")!,
+    descriptionVi:
+      "Gói vay mua ô tô mới và cũ với lãi suất cạnh tranh, hỗ trợ lên đến 85% giá trị xe.",
+    descriptionEn:
+      "Car loan package for new and used vehicles with competitive interest rates, supporting up to 85% of vehicle value.",
+    bank: vietnameseBanks.find((bank) => bank.code === "VPB")!,
     loanType: "auto_loan",
     active: true,
     amountLimits: {
@@ -795,9 +810,11 @@ export const vietnameseLoanProducts: VietnameseLoanProduct[] = [
     id: "acb-student-loan-1",
     nameVi: "Vay học sinh - sinh viên",
     nameEn: "Student Loan",
-    descriptionVi: "Gói vay hỗ trợ học sinh, sinh viên chi trả học phí và chi phí sinh hoạt với lãi suất ưu đãi.",
-    descriptionEn: "Student loan package supporting tuition fees and living expenses with preferential interest rates.",
-    bank: vietnameseBanks.find(bank => bank.code === "ACB")!,
+    descriptionVi:
+      "Gói vay hỗ trợ học sinh, sinh viên chi trả học phí và chi phí sinh hoạt với lãi suất ưu đãi.",
+    descriptionEn:
+      "Student loan package supporting tuition fees and living expenses with preferential interest rates.",
+    bank: vietnameseBanks.find((bank) => bank.code === "ACB")!,
     loanType: "student_loan",
     active: true,
     amountLimits: {
@@ -919,9 +936,11 @@ export const vietnameseLoanProducts: VietnameseLoanProduct[] = [
     id: "mb-business-loan-1",
     nameVi: "Vay kinh doanh Doanh nghiệp vừa và nhỏ",
     nameEn: "SME Business Loan",
-    descriptionVi: "Gói vay vốn kinh doanh dành cho các doanh nghiệp vừa và nhỏ với thủ tục đơn giản, giải ngân nhanh.",
-    descriptionEn: "Business capital loan for SMEs with simplified procedures and fast disbursement.",
-    bank: vietnameseBanks.find(bank => bank.code === "MB")!,
+    descriptionVi:
+      "Gói vay vốn kinh doanh dành cho các doanh nghiệp vừa và nhỏ với thủ tục đơn giản, giải ngân nhanh.",
+    descriptionEn:
+      "Business capital loan for SMEs with simplified procedures and fast disbursement.",
+    bank: vietnameseBanks.find((bank) => bank.code === "MB")!,
     loanType: "business_loan",
     active: true,
     amountLimits: {
@@ -942,7 +961,10 @@ export const vietnameseLoanProducts: VietnameseLoanProduct[] = [
         rate: 9.5,
         duration: 12,
         conditions: ["MB Bank business account holders", "Export businesses"],
-        conditionsVi: ["Khách hàng có tài khoản kinh doanh MB", "Doanh nghiệp xuất khẩu"],
+        conditionsVi: [
+          "Khách hàng có tài khoản kinh doanh MB",
+          "Doanh nghiệp xuất khẩu",
+        ],
       },
       type: "reducing",
       calculationMethod: "monthly",
@@ -996,7 +1018,12 @@ export const vietnameseLoanProducts: VietnameseLoanProduct[] = [
         },
       ],
       collateralRequired: true,
-      acceptedCollateralTypes: ["real_estate", "vehicle", "savings_book", "other"],
+      acceptedCollateralTypes: [
+        "real_estate",
+        "vehicle",
+        "savings_book",
+        "other",
+      ],
       minCollateralValue: 200000000, // 200 triệu VND
       maxLoanToValueRatio: 70,
     },
@@ -1030,7 +1057,11 @@ export const vietnameseLoanProducts: VietnameseLoanProduct[] = [
     },
     specialConditions: {
       targetProfessions: ["SME owners", "Startups", "Export businesses"],
-      targetProfessionsVi: ["Chủ doanh nghiệp vừa và nhỏ", "Khởi nghiệp", "Doanh nghiệp xuất khẩu"],
+      targetProfessionsVi: [
+        "Chủ doanh nghiệp vừa và nhỏ",
+        "Khởi nghiệp",
+        "Doanh nghiệp xuất khẩu",
+      ],
       prioritySectors: ["Manufacturing", "Agriculture", "Technology", "Export"],
       prioritySectorsVi: ["Sản xuất", "Nông nghiệp", "Công nghệ", "Xuất khẩu"],
     },
@@ -1062,19 +1093,21 @@ export const vietnameseLoanProducts: VietnameseLoanProduct[] = [
  * Get loan products by loan type
  */
 export function getLoanProductsByType(
-  loanType: VietnameseLoanType
+  loanType: VietnameseLoanType,
 ): VietnameseLoanProduct[] {
   return vietnameseLoanProducts.filter(
-    (product) => product.loanType === loanType && product.active
+    (product) => product.loanType === loanType && product.active,
   );
 }
 
 /**
  * Get loan products by bank
  */
-export function getLoanProductsByBank(bankCode: string): VietnameseLoanProduct[] {
+export function getLoanProductsByBank(
+  bankCode: string,
+): VietnameseLoanProduct[] {
   return vietnameseLoanProducts.filter(
-    (product) => product.bank.code === bankCode && product.active
+    (product) => product.bank.code === bankCode && product.active,
   );
 }
 
@@ -1083,7 +1116,7 @@ export function getLoanProductsByBank(bankCode: string): VietnameseLoanProduct[]
  */
 export function getFeaturedLoanProducts(): VietnameseLoanProduct[] {
   return vietnameseLoanProducts.filter(
-    (product) => product.metadata.featured && product.active
+    (product) => product.metadata.featured && product.active,
   );
 }
 
@@ -1091,13 +1124,13 @@ export function getFeaturedLoanProducts(): VietnameseLoanProduct[] {
  * Get loan products by amount range
  */
 export function getLoanProductsByAmount(
-  amount: number
+  amount: number,
 ): VietnameseLoanProduct[] {
   return vietnameseLoanProducts.filter(
     (product) =>
       product.active &&
       amount >= product.amountLimits.min &&
-      amount <= product.amountLimits.max
+      amount <= product.amountLimits.max,
   );
 }
 
@@ -1109,7 +1142,7 @@ export function getLoanProductsByTerm(term: number): VietnameseLoanProduct[] {
     (product) =>
       product.active &&
       term >= product.termOptions.min &&
-      term <= product.termOptions.max
+      term <= product.termOptions.max,
   );
 }
 
@@ -1126,8 +1159,8 @@ export function searchLoanProducts(keywords: string): VietnameseLoanProduct[] {
         product.descriptionVi.toLowerCase().includes(lowerKeywords) ||
         product.descriptionEn.toLowerCase().includes(lowerKeywords) ||
         product.metadata.tags.some((tag) =>
-          tag.toLowerCase().includes(lowerKeywords)
-        ))
+          tag.toLowerCase().includes(lowerKeywords),
+        )),
   );
 }
 
@@ -1141,21 +1174,32 @@ export function sortLoanProducts(
     | "popularity"
     | "processing_time"
     | "max_amount"
-    | "rating" = "interest_rate"
+    | "rating" = "interest_rate",
 ): VietnameseLoanProduct[] {
   const sorted = [...products];
 
   switch (sortBy) {
     case "interest_rate":
-      return sorted.sort((a, b) => a.interestRate.annual - b.interestRate.annual);
+      return sorted.sort(
+        (a, b) => a.interestRate.annual - b.interestRate.annual,
+      );
     case "popularity":
-      return sorted.sort((a, b) => b.metadata.popularityScore - a.metadata.popularityScore);
+      return sorted.sort(
+        (a, b) => b.metadata.popularityScore - a.metadata.popularityScore,
+      );
     case "processing_time":
-      return sorted.sort((a, b) => a.applicationRequirements.processingTime.min - b.applicationRequirements.processingTime.min);
+      return sorted.sort(
+        (a, b) =>
+          a.applicationRequirements.processingTime.min -
+          b.applicationRequirements.processingTime.min,
+      );
     case "max_amount":
       return sorted.sort((a, b) => b.amountLimits.max - a.amountLimits.max);
     case "rating":
-      return sorted.sort((a, b) => (b.metadata.averageRating || 0) - (a.metadata.averageRating || 0));
+      return sorted.sort(
+        (a, b) =>
+          (b.metadata.averageRating || 0) - (a.metadata.averageRating || 0),
+      );
     default:
       return sorted;
   }
@@ -1164,7 +1208,9 @@ export function sortLoanProducts(
 /**
  * Get Vietnamese loan type name in Vietnamese
  */
-export function getVietnameseLoanTypeName(loanType: VietnameseLoanType): string {
+export function getVietnameseLoanTypeName(
+  loanType: VietnameseLoanType,
+): string {
   const typeNames: Record<VietnameseLoanType, string> = {
     home_loan: "Vay mua nhà",
     auto_loan: "Vay mua xe",

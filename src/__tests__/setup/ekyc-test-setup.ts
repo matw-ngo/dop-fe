@@ -7,8 +7,8 @@
  * - Global configuration
  */
 
-import { vi, beforeEach, afterEach, beforeAll, afterAll } from "vitest";
-import { TextEncoder, TextDecoder } from "util";
+import { TextDecoder, TextEncoder } from "util";
+import { afterAll, afterEach, beforeAll, beforeEach, vi } from "vitest";
 
 // Setup global mocks
 (global as any).TextEncoder = TextEncoder;

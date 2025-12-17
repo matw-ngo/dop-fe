@@ -2,18 +2,18 @@
 
 import React, {
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useRef,
   useState,
-  useCallback,
 } from "react";
-import { Theme, ThemeContextValue } from "../types/ui-theme.d";
-import { lightTheme, darkTheme } from "./default-themes";
+import { isValidColor } from "@/lib/validate-colors";
+import type { Theme, ThemeContextValue } from "../types/ui-theme.d";
+import { darkTheme, lightTheme } from "./default-themes";
 import { themes, userGroups } from "./themes";
 import type { ThemeColors, ThemeConfig, ThemeState, UserGroup } from "./types";
 import { applyTheme } from "./utils";
-import { isValidColor } from "@/lib/validate-colors";
 
 type ThemeName = "light" | "dark" | string;
 type ThemeMode = "light" | "dark" | "system";
@@ -570,8 +570,8 @@ export { ThemeSelector } from "@/components/theme/theme-selector";
 
 // Export from context.tsx (legacy context)
 export {
-  useTheme as useLegacyTheme,
   ThemeProvider as LegacyThemeProvider,
+  useTheme as useLegacyTheme,
 } from "./context";
 
 // Export other modules

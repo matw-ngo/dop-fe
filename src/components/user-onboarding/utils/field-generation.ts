@@ -1,7 +1,7 @@
-import type { MappedStep } from "@/mappers/flowMapper";
 import type { RawFieldConfig } from "@/components/renderer/types/data-driven-ui";
-import { FieldValidation } from "../types/field-config";
+import type { MappedStep } from "@/mappers/flowMapper";
 import { FieldType } from "../constants/field-types";
+import type { FieldValidation } from "../types/field-config";
 
 /**
  * Generate fields for a given step using the field builder map
@@ -253,7 +253,7 @@ export function validateStepFields(
     if (value && field.props?.validations) {
       field.props.validations.forEach((validation) => {
         switch (validation.type) {
-          case "email":
+          case "email": {
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!emailRegex.test(value)) {
               errors[field.fieldName] =
@@ -261,6 +261,7 @@ export function validateStepFields(
               isValid = false;
             }
             break;
+          }
 
           case "minLength":
             if (value.length < (validation.value as number)) {
@@ -278,7 +279,7 @@ export function validateStepFields(
             }
             break;
 
-          case "pattern":
+          case "pattern": {
             const regex = new RegExp(validation.value as string);
             if (!regex.test(value)) {
               errors[field.fieldName] =
@@ -286,6 +287,7 @@ export function validateStepFields(
               isValid = false;
             }
             break;
+          }
         }
       });
     }

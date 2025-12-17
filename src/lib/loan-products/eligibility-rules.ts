@@ -1,7 +1,10 @@
 // Vietnamese Loan Eligibility Rules
 // Comprehensive eligibility engine for Vietnamese loan products
 
-import type { VietnameseLoanProduct, VietnameseLoanType } from "./vietnamese-loan-products";
+import type {
+  VietnameseLoanProduct,
+  VietnameseLoanType,
+} from "./vietnamese-loan-products";
 
 /**
  * Eligibility check result
@@ -130,9 +133,21 @@ export interface ApplicantProfile {
   /** Employment information */
   employmentInfo: {
     /** Employment type */
-    employmentType: "formal" | "informal" | "self_employed" | "business_owner" | "retired" | "unemployed" | "student";
+    employmentType:
+      | "formal"
+      | "informal"
+      | "self_employed"
+      | "business_owner"
+      | "retired"
+      | "unemployed"
+      | "student";
     /** Employment status */
-    employmentStatus: "full_time" | "part_time" | "contract" | "freelance" | "temporary";
+    employmentStatus:
+      | "full_time"
+      | "part_time"
+      | "contract"
+      | "freelance"
+      | "temporary";
     /** Company name */
     companyName?: string;
     /** Job title */
@@ -146,7 +161,13 @@ export interface ApplicantProfile {
     /** Monthly income */
     monthlyIncome: number;
     /** Income source */
-    incomeSource: "salary" | "business" | "investment" | "rental" | "pension" | "other";
+    incomeSource:
+      | "salary"
+      | "business"
+      | "investment"
+      | "rental"
+      | "pension"
+      | "other";
     /** Income stability (stable/variable/seasonal) */
     incomeStability: "stable" | "variable" | "seasonal";
     /** Whether can provide income proof */
@@ -196,13 +217,26 @@ export interface ApplicantProfile {
     /** Collateral available */
     collateralAvailable: boolean;
     /** Collateral type */
-    collateralType?: "real_estate" | "vehicle" | "savings_book" | "guarantor" | "other";
+    collateralType?:
+      | "real_estate"
+      | "vehicle"
+      | "savings_book"
+      | "guarantor"
+      | "other";
     /** Collateral value */
     collateralValue?: number;
     /** Preferred repayment method */
-    preferredRepaymentMethod: "bank_transfer" | "cash" | "salary_deduction" | "auto_debit";
+    preferredRepaymentMethod:
+      | "bank_transfer"
+      | "cash"
+      | "salary_deduction"
+      | "auto_debit";
     /** Application urgency */
-    applicationUrgency: "immediate" | "within_week" | "within_month" | "flexible";
+    applicationUrgency:
+      | "immediate"
+      | "within_week"
+      | "within_month"
+      | "flexible";
   };
 
   /** Special circumstances */
@@ -240,7 +274,7 @@ export class VietnameseEligibilityEngine {
    */
   static checkEligibility(
     profile: ApplicantProfile,
-    product: VietnameseLoanProduct
+    product: VietnameseLoanProduct,
   ): EligibilityResult {
     const criteria: EligibilityCriterion[] = [];
     const passedCriteria: EligibilityCriterion[] = [];
@@ -251,47 +285,72 @@ export class VietnameseEligibilityEngine {
     let maxScore = 0;
 
     // 1. Basic eligibility criteria
-    const basicCriteria = this.checkBasicEligibility(profile, product);
+    const basicCriteria = VietnameseEligibilityEngine.checkBasicEligibility(
+      profile,
+      product,
+    );
     criteria.push(...basicCriteria);
 
     // 2. Age eligibility
-    const ageCriteria = this.checkAgeEligibility(profile, product);
+    const ageCriteria = VietnameseEligibilityEngine.checkAgeEligibility(
+      profile,
+      product,
+    );
     criteria.push(...ageCriteria);
 
     // 3. Citizenship eligibility
-    const citizenshipCriteria = this.checkCitizenshipEligibility(profile, product);
+    const citizenshipCriteria =
+      VietnameseEligibilityEngine.checkCitizenshipEligibility(profile, product);
     criteria.push(...citizenshipCriteria);
 
     // 4. Employment eligibility
-    const employmentCriteria = this.checkEmploymentEligibility(profile, product);
+    const employmentCriteria =
+      VietnameseEligibilityEngine.checkEmploymentEligibility(profile, product);
     criteria.push(...employmentCriteria);
 
     // 5. Income eligibility
-    const incomeCriteria = this.checkIncomeEligibility(profile, product);
+    const incomeCriteria = VietnameseEligibilityEngine.checkIncomeEligibility(
+      profile,
+      product,
+    );
     criteria.push(...incomeCriteria);
 
     // 6. Credit eligibility
-    const creditCriteria = this.checkCreditEligibility(profile, product);
+    const creditCriteria = VietnameseEligibilityEngine.checkCreditEligibility(
+      profile,
+      product,
+    );
     criteria.push(...creditCriteria);
 
     // 7. Debt-to-income ratio
-    const dtiCriteria = this.checkDebtToIncomeEligibility(profile, product);
+    const dtiCriteria =
+      VietnameseEligibilityEngine.checkDebtToIncomeEligibility(
+        profile,
+        product,
+      );
     criteria.push(...dtiCriteria);
 
     // 8. Collateral eligibility
-    const collateralCriteria = this.checkCollateralEligibility(profile, product);
+    const collateralCriteria =
+      VietnameseEligibilityEngine.checkCollateralEligibility(profile, product);
     criteria.push(...collateralCriteria);
 
     // 9. Loan amount eligibility
-    const loanAmountCriteria = this.checkLoanAmountEligibility(profile, product);
+    const loanAmountCriteria =
+      VietnameseEligibilityEngine.checkLoanAmountEligibility(profile, product);
     criteria.push(...loanAmountCriteria);
 
     // 10. Loan term eligibility
-    const loanTermCriteria = this.checkLoanTermEligibility(profile, product);
+    const loanTermCriteria =
+      VietnameseEligibilityEngine.checkLoanTermEligibility(profile, product);
     criteria.push(...loanTermCriteria);
 
     // 11. Special program eligibility
-    const specialCriteria = this.checkSpecialProgramEligibility(profile, product);
+    const specialCriteria =
+      VietnameseEligibilityEngine.checkSpecialProgramEligibility(
+        profile,
+        product,
+      );
     criteria.push(...specialCriteria);
 
     // Separate passed, failed, and warning criteria
@@ -310,10 +369,13 @@ export class VietnameseEligibilityEngine {
       }
     }
 
-    const overallScore = maxScore > 0 ? Math.round((totalScore / maxScore) * 100) : 0;
+    const overallScore =
+      maxScore > 0 ? Math.round((totalScore / maxScore) * 100) : 0;
 
     // Determine overall eligibility
-    const hasCriticalFailures = failedCriteria.some(c => c.importance === "critical");
+    const hasCriticalFailures = failedCriteria.some(
+      (c) => c.importance === "critical",
+    );
     const eligible = !hasCriticalFailures && overallScore >= 50;
 
     // Determine confidence level
@@ -322,15 +384,31 @@ export class VietnameseEligibilityEngine {
     else if (overallScore >= 60) confidence = "medium";
 
     // Generate recommendations
-    const recommendations = this.generateRecommendations(failedCriteria, warningCriteria);
-    const recommendationsVi = this.generateRecommendationsVi(failedCriteria, warningCriteria);
+    const recommendations = VietnameseEligibilityEngine.generateRecommendations(
+      failedCriteria,
+      warningCriteria,
+    );
+    const recommendationsVi =
+      VietnameseEligibilityEngine.generateRecommendationsVi(
+        failedCriteria,
+        warningCriteria,
+      );
 
     // Generate required documents
-    const requiredDocuments = this.generateRequiredDocuments(profile, product);
+    const requiredDocuments =
+      VietnameseEligibilityEngine.generateRequiredDocuments(profile, product);
 
     // Generate next steps
-    const nextSteps = this.generateNextSteps(eligible, confidence, failedCriteria);
-    const nextStepsVi = this.generateNextStepsVi(eligible, confidence, failedCriteria);
+    const nextSteps = VietnameseEligibilityEngine.generateNextSteps(
+      eligible,
+      confidence,
+      failedCriteria,
+    );
+    const nextStepsVi = VietnameseEligibilityEngine.generateNextStepsVi(
+      eligible,
+      confidence,
+      failedCriteria,
+    );
 
     return {
       eligible,
@@ -352,7 +430,7 @@ export class VietnameseEligibilityEngine {
    */
   private static checkBasicEligibility(
     profile: ApplicantProfile,
-    product: VietnameseLoanProduct
+    product: VietnameseLoanProduct,
   ): EligibilityCriterion[] {
     const criteria: EligibilityCriterion[] = [];
 
@@ -360,13 +438,18 @@ export class VietnameseEligibilityEngine {
     criteria.push({
       name: "Complete Profile",
       nameVi: "Hồ sơ đầy đủ",
-      passed: !!profile.personalInfo.fullName && !!profile.personalInfo.nationalId,
+      passed:
+        !!profile.personalInfo.fullName && !!profile.personalInfo.nationalId,
       actualValue: profile.personalInfo.fullName ? "Complete" : "Incomplete",
       requiredValue: "Complete",
       importance: "critical",
       weight: 0.1,
-      reason: profile.personalInfo.fullName ? undefined : "Profile information is incomplete",
-      reasonVi: profile.personalInfo.fullName ? undefined : "Thông tin hồ sơ chưa đầy đủ",
+      reason: profile.personalInfo.fullName
+        ? undefined
+        : "Profile information is incomplete",
+      reasonVi: profile.personalInfo.fullName
+        ? undefined
+        : "Thông tin hồ sơ chưa đầy đủ",
     });
 
     return criteria;
@@ -377,10 +460,12 @@ export class VietnameseEligibilityEngine {
    */
   private static checkAgeEligibility(
     profile: ApplicantProfile,
-    product: VietnameseLoanProduct
+    product: VietnameseLoanProduct,
   ): EligibilityCriterion[] {
     const criteria: EligibilityCriterion[] = [];
-    const age = this.calculateAge(profile.personalInfo.dateOfBirth);
+    const age = VietnameseEligibilityEngine.calculateAge(
+      profile.personalInfo.dateOfBirth,
+    );
 
     // Minimum age check
     criteria.push({
@@ -391,12 +476,18 @@ export class VietnameseEligibilityEngine {
       requiredValue: product.eligibility.minAge,
       importance: "critical",
       weight: 0.15,
-      reason: age >= product.eligibility.minAge ? undefined : `Age ${age} is below minimum ${product.eligibility.minAge}`,
-      reasonVi: age >= product.eligibility.minAge ? undefined : `Tuổi ${age} thấp hơn tối thiểu ${product.eligibility.minAge}`,
+      reason:
+        age >= product.eligibility.minAge
+          ? undefined
+          : `Age ${age} is below minimum ${product.eligibility.minAge}`,
+      reasonVi:
+        age >= product.eligibility.minAge
+          ? undefined
+          : `Tuổi ${age} thấp hơn tối thiểu ${product.eligibility.minAge}`,
     });
 
     // Maximum age at maturity check
-    const ageAtMaturity = age + (profile.loanRequirements.requestedTerm / 12);
+    const ageAtMaturity = age + profile.loanRequirements.requestedTerm / 12;
     criteria.push({
       name: "Maximum Age at Maturity",
       nameVi: "Tuổi tối đa tại thời điểm đáo hạn",
@@ -405,8 +496,14 @@ export class VietnameseEligibilityEngine {
       requiredValue: product.eligibility.maxAgeAtMaturity,
       importance: "critical",
       weight: 0.15,
-      reason: ageAtMaturity <= product.eligibility.maxAgeAtMaturity ? undefined : `Age at maturity ${ageAtMaturity} exceeds maximum ${product.eligibility.maxAgeAtMaturity}`,
-      reasonVi: ageAtMaturity <= product.eligibility.maxAgeAtMaturity ? undefined : `Tuổi tại thời điểm đáo hạn ${ageAtMaturity} vượt quá tối đa ${product.eligibility.maxAgeAtMaturity}`,
+      reason:
+        ageAtMaturity <= product.eligibility.maxAgeAtMaturity
+          ? undefined
+          : `Age at maturity ${ageAtMaturity} exceeds maximum ${product.eligibility.maxAgeAtMaturity}`,
+      reasonVi:
+        ageAtMaturity <= product.eligibility.maxAgeAtMaturity
+          ? undefined
+          : `Tuổi tại thời điểm đáo hạn ${ageAtMaturity} vượt quá tối đa ${product.eligibility.maxAgeAtMaturity}`,
     });
 
     return criteria;
@@ -417,20 +514,32 @@ export class VietnameseEligibilityEngine {
    */
   private static checkCitizenshipEligibility(
     profile: ApplicantProfile,
-    product: VietnameseLoanProduct
+    product: VietnameseLoanProduct,
   ): EligibilityCriterion[] {
     const criteria: EligibilityCriterion[] = [];
 
     criteria.push({
       name: "Vietnamese Citizenship",
       nameVi: "Quốc tịch Việt Nam",
-      passed: !product.eligibility.vietnameseCitizen || profile.personalInfo.vietnameseCitizen,
+      passed:
+        !product.eligibility.vietnameseCitizen ||
+        profile.personalInfo.vietnameseCitizen,
       actualValue: profile.personalInfo.vietnameseCitizen,
       requiredValue: product.eligibility.vietnameseCitizen,
-      importance: product.eligibility.vietnameseCitizen ? "critical" : "optional",
+      importance: product.eligibility.vietnameseCitizen
+        ? "critical"
+        : "optional",
       weight: product.eligibility.vietnameseCitizen ? 0.1 : 0.05,
-      reason: product.eligibility.vietnameseCitizen && !profile.personalInfo.vietnameseCitizen ? "Vietnamese citizenship required" : undefined,
-      reasonVi: product.eligibility.vietnameseCitizen && !profile.personalInfo.vietnameseCitizen ? "Yêu cầu quốc tịch Việt Nam" : undefined,
+      reason:
+        product.eligibility.vietnameseCitizen &&
+        !profile.personalInfo.vietnameseCitizen
+          ? "Vietnamese citizenship required"
+          : undefined,
+      reasonVi:
+        product.eligibility.vietnameseCitizen &&
+        !profile.personalInfo.vietnameseCitizen
+          ? "Yêu cầu quốc tịch Việt Nam"
+          : undefined,
     });
 
     return criteria;
@@ -441,28 +550,43 @@ export class VietnameseEligibilityEngine {
    */
   private static checkEmploymentEligibility(
     profile: ApplicantProfile,
-    product: VietnameseLoanProduct
+    product: VietnameseLoanProduct,
   ): EligibilityCriterion[] {
     const criteria: EligibilityCriterion[] = [];
 
     // Employment type check
-    if (product.eligibility.employmentTypes && product.eligibility.employmentTypes.length > 0) {
+    if (
+      product.eligibility.employmentTypes &&
+      product.eligibility.employmentTypes.length > 0
+    ) {
       criteria.push({
         name: "Employment Type",
         nameVi: "Loại hình việc làm",
-        passed: product.eligibility.employmentTypes.includes(profile.employmentInfo.employmentType),
+        passed: product.eligibility.employmentTypes.includes(
+          profile.employmentInfo.employmentType,
+        ),
         actualValue: profile.employmentInfo.employmentType,
         requiredValue: product.eligibility.employmentTypes,
         importance: "critical",
         weight: 0.1,
-        reason: product.eligibility.employmentTypes.includes(profile.employmentInfo.employmentType) ? undefined : `Employment type ${profile.employmentInfo.employmentType} not eligible`,
-        reasonVi: product.eligibility.employmentTypes.includes(profile.employmentInfo.employmentType) ? undefined : `Loại hình việc làm ${profile.employmentInfo.employmentType} không đủ điều kiện`,
+        reason: product.eligibility.employmentTypes.includes(
+          profile.employmentInfo.employmentType,
+        )
+          ? undefined
+          : `Employment type ${profile.employmentInfo.employmentType} not eligible`,
+        reasonVi: product.eligibility.employmentTypes.includes(
+          profile.employmentInfo.employmentType,
+        )
+          ? undefined
+          : `Loại hình việc làm ${profile.employmentInfo.employmentType} không đủ điều kiện`,
       });
     }
 
     // Employment duration check
     if (product.eligibility.minEmploymentDuration) {
-      const requiredMonths = product.eligibility.minEmploymentDuration.years * 12 + product.eligibility.minEmploymentDuration.months;
+      const requiredMonths =
+        product.eligibility.minEmploymentDuration.years * 12 +
+        product.eligibility.minEmploymentDuration.months;
       criteria.push({
         name: "Employment Duration",
         nameVi: "Thời gian làm việc",
@@ -471,8 +595,14 @@ export class VietnameseEligibilityEngine {
         requiredValue: requiredMonths,
         importance: "important",
         weight: 0.08,
-        reason: profile.employmentInfo.workDurationMonths >= requiredMonths ? undefined : `Employment duration ${profile.employmentInfo.workDurationMonths} months below required ${requiredMonths} months`,
-        reasonVi: profile.employmentInfo.workDurationMonths >= requiredMonths ? undefined : `Thời gian làm việc ${profile.employmentInfo.workDurationMonths} tháng thấp hơn yêu cầu ${requiredMonths} tháng`,
+        reason:
+          profile.employmentInfo.workDurationMonths >= requiredMonths
+            ? undefined
+            : `Employment duration ${profile.employmentInfo.workDurationMonths} months below required ${requiredMonths} months`,
+        reasonVi:
+          profile.employmentInfo.workDurationMonths >= requiredMonths
+            ? undefined
+            : `Thời gian làm việc ${profile.employmentInfo.workDurationMonths} tháng thấp hơn yêu cầu ${requiredMonths} tháng`,
       });
     }
 
@@ -485,8 +615,12 @@ export class VietnameseEligibilityEngine {
       requiredValue: true,
       importance: "important",
       weight: 0.05,
-      reason: profile.employmentInfo.canProvideIncomeProof ? undefined : "Unable to provide income proof",
-      reasonVi: profile.employmentInfo.canProvideIncomeProof ? undefined : "Không thể chứng minh thu nhập",
+      reason: profile.employmentInfo.canProvideIncomeProof
+        ? undefined
+        : "Unable to provide income proof",
+      reasonVi: profile.employmentInfo.canProvideIncomeProof
+        ? undefined
+        : "Không thể chứng minh thu nhập",
     });
 
     return criteria;
@@ -497,7 +631,7 @@ export class VietnameseEligibilityEngine {
    */
   private static checkIncomeEligibility(
     profile: ApplicantProfile,
-    product: VietnameseLoanProduct
+    product: VietnameseLoanProduct,
   ): EligibilityCriterion[] {
     const criteria: EligibilityCriterion[] = [];
 
@@ -505,13 +639,23 @@ export class VietnameseEligibilityEngine {
     criteria.push({
       name: "Minimum Monthly Income",
       nameVi: "Thu nhập hàng tháng tối thiểu",
-      passed: profile.employmentInfo.monthlyIncome >= product.eligibility.minMonthlyIncome,
+      passed:
+        profile.employmentInfo.monthlyIncome >=
+        product.eligibility.minMonthlyIncome,
       actualValue: profile.employmentInfo.monthlyIncome,
       requiredValue: product.eligibility.minMonthlyIncome,
       importance: "critical",
       weight: 0.15,
-      reason: profile.employmentInfo.monthlyIncome >= product.eligibility.minMonthlyIncome ? undefined : `Income ${this.formatCurrency(profile.employmentInfo.monthlyIncome)} below minimum ${this.formatCurrency(product.eligibility.minMonthlyIncome)}`,
-      reasonVi: profile.employmentInfo.monthlyIncome >= product.eligibility.minMonthlyIncome ? undefined : `Thu nhập ${this.formatCurrency(profile.employmentInfo.monthlyIncome)} thấp hơn tối thiểu ${this.formatCurrency(product.eligibility.minMonthlyIncome)}`,
+      reason:
+        profile.employmentInfo.monthlyIncome >=
+        product.eligibility.minMonthlyIncome
+          ? undefined
+          : `Income ${VietnameseEligibilityEngine.formatCurrency(profile.employmentInfo.monthlyIncome)} below minimum ${VietnameseEligibilityEngine.formatCurrency(product.eligibility.minMonthlyIncome)}`,
+      reasonVi:
+        profile.employmentInfo.monthlyIncome >=
+        product.eligibility.minMonthlyIncome
+          ? undefined
+          : `Thu nhập ${VietnameseEligibilityEngine.formatCurrency(profile.employmentInfo.monthlyIncome)} thấp hơn tối thiểu ${VietnameseEligibilityEngine.formatCurrency(product.eligibility.minMonthlyIncome)}`,
     });
 
     // Maximum income check (if specified)
@@ -519,13 +663,23 @@ export class VietnameseEligibilityEngine {
       criteria.push({
         name: "Maximum Monthly Income",
         nameVi: "Thu nhập hàng tháng tối đa",
-        passed: profile.employmentInfo.monthlyIncome <= product.eligibility.maxMonthlyIncome,
+        passed:
+          profile.employmentInfo.monthlyIncome <=
+          product.eligibility.maxMonthlyIncome,
         actualValue: profile.employmentInfo.monthlyIncome,
         requiredValue: product.eligibility.maxMonthlyIncome,
         importance: "important",
         weight: 0.05,
-        reason: profile.employmentInfo.monthlyIncome <= product.eligibility.maxMonthlyIncome ? undefined : `Income ${this.formatCurrency(profile.employmentInfo.monthlyIncome)} exceeds maximum ${this.formatCurrency(product.eligibility.maxMonthlyIncome)}`,
-        reasonVi: profile.employmentInfo.monthlyIncome <= product.eligibility.maxMonthlyIncome ? undefined : `Thu nhập ${this.formatCurrency(profile.employmentInfo.monthlyIncome)} vượt quá tối đa ${this.formatCurrency(product.eligibility.maxMonthlyIncome)}`,
+        reason:
+          profile.employmentInfo.monthlyIncome <=
+          product.eligibility.maxMonthlyIncome
+            ? undefined
+            : `Income ${VietnameseEligibilityEngine.formatCurrency(profile.employmentInfo.monthlyIncome)} exceeds maximum ${VietnameseEligibilityEngine.formatCurrency(product.eligibility.maxMonthlyIncome)}`,
+        reasonVi:
+          profile.employmentInfo.monthlyIncome <=
+          product.eligibility.maxMonthlyIncome
+            ? undefined
+            : `Thu nhập ${VietnameseEligibilityEngine.formatCurrency(profile.employmentInfo.monthlyIncome)} vượt quá tối đa ${VietnameseEligibilityEngine.formatCurrency(product.eligibility.maxMonthlyIncome)}`,
       });
     }
 
@@ -537,28 +691,42 @@ export class VietnameseEligibilityEngine {
    */
   private static checkCreditEligibility(
     profile: ApplicantProfile,
-    product: VietnameseLoanProduct
+    product: VietnameseLoanProduct,
   ): EligibilityCriterion[] {
     const criteria: EligibilityCriterion[] = [];
 
     // Credit score check
-    if (product.eligibility.minCreditScore && profile.financialInfo.creditScore) {
+    if (
+      product.eligibility.minCreditScore &&
+      profile.financialInfo.creditScore
+    ) {
       criteria.push({
         name: "Credit Score",
         nameVi: "Điểm tín dụng",
-        passed: profile.financialInfo.creditScore >= product.eligibility.minCreditScore,
+        passed:
+          profile.financialInfo.creditScore >=
+          product.eligibility.minCreditScore,
         actualValue: profile.financialInfo.creditScore,
         requiredValue: product.eligibility.minCreditScore,
         importance: "critical",
         weight: 0.1,
-        reason: profile.financialInfo.creditScore >= product.eligibility.minCreditScore ? undefined : `Credit score ${profile.financialInfo.creditScore} below minimum ${product.eligibility.minCreditScore}`,
-        reasonVi: profile.financialInfo.creditScore >= product.eligibility.minCreditScore ? undefined : `Điểm tín dụng ${profile.financialInfo.creditScore} thấp hơn tối thiểu ${product.eligibility.minCreditScore}`,
+        reason:
+          profile.financialInfo.creditScore >=
+          product.eligibility.minCreditScore
+            ? undefined
+            : `Credit score ${profile.financialInfo.creditScore} below minimum ${product.eligibility.minCreditScore}`,
+        reasonVi:
+          profile.financialInfo.creditScore >=
+          product.eligibility.minCreditScore
+            ? undefined
+            : `Điểm tín dụng ${profile.financialInfo.creditScore} thấp hơn tối thiểu ${product.eligibility.minCreditScore}`,
       });
     }
 
     // Credit history check
     if (profile.financialInfo.previousLoanHistory.hasPreviousLoans) {
-      const onTimePayments = profile.financialInfo.previousLoanHistory.onTimePaymentsPercentage || 0;
+      const onTimePayments =
+        profile.financialInfo.previousLoanHistory.onTimePaymentsPercentage || 0;
       criteria.push({
         name: "Payment History",
         nameVi: "Lịch sử trả nợ",
@@ -567,12 +735,19 @@ export class VietnameseEligibilityEngine {
         requiredValue: 90,
         importance: "important",
         weight: 0.05,
-        reason: onTimePayments >= 90 ? undefined : `On-time payment rate ${onTimePayments}% below recommended 90%`,
-        reasonVi: onTimePayments >= 90 ? undefined : `Tỷ lệ trả đúng hạn ${onTimePayments}% thấp hơn khuyến nghị 90%`,
+        reason:
+          onTimePayments >= 90
+            ? undefined
+            : `On-time payment rate ${onTimePayments}% below recommended 90%`,
+        reasonVi:
+          onTimePayments >= 90
+            ? undefined
+            : `Tỷ lệ trả đúng hạn ${onTimePayments}% thấp hơn khuyến nghị 90%`,
       });
 
       // Check for defaults
-      const defaultsCount = profile.financialInfo.previousLoanHistory.pastDefaultsCount || 0;
+      const defaultsCount =
+        profile.financialInfo.previousLoanHistory.pastDefaultsCount || 0;
       criteria.push({
         name: "Default History",
         nameVi: "Lịch sử vỡ nợ",
@@ -581,8 +756,14 @@ export class VietnameseEligibilityEngine {
         requiredValue: 0,
         importance: "critical",
         weight: 0.08,
-        reason: defaultsCount === 0 ? undefined : `Has ${defaultsCount} past defaults`,
-        reasonVi: defaultsCount === 0 ? undefined : `Có ${defaultsCount} lần vỡ nợ trong quá khứ`,
+        reason:
+          defaultsCount === 0
+            ? undefined
+            : `Has ${defaultsCount} past defaults`,
+        reasonVi:
+          defaultsCount === 0
+            ? undefined
+            : `Có ${defaultsCount} lần vỡ nợ trong quá khứ`,
       });
     }
 
@@ -594,7 +775,7 @@ export class VietnameseEligibilityEngine {
    */
   private static checkDebtToIncomeEligibility(
     profile: ApplicantProfile,
-    product: VietnameseLoanProduct
+    product: VietnameseLoanProduct,
   ): EligibilityCriterion[] {
     const criteria: EligibilityCriterion[] = [];
 
@@ -610,8 +791,14 @@ export class VietnameseEligibilityEngine {
       requiredValue: 50,
       importance: "important",
       weight: 0.05,
-      reason: currentDTI <= 50 ? undefined : `Current DTI ${currentDTI.toFixed(1)}% exceeds recommended 50%`,
-      reasonVi: currentDTI <= 50 ? undefined : `DTI hiện tại ${currentDTI.toFixed(1)}% vượt quá khuyến nghị 50%`,
+      reason:
+        currentDTI <= 50
+          ? undefined
+          : `Current DTI ${currentDTI.toFixed(1)}% exceeds recommended 50%`,
+      reasonVi:
+        currentDTI <= 50
+          ? undefined
+          : `DTI hiện tại ${currentDTI.toFixed(1)}% vượt quá khuyến nghị 50%`,
     });
 
     if (product.eligibility.maxDebtToIncomeRatio) {
@@ -623,8 +810,14 @@ export class VietnameseEligibilityEngine {
         requiredValue: product.eligibility.maxDebtToIncomeRatio,
         importance: "critical",
         weight: 0.08,
-        reason: currentDTI <= product.eligibility.maxDebtToIncomeRatio ? undefined : `DTI ${currentDTI.toFixed(1)}% exceeds product maximum ${product.eligibility.maxDebtToIncomeRatio}%`,
-        reasonVi: currentDTI <= product.eligibility.maxDebtToIncomeRatio ? undefined : `DTI ${currentDTI.toFixed(1)}% vượt quá tối đa sản phẩm ${product.eligibility.maxDebtToIncomeRatio}%`,
+        reason:
+          currentDTI <= product.eligibility.maxDebtToIncomeRatio
+            ? undefined
+            : `DTI ${currentDTI.toFixed(1)}% exceeds product maximum ${product.eligibility.maxDebtToIncomeRatio}%`,
+        reasonVi:
+          currentDTI <= product.eligibility.maxDebtToIncomeRatio
+            ? undefined
+            : `DTI ${currentDTI.toFixed(1)}% vượt quá tối đa sản phẩm ${product.eligibility.maxDebtToIncomeRatio}%`,
       });
     }
 
@@ -636,7 +829,7 @@ export class VietnameseEligibilityEngine {
    */
   private static checkCollateralEligibility(
     profile: ApplicantProfile,
-    product: VietnameseLoanProduct
+    product: VietnameseLoanProduct,
   ): EligibilityCriterion[] {
     const criteria: EligibilityCriterion[] = [];
 
@@ -650,32 +843,53 @@ export class VietnameseEligibilityEngine {
         requiredValue: true,
         importance: "critical",
         weight: 0.1,
-        reason: profile.loanRequirements.collateralAvailable ? undefined : "Collateral required but not available",
-        reasonVi: profile.loanRequirements.collateralAvailable ? undefined : "Yêu cầu tài sản đảm bảo nhưng chưa có",
+        reason: profile.loanRequirements.collateralAvailable
+          ? undefined
+          : "Collateral required but not available",
+        reasonVi: profile.loanRequirements.collateralAvailable
+          ? undefined
+          : "Yêu cầu tài sản đảm bảo nhưng chưa có",
       });
 
       // Collateral type check
-      if (profile.loanRequirements.collateralAvailable && product.eligibility.acceptedCollateralTypes) {
+      if (
+        profile.loanRequirements.collateralAvailable &&
+        product.eligibility.acceptedCollateralTypes
+      ) {
         criteria.push({
           name: "Collateral Type",
           nameVi: "Loại tài sản đảm bảo",
-          passed: !!profile.loanRequirements.collateralType &&
-                 product.eligibility.acceptedCollateralTypes.includes(profile.loanRequirements.collateralType),
+          passed:
+            !!profile.loanRequirements.collateralType &&
+            product.eligibility.acceptedCollateralTypes.includes(
+              profile.loanRequirements.collateralType,
+            ),
           actualValue: profile.loanRequirements.collateralType,
           requiredValue: product.eligibility.acceptedCollateralTypes,
           importance: "critical",
           weight: 0.08,
-          reason: profile.loanRequirements.collateralType &&
-                 product.eligibility.acceptedCollateralTypes.includes(profile.loanRequirements.collateralType) ? undefined :
-                 `Collateral type ${profile.loanRequirements.collateralType} not accepted`,
-          reasonVi: profile.loanRequirements.collateralType &&
-                   product.eligibility.acceptedCollateralTypes.includes(profile.loanRequirements.collateralType) ? undefined :
-                   `Loại tài sản ${profile.loanRequirements.collateralType} không được chấp nhận`,
+          reason:
+            profile.loanRequirements.collateralType &&
+            product.eligibility.acceptedCollateralTypes.includes(
+              profile.loanRequirements.collateralType,
+            )
+              ? undefined
+              : `Collateral type ${profile.loanRequirements.collateralType} not accepted`,
+          reasonVi:
+            profile.loanRequirements.collateralType &&
+            product.eligibility.acceptedCollateralTypes.includes(
+              profile.loanRequirements.collateralType,
+            )
+              ? undefined
+              : `Loại tài sản ${profile.loanRequirements.collateralType} không được chấp nhận`,
         });
       }
 
       // Loan-to-value ratio check
-      if (profile.loanRequirements.collateralValue && product.eligibility.maxLoanToValueRatio) {
+      if (
+        profile.loanRequirements.collateralValue &&
+        product.eligibility.maxLoanToValueRatio
+      ) {
         const requestedAmount = profile.loanRequirements.requestedAmount;
         const collateralValue = profile.loanRequirements.collateralValue;
         const ltvRatio = (requestedAmount / collateralValue) * 100;
@@ -688,10 +902,14 @@ export class VietnameseEligibilityEngine {
           requiredValue: product.eligibility.maxLoanToValueRatio,
           importance: "important",
           weight: 0.05,
-          reason: ltvRatio <= product.eligibility.maxLoanToValueRatio ? undefined :
-                  `LTV ${ltvRatio.toFixed(1)}% exceeds maximum ${product.eligibility.maxLoanToValueRatio}%`,
-          reasonVi: ltvRatio <= product.eligibility.maxLoanToValueRatio ? undefined :
-                    `LTV ${ltvRatio.toFixed(1)}% vượt quá tối đa ${product.eligibility.maxLoanToValueRatio}%`,
+          reason:
+            ltvRatio <= product.eligibility.maxLoanToValueRatio
+              ? undefined
+              : `LTV ${ltvRatio.toFixed(1)}% exceeds maximum ${product.eligibility.maxLoanToValueRatio}%`,
+          reasonVi:
+            ltvRatio <= product.eligibility.maxLoanToValueRatio
+              ? undefined
+              : `LTV ${ltvRatio.toFixed(1)}% vượt quá tối đa ${product.eligibility.maxLoanToValueRatio}%`,
         });
       }
     }
@@ -704,7 +922,7 @@ export class VietnameseEligibilityEngine {
    */
   private static checkLoanAmountEligibility(
     profile: ApplicantProfile,
-    product: VietnameseLoanProduct
+    product: VietnameseLoanProduct,
   ): EligibilityCriterion[] {
     const criteria: EligibilityCriterion[] = [];
     const requestedAmount = profile.loanRequirements.requestedAmount;
@@ -718,10 +936,14 @@ export class VietnameseEligibilityEngine {
       requiredValue: product.amountLimits.min,
       importance: "critical",
       weight: 0.08,
-      reason: requestedAmount >= product.amountLimits.min ? undefined :
-              `Requested amount ${this.formatCurrency(requestedAmount)} below minimum ${this.formatCurrency(product.amountLimits.min)}`,
-      reasonVi: requestedAmount >= product.amountLimits.min ? undefined :
-                `Số tiền yêu cầu ${this.formatCurrency(requestedAmount)} thấp hơn tối thiểu ${this.formatCurrency(product.amountLimits.min)}`,
+      reason:
+        requestedAmount >= product.amountLimits.min
+          ? undefined
+          : `Requested amount ${VietnameseEligibilityEngine.formatCurrency(requestedAmount)} below minimum ${VietnameseEligibilityEngine.formatCurrency(product.amountLimits.min)}`,
+      reasonVi:
+        requestedAmount >= product.amountLimits.min
+          ? undefined
+          : `Số tiền yêu cầu ${VietnameseEligibilityEngine.formatCurrency(requestedAmount)} thấp hơn tối thiểu ${VietnameseEligibilityEngine.formatCurrency(product.amountLimits.min)}`,
     });
 
     // Maximum amount check
@@ -733,10 +955,14 @@ export class VietnameseEligibilityEngine {
       requiredValue: product.amountLimits.max,
       importance: "critical",
       weight: 0.08,
-      reason: requestedAmount <= product.amountLimits.max ? undefined :
-              `Requested amount ${this.formatCurrency(requestedAmount)} exceeds maximum ${this.formatCurrency(product.amountLimits.max)}`,
-      reasonVi: requestedAmount <= product.amountLimits.max ? undefined :
-                `Số tiền yêu cầu ${this.formatCurrency(requestedAmount)} vượt quá tối đa ${this.formatCurrency(product.amountLimits.max)}`,
+      reason:
+        requestedAmount <= product.amountLimits.max
+          ? undefined
+          : `Requested amount ${VietnameseEligibilityEngine.formatCurrency(requestedAmount)} exceeds maximum ${VietnameseEligibilityEngine.formatCurrency(product.amountLimits.max)}`,
+      reasonVi:
+        requestedAmount <= product.amountLimits.max
+          ? undefined
+          : `Số tiền yêu cầu ${VietnameseEligibilityEngine.formatCurrency(requestedAmount)} vượt quá tối đa ${VietnameseEligibilityEngine.formatCurrency(product.amountLimits.max)}`,
     });
 
     return criteria;
@@ -747,7 +973,7 @@ export class VietnameseEligibilityEngine {
    */
   private static checkLoanTermEligibility(
     profile: ApplicantProfile,
-    product: VietnameseLoanProduct
+    product: VietnameseLoanProduct,
   ): EligibilityCriterion[] {
     const criteria: EligibilityCriterion[] = [];
     const requestedTerm = profile.loanRequirements.requestedTerm;
@@ -761,10 +987,14 @@ export class VietnameseEligibilityEngine {
       requiredValue: product.termOptions.min,
       importance: "critical",
       weight: 0.05,
-      reason: requestedTerm >= product.termOptions.min ? undefined :
-              `Requested term ${requestedTerm} months below minimum ${product.termOptions.min} months`,
-      reasonVi: requestedTerm >= product.termOptions.min ? undefined :
-                `Thời gian vay yêu cầu ${requestedTerm} tháng thấp hơn tối thiểu ${product.termOptions.min} tháng`,
+      reason:
+        requestedTerm >= product.termOptions.min
+          ? undefined
+          : `Requested term ${requestedTerm} months below minimum ${product.termOptions.min} months`,
+      reasonVi:
+        requestedTerm >= product.termOptions.min
+          ? undefined
+          : `Thời gian vay yêu cầu ${requestedTerm} tháng thấp hơn tối thiểu ${product.termOptions.min} tháng`,
     });
 
     // Maximum term check
@@ -776,10 +1006,14 @@ export class VietnameseEligibilityEngine {
       requiredValue: product.termOptions.max,
       importance: "critical",
       weight: 0.05,
-      reason: requestedTerm <= product.termOptions.max ? undefined :
-              `Requested term ${requestedTerm} months exceeds maximum ${product.termOptions.max} months`,
-      reasonVi: requestedTerm <= product.termOptions.max ? undefined :
-                `Thời gian vay yêu cầu ${requestedTerm} tháng vượt quá tối đa ${product.termOptions.max} tháng`,
+      reason:
+        requestedTerm <= product.termOptions.max
+          ? undefined
+          : `Requested term ${requestedTerm} months exceeds maximum ${product.termOptions.max} months`,
+      reasonVi:
+        requestedTerm <= product.termOptions.max
+          ? undefined
+          : `Thời gian vay yêu cầu ${requestedTerm} tháng vượt quá tối đa ${product.termOptions.max} tháng`,
     });
 
     return criteria;
@@ -790,22 +1024,31 @@ export class VietnameseEligibilityEngine {
    */
   private static checkSpecialProgramEligibility(
     profile: ApplicantProfile,
-    product: VietnameseLoanProduct
+    product: VietnameseLoanProduct,
   ): EligibilityCriterion[] {
     const criteria: EligibilityCriterion[] = [];
 
     // Government employee programs
-    if (product.specialConditions?.targetProfessions?.includes("Government employees")) {
+    if (
+      product.specialConditions?.targetProfessions?.includes(
+        "Government employees",
+      )
+    ) {
       criteria.push({
         name: "Government Employee Program",
         nameVi: "Chương trình công chức",
         passed: !!profile.specialCircumstances?.isGovernmentEmployee,
-        actualValue: profile.specialCircumstances?.isGovernmentEmployee || false,
+        actualValue:
+          profile.specialCircumstances?.isGovernmentEmployee || false,
         requiredValue: true,
         importance: "optional",
         weight: 0.03,
-        reason: profile.specialCircumstances?.isGovernmentEmployee ? undefined : "Not a government employee",
-        reasonVi: profile.specialCircumstances?.isGovernmentEmployee ? undefined : "Không phải là công chức",
+        reason: profile.specialCircumstances?.isGovernmentEmployee
+          ? undefined
+          : "Not a government employee",
+        reasonVi: profile.specialCircumstances?.isGovernmentEmployee
+          ? undefined
+          : "Không phải là công chức",
       });
     }
 
@@ -814,13 +1057,25 @@ export class VietnameseEligibilityEngine {
       criteria.push({
         name: "Student Status",
         nameVi: "Tình trạng sinh viên",
-        passed: !!profile.specialCircumstances?.isStudent || profile.employmentInfo.employmentType === "student",
-        actualValue: profile.specialCircumstances?.isStudent || profile.employmentInfo.employmentType === "student",
+        passed:
+          !!profile.specialCircumstances?.isStudent ||
+          profile.employmentInfo.employmentType === "student",
+        actualValue:
+          profile.specialCircumstances?.isStudent ||
+          profile.employmentInfo.employmentType === "student",
         requiredValue: true,
         importance: "critical",
         weight: 0.1,
-        reason: (profile.specialCircumstances?.isStudent || profile.employmentInfo.employmentType === "student") ? undefined : "Not a student",
-        reasonVi: (profile.specialCircumstances?.isStudent || profile.employmentInfo.employmentType === "student") ? undefined : "Không phải là sinh viên",
+        reason:
+          profile.specialCircumstances?.isStudent ||
+          profile.employmentInfo.employmentType === "student"
+            ? undefined
+            : "Not a student",
+        reasonVi:
+          profile.specialCircumstances?.isStudent ||
+          profile.employmentInfo.employmentType === "student"
+            ? undefined
+            : "Không phải là sinh viên",
       });
     }
 
@@ -832,57 +1087,85 @@ export class VietnameseEligibilityEngine {
    */
   private static generateRecommendations(
     failedCriteria: EligibilityCriterion[],
-    warningCriteria: EligibilityCriterion[]
+    warningCriteria: EligibilityCriterion[],
   ): string[] {
     const recommendations: string[] = [];
 
     for (const criterion of failedCriteria) {
       switch (criterion.name) {
         case "Minimum Age":
-          recommendations.push("Consider waiting until you meet the minimum age requirement or explore other loan products with lower age requirements.");
+          recommendations.push(
+            "Consider waiting until you meet the minimum age requirement or explore other loan products with lower age requirements.",
+          );
           break;
         case "Maximum Age at Maturity":
-          recommendations.push("Consider a shorter loan term or explore loan products with higher maximum age limits.");
+          recommendations.push(
+            "Consider a shorter loan term or explore loan products with higher maximum age limits.",
+          );
           break;
         case "Vietnamese Citizenship":
-          recommendations.push("This loan product requires Vietnamese citizenship. Please check with the bank about options for non-citizens.");
+          recommendations.push(
+            "This loan product requires Vietnamese citizenship. Please check with the bank about options for non-citizens.",
+          );
           break;
         case "Employment Type":
-          recommendations.push("Consider employment options that meet the lender's requirements or explore loan products for your employment type.");
+          recommendations.push(
+            "Consider employment options that meet the lender's requirements or explore loan products for your employment type.",
+          );
           break;
         case "Employment Duration":
-          recommendations.push("Maintain current employment longer to meet the minimum duration requirement.");
+          recommendations.push(
+            "Maintain current employment longer to meet the minimum duration requirement.",
+          );
           break;
         case "Income Proof Capability":
-          recommendations.push("Prepare income documentation such as payslips, tax returns, or bank statements.");
+          recommendations.push(
+            "Prepare income documentation such as payslips, tax returns, or bank statements.",
+          );
           break;
         case "Minimum Monthly Income":
-          recommendations.push("Consider increasing your income through additional sources or applying for a smaller loan amount.");
+          recommendations.push(
+            "Consider increasing your income through additional sources or applying for a smaller loan amount.",
+          );
           break;
         case "Credit Score":
-          recommendations.push("Work on improving your credit score by paying bills on time and reducing existing debt.");
+          recommendations.push(
+            "Work on improving your credit score by paying bills on time and reducing existing debt.",
+          );
           break;
         case "Payment History":
-          recommendations.push("Focus on making all payments on time to improve your payment history.");
+          recommendations.push(
+            "Focus on making all payments on time to improve your payment history.",
+          );
           break;
         case "Default History":
-          recommendations.push("Wait until any negative items age off your credit report and demonstrate consistent on-time payments.");
+          recommendations.push(
+            "Wait until any negative items age off your credit report and demonstrate consistent on-time payments.",
+          );
           break;
         case "Collateral Requirement":
-          recommendations.push("Prepare acceptable collateral such as real estate, vehicles, or savings accounts.");
+          recommendations.push(
+            "Prepare acceptable collateral such as real estate, vehicles, or savings accounts.",
+          );
           break;
         case "Minimum Loan Amount":
-          recommendations.push("Apply for a larger loan amount that meets the minimum requirement.");
+          recommendations.push(
+            "Apply for a larger loan amount that meets the minimum requirement.",
+          );
           break;
         case "Maximum Loan Amount":
-          recommendations.push("Apply for a smaller loan amount or consider providing additional collateral.");
+          recommendations.push(
+            "Apply for a smaller loan amount or consider providing additional collateral.",
+          );
           break;
       }
     }
 
     for (const criterion of warningCriteria) {
       if (criterion.name === "Current Debt-to-Income Ratio") {
-        recommendations.push("Consider paying down existing debts to improve your debt-to-income ratio.");
+        recommendations.push(
+          "Consider paying down existing debts to improve your debt-to-income ratio.",
+        );
       }
     }
 
@@ -894,57 +1177,85 @@ export class VietnameseEligibilityEngine {
    */
   private static generateRecommendationsVi(
     failedCriteria: EligibilityCriterion[],
-    warningCriteria: EligibilityCriterion[]
+    warningCriteria: EligibilityCriterion[],
   ): string[] {
     const recommendations: string[] = [];
 
     for (const criterion of failedCriteria) {
       switch (criterion.name) {
         case "Minimum Age":
-          recommendations.push("Cân nhắc đợi đến khi đủ tuổi tối thiểu hoặc khám phá các sản phẩm vay khác có yêu cầu tuổi thấp hơn.");
+          recommendations.push(
+            "Cân nhắc đợi đến khi đủ tuổi tối thiểu hoặc khám phá các sản phẩm vay khác có yêu cầu tuổi thấp hơn.",
+          );
           break;
         case "Maximum Age at Maturity":
-          recommendations.push("Cân nhắc thời gian vay ngắn hơn hoặc khám phá các sản phẩm vay có giới hạn tuổi cao hơn.");
+          recommendations.push(
+            "Cân nhắc thời gian vay ngắn hơn hoặc khám phá các sản phẩm vay có giới hạn tuổi cao hơn.",
+          );
           break;
         case "Vietnamese Citizenship":
-          recommendations.push("Sản phẩm vay này yêu cầu quốc tịch Việt Nam. Vui lòng kiểm tra với ngân hàng về các lựa chọn cho người không phải công dân Việt Nam.");
+          recommendations.push(
+            "Sản phẩm vay này yêu cầu quốc tịch Việt Nam. Vui lòng kiểm tra với ngân hàng về các lựa chọn cho người không phải công dân Việt Nam.",
+          );
           break;
         case "Employment Type":
-          recommendations.push("Cân nhắc các lựa chọn việc làm đáp ứng yêu cầu của người cho vay hoặc khám phá các sản phẩm vay cho loại hình việc làm của bạn.");
+          recommendations.push(
+            "Cân nhắc các lựa chọn việc làm đáp ứng yêu cầu của người cho vay hoặc khám phá các sản phẩm vay cho loại hình việc làm của bạn.",
+          );
           break;
         case "Employment Duration":
-          recommendations.push("Duy trì việc làm hiện tại lâu hơn để đáp ứng yêu cầu thời gian tối thiểu.");
+          recommendations.push(
+            "Duy trì việc làm hiện tại lâu hơn để đáp ứng yêu cầu thời gian tối thiểu.",
+          );
           break;
         case "Income Proof Capability":
-          recommendations.push("Chuẩn bị tài liệu chứng minh thu nhập như bảng lương, tờ khai thuế, hoặc sao kê tài khoản ngân hàng.");
+          recommendations.push(
+            "Chuẩn bị tài liệu chứng minh thu nhập như bảng lương, tờ khai thuế, hoặc sao kê tài khoản ngân hàng.",
+          );
           break;
         case "Minimum Monthly Income":
-          recommendations.push("Cân nhắc tăng thu nhập thông qua các nguồn bổ sung hoặc nộp đơn vay số tiền nhỏ hơn.");
+          recommendations.push(
+            "Cân nhắc tăng thu nhập thông qua các nguồn bổ sung hoặc nộp đơn vay số tiền nhỏ hơn.",
+          );
           break;
         case "Credit Score":
-          recommendations.push("Cải thiện điểm tín dụng bằng cách thanh toán hóa đơn đúng hạn và giảm nợ hiện có.");
+          recommendations.push(
+            "Cải thiện điểm tín dụng bằng cách thanh toán hóa đơn đúng hạn và giảm nợ hiện có.",
+          );
           break;
         case "Payment History":
-          recommendations.push("Tập trung thanh toán tất cả các khoản đúng hạn để cải thiện lịch sử thanh toán.");
+          recommendations.push(
+            "Tập trung thanh toán tất cả các khoản đúng hạn để cải thiện lịch sử thanh toán.",
+          );
           break;
         case "Default History":
-          recommendations.push("Đợi cho đến khi các mục tiêu tiêu cực hết hạn trên báo cáo tín dụng và chứng minh thanh toán đúng hạn.");
+          recommendations.push(
+            "Đợi cho đến khi các mục tiêu tiêu cực hết hạn trên báo cáo tín dụng và chứng minh thanh toán đúng hạn.",
+          );
           break;
         case "Collateral Requirement":
-          recommendations.push("Chuẩn bị tài sản đảm bảo chấp nhận được như bất động sản, phương tiện, hoặc sổ tiết kiệm.");
+          recommendations.push(
+            "Chuẩn bị tài sản đảm bảo chấp nhận được như bất động sản, phương tiện, hoặc sổ tiết kiệm.",
+          );
           break;
         case "Minimum Loan Amount":
-          recommendations.push("Nộp đơn vay số tiền lớn hơn đáp ứng yêu cầu tối thiểu.");
+          recommendations.push(
+            "Nộp đơn vay số tiền lớn hơn đáp ứng yêu cầu tối thiểu.",
+          );
           break;
         case "Maximum Loan Amount":
-          recommendations.push("Nộp đơn vay số tiền nhỏ hơn hoặc cân nhắc cung cấp tài sản đảm bảo bổ sung.");
+          recommendations.push(
+            "Nộp đơn vay số tiền nhỏ hơn hoặc cân nhắc cung cấp tài sản đảm bảo bổ sung.",
+          );
           break;
       }
     }
 
     for (const criterion of warningCriteria) {
       if (criterion.name === "Current Debt-to-Income Ratio") {
-        recommendations.push("Cân nhắc trả nợ hiện có để cải thiện tỷ lệ nợ trên thu nhập.");
+        recommendations.push(
+          "Cân nhắc trả nợ hiện có để cải thiện tỷ lệ nợ trên thu nhập.",
+        );
       }
     }
 
@@ -956,7 +1267,7 @@ export class VietnameseEligibilityEngine {
    */
   private static generateRequiredDocuments(
     profile: ApplicantProfile,
-    product: VietnameseLoanProduct
+    product: VietnameseLoanProduct,
   ): DocumentRequirement[] {
     const documents: DocumentRequirement[] = [];
 
@@ -992,7 +1303,10 @@ export class VietnameseEligibilityEngine {
       });
     }
 
-    if (profile.employmentInfo.employmentType === "self_employed" || profile.employmentInfo.employmentType === "business_owner") {
+    if (
+      profile.employmentInfo.employmentType === "self_employed" ||
+      profile.employmentInfo.employmentType === "business_owner"
+    ) {
       documents.push({
         type: "business_registration",
         typeVi: "Giấy đăng ký kinh doanh",
@@ -1022,7 +1336,10 @@ export class VietnameseEligibilityEngine {
     });
 
     // Add collateral documents if required
-    if (product.eligibility.collateralRequired && profile.loanRequirements.collateralAvailable) {
+    if (
+      product.eligibility.collateralRequired &&
+      profile.loanRequirements.collateralAvailable
+    ) {
       switch (profile.loanRequirements.collateralType) {
         case "real_estate":
           documents.push({
@@ -1030,7 +1347,8 @@ export class VietnameseEligibilityEngine {
             typeVi: "Giấy tờ bất động sản",
             mandatory: true,
             description: "Property ownership documents, land use certificate",
-            descriptionVi: "Giấy tờ sở hữu bất động sản, giấy chứng nhận quyền sử dụng đất",
+            descriptionVi:
+              "Giấy tờ sở hữu bất động sản, giấy chứng nhận quyền sử dụng đất",
             whereToObtain: "Land registration office",
             whereToObtainVi: "Văn phòng đăng ký đất đai",
           });
@@ -1071,28 +1389,50 @@ export class VietnameseEligibilityEngine {
   private static generateNextSteps(
     eligible: boolean,
     confidence: "low" | "medium" | "high",
-    failedCriteria: EligibilityCriterion[]
+    failedCriteria: EligibilityCriterion[],
   ): string[] {
     const nextSteps: string[] = [];
 
     if (eligible) {
       if (confidence === "high") {
-        nextSteps.push("You can proceed with your loan application with high confidence of approval.");
-        nextSteps.push("Prepare all required documents before starting the application.");
+        nextSteps.push(
+          "You can proceed with your loan application with high confidence of approval.",
+        );
+        nextSteps.push(
+          "Prepare all required documents before starting the application.",
+        );
         nextSteps.push("Consider applying online for faster processing.");
       } else if (confidence === "medium") {
-        nextSteps.push("You have a good chance of approval, but consider improving your profile.");
-        nextSteps.push("Double-check all documents for accuracy and completeness.");
-        nextSteps.push("Be prepared to provide additional information if requested.");
+        nextSteps.push(
+          "You have a good chance of approval, but consider improving your profile.",
+        );
+        nextSteps.push(
+          "Double-check all documents for accuracy and completeness.",
+        );
+        nextSteps.push(
+          "Be prepared to provide additional information if requested.",
+        );
       } else {
-        nextSteps.push("You meet minimum requirements, but consider strengthening your application.");
-        nextSteps.push("Review the recommendations to improve your chances of approval.");
-        nextSteps.push("Consider applying with a co-signer or additional collateral if possible.");
+        nextSteps.push(
+          "You meet minimum requirements, but consider strengthening your application.",
+        );
+        nextSteps.push(
+          "Review the recommendations to improve your chances of approval.",
+        );
+        nextSteps.push(
+          "Consider applying with a co-signer or additional collateral if possible.",
+        );
       }
     } else {
-      nextSteps.push("Focus on addressing the critical eligibility issues identified.");
-      nextSteps.push("Consider alternative loan products that better match your profile.");
-      nextSteps.push("Work on improving your credit score and financial situation before reapplying.");
+      nextSteps.push(
+        "Focus on addressing the critical eligibility issues identified.",
+      );
+      nextSteps.push(
+        "Consider alternative loan products that better match your profile.",
+      );
+      nextSteps.push(
+        "Work on improving your credit score and financial situation before reapplying.",
+      );
     }
 
     return nextSteps;
@@ -1104,28 +1444,48 @@ export class VietnameseEligibilityEngine {
   private static generateNextStepsVi(
     eligible: boolean,
     confidence: "low" | "medium" | "high",
-    failedCriteria: EligibilityCriterion[]
+    failedCriteria: EligibilityCriterion[],
   ): string[] {
     const nextSteps: string[] = [];
 
     if (eligible) {
       if (confidence === "high") {
-        nextSteps.push("Bạn có thể tiếp tục đơn vay với khả năng phê duyệt cao.");
-        nextSteps.push("Chuẩn bị tất cả tài liệu cần thiết trước khi bắt đầu hồ sơ.");
+        nextSteps.push(
+          "Bạn có thể tiếp tục đơn vay với khả năng phê duyệt cao.",
+        );
+        nextSteps.push(
+          "Chuẩn bị tất cả tài liệu cần thiết trước khi bắt đầu hồ sơ.",
+        );
         nextSteps.push("Cân nhắc nộp đơn trực tuyến để xử lý nhanh hơn.");
       } else if (confidence === "medium") {
-        nextSteps.push("Bạn có cơ hội phê duyệt tốt, nhưng hãy xem xét cải thiện hồ sơ.");
-        nextSteps.push("Kiểm tra lại tất cả tài liệu để đảm bảo chính xác và đầy đủ.");
+        nextSteps.push(
+          "Bạn có cơ hội phê duyệt tốt, nhưng hãy xem xét cải thiện hồ sơ.",
+        );
+        nextSteps.push(
+          "Kiểm tra lại tất cả tài liệu để đảm bảo chính xác và đầy đủ.",
+        );
         nextSteps.push("Sẵn sàng cung cấp thông tin bổ sung nếu được yêu cầu.");
       } else {
-        nextSteps.push("Bạn đáp ứng yêu cầu tối thiểu, nhưng hãy xem xét tăng cường hồ sơ.");
-        nextSteps.push("Xem lại các khuyến nghị để cải thiện cơ hội phê duyệt.");
-        nextSteps.push("Cân nhắc nộp đơn với người đồng ký hoặc tài sản đảm bảo bổ sung nếu có thể.");
+        nextSteps.push(
+          "Bạn đáp ứng yêu cầu tối thiểu, nhưng hãy xem xét tăng cường hồ sơ.",
+        );
+        nextSteps.push(
+          "Xem lại các khuyến nghị để cải thiện cơ hội phê duyệt.",
+        );
+        nextSteps.push(
+          "Cân nhắc nộp đơn với người đồng ký hoặc tài sản đảm bảo bổ sung nếu có thể.",
+        );
       }
     } else {
-      nextSteps.push("Tập trung giải quyết các vấn đề đủ điều kiện quan trọng được xác định.");
-      nextSteps.push("Cân nhắc các sản phẩm vay khác phù hợp hơn với hồ sơ của bạn.");
-      nextSteps.push("Cải thiện điểm tín dụng và tình hình tài chính trước khi nộp đơn lại.");
+      nextSteps.push(
+        "Tập trung giải quyết các vấn đề đủ điều kiện quan trọng được xác định.",
+      );
+      nextSteps.push(
+        "Cân nhắc các sản phẩm vay khác phù hợp hơn với hồ sơ của bạn.",
+      );
+      nextSteps.push(
+        "Cải thiện điểm tín dụng và tình hình tài chính trước khi nộp đơn lại.",
+      );
     }
 
     return nextSteps;
@@ -1140,7 +1500,10 @@ export class VietnameseEligibilityEngine {
     let age = today.getFullYear() - birthDate.getFullYear();
     const monthDiff = today.getMonth() - birthDate.getMonth();
 
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+    if (
+      monthDiff < 0 ||
+      (monthDiff === 0 && today.getDate() < birthDate.getDate())
+    ) {
       age--;
     }
 
