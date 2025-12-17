@@ -10,6 +10,7 @@ import {
   DialogContent,
   DialogTitle,
   DialogHeader,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import type { EkycFieldConfig } from "@/components/form-generation/types";
 import type { VerificationResult } from "@/lib/verification/types";
@@ -84,6 +85,9 @@ export function VerificationModal({
           <DialogTitle className="text-lg font-semibold text-gray-900">
             {config.verification?.modalConfig?.title || "Identity Verification"}
           </DialogTitle>
+          <DialogDescription>
+            Verify your identity using your ID document and facial recognition
+          </DialogDescription>
         </DialogHeader>
 
         {/* Content */}

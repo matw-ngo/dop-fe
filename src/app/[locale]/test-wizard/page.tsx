@@ -19,8 +19,6 @@ export default function WizardTestPage() {
     steps: [
       {
         id: "personal-info",
-        title: "Personal Information",
-        description: "Tell us about yourself",
         fields: [
           {
             id: "firstName",

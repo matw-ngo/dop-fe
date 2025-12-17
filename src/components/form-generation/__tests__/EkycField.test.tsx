@@ -5,7 +5,13 @@
  * with the form generation library.
  */
 
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+  act,
+} from "@testing-library/react";
 import { vi, describe, it, expect, beforeEach } from "vitest";
 import { FormProvider } from "@/components/form-generation/context/FormContext";
 import { EkycField } from "../fields/EkycField";
@@ -17,19 +23,29 @@ import {
 import { verificationManager } from "@/lib/verification/manager";
 import { VNPTVerificationProvider } from "@/lib/verification/providers/vnpt-provider";
 
+// Create mock references that will be assigned after mocking
+let mockVerificationManager: any;
+let mockVNPTProvider: any;
+
 // Mock verification manager
-vi.mock("@/lib/verification", () => ({
+vi.mock("@/lib/verification/manager", () => ({
   verificationManager: {
     verify: vi.fn(),
     getResult: vi.fn(),
     cancel: vi.fn(),
-    registerProvider: vi.fn(),
+    getStatus: vi.fn(),
+    registerProvider: vi.fn().mockResolvedValue(undefined),
   },
 }));
 
 // Mock VNPT provider
 vi.mock("@/lib/verification/providers/vnpt-provider", () => ({
-  VNPTVerificationProvider: vi.fn(),
+  VNPTVerificationProvider: vi.fn().mockImplementation(() => ({
+    initialize: vi.fn().mockResolvedValue(undefined),
+    verify: vi.fn(),
+    cancel: vi.fn(),
+    getStatus: vi.fn(),
+  })),
 }));
 
 // Mock FormContext
@@ -52,7 +68,41 @@ const renderWithProvider = (component: React.ReactElement) => {
   );
 };
 
+// Helper to render EkycField with required props
+const renderEkycField = (
+  field: EkycFieldConfig,
+  value?: any,
+  onChange?: (value: any) => void,
+  props?: Partial<{ disabled: boolean; error: string }>,
+) => {
+  return renderWithProvider(
+    <EkycField
+      field={field}
+      value={value || null}
+      onChange={onChange || vi.fn()}
+      disabled={props?.disabled}
+      error={props?.error}
+    />,
+  );
+};
+
 describe("EkycField", () => {
+  beforeEach(() => {
+    // Get reference to the mocked manager
+    mockVerificationManager = verificationManager;
+    vi.clearAllMocks();
+    mockVerificationManager.verify.mockResolvedValue({
+      id: "test_session",
+      status: "processing",
+      provider: "vnpt",
+      startedAt: new Date().toISOString(),
+    } as any);
+    mockVerificationManager.getResult.mockResolvedValue(mockVerificationResult);
+    mockVerificationManager.getStatus.mockResolvedValue(
+      "success" as VerificationStatus,
+    );
+  });
+
   const mockField: EkycFieldConfig = {
     id: "ekyc_test",
     name: "ekyc_test",
@@ -150,22 +200,21 @@ describe("EkycField", () => {
   });
 
   it("renders verification button when not verified", () => {
-    renderWithProvider(<EkycField field={mockField} />);
+    renderEkycField(mockField);
 
     expect(screen.getByText("Verify Identity")).toBeInTheDocument();
     expect(screen.getByRole("button")).not.toBeDisabled();
   });
 
   it("shows loading state during verification", async () => {
-    const mockVerify = vi.mocked(verificationManager.verify);
-    mockVerify.mockResolvedValue({
+    mockVerificationManager.verify.mockResolvedValue({
       id: "test_session",
       status: "processing",
       provider: "vnpt",
       startedAt: new Date().toISOString(),
     } as any);
 
-    const mockGetResult = vi.mocked(verificationManager.getResult);
+    const mockGetResult = mockVerificationManager.getResult;
     mockGetResult.mockImplementation(
       () =>
         new Promise((resolve) =>
@@ -173,7 +222,7 @@ describe("EkycField", () => {
         ),
     );
 
-    renderWithProvider(<EkycField field={mockField} />);
+    renderEkycField(mockField);
 
     const button = screen.getByText("Verify Identity");
     fireEvent.click(button);
@@ -185,7 +234,7 @@ describe("EkycField", () => {
   });
 
   it("shows success state after successful verification", async () => {
-    const mockVerify = vi.mocked(verificationManager.verify);
+    const mockVerify = mockVerificationManager.verify;
     mockVerify.mockResolvedValue({
       id: "test_session",
       status: "processing",
@@ -193,10 +242,10 @@ describe("EkycField", () => {
       startedAt: new Date().toISOString(),
     } as any);
 
-    const mockGetResult = vi.mocked(verificationManager.getResult);
+    const mockGetResult = mockVerificationManager.getResult;
     mockGetResult.mockResolvedValue(mockVerificationResult);
 
-    renderWithProvider(<EkycField field={mockField} />);
+    renderEkycField(mockField);
 
     const button = screen.getByText("Verify Identity");
     fireEvent.click(button);
@@ -222,10 +271,10 @@ describe("EkycField", () => {
   });
 
   it("shows error state on verification failure", async () => {
-    const mockVerify = vi.mocked(verificationManager.verify);
+    const mockVerify = mockVerificationManager.verify;
     mockVerify.mockRejectedValue(new Error("Network error"));
 
-    renderWithProvider(<EkycField field={mockField} />);
+    renderEkycField(mockField);
 
     const button = screen.getByText("Verify Identity");
     fireEvent.click(button);
@@ -237,7 +286,7 @@ describe("EkycField", () => {
   });
 
   it("shows low confidence warning", async () => {
-    const mockVerify = vi.mocked(verificationManager.verify);
+    const mockVerify = mockVerificationManager.verify;
     mockVerify.mockResolvedValue({
       id: "test_session",
       status: "processing",
@@ -253,10 +302,10 @@ describe("EkycField", () => {
       },
     };
 
-    const mockGetResult = vi.mocked(verificationManager.getResult);
+    const mockGetResult = mockVerificationManager.getResult;
     mockGetResult.mockResolvedValue(lowConfidenceResult);
 
-    renderWithProvider(<EkycField field={mockField} />);
+    renderEkycField(mockField);
 
     const button = screen.getByText("Verify Identity");
     fireEvent.click(button);
@@ -267,10 +316,19 @@ describe("EkycField", () => {
   });
 
   it("disables verification when disabled prop is true", () => {
-    renderWithProvider(<EkycField field={mockField} disabled />);
+    const disabledField = {
+      ...mockField,
+    };
 
-    const button = screen.getByText("Verify Identity");
+    renderEkycField(disabledField, null, vi.fn(), { disabled: true });
+
+    const button = screen.getByRole("button", { name: "Verify Identity" });
     expect(button).toBeDisabled();
+    expect(button).toHaveClass(
+      "bg-gray-300",
+      "text-gray-500",
+      "cursor-not-allowed",
+    );
   });
 
   it("calls onVerified callback when verification succeeds", async () => {
@@ -283,7 +341,7 @@ describe("EkycField", () => {
       },
     };
 
-    const mockVerify = vi.mocked(verificationManager.verify);
+    const mockVerify = mockVerificationManager.verify;
     mockVerify.mockResolvedValue({
       id: "test_session",
       status: "processing",
@@ -291,10 +349,10 @@ describe("EkycField", () => {
       startedAt: new Date().toISOString(),
     } as any);
 
-    const mockGetResult = vi.mocked(verificationManager.getResult);
+    const mockGetResult = mockVerificationManager.getResult;
     mockGetResult.mockResolvedValue(mockVerificationResult);
 
-    renderWithProvider(<EkycField field={fieldWithCallback} />);
+    renderEkycField(fieldWithCallback);
 
     const button = screen.getByText("Verify Identity");
     fireEvent.click(button);
@@ -314,10 +372,10 @@ describe("EkycField", () => {
       },
     };
 
-    const mockVerify = vi.mocked(verificationManager.verify);
+    const mockVerify = mockVerificationManager.verify;
     mockVerify.mockRejectedValue(new Error("API Error"));
 
-    renderWithProvider(<EkycField field={fieldWithErrorCallback} />);
+    renderEkycField(fieldWithErrorCallback);
 
     const button = screen.getByText("Verify Identity");
     fireEvent.click(button);
@@ -328,12 +386,12 @@ describe("EkycField", () => {
   });
 
   it("initializes VNPT provider on mount", async () => {
-    renderWithProvider(<EkycField field={mockField} />);
+    renderEkycField(mockField);
 
     await waitFor(() => {
       expect(verificationManager.registerProvider).toHaveBeenCalledWith(
         "vnpt",
-        expect.any(VNPTVerificationProvider),
+        expect.any(Object), // Since VNPTVerificationProvider is mocked, expect any object
         expect.objectContaining({
           environment: "production",
           language: "vi",
@@ -350,7 +408,7 @@ describe("EkycField", () => {
         renderMode: "inline" as const,
       };
 
-      renderWithProvider(<EkycField field={inlineField} />);
+      renderEkycField(inlineField);
 
       expect(screen.getByText("Verify Your Identity")).toBeInTheDocument();
       expect(
@@ -360,7 +418,7 @@ describe("EkycField", () => {
       ).toBeInTheDocument();
     });
 
-    it("renders modal mode correctly", () => {
+    it("renders modal mode correctly", async () => {
       const modalField = {
         ...mockField,
         renderMode: "modal" as const,
@@ -373,24 +431,37 @@ describe("EkycField", () => {
         },
       };
 
-      renderWithProvider(<EkycField field={modalField} />);
+      renderEkycField(modalField);
 
       // Initially shows button
       expect(screen.getByText("Verify Identity")).toBeInTheDocument();
 
-      // Click to open modal
+      // Click to open modal with act
       const button = screen.getByText("Verify Identity");
-      fireEvent.click(button);
 
-      // Should show modal content
-      expect(screen.getByText("Identity Verification")).toBeInTheDocument();
+      await act(async () => {
+        fireEvent.click(button);
+      });
+
+      // Should show modal content - look for the custom title we set
+      await waitFor(() => {
+        expect(
+          screen.getByText("Custom Verification Title"),
+        ).toBeInTheDocument();
+      });
     });
 
     it("renders custom mode with custom render function", () => {
       const customField = {
         ...mockField,
         renderMode: "custom" as const,
-        customRender: ({ startVerification, isVerifying }) => (
+        customRender: ({
+          startVerification,
+          isVerifying,
+        }: {
+          startVerification: any;
+          isVerifying: any;
+        }) => (
           <div data-testid="custom-ekyc">
             <button onClick={startVerification} disabled={isVerifying}>
               Custom Verify
@@ -400,7 +471,7 @@ describe("EkycField", () => {
         ),
       };
 
-      renderWithProvider(<EkycField field={customField} />);
+      renderEkycField(customField);
 
       expect(screen.getByTestId("custom-ekyc")).toBeInTheDocument();
       expect(screen.getByText("Custom Verify")).toBeInTheDocument();
@@ -409,14 +480,14 @@ describe("EkycField", () => {
 
   describe("accessibility", () => {
     it("has proper ARIA labels", () => {
-      renderWithProvider(<EkycField field={mockField} />);
+      renderEkycField(mockField);
 
       const button = screen.getByRole("button");
       expect(button).toHaveAttribute("type", "button");
     });
 
     it("announces verification status to screen readers", async () => {
-      const mockVerify = vi.mocked(verificationManager.verify);
+      const mockVerify = mockVerificationManager.verify;
       mockVerify.mockResolvedValue({
         id: "test_session",
         status: "processing",
@@ -424,10 +495,10 @@ describe("EkycField", () => {
         startedAt: new Date().toISOString(),
       } as any);
 
-      const mockGetResult = vi.mocked(verificationManager.getResult);
+      const mockGetResult = mockVerificationManager.getResult;
       mockGetResult.mockResolvedValue(mockVerificationResult);
 
-      renderWithProvider(<EkycField field={mockField} />);
+      renderEkycField(mockField);
 
       const button = screen.getByText("Verify Identity");
       fireEvent.click(button);
@@ -452,7 +523,7 @@ describe("EkycField", () => {
         },
       };
 
-      const mockVerify = vi.mocked(verificationManager.verify);
+      const mockVerify = mockVerificationManager.verify;
       mockVerify.mockResolvedValue({
         id: "test_session",
         status: "processing",
@@ -460,10 +531,10 @@ describe("EkycField", () => {
         startedAt: new Date().toISOString(),
       } as any);
 
-      const mockGetResult = vi.mocked(verificationManager.getResult);
+      const mockGetResult = mockVerificationManager.getResult;
       mockGetResult.mockResolvedValue(mockVerificationResult);
 
-      renderWithProvider(<EkycField field={fieldWithNestedMapping} />);
+      renderEkycField(fieldWithNestedMapping);
 
       const button = screen.getByText("Verify Identity");
       fireEvent.click(button);

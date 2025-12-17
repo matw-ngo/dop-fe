@@ -108,6 +108,15 @@ export function VerificationInline({
   if (isVerifying) {
     return (
       <div className="border border-blue-200 bg-blue-50 rounded-lg p-4">
+        {/* Screen reader announcement */}
+        <div role="status" aria-live="polite" className="sr-only">
+          {status === "initializing" && "Initializing identity verification"}
+          {status === "processing" &&
+            "Processing identity verification documents"}
+          {status === "success" && "Identity verification completed"}
+          {status === "error" && "Identity verification failed"}
+        </div>
+
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-600 mr-3"></div>

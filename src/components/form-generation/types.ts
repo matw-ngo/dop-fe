@@ -989,7 +989,7 @@ export interface FormStep {
   id: string;
 
   /** Step title */
-  title: string;
+  title?: string;
 
   /** Step description/subtitle */
   description?: string;
