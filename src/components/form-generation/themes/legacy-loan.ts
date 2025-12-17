@@ -2,6 +2,9 @@
  * Form Generation Library - Legacy Loan Theme
  *
  * Theme matching the legacy LoanExtraInfoForm component
+ *
+ * @deprecated Use legacy-loan-simplified.ts instead
+ * See example-usage.tsx for migration guide
  */
 
 import type { FormTheme } from "./types";

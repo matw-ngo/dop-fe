@@ -2,6 +2,9 @@
  * Form Generation Library - Theme Types
  *
  * Type definitions for the theme system
+ *
+ * @deprecated Consider using the simplified theme system in types-simplified.ts
+ * See example-usage.tsx for migration guide
  */
 
 /**
