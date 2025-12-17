@@ -47,6 +47,9 @@ export function SelectField({
     // Internal label defaults (can be overridden by className)
     internalLabel && "min-h-[60px] py-3", // structural default for internal label
 
+    // Placeholder color override - applied through theme
+    // The theme already handles placeholder styling with higher specificity
+
     // User override (highest priority)
     className,
   );
@@ -109,7 +112,10 @@ export function SelectField({
               {field.label}
             </span>
           )}
-          <SelectValue placeholder={field.placeholder || "Select..."} />
+          <SelectValue
+            placeholder={field.placeholder || "Select..."}
+            className="data-[placeholder]:text-gray-400 data-[placeholder]:font-medium"
+          />
         </div>
       </SelectTrigger>
       {renderSelectContent()}

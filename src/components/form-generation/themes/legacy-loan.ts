@@ -10,7 +10,7 @@ export const legacyLoanTheme: FormTheme = {
   name: "legacy-loan",
 
   control: {
-    base: "w-full border bg-white transition-colors placeholder:text-gray-300 data-[placeholder]:text-gray-300",
+    base: "w-full border bg-white transition-colors placeholder:text-gray-400 placeholder:text-sm placeholder:font-medium data-[placeholder]:text-gray-400 data-[placeholder]:text-sm data-[placeholder]:font-medium [&::placeholder]:text-gray-400 [&::placeholder]:text-sm [&::placeholder]:font-medium [&[data-placeholder]]:text-gray-400 [&[data-placeholder]]:text-sm [&[data-placeholder]]:font-medium",
 
     variants: {
       default: "border-[#bfd1cc] rounded-[8px]",
@@ -21,7 +21,7 @@ export const legacyLoanTheme: FormTheme = {
 
     sizes: {
       sm: "h-12 px-3 text-sm",
-      md: "h-[60px] px-4 text-base md:text-base",
+      md: "h-[60px] px-4 text-sm md:text-sm",
       lg: "h-16 px-4 text-lg",
     },
 

@@ -93,8 +93,9 @@ export function TextField({
           aria-invalid={!!error}
           aria-describedby={error ? `${field.id}-error` : undefined}
           className={cn(
-            "border-none shadow-none focus-visible:ring-0 px-0 h-6 py-0 bg-transparent w-full text-base", // Fixed height for cursor consistency
-            internalLabel && "mt-1", // minimal adjustment to align with label
+            "border-none shadow-none focus-visible:ring-0 px-0 h-6 py-0 bg-transparent w-full text-sm",
+            internalLabel && "mt-1",
+            "placeholder:text-gray-400 placeholder:font-medium [&::placeholder]:text-gray-400 [&::placeholder]:font-medium",
           )}
         />
 
