@@ -45,7 +45,7 @@ export const legacyLoanTheme: FormTheme = {
   focusRing: {
     width: "2px",
     color: "#017848",
-    opacity: "0.2",
+    opacity: "20",
   },
 
   fieldOptions: {
@@ -66,5 +66,27 @@ export const legacyLoanTheme: FormTheme = {
 
   help: {
     base: "text-sm text-gray-500 mt-1",
+  },
+
+  // Optional specialized styling
+  components: {
+    file: {
+      borderDashed: "#bfd1cc",
+      backgroundDashed: "#ffffff",
+      hoverBackground: "#f9fafb",
+      hoverBorder: "#017848",
+    },
+
+    ekyc: {
+      success: "#017848",
+      processing: "#017848",
+      retryButton: "#017848",
+    },
+
+    checkable: {
+      checkedColor: "#017848",
+      uncheckedBorder: "#d1d5db",
+      focusRing: "#017848",
+    },
   },
 };

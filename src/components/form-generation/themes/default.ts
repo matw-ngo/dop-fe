@@ -66,4 +66,26 @@ export const defaultTheme: FormTheme = {
   help: {
     base: "text-sm text-muted-foreground mt-1.5",
   },
+
+  // Optional specialized styling
+  components: {
+    file: {
+      borderDashed: "hsl(var(--border))",
+      backgroundDashed: "hsl(var(--background))",
+      hoverBackground: "hsl(var(--muted))",
+      hoverBorder: "hsl(var(--ring))",
+    },
+
+    ekyc: {
+      success: "hsl(var(--ring))",
+      processing: "hsl(var(--ring))",
+      retryButton: "hsl(var(--ring))",
+    },
+
+    checkable: {
+      checkedColor: "hsl(var(--ring))",
+      uncheckedBorder: "hsl(var(--border))",
+      focusRing: "hsl(var(--ring))",
+    },
+  },
 };

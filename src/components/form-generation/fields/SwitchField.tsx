@@ -1,11 +1,15 @@
 "use client";
 
 import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
-import { useFormTheme } from "../themes/ThemeProvider";
+import * as SwitchPrimitive from "@radix-ui/react-switch";
 import type { FieldComponentProps } from "../types";
 import { cn } from "../utils/helpers";
 
+/**
+ * SwitchField component that handles toggle switches
+ * Only the thumb (circle) can toggle the switch, not the entire track
+ */
+// TODO: Improve UI consistency and theme integration to match TextField/SelectField implementation
 export function SwitchField({
   field,
   value,
@@ -15,51 +19,131 @@ export function SwitchField({
   disabled,
   className,
 }: FieldComponentProps<boolean>) {
-  const { theme } = useFormTheme();
   const isChecked = !!value;
   const isDisabled = disabled || field.disabled;
 
-  // Build className for the container
-  const containerClassName = cn("flex items-center gap-3", className);
-
-  // Build className for the switch
-  const switchClassName = cn(
-    // Base styles from theme
-    theme.control.base,
-    theme.control.variants.default,
-    theme.control.sizes.md,
-
-    // State styles
-    theme.control.states.focus,
-    error && theme.control.states.error,
-    isDisabled && theme.control.states.disabled,
+  // Base switch container styles
+  const switchContainerStyles = cn(
+    // Relative positioning for thumb overlay
+    "relative",
+    "inline-flex",
+    // Size
+    "h-6",
+    "w-11",
+    // Track styling
+    "rounded-full",
+    "border-2",
+    "transition-colors",
+    "duration-200",
+    // Colors based on state
+    isChecked ? "bg-[#017848] border-[#017848]" : "bg-gray-200 border-gray-300",
+    // Disabled state
+    isDisabled && "opacity-50 cursor-not-allowed",
+    // Focus ring for accessibility
+    "focus-within:outline-none",
+    "focus-within:ring-2",
+    "focus-within:ring-[#017848]/20",
+    "focus-within:ring-offset-2",
+    // Error state
+    error && "focus-within:ring-red-500/20",
   );
 
-  // Build className for the label
-  const labelClassName = cn(
-    theme.label.base,
-    isDisabled && theme.label.disabled,
-    "cursor-pointer",
+  // Thumb button styles - this is the clickable element
+  const thumbButtonStyles = cn(
+    // Position and size
+    "absolute",
+    "top-[2px]",
+    "left-[2px]",
+    "h-5",
+    "w-5",
+    "rounded-full",
+    // Colors and transitions
+    "bg-white",
+    "shadow-md",
+    "transition-transform",
+    "duration-200",
+    "border",
+    "border-gray-200",
+    // Transform based on state
+    isChecked ? "translate-x-5" : "translate-x-0",
+    // Interactive states
+    "hover:shadow-lg",
+    "focus:outline-none",
+    "focus:ring-2",
+    "focus:ring-[#017848]/20",
+    "focus:ring-offset-1",
+    // Disabled state
+    isDisabled && "cursor-not-allowed opacity-60",
+    // Prevent text selection
+    "select-none",
   );
+
+  // Base label styles
+  const labelStyles = cn(
+    "text-sm",
+    "font-medium",
+    "text-gray-700",
+    "select-none",
+    // Remove cursor pointer since label shouldn't toggle
+    isDisabled ? "opacity-60 cursor-not-allowed" : "cursor-default",
+  );
+
+  const handleThumbClick = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent the switch container from handling the click
+    if (!isDisabled && onChange) {
+      onChange(!isChecked);
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (isDisabled) return;
+
+    // Allow keyboard toggle with Space or Enter
+    if (e.key === " " || e.key === "Enter") {
+      e.preventDefault();
+      if (onChange) {
+        onChange(!isChecked);
+      }
+    }
+  };
 
   return (
-    <div className={containerClassName}>
-      <Switch
+    <div className={cn("flex items-center gap-3", className)}>
+      {/* Hidden Radix Switch for screen reader accessibility */}
+      <SwitchPrimitive.Root
         id={field.id}
         checked={isChecked}
         onCheckedChange={onChange}
-        onBlur={onBlur}
         disabled={isDisabled}
         aria-invalid={!!error}
         aria-describedby={error ? `${field.id}-error` : undefined}
-        aria-labelledby={field.label ? `${field.id}-label` : undefined}
-        className={switchClassName}
+        className="sr-only"
       />
+
+      {/* Visual switch - only thumb is clickable */}
+      <div
+        className={switchContainerStyles}
+        onKeyDown={handleKeyDown}
+        role="switch"
+        aria-checked={isChecked}
+        aria-label={field.label}
+        tabIndex={isDisabled ? -1 : 0}
+      >
+        <button
+          type="button"
+          className={thumbButtonStyles}
+          onClick={handleThumbClick}
+          disabled={isDisabled}
+          aria-hidden="true"
+          tabIndex={-1}
+        />
+      </div>
+
       {field.label && (
         <Label
           id={`${field.id}-label`}
           htmlFor={field.id}
-          className={labelClassName}
+          className={cn(labelStyles, isDisabled && "!cursor-not-allowed")}
         >
           {field.label}
         </Label>

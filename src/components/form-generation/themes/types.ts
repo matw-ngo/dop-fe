@@ -177,4 +177,74 @@ export interface FormTheme {
   help?: {
     base: string;
   };
+
+  /**
+   * Optional specialized styling for specific field types
+   */
+  components?: {
+    /**
+     * File field specific styling
+     */
+    file?: {
+      /**
+       * Border color for drag-and-drop area
+       */
+      borderDashed?: string;
+
+      /**
+       * Background color for drag-and-drop area
+       */
+      backgroundDashed?: string;
+
+      /**
+       * Hover background color for drag-and-drop area
+       */
+      hoverBackground?: string;
+
+      /**
+       * Hover border color for drag-and-drop area
+       */
+      hoverBorder?: string;
+    };
+
+    /**
+     * eKYC field specific styling
+     */
+    ekyc?: {
+      /**
+       * Color for success status
+       */
+      success?: string;
+
+      /**
+       * Color for processing status
+       */
+      processing?: string;
+
+      /**
+       * Color for retry button
+       */
+      retryButton?: string;
+    };
+
+    /**
+     * Checkbox/Radio field specific styling
+     */
+    checkable?: {
+      /**
+       * Accent color for checked state
+       */
+      checkedColor?: string;
+
+      /**
+       * Border color for unchecked state
+       */
+      uncheckedBorder?: string;
+
+      /**
+       * Focus ring color
+       */
+      focusRing?: string;
+    };
+  };
 }

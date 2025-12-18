@@ -5,6 +5,11 @@ import { useFormTheme } from "../themes/ThemeProvider";
 import type { FieldComponentProps, NumberFieldConfig } from "../types";
 import { cn, formatCurrency, parseCurrency } from "../utils/helpers";
 
+/**
+ * NumberField component that handles most styling directly
+ * Supports both numeric and currency input with formatting
+ */
+// TODO: Improve UI consistency and theme integration to match TextField/SelectField implementation
 export function NumberField({
   field,
   value,
@@ -21,6 +26,7 @@ export function NumberField({
   const isCurrency = field.type === "currency";
   const isDisabled = disabled || field.disabled;
   const isReadOnly = readOnly || field.readOnly;
+  const internalLabel = theme.fieldOptions?.internalLabel;
 
   // Display value (formatted for currency)
   const displayValue =
@@ -40,28 +46,89 @@ export function NumberField({
     }
   };
 
-  // Build className from theme + user overrides
-  const inputClassName = cn(
-    // Base styles from theme
-    theme.control.base,
-    theme.control.variants.default,
-    theme.control.sizes.md,
+  // Base input styles that are consistent across themes
+  const baseInputStyles = [
+    "w-full",
+    "border",
+    "transition-all",
+    "duration-200",
+    "text-sm",
+    // Base focus styles
+    "focus:outline-none",
+    // Placeholder styles
+    "placeholder:text-gray-400",
+    "placeholder:font-medium",
+    // Disabled and readonly states
+    "disabled:cursor-not-allowed",
+    "disabled:opacity-60",
+    "read-only:cursor-default",
+  ];
 
-    // State styles
-    theme.control.states.focus,
-    error && theme.control.states.error,
-    isDisabled && theme.control.states.disabled,
-    isReadOnly && theme.control.states.readOnly,
+  // Theme-specific styles
+  const themeStyles = [
+    // Border radius from theme
+    "rounded-[8px]",
+    // Border color
+    "border-[#bfd1cc]",
+    // Default background
+    "bg-white",
+    // Size
+    "h-[60px]",
+    "px-4",
+    // Focus state
+    "focus:border-[#017848]",
+    "focus:ring-2",
+    "focus:ring-[#017848]/20",
+    // Error state
+    error && "border-red-500",
+    error && "focus:ring-red-500/20",
+    // Override background for special states
+    isDisabled && "!bg-gray-100",
+    isReadOnly && "!bg-gray-50",
+  ].filter(Boolean);
 
-    // User override (highest priority)
-    className,
-  );
+  // If internal label is enabled, use wrapper with label
+  if (internalLabel && field.label) {
+    return (
+      <div className="relative w-full">
+        <label
+          htmlFor={field.id}
+          className="absolute top-2 left-4 text-xs font-medium text-[#017848] pointer-events-none z-10"
+        >
+          {field.label}
+        </label>
+        <Input
+          id={field.id}
+          name={field.name}
+          type="text" // Always use text to avoid browser limitations on number inputs
+          value={displayValue}
+          onChange={handleChange}
+          onBlur={onBlur}
+          placeholder={field.placeholder}
+          disabled={isDisabled}
+          readOnly={isReadOnly}
+          min={options.min}
+          max={options.max}
+          step={options.step}
+          inputMode={isCurrency ? "decimal" : "numeric"} // Better mobile keyboard
+          aria-invalid={!!error}
+          aria-describedby={error ? `${field.id}-error` : undefined}
+          className={cn(
+            ...baseInputStyles,
+            ...themeStyles,
+            "pt-8", // Extra padding for internal label
+            className,
+          )}
+        />
+      </div>
+    );
+  }
 
   return (
     <Input
       id={field.id}
       name={field.name}
-      type={isCurrency ? "text" : "number"}
+      type="text" // Always use text to avoid browser limitations on number inputs
       value={displayValue}
       onChange={handleChange}
       onBlur={onBlur}
@@ -71,9 +138,10 @@ export function NumberField({
       min={options.min}
       max={options.max}
       step={options.step}
+      inputMode={isCurrency ? "decimal" : "numeric"} // Better mobile keyboard
       aria-invalid={!!error}
       aria-describedby={error ? `${field.id}-error` : undefined}
-      className={inputClassName}
+      className={cn(...baseInputStyles, ...themeStyles, className)}
     />
   );
 }

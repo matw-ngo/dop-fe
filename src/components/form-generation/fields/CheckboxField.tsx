@@ -2,10 +2,14 @@
 
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import { useFormTheme } from "../themes/ThemeProvider";
 import type { CheckboxFieldConfig, FieldComponentProps } from "../types";
 import { cn } from "../utils/helpers";
 
+/**
+ * CheckboxField component that handles both single checkbox and checkbox group
+ * Uses simplified inline styling for consistent appearance
+ */
+// TODO: Improve UI consistency and theme integration to match TextField/SelectField implementation
 export function CheckboxField({
   field,
   value,
@@ -15,11 +19,32 @@ export function CheckboxField({
   disabled,
   className,
 }: FieldComponentProps<boolean | string[]>) {
-  const { theme } = useFormTheme();
   const checkboxField = field as CheckboxFieldConfig;
   const options = checkboxField.options || {};
   const isGroup = field.type === "checkbox-group";
   const isDisabled = disabled || field.disabled;
+
+  // Base checkbox styles for error state
+  const checkboxStyles = cn(
+    "data-[state=checked]:bg-[#017848]",
+    "data-[state=checked]:border-[#017848]",
+    "focus-visible:ring-[#017848]/20",
+    error && "border-red-500",
+    error && "data-[state=checked]:bg-red-500",
+    error && "data-[state=checked]:border-red-500",
+    error && "focus-visible:ring-red-500/20",
+  );
+
+  // Base label styles
+  const labelStyles = cn(
+    "text-sm",
+    "font-medium",
+    "text-gray-700",
+    "select-none",
+    "cursor-pointer",
+    isDisabled && "opacity-60",
+    isDisabled && "cursor-not-allowed",
+  );
 
   if (isGroup && options.choices) {
     // Checkbox Group
@@ -34,7 +59,11 @@ export function CheckboxField({
     };
 
     return (
-      <div className={cn("space-y-3", className)}>
+      <div
+        className={cn("space-y-3", className)}
+        role="group"
+        aria-label={field.label}
+      >
         {options.choices.map((choice) => {
           const isChecked = selectedValues.includes(choice.value);
           const choiceId = `${field.id}-${choice.value}`;
@@ -48,19 +77,15 @@ export function CheckboxField({
                   handleGroupChange(choice.value, checked as boolean)
                 }
                 disabled={isDisabled || choice.disabled}
-                className={cn(
-                  error && "border-destructive focus-visible:ring-destructive",
-                )}
+                className={checkboxStyles}
                 aria-invalid={!!error}
                 aria-describedby={error ? `${field.id}-error` : undefined}
               />
               <Label
                 htmlFor={choiceId}
                 className={cn(
-                  theme.label.base,
-                  "cursor-pointer",
-                  (isDisabled || choice.disabled) &&
-                    (theme.label.disabled || "opacity-70 cursor-not-allowed"),
+                  labelStyles,
+                  (isDisabled || choice.disabled) && "!cursor-not-allowed",
                 )}
               >
                 {choice.label}
@@ -84,21 +109,14 @@ export function CheckboxField({
         onCheckedChange={(checked) => onChange(checked as boolean)}
         onBlur={onBlur}
         disabled={isDisabled}
-        className={cn(
-          error && "border-destructive focus-visible:ring-destructive",
-        )}
+        className={checkboxStyles}
         aria-invalid={!!error}
         aria-describedby={error ? `${field.id}-error` : undefined}
       />
       {(field.label || options.checkboxLabel) && (
         <Label
           htmlFor={field.id}
-          className={cn(
-            theme.label.base,
-            "cursor-pointer",
-            isDisabled &&
-              (theme.label.disabled || "opacity-70 cursor-not-allowed"),
-          )}
+          className={cn(labelStyles, isDisabled && "!cursor-not-allowed")}
         >
           {options.checkboxLabel || field.label}
         </Label>

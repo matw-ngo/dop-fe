@@ -43,8 +43,16 @@ export function TextField({
     "transition-all",
     "duration-200",
     "text-sm",
-    // Base focus styles
+    // Override shadcn Input focus styles with !important
+    "!focus-visible:ring-0",
+    "!focus-visible:ring-offset-0",
+    "!focus-visible:border-transparent",
+    // Focus styles with customizable ring
     "focus:outline-none",
+    "focus:ring-2",
+    theme.focusRing
+      ? `focus:ring-[${theme.focusRing.color}]/${theme.focusRing.opacity}`
+      : `focus:ring-[${theme.colors.primary}]/20`,
     // Placeholder styles
     "placeholder:text-gray-400",
     "placeholder:font-medium",
@@ -59,19 +67,23 @@ export function TextField({
     // Border radius from theme
     "rounded-[8px]", // This could be extracted from theme if needed
     // Border color
-    "border-[#bfd1cc]",
+    `border-[${theme.colors.border}]`,
     // Default background (important!)
-    "bg-white",
+    `bg-[${theme.colors.background}]`,
     // Focus state
-    "focus:border-[#017848]",
+    `focus:border-[${theme.colors.borderFocus}]`,
     "focus:ring-2",
-    "focus:ring-[#017848]/20",
+    `focus:ring-[${theme.colors.primary}]/20`,
+    // Focus within (for wrapper)
+    `focus-within:border-[${theme.colors.borderFocus}]`,
+    "focus-within:ring-2",
+    `focus-within:ring-[${theme.colors.primary}]/20`,
     // Error state
-    error && "border-red-500",
-    error && "focus:ring-red-500/20",
+    error && `border-[${theme.colors.error}]`,
+    error && `focus:ring-[${theme.colors.error}]/20`,
     // Override background for special states
-    (disabled || field.disabled) && "!bg-gray-100",
-    (readOnly || field.readOnly) && "!bg-gray-50",
+    (disabled || field.disabled) && `!bg-[${theme.colors.disabled}]`,
+    (readOnly || field.readOnly) && `!bg-[${theme.colors.readOnly}]`,
   ].filter(Boolean);
 
   // Size styles
@@ -101,7 +113,10 @@ export function TextField({
         {internalLabel && field.label && (
           <label
             htmlFor={field.id}
-            className="absolute top-2 left-4 text-xs font-medium text-[#017848] pointer-events-none"
+            className={cn(
+              "absolute top-2 left-4 text-xs font-medium pointer-events-none",
+              `text-[${theme.colors.primary}]`,
+            )}
           >
             {field.label}
           </label>

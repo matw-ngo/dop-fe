@@ -6,6 +6,11 @@ import { useFormTheme } from "../themes/ThemeProvider";
 import type { DateFieldConfig, FieldComponentProps } from "../types";
 import { cn } from "../utils/helpers";
 
+/**
+ * DateField component that handles date, datetime, and time inputs
+ * Uses simplified inline styling with calendar icon
+ */
+// TODO: Improve UI consistency and theme integration to match TextField/SelectField implementation
 export function DateField({
   field,
   value,
@@ -19,6 +24,9 @@ export function DateField({
   const { theme } = useFormTheme();
   const dateField = field as DateFieldConfig;
   const options = dateField.options || {};
+  const isDisabled = disabled || field.disabled;
+  const isReadOnly = readOnly || field.readOnly;
+  const internalLabel = theme.fieldOptions?.internalLabel;
 
   // Determine input type based on field type
   const inputTypeMapping = {
@@ -93,42 +101,111 @@ export function DateField({
     }
   };
 
-  // Build className for the container
-  const containerClassName = cn("relative w-full", className);
+  // Base input styles that are consistent across themes
+  const baseInputStyles = [
+    "w-full",
+    "border",
+    "transition-all",
+    "duration-200",
+    "text-sm",
+    // Base focus styles
+    "focus:outline-none",
+    // Placeholder styles
+    "placeholder:text-gray-400",
+    "placeholder:font-medium",
+    // Disabled and readonly states
+    "disabled:cursor-not-allowed",
+    "disabled:opacity-60",
+    "read-only:cursor-default",
+    // Add padding for icon
+    "pr-12",
+  ];
 
-  // Build className for the input
-  const inputClassName = cn(
-    // Base styles from theme
-    theme.control.base,
-    theme.control.variants.default,
-    theme.control.sizes.md,
+  // Theme-specific styles
+  const themeStyles = [
+    // Border radius from theme
+    "rounded-[8px]",
+    // Border color
+    "border-[#bfd1cc]",
+    // Default background
+    "bg-white",
+    // Size
+    "h-[60px]",
+    "px-4",
+    // Focus state
+    "focus:border-[#017848]",
+    "focus:ring-2",
+    "focus:ring-[#017848]/20",
+    // Error state
+    error && "border-red-500",
+    error && "focus:ring-red-500/20",
+    // Override background for special states
+    isDisabled && "!bg-gray-100",
+    isReadOnly && "!bg-gray-50",
+  ].filter(Boolean);
 
-    // State styles
-    theme.control.states.focus,
-    error && theme.control.states.error,
-    (disabled || field.disabled) && theme.control.states.disabled,
-    (readOnly || field.readOnly) && theme.control.states.readOnly,
-  );
+  // If internal label is enabled, use wrapper with label
+  if (internalLabel && field.label) {
+    return (
+      <div className={cn("relative w-full", className)}>
+        <label
+          htmlFor={field.id}
+          className="absolute top-2 left-4 text-xs font-medium text-[#017848] pointer-events-none z-10"
+        >
+          {field.label}
+        </label>
+        <Input
+          id={field.id}
+          name={field.name}
+          type="text" // Use text type to avoid browser date picker
+          value={formatValue(value)}
+          onChange={handleChange}
+          onBlur={onBlur}
+          placeholder={field.placeholder}
+          disabled={isDisabled}
+          readOnly={isReadOnly}
+          min={formatDateForInput(options.minDate, field.type)}
+          max={formatDateForInput(options.maxDate, field.type)}
+          aria-invalid={!!error}
+          aria-describedby={error ? `${field.id}-error` : undefined}
+          inputMode={inputType === "time" ? "numeric" : "text"}
+          className={cn(
+            ...baseInputStyles,
+            ...themeStyles,
+            "pt-8", // Extra padding for internal label
+          )}
+        />
+        <CalendarIcon
+          className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none"
+          aria-hidden="true"
+        />
+      </div>
+    );
+  }
 
   return (
-    <div className={containerClassName}>
+    <div className={cn("relative w-full", className)}>
       <Input
         id={field.id}
         name={field.name}
-        type={inputType}
+        type="text" // Use text type to avoid browser date picker
         value={formatValue(value)}
         onChange={handleChange}
         onBlur={onBlur}
         placeholder={field.placeholder}
-        disabled={disabled || field.disabled}
-        readOnly={readOnly || field.readOnly}
+        disabled={isDisabled}
+        readOnly={isReadOnly}
         min={formatDateForInput(options.minDate, field.type)}
         max={formatDateForInput(options.maxDate, field.type)}
         aria-invalid={!!error}
         aria-describedby={error ? `${field.id}-error` : undefined}
-        className={inputClassName}
+        inputMode={inputType === "time" ? "numeric" : "text"}
+        className={cn(...baseInputStyles, ...themeStyles)}
       />
-      <CalendarIcon className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+      <CalendarIcon
+        className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none"
+        aria-hidden="true"
+      />
     </div>
   );
 }

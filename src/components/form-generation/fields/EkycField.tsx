@@ -1,12 +1,100 @@
 /**
  * eKYC Field Component
  *
- * This component renders the eKYC verification field in various modes
- * and handles the verification workflow integration with forms.
+ * Electronic Know Your Customer (eKYC) verification field that supports multiple
+ * rendering modes and integrates with verification providers. Handles the complete
+ * verification workflow including initialization, processing, result handling, and
+ * autofill of form fields based on verification data.
+ *
+ * **Features:**
+ * - Multiple render modes: button, modal, inline, custom
+ * - Integration with verification providers (VNPT, etc.)
+ * - Autofill support for mapped form fields
+ * - Confidence threshold validation
+ * - Retry mechanism with configurable limits
+ * - Progress indication and status tracking
+ * - Error handling with user feedback
+ *
+ * **Render Modes:**
+ * - **button**: Shows a verification button (default)
+ * - **modal**: Opens modal interface for verification
+ * - **inline**: Shows inline verification interface
+ * - **custom**: Uses custom render function
+ *
+ * @example
+ * ```tsx
+ * // Basic eKYC field with button mode
+ * <EkycField
+ *   field={{
+ *     id: 'ekyc',
+ *     name: 'ekyc',
+ *     type: 'ekyc',
+ *     label: 'Identity Verification',
+ *     verification: {
+ *       provider: 'vnpt',
+ *       confidenceThreshold: 70,
+ *       autofillMapping: {
+ *         'fullName': 'fullName',
+ *         'idNumber': 'idCard.number',
+ *         'address': 'address.full'
+ *       },
+ *       showResultPreview: true,
+ *       allowManualOverride: false,
+ *       uiConfig: {
+ *         maxRetries: 3,
+ *         showProgress: true
+ *       }
+ *     }
+ *   }}
+ *   value={ekycData}
+ *   onChange={setEkycData}
+ * />
+ *
+ * // Modal mode with custom configuration
+ * <EkycField
+ *   field={{
+ *     id: 'ekyc-modal',
+ *     name: 'ekyc',
+ *     type: 'ekyc',
+ *     label: 'Verify Identity',
+ *     renderMode: 'modal',
+ *     verification: {
+ *       provider: 'vnpt',
+ *       providerOptions: {
+ *         environment: 'production'
+ *       }
+ *     }
+ *   }}
+ *   value={ekycData}
+ *   onChange={setEkycData}
+ * />
+ *
+ * // Custom render mode
+ * <EkycField
+ *   field={{
+ *     id: 'custom-ekyc',
+ *     name: 'ekyc',
+ *     type: 'ekyc',
+ *     renderMode: 'custom',
+ *     customRender: ({ status, result, startVerification }) => (
+ *       <div className="custom-ekyc">
+ *         {status === 'success' ? (
+ *           <p>Verified! Confidence: {result?.confidence}%</p>
+ *         ) : (
+ *           <button onClick={startVerification}>Start Verification</button>
+ *         )}
+ *       </div>
+ *     )
+ *   }}
+ *   value={ekycData}
+ *   onChange={setEkycData}
+ * />
+ * ```
  */
 
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useFormContext } from "@/components/form-generation/context/FormContext";
+import { useFormTheme } from "@/components/form-generation/themes/ThemeProvider";
 import type {
   EkycFieldConfig,
   FieldComponentProps,
@@ -18,6 +106,7 @@ import {
   type VerificationResult,
   VerificationStatus,
 } from "@/lib/verification/types";
+import { cn } from "@/components/form-generation/utils/helpers";
 
 // Import sub-components
 import { VerificationButton } from "./ekyc/VerificationButton";
@@ -32,6 +121,7 @@ import { VerificationResult as ResultDisplay } from "./ekyc/VerificationResult";
 // EkycField uses standard FieldComponentProps
 export type EkycFieldProps = FieldComponentProps<any>;
 
+// TODO: Improve UI consistency and theme integration to match TextField/SelectField implementation
 export function EkycField({
   field,
   value,
@@ -40,7 +130,9 @@ export function EkycField({
   disabled,
 }: EkycFieldProps) {
   const { formData, setFieldValue } = useFormContext();
+  const { theme } = useFormTheme();
   const ekycField = field as EkycFieldConfig;
+  const internalLabel = theme.fieldOptions?.internalLabel;
 
   // Component state
   const [isVerifying, setIsVerifying] = useState(false);
@@ -281,7 +373,7 @@ export function EkycField({
   // Render modal mode
   if (ekycField.renderMode === "modal") {
     return (
-      <div className="ekyc-field-modal">
+      <div className={cn("ekyc-field-modal", error && "space-y-2")}>
         <VerificationButton
           onStart={handleVerify}
           isVerifying={isVerifying}
@@ -307,23 +399,107 @@ export function EkycField({
   // Render inline mode
   if (ekycField.renderMode === "inline") {
     return (
-      <VerificationInline
-        onStart={handleVerify}
-        onRetry={handleRetry}
-        onCancel={handleCancel}
-        isVerifying={isVerifying}
-        status={status}
-        result={result}
-        error={currentError}
-        disabled={disabled}
-        config={ekycField}
-      />
+      <div className={cn("ekyc-field-inline", error && "space-y-2")}>
+        <VerificationInline
+          onStart={handleVerify}
+          onRetry={handleRetry}
+          onCancel={handleCancel}
+          isVerifying={isVerifying}
+          status={status}
+          result={result}
+          error={currentError}
+          disabled={disabled}
+          config={ekycField}
+        />
+      </div>
     );
   }
 
   // Default: button mode
+  if (internalLabel && field.label) {
+    return (
+      <div className={cn("relative w-full", error && "space-y-2")}>
+        {/* Internal Label */}
+        <label
+          htmlFor={field.id}
+          className="absolute top-2 left-4 text-xs font-medium text-[#017848] pointer-events-none z-10"
+        >
+          {field.label}
+        </label>
+        <div className="pt-8">
+          <VerificationButton
+            onStart={handleVerify}
+            isVerifying={isVerifying}
+            result={result}
+            disabled={disabled}
+            config={ekycField}
+          />
+
+          {/* Show result preview if enabled */}
+          {result && ekycField.verification?.showResultPreview && (
+            <ResultDisplay
+              result={result}
+              showDetails={ekycField.verification?.showResultPreview}
+              onEdit={
+                ekycField.verification?.allowManualOverride
+                  ? () => {}
+                  : undefined
+              }
+            />
+          )}
+
+          {/* Show error */}
+          {currentError && (
+            <div
+              className={cn(
+                "flex items-start gap-2 text-sm mt-1.5",
+                // Use theme error color
+                error ? "text-[rgb(255,116,116)]" : "text-red-500",
+              )}
+            >
+              {currentError}
+              {retryCount <
+                (ekycField.verification?.uiConfig?.maxRetries || 3) && (
+                <button
+                  type="button"
+                  onClick={handleRetry}
+                  className={cn(
+                    "underline ml-2",
+                    // Use theme colors for links
+                    "hover:text-red-700",
+                    "focus:outline-none focus:ring-2 focus:ring-offset-2 rounded",
+                    // Use theme focus ring color
+                    "focus:ring-[#017848]/20",
+                  )}
+                  disabled={isVerifying}
+                >
+                  Retry
+                </button>
+              )}
+            </div>
+          )}
+
+          {/* Show status indicator */}
+          {isVerifying && ekycField.verification?.uiConfig?.showProgress && (
+            <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+              <div
+                className={cn(
+                  "animate-spin rounded-full h-4 w-4 border-b-2",
+                  // Use theme primary color
+                  "border-[#017848]",
+                )}
+              ></div>
+              <span>Verifying identity...</span>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  // Default: button mode without internal label
   return (
-    <div className="ekyc-field-button space-y-4">
+    <div className={cn("ekyc-field-button", error && "space-y-2")}>
       <VerificationButton
         onStart={handleVerify}
         isVerifying={isVerifying}
@@ -345,13 +521,26 @@ export function EkycField({
 
       {/* Show error */}
       {currentError && (
-        <div className="text-red-500 text-sm mt-2">
+        <div
+          className={cn(
+            "flex items-start gap-2 text-sm mt-1.5",
+            // Use theme error color
+            error ? "text-[rgb(255,116,116)]" : "text-red-500",
+          )}
+        >
           {currentError}
           {retryCount < (ekycField.verification?.uiConfig?.maxRetries || 3) && (
             <button
               type="button"
               onClick={handleRetry}
-              className="ml-2 underline text-red-600 hover:text-red-700"
+              className={cn(
+                "underline ml-2",
+                // Use theme colors for links
+                "hover:text-red-700",
+                "focus:outline-none focus:ring-2 focus:ring-offset-2 rounded",
+                // Use theme focus ring color
+                "focus:ring-[#017848]/20",
+              )}
               disabled={isVerifying}
             >
               Retry
@@ -362,8 +551,14 @@ export function EkycField({
 
       {/* Show status indicator */}
       {isVerifying && ekycField.verification?.uiConfig?.showProgress && (
-        <div className="flex items-center space-x-2 text-sm text-gray-600">
-          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
+        <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+          <div
+            className={cn(
+              "animate-spin rounded-full h-4 w-4 border-b-2",
+              // Use theme primary color
+              "border-[#017848]",
+            )}
+          ></div>
           <span>Verifying identity...</span>
         </div>
       )}
