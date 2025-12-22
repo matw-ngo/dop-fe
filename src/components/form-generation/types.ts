@@ -599,6 +599,15 @@ export interface EkycFieldConfig extends BaseFieldConfig {
   renderMode?: "button" | "inline" | "modal" | "custom";
 
   /**
+   * Visual variant for the eKYC field
+   * - button: Full-width button (default)
+   * - compact: Smaller button for dense forms
+   * - card: Bordered card with icon
+   * - inline-status: Minimal inline badge
+   */
+  variant?: "button" | "compact" | "card" | "inline-status";
+
+  /**
    * eKYC verification configuration
    */
   verification?: {

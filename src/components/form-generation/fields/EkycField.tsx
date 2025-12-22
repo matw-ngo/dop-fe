@@ -129,7 +129,18 @@ export function EkycField({
   error,
   disabled,
 }: EkycFieldProps) {
-  const { formData, setFieldValue } = useFormContext();
+  // Form context is optional - only needed for autofill functionality
+  let formData: Record<string, any> = {};
+  let setFieldValue: ((fieldId: string, value: any) => void) | undefined;
+
+  try {
+    const context = useFormContext();
+    formData = context.formData;
+    setFieldValue = context.setFieldValue;
+  } catch (e) {
+    // FormContext not available - autofill won't work but field will still function
+  }
+
   const { theme } = useFormTheme();
   const ekycField = field as EkycFieldConfig;
   const internalLabel = theme.fieldOptions?.internalLabel;
@@ -143,6 +154,50 @@ export function EkycField({
   const [currentError, setCurrentError] = useState<string | null>(null);
   const [retryCount, setRetryCount] = useState(0);
   const [showModal, setShowModal] = useState(false);
+
+  // Get variant (default to 'button')
+  const variant = ekycField.variant || "button";
+
+  // Base wrapper styles - consistent across all variants
+  const baseWrapperStyles = ["w-full", "transition-all", "duration-200"];
+
+  // Theme-specific wrapper styles
+  const themeWrapperStyles = [
+    `border-[${theme.colors.border}]`,
+    `bg-[${theme.colors.background}]`,
+    // Focus within (for wrapper)
+    `focus-within:border-[${theme.colors.borderFocus}]`,
+    "focus-within:ring-2",
+    theme.focusRing
+      ? `focus-within:ring-[${theme.focusRing.color}]/${theme.focusRing.opacity}`
+      : `focus-within:ring-[${theme.colors.primary}]/20`,
+    // Error state
+    error && `border-[${theme.colors.error}]`,
+    error && `focus-within:ring-[${theme.colors.error}]/20`,
+    // Disabled state
+    disabled && `!bg-[${theme.colors.disabled}]`,
+  ].filter(Boolean);
+
+  // Variant-specific styles
+  const variantStyles = {
+    button: [
+      "border",
+      "rounded-[8px]",
+      internalLabel ? "min-h-[60px]" : "h-[60px]",
+      "px-4",
+      internalLabel ? "py-3" : "py-0",
+    ],
+    compact: ["border", "rounded-md", "h-10", "px-3"],
+    card: ["border-2", "rounded-lg", "p-4", "shadow-sm", "hover:shadow-md"],
+    "inline-status": ["border-0", "h-auto", "p-0"],
+  };
+
+  // Combined wrapper classes
+  const wrapperClassName = cn(
+    ...baseWrapperStyles,
+    ...themeWrapperStyles,
+    ...variantStyles[variant],
+  );
 
   // Initialize provider on mount
   useEffect(() => {
@@ -308,7 +363,7 @@ export function EkycField({
         }
 
         // Update form field
-        if (value !== undefined) {
+        if (value !== undefined && setFieldValue) {
           setFieldValue(targetFieldId, value);
         }
       }
@@ -422,7 +477,10 @@ export function EkycField({
         {/* Internal Label */}
         <label
           htmlFor={field.id}
-          className="absolute top-2 left-4 text-xs font-medium text-[#017848] pointer-events-none z-10"
+          className={cn(
+            "absolute top-2 left-4 text-xs font-medium pointer-events-none z-10",
+            `text-[${theme.colors.primary}]`,
+          )}
         >
           {field.label}
         </label>
@@ -453,8 +511,7 @@ export function EkycField({
             <div
               className={cn(
                 "flex items-start gap-2 text-sm mt-1.5",
-                // Use theme error color
-                error ? "text-[rgb(255,116,116)]" : "text-red-500",
+                `text-[${theme.colors.error}]`,
               )}
             >
               {currentError}
@@ -465,11 +522,11 @@ export function EkycField({
                   onClick={handleRetry}
                   className={cn(
                     "underline ml-2",
-                    // Use theme colors for links
-                    "hover:text-red-700",
+                    "hover:opacity-80",
                     "focus:outline-none focus:ring-2 focus:ring-offset-2 rounded",
-                    // Use theme focus ring color
-                    "focus:ring-[#017848]/20",
+                    theme.focusRing
+                      ? `focus:ring-[${theme.focusRing.color}]/${theme.focusRing.opacity}`
+                      : `focus:ring-[${theme.colors.primary}]/20`,
                   )}
                   disabled={isVerifying}
                 >
@@ -485,8 +542,7 @@ export function EkycField({
               <div
                 className={cn(
                   "animate-spin rounded-full h-4 w-4 border-b-2",
-                  // Use theme primary color
-                  "border-[#017848]",
+                  `border-[${theme.colors.primary}]`,
                 )}
               ></div>
               <span>Verifying identity...</span>
@@ -524,8 +580,7 @@ export function EkycField({
         <div
           className={cn(
             "flex items-start gap-2 text-sm mt-1.5",
-            // Use theme error color
-            error ? "text-[rgb(255,116,116)]" : "text-red-500",
+            `text-[${theme.colors.error}]`,
           )}
         >
           {currentError}
@@ -535,11 +590,11 @@ export function EkycField({
               onClick={handleRetry}
               className={cn(
                 "underline ml-2",
-                // Use theme colors for links
-                "hover:text-red-700",
+                "hover:opacity-80",
                 "focus:outline-none focus:ring-2 focus:ring-offset-2 rounded",
-                // Use theme focus ring color
-                "focus:ring-[#017848]/20",
+                theme.focusRing
+                  ? `focus:ring-[${theme.focusRing.color}]/${theme.focusRing.opacity}`
+                  : `focus:ring-[${theme.colors.primary}]/20`,
               )}
               disabled={isVerifying}
             >
@@ -555,8 +610,7 @@ export function EkycField({
           <div
             className={cn(
               "animate-spin rounded-full h-4 w-4 border-b-2",
-              // Use theme primary color
-              "border-[#017848]",
+              `border-[${theme.colors.primary}]`,
             )}
           ></div>
           <span>Verifying identity...</span>

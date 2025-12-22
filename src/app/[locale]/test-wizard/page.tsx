@@ -188,6 +188,21 @@ export default function WizardTestPage() {
               enabled: false,
             },
           },
+          {
+            id: "ekyc-step2-compact",
+            name: "ekycStep2Compact",
+            type: FieldType.EKYC,
+            label: "Xác minh nhanh",
+            variant: "compact", // Compact variant for dense form
+            renderMode: "button",
+            verification: {
+              provider: "vnpt",
+              autofillMapping: {},
+            },
+            i18n: {
+              enabled: false,
+            },
+          },
           // Conditional fields for "Đi làm hưởng lương"
           {
             id: "companyName",
@@ -298,6 +313,21 @@ export default function WizardTestPage() {
         title: "Thông tin tài chính",
         fields: [
           {
+            id: "ekyc-step3-card",
+            name: "ekycStep3Card",
+            type: FieldType.EKYC,
+            label: "Xác thực để tiếp tục",
+            variant: "card", // Card variant for prominent placement
+            renderMode: "button",
+            verification: {
+              provider: "vnpt",
+              autofillMapping: {},
+            },
+            i18n: {
+              enabled: false,
+            },
+          },
+          {
             id: "existingLoans",
             name: "existingLoans",
             type: FieldType.SELECT,
@@ -351,10 +381,10 @@ export default function WizardTestPage() {
       },
     ],
     navigation: {
-      showProgress: true,
+      showProgress: false,
       progressType: "bar",
-      showStepNumbers: true,
-      showStepTitles: true,
+      showStepNumbers: false,
+      showStepTitles: false,
     },
   };
 
