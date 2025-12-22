@@ -19,6 +19,8 @@ import {
 } from "@/components/form-generation/themes";
 import { FindingLoanScreen } from "./FindingLoanScreen";
 import { useTranslations } from "next-intl";
+import { useSubmitLeadInfo } from "@/hooks/use-lead-submission";
+import { mapFormDataToLeadInfo } from "@/mappers/leadMapper";
 
 // Define the custom component
 const SectionHeader = ({ field }: FieldComponentProps) => {
@@ -393,12 +395,29 @@ export default function WizardTestPage() {
     },
   };
 
+  const { mutate: submitInfo, isPending: isSubmitting } = useSubmitLeadInfo();
+
   const [isFinding, setIsFinding] = useState(false);
 
   const handleComplete = (data: Record<string, any>) => {
     console.log("Wizard completed:", data);
     setSubmittedData(data);
     setIsFinding(true);
+
+    // MAPPING DATA
+    // In a real application, flowId and stepId would come from the context or props
+    const flowId = "00000000-0000-0000-0000-000000000000";
+    const stepId = "00000000-0000-0000-0000-000000000000";
+
+    const apiPayload = mapFormDataToLeadInfo(data, flowId, stepId);
+
+    console.log("Mapped Payload:", apiPayload);
+
+    // Uncomment to use API when leadId is available
+    // submitInfo({ leadId: "lead-id-placeholder", data: apiPayload }, {
+    //   onSuccess: () => console.log("Success"),
+    //   onError: (e) => console.error("Error", e),
+    // });
   };
 
   const handleFindingFinish = () => {
