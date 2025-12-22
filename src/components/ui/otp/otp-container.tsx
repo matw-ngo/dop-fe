@@ -3,6 +3,8 @@ import type React from "react";
 import { useEffect, useState } from "react";
 import { useLocalizedTelcos } from "@/hooks/use-localized-telcos";
 import { getLocalizableTelcoByPhoneNumber } from "@/lib/telcos/localizable-telcos";
+import { useSubmitOTP } from "@/hooks/use-submit-otp";
+import { useResendOTP } from "@/hooks/use-resend-otp";
 import { OtpForm } from "./otp-form";
 
 // ============================================================================
@@ -12,6 +14,8 @@ import { OtpForm } from "./otp-form";
 export interface OtpContainerProps {
   // Configuration
   phoneNumber: string;
+  leadId?: string; // Lead ID for API calls
+  token?: string; // Auth token for OTP submission
   size?: number;
   otpType?: 1 | 2; // 1 = call, 2 = SMS
   maxRefresh?: number;
@@ -36,6 +40,8 @@ export interface OtpContainerProps {
 
 export const OtpContainer: React.FC<OtpContainerProps> = ({
   phoneNumber,
+  leadId,
+  token,
   size = 4,
   otpType = 2, // Default to SMS
   maxRefresh = 3,
@@ -51,6 +57,10 @@ export const OtpContainer: React.FC<OtpContainerProps> = ({
 
   const t = useTranslations("components.otp.form");
   const { getTelcoName } = useLocalizedTelcos();
+
+  // API hooks
+  const { mutate: submitOTP, isPending: isSubmittingOTP } = useSubmitOTP();
+  const { mutate: resendOTP, isPending: isResendingOTP } = useResendOTP();
 
   // ============================================================================
   // STATE MANAGEMENT
@@ -102,50 +112,98 @@ export const OtpContainer: React.FC<OtpContainerProps> = ({
   // ============================================================================
 
   const handleSubmit = async (otp: string) => {
-    console.log("Submitting OTP:", otp, "(Dev mode: use '0000' to pass)");
+    console.log("Submitting OTP:", otp);
     setOtpStatus("submitting");
 
-    try {
-      // Simulate API call - replace with actual API call
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+    // If leadId and token are provided, use V1 API
+    if (leadId && token) {
+      submitOTP(
+        { leadId, token, otp },
+        {
+          onSuccess: () => {
+            setOtpStatus("success");
+            onSuccess?.(otp);
+            console.log("OTP verified successfully");
+          },
+          onError: (error) => {
+            setOtpStatus("failed");
+            const newAttempts = otpAttempts + 1;
+            setOtpAttempts(newAttempts);
 
-      // Simulate validation - replace with actual validation
-      if (otp === (process.env.NODE_ENV === "development" ? "0000" : "1234")) {
-        // For testing, use 0000 in development, 1234 in production
-        setOtpStatus("success");
-        onSuccess?.(otp);
-        console.log("OTP verified successfully");
-      } else {
-        setOtpStatus("failed");
-        const newAttempts = otpAttempts + 1;
-        setOtpAttempts(newAttempts);
+            if (newAttempts >= maxAttempts) {
+              setOtpStatus("force_refresh");
+              onFailure?.(t("forceRefreshMessage"));
+            } else {
+              const attemptsLeft = maxAttempts - newAttempts;
+              onFailure?.(
+                error.message ||
+                  t("errorMessage") + ` Còn ${attemptsLeft} lần thử.`,
+              );
+            }
+          },
+        },
+      );
+    } else {
+      // Fallback to mock logic for testing
+      try {
+        await new Promise((resolve) => setTimeout(resolve, 1500));
 
-        // Check if max attempts reached
-        if (newAttempts >= maxAttempts) {
-          setOtpStatus("force_refresh");
-          onFailure?.(t("forceRefreshMessage"));
+        if (
+          otp === (process.env.NODE_ENV === "development" ? "0000" : "1234")
+        ) {
+          setOtpStatus("success");
+          onSuccess?.(otp);
+          console.log("OTP verified successfully");
         } else {
-          const attemptsLeft = maxAttempts - newAttempts;
-          onFailure?.(t("errorMessage") + ` Còn ${attemptsLeft} lần thử.`);
+          setOtpStatus("failed");
+          const newAttempts = otpAttempts + 1;
+          setOtpAttempts(newAttempts);
+
+          if (newAttempts >= maxAttempts) {
+            setOtpStatus("force_refresh");
+            onFailure?.(t("forceRefreshMessage"));
+          } else {
+            const attemptsLeft = maxAttempts - newAttempts;
+            onFailure?.(t("errorMessage") + ` Còn ${attemptsLeft} lần thử.`);
+          }
         }
+      } catch (error) {
+        setOtpStatus("failed");
+        onFailure?.(t("errorMessage") + ". " + t("genericError"));
       }
-    } catch (error) {
-      setOtpStatus("failed");
-      onFailure?.(t("errorMessage") + ". " + t("genericError"));
     }
   };
 
   const handleResend = () => {
     console.log("Resending OTP to:", phoneNumber);
-    setOtpCount((prev) => prev + 1);
-    setTimeRemaining(300);
-    setOtpStatus("waiting");
-    setOtpAttempts(0);
 
-    // API call to resend OTP would go here
-    console.log(
-      `Resending ${otpType === 1 ? "call" : "SMS"} OTP to ${phoneNumber}`,
-    );
+    // If leadId is provided, use V1 API
+    if (leadId) {
+      resendOTP(
+        { leadId, target: phoneNumber },
+        {
+          onSuccess: () => {
+            setOtpCount((prev) => prev + 1);
+            setTimeRemaining(300);
+            setOtpStatus("waiting");
+            setOtpAttempts(0);
+            console.log("OTP resent successfully");
+          },
+          onError: (error) => {
+            onFailure?.(error.message || "Failed to resend OTP");
+          },
+        },
+      );
+    } else {
+      // Fallback to mock logic
+      setOtpCount((prev) => prev + 1);
+      setTimeRemaining(300);
+      setOtpStatus("waiting");
+      setOtpAttempts(0);
+      console.log(
+        `Resending ${otpType === 1 ? "call" : "SMS"} OTP to ${phoneNumber}`,
+      );
+    }
   };
 
   const handleExpired = () => {
