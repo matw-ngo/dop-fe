@@ -17,6 +17,8 @@ import {
   FormThemeProvider,
   legacyLoanTheme,
 } from "@/components/form-generation/themes";
+import { FindingLoanScreen } from "./FindingLoanScreen";
+import { useTranslations } from "next-intl";
 
 // Define the custom component
 const SectionHeader = ({ field }: FieldComponentProps) => {
@@ -38,6 +40,7 @@ try {
 }
 
 export default function WizardTestPage() {
+  const t = useTranslations("pages.form");
   const [submittedData, setSubmittedData] = useState<Record<
     string,
     any
@@ -47,121 +50,109 @@ export default function WizardTestPage() {
     id: "loan-wizard",
     // theme: legacyLoanTheme, // Removed invalid prop
     steps: [
-      // {
-      //   id: "loan-info",
-      //   title: "Thông tin vay",
-      //   fields: [
-      //     {
-      //       id: "personal-section-header",
-      //       name: "personalSectionHeader",
-      //       type: FieldType.CUSTOM,
-      //       label: "Thông tin cá nhân",
-      //       options: {
-      //         componentName: "SectionHeader", // Assuming a custom component or just use a label
-      //       },
-      //       i18n: {
-      //         enabled: false,
-      //       },
-      //       layout: {
-      //         // We might need to adjust this if there isn't a dedicated header type,
-      //         // but for now let's stick to standard fields or just let the title handle it.
-      //         // Actually, looking at the image, "Thông tin cá nhân" looks like a section header.
-      //         // I'll skip a specific header field for now and rely on standard fields,
-      //         // or maybe just use 'Group' if supported, but flat list is safer.
-      //         // Let's just put fields directly.
-      //         hidden: { xs: true, sm: true, md: true, lg: true, xl: true }, // Hide this dummy field, effectively.
-      //       },
-      //       // better to just not include it if not needed, but let's stick to the main fields.
-      //     },
-      //     // To strictly follow the image "Thông tin cá nhân" with icon:
-      //     // The library might support sections within steps.
-      //     // Looking at `examples.tsx`, `sections` are top level, but steps can HAVE fields.
-      //     // `FormStep` has `fields`.
-      //     // Let's just implement the fields.
-      //     {
-      //       id: "fullName",
-      //       name: "fullName",
-      //       type: FieldType.TEXT,
-      //       label: "Họ và tên",
-      //       placeholder: "Họ và tên",
-      //       validation: [
-      //         {
-      //           type: ValidationRuleType.REQUIRED,
-      //           message: "Họ tên không hợp lệ",
-      //         },
-      //       ],
-      //       i18n: {
-      //         enabled: false,
-      //       },
-      //     },
-      //     {
-      //       id: "idCard",
-      //       name: "idCard",
-      //       type: FieldType.TEXT,
-      //       label: "Căn cước công dân 12 Số",
-      //       placeholder: "Căn cước công dân 12 Số",
-      //       validation: [
-      //         {
-      //           type: ValidationRuleType.REQUIRED,
-      //           message: "Vui lòng nhập số CCCD",
-      //         },
-      //         {
-      //           type: ValidationRuleType.PATTERN,
-      //           value: "^[0-9]{12}$",
-      //           message: "CCCD phải có 12 số",
-      //         },
-      //       ],
-      //       i18n: {
-      //         enabled: false,
-      //       },
-      //     },
-      //     {
-      //       id: "city",
-      //       name: "city",
-      //       type: FieldType.SELECT,
-      //       label: "Tỉnh thành",
-      //       placeholder: "Vui lòng chọn",
-      //       options: {
-      //         choices: [
-      //           { label: "Hà Nội", value: "hanoi" },
-      //           { label: "TP. Hồ Chí Minh", value: "hcm" },
-      //           { label: "Đà Nẵng", value: "danang" },
-      //           // Add more as necessary
-      //         ],
-      //       },
-      //       validation: [
-      //         {
-      //           type: ValidationRuleType.REQUIRED,
-      //           message: "Vui lòng chọn tỉnh thành",
-      //         },
-      //       ],
-      //       i18n: {
-      //         enabled: false,
-      //       },
-      //     },
-      //     {
-      //       id: "vehicleOwnership",
-      //       name: "vehicleOwnership",
-      //       type: FieldType.SELECT,
-      //       label: "Sở hữu Đăng ký/ Cà vẹt xe chính chủ",
-      //       placeholder: "Vui lòng chọn",
-      //       options: {
-      //         choices: [
-      //           { label: "Có", value: "yes" },
-      //           { label: "Không", value: "no" },
-      //         ],
-      //       },
-      //       validation: [
-      //         {
-      //           type: ValidationRuleType.REQUIRED,
-      //         },
-      //       ],
-      //       i18n: {
-      //         enabled: false,
-      //       },
-      //     },
-      //   ],
-      // },
+      {
+        id: "loan-info",
+        title: "Thông tin vay",
+        fields: [
+          {
+            id: "personal-section-header",
+            name: "personalSectionHeader",
+            type: FieldType.CUSTOM,
+            label: "Thông tin cá nhân",
+            options: {
+              componentName: "SectionHeader",
+            },
+            i18n: {
+              enabled: false,
+            },
+            layout: {
+              hidden: { xs: true, sm: true, md: true, lg: true, xl: true },
+            },
+          },
+          {
+            id: "fullName",
+            name: "fullName",
+            type: FieldType.TEXT,
+            label: "Họ và tên",
+            placeholder: "Họ và tên",
+            validation: [
+              {
+                type: ValidationRuleType.REQUIRED,
+              },
+              {
+                type: ValidationRuleType.MIN_LENGTH,
+                value: 2,
+              },
+            ],
+            i18n: {
+              enabled: false,
+            },
+          },
+          {
+            id: "idCard",
+            name: "idCard",
+            type: FieldType.TEXT,
+            label: "Căn cước công dân 12 Số",
+            placeholder: "Căn cước công dân 12 Số",
+            validation: [
+              {
+                type: ValidationRuleType.REQUIRED,
+              },
+              {
+                type: ValidationRuleType.PATTERN,
+                value: "^[0-9]{12}$",
+                message: "pages.form.errors.pattern",
+              },
+            ],
+            i18n: {
+              enabled: false,
+            },
+          },
+          {
+            id: "city",
+            name: "city",
+            type: FieldType.SELECT,
+            label: "Tỉnh thành",
+            placeholder: "Vui lòng chọn",
+            options: {
+              choices: [
+                { label: "Hà Nội", value: "hanoi" },
+                { label: "TP. Hồ Chí Minh", value: "hcm" },
+                { label: "Đà Nẵng", value: "danang" },
+              ],
+            },
+            validation: [
+              {
+                type: ValidationRuleType.REQUIRED,
+              },
+            ],
+            i18n: {
+              enabled: false,
+            },
+          },
+          {
+            id: "vehicleOwnership",
+            name: "vehicleOwnership",
+            type: FieldType.SELECT,
+            label: "Sở hữu Đăng ký/ Cà vẹt xe chính chủ",
+            placeholder: "Vui lòng chọn",
+            options: {
+              choices: [
+                { label: "Có", value: "yes" },
+                { label: "Không", value: "no" },
+              ],
+            },
+            validation: [
+              {
+                type: ValidationRuleType.REQUIRED,
+              },
+            ],
+            i18n: {
+              enabled: false,
+            },
+          },
+        ],
+      },
       {
         id: "income-info",
         title: "Thông tin thu nhập",
@@ -388,23 +379,82 @@ export default function WizardTestPage() {
       showBackButtonOnFirstStep: false,
       fullWidthButtons: true,
       backButton: {
-        label: "Quay lại",
+        label: t("buttons.previous"),
         variant: "outline",
       },
       nextButton: {
-        label: "Tiếp tục",
+        label: t("buttons.next"),
         variant: "default",
       },
       submitButton: {
-        label: "Hoàn tất",
+        label: t("buttons.submit"),
         variant: "default",
       },
     },
   };
 
+  const [isFinding, setIsFinding] = useState(false);
+
   const handleComplete = (data: Record<string, any>) => {
     console.log("Wizard completed:", data);
     setSubmittedData(data);
+    setIsFinding(true);
+  };
+
+  const handleFindingFinish = () => {
+    setIsFinding(false);
+    // Here we stay on the page showing results (submittedData is already set)
+    // Or we could scroll to results.
+    // Logic:
+    // If finding, show FindingScreen.
+    // If submittedData & !finding, show Results.
+    // If neither, show Form.
+  };
+
+  // Render logic
+  const renderContent = () => {
+    if (isFinding) {
+      return (
+        <div className="rounded-lg border bg-card p-8 min-h-[400px] flex items-center justify-center">
+          <FormThemeProvider theme={legacyLoanTheme}>
+            <FindingLoanScreen onFinish={handleFindingFinish} />
+          </FormThemeProvider>
+        </div>
+      );
+    }
+
+    if (submittedData) {
+      return (
+        <div className="rounded-lg border bg-muted p-6">
+          <h3 className="font-semibold mb-4 text-green-700 flex items-center gap-2">
+            <span className="text-2xl">✅</span>{" "}
+            {t("finding_loan.success_title")}
+          </h3>
+          <p className="mb-4">{t("finding_loan.success_desc")}</p>
+          <div className="bg-white p-4 rounded border font-mono text-xs overflow-auto max-h-96">
+            {JSON.stringify(submittedData, null, 2)}
+          </div>
+
+          <button
+            onClick={() => {
+              setSubmittedData(null);
+              setIsFinding(false);
+            }}
+            className="mt-6 px-4 py-2 bg-gray-800 text-white rounded hover:bg-gray-700 text-sm"
+          >
+            {t("finding_loan.retry")}
+          </button>
+        </div>
+      );
+    }
+
+    return (
+      <div className="rounded-lg border bg-card p-8">
+        <FormThemeProvider theme={legacyLoanTheme}>
+          <StepWizard config={wizardConfig} onComplete={handleComplete} />
+        </FormThemeProvider>
+      </div>
+    );
   };
 
   return (
@@ -417,20 +467,7 @@ export default function WizardTestPage() {
           </p>
         </div>
 
-        <div className="rounded-lg border bg-card p-8">
-          <FormThemeProvider theme={legacyLoanTheme}>
-            <StepWizard config={wizardConfig} onComplete={handleComplete} />
-          </FormThemeProvider>
-        </div>
-
-        {submittedData && (
-          <div className="rounded-lg border bg-muted p-6">
-            <h3 className="font-semibold mb-4">✅ Wizard Completed!</h3>
-            <pre className="text-xs overflow-auto">
-              {JSON.stringify(submittedData, null, 2)}
-            </pre>
-          </div>
-        )}
+        {renderContent()}
       </div>
     </div>
   );

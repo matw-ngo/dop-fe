@@ -80,9 +80,6 @@ export function StepContent({ step, className }: StepContentProps) {
         <div className="rounded-lg bg-muted p-4 text-sm">{step.helpText}</div>
       )}
 
-      {/* Step-level Errors */}
-      <StepErrors stepId={step.id} />
-
       {/* Review Step Content */}
       {step.type === "review" && (
         <ReviewStep
@@ -106,6 +103,9 @@ export function StepContent({ step, className }: StepContentProps) {
           />
         ))}
       </div>
+
+      {/* Step-level Errors */}
+      <StepErrors stepId={step.id} />
     </div>
   );
 }

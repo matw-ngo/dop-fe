@@ -3,6 +3,7 @@
 import { AlertCircle } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useStepMeta } from "../store/use-form-wizard-store";
+import { useTranslations } from "next-intl";
 
 interface StepErrorsProps {
   stepId: string;
@@ -11,6 +12,7 @@ interface StepErrorsProps {
 
 export function StepErrors({ stepId, className }: StepErrorsProps) {
   const stepMeta = useStepMeta(stepId);
+  const t = useTranslations("pages.form.errors");
 
   if (
     !stepMeta ||
@@ -40,8 +42,7 @@ export function StepErrors({ stepId, className }: StepErrorsProps) {
         <Alert variant="destructive">
           <AlertCircle className="h-4 w-4" />
           <AlertDescription>
-            Please fix {fieldErrors.length} error
-            {fieldErrors.length > 1 ? "s" : ""} above
+            {t("summary_error", { count: fieldErrors.length })}
           </AlertDescription>
         </Alert>
       )}

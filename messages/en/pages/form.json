@@ -1,22 +1,30 @@
 {
   "buttons": {
     "next": "Next",
-    "previous": "Previous"
+    "previous": "Previous",
+    "submit": "Submit"
   },
   "errors": {
     "required": "This field is required",
-    "minLength": "Must be at least {value} characters",
-    "maxLength": "Must be at most {value} characters",
-    "min": "Must be at least {value}",
-    "max": "Must be at most {value}",
-    "emailInvalid": "Please enter a valid email address",
-    "phoneInvalid": "Please enter a valid phone number (10 digits)",
-    "urlInvalid": "Please enter a valid URL",
-    "passwordMinLength": "Password must be at least {value} characters",
-    "passwordRegex": "Password must contain uppercase, lowercase, and numbers",
-    "number": "Must be a valid number",
-    "integer": "Must be a whole number",
+    "minLength": "Please enter at least {min} characters",
+    "maxLength": "Please enter at most {max} characters",
+    "min": "Value must be greater than or equal to {min}",
+    "max": "Value must be less than or equal to {max}",
+    "email": "Invalid email address",
+    "phone": "Invalid phone number",
+    "url": "Invalid URL",
+    "pattern": "Invalid format",
+    "minDate": "Date must be after {date}",
+    "maxDate": "Date must be before {date}",
+    "integer": "Must be an integer",
     "positive": "Must be a positive number",
-    "negative": "Must be a negative number"
+    "negative": "Must be a negative number",
+    "summary_error": "Please fix {count} error(s) above"
+  },
+  "finding_loan": {
+    "message": "Please wait a moment, we are finding suitable loans for you",
+    "success_title": "Application submitted successfully!",
+    "success_desc": "We have found suitable loans for you.",
+    "retry": "Retry"
   }
 }

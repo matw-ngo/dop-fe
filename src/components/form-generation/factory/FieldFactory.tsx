@@ -31,6 +31,7 @@ import type { FieldComponentProps, FormField } from "../types";
 import { FieldType } from "../types";
 import { cn } from "../utils/helpers";
 import { ValidationEngine } from "../validation/ValidationEngine";
+import { useTranslations } from "next-intl";
 
 // Register built-in components
 const registry = ComponentRegistry.getInstance();
@@ -136,6 +137,8 @@ export function FieldFactory({
   readOnly,
 }: FieldFactoryProps) {
   const { getLabel, getPlaceholder, getHelp } = useFormTranslations(namespace);
+  const translateError = useValidationErrorTranslation();
+  const translatedError = translateError(externalError);
 
   // Initialize tracking
   const { trackInput, trackValidation, trackBlur, trackSelection, trackFocus } =
@@ -289,7 +292,7 @@ export function FieldFactory({
     onChange: fieldOnChange,
     onBlur: handleBlur,
     onFocus: handleFocus,
-    error: externalError,
+    error: translatedError,
     disabled: disabled || field.disabled,
     readOnly: readOnly || field.readOnly,
     className: controlClassName, // Only control className
@@ -313,14 +316,14 @@ export function FieldFactory({
       id={field.id}
       label={label}
       required={isRequired}
-      error={externalError}
+      error={translatedError}
       help={help}
       disabled={disabled || field.disabled}
       // Granular styling - separate classNames
       wrapperClassName={styling.wrapper}
-      labelClassName={cn(theme.label.base, styling.label)} // Merge theme style with field override
-      errorClassName={cn(theme.error.base, styling.error)}
-      helpClassName={cn(theme.help.base, styling.help)}
+      labelClassName={cn(theme.label?.base, styling.label)} // Merge theme style with field override
+      errorClassName={cn(theme.error?.base, styling.error)}
+      helpClassName={cn(theme.help?.base, styling.help)}
     >
       <FieldComponent {...fieldProps} />
     </FieldWrapper>
@@ -328,9 +331,41 @@ export function FieldFactory({
     <FieldComponent {...fieldProps} />
   );
 
-  // Wrap with error boundary for safety
   return (
     <FieldErrorBoundary fieldId={field.id}>{fieldContent}</FieldErrorBoundary>
+  );
+}
+
+// Helper to translate validation errors
+function useValidationErrorTranslation() {
+  const t = useTranslations();
+
+  return useCallback(
+    (error?: string) => {
+      if (!error) return undefined;
+
+      // Check if error is a translation key (contains | or starts with pages.form.errors)
+      // Simple check: if it has a pipe, parse it.
+      // If not but looks like a key, translate it.
+      // If regular string, return as is (fallback).
+
+      if (error.includes("|")) {
+        const [key, paramsStr] = error.split("|");
+        try {
+          const params = JSON.parse(paramsStr);
+          return t(key, params);
+        } catch (e) {
+          return error;
+        }
+      }
+
+      if (error.startsWith("pages.form.errors.")) {
+        return t(error);
+      }
+
+      return error;
+    },
+    [t],
   );
 }
 

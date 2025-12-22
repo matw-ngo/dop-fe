@@ -1,22 +1,30 @@
 {
   "buttons": {
     "next": "Tiếp theo",
-    "previous": "Trước"
+    "previous": "Trước",
+    "submit": "Hoàn tất"
   },
   "errors": {
     "required": "Trường này là bắt buộc",
-    "minLength": "Phải có ít nhất {value} ký tự",
-    "maxLength": "Phải có tối đa {value} ký tự",
-    "min": "Phải có giá trị ít nhất {value}",
-    "max": "Phải có giá trị tối đa {value}",
-    "emailInvalid": "Vui lòng nhập địa chỉ email hợp lệ",
-    "phoneInvalid": "Vui lòng nhập số điện thoại hợp lệ (10 chữ số)",
-    "urlInvalid": "Vui lòng nhập URL hợp lệ",
-    "passwordMinLength": "Mật khẩu phải có ít nhất {value} ký tự",
-    "passwordRegex": "Mật khẩu phải chứa chữ hoa, chữ thường và số",
-    "number": "Phải là một số hợp lệ",
-    "integer": "Phải là một số nguyên",
-    "positive": "Phải là một số dương",
-    "negative": "Phải là một số âm"
+    "minLength": "Vui lòng nhập tối thiểu {min} ký tự",
+    "maxLength": "Vui lòng nhập tối đa {max} ký tự",
+    "min": "Giá trị phải lớn hơn hoặc bằng {min}",
+    "max": "Giá trị phải nhỏ hơn hoặc bằng {max}",
+    "email": "Email không hợp lệ",
+    "phone": "Số điện thoại không hợp lệ",
+    "url": "URL không hợp lệ",
+    "pattern": "Định dạng không hợp lệ",
+    "minDate": "Ngày phải sau {date}",
+    "maxDate": "Ngày phải trước {date}",
+    "integer": "Phải là số nguyên",
+    "positive": "Phải là số dương",
+    "negative": "Phải là số âm",
+    "summary_error": "Vui lòng sửa {count} lỗi ở trên"
+  },
+  "finding_loan": {
+    "message": "Vui lòng đợi trong giây lát, chúng tôi đang tìm kiếm các khoản vay phù hợp với bạn",
+    "success_title": "Hồ sơ đã được gửi thành công!",
+    "success_desc": "Chúng tôi đã tìm thấy các khoản vay phù hợp với bạn.",
+    "retry": "Làm lại"
   }
 }

@@ -38,7 +38,7 @@ export class Validators {
     const valid = !isEmpty(value);
     return {
       valid,
-      error: valid ? undefined : rule.message || "This field is required",
+      error: valid ? undefined : rule.message || "pages.form.errors.required",
     };
   }
 
@@ -56,7 +56,7 @@ export class Validators {
       valid,
       error: valid
         ? undefined
-        : rule.message || `Minimum ${min} characters required`,
+        : rule.message || `pages.form.errors.minLength|{"min":${min}}`,
     };
   }
 
@@ -74,7 +74,7 @@ export class Validators {
       valid,
       error: valid
         ? undefined
-        : rule.message || `Maximum ${max} characters allowed`,
+        : rule.message || `pages.form.errors.maxLength|{"max":${max}}`,
     };
   }
 
@@ -92,7 +92,7 @@ export class Validators {
       valid,
       error: valid
         ? undefined
-        : rule.message || `Value must be at least ${min}`,
+        : rule.message || `pages.form.errors.min|{"min":${min}}`,
     };
   }
 
@@ -108,7 +108,9 @@ export class Validators {
 
     return {
       valid,
-      error: valid ? undefined : rule.message || `Value must be at most ${max}`,
+      error: valid
+        ? undefined
+        : rule.message || `pages.form.errors.max|{"max":${max}}`,
     };
   }
 
@@ -128,7 +130,7 @@ export class Validators {
 
     return {
       valid,
-      error: valid ? undefined : rule.message || "Invalid format",
+      error: valid ? undefined : rule.message || "pages.form.errors.pattern",
     };
   }
 
@@ -142,9 +144,7 @@ export class Validators {
 
     return {
       valid,
-      error: valid
-        ? undefined
-        : rule.message || "Please enter a valid email address",
+      error: valid ? undefined : rule.message || "pages.form.errors.email",
     };
   }
 
@@ -158,7 +158,7 @@ export class Validators {
 
     return {
       valid,
-      error: valid ? undefined : rule.message || "Please enter a valid URL",
+      error: valid ? undefined : rule.message || "pages.form.errors.url",
     };
   }
 
@@ -172,9 +172,7 @@ export class Validators {
 
     return {
       valid,
-      error: valid
-        ? undefined
-        : rule.message || "Please enter a valid phone number",
+      error: valid ? undefined : rule.message || "pages.form.errors.phone",
     };
   }
 
