@@ -11,16 +11,39 @@ interface VerificationResultProps {
   result: VerificationResult;
   showDetails?: boolean;
   onEdit?: () => void;
+  variant?: "full" | "compact";
 }
 
 export function VerificationResult({
   result,
   showDetails = false,
   onEdit,
+  variant = "full",
 }: VerificationResultProps) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   if (!result.success) {
+    if (variant === "compact") {
+      return (
+        <div className="flex items-center text-red-600 text-sm truncate">
+          <svg
+            className="w-4 h-4 mr-1.5 flex-shrink-0"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          <span className="truncate">Verification Failed</span>
+        </div>
+      );
+    }
+
     return (
       <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
         <div className="flex items-start">
@@ -52,6 +75,31 @@ export function VerificationResult({
   }
 
   const { personalData, verificationData } = result;
+
+  if (variant === "compact") {
+    return (
+      <div className="flex items-center justify-between w-full pr-2">
+        <div className="flex items-center text-green-600 text-sm truncate">
+          <svg
+            className="w-4 h-4 mr-1.5 flex-shrink-0"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M5 13l4 4L19 7"
+            />
+          </svg>
+          <span className="truncate">
+            {personalData.fullName || "Verified"}
+          </span>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">

@@ -14,6 +14,7 @@ interface VerificationButtonProps {
   result: VerificationResult | null;
   disabled?: boolean;
   config: EkycFieldConfig;
+  compact?: boolean;
 }
 
 export function VerificationButton({
@@ -22,9 +23,14 @@ export function VerificationButton({
   result,
   disabled,
   config,
+  compact,
 }: VerificationButtonProps) {
   // Don't show button if already verified
   if (result && result.success) {
+    if (compact) {
+      return null;
+    }
+
     return (
       <div className="flex items-center space-x-2 p-3 bg-green-50 border border-green-200 rounded-lg">
         <svg
@@ -65,9 +71,10 @@ export function VerificationButton({
         onClick={onStart}
         disabled={isDisabled}
         className={`
-          inline-flex items-center justify-center px-4 py-2 border border-transparent
+          inline-flex items-center justify-center border border-transparent
           text-sm font-medium rounded-md shadow-sm focus:outline-none focus:ring-2
           focus:ring-offset-2 transition-colors duration-200
+          ${compact ? "px-3 py-1.5 text-xs" : "px-4 py-2"}
           ${
             isDisabled
               ? "bg-gray-300 text-gray-500 cursor-not-allowed"

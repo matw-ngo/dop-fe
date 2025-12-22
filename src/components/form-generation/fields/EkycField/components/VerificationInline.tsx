@@ -21,6 +21,7 @@ interface VerificationInlineProps {
   error: string | null;
   disabled?: boolean;
   config: EkycFieldConfig;
+  renderProps: import("@/lib/verification/types").EkycRenderProps;
 }
 
 export function VerificationInline({
@@ -33,6 +34,7 @@ export function VerificationInline({
   error,
   disabled,
   config,
+  renderProps,
 }: VerificationInlineProps) {
   // If already verified, show result
   if (result && result.success) {

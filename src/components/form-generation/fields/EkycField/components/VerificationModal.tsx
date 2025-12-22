@@ -23,6 +23,7 @@ interface VerificationModalProps {
   result: VerificationResult | null;
   error: string | null;
   onRetry: () => void;
+  onCancel: () => void;
   config: EkycFieldConfig;
 }
 
@@ -34,6 +35,7 @@ export function VerificationModal({
   result,
   error,
   onRetry,
+  onCancel,
   config,
 }: VerificationModalProps) {
   // Start verification when modal opens

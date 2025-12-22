@@ -47,121 +47,121 @@ export default function WizardTestPage() {
     id: "loan-wizard",
     // theme: legacyLoanTheme, // Removed invalid prop
     steps: [
-      {
-        id: "loan-info",
-        title: "Thông tin vay",
-        fields: [
-          {
-            id: "personal-section-header",
-            name: "personalSectionHeader",
-            type: FieldType.CUSTOM,
-            label: "Thông tin cá nhân",
-            options: {
-              componentName: "SectionHeader", // Assuming a custom component or just use a label
-            },
-            i18n: {
-              enabled: false,
-            },
-            layout: {
-              // We might need to adjust this if there isn't a dedicated header type,
-              // but for now let's stick to standard fields or just let the title handle it.
-              // Actually, looking at the image, "Thông tin cá nhân" looks like a section header.
-              // I'll skip a specific header field for now and rely on standard fields,
-              // or maybe just use 'Group' if supported, but flat list is safer.
-              // Let's just put fields directly.
-              hidden: { xs: true, sm: true, md: true, lg: true, xl: true }, // Hide this dummy field, effectively.
-            },
-            // better to just not include it if not needed, but let's stick to the main fields.
-          },
-          // To strictly follow the image "Thông tin cá nhân" with icon:
-          // The library might support sections within steps.
-          // Looking at `examples.tsx`, `sections` are top level, but steps can HAVE fields.
-          // `FormStep` has `fields`.
-          // Let's just implement the fields.
-          {
-            id: "fullName",
-            name: "fullName",
-            type: FieldType.TEXT,
-            label: "Họ và tên",
-            placeholder: "Họ và tên",
-            validation: [
-              {
-                type: ValidationRuleType.REQUIRED,
-                message: "Họ tên không hợp lệ",
-              },
-            ],
-            i18n: {
-              enabled: false,
-            },
-          },
-          {
-            id: "idCard",
-            name: "idCard",
-            type: FieldType.TEXT,
-            label: "Căn cước công dân 12 Số",
-            placeholder: "Căn cước công dân 12 Số",
-            validation: [
-              {
-                type: ValidationRuleType.REQUIRED,
-                message: "Vui lòng nhập số CCCD",
-              },
-              {
-                type: ValidationRuleType.PATTERN,
-                value: "^[0-9]{12}$",
-                message: "CCCD phải có 12 số",
-              },
-            ],
-            i18n: {
-              enabled: false,
-            },
-          },
-          {
-            id: "city",
-            name: "city",
-            type: FieldType.SELECT,
-            label: "Tỉnh thành",
-            placeholder: "Vui lòng chọn",
-            options: {
-              choices: [
-                { label: "Hà Nội", value: "hanoi" },
-                { label: "TP. Hồ Chí Minh", value: "hcm" },
-                { label: "Đà Nẵng", value: "danang" },
-                // Add more as necessary
-              ],
-            },
-            validation: [
-              {
-                type: ValidationRuleType.REQUIRED,
-                message: "Vui lòng chọn tỉnh thành",
-              },
-            ],
-            i18n: {
-              enabled: false,
-            },
-          },
-          {
-            id: "vehicleOwnership",
-            name: "vehicleOwnership",
-            type: FieldType.SELECT,
-            label: "Sở hữu Đăng ký/ Cà vẹt xe chính chủ",
-            placeholder: "Vui lòng chọn",
-            options: {
-              choices: [
-                { label: "Có", value: "yes" },
-                { label: "Không", value: "no" },
-              ],
-            },
-            validation: [
-              {
-                type: ValidationRuleType.REQUIRED,
-              },
-            ],
-            i18n: {
-              enabled: false,
-            },
-          },
-        ],
-      },
+      // {
+      //   id: "loan-info",
+      //   title: "Thông tin vay",
+      //   fields: [
+      //     {
+      //       id: "personal-section-header",
+      //       name: "personalSectionHeader",
+      //       type: FieldType.CUSTOM,
+      //       label: "Thông tin cá nhân",
+      //       options: {
+      //         componentName: "SectionHeader", // Assuming a custom component or just use a label
+      //       },
+      //       i18n: {
+      //         enabled: false,
+      //       },
+      //       layout: {
+      //         // We might need to adjust this if there isn't a dedicated header type,
+      //         // but for now let's stick to standard fields or just let the title handle it.
+      //         // Actually, looking at the image, "Thông tin cá nhân" looks like a section header.
+      //         // I'll skip a specific header field for now and rely on standard fields,
+      //         // or maybe just use 'Group' if supported, but flat list is safer.
+      //         // Let's just put fields directly.
+      //         hidden: { xs: true, sm: true, md: true, lg: true, xl: true }, // Hide this dummy field, effectively.
+      //       },
+      //       // better to just not include it if not needed, but let's stick to the main fields.
+      //     },
+      //     // To strictly follow the image "Thông tin cá nhân" with icon:
+      //     // The library might support sections within steps.
+      //     // Looking at `examples.tsx`, `sections` are top level, but steps can HAVE fields.
+      //     // `FormStep` has `fields`.
+      //     // Let's just implement the fields.
+      //     {
+      //       id: "fullName",
+      //       name: "fullName",
+      //       type: FieldType.TEXT,
+      //       label: "Họ và tên",
+      //       placeholder: "Họ và tên",
+      //       validation: [
+      //         {
+      //           type: ValidationRuleType.REQUIRED,
+      //           message: "Họ tên không hợp lệ",
+      //         },
+      //       ],
+      //       i18n: {
+      //         enabled: false,
+      //       },
+      //     },
+      //     {
+      //       id: "idCard",
+      //       name: "idCard",
+      //       type: FieldType.TEXT,
+      //       label: "Căn cước công dân 12 Số",
+      //       placeholder: "Căn cước công dân 12 Số",
+      //       validation: [
+      //         {
+      //           type: ValidationRuleType.REQUIRED,
+      //           message: "Vui lòng nhập số CCCD",
+      //         },
+      //         {
+      //           type: ValidationRuleType.PATTERN,
+      //           value: "^[0-9]{12}$",
+      //           message: "CCCD phải có 12 số",
+      //         },
+      //       ],
+      //       i18n: {
+      //         enabled: false,
+      //       },
+      //     },
+      //     {
+      //       id: "city",
+      //       name: "city",
+      //       type: FieldType.SELECT,
+      //       label: "Tỉnh thành",
+      //       placeholder: "Vui lòng chọn",
+      //       options: {
+      //         choices: [
+      //           { label: "Hà Nội", value: "hanoi" },
+      //           { label: "TP. Hồ Chí Minh", value: "hcm" },
+      //           { label: "Đà Nẵng", value: "danang" },
+      //           // Add more as necessary
+      //         ],
+      //       },
+      //       validation: [
+      //         {
+      //           type: ValidationRuleType.REQUIRED,
+      //           message: "Vui lòng chọn tỉnh thành",
+      //         },
+      //       ],
+      //       i18n: {
+      //         enabled: false,
+      //       },
+      //     },
+      //     {
+      //       id: "vehicleOwnership",
+      //       name: "vehicleOwnership",
+      //       type: FieldType.SELECT,
+      //       label: "Sở hữu Đăng ký/ Cà vẹt xe chính chủ",
+      //       placeholder: "Vui lòng chọn",
+      //       options: {
+      //         choices: [
+      //           { label: "Có", value: "yes" },
+      //           { label: "Không", value: "no" },
+      //         ],
+      //       },
+      //       validation: [
+      //         {
+      //           type: ValidationRuleType.REQUIRED,
+      //         },
+      //       ],
+      //       i18n: {
+      //         enabled: false,
+      //       },
+      //     },
+      //   ],
+      // },
       {
         id: "income-info",
         title: "Thông tin thu nhập",

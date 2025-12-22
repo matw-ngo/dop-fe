@@ -1257,3 +1257,8 @@ export interface FieldComponentProps<T = any> {
 export type FieldComponent<T = any> = React.ComponentType<
   FieldComponentProps<T>
 >;
+
+/**
+ * EkycField props type - alias for generic field props
+ */
+export type EkycFieldProps = FieldComponentProps<any>;
