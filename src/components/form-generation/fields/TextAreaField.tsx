@@ -2,7 +2,11 @@
 
 import { Textarea } from "@/components/ui/textarea";
 import { useFormTheme } from "../themes/ThemeProvider";
-import type { FieldComponentProps, TextAreaFieldConfig } from "../types";
+import {
+  type FieldComponentProps,
+  type TextAreaFieldConfig,
+  ValidationRuleType,
+} from "../types";
 import { cn } from "../utils/helpers";
 
 /**
@@ -26,6 +30,9 @@ export function TextAreaField({
   const isDisabled = disabled || field.disabled;
   const isReadOnly = readOnly || field.readOnly;
   const internalLabel = theme.fieldOptions?.internalLabel;
+  const isRequired = field.validation?.some(
+    (rule) => rule.type === ValidationRuleType.REQUIRED,
+  );
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     onChange(e.target.value);
@@ -89,6 +96,7 @@ export function TextAreaField({
           className="absolute top-3 left-4 text-xs font-medium text-[#017848] pointer-events-none z-10"
         >
           {field.label}
+          {isRequired && <span className="text-red-500 ml-0.5">*</span>}
         </label>
         <Textarea
           id={field.id}

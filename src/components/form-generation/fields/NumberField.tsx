@@ -2,7 +2,11 @@
 
 import { Input } from "@/components/ui/input";
 import { useFormTheme } from "../themes/ThemeProvider";
-import type { FieldComponentProps, NumberFieldConfig } from "../types";
+import {
+  type FieldComponentProps,
+  type NumberFieldConfig,
+  ValidationRuleType,
+} from "../types";
 import { cn, formatCurrency, parseCurrency } from "../utils/helpers";
 
 /**
@@ -27,6 +31,9 @@ export function NumberField({
   const isDisabled = disabled || field.disabled;
   const isReadOnly = readOnly || field.readOnly;
   const internalLabel = theme.fieldOptions?.internalLabel;
+  const isRequired = field.validation?.some(
+    (rule) => rule.type === ValidationRuleType.REQUIRED,
+  );
 
   // Display value (formatted for currency)
   const displayValue =
@@ -96,6 +103,7 @@ export function NumberField({
           className="absolute top-2 left-4 text-xs font-medium text-[#017848] pointer-events-none z-10"
         >
           {field.label}
+          {isRequired && <span className="text-red-500 ml-0.5">*</span>}
         </label>
         <Input
           id={field.id}

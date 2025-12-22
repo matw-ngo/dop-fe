@@ -2,7 +2,11 @@
 
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import type { CheckboxFieldConfig, FieldComponentProps } from "../types";
+import {
+  type CheckboxFieldConfig,
+  type FieldComponentProps,
+  ValidationRuleType,
+} from "../types";
 import { cn } from "../utils/helpers";
 
 /**
@@ -23,6 +27,9 @@ export function CheckboxField({
   const options = checkboxField.options || {};
   const isGroup = field.type === "checkbox-group";
   const isDisabled = disabled || field.disabled;
+  const isRequired = field.validation?.some(
+    (rule) => rule.type === ValidationRuleType.REQUIRED,
+  );
 
   // Base checkbox styles for error state
   const checkboxStyles = cn(
@@ -119,6 +126,7 @@ export function CheckboxField({
           className={cn(labelStyles, isDisabled && "!cursor-not-allowed")}
         >
           {options.checkboxLabel || field.label}
+          {isRequired && <span className="text-red-500 ml-0.5">*</span>}
         </Label>
       )}
     </div>

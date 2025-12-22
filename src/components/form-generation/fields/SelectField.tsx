@@ -11,7 +11,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useFormTheme } from "../themes/ThemeProvider";
-import type { FieldComponentProps, SelectFieldConfig } from "../types";
+import {
+  type FieldComponentProps,
+  type SelectFieldConfig,
+  ValidationRuleType,
+} from "../types";
 import { cn } from "../utils/helpers";
 
 /**
@@ -33,6 +37,9 @@ export function SelectField({
   const choices = options.choices || [];
   const isDisabled = disabled || field.disabled;
   const internalLabel = theme.fieldOptions?.internalLabel;
+  const isRequired = field.validation?.some(
+    (rule) => rule.type === ValidationRuleType.REQUIRED,
+  );
 
   // Base trigger styles that are consistent across themes
   const baseTriggerStyles = [
@@ -139,6 +146,7 @@ export function SelectField({
               )}
             >
               {field.label}
+              {isRequired && <span className="text-red-500 ml-0.5">*</span>}
             </span>
           )}
           <SelectValue

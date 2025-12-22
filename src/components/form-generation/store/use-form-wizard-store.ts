@@ -13,6 +13,7 @@ import type {
   StepCompletionStatus,
   StepValidationStatus,
 } from "@/components/form-generation/types";
+import { evaluateConditions } from "../utils/helpers";
 
 // ============================================================================
 // Store Types
@@ -314,6 +315,38 @@ export const useFormWizardStore = create<FormWizardStore>()(
             // Field-level validation using ValidationEngine
             for (const field of step.fields) {
               if (!field.validation || field.validation.length === 0) {
+                continue;
+              }
+
+              // Check if field is visible/enabled based on dependencies
+              let shouldValidate = true;
+              if (field.dependencies && field.dependencies.length > 0) {
+                const isVisible = field.dependencies.every((dep) => {
+                  const conditionsMet = evaluateConditions(
+                    dep.conditions,
+                    formData,
+                    dep.logic,
+                  );
+
+                  if (dep.action === "show") return conditionsMet;
+                  if (dep.action === "hide") return !conditionsMet;
+                  if (dep.action === "disable") return !conditionsMet; // Skip if disabled
+                  if (dep.action === "enable") return conditionsMet; // Skip if not enabled
+
+                  return true;
+                });
+
+                if (!isVisible) {
+                  shouldValidate = false;
+                }
+              }
+
+              // Also check static disabled state
+              if (field.disabled) {
+                shouldValidate = false;
+              }
+
+              if (!shouldValidate) {
                 continue;
               }
 

@@ -2,7 +2,11 @@
 
 import { Input } from "@/components/ui/input";
 import { useFormTheme } from "../themes/ThemeProvider";
-import type { FieldComponentProps, TextFieldConfig } from "../types";
+import {
+  type FieldComponentProps,
+  type TextFieldConfig,
+  ValidationRuleType,
+} from "../types";
 import { cn } from "../utils/helpers";
 
 /**
@@ -23,6 +27,9 @@ export function TextField({
   const textField = field as TextFieldConfig;
   const options = textField.options || {};
   const internalLabel = theme.fieldOptions?.internalLabel;
+  const isRequired = field.validation?.some(
+    (rule) => rule.type === ValidationRuleType.REQUIRED,
+  );
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange(e.target.value);
@@ -119,6 +126,7 @@ export function TextField({
             )}
           >
             {field.label}
+            {isRequired && <span className="text-red-500 ml-0.5">*</span>}
           </label>
         )}
 

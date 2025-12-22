@@ -46,7 +46,11 @@
 import { File as FileIcon, Image as ImageIcon, Upload, X } from "lucide-react";
 import { useState } from "react";
 import { useFormTheme } from "../themes/ThemeProvider";
-import type { FieldComponentProps, FileFieldConfig } from "../types";
+import {
+  type FieldComponentProps,
+  type FileFieldConfig,
+  ValidationRuleType,
+} from "../types";
 import { cn, formatFileSize } from "../utils/helpers";
 
 // TODO: Improve UI consistency and theme integration to match TextField/SelectField implementation
@@ -67,6 +71,9 @@ export function FileField({
   const maxSize = options.maxSize || 5 * 1024 * 1024; // 5MB default
   const isDisabled = disabled || field.disabled;
   const internalLabel = theme.fieldOptions?.internalLabel;
+  const isRequired = field.validation?.some(
+    (rule) => rule.type === ValidationRuleType.REQUIRED,
+  );
 
   // Base field wrapper styles
   const baseFieldStyles = [
@@ -142,6 +149,7 @@ export function FileField({
               className="absolute top-2 left-4 text-xs font-medium text-[#017848] pointer-events-none z-10"
             >
               {field.label}
+              {isRequired && <span className="text-red-500 ml-0.5">*</span>}
             </label>
           )}
           <label

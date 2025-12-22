@@ -3,7 +3,11 @@
 import { CalendarIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useFormTheme } from "../themes/ThemeProvider";
-import type { DateFieldConfig, FieldComponentProps } from "../types";
+import {
+  type DateFieldConfig,
+  type FieldComponentProps,
+  ValidationRuleType,
+} from "../types";
 import { cn } from "../utils/helpers";
 
 /**
@@ -27,6 +31,9 @@ export function DateField({
   const isDisabled = disabled || field.disabled;
   const isReadOnly = readOnly || field.readOnly;
   const internalLabel = theme.fieldOptions?.internalLabel;
+  const isRequired = field.validation?.some(
+    (rule) => rule.type === ValidationRuleType.REQUIRED,
+  );
 
   // Determine input type based on field type
   const inputTypeMapping = {
@@ -153,6 +160,7 @@ export function DateField({
           className="absolute top-2 left-4 text-xs font-medium text-[#017848] pointer-events-none z-10"
         >
           {field.label}
+          {isRequired && <span className="text-red-500 ml-0.5">*</span>}
         </label>
         <Input
           id={field.id}

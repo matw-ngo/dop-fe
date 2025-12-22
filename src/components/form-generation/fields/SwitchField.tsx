@@ -2,7 +2,7 @@
 
 import { Label } from "@/components/ui/label";
 import * as SwitchPrimitive from "@radix-ui/react-switch";
-import type { FieldComponentProps } from "../types";
+import { type FieldComponentProps, ValidationRuleType } from "../types";
 import { cn } from "../utils/helpers";
 
 /**
@@ -21,6 +21,9 @@ export function SwitchField({
 }: FieldComponentProps<boolean>) {
   const isChecked = !!value;
   const isDisabled = disabled || field.disabled;
+  const isRequired = field.validation?.some(
+    (rule) => rule.type === ValidationRuleType.REQUIRED,
+  );
 
   // Base switch container styles
   const switchContainerStyles = cn(
@@ -146,6 +149,7 @@ export function SwitchField({
           className={cn(labelStyles, isDisabled && "!cursor-not-allowed")}
         >
           {field.label}
+          {isRequired && <span className="text-red-500 ml-0.5">*</span>}
         </Label>
       )}
     </div>

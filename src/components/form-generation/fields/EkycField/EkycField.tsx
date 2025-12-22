@@ -1,6 +1,10 @@
 import React from "react";
 import { useFormTheme } from "../../themes/ThemeProvider";
-import type { EkycFieldConfig, EkycFieldProps } from "../../types";
+import {
+  type EkycFieldConfig,
+  type EkycFieldProps,
+  ValidationRuleType,
+} from "../../types";
 import { cn } from "../../utils/helpers";
 import { useEkycField } from "./useEkycField";
 import { getEkycStyles } from "./styles";
@@ -17,6 +21,9 @@ export function EkycField(props: EkycFieldProps) {
   const { theme } = useFormTheme();
   const ekycField = field as EkycFieldConfig;
   const internalLabel = theme.fieldOptions?.internalLabel;
+  const isRequired = field.validation?.some(
+    (rule) => rule.type === ValidationRuleType.REQUIRED,
+  );
 
   // Use the extracted hook
   const {
@@ -126,6 +133,7 @@ export function EkycField(props: EkycFieldProps) {
           )}
         >
           {field.label}
+          {isRequired && <span className="text-red-500 ml-0.5">*</span>}
         </label>
 
         <div className="h-full flex items-center justify-between w-full">
