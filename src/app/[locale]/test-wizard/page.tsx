@@ -385,6 +385,20 @@ export default function WizardTestPage() {
       progressType: "bar",
       showStepNumbers: false,
       showStepTitles: false,
+      showBackButtonOnFirstStep: false,
+      fullWidthButtons: true,
+      backButton: {
+        label: "Quay lại",
+        variant: "outline",
+      },
+      nextButton: {
+        label: "Tiếp tục",
+        variant: "default",
+      },
+      submitButton: {
+        label: "Hoàn tất",
+        variant: "default",
+      },
     },
   };
 

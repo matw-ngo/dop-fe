@@ -1059,6 +1059,9 @@ export interface NavigationButtonConfig {
 
   /** Button variant */
   variant?: "default" | "outline" | "ghost" | "link" | "destructive";
+
+  /** Button takes full width */
+  fullWidth?: boolean;
 }
 
 /**
@@ -1091,6 +1094,18 @@ export interface WizardNavigationConfig {
 
   /** Sticky navigation */
   stickyNavigation?: boolean;
+
+  /** Show back button on first step */
+  showBackButtonOnFirstStep?: boolean;
+
+  /** Navigation container alignment */
+  position?: "start" | "center" | "end" | "between";
+
+  /** Force buttons to take full width */
+  fullWidthButtons?: boolean;
+
+  /** Custom container class */
+  containerClassName?: string;
 }
 
 // ============================================================================
