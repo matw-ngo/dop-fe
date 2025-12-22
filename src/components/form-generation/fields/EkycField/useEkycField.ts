@@ -123,8 +123,18 @@ export function useEkycField({
   // Handle verification start
   const handleVerify = useCallback(async () => {
     if (!ekycField.verification || isVerifying || disabled) {
+      console.log("[EkycField] Verification skipped:", {
+        hasConfig: !!ekycField.verification,
+        isVerifying,
+        disabled,
+      });
       return;
     }
+
+    console.log("[EkycField] Starting verification:", {
+      fieldId: field.id,
+      provider: ekycField.verification.provider,
+    });
 
     setIsVerifying(true);
     setStatus(VerificationStatus.INITIALIZING);
@@ -143,11 +153,20 @@ export function useEkycField({
       );
 
       setStatus(VerificationStatus.PROCESSING);
+      console.log(
+        "[EkycField] Session created, waiting for result:",
+        session.id,
+      );
 
       // Wait for result
       const verificationResult = await verificationManager.getResult(
         session.id,
       );
+      console.log("[EkycField] Verification result received:", {
+        success: verificationResult.success,
+        confidence: verificationResult.verificationData.confidence,
+        sessionId: verificationResult.sessionId,
+      });
 
       // Update state
       setResult(verificationResult);
@@ -196,7 +215,7 @@ export function useEkycField({
         setTimeout(() => setShowModal(false), 2000); // Keep open briefly to show result
       }
     } catch (error) {
-      console.error("Verification failed:", error);
+      console.error("[EkycField] Verification failed:", error);
       setStatus(VerificationStatus.ERROR);
       setCurrentError(
         error instanceof Error ? error.message : "Verification failed",
