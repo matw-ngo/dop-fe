@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { useTenant } from "@/hooks/useTenant";
+import { cn } from "@/lib/utils";
 import {
   PercentageIcon,
   BankIcon,
@@ -51,47 +52,52 @@ export function ProductTabs({ children, defaultTab = 0 }: ProductTabsProps) {
   ];
 
   return (
-    <div className="w-full bg-white">
+    <div className="w-full bg-white pt-8">
       <div className="max-w-[1200px] mx-auto px-4">
-        {/* Tab List */}
-        <div className="flex overflow-x-auto no-scrollbar border-b border-gray-100">
-          {tabs.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => !tab.disabled && setActiveTab(tab.id)}
-              className={`flex items-center gap-3 px-6 py-4 md:py-6 border-b-2 transition-all whitespace-nowrap ${
-                tab.disabled
-                  ? "opacity-50 cursor-not-allowed"
-                  : "cursor-pointer"
-              } ${
-                activeTab === tab.id
-                  ? "border-current font-bold"
-                  : "border-transparent text-gray-400 hover:text-gray-600"
-              }`}
-              style={{
-                color: activeTab === tab.id ? primaryColor : undefined,
-                borderColor: activeTab === tab.id ? primaryColor : undefined,
-              }}
-            >
-              <div
-                className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors ${
-                  activeTab === tab.id ? "" : "bg-gray-50"
-                }`}
+        {/* Tab List - Legacy Card Style */}
+        <div className="flex flex-wrap justify-center gap-3 md:gap-4 mb-8 md:mb-12">
+          {tabs.map((tab) => {
+            const isActive = activeTab === tab.id;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => !tab.disabled && setActiveTab(tab.id)}
+                disabled={tab.disabled}
+                className={cn(
+                  "relative flex items-center justify-center gap-2 md:gap-3",
+                  "w-[163px] h-[56px] md:w-[270px] md:h-[80px]",
+                  "rounded-lg font-medium transition-all duration-200",
+                  "text-sm md:text-lg whitespace-nowrap",
+                  tab.disabled
+                    ? "opacity-100 cursor-default"
+                    : "cursor-pointer",
+                  isActive
+                    ? "text-white shadow-lg"
+                    : "bg-gray-100 hover:bg-gray-200 text-gray-500",
+                )}
                 style={{
-                  backgroundColor:
-                    activeTab === tab.id ? primaryColor : undefined,
+                  backgroundColor: isActive ? primaryColor : undefined,
+                  color: isActive ? "white" : undefined,
                 }}
               >
-                {tab.icon}
-              </div>
-              <span className="text-sm md:text-base">{tab.label}</span>
-              {tab.disabled && (
-                <span className="text-[10px] bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded uppercase font-normal">
-                  {t_common("comingSoon")}
-                </span>
-              )}
-            </button>
-          ))}
+                {/* Icon */}
+                <div className="flex-shrink-0">
+                  {/* We clone the icon to inject the white color if active, otherwise it uses primaryColor by default in tabs definition */}
+                  {tab.icon}
+                </div>
+
+                {/* Label */}
+                <span className="font-sans">{tab.label}</span>
+
+                {/* Coming Soon Badge */}
+                {tab.disabled && (
+                  <div className="absolute -top-2 px-3 py-0.5 rounded-full bg-gray-200 text-[#073126] text-[10px] md:text-[11px] font-normal uppercase">
+                    {t_common("comingSoon")}
+                  </div>
+                )}
+              </button>
+            );
+          })}
         </div>
 
         {/* Tab Content */}
