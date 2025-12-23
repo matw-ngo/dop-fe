@@ -2,6 +2,7 @@ import { useTranslations } from "next-intl";
 import type React from "react";
 import { URLS } from "../constants";
 import { useFormTheme } from "@/components/form-generation/themes";
+import { useTenant } from "@/hooks/useTenant";
 
 export interface TermsAgreementProps {
   value: string;
@@ -16,6 +17,7 @@ export const TermsAgreement: React.FC<TermsAgreementProps> = ({
 }) => {
   const t = useTranslations("features.loan-application");
   const { theme } = useFormTheme();
+  const tenant = useTenant();
 
   const primaryColor = theme.colors.primary;
   const textPrimary = theme.colors.textPrimary || "#073126";
@@ -50,6 +52,7 @@ export const TermsAgreement: React.FC<TermsAgreementProps> = ({
     <div className="my-4 text-xs font-normal leading-5">
       <div style={{ color: textPrimary }}>
         {t.rich("terms.fullText", {
+          companyName: tenant.name,
           terms: renderLink,
           privacy: renderPrivacyLink,
         })}

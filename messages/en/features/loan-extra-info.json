@@ -1,0 +1,62 @@
+{
+  "personal": {
+    "title": "Personal Information",
+    "fullName": {
+      "placeholder": "Full Name",
+      "error": {
+        "invalid": "Invalid full name",
+        "format": "Full name must only contain letters and include both first and last name"
+      }
+    },
+    "nationalId": {
+      "placeholder": "National ID (12 digits)",
+      "error": {
+        "required": "Please enter National ID",
+        "invalid": "Invalid National ID",
+        "ageLimit": "Invalid National ID: Birth year does not meet requirements.",
+        "provinceCode": "Invalid National ID: Incorrect province code."
+      }
+    },
+    "province": {
+      "label": "Province",
+      "placeholder": "Select province",
+      "error": "Please select your current province"
+    },
+    "vehicleRegistration": {
+      "label": "Do you own a vehicle registration?",
+      "options": {
+        "yes": "Yes",
+        "no": "No"
+      }
+    },
+    "continue": "Continue"
+  },
+  "income": {
+    "title": "Income Information",
+    "careerStatus": {
+      "label": "Employment Status",
+      "error": "Please select your employment status."
+    },
+    "careerType": {
+      "label": "Occupational Field",
+      "error": "Please select your occupational field."
+    },
+    "incomeAmount": {
+      "label": "Income Level",
+      "error": "Please select your income level."
+    },
+    "continue": "Continue"
+  },
+  "finance": {
+    "title": "Financial Information",
+    "havingLoan": {
+      "label": "Do you currently have any loans with financial institutions/banks?",
+      "error": "Please confirm loan information."
+    },
+    "creditHistory": {
+      "label": "What is your credit history in the last 3 years?",
+      "error": "Please select your credit history."
+    },
+    "submit": "Dstart Loan Search"
+  }
+}

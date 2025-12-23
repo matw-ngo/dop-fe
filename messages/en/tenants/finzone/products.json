@@ -4,7 +4,13 @@
     "benefits": {
       "lowRate": "Preferential interest rate from {minRate}% - {maxRate}%/month",
       "highAmount": "Loans up to {maxAmount} million VND",
-      "fastApproval": "Receive loan approval results in {approvalTime} seconds"
+      "fastApproval": "Receive loan approval results in {approvalTime} seconds",
+      "noCollateral": "Unsecured loan, attractive interest rates",
+      "noCollateralDesc": "Loan amount from 5 - 90 million VND, interest rate from only 1.67%",
+      "trustedPartners": "Connect to reputable financial partners",
+      "trustedPartnersDesc": "Quick disbursement from banks, legal financial organizations and reputable leading institutions in Vietnam",
+      "simpleFast": "Simple procedure, super fast approval",
+      "simpleFastDesc": "Approve loan within the day with only National ID"
     }
   },
   "creditCard": {

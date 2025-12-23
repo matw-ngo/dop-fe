@@ -4,8 +4,6 @@ export const LOAN_AMOUNT = {
   MAX: 90,
   STEP: 5,
   DEFAULT: 12,
-  UNIT: "triệu VNĐ",
-  CURRENCY: "VNĐ",
 } as const;
 
 // Loan period configuration
@@ -14,7 +12,6 @@ export const LOAN_PERIOD = {
   MAX: 36,
   STEP: 1,
   DEFAULT: 6,
-  UNIT: "tháng",
 } as const;
 
 // Form configuration
@@ -57,26 +54,6 @@ export const FORM_STEPS = {
   OTP_VERIFICATION: "otp-verification",
   SUCCESS: "success",
   ERROR: "error",
-} as const;
-
-// Error messages (fallbacks)
-export const ERROR_MESSAGES = {
-  REQUIRED: "This field is required",
-  INVALID_PHONE: "Invalid phone number format",
-  UNSUPPORTED_TELCO: "Your telecom provider is not supported",
-  INVALID_AMOUNT: `Amount must be between ${LOAN_AMOUNT.MIN} and ${LOAN_AMOUNT.MAX} million`,
-  INVALID_PERIOD: `Period must be between ${LOAN_PERIOD.MIN} and ${LOAN_PERIOD.MAX} months`,
-  TERMS_REQUIRED: "You must agree to the terms and conditions",
-  OTP_EXPIRED: "OTP has expired",
-  OTP_INVALID: "Invalid OTP",
-  NETWORK_ERROR: "Network error. Please try again",
-} as const;
-
-// Success messages
-export const SUCCESS_MESSAGES = {
-  FORM_SUBMITTED: "Application submitted successfully",
-  PHONE_VERIFIED: "Phone number verified",
-  OTP_VERIFIED: "OTP verified successfully",
 } as const;
 
 // URLs

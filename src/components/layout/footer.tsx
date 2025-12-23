@@ -147,7 +147,7 @@ export function Footer() {
                   href="/cong-cu/tinh-toan-khoan-vay"
                   className="hover:text-white transition"
                 >
-                  Tính toán khoản vay
+                  {t("tools.loanCalculator")}
                 </Link>
               </li>
               <li>
@@ -155,7 +155,7 @@ export function Footer() {
                   href="/cong-cu/tinh-lai-tien-gui"
                   className="hover:text-white transition"
                 >
-                  Tính lãi tiền gửi
+                  {t("tools.depositInterest")}
                 </Link>
               </li>
               <li>
@@ -163,7 +163,7 @@ export function Footer() {
                   href="/cong-cu/tinh-luong-gross-net"
                   className="hover:text-white transition"
                 >
-                  Tính lương Gross - Net
+                  {t("tools.salaryGrossNet")}
                 </Link>
               </li>
               <li>
@@ -171,7 +171,7 @@ export function Footer() {
                   href="/cong-cu/tinh-luong-net-gross"
                   className="hover:text-white transition"
                 >
-                  Tính lương Net - Gross
+                  {t("tools.salaryNetGross")}
                 </Link>
               </li>
             </ul>

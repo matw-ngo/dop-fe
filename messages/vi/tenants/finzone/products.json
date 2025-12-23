@@ -4,7 +4,13 @@
     "benefits": {
       "lowRate": "Lãi suất ưu đãi từ {minRate}% - {maxRate}%/tháng",
       "highAmount": "Khoản vay lên đến {maxAmount} triệu VNĐ",
-      "fastApproval": "Nhận kết quả duyệt vay trong {approvalTime} giây"
+      "fastApproval": "Nhận kết quả duyệt vay trong {approvalTime} giây",
+      "noCollateral": "Vay không thế chấp, lãi suất hấp dẫn",
+      "noCollateralDesc": "Số tiền vay từ 5 - 90 triệu đồng, lãi suất chỉ từ 1,67%",
+      "trustedPartners": "Kết nối tới các đối tác tài chính uy tín",
+      "trustedPartnersDesc": "Giải ngân nhanh chóng từ các ngân hàng, tổ chức tài chính hợp pháp và uy tín hàng đầu Việt Nam",
+      "simpleFast": "Thủ tục đơn giản, duyệt vay siêu tốc",
+      "simpleFastDesc": "Duyệt vay trong ngày chỉ cần CCCD"
     }
   },
   "creditCard": {

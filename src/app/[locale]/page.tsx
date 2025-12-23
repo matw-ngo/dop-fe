@@ -6,6 +6,7 @@ import { ProductTabs } from "@/components/home/ProductTabs";
 import { LoanProductPanel } from "@/components/home/LoanProductPanel";
 import { IntroductionSection } from "@/components/home/IntroductionSection";
 import { StatsSection } from "@/components/home/StatsSection";
+import { useTranslations } from "next-intl";
 
 /**
  * Home Page
@@ -14,6 +15,9 @@ import { StatsSection } from "@/components/home/StatsSection";
  * Refactored for multi-tenancy and i18n
  */
 export default function Home() {
+  const t = useTranslations("components.layout.header.nav.products");
+  const t_common = useTranslations("common");
+
   return (
     <TenantThemeProvider>
       <Header />
@@ -28,20 +32,20 @@ export default function Home() {
 
           {/* Credit Card Tab - Placeholder */}
           <div className="p-8 text-center text-gray-500">
-            <h3 className="text-2xl font-bold mb-4">Thẻ tín dụng</h3>
-            <p>Nội dung đang được cập nhật...</p>
+            <h3 className="text-2xl font-bold mb-4">{t("creditCard")}</h3>
+            <p>{t_common("updatingContent")}</p>
           </div>
 
           {/* Insurance Tab - Placeholder */}
           <div className="p-8 text-center text-gray-500">
-            <h3 className="text-2xl font-bold mb-4">Bảo hiểm</h3>
-            <p>Nội dung đang được cập nhật...</p>
+            <h3 className="text-2xl font-bold mb-4">{t("insurance")}</h3>
+            <p>{t_common("updatingContent")}</p>
           </div>
 
           {/* Securities Tab - Disabled */}
           <div className="p-8 text-center text-gray-500">
-            <h3 className="text-2xl font-bold mb-4">Chứng khoán</h3>
-            <p>Coming soon</p>
+            <h3 className="text-2xl font-bold mb-4">{t("securities")}</h3>
+            <p>{t_common("comingSoon")}</p>
           </div>
         </ProductTabs>
 

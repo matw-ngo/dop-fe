@@ -16,7 +16,11 @@
     "title": "PRODUCTS"
   },
   "tools": {
-    "title": "TOOLS"
+    "title": "TOOLS",
+    "loanCalculator": "Loan Calculator",
+    "depositInterest": "Deposit Interest Calculator",
+    "salaryGrossNet": "Gross to Net Salary",
+    "salaryNetGross": "Net to Gross Salary"
   },
   "socialMedia": {
     "title": "SOCIAL MEDIA"

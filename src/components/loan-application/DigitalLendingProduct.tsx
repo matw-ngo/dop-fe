@@ -1,32 +1,32 @@
 "use client";
 
 import React from "react";
-import { useFormTheme } from "@/components/form-generation/themes";
+import { useTranslations } from "next-intl";
+import { useTenant } from "@/hooks/useTenant";
 import { ApplyLoanForm } from "./ApplyLoanForm";
 import { PercentageSvg, BankSvg, FlashSvg, SearchMoneySvg } from "./icons";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 
 export const DigitalLendingProduct = () => {
-  const { theme } = useFormTheme();
-  const primaryColor = theme.colors.primary;
+  const t = useTranslations("tenants.finzone.products.loan");
+  const tenant = useTenant();
+  const primaryColor = tenant.theme.colors.primary;
 
-  // Benefits data
   const benefits = [
     {
       Icon: PercentageSvg,
-      title: "Vay không thế chấp, lãi suất hấp dẫn",
-      description: "Số tiền vay từ 5 - 90 triệu đồng, lãi suất chỉ từ 1,67%",
+      title: t("benefits.noCollateral"),
+      description: t("benefits.noCollateralDesc"),
     },
     {
       Icon: BankSvg,
-      title: "Kết nối tới các đối tác tài chính uy tín",
-      description:
-        "Giải ngân nhanh chóng từ các ngân hàng, tổ chức tài chính hợp pháp và uy tín hàng đầu Việt Nam",
+      title: t("benefits.trustedPartners"),
+      description: t("benefits.trustedPartnersDesc"),
     },
     {
       Icon: FlashSvg,
-      title: "Thủ tục đơn giản, duyệt vay siêu tốc",
-      description: "Duyệt vay trong ngày chỉ cần CCCD",
+      title: t("benefits.simpleFast"),
+      description: t("benefits.simpleFastDesc"),
     },
   ];
 
@@ -37,7 +37,7 @@ export const DigitalLendingProduct = () => {
         {/* Left Column: Intro & Benefits */}
         <div className="space-y-8 pt-4">
           <h2 className="text-3xl md:text-4xl font-bold text-[#073126]">
-            Đăng ký nhận khoản vay
+            {t("title")}
           </h2>
 
           <div className="space-y-8">
@@ -66,7 +66,7 @@ export const DigitalLendingProduct = () => {
           <div className="flex lg:hidden items-center gap-2 mb-4">
             <SearchMoneySvg color={primaryColor} />
             <span className="text-lg font-bold text-[#073126]">
-              Vay tiêu dùng
+              {t("title")}
             </span>
           </div>
 

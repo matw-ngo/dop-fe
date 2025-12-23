@@ -9,7 +9,8 @@
       "label": "Products",
       "lending": "Consumer Loan",
       "creditCard": "Credit Card",
-      "insurance": "Insurance"
+      "insurance": "Insurance",
+      "securities": "Securities"
     },
     "tools": {
       "label": "Tools",

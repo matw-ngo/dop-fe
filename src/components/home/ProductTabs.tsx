@@ -22,6 +22,7 @@ export function ProductTabs({ children, defaultTab = 0 }: ProductTabsProps) {
   const [activeTab, setActiveTab] = useState(defaultTab);
   const tenant = useTenant();
   const primaryColor = tenant.theme.colors.primary;
+  const t_common = useTranslations("common");
 
   const tabs = [
     {
@@ -41,7 +42,7 @@ export function ProductTabs({ children, defaultTab = 0 }: ProductTabsProps) {
     },
     {
       id: 3,
-      label: "Chứng khoán",
+      label: t("securities"),
       icon: (
         <SearchMoneyIcon color={activeTab === 3 ? "white" : primaryColor} />
       ),
@@ -86,7 +87,7 @@ export function ProductTabs({ children, defaultTab = 0 }: ProductTabsProps) {
               <span className="text-sm md:text-base">{tab.label}</span>
               {tab.disabled && (
                 <span className="text-[10px] bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded uppercase font-normal">
-                  Coming soon
+                  {t_common("comingSoon")}
                 </span>
               )}
             </button>

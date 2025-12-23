@@ -16,7 +16,11 @@
     "title": "SẢN PHẨM"
   },
   "tools": {
-    "title": "CÔNG CỤ"
+    "title": "CÔNG CỤ",
+    "loanCalculator": "Tính toán khoản vay",
+    "depositInterest": "Tính lãi tiền gửi",
+    "salaryGrossNet": "Tính lương Gross - Net",
+    "salaryNetGross": "Tính lương Net - Gross"
   },
   "socialMedia": {
     "title": "SOCIAL MEDIA"

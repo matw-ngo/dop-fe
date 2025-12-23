@@ -14,8 +14,8 @@ import { validProvinceCodeNID12 } from "@app/helpers/validate";
 import { ActionContext } from "@app/states/zu-action";
 import { useLoanStore } from "@app/states/zu-store";
 import { DollarSign, User } from "lucide-react";
-import { off } from "process";
 import React, { useEffect, useMemo } from "react";
+import { useTranslations } from "next-intl";
 import { Button, SelectGroup, TextInput } from "@/components/ui";
 import { cn } from "@/lib/utils";
 import s from "./style.module.scss";
@@ -24,9 +24,9 @@ const provinceList = VN_PROVINCES.map((x) => ({
   label: x.label,
   value: x.value,
 }));
-const vehicleRegistrationOptions = [
-  { label: "Có", value: "cavet" },
-  { label: "Không", value: "none" },
+const vehicleRegistrationOptions = (t: any) => [
+  { label: t("personal.vehicleRegistration.options.yes"), value: "cavet" },
+  { label: t("personal.vehicleRegistration.options.no"), value: "none" },
 ];
 const yearOptions = () => {
   const year = new Date().getFullYear() - ValidationConfig.MINIMUM_AGE;
@@ -37,6 +37,7 @@ const yearOptions = () => {
 };
 
 export const LoanExtraInfoForm = () => {
+  const t = useTranslations("features.loan-extra-info");
   const {
     setUserLoanData,
     setUserLoanValidate,
@@ -77,11 +78,7 @@ export const LoanExtraInfoForm = () => {
     const province = userData.province;
     let valid = 1;
     if (!province || !province.trim()) {
-      setUserLoanValidate(
-        "province",
-        false,
-        "Vui lòng chọn tỉnh thành hiện tại",
-      );
+      setUserLoanValidate("province", false, t("personal.province.error"));
       valid = 0;
     } else {
       setUserLoanValidate("province", true, "");
@@ -92,14 +89,18 @@ export const LoanExtraInfoForm = () => {
   const fullNameValidation = () => {
     const fullName = userData.full_name;
     if (!fullName) {
-      setUserLoanValidate("full_name", false, "Họ tên không hợp lệ");
+      setUserLoanValidate(
+        "full_name",
+        false,
+        t("personal.fullName.error.invalid"),
+      );
       return 0;
     }
     if (!FULL_NAME_REGEX.test(fullName.trim())) {
       setUserLoanValidate(
         "full_name",
         false,
-        "Họ và tên chỉ gồm ký tự chữ cái a-z và gồm cả họ và tên",
+        t("personal.fullName.error.format"),
       );
       return 0;
     }
@@ -111,11 +112,19 @@ export const LoanExtraInfoForm = () => {
     const id = userData.national_id;
     const validateRegex = new RegExp(/^[0-9]{3}[0-3][0-9]{8}$/);
     if (!id || !id.trim()) {
-      setUserLoanValidate("national_id", false, "Vui lòng nhập số CCCD");
+      setUserLoanValidate(
+        "national_id",
+        false,
+        t("personal.nationalId.error.required"),
+      );
       return 0;
     }
     if (!validateRegex.test(id)) {
-      setUserLoanValidate("national_id", false, "Số CCCD không hợp lệ");
+      setUserLoanValidate(
+        "national_id",
+        false,
+        t("personal.nationalId.error.invalid"),
+      );
       return 0;
     }
     const birthCode = id.substring(3, 6);
@@ -130,7 +139,7 @@ export const LoanExtraInfoForm = () => {
       setUserLoanValidate(
         "national_id",
         false,
-        "Số CCCD không hợp lệ: Năm sinh không thỏa yêu cầu.",
+        t("personal.nationalId.error.ageLimit"),
       );
       return 0;
     }
@@ -140,7 +149,7 @@ export const LoanExtraInfoForm = () => {
       setUserLoanValidate(
         "national_id",
         false,
-        "Số CCCD không hợp lệ: Mã tỉnh thành không chính xác.",
+        t("personal.nationalId.error.provinceCode"),
       );
       return 0;
     }
@@ -156,7 +165,7 @@ export const LoanExtraInfoForm = () => {
       setUserLoanValidate(
         "career_status",
         false,
-        "Vui lòng chọn tình trạng việc làm của bạn.",
+        t("income.careerStatus.error"),
       );
       valid = 0;
     } else {
@@ -173,11 +182,7 @@ export const LoanExtraInfoForm = () => {
         userData.career_status === "self_employed") &&
       (!ic || ic <= 0)
     ) {
-      setUserLoanValidate(
-        "income",
-        false,
-        "Vui lòng chọn khoản thu nhập của bạn.",
-      );
+      setUserLoanValidate("income", false, t("income.incomeAmount.error"));
       valid = 0;
     } else {
       setUserLoanValidate("income", true, "");
@@ -189,11 +194,7 @@ export const LoanExtraInfoForm = () => {
     const ic = userData.career_type;
     let valid = 1;
     if (userData.career_status === "employed" && (!ic || !ic.trim())) {
-      setUserLoanValidate(
-        "career_type",
-        false,
-        "Vui lòng chọn lĩnh vực nghề nghiệp của bạn.",
-      );
+      setUserLoanValidate("career_type", false, t("income.careerType.error"));
       valid = 0;
     } else {
       setUserLoanValidate("career_type", true, "");
@@ -210,7 +211,7 @@ export const LoanExtraInfoForm = () => {
       setUserLoanValidate(
         "credit_status",
         false,
-        "Vui lòng chọn lịch sử tín dụng của bạn.",
+        t("finance.creditHistory.error"),
       );
       valid = 0;
     }
@@ -249,43 +250,48 @@ export const LoanExtraInfoForm = () => {
       <div className={cn(s.personal_info, { hidden: infoStep !== "personal" })}>
         <div className={s.caption}>
           <User />
-          <span>Thông tin cá nhân</span>
+          <span>{t("personal.title")}</span>
         </div>
         <div className={s.field}>
           <TextInput
-            classNames={s.text_input}
+            className={s.text_input}
             value={userData.full_name || ""}
-            placeholder="Họ và tên"
+            placeholder={t("personal.fullName.placeholder")}
             onBlur={fullNameValidation}
-            onChange={onNameChangeHandle}
+            onChange={(e) => onNameChangeHandle(e.target.value)}
+            error={!userDataValidate.full_name.valid}
+            errorMessage={
+              !userDataValidate.full_name.valid
+                ? userDataValidate.full_name.msg
+                : ""
+            }
           ></TextInput>
-          <span className={cn(s.error)}>
-            {!userDataValidate.full_name.valid
-              ? userDataValidate.full_name.msg
-              : ""}
-          </span>
+          {/* Removed redundant error span as TextInput handles it */}
         </div>
         <div className={s.field}>
           <TextInput
-            classNames={s.text_input}
-            placeholder="Căn cước công dân 12 Số"
+            className={s.text_input}
+            placeholder={t("personal.nationalId.placeholder")}
             onBlur={nationalIdValidation}
             value={userData.national_id || ""}
-            onChange={(value) => {
+            onChange={(e) => {
+              const value = e.target.value;
               eventTracking(EventType.lending_page_input_nid, { nid: value });
               setUserLoanData("national_id", value);
             }}
+            error={!userDataValidate.national_id.valid}
+            errorMessage={
+              !userDataValidate.national_id.valid
+                ? userDataValidate.national_id.msg
+                : ""
+            }
           ></TextInput>
-          <span className={cn(s.error)}>
-            {!userDataValidate.national_id.valid
-              ? userDataValidate.national_id.msg
-              : ""}
-          </span>
+          {/* Removed redundant error span */}
         </div>
         <div className={cn(s.field)}>
           <SelectGroup
-            label="Tỉnh thành"
-            listOptions={provinceList}
+            label={t("personal.province.label")}
+            options={provinceList}
             value={userData.province || "-1"}
             onChange={(value) => {
               eventTracking(EventType.lending_page_select_province, {
@@ -293,43 +299,45 @@ export const LoanExtraInfoForm = () => {
               });
               setUserLoanData("province", value);
             }}
+            error={
+              !userDataValidate.province.valid
+                ? userDataValidate.province.msg
+                : ""
+            }
           />
-          <span className={cn(s.error)}>
-            {!userDataValidate.province.valid
-              ? userDataValidate.province.msg
-              : ""}
-          </span>
+          {/* Removed redundant error span */}
         </div>
         <div className={cn(s.field)}>
           <SelectGroup
-            label="Sở hữu Đăng ký/ Cà vẹt xe chính chủ"
-            listOptions={vehicleRegistrationOptions}
+            label={t("personal.vehicleRegistration.label")}
+            options={vehicleRegistrationOptions(t)}
             value={userData.extra_docs || "-1"}
             onChange={(value) => {
               setUserLoanData("extra_docs", value);
             }}
+            error={
+              !userDataValidate.extra_docs.valid
+                ? userDataValidate.extra_docs.msg
+                : ""
+            }
           />
-          <span className={cn(s.error)}>
-            {!userDataValidate.extra_docs.valid
-              ? userDataValidate.extra_docs.msg
-              : ""}
-          </span>
+          {/* Removed redundant error span */}
         </div>
         <div className={s.field}>
           <Button className={s.btn} onClick={moveToIncomeStep}>
-            Tiếp tục
+            {t("personal.continue")}
           </Button>
         </div>
       </div>
       <div className={cn(s.income_info, { hidden: infoStep !== "income" })}>
         <div className={s.caption}>
           <DollarSign />
-          <span>Thông tin thu nhập</span>
+          <span>{t("income.title")}</span>
         </div>
         <div className={cn(s.field)}>
           <SelectGroup
-            label="Tình trạng việc làm"
-            listOptions={EMPLOYMENT_STATUSES}
+            label={t("income.careerStatus.label")}
+            options={EMPLOYMENT_STATUSES}
             value={userData.career_status || "-1"}
             onChange={(value) => {
               eventTracking(EventType.lending_page_select_job, {
@@ -337,17 +345,18 @@ export const LoanExtraInfoForm = () => {
               });
               setUserLoanData("career_status", value);
             }}
+            error={
+              !userDataValidate.career_status.valid
+                ? userDataValidate.career_status.msg
+                : ""
+            }
           />
-          <span className={cn(s.error)}>
-            {!userDataValidate.career_status.valid
-              ? userDataValidate.career_status.msg
-              : ""}
-          </span>
+          {/* Removed redundant error span */}
         </div>
         <div className={cn(s.field, { "is-hidden": !isEmployment })}>
           <SelectGroup
-            label="Lĩnh vực làm việc"
-            listOptions={EMPLOYMENT_TYPE}
+            label={t("income.careerType.label")}
+            options={EMPLOYMENT_TYPE}
             value={userData.career_type || "-1"}
             onChange={(value) => {
               eventTracking(EventType.lending_page_select_industry, {
@@ -355,17 +364,18 @@ export const LoanExtraInfoForm = () => {
               });
               setUserLoanData("career_type", value);
             }}
+            error={
+              !userDataValidate.career_type.valid
+                ? userDataValidate.career_type.msg
+                : ""
+            }
           />
-          <span className={cn(s.error)}>
-            {!userDataValidate.career_type.valid
-              ? userDataValidate.career_type.msg
-              : ""}
-          </span>
+          {/* Removed redundant error span */}
         </div>
         <div className={cn(s.field, { "is-hidden": !shouldShowIncome })}>
           <SelectGroup
-            label="Mức thu nhập"
-            listOptions={INCOME_AMOUNT}
+            label={t("income.incomeAmount.label")}
+            options={INCOME_AMOUNT}
             value={userData.income || "-1"}
             onChange={(value) => {
               eventTracking(EventType.lending_page_select_income_range, {
@@ -373,30 +383,27 @@ export const LoanExtraInfoForm = () => {
               });
               setUserLoanData("income", value);
             }}
+            error={
+              !userDataValidate.income.valid ? userDataValidate.income.msg : ""
+            }
           />
-          <span className={cn(s.error)}>
-            {!userDataValidate.income.valid ? userDataValidate.income.msg : ""}
-          </span>
+          {/* Removed redundant error span */}
         </div>
         <div className={cn(s.field, "mt-5")}>
-          <Button
-            className={s.btn}
-            onClick={moveToCreditStep}
-            isLoading={isLoading}
-          >
-            Tiếp Tục
+          <Button className={s.btn} onClick={moveToCreditStep}>
+            {t("income.continue")}
           </Button>
         </div>
       </div>
       <div className={cn(s.credit_info, { hidden: infoStep !== "finance" })}>
         <div className={s.caption}>
-          <IncomeIcon />
-          <span>Thông tin tài chính</span>
+          <DollarSign />
+          <span>{t("finance.title")}</span>
         </div>
         <div className={cn(s.field, "mt-4")}>
           <SelectGroup
-            label="Hiện tại, Bạn đang có khoản vay tổ chức tài chính/ngân hàng không?"
-            listOptions={CREDIT_STATUSES}
+            label={t("finance.havingLoan.label")}
+            options={CREDIT_STATUSES}
             value={userData.having_loan.toString()}
             onChange={(value) => {
               eventTracking(EventType.lending_page_select_current_loan, {
@@ -404,17 +411,18 @@ export const LoanExtraInfoForm = () => {
               });
               setUserLoanData("having_loan", parseInt(value));
             }}
+            error={
+              !userDataValidate.having_loan.valid
+                ? userDataValidate.having_loan.msg
+                : ""
+            }
           />
-          <span className={cn(s.error)}>
-            {!userDataValidate.having_loan.valid
-              ? userDataValidate.having_loan.msg
-              : ""}
-          </span>
+          {/* Removed redundant error span */}
         </div>
         <div className={cn(s.field, "mt-4")}>
           <SelectGroup
-            label="Lịch sử tín dụng của bạn trong 3 năm gần đây?"
-            listOptions={CREDIT_HISTORY}
+            label={t("finance.creditHistory.label")}
+            options={CREDIT_HISTORY}
             value={userData.credit_status.toString()}
             onChange={(value) => {
               eventTracking(EventType.lending_page_select_credit_history, {
@@ -422,16 +430,17 @@ export const LoanExtraInfoForm = () => {
               });
               setUserLoanData("credit_status", parseInt(value));
             }}
+            error={
+              !userDataValidate.credit_status.valid
+                ? userDataValidate.credit_status.msg
+                : ""
+            }
           />
-          <span className={cn(s.error)}>
-            {!userDataValidate.credit_status.valid
-              ? userDataValidate.credit_status.msg
-              : ""}
-          </span>
+          {/* Removed redundant error span */}
         </div>
         <div className={cn(s.field, "mt-5")}>
-          <Button className={s.btn} onClick={onSubmit} isLoading={isLoading}>
-            Bắt Đầu Tìm Kiếm Khoản Vay
+          <Button className={s.btn} onClick={onSubmit}>
+            {t("finance.submit")}
           </Button>
         </div>
       </div>
