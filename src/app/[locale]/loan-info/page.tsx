@@ -54,6 +54,10 @@ export default function LoanInfoPage() {
   const [leadToken, setLeadToken] = useState<string | null>(
     searchParams.get("token"),
   );
+  const [submittedData, setSubmittedData] = useState<Record<
+    string,
+    any
+  > | null>(null);
 
   const wizardConfig: DynamicFormConfig = {
     id: "loan-wizard",

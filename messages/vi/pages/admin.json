@@ -1,0 +1,6 @@
+{
+  "auth": {
+    "loginSuccess": "Đăng nhập thành công: {username}",
+    "logoutSuccess": "Đăng xuất thành công"
+  }
+}

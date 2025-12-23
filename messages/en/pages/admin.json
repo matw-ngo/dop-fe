@@ -1,0 +1,6 @@
+{
+  "auth": {
+    "loginSuccess": "Logged in successfully: {username}",
+    "logoutSuccess": "Logged out successfully"
+  }
+}
