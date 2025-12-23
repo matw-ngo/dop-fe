@@ -1,10 +1,6 @@
 import { FormTheme } from "@/components/form-generation/themes/types";
 
-export interface Address {
-  type: "headquarters" | "branch";
-  city: string;
-  address: string;
-}
+// Address interface removed as addresses are now handled by i18n
 
 export interface SocialMediaLinks {
   instagram?: string;
@@ -16,9 +12,8 @@ export interface SocialMediaLinks {
 
 export interface TenantConfig {
   id: string;
-  name: string;
-  domain: string;
   theme: FormTheme;
+  name: string; // System name / identifier
 
   /**
    * i18n namespace for tenant-specific translations
@@ -68,10 +63,7 @@ export interface TenantConfig {
   };
 
   legal: {
-    companyName: string; // Keep for non-i18n contexts (e.g., API calls)
     businessLicense: string;
     socialLicense?: string;
-    addresses: Address[];
-    disclaimer: string; // Long text, will be in i18n
   };
 }

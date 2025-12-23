@@ -19,6 +19,9 @@ import { useTenant } from "@/hooks/useTenant";
 export function Footer() {
   const t = useTranslations("components.layout.footer");
   const tenant = useTenant();
+  const t_company = useTranslations(`tenants.${tenant.id}.company`);
+  const t_legal = useTranslations(`tenants.${tenant.id}.legal`);
+  const t_products = useTranslations(`tenants.${tenant.id}.products`);
   const currentYear = new Date().getFullYear();
   const primaryColor = tenant.theme.colors.primary;
 
@@ -49,12 +52,15 @@ export function Footer() {
               {t("companyInfo.title")}
             </h3>
             <div className="text-sm space-y-2">
-              <p>{tenant.legal.companyName}</p>
-              {tenant.legal.addresses.map((addr, index) => (
-                <p key={index}>
-                  {t(`companyInfo.${addr.type}Label`)}: {addr.address}
-                </p>
-              ))}
+              <p>{t_company("fullName")}</p>
+              <p>
+                {t("companyInfo.headquartersLabel")}:{" "}
+                {t_company("addresses.headquarters")}
+              </p>
+              <p>
+                {t("companyInfo.branchLabel")}:{" "}
+                {t_company("addresses.hcmBranch")}
+              </p>
             </div>
           </div>
 
@@ -111,7 +117,7 @@ export function Footer() {
                   href="/vay-tieu-dung"
                   className="hover:text-white transition"
                 >
-                  Vay tiêu dùng
+                  {t_products("loan.title")}
                 </Link>
               </li>
               <li>
@@ -119,12 +125,12 @@ export function Footer() {
                   href="/the-tin-dung"
                   className="hover:text-white transition"
                 >
-                  Thẻ tín dụng
+                  {t_products("creditCard.title")}
                 </Link>
               </li>
               <li>
                 <Link href="/bao-hiem" className="hover:text-white transition">
-                  Bảo hiểm
+                  {t_products("insurance.title")}
                 </Link>
               </li>
             </ul>
@@ -226,20 +232,19 @@ export function Footer() {
           className="mt-10 md:mt-10 pb-6 md:pb-6 border-b text-xs md:text-sm opacity-60 text-justify"
           style={{ borderColor: "#278c63" }}
         >
-          {tenant.legal.disclaimer}
+          {t_legal("disclaimer")}
         </div>
 
         {/* Copyright */}
         <div className="mt-4 pb-12 md:pb-12 text-xs opacity-60">
           <p className="mb-1">
-            Giấy chứng nhận Đăng ký Kinh doanh số {tenant.legal.businessLicense}{" "}
-            cấp bởi Sở Kế hoạch và Đầu tư TP Hà Nội ngày 27/03/2018
+            {t_legal("businessLicense", {
+              number: tenant.legal.businessLicense,
+            })}
           </p>
           {tenant.legal.socialLicense && (
             <p className="mb-1">
-              Giấy phép Thiết lập Mạng Xã Hội trên mạng số{" "}
-              {tenant.legal.socialLicense} cấp bởi Bộ Thông Tin và Truyền Thông
-              ngày 06/02/2024
+              {t_legal("socialLicense", { number: tenant.legal.socialLicense })}
             </p>
           )}
           <p>
