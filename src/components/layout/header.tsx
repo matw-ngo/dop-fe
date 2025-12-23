@@ -1,217 +1,227 @@
 "use client";
 
-import { ChevronDown, Menu, X } from "lucide-react";
-import Link from "next/link";
+import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import { ThemeSwitcher } from "@/components/theme/theme-switcher";
-import {
-  getNavbarConfig,
-  type NavbarConfig,
-  type NavbarItem,
-} from "@/configs/navbar-config";
+import Link from "next/link";
+import { Logo } from "@/components/icons/home";
+import { legacyLoanTheme } from "@/components/form-generation/themes/legacy-loan";
 
-interface HeaderProps {
-  company?: string;
-  configOverride?: NavbarConfig;
+/**
+ * Header Component (NavBar)
+ *
+ * Reference: docs/old-code/components/NavBar/index.js + NavBar.module.scss
+ * Features:
+ * - Fixed positioning with conditional visibility
+ * - Dropdown menus for desktop
+ * - Mobile hamburger menu
+ * - Theme-aware colors
+ */
+
+interface NavItem {
+  label: string;
+  href?: string;
+  external?: boolean;
+  children?: { label: string; href: string; external?: boolean }[];
 }
 
-export default function Header({ company, configOverride }: HeaderProps) {
-  const [config, setConfig] = useState<NavbarConfig | null>(null);
-  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
-  const [openDropdowns, setOpenDropdowns] = useState<Set<string>>(new Set());
+export function Header() {
   const pathname = usePathname();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (configOverride) {
-      setConfig(configOverride);
-    } else {
-      const navbarConfig = getNavbarConfig(company);
-      setConfig(navbarConfig);
-    }
-  }, [company, configOverride]);
+  const primaryColor = legacyLoanTheme.colors.primary;
 
+  // Hide header on loan flow pages
+  const hideHeader = ["/loan-info", "/tim-kiem-vay", "/ket-qua-vay"].some(
+    (path) => pathname?.includes(path),
+  );
+
+  // Close mobile menu on route change
   useEffect(() => {
-    // Close mobile nav when route changes
-    setIsMobileNavOpen(false);
-    setOpenDropdowns(new Set());
+    setIsMobileMenuOpen(false);
+    setOpenDropdown(null);
   }, [pathname]);
 
-  const handleEventTracking = (eventType?: string, data?: any) => {
-    if (eventType && typeof window !== "undefined") {
-      // This would integrate with your analytics system
-      console.log("Event tracking:", eventType, data);
-      // eventTracking(EventType[eventType], data)
-    }
-  };
+  const navItems: NavItem[] = [
+    {
+      label: "Về Fin Zone",
+      children: [
+        { label: "Giới thiệu", href: "/gioi-thieu" },
+        { label: "Liên hệ", href: "/lien-he" },
+      ],
+    },
+    {
+      label: "Sản phẩm",
+      children: [
+        { label: "Vay tiêu dùng", href: "/vay-tieu-dung" },
+        { label: "Thẻ tín dụng", href: "/the-tin-dung" },
+        { label: "Bảo hiểm", href: "/bao-hiem" },
+      ],
+    },
+    {
+      label: "Công cụ",
+      children: [
+        { label: "Tính toán khoản vay", href: "/cong-cu/tinh-toan-khoan-vay" },
+        { label: "Tính lãi tiền gửi", href: "/cong-cu/tinh-lai-tien-gui" },
+        {
+          label: "Tính lương Gross - Net",
+          href: "/cong-cu/tinh-luong-gross-net",
+        },
+        {
+          label: "Tính lương Net - Gross",
+          href: "/cong-cu/tinh-luong-net-gross",
+        },
+      ],
+    },
+    { label: "Hỗ trợ", href: "/lien-he" },
+    { label: "Blog", href: "https://blog.finzone.vn", external: true },
+  ];
 
-  const toggleDropdown = (itemId: string) => {
-    const newOpenDropdowns = new Set(openDropdowns);
-    if (newOpenDropdowns.has(itemId)) {
-      newOpenDropdowns.delete(itemId);
-    } else {
-      newOpenDropdowns.add(itemId);
-    }
-    setOpenDropdowns(newOpenDropdowns);
-  };
-
-  const handleNavItemClick = (item: NavbarItem) => {
-    if (item.onClick) {
-      handleEventTracking(item.onClick, { path: item.href });
-    }
-  };
-
-  const renderNavItem = (item: NavbarItem, isMobile = false) => {
-    const isDropdownOpen = openDropdowns.has(item.id);
-
-    if (item.type === "dropdown") {
-      return (
-        <li key={item.id} className="relative group">
-          {isMobile ? (
-            <div>
-              <button
-                className="flex items-center justify-between w-full px-4 py-3 text-foreground hover:text-primary transition"
-                onClick={() => toggleDropdown(item.id)}
-              >
-                <span>{item.label}</span>
-                <ChevronDown
-                  className={`w-4 h-4 transition-transform ${
-                    isDropdownOpen ? "rotate-180" : ""
-                  }`}
-                />
-              </button>
-              {isDropdownOpen && item.children && (
-                <div className="bg-muted/50 border-l-2 border-primary">
-                  {item.children.map((child) => (
-                    <Link
-                      key={child.id}
-                      href={child.href || "#"}
-                      target={child.target}
-                      className="block px-8 py-2 text-muted-foreground hover:text-primary transition"
-                      onClick={() => handleNavItemClick(child)}
-                    >
-                      {child.label}
-                    </Link>
-                  ))}
-                </div>
-              )}
-            </div>
-          ) : (
-            <div>
-              <button className="flex items-center gap-1 text-foreground hover:text-primary transition">
-                {item.label}
-                <ChevronDown className="w-4 h-4" />
-              </button>
-              <div className="absolute top-full left-0 mt-1 w-48 bg-card border border-border rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                {item.children?.map((child) => (
-                  <Link
-                    key={child.id}
-                    href={child.href || "#"}
-                    target={child.target}
-                    className="block px-4 py-2 text-foreground hover:text-primary hover:bg-muted/50 transition"
-                    onClick={() => handleNavItemClick(child)}
-                  >
-                    {child.label}
-                  </Link>
-                ))}
-              </div>
-            </div>
-          )}
-        </li>
-      );
-    }
-
-    return (
-      <li key={item.id}>
-        <Link
-          href={item.href || "#"}
-          target={item.target}
-          className={`${
-            isMobile
-              ? "block px-4 py-3 text-foreground hover:text-primary transition"
-              : "text-foreground hover:text-primary transition"
-          }`}
-          onClick={() => handleNavItemClick(item)}
-        >
-          {item.label}
-        </Link>
-      </li>
-    );
-  };
-
-  if (!config) {
-    return null; // or loading spinner
-  }
-
-  // Check if navbar should be hidden on current path
-  const shouldHideNavbar =
-    config.hideOnPaths?.some((path) => pathname.includes(path)) ||
-    (config.showOnPaths &&
-      !config.showOnPaths.some((path) => pathname.includes(path)));
-
-  if (shouldHideNavbar) {
-    return null;
-  }
+  if (hideHeader) return null;
 
   return (
-    <header className="sticky top-0 z-50 bg-card border-b border-border">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+    <header
+      className="fixed top-0 left-0 right-0 z-30 bg-white transition-colors"
+      style={{
+        boxShadow: "0 4px 40px 0 rgba(0, 71, 51, 0.05)",
+        backgroundColor: isMobileMenuOpen ? primaryColor : "white",
+      }}
+    >
+      <nav className="max-w-full px-4 mx-auto">
+        <div className="flex items-center justify-center relative h-[60px] md:h-[72px]">
           {/* Logo */}
-          <Link href={config.logo.href} className="flex items-center gap-2">
-            <div
-              className="w-8 h-8 rounded-full flex items-center justify-center"
-              style={{ backgroundColor: config.logo.iconColor }}
-            >
-              <span className="text-white font-bold text-sm">
-                {config.logo.iconLetter}
-              </span>
-            </div>
-            <span className="font-bold text-lg text-foreground">
-              {config.logo.text}
-            </span>
+          <Link href="/" className="absolute left-4 md:left-12">
+            <Logo
+              currentColor={isMobileMenuOpen ? "white" : primaryColor}
+              width={124}
+              height={40}
+            />
           </Link>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-8">
-            <ul className="flex items-center gap-8">
-              {config.navigation.map((item) => renderNavItem(item, false))}
-            </ul>
-          </nav>
-
-          {/* Theme Switcher - Desktop */}
-          <div className="hidden md:block">
-            <ThemeSwitcher />
-          </div>
-
-          {/* Mobile menu button */}
+          {/* Mobile Menu Toggle */}
           <button
-            className="md:hidden p-2"
-            onClick={() => setIsMobileNavOpen(!isMobileNavOpen)}
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="md:hidden absolute right-4 p-2"
+            aria-label="Toggle menu"
           >
-            {isMobileNavOpen ? (
-              <X className="w-6 h-6" />
+            {!isMobileMenuOpen ? (
+              <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  fillRule="evenodd"
+                  d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
+                  clipRule="evenodd"
+                />
+              </svg>
             ) : (
-              <Menu className="w-6 h-6" />
+              <svg className="w-6 h-6" fill="white" viewBox="0 0 20 20">
+                <path
+                  fillRule="evenodd"
+                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                  clipRule="evenodd"
+                />
+              </svg>
             )}
           </button>
+
+          {/* Desktop Navigation */}
+          <ul className="hidden md:flex md:space-x-8">
+            {navItems.map((item, index) => (
+              <li key={index} className="relative group">
+                {item.children ? (
+                  <div>
+                    <button
+                      className="px-3 py-6 font-medium text-sm transition-colors"
+                      style={{ color: primaryColor }}
+                      onMouseEnter={() => setOpenDropdown(item.label)}
+                    >
+                      {item.label}
+                      <span className="ml-1">▼</span>
+                    </button>
+                    {openDropdown === item.label && (
+                      <div
+                        className="absolute top-full left-0 bg-white rounded border shadow-lg z-50 w-52"
+                        onMouseLeave={() => setOpenDropdown(null)}
+                      >
+                        <ul className="py-1">
+                          {item.children.map((child, childIndex) => (
+                            <li key={childIndex}>
+                              <Link
+                                href={child.href}
+                                className="block px-4 py-3 text-sm hover:bg-gray-50 transition-colors"
+                                style={{ color: primaryColor }}
+                              >
+                                {child.label}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <Link
+                    href={item.href!}
+                    target={item.external ? "_blank" : undefined}
+                    className="px-3 py-6 font-medium text-sm transition-colors inline-block"
+                    style={{ color: primaryColor }}
+                  >
+                    {item.label}
+                  </Link>
+                )}
+              </li>
+            ))}
+          </ul>
         </div>
 
         {/* Mobile Navigation */}
-        {isMobileNavOpen && (
-          <div className="md:hidden border-t border-border bg-card">
-            <ul className="py-2">
-              {config.navigation.map((item) => renderNavItem(item, true))}
+        {isMobileMenuOpen && (
+          <div className="md:hidden bg-white px-5 pb-8">
+            <ul>
+              {navItems.map((item, index) => (
+                <li key={index} className="border-t border-gray-200">
+                  {item.children ? (
+                    <div>
+                      <button
+                        onClick={() =>
+                          setOpenDropdown(
+                            openDropdown === item.label ? null : item.label,
+                          )
+                        }
+                        className="flex items-center justify-between w-full py-4 font-medium text-white"
+                      >
+                        <span>{item.label}</span>
+                        <span>{openDropdown === item.label ? "▲" : "▼"}</span>
+                      </button>
+                      {openDropdown === item.label && (
+                        <ul className="pl-12 pb-4 space-y-4">
+                          {item.children.map((child, childIndex) => (
+                            <li key={childIndex}>
+                              <Link
+                                href={child.href}
+                                className="text-white text-sm"
+                              >
+                                {child.label}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+                  ) : (
+                    <Link
+                      href={item.href!}
+                      target={item.external ? "_blank" : undefined}
+                      className="block py-4 font-medium text-white"
+                    >
+                      {item.label}
+                    </Link>
+                  )}
+                </li>
+              ))}
             </ul>
-
-            {/* Theme Switcher - Mobile */}
-            <div className="flex items-center justify-between px-4 py-3 border-t border-border">
-              <span className="text-sm font-medium text-foreground">Theme</span>
-              <ThemeSwitcher />
-            </div>
           </div>
         )}
-      </div>
+      </nav>
     </header>
   );
 }
