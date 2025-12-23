@@ -389,6 +389,7 @@ export default function LoanInfoPage() {
       progressType: "bar",
       showStepNumbers: false,
       showStepTitles: false,
+      showStepHeader: false,
       showBackButtonOnFirstStep: false,
       fullWidthButtons: true,
       backButton: {

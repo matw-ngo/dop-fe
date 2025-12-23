@@ -1092,6 +1092,9 @@ export interface WizardNavigationConfig {
   /** Show step numbers */
   showStepNumbers?: boolean;
 
+  /** Show step header (title/description) in StepContent */
+  showStepHeader?: boolean;
+
   /** Sticky navigation */
   stickyNavigation?: boolean;
 

@@ -88,7 +88,10 @@ export function StepWizard({
       )}
 
       {/* Current Step Content */}
-      <StepContent step={currentStepConfig} />
+      <StepContent
+        step={currentStepConfig}
+        showTitle={config.navigation?.showStepHeader}
+      />
 
       {/* Navigation Buttons */}
       <WizardNavigation config={config.navigation} onComplete={onComplete} />

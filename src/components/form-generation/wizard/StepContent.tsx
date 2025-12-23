@@ -11,9 +11,14 @@ import { StepErrors } from "./StepErrors";
 interface StepContentProps {
   step: FormStep;
   className?: string;
+  showTitle?: boolean;
 }
 
-export function StepContent({ step, className }: StepContentProps) {
+export function StepContent({
+  step,
+  className,
+  showTitle = true,
+}: StepContentProps) {
   const { updateFieldValue, getStepData, stepMeta, formData } =
     useFormWizardStore();
 
@@ -62,7 +67,7 @@ export function StepContent({ step, className }: StepContentProps) {
   return (
     <div className={`space-y-6 ${className}`}>
       {/* Step Header */}
-      {(step.title || step.description) && (
+      {showTitle && (step.title || step.description) && (
         <div className="space-y-2">
           {step.title && (
             <h2 className="text-2xl font-semibold tracking-tight">
