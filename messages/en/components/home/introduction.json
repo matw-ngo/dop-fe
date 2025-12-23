@@ -1,0 +1,16 @@
+{
+  "sections": {
+    "loanApproval": {
+      "title": "Fast loan approval with only ID card",
+      "description": "With advanced AI technology, you can search and approve loans quickly and easily within minutes."
+    },
+    "creditCardComparison": {
+      "title": "Easy credit card comparison & search",
+      "description": "We partner with reputable Banks and Credit Institutions in the market to provide credit card products with many suitable options."
+    },
+    "benefits": {
+      "title": "Attractive offers and product policies",
+      "description": "{companyName} links with Banks & Organizations to offer financial products with special interest rate policies, along with many attractive offers."
+    }
+  }
+}

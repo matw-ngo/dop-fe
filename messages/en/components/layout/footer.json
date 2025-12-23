@@ -1,0 +1,27 @@
+{
+  "companyInfo": {
+    "title": "GOVERNING UNIT",
+    "headquartersLabel": "Headquarters",
+    "branchLabel": "HCM Branch"
+  },
+  "information": {
+    "title": "INFORMATION",
+    "about": "Introduction",
+    "blog": "Blog",
+    "contact": "Contact Us",
+    "faq": "FAQ",
+    "terms": "Terms"
+  },
+  "products": {
+    "title": "PRODUCTS"
+  },
+  "tools": {
+    "title": "TOOLS"
+  },
+  "socialMedia": {
+    "title": "SOCIAL MEDIA"
+  },
+  "legal": {
+    "copyright": "Copyright © {year} {companyName}, All rights reserved"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "nav": {
+    "about": {
+      "label": "About {companyName}",
+      "introduction": "Introduction",
+      "contact": "Contact Us"
+    },
+    "products": {
+      "label": "Products",
+      "lending": "Consumer Loan",
+      "creditCard": "Credit Card",
+      "insurance": "Insurance"
+    },
+    "tools": {
+      "label": "Tools",
+      "loanCalculator": "Loan Calculator",
+      "savingsCalculator": "Savings Calculator",
+      "salaryGrossToNet": "Salary Gross - Net",
+      "salaryNetToGross": "Salary Net - Gross"
+    },
+    "support": "Support",
+    "blog": "Blog"
+  }
+}

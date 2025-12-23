@@ -1,5 +1,4 @@
-import { FormThemeProvider } from "@/components/form-generation/themes/ThemeProvider";
-import { legacyLoanTheme } from "@/components/form-generation/themes/legacy-loan";
+import { TenantThemeProvider } from "@/components/layout/TenantThemeProvider";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { HeroBanner } from "@/components/home/HeroBanner";
@@ -12,11 +11,11 @@ import { StatsSection } from "@/components/home/StatsSection";
  * Home Page
  *
  * Main landing page assembled from theme-aware components
- * Reference: docs/old-code/app/page.tsx
+ * Refactored for multi-tenancy and i18n
  */
 export default function Home() {
   return (
-    <FormThemeProvider theme={legacyLoanTheme}>
+    <TenantThemeProvider>
       <Header />
       <main className="min-h-screen pt-[60px] md:pt-[72px]">
         {/* Hero Banner */}
@@ -53,6 +52,6 @@ export default function Home() {
         <StatsSection />
       </main>
       <Footer />
-    </FormThemeProvider>
+    </TenantThemeProvider>
   );
 }

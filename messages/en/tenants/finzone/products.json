@@ -1,0 +1,16 @@
+{
+  "loan": {
+    "title": "Consumer Loan",
+    "benefits": {
+      "lowRate": "Preferential interest rate from {minRate}% - {maxRate}%/month",
+      "highAmount": "Loans up to {maxAmount} million VND",
+      "fastApproval": "Receive loan approval results in {approvalTime} seconds"
+    }
+  },
+  "creditCard": {
+    "title": "Credit Card"
+  },
+  "insurance": {
+    "title": "Insurance"
+  }
+}

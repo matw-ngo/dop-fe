@@ -1,39 +1,42 @@
 "use client";
 
 import Image from "next/image";
+import { useTenant } from "@/hooks/useTenant";
 
-/**
- * Hero Banner Component
- *
- * Reference: docs/old-code/app/Home.module.scss lines 16-45
- * - Desktop image height: 408px
- * - Mobile image height: 332px
- * - Background: theme-aware light variant
- */
 export function HeroBanner() {
-  return (
-    <section className="bg-[#f0f7f4]">
-      <div className="hero-image">
-        {/* Desktop Banner */}
-        <div className="hidden md:block h-[408px] relative">
-          <Image
-            src="/images/banner.png"
-            alt="Fin Zone Banner"
-            fill
-            className="object-contain"
-            priority
-          />
-        </div>
+  const tenant = useTenant();
 
-        {/* Mobile Banner */}
-        <div className="block md:hidden h-[332px] relative">
-          <Image
-            src="/images/banner-mobile.png"
-            alt="Fin Zone Banner"
-            fill
-            className="object-contain"
-            priority
-          />
+  return (
+    <section
+      className="relative w-full h-auto overflow-hidden"
+      style={{ backgroundColor: "#f0f7f4" }} // Specific to legacy feel
+    >
+      <div className="max-w-full mx-auto px-0">
+        <div className="relative w-full h-[220px] md:h-[450px]">
+          {/* Desktop Banner */}
+          <div className="hidden md:block absolute inset-0">
+            <Image
+              src="/images/banner.png"
+              alt={`${tenant.name} Banner`}
+              fill
+              className="object-contain object-right"
+              priority
+            />
+          </div>
+
+          {/* Mobile Banner */}
+          <div className="block md:hidden absolute inset-0">
+            <Image
+              src="/images/banner-mobile.png"
+              alt={`${tenant.name} Banner Mobile`}
+              fill
+              className="object-contain object-bottom"
+              priority
+            />
+          </div>
+
+          {/* Desktop Slogan/Text overlay if needed could go here, 
+              but in legacy it was part of the image */}
         </div>
       </div>
     </section>

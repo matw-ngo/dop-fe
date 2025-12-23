@@ -1,0 +1,27 @@
+{
+  "companyInfo": {
+    "title": "ĐƠN VỊ CHỦ QUẢN",
+    "headquartersLabel": "Trụ sở",
+    "branchLabel": "Chi nhánh HCM"
+  },
+  "information": {
+    "title": "THÔNG TIN",
+    "about": "Giới thiệu",
+    "blog": "Blog",
+    "contact": "Liên hệ",
+    "faq": "FAQ",
+    "terms": "Điều khoản"
+  },
+  "products": {
+    "title": "SẢN PHẨM"
+  },
+  "tools": {
+    "title": "CÔNG CỤ"
+  },
+  "socialMedia": {
+    "title": "SOCIAL MEDIA"
+  },
+  "legal": {
+    "copyright": "Copyright © {year} {companyName}, All rights reserved"
+  }
+}

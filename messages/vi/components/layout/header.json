@@ -1,0 +1,24 @@
+{
+  "nav": {
+    "about": {
+      "label": "Về {companyName}",
+      "introduction": "Giới thiệu",
+      "contact": "Liên hệ"
+    },
+    "products": {
+      "label": "Sản phẩm",
+      "lending": "Vay tiêu dùng",
+      "creditCard": "Thẻ tín dụng",
+      "insurance": "Bảo hiểm"
+    },
+    "tools": {
+      "label": "Công cụ",
+      "loanCalculator": "Tính toán khoản vay",
+      "savingsCalculator": "Tính lãi tiền gửi",
+      "salaryGrossToNet": "Tính lương Gross - Net",
+      "salaryNetToGross": "Tính lương Net - Gross"
+    },
+    "support": "Hỗ trợ",
+    "blog": "Blog"
+  }
+}

@@ -1,27 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { useFormTheme } from "@/components/form-generation/themes/ThemeProvider";
+import { useTranslations } from "next-intl";
+import { useTenant } from "@/hooks/useTenant";
 import {
+  PercentageIcon,
+  BankIcon,
+  FlashIcon,
   SearchMoneyIcon,
   CardsIcon,
   CarInsurIcon,
 } from "@/components/icons/home";
-
-/**
- * Product Tabs Component
- *
- * Reference: docs/old-code/components/TabDisplay/index.tsx
- * Tab navigation for different products with theme-aware colors
- */
-
-interface Tab {
-  id: string;
-  displayName: string;
-  icon: React.ReactNode;
-  activeIcon: React.ReactNode;
-  disabled: boolean;
-}
 
 interface ProductTabsProps {
   children: React.ReactNode[];
@@ -29,82 +18,84 @@ interface ProductTabsProps {
 }
 
 export function ProductTabs({ children, defaultTab = 0 }: ProductTabsProps) {
-  const { theme } = useFormTheme();
-  const primaryColor = theme.colors.primary;
-  const [currentTabIndex, setCurrentTabIndex] = useState(defaultTab);
+  const t = useTranslations("components.layout.header.nav.products");
+  const [activeTab, setActiveTab] = useState(defaultTab);
+  const tenant = useTenant();
+  const primaryColor = tenant.theme.colors.primary;
 
-  const tabs: Tab[] = [
+  const tabs = [
     {
-      id: "lending",
-      displayName: "Vay tiêu dùng",
-      icon: <SearchMoneyIcon color={primaryColor} width={24} height={24} />,
-      activeIcon: <SearchMoneyIcon color="#fff" width={24} height={24} />,
-      disabled: false,
+      id: 0,
+      label: t("lending"),
+      icon: <BankIcon color={activeTab === 0 ? "white" : primaryColor} />,
     },
     {
-      id: "credit-card",
-      displayName: "Thẻ tín dụng",
-      icon: <CardsIcon color={primaryColor} width={24} height={24} />,
-      activeIcon: <CardsIcon color="#fff" width={24} height={24} />,
-      disabled: false,
+      id: 1,
+      label: t("creditCard"),
+      icon: <CardsIcon color={activeTab === 1 ? "white" : primaryColor} />,
     },
     {
-      id: "insurance",
-      displayName: "Bảo hiểm",
-      icon: <CarInsurIcon color={primaryColor} width={24} height={24} />,
-      activeIcon: <CarInsurIcon color="#fff" width={24} height={24} />,
-      disabled: false,
+      id: 2,
+      label: t("insurance"),
+      icon: <CarInsurIcon color={activeTab === 2 ? "white" : primaryColor} />,
     },
     {
-      id: "securities",
-      displayName: "Chứng khoán",
-      icon: <SearchMoneyIcon color="#999" width={24} height={24} />,
-      activeIcon: <SearchMoneyIcon color="#999" width={24} height={24} />,
+      id: 3,
+      label: "Chứng khoán",
+      icon: (
+        <SearchMoneyIcon color={activeTab === 3 ? "white" : primaryColor} />
+      ),
       disabled: true,
     },
   ];
 
   return (
-    <section className="w-full mb-12 md:mb-12">
-      <div className="max-w-[1170px] mx-auto pt-[30px] px-4 md:px-4">
-        {/* Tab Navigation */}
-        <div className="flex flex-wrap gap-2 md:gap-4 mb-8">
-          {tabs.map((tab, index) => (
+    <div className="w-full bg-white">
+      <div className="max-w-[1200px] mx-auto px-4">
+        {/* Tab List */}
+        <div className="flex overflow-x-auto no-scrollbar border-b border-gray-100">
+          {tabs.map((tab) => (
             <button
               key={tab.id}
-              onClick={() => !tab.disabled && setCurrentTabIndex(index)}
-              disabled={tab.disabled}
-              className={`
-                flex items-center gap-3 px-6 py-4 rounded-lg transition-all
-                ${
-                  currentTabIndex === index
-                    ? "shadow-lg"
-                    : "bg-white border border-gray-200"
-                }
-                ${tab.disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer hover:shadow-md"}
-              `}
+              onClick={() => !tab.disabled && setActiveTab(tab.id)}
+              className={`flex items-center gap-3 px-6 py-4 md:py-6 border-b-2 transition-all whitespace-nowrap ${
+                tab.disabled
+                  ? "opacity-50 cursor-not-allowed"
+                  : "cursor-pointer"
+              } ${
+                activeTab === tab.id
+                  ? "border-current font-bold"
+                  : "border-transparent text-gray-400 hover:text-gray-600"
+              }`}
               style={{
-                backgroundColor:
-                  currentTabIndex === index ? primaryColor : undefined,
-                color: currentTabIndex === index ? "#fff" : primaryColor,
+                color: activeTab === tab.id ? primaryColor : undefined,
+                borderColor: activeTab === tab.id ? primaryColor : undefined,
               }}
             >
-              <div className="w-6 h-6">
-                {currentTabIndex === index ? tab.activeIcon : tab.icon}
+              <div
+                className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors ${
+                  activeTab === tab.id ? "" : "bg-gray-50"
+                }`}
+                style={{
+                  backgroundColor:
+                    activeTab === tab.id ? primaryColor : undefined,
+                }}
+              >
+                {tab.icon}
               </div>
-              <span className="font-semibold text-sm md:text-base">
-                {tab.displayName}
-              </span>
+              <span className="text-sm md:text-base">{tab.label}</span>
               {tab.disabled && (
-                <span className="text-xs opacity-70">Coming soon</span>
+                <span className="text-[10px] bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded uppercase font-normal">
+                  Coming soon
+                </span>
               )}
             </button>
           ))}
         </div>
 
         {/* Tab Content */}
-        <div className="tab-content">{children[currentTabIndex]}</div>
+        <div className="py-8 md:py-12">{children[activeTab]}</div>
       </div>
-    </section>
+    </div>
   );
 }

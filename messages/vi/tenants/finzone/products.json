@@ -1,0 +1,16 @@
+{
+  "loan": {
+    "title": "Vay tiêu dùng",
+    "benefits": {
+      "lowRate": "Lãi suất ưu đãi từ {minRate}% - {maxRate}%/tháng",
+      "highAmount": "Khoản vay lên đến {maxAmount} triệu VNĐ",
+      "fastApproval": "Nhận kết quả duyệt vay trong {approvalTime} giây"
+    }
+  },
+  "creditCard": {
+    "title": "Thẻ tín dụng"
+  },
+  "insurance": {
+    "title": "Bảo hiểm"
+  }
+}

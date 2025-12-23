@@ -171,14 +171,50 @@ async function loadComponents(locale: string): Promise<any> {
   if (!fs.existsSync(componentsDir)) return {};
 
   const components: any = {};
-  const componentFiles = fs
-    .readdirSync(componentsDir)
-    .filter((f) => f.endsWith(".json"));
+
+  // Read both files and directories
+  const entries = fs.readdirSync(componentsDir, { withFileTypes: true });
+
+  // Process direct .json files
+  const componentFiles = entries
+    .filter((entry) => entry.isFile() && entry.name.endsWith(".json"))
+    .map((entry) => entry.name);
 
   for (const file of componentFiles) {
     const content = await loadNamespaceFile(locale, `components/${file}`);
     const fileName = file.replace(".json", "");
     components[fileName] = content;
+  }
+
+  // Process subdirectories (like layout/, home/)
+  const componentDirs = entries
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => entry.name);
+
+  for (const dir of componentDirs) {
+    const dirPath = path.join(componentsDir, dir);
+    const dirFiles = fs.readdirSync(dirPath).filter((f) => f.endsWith(".json"));
+
+    components[dir] = {};
+    for (const file of dirFiles) {
+      const content = await loadNamespaceFile(
+        locale,
+        `components/${dir}/${file}`,
+      );
+      const fileName = file.replace(".json", "");
+      components[dir][fileName] = content;
+    }
+  }
+
+  if (process.env.NODE_ENV === "development") {
+    console.log("🔍 Components structure loaded:", {
+      topLevelKeys: Object.keys(components),
+      layout: components.layout ? Object.keys(components.layout) : "missing",
+      home: components.home ? Object.keys(components.home) : "missing",
+      layoutHeaderSample: components.layout?.header?.nav
+        ? "nav exists"
+        : "nav missing",
+    });
   }
 
   return components;
@@ -210,6 +246,41 @@ async function loadForms(locale: string): Promise<any> {
 }
 
 /**
+ * Load all tenant translations for a locale
+ */
+async function loadTenantTranslations(locale: string): Promise<any> {
+  const tenantsDir = path.join(MESSAGES_DIR, locale, "tenants");
+  if (!fs.existsSync(tenantsDir)) return {};
+
+  const tenants: any = {};
+
+  // Get all tenant directories
+  const tenantDirs = fs
+    .readdirSync(tenantsDir, { withFileTypes: true })
+    .filter((dirent) => dirent.isDirectory())
+    .map((dirent) => dirent.name);
+
+  for (const tenantId of tenantDirs) {
+    const tenantDir = path.join(tenantsDir, tenantId);
+    const tenantFiles = fs
+      .readdirSync(tenantDir)
+      .filter((f) => f.endsWith(".json"));
+
+    tenants[tenantId] = {};
+    for (const file of tenantFiles) {
+      const content = await loadNamespaceFile(
+        locale,
+        `tenants/${tenantId}/${file}`,
+      );
+      const fileName = file.replace(".json", "");
+      tenants[tenantId][fileName] = content;
+    }
+  }
+
+  return tenants;
+}
+
+/**
  * Main loader function that loads all translations for a locale
  */
 const loadAllTranslations = cache(async (locale: string) => {
@@ -219,6 +290,7 @@ const loadAllTranslations = cache(async (locale: string) => {
   const common = await loadCommon(locale);
   const components = await loadComponents(locale);
   const forms = await loadForms(locale);
+  const tenants = await loadTenantTranslations(locale);
 
   // If we have split files, return them with proper structure
   if (
@@ -226,7 +298,8 @@ const loadAllTranslations = cache(async (locale: string) => {
     Object.keys(pages).length > 0 ||
     Object.keys(common).length > 0 ||
     Object.keys(components).length > 0 ||
-    Object.keys(forms).length > 0
+    Object.keys(forms).length > 0 ||
+    Object.keys(tenants).length > 0
   ) {
     // Create a merged structure for next-intl
     const merged: any = {
@@ -234,6 +307,7 @@ const loadAllTranslations = cache(async (locale: string) => {
       pages,
       components,
       forms,
+      tenants,
 
       // Properly nest features
       features: Object.entries(features).reduce(
@@ -318,6 +392,7 @@ const loadAllTranslations = cache(async (locale: string) => {
           common: Object.keys(common).length,
           components: Object.keys(components).length,
           forms: Object.keys(forms).length,
+          tenants: Object.keys(tenants).length,
           totalKeys: Object.keys(merged).length,
         },
         features: featureDetails,

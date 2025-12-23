@@ -3,18 +3,14 @@
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { Logo } from "@/components/icons/home";
-import { legacyLoanTheme } from "@/components/form-generation/themes/legacy-loan";
+import { useTenant } from "@/hooks/useTenant";
 
 /**
  * Header Component (NavBar)
  *
- * Reference: docs/old-code/components/NavBar/index.js + NavBar.module.scss
- * Features:
- * - Fixed positioning with conditional visibility
- * - Dropdown menus for desktop
- * - Mobile hamburger menu
- * - Theme-aware colors
+ * Refactored for multi-tenancy and i18n.
  */
 
 interface NavItem {
@@ -25,11 +21,13 @@ interface NavItem {
 }
 
 export function Header() {
+  const t = useTranslations("components.layout.header.nav");
+  const tenant = useTenant();
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
-  const primaryColor = legacyLoanTheme.colors.primary;
+  const primaryColor = tenant.theme.colors.primary;
 
   // Hide header on loan flow pages
   const hideHeader = ["/loan-info", "/tim-kiem-vay", "/ket-qua-vay"].some(
@@ -44,37 +42,43 @@ export function Header() {
 
   const navItems: NavItem[] = [
     {
-      label: "Về Fin Zone",
+      label: t("about.label", { companyName: tenant.name }),
       children: [
-        { label: "Giới thiệu", href: "/gioi-thieu" },
-        { label: "Liên hệ", href: "/lien-he" },
+        { label: t("about.introduction"), href: "/gioi-thieu" },
+        { label: t("about.contact"), href: "/lien-he" },
       ],
     },
     {
-      label: "Sản phẩm",
+      label: t("products.label"),
       children: [
-        { label: "Vay tiêu dùng", href: "/vay-tieu-dung" },
-        { label: "Thẻ tín dụng", href: "/the-tin-dung" },
-        { label: "Bảo hiểm", href: "/bao-hiem" },
+        { label: t("products.lending"), href: "/vay-tieu-dung" },
+        { label: t("products.creditCard"), href: "/the-tin-dung" },
+        { label: t("products.insurance"), href: "/bao-hiem" },
       ],
     },
     {
-      label: "Công cụ",
+      label: t("tools.label"),
       children: [
-        { label: "Tính toán khoản vay", href: "/cong-cu/tinh-toan-khoan-vay" },
-        { label: "Tính lãi tiền gửi", href: "/cong-cu/tinh-lai-tien-gui" },
         {
-          label: "Tính lương Gross - Net",
+          label: t("tools.loanCalculator"),
+          href: "/cong-cu/tinh-toan-khoan-vay",
+        },
+        {
+          label: t("tools.savingsCalculator"),
+          href: "/cong-cu/tinh-lai-tien-gui",
+        },
+        {
+          label: t("tools.salaryGrossToNet"),
           href: "/cong-cu/tinh-luong-gross-net",
         },
         {
-          label: "Tính lương Net - Gross",
+          label: t("tools.salaryNetToGross"),
           href: "/cong-cu/tinh-luong-net-gross",
         },
       ],
     },
-    { label: "Hỗ trợ", href: "/lien-he" },
-    { label: "Blog", href: "https://blog.finzone.vn", external: true },
+    { label: t("support"), href: "/lien-he" },
+    { label: t("blog"), href: "https://blog.finzone.vn", external: true },
   ];
 
   if (hideHeader) return null;
@@ -130,12 +134,12 @@ export function Header() {
                 {item.children ? (
                   <div>
                     <button
-                      className="px-3 py-6 font-medium text-sm transition-colors"
+                      className="px-3 py-6 font-medium text-sm transition-colors flex items-center"
                       style={{ color: primaryColor }}
                       onMouseEnter={() => setOpenDropdown(item.label)}
                     >
                       {item.label}
-                      <span className="ml-1">▼</span>
+                      <span className="ml-1 text-[10px]">▼</span>
                     </button>
                     {openDropdown === item.label && (
                       <div
@@ -147,7 +151,7 @@ export function Header() {
                             <li key={childIndex}>
                               <Link
                                 href={child.href}
-                                className="block px-4 py-3 text-sm hover:bg-gray-50 transition-colors"
+                                className="block px-4 py-3 text-sm hover:bg-gray-400/10 transition-colors"
                                 style={{ color: primaryColor }}
                               >
                                 {child.label}
@@ -175,7 +179,7 @@ export function Header() {
 
         {/* Mobile Navigation */}
         {isMobileMenuOpen && (
-          <div className="md:hidden bg-white px-5 pb-8">
+          <div className="md:hidden bg-white px-5 pb-8 min-h-screen">
             <ul>
               {navItems.map((item, index) => (
                 <li key={index} className="border-t border-gray-200">
@@ -187,18 +191,20 @@ export function Header() {
                             openDropdown === item.label ? null : item.label,
                           )
                         }
-                        className="flex items-center justify-between w-full py-4 font-medium text-white"
+                        className="flex items-center justify-between w-full py-4 font-medium"
+                        style={{ color: primaryColor }}
                       >
                         <span>{item.label}</span>
                         <span>{openDropdown === item.label ? "▲" : "▼"}</span>
                       </button>
                       {openDropdown === item.label && (
-                        <ul className="pl-12 pb-4 space-y-4">
+                        <ul className="pl-6 pb-4 space-y-4">
                           {item.children.map((child, childIndex) => (
                             <li key={childIndex}>
                               <Link
                                 href={child.href}
-                                className="text-white text-sm"
+                                className="text-sm block"
+                                style={{ color: primaryColor }}
                               >
                                 {child.label}
                               </Link>
@@ -211,7 +217,8 @@ export function Header() {
                     <Link
                       href={item.href!}
                       target={item.external ? "_blank" : undefined}
-                      className="block py-4 font-medium text-white"
+                      className="block py-4 font-medium"
+                      style={{ color: primaryColor }}
                     >
                       {item.label}
                     </Link>
