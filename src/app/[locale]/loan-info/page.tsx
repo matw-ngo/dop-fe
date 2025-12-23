@@ -19,6 +19,7 @@ import {
 } from "@/components/form-generation/themes";
 import { FindingLoanScreen } from "./FindingLoanScreen";
 import { useTranslations } from "next-intl";
+import { useSearchParams } from "next/navigation";
 import { useCreateLead } from "@/hooks/use-create-lead";
 import { useSubmitLeadInfo } from "@/hooks/use-lead-submission";
 import { mapFormDataToLeadInfo } from "@/mappers/leadMapper";
@@ -42,16 +43,17 @@ try {
   // Ignore registration errors in strict mode / hot reload
 }
 
-export default function WizardTestPage() {
+export default function LoanInfoPage() {
   const t = useTranslations("pages.form");
-  const [submittedData, setSubmittedData] = useState<Record<
-    string,
-    any
-  > | null>(null);
+  const searchParams = useSearchParams();
 
-  // Lead state from V1 API
-  const [leadId, setLeadId] = useState<string | null>(null);
-  const [leadToken, setLeadToken] = useState<string | null>(null);
+  // Lead state from V1 API or URL params
+  const [leadId, setLeadId] = useState<string | null>(
+    searchParams.get("leadId"),
+  );
+  const [leadToken, setLeadToken] = useState<string | null>(
+    searchParams.get("token"),
+  );
 
   const wizardConfig: DynamicFormConfig = {
     id: "loan-wizard",
@@ -432,7 +434,23 @@ export default function WizardTestPage() {
 
     console.log("Mapped Payload:", apiPayload);
 
-    // Step 1: Create lead first to get leadId and token
+    // If we already have a leadId (e.g. from previous step/URL), use it directly
+    if (leadId) {
+      console.log("Using existing leadId:", leadId);
+      setIsFinding(true);
+
+      // Submit info for the existing lead
+      submitInfo(
+        { leadId, data: apiPayload },
+        {
+          onSuccess: () => console.log("Lead info submitted successfully"),
+          onError: (e) => console.error("Submit info error:", e),
+        },
+      );
+      return;
+    }
+
+    // Otherwise, create a new lead
     createLead(
       {
         flowId,
@@ -448,20 +466,11 @@ export default function WizardTestPage() {
           setLeadToken(leadData.token);
           setIsFinding(true);
 
-          // Step 2: Submit additional lead info (if needed)
-          // Note: In V1, POST /leads already accepts all info, so submit-info might be optional
-          // depending on your flow. Uncomment if you need to submit extra data later.
-          // submitInfo(
-          //   { leadId: leadData.id, data: apiPayload },
-          //   {
-          //     onSuccess: () => console.log("Lead info submitted"),
-          //     onError: (e) => console.error("Submit info error:", e),
-          //   }
-          // );
+          // Submit additional info if needed logic can go here
         },
         onError: (error) => {
           console.error("Failed to create lead:", error);
-          // TODO: Show error to user via toast or modal
+          // TODO: Show error
         },
       },
     );
@@ -527,10 +536,9 @@ export default function WizardTestPage() {
     <div className="min-h-screen bg-background p-8">
       <div className="max-w-3xl mx-auto space-y-8">
         <div className="space-y-2">
-          <h1 className="text-4xl font-bold">Multi-Step Wizard Test</h1>
-          <p className="text-muted-foreground">
-            Testing P5.1 Foundation - StepWizard with Legacy Loan Theme
-          </p>
+          <div className="space-y-2">
+            <h1 className="text-4xl font-bold">Thông tin vay</h1>
+          </div>
         </div>
 
         {renderContent()}

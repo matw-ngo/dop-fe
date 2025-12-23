@@ -14,6 +14,9 @@ import { useLoanPurposes } from "@/hooks/use-loan-purposes";
 import { usePhoneValidationMessages } from "@/hooks/use-phone-validation-messages";
 import { trackLoanApplication } from "@/lib/tracking/events";
 import { ALLOWED_TELCOS, phoneValidation } from "@/lib/utils/phone-validation";
+import { useCreateLead } from "@/hooks/use-create-lead";
+import { useRouter } from "next/navigation";
+import { mapFormDataToLeadInfo } from "@/mappers/leadMapper";
 import { AmountField } from "./components/AmountField";
 import { PeriodField } from "./components/PeriodField";
 import { PurposeField } from "./components/PurposeField";
@@ -55,6 +58,16 @@ const ApplyLoanForm: React.FC<ApplyLoanFormProps> = ({
   const [showPhoneModal, setShowPhoneModal] = React.useState(false);
   const [showOTPModal, setShowOTPModal] = React.useState(false);
   const [formId, setFormId] = React.useState("");
+
+  // Lead creation state
+  const router = useRouter();
+  const { mutate: createLead, isPending: isCreatingLead } = useCreateLead();
+  const [createdLeadId, setCreatedLeadId] = React.useState<string | undefined>(
+    leadId,
+  );
+  const [createdLeadToken, setCreatedLeadToken] = React.useState<
+    string | undefined
+  >(leadToken);
 
   const form = useForm<LoanApplicationFormData>({
     resolver: zodResolver(createLoanApplicationSchema(t)),
@@ -127,9 +140,43 @@ const ApplyLoanForm: React.FC<ApplyLoanFormProps> = ({
   const onSubmitFinal = () => {
     if (validatePhoneNum()) {
       console.log("Form submitted:", { userData, formId });
-      // Show OTP modal after phone validation
-      setShowPhoneModal(false);
-      setShowOTPModal(true);
+
+      // If we already have lead props, just show OTP (legacy behavior support)
+      if (leadId && leadToken) {
+        setShowPhoneModal(false);
+        setShowOTPModal(true);
+        return;
+      }
+
+      // Create Lead
+      const flowId = "00000000-0000-0000-0000-000000000000"; // Default flow ID
+      const stepId = "00000000-0000-0000-0000-000000000000"; // Default step ID
+      const apiPayload = mapFormDataToLeadInfo(userData, flowId, stepId);
+
+      createLead(
+        {
+          flowId,
+          domain: "lending",
+          deviceInfo: {},
+          trackingParams: {},
+          info: apiPayload,
+        },
+        {
+          onSuccess: (data) => {
+            console.log("Lead created:", data);
+            setCreatedLeadId(data.id);
+            setCreatedLeadToken(data.token);
+
+            // Proceed to OTP
+            setShowPhoneModal(false);
+            setShowOTPModal(true);
+          },
+          onError: (error) => {
+            console.error("Lead creation failed:", error);
+            toast.error(t("errors.submissionFailed"));
+          },
+        },
+      );
     }
   };
 
@@ -138,6 +185,13 @@ const ApplyLoanForm: React.FC<ApplyLoanFormProps> = ({
     console.log("OTP verified successfully:", otp);
     toast.info(t("messages.otpSuccess"));
     setShowOTPModal(false);
+
+    // Navigate to loan info wizard with lead data
+    if (createdLeadId && createdLeadToken) {
+      router.push(
+        `/loan-info?leadId=${createdLeadId}&token=${createdLeadToken}`,
+      );
+    }
   };
 
   const handleOtpFailure = (error: string) => {
@@ -268,8 +322,8 @@ const ApplyLoanForm: React.FC<ApplyLoanFormProps> = ({
         >
           <OtpContainer
             phoneNumber={userData.phone_number || ""}
-            leadId={leadId}
-            token={leadToken}
+            leadId={createdLeadId}
+            token={createdLeadToken}
             size={4}
             otpType={2} // SMS OTP
             onSuccess={handleOtpSuccess}
