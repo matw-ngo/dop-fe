@@ -1,8 +1,8 @@
 import { useTranslations } from "next-intl";
 import type React from "react";
 import { Button } from "@/components/ui";
-import { CSS_CLASSES } from "../constants";
 import type { SubmitButtonProps } from "../types";
+import { useFormTheme } from "@/components/form-generation/themes";
 
 export const SubmitButton: React.FC<SubmitButtonProps> = ({
   isSubmitting,
@@ -12,10 +12,12 @@ export const SubmitButton: React.FC<SubmitButtonProps> = ({
   onClick,
 }) => {
   const t = useTranslations("features.loan-application");
+  const { theme } = useFormTheme();
 
   return (
     <Button
-      className={CSS_CLASSES.SUBMIT_BUTTON}
+      className="h-14 w-full rounded-lg whitespace-nowrap text-white font-semibold transition-all hover:opacity-90 active:scale-[0.98]"
+      style={{ backgroundColor: theme.colors.primary }}
       disabled={disabled || isSubmitting}
       type="button"
       onClick={onClick}

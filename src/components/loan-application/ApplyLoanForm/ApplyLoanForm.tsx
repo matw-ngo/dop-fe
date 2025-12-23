@@ -22,7 +22,7 @@ import { PeriodField } from "./components/PeriodField";
 import { PurposeField } from "./components/PurposeField";
 import { SubmitButton } from "./components/SubmitButton";
 import { TermsAgreement } from "./components/TermsAgreement";
-import { CSS_CLASSES, LOAN_AMOUNT, LOAN_PERIOD } from "./constants";
+import { LOAN_AMOUNT, LOAN_PERIOD } from "./constants";
 import {
   createLoanApplicationSchema,
   type LoanApplicationFormData,
@@ -223,7 +223,7 @@ const ApplyLoanForm: React.FC<ApplyLoanFormProps> = ({
 
   return (
     <FormProvider {...form}>
-      <div className={CSS_CLASSES.CONTAINER}>
+      <div className="max-w-2xl mx-auto p-4">
         {/* Số tiền vay field */}
         <AmountField
           value={userData.expected_amount}
@@ -279,14 +279,17 @@ const ApplyLoanForm: React.FC<ApplyLoanFormProps> = ({
           }}
           size="lg"
         >
-          <div className="py-2">
+          <div className="p-2">
             <h3
               className="text-center text-2xl font-bold leading-8 mb-3"
               style={{ color: theme.colors.primary }}
             >
               {t("otp.title")}
             </h3>
-            <p className="text-center text-sm font-normal leading-6 mb-4 text-[#4d7e70]">
+            <p
+              className="text-center text-sm font-normal leading-6 mb-4"
+              style={{ color: theme.colors.textSecondary }}
+            >
               {t("otp.description")}
             </p>
             <div className="mb-4">
@@ -300,7 +303,7 @@ const ApplyLoanForm: React.FC<ApplyLoanFormProps> = ({
                 onBlur={validatePhoneNum}
                 error={!!errors.phone_number?.message}
                 errorMessage={errors.phone_number?.message}
-                className="h-[60px] text-lg border-[#bfd1cc]"
+                className="text-lg"
               />
             </div>
             <div>

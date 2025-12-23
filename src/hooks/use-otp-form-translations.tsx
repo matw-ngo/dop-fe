@@ -1,3 +1,4 @@
+import React from "react";
 import { useTranslations } from "next-intl";
 import {
   useLocalizedCompanies,
@@ -18,19 +19,28 @@ export const useOtpFormTranslations = () => {
 
     // OTP type messages
     getCallOtpText: (phoneNumber: string) =>
-      t("callOtpText", {
+      t.rich("callOtpText", {
         otpType: otpTypes.call,
         companyName: finzone,
-      }) + ` <strong>${phoneNumber}</strong>`,
+        phoneNumber,
+        strong: (chunks: React.ReactNode) => (
+          <strong className="font-bold">{chunks}</strong>
+        ),
+      }),
 
-    getSMSCaption: (telcoName: string) =>
-      t("smsOtpConsent", {
-        companyName: finzone,
-        telcoName,
-        dataProcessor: dataNest,
-      }) +
-      ` <strong>${telcoName}</strong> ` +
-      t("smsOtpPurpose"),
+    getSMSCaption: (telcoName: string) => (
+      <>
+        {t.rich("smsOtpConsent", {
+          companyName: finzone,
+          telcoName,
+          dataProcessor: dataNest,
+          strong: (chunks: React.ReactNode) => (
+            <strong className="font-bold">{chunks}</strong>
+          ),
+        })}{" "}
+        {t("smsOtpPurpose")}
+      </>
+    ),
 
     // Input
     getInputPlaceholder: (index: number) =>

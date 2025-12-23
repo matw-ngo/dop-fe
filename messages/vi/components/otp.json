@@ -1,8 +1,8 @@
 {
   "form": {
     "title": "Nhập mã xác thực",
-    "callOtpText": "Bạn vui lòng nhập mã xác nhận từ {otpType} của {companyName} tới số điện thoại",
-    "smsOtpConsent": "Bằng việc cung cấp OTP này, tôi đồng ý ủy quyền cho {companyName} yêu cầu {telcoName} và {dataProcessor} xử lý dữ liệu của tôi tại {telcoName} và chia sẻ kết quả xử lý dữ liệu đến các đối tác của {companyName} theo danh mục tại",
+    "callOtpText": "Bạn vui lòng nhập mã xác nhận từ {otpType} của {companyName} tới số điện thoại <strong>{phoneNumber}</strong>",
+    "smsOtpConsent": "Bằng việc cung cấp OTP này, tôi đồng ý ủy quyền cho {companyName} yêu cầu {telcoName} và {dataProcessor} xử lý dữ liệu của tôi tại {telcoName} và chia sẻ kết quả xử lý dữ liệu đến các đối tác của {companyName} theo danh mục tại <strong>{telcoName}</strong>",
     "termsLinkText": "Điều khoản sử dụng dịch vụ",
     "smsOtpPurpose": "nhằm mục đích xác định khoản vay phù hợp và mở hồ sơ vay.",
     "inputPlaceholder": "Số OTP thứ {index}",

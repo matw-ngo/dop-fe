@@ -2,6 +2,8 @@ import React, { useEffect, useRef } from "react";
 import { useLocalizedOtpTypes } from "@/hooks/use-localized-telcos";
 import { useOtpFormTranslations } from "@/hooks/use-otp-form-translations";
 import { Button } from "../button";
+import { useFormTheme } from "@/components/form-generation/themes";
+import { cn } from "@/lib/utils";
 
 // ============================================================================
 // TYPE DEFINITIONS
@@ -67,6 +69,13 @@ export const OtpForm: React.FC<OtpFormProps> = ({
 
   const t = useOtpFormTranslations();
   const otpTypes = useLocalizedOtpTypes();
+  const { theme } = useFormTheme();
+
+  const primaryColor = theme.colors.primary;
+  const textPrimary = theme.colors.textPrimary || "#073126";
+  const textSecondary = theme.colors.textSecondary || "#4d7e70";
+  const borderColor = theme.colors.border || "#bfd1cc";
+  const errorColor = theme.colors.error || "#ff7474";
 
   // ============================================================================
   // REFS
@@ -79,8 +88,6 @@ export const OtpForm: React.FC<OtpFormProps> = ({
   // ============================================================================
   // COMPUTED VALUES
   // ============================================================================
-
-  const otpMessage = otpType === 1 ? otpTypes.call : otpTypes.sms;
 
   const isShowOtpInput = [
     "waiting",
@@ -251,32 +258,42 @@ export const OtpForm: React.FC<OtpFormProps> = ({
   // ============================================================================
 
   return (
-    <div className={`text-center font-sans p-[13px] ${className}`}>
+    <div className={cn("text-center p-[13px]", className)}>
       {/* Title */}
-      <h2 className="text-[#073126] text-center text-2xl font-bold leading-8 mb-3">
+      <h2
+        className="text-center text-2xl font-bold leading-8 mb-3"
+        style={{ color: textPrimary }}
+      >
         {t.title}
       </h2>
 
       {/* Caption for Call OTP */}
       {isShowOtpInput && otpType === 1 && (
-        <p className="text-center max-w-[430px] mx-auto mb-4">
+        <div
+          className="text-center max-w-[430px] mx-auto mb-4"
+          style={{ color: textPrimary }}
+        >
           {t.getCallOtpText(phoneNumber)}
-        </p>
+        </div>
       )}
 
       {/* Caption for SMS OTP with consent */}
       {isShowOtpInput && otpType === 2 && (
-        <p className="text-center max-w-full mx-auto mb-4">
+        <div
+          className="text-center max-w-full mx-auto mb-4"
+          style={{ color: textPrimary }}
+        >
           {t.getSMSCaption(telcoName)}{" "}
           <a
-            className="text-[#0D40B6] underline"
+            className="font-semibold underline"
+            style={{ color: primaryColor }}
             href="/dieu-khoan-su-dung"
             target="_blank"
             rel="noopener noreferrer"
           >
             {t.termsLinkText}
           </a>
-        </p>
+        </div>
       )}
 
       {/* OTP Input Form */}
@@ -291,11 +308,18 @@ export const OtpForm: React.FC<OtpFormProps> = ({
                 inputMode="numeric"
                 pattern="[0-9]*"
                 maxLength={1}
-                className={`text-center outline-none font-bold text-[32px] rounded-lg w-[60px] h-[60px] border border-[#bfd1cc] bg-white text-[#073126] focus:border-[#017848] transition-colors ${
-                  isSubmitting
-                    ? "bg-gray-100 text-gray-500 cursor-not-allowed"
-                    : ""
-                }`}
+                className={cn(
+                  "text-center outline-none font-bold text-[32px] rounded-lg w-[60px] h-[60px] border transition-colors",
+                  "focus:ring-2",
+                  isSubmitting && "opacity-50 cursor-not-allowed bg-gray-50",
+                )}
+                style={
+                  {
+                    color: textPrimary,
+                    borderColor: borderColor,
+                    "--tw-ring-color": primaryColor,
+                  } as React.CSSProperties
+                }
                 onChange={(e) => handleInput(index, e)}
                 onKeyUp={(e) => handleKeyUp(index, e)}
                 onKeyDown={(e) => handleKeyDown(index, e)}
@@ -309,19 +333,18 @@ export const OtpForm: React.FC<OtpFormProps> = ({
 
           {/* Error Message */}
           {otpStatus === "failed" && (
-            <div className="mt-2">
-              <p className="text-center text-red-700 text-sm font-medium">
-                {t.errorMessage}
-              </p>
+            <div
+              className="mt-2 text-center text-sm font-medium"
+              style={{ color: errorColor }}
+            >
+              {t.errorMessage}
             </div>
           )}
 
           {/* Success Message */}
           {otpStatus === "success" && (
-            <div className="mt-4">
-              <p className="text-center text-green-700 text-sm font-semibold">
-                {t.successMessage}
-              </p>
+            <div className="mt-4 text-center text-green-700 text-sm font-semibold">
+              {t.successMessage}
             </div>
           )}
 
@@ -330,14 +353,18 @@ export const OtpForm: React.FC<OtpFormProps> = ({
             <div className="mt-4 space-y-2">
               {/* Resend OTP Link */}
               {showResendLink && (
-                <p className="text-[#073126] text-center text-sm font-normal leading-5">
+                <p
+                  className="text-center text-sm font-normal leading-5"
+                  style={{ color: textPrimary }}
+                >
                   {t.resendText}{" "}
                   {isSubmitting ? (
                     <span className="inline-block animate-spin">⏳</span>
                   ) : (
                     <button
                       type="button"
-                      className="text-[#017848] font-semibold underline hover:text-[#016039] cursor-pointer"
+                      className="font-semibold underline cursor-pointer"
+                      style={{ color: primaryColor }}
                       onClick={handleResend}
                     >
                       {t.resendButton}
@@ -348,9 +375,15 @@ export const OtpForm: React.FC<OtpFormProps> = ({
 
               {/* Countdown Timer */}
               {timeRemaining > 0 && (
-                <div className="text-sm flex gap-1 items-center justify-center text-[#073126]">
+                <div
+                  className="text-sm flex gap-1 items-center justify-center"
+                  style={{ color: textPrimary }}
+                >
                   <span>{t.timeRemaining}</span>
-                  <strong className="text-[#017848] font-semibold">
+                  <strong
+                    className="font-semibold"
+                    style={{ color: primaryColor }}
+                  >
                     {formatTime(timeRemaining)}
                   </strong>
                 </div>
@@ -363,13 +396,16 @@ export const OtpForm: React.FC<OtpFormProps> = ({
       {/* OTP Expired State */}
       {otpStatus === "expired" && (
         <div className="mt-4">
-          <p className="text-red-700 text-sm mb-3">{t.expiredMessage}</p>
+          <p className="text-sm mb-3" style={{ color: errorColor }}>
+            {t.expiredMessage}
+          </p>
           {isSubmitting ? (
             <span className="inline-block animate-spin">⏳</span>
           ) : (
             <button
               type="button"
-              className="text-[#017848] font-semibold hover:text-[#016039] cursor-pointer"
+              className="font-semibold cursor-pointer"
+              style={{ color: primaryColor }}
               onClick={handleResend}
             >
               {t.resendButton}
@@ -381,10 +417,13 @@ export const OtpForm: React.FC<OtpFormProps> = ({
       {/* Force Refresh OTP State */}
       {otpStatus === "force_refresh" && (
         <div className="mt-4">
-          <p className="text-red-700 text-sm mb-3">{t.forceRefreshMessage}</p>
+          <p className="text-sm mb-3" style={{ color: errorColor }}>
+            {t.forceRefreshMessage}
+          </p>
           <button
             type="button"
-            className="text-[#017848] font-semibold hover:text-[#016039] cursor-pointer"
+            className="font-semibold cursor-pointer"
+            style={{ color: primaryColor }}
             onClick={handleResend}
           >
             {t.resendButton}
@@ -400,7 +439,8 @@ export const OtpForm: React.FC<OtpFormProps> = ({
             disabled={
               !isOtpComplete() || isSubmitting || otpStatus === "force_refresh"
             }
-            className="rounded-lg w-full h-12 bg-[#017848] text-white font-semibold text-base hover:bg-[#016039] disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed transition-colors flex items-center justify-center"
+            className="rounded-lg w-full h-12 text-white font-semibold text-base transition-colors flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+            style={{ backgroundColor: primaryColor }}
             onClick={handleSubmit}
           >
             {isSubmitting ? (
