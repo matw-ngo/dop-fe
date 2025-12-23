@@ -19,6 +19,7 @@ import {
 } from "@/components/form-generation/themes";
 import { FindingLoanScreen } from "./FindingLoanScreen";
 import { useTranslations } from "next-intl";
+import { useCreateLead } from "@/hooks/use-create-lead";
 import { useSubmitLeadInfo } from "@/hooks/use-lead-submission";
 import { mapFormDataToLeadInfo } from "@/mappers/leadMapper";
 
@@ -47,6 +48,10 @@ export default function WizardTestPage() {
     string,
     any
   > | null>(null);
+
+  // Lead state from V1 API
+  const [leadId, setLeadId] = useState<string | null>(null);
+  const [leadToken, setLeadToken] = useState<string | null>(null);
 
   const wizardConfig: DynamicFormConfig = {
     id: "loan-wizard",
@@ -395,14 +400,28 @@ export default function WizardTestPage() {
     },
   };
 
+  const { mutate: createLead, isPending: isCreatingLead } = useCreateLead();
   const { mutate: submitInfo, isPending: isSubmitting } = useSubmitLeadInfo();
 
   const [isFinding, setIsFinding] = useState(false);
 
+  /**
+   * Handles wizard completion.
+   *
+   * Flow:
+   * 1. Create lead via POST /leads (if not already created)
+   * 2. Store leadId and token from response
+   * 3. Show finding loan screen
+   * 4. Submit lead info via POST /leads/{id}/submit-info
+   *
+   * @remarks
+   * Lead creation timing: Called at the END of wizard completion.
+   * Alternative: You can call createLead earlier (e.g., after step 1 or 2) to capture leads sooner.
+   * If you change the timing, update the JSDoc in both this function and `use-create-lead.ts`.
+   */
   const handleComplete = (data: Record<string, any>) => {
     console.log("Wizard completed:", data);
     setSubmittedData(data);
-    setIsFinding(true);
 
     // MAPPING DATA
     // In a real application, flowId and stepId would come from the context or props
@@ -413,11 +432,39 @@ export default function WizardTestPage() {
 
     console.log("Mapped Payload:", apiPayload);
 
-    // Uncomment to use API when leadId is available
-    // submitInfo({ leadId: "lead-id-placeholder", data: apiPayload }, {
-    //   onSuccess: () => console.log("Success"),
-    //   onError: (e) => console.error("Error", e),
-    // });
+    // Step 1: Create lead first to get leadId and token
+    createLead(
+      {
+        flowId,
+        domain: "lending",
+        deviceInfo: {},
+        trackingParams: {},
+        info: apiPayload,
+      },
+      {
+        onSuccess: (leadData) => {
+          console.log("Lead created successfully:", leadData);
+          setLeadId(leadData.id);
+          setLeadToken(leadData.token);
+          setIsFinding(true);
+
+          // Step 2: Submit additional lead info (if needed)
+          // Note: In V1, POST /leads already accepts all info, so submit-info might be optional
+          // depending on your flow. Uncomment if you need to submit extra data later.
+          // submitInfo(
+          //   { leadId: leadData.id, data: apiPayload },
+          //   {
+          //     onSuccess: () => console.log("Lead info submitted"),
+          //     onError: (e) => console.error("Submit info error:", e),
+          //   }
+          // );
+        },
+        onError: (error) => {
+          console.error("Failed to create lead:", error);
+          // TODO: Show error to user via toast or modal
+        },
+      },
+    );
   };
 
   const handleFindingFinish = () => {

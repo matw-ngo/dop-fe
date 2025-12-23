@@ -25,7 +25,29 @@ import {
   type LoanApplicationFormData,
 } from "./schema";
 
-const ApplyLoanForm: React.FC = () => {
+interface ApplyLoanFormProps {
+  defaultValues?: Partial<LoanApplicationFormData>;
+  /**
+   * Lead ID returned from POST /leads.
+   * Required for OTP submission via POST /leads/{id}/submit-otp.
+   */
+  leadId?: string;
+  /**
+   * Auth token returned from POST /leads.
+   * Required for OTP submission request body.
+   */
+  leadToken?: string;
+  onSubmitSuccess?: (data: LoanApplicationFormData) => void;
+  onCloseModal?: () => void;
+}
+
+const ApplyLoanForm: React.FC<ApplyLoanFormProps> = ({
+  leadId,
+  leadToken,
+  defaultValues,
+  onSubmitSuccess,
+  onCloseModal: onParentCloseModal,
+}) => {
   const t = useTranslations("features.loan-application");
   const loanPurposes = useLoanPurposes();
   const { getTelcoList } = usePhoneValidationMessages();
@@ -246,6 +268,8 @@ const ApplyLoanForm: React.FC = () => {
         >
           <OtpContainer
             phoneNumber={userData.phone_number || ""}
+            leadId={leadId}
+            token={leadToken}
             size={4}
             otpType={2} // SMS OTP
             onSuccess={handleOtpSuccess}
