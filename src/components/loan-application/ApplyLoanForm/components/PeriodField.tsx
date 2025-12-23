@@ -41,6 +41,7 @@ export const PeriodField: React.FC<PeriodFieldProps> = ({
           min={min}
           max={max}
           step={step}
+          thumbImg="/images/calendar.png"
           onValueChange={(vals) => {
             onChange(vals[0]);
           }}

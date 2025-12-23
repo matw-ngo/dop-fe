@@ -18,6 +18,9 @@ export const defaultTheme: FormTheme = {
     error: "hsl(var(--destructive))",
     disabled: "hsl(var(--muted))",
     readOnly: "hsl(var(--muted))",
+    textPrimary: "hsl(var(--foreground))",
+    textSecondary: "hsl(var(--muted-foreground))",
+    radioBorder: "hsl(var(--border))",
   },
 
   borderRadius: {

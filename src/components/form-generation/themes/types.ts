@@ -57,6 +57,21 @@ export interface FormTheme {
      * Background color for read-only states
      */
     readOnly: string;
+
+    /**
+     * Primary text color
+     */
+    textPrimary?: string;
+
+    /**
+     * Secondary text color (labels, subtext)
+     */
+    textSecondary?: string;
+
+    /**
+     * Border color for checkboxes/radios
+     */
+    radioBorder?: string;
   };
 
   /**

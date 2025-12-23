@@ -1,33 +1,66 @@
 "use client";
 
 import { Suspense } from "react";
-import { ApplyLoanForm } from "@/components/loan-application/ApplyLoanForm";
 import {
   FormThemeProvider,
   legacyLoanTheme,
-  useFormTheme,
 } from "@/components/form-generation/themes";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
+import { DigitalLendingProduct } from "@/components/loan-application/DigitalLendingProduct";
+import { ProductTabs } from "@/components/loan-application/ProductTabs";
+import {
+  SearchMoneySvg,
+  CardsSvg,
+  CarInsurSvg,
+  StudentLoanSvg,
+} from "@/components/loan-application/icons";
+
+const TAB_LIST = [
+  {
+    id: "lending",
+    displayName: "Vay tiêu dùng",
+    component: <DigitalLendingProduct />,
+    disabled: false,
+    icon: <SearchMoneySvg color="#017848" />,
+    activeIcon: <SearchMoneySvg color="#fff" />,
+  },
+  {
+    id: "credit-card",
+    displayName: "Thẻ tín dụng",
+    component: (
+      <div className="text-center py-16 text-gray-500">Coming soon</div>
+    ),
+    disabled: false,
+    icon: <CardsSvg color="#017848" />,
+    activeIcon: <CardsSvg color="#fff" />,
+  },
+  {
+    id: "insurance",
+    displayName: "Bảo hiểm",
+    component: (
+      <div className="text-center py-16 text-gray-500">Coming soon</div>
+    ),
+    disabled: false,
+    icon: <CarInsurSvg color="#017848" />,
+    activeIcon: <CarInsurSvg color="#fff" />,
+  },
+  {
+    id: "mortgage",
+    displayName: "Chứng khoán",
+    component: (
+      <div className="text-center py-16 text-gray-500">Coming soon</div>
+    ),
+    disabled: true,
+    icon: <StudentLoanSvg color="#017848" />,
+    activeIcon: <StudentLoanSvg color="#fff" />,
+  },
+];
 
 function DemoContent() {
-  const { theme } = useFormTheme();
-
   return (
-    <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 to-indigo-100">
-      <div className="max-w-4xl mx-auto">
-        <Card className="shadow-xl">
-          <CardHeader
-            className="text-white"
-            style={{ backgroundColor: theme.colors.primary }}
-          >
-            <CardTitle className="text-2xl font-bold text-center">
-              Đơn Đăng Ký Vay Tiền
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="p-6">
-            <ApplyLoanForm />
-          </CardContent>
-        </Card>
+    <div className="min-h-screen py-8 bg-gradient-to-br from-blue-50 to-indigo-100/50">
+      <div className="container mx-auto max-w-7xl">
+        <ProductTabs tabList={TAB_LIST} activeTab={0} />
       </div>
     </div>
   );

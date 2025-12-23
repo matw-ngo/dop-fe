@@ -210,6 +210,6 @@ export const config = {
      * - favicon.ico (favicon file)
      * - public folder
      */
-    "/((?!ekyc|api|_next/static|_next/image|favicon.ico|public).*)",
+    "/((?!ekyc|api|_next/static|_next/image|favicon.ico|public|images).*)",
   ],
 };

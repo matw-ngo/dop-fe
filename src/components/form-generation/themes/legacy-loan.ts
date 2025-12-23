@@ -15,10 +15,13 @@ export const legacyLoanTheme: FormTheme = {
     border: "#bfd1cc",
     borderFocus: "#017848",
     background: "#ffffff",
-    placeholder: "#9ca3af",
+    placeholder: "#A3A3A3",
     error: "#ff7474",
     disabled: "#f3f4f6",
     readOnly: "#f9fafb",
+    textPrimary: "#073126",
+    textSecondary: "#4d7e70",
+    radioBorder: "#999999",
   },
 
   borderRadius: {

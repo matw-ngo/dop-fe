@@ -82,13 +82,14 @@ export const SUCCESS_MESSAGES = {
 // URLs
 export const URLS = {
   TERMS_AND_CONDITIONS: "/dieu-khoan-su-dung",
+  PRIVACY_POLICY: "/chinh-sach-bao-mat",
 } as const;
 
 // CSS classes
 export const CSS_CLASSES = {
   CONTAINER: "max-w-2xl mx-auto p-4",
   FIELD_WRAPPER:
-    "relative mb-[34px] rounded-lg border border-[#bfd1cc] bg-white p-4 pb-[9px]",
+    "relative mb-[34px] rounded-lg border border-[#bfd1cc] bg-white px-4 pt-2 pb-[9px]",
   FIELD_LABEL: "text-xs font-normal leading-4 text-[#4d7e70]",
   FIELD_VALUE: "mt-0.5 mb-0.5 text-xl font-semibold leading-[30px]",
   FIELD_PLACEHOLDER: "font-medium text-sm leading-[30px] mb-0.5",
@@ -99,8 +100,8 @@ export const CSS_CLASSES = {
   TERMS_TEXT: "text-[#073126]",
   TERMS_LINK: "text-[#017848] font-semibold",
   RADIO_INPUT:
-    "relative top-0.5 w-[13px] h-[13px] appearance-none rounded-full border border-[#999] transition-all duration-200 checked:border-4 checked:border-[#017848] outline-none",
-  RADIO_LABEL: "ml-2 text-sm md:text-xs font-normal leading-5 text-[#017848]",
+    "relative top-[2px] w-[13px] h-[13px] appearance-none rounded-full border border-[#999] transition-all duration-200 checked:border-4 checked:border-[#017848] outline-none flex-shrink-0",
+  RADIO_LABEL: "ml-2 text-xs font-normal leading-5 text-[#073126]",
   ERROR_TEXT: "block min-h-[18px] text-[11px] text-[rgb(255,116,116)]",
 } as const;
 

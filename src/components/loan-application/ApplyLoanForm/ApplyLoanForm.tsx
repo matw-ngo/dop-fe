@@ -27,6 +27,7 @@ import {
   createLoanApplicationSchema,
   type LoanApplicationFormData,
 } from "./schema";
+import { useFormTheme } from "@/components/form-generation/themes";
 
 interface ApplyLoanFormProps {
   defaultValues?: Partial<LoanApplicationFormData>;
@@ -51,6 +52,7 @@ const ApplyLoanForm: React.FC<ApplyLoanFormProps> = ({
   onSubmitSuccess,
   onCloseModal: onParentCloseModal,
 }) => {
+  const { theme } = useFormTheme();
   const t = useTranslations("features.loan-application");
   const loanPurposes = useLoanPurposes();
   const { getTelcoList } = usePhoneValidationMessages();
@@ -70,7 +72,7 @@ const ApplyLoanForm: React.FC<ApplyLoanFormProps> = ({
   >(leadToken);
 
   const form = useForm<LoanApplicationFormData>({
-    resolver: zodResolver(createLoanApplicationSchema(t)),
+    resolver: zodResolver(createLoanApplicationSchema(t)) as any,
     defaultValues: {
       expected_amount: LOAN_AMOUNT.MIN,
       loan_period: LOAN_PERIOD.MIN,
@@ -257,7 +259,6 @@ const ApplyLoanForm: React.FC<ApplyLoanFormProps> = ({
           value={userData.agreeStatus}
           onChange={(value) => setValue("agreeStatus", value as "0" | "1" | "")}
           error={errors.agreeStatus?.message}
-          termsLink="/dieu-khoan-su-dung"
         />
 
         {/* Submit Button */}
@@ -278,14 +279,17 @@ const ApplyLoanForm: React.FC<ApplyLoanFormProps> = ({
           }}
           size="lg"
         >
-          <div className="font-['Lexend_Deca']">
-            <p className="text-center text-2xl font-bold leading-8 mb-3">
+          <div className="py-2">
+            <h3
+              className="text-center text-2xl font-bold leading-8 mb-3"
+              style={{ color: theme.colors.primary }}
+            >
               {t("otp.title")}
-            </p>
-            <p className="text-center text-sm font-normal leading-6 mb-4">
+            </h3>
+            <p className="text-center text-sm font-normal leading-6 mb-4 text-[#4d7e70]">
               {t("otp.description")}
             </p>
-            <div>
+            <div className="mb-4">
               <TextInput
                 placeholder={t("otp.placeholder")}
                 value={userData.phone_number}
@@ -296,11 +300,13 @@ const ApplyLoanForm: React.FC<ApplyLoanFormProps> = ({
                 onBlur={validatePhoneNum}
                 error={!!errors.phone_number?.message}
                 errorMessage={errors.phone_number?.message}
+                className="h-[60px] text-lg border-[#bfd1cc]"
               />
             </div>
-            <div className="mt-6">
+            <div>
               <Button
-                className="mx-auto block rounded-lg font-semibold md:text-sm w-full bg-primary"
+                className="mx-auto block rounded-lg font-semibold w-full h-14 text-white"
+                style={{ backgroundColor: theme.colors.primary }}
                 onClick={onSubmitFinal}
               >
                 {t("otp.continue")}

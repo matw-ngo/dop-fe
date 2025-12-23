@@ -22,9 +22,11 @@
     "text": "Bằng việc nhấn Gửi, bạn đồng ý với",
     "link": "Điều khoản dịch vụ",
     "linkText": "Điều khoản sử dụng dịch vụ",
-    "fullText": "Để đăng kí và sử dụng dịch vụ từ Fin Zone, xin vui lòng đọc và đồng ý với {link} &nbsp;của chúng tôi.",
-    "agree": "Tôi đồng ý và muốn sử dụng dịch vụ.",
-    "disagree": "Tôi không đồng ý với toàn bộ hoặc một phần trong Điều khoản dịch vụ."
+    "privacyPolicy": "Chính sách bảo mật",
+    "privacyPolicyText": "Chính sách bảo mật",
+    "fullText": "Để đăng kí và sử dụng dịch vụ từ Fin Zone, xin vui lòng đọc và đồng ý với <terms>Điều khoản sử dụng dịch vụ</terms> & <privacy>Chính sách bảo mật</privacy> của chúng tôi.",
+    "agree": "Tôi đồng ý và muốn sử dụng <terms>dịch vụ</terms>.",
+    "disagree": "Tôi không đồng ý với toàn bộ hoặc một phần trong <terms>Điều khoản dịch vụ</terms>."
   },
   "errors": {
     "phoneRequired": "Số điện thoại không được để trống",

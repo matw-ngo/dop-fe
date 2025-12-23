@@ -61,10 +61,10 @@ export default function CustomSlider({
       disabled={disabled}
     >
       <RadixSlider.Track className="bg-[#E6F1ED] relative grow rounded-full h-[6px]">
-        <RadixSlider.Range className="absolute bg-[#007848] rounded-full h-full" />
+        <RadixSlider.Range className="absolute bg-[#017848] rounded-full h-full" />
       </RadixSlider.Track>
       <RadixSlider.Thumb
-        className="block w-7 h-7 bg-white rounded-full shadow-lg border-4 border-[#007848] hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#007848] focus:ring-offset-2 cursor-pointer hover:scale-110 transition-transform"
+        className="block w-[28px] h-[28px] bg-white rounded-[4px] shadow-sm border-[4px] border-white focus:outline-none focus:ring-2 focus:ring-[#017848] focus:ring-offset-2 cursor-pointer"
         style={
           thumbImg
             ? {
