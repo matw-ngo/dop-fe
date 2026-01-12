@@ -4,15 +4,15 @@
  */
 
 export interface paths {
-  "/flows/{domain}": {
+  "/flows/{tenant}": {
     parameters: {
       query?: never;
       header?: never;
       path?: never;
       cookie?: never;
     };
-    /** Get domain onboarding flow */
-    get: operations["get-domain-flow"];
+    /** Get tenant onboarding flow */
+    get: operations["get-tenant-flow"];
     put?: never;
     post?: never;
     delete?: never;
@@ -89,6 +89,40 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/leads/{id}/ekyc/config": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** end point to get ekyc config */
+    get: operations["get-ekyc-config"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/leads/{id}/ekyc/vnpt": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** end point to submit ekyc data from vnpt */
+    post: operations["submit-vnpt-ekyc-result"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -99,11 +133,12 @@ export interface components {
      * @description The status of the flow
      * @enum {string}
      */
-    FlowStatus: "FLOW_STATUS_ACTIVE" | "FLOW_STATUS_INACTIVE";
+    FlowStatus: "active" | "inactive" | "archived";
     Step: {
       id: components["schemas"]["uuid"];
       use_ekyc: boolean;
       send_otp: boolean;
+      page: string;
       have_purpose: boolean;
       required_purpose: boolean;
       have_phone_number: boolean;
@@ -139,7 +174,7 @@ export interface components {
       /** Format: date-time */
       updated_at: string;
     };
-    /** @description Get Flow by domain response */
+    /** @description Get Flow by tenant response */
     FlowDetail: {
       id: components["schemas"]["uuid"];
       name: string;
@@ -199,7 +234,7 @@ export interface components {
     };
     CreateLeadRequestBody: {
       flow_id: components["schemas"]["uuid"];
-      domain: string;
+      tenant: components["schemas"]["uuid"];
       deviece_info: Record<string, never>;
       tracking_params: Record<string, never>;
       info: components["schemas"]["SubmitLeadInfoRequestBody"];
@@ -217,6 +252,297 @@ export interface components {
     ResendOTPRequestBody: {
       /** @description The phone number or email to resend OTP */
       target: string;
+    };
+    /**
+     * @description ekyc sdk flow
+     * @enum {string}
+     */
+    SdkFlow: "DOCUMENT_TO_FACE" | "FACE_TO_DOCUMENT" | "FACE" | "DOCUMENT";
+    /**
+     * @description ekyc picture method
+     * @enum {string}
+     */
+    PictureMethod: "BOTH" | "PHOTO" | "UPLOAD";
+    EkycConfigResponseBody: {
+      access_token: string;
+      challenge_code: string;
+      has_result_screen: boolean;
+      enable_api_liveness_document: boolean;
+      enable_api_liveness_face: boolean;
+      enable_api_masked_face: boolean;
+      enable_api_compare_face: boolean;
+      sdk_flow: components["schemas"]["SdkFlow"];
+      list_type_document: number[];
+      show_step: boolean;
+      has_qr_scan: boolean;
+      /** Format: int32 */
+      document_type_start: number;
+      double_liveness: boolean;
+      use_method: components["schemas"]["PictureMethod"];
+      show_tab_result_information: boolean;
+      show_tab_result_validation: boolean;
+      show_tab_result_qrcode: boolean;
+    };
+    VNPTLivenessCard: {
+      challengeCode: string;
+      dataBase64: string;
+      dataSign: string;
+      imgs: {
+        img: string;
+      };
+      logID: string;
+      message: string;
+      object: {
+        face_swapping: string;
+        /** Format: double */
+        face_swapping_prob: number;
+        fake_liveness: string;
+        /** Format: double */
+        fake_liveness_prob: number;
+        fake_print_photo: string;
+        /** Format: double */
+        fake_print_photo_prob: number;
+        liveness: string;
+        liveness_msg: string;
+      };
+      server_version: string;
+      statusCode: number;
+    };
+    VnptEkycCheckingOcrResult: {
+      /** Format: double */
+      check_photocopied_prob: number;
+      check_photocopied_result: string;
+      corner_cut_prob: number[];
+      corner_cut_result: string;
+      /** Format: double */
+      edited_prob: number;
+      edited_result: string;
+      /** Format: double */
+      recaptured_prob: number;
+      recaptured_result: string;
+    };
+    VnptEkycOcrPostCode: {
+      city: unknown[];
+      detail: string;
+      district: unknown[];
+      type: string;
+      ward: unknown[];
+    };
+    VnptEkycOrcQuality: {
+      /** Format: double */
+      blur_score: number;
+      bright_spot_params: {
+        /** Format: double */
+        average_intensity: number;
+        /** Format: double */
+        bright_spot_threshold: number;
+        total_bright_spot_area: number;
+      };
+      /** Format: double */
+      bright_spot_score: number;
+      final_result: {
+        bad_luminance_likelyhood: string;
+        blurred_likelyhood: string;
+        bright_spot_likelyhood: string;
+        low_resolution_likelyhood: string;
+      };
+      /** Format: double */
+      luminance_score: number;
+      resolution: number[];
+    };
+    VNPTOCR: {
+      message: string;
+      challengeCode: string;
+      dataBase64: string;
+      dataSign: string;
+      imgs: {
+        img_back?: string;
+        img_front?: string;
+      };
+      logID: string;
+      object: {
+        address_fake_warning?: boolean;
+        back_corner_warning?: string;
+        back_expired_warning?: string;
+        /** Format: int32 */
+        back_type_id?: number;
+        birth_day?: string;
+        /** Format: double */
+        birth_day_prob?: number;
+        card_type?: string;
+        checking_result_back?: components["schemas"]["VnptEkycCheckingOcrResult"];
+        checking_result_front?: components["schemas"]["VnptEkycCheckingOcrResult"];
+        citizen_id?: string;
+        /** Format: double */
+        citizen_id_prob?: number;
+        corner_warning?: string;
+        /** Format: double */
+        cover_prob_front?: number;
+        dict_qr?: Record<string, never>;
+        dob_fake_warning?: boolean;
+        /** Format: double */
+        dob_fake_warning_prob?: number;
+        dupplication_warning?: boolean;
+        expire_warning?: string;
+        features?: string;
+        /** Format: double */
+        features_prob?: number;
+        gender?: string;
+        general_warning?: unknown[];
+        id?: string;
+        /** Format: double */
+        id_fake_prob?: number;
+        id_fake_warning?: string;
+        id_probs?: number[];
+        issue_date?: string;
+        /** Format: double */
+        issue_date_prob?: number;
+        issue_date_probs?: number[];
+        issue_place?: string;
+        /** Format: double */
+        issue_place_prob?: number;
+        issuedate_fake_warning?: boolean;
+        match_front_back?: {
+          match_bod?: string;
+          match_id?: string;
+          match_name?: string;
+          match_sex?: string;
+          match_valid_date?: string;
+        };
+        match_qr?: Record<string, never>;
+        mrz?: string[];
+        /** Format: double */
+        mrz_prob?: number;
+        mrz_probs?: number[];
+        mrz_valid_score?: number;
+        msg?: string;
+        msg_back?: string;
+        name?: string;
+        name_fake_warning?: string;
+        /** Format: double */
+        name_fake_warning_prob?: number;
+        /** Format: double */
+        name_prob?: number;
+        name_probs?: number[];
+        nation_policy?: string;
+        nationality?: string;
+        new_post_code?: components["schemas"]["VnptEkycOcrPostCode"][];
+        origin_location?: string;
+        /** Format: double */
+        origin_location_prob?: number;
+        post_code?: components["schemas"]["VnptEkycOcrPostCode"][];
+        quality_back?: components["schemas"]["VnptEkycOrcQuality"];
+        quality_front?: components["schemas"]["VnptEkycOrcQuality"];
+        recent_location?: string;
+        /** Format: double */
+        recent_location_prob?: number;
+        tampering?: {
+          is_legal: string;
+          warning: string[];
+        };
+        type_id?: number;
+        valid_date?: string;
+        /** Format: double */
+        valid_date_prob?: number;
+      };
+      server_version: string;
+      statusCode: number;
+    };
+    VNPTLivenessFace: {
+      challengeCode: string;
+      dataBase64: string;
+      dataSign: string;
+      imgs: {
+        img_face: string;
+        img_front: string;
+      };
+      object: {
+        /** Format: int32 */
+        age: number;
+        background_warning: string;
+        blur_face: string;
+        /** Format: double */
+        blur_face_prob: number;
+        gender: string;
+        is_eye_open: string;
+        liveness: string;
+        liveness_msg: string;
+        /** Format: double */
+        liveness_prob: number;
+        multiple_faces_detail: {
+          multiple_face_1: boolean;
+          multiple_face_2: boolean;
+        };
+      };
+      server_version: string;
+      message: string;
+      logID: string;
+      statusCode: number;
+    };
+    VNPTMasked: {
+      challengeCode: string;
+      dataBase64: string;
+      dataSign: string;
+      imgs: {
+        img: string;
+      };
+      message: string;
+      object: {
+        masked?: string;
+      };
+      server_version: string;
+      statusCode: number;
+    };
+    VNPTCompare: {
+      challengeCode: string;
+      dataBase64: string;
+      dataSign: string;
+      imgs: {
+        img_face: string;
+        img_front: string;
+      };
+      object: {
+        match_warning: string;
+        msg: string;
+        multiple_faces: boolean;
+        multiple_faces_detail: {
+          multiple_face_1: boolean;
+          multiple_face_2: boolean;
+        };
+        /** Format: double */
+        prob: number;
+        result: string;
+      };
+      server_version: string;
+      message: string;
+      logID: string;
+      statusCode: number;
+    };
+    VNPTBase64DocImg: {
+      img_front: string;
+      img_back: string;
+    };
+    VNPTBase64FaceImg: {
+      img_face_far: string;
+      img_face_near: string;
+    };
+    VNPTHashDocument: {
+      img_back: string;
+      img_front: string;
+    };
+    VnptEkycRequestBody: {
+      type_document?: number;
+      liveness_card_front?: components["schemas"]["VNPTLivenessCard"];
+      liveness_card_back?: components["schemas"]["VNPTLivenessCard"];
+      ocr?: components["schemas"]["VNPTOCR"];
+      liveness_face?: components["schemas"]["VNPTLivenessFace"];
+      masked?: components["schemas"]["VNPTMasked"];
+      hash_img?: string;
+      compare?: components["schemas"]["VNPTCompare"];
+      base64_doc_img?: components["schemas"]["VNPTBase64DocImg"];
+      base64_face_img?: components["schemas"]["VNPTBase64FaceImg"];
+      data_hash_document?: components["schemas"]["VNPTHashDocument"];
+      qr_code?: string;
     };
   };
   responses: {
@@ -257,10 +583,10 @@ export interface components {
     };
   };
   parameters: {
-    /** @description domain */
-    domain: string;
-    /** @description lead id */
-    lead_id: string;
+    /** @description Tenant */
+    tenant: string;
+    /** @description uuid id */
+    id: string;
   };
   requestBodies: never;
   headers: never;
@@ -268,13 +594,13 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
-  "get-domain-flow": {
+  "get-tenant-flow": {
     parameters: {
       query?: never;
       header?: never;
       path: {
-        /** @description domain */
-        domain: components["parameters"]["domain"];
+        /** @description Tenant */
+        tenant: components["parameters"]["tenant"];
       };
       cookie?: never;
     };
@@ -328,8 +654,8 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
-        /** @description lead id */
-        id: components["parameters"]["lead_id"];
+        /** @description uuid id */
+        id: components["parameters"]["id"];
       };
       cookie?: never;
     };
@@ -351,8 +677,8 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
-        /** @description lead id */
-        id: components["parameters"]["lead_id"];
+        /** @description uuid id */
+        id: components["parameters"]["id"];
       };
       cookie?: never;
     };
@@ -374,14 +700,64 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
-        /** @description lead id */
-        id: components["parameters"]["lead_id"];
+        /** @description uuid id */
+        id: components["parameters"]["id"];
       };
       cookie?: never;
     };
     requestBody: {
       content: {
         "application/json": components["schemas"]["ResendOTPRequestBody"];
+      };
+    };
+    responses: {
+      200: components["responses"]["200"];
+      401: components["responses"]["401"];
+      403: components["responses"]["403"];
+      500: components["responses"]["500"];
+      503: components["responses"]["503"];
+    };
+  };
+  "get-ekyc-config": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description uuid id */
+        id: components["parameters"]["id"];
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description get ekyc access key successful */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["EkycConfigResponseBody"];
+        };
+      };
+      401: components["responses"]["401"];
+      403: components["responses"]["403"];
+      500: components["responses"]["500"];
+      503: components["responses"]["503"];
+    };
+  };
+  "submit-vnpt-ekyc-result": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description uuid id */
+        id: components["parameters"]["id"];
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["VnptEkycRequestBody"];
       };
     };
     responses: {
