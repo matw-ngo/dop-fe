@@ -419,3 +419,48 @@ export interface EkycResponse {
   hash_img: HashImgResponse;
   compare: CompareFaceResponse;
 }
+
+/**
+ * eKYC session status values
+ */
+export enum EkycSessionStatus {
+  /** Session has been initialized but not started */
+  INITIALIZED = "initialized",
+  /** eKYC process is in progress */
+  IN_PROGRESS = "in_progress",
+  /** eKYC process completed successfully, awaiting submission */
+  COMPLETED = "completed",
+  /** Results have been submitted to backend */
+  SUBMITTED = "submitted",
+  /** Session has expired */
+  EXPIRED = "expired",
+  /** Session failed with error */
+  FAILED = "failed",
+}
+
+/**
+ * eKYC session state stored in localStorage
+ * Tracks the eKYC verification lifecycle for a lead
+ */
+export interface EkycSessionState {
+  /** Unique session identifier */
+  sessionId: string;
+  /** Associated lead ID */
+  leadId: string;
+  /** Current session status */
+  status: EkycSessionStatus;
+  /** Timestamp when session was created */
+  createdAt: string;
+  /** Timestamp when session was last updated */
+  updatedAt: string;
+  /** Timestamp when session expires (30 minutes TTL) */
+  expiresAt: string;
+  /** Number of submission attempts */
+  submissionAttempts: number;
+  /** Whether results have been submitted */
+  isSubmitted: boolean;
+  /** Optional verification ID from backend */
+  verificationId?: string;
+  /** Optional error message if session failed */
+  error?: string;
+}

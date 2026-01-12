@@ -41,3 +41,51 @@ export {
 // Hooks
 export { useEkycConfig } from "../../hooks/use-ekyc-config";
 export { useSubmitEkycResult } from "../../hooks/use-submit-ekyc-result";
+
+// Session Management
+export {
+  initSession,
+  getSession,
+  updateSessionStatus,
+  incrementSubmissionAttempts,
+  markSubmitted,
+  canSubmit,
+  isSessionExpired,
+  expireSession,
+  clearSession,
+  getAllActiveSessions,
+  cleanupExpiredSessions,
+  getSessionStats,
+} from "./session-manager";
+
+// Validation
+export {
+  isValidBase64,
+  getBase64Size,
+  isBase64TooLarge,
+  validateEkycResult,
+  formatValidationErrors,
+  formatValidationWarnings,
+  type ValidationResult,
+  type ValidationError,
+} from "./validators";
+
+// Audit Logging
+export {
+  logConfigFetchStart,
+  logConfigFetchSuccess,
+  logConfigFetchError,
+  logSubmitStart,
+  logSubmitSuccess,
+  logSubmitError,
+  logSubmitRetry,
+  logValidationError,
+  logSessionInit,
+  logSessionUpdate,
+  logSessionExpire,
+  logSessionClear,
+  logDuplicatePrevented,
+  type AuditLogEntry,
+  type AuditLogLevel,
+  type AuditEventType,
+} from "./audit-logger";
