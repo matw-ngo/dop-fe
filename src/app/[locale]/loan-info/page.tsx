@@ -176,9 +176,9 @@ export default function LoanInfoPage() {
     return (
       <div className="space-y-6">
         {/* Demo Loader - Only visible when no submitted data and not finding */}
-        {!isFinding && !submittedData && (
+        {/* {!isFinding && !submittedData && (
           <DemoLoader onLoadDemo={handleLoadDemo} />
-        )}
+        )} */}
 
         <div className="rounded-lg border bg-card p-8">
           <FormThemeProvider theme={legacyLoanTheme}>
