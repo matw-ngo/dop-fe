@@ -1,0 +1,830 @@
+openapi: 3.0.3
+info:
+  title: eKYC Submission API
+  description: |
+    API endpoint for submitting VNPT eKYC (Electronic Know Your Customer) verification
+    results to the backend after a user completes the verification process.
+    
+    This endpoint accepts the complete eKYC data including:
+    - Document OCR results (personal information extraction)
+    - Liveness detection results (document and face)
+    - Face comparison results
+    - Base64-encoded document and face images
+    
+    All data is submitted as base64-encoded strings to comply with the VNPT SDK
+    output format and backend API requirements.
+  version: 1.0.0
+  contact:
+    name: API Support
+    email: support@example.com
+
+servers:
+  - url: https://api.example.com
+    description: Production server
+  - url: https://staging-api.example.com
+    description: Staging server
+  - url: http://localhost:3000
+    description: Local development server
+
+tags:
+  - name: eKYC
+    description: Electronic Know Your Customer operations
+
+paths:
+  /leads/{id}/ekyc/vnpt:
+    post:
+      summary: Submit VNPT eKYC results
+      description: |
+        Submits the complete eKYC verification results from the VNPT SDK to the backend.
+        This endpoint should be called after the user successfully completes the
+        verification process.
+        
+        **Important Notes:**
+        - All images must be base64-encoded strings
+        - Document images include front and back (if applicable)
+        - Face images include near and far captures
+        - The request payload can be large (500KB - 2MB typical)
+        - Network timeout is set to 30 seconds
+        
+        **Validation:**
+        - OCR data with at least ID and name is required
+        - At least one liveness check must pass
+        - Face comparison is recommended but not required
+        
+        **Duplicate Prevention:**
+        - Use session state tracking to prevent duplicate submissions
+        - Check localStorage session before submitting
+        - Backend may reject duplicate submissions
+      operationId: submitVnptEkycResult
+      tags:
+        - eKYC
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The unique identifier of the lead
+          schema:
+            type: string
+            format: uuid
+          example: "550e8400-e29b-41d4-a716-446655440000"
+      requestBody:
+        required: true
+        description: Complete eKYC verification results from VNPT SDK
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VnptEkycRequestBody'
+            examples:
+              minimal:
+                summary: Minimal submission (required fields only)
+                value:
+                  type_document: 0
+                  ocr:
+                    object:
+                      id: "001234567890"
+                      name: "NGUYEN VAN A"
+                      birth_day: "01/01/1990"
+                      gender: "Nam"
+              complete:
+                summary: Complete submission with all verification data
+                value:
+                  type_document: 0
+                  liveness_card_front:
+                    object:
+                      liveness: "success"
+                      liveness_msg: "Liveness check passed"
+                  liveness_card_back:
+                    object:
+                      liveness: "success"
+                      liveness_msg: "Liveness check passed"
+                  ocr:
+                    object:
+                      id: "001234567890"
+                      name: "NGUYEN VAN A"
+                      birth_day: "01/01/1990"
+                      gender: "Nam"
+                      recent_location: "Hà Nội"
+                  liveness_face:
+                    object:
+                      liveness: "success"
+                      liveness_prob: 0.95
+                  compare:
+                    object:
+                      msg: "MATCH"
+                      prob: 0.92
+                  base64_doc_img:
+                    img_front: "data:image/jpeg;base64,/9j/4AAQSkZJRg..."
+                    img_back: "data:image/jpeg;base64,/9j/4AAQSkZJRg..."
+                  base64_face_img:
+                    img_face_far: "data:image/jpeg;base64,/9j/4AAQSkZJRg..."
+                    img_face_near: "data:image/jpeg;base64,/9j/4AAQSkZJRg..."
+      responses:
+        '200':
+          description: eKYC results submitted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      verification_id:
+                        type: string
+                        format: uuid
+                        description: Unique identifier for the verification record
+                        example: "550e8400-e29b-41d4-a716-446655440001"
+                      status:
+                        type: string
+                        enum: [pending, approved, rejected, review_required]
+                        example: "pending"
+                      message:
+                        type: string
+                        example: "eKYC results submitted successfully"
+        '400':
+          description: Invalid request data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                missingRequiredFields:
+                  summary: Missing required OCR data
+                  value:
+                    success: false
+                    error:
+                      code: "VALIDATION_ERROR"
+                      message: "Missing required fields: OCR data must include ID and name"
+                      details:
+                        fields: ["ocr.object.id", "ocr.object.name"]
+                invalidBase64:
+                  summary: Invalid base64 encoding
+                  value:
+                    success: false
+                    error:
+                      code: "INVALID_IMAGE_FORMAT"
+                      message: "Document images must be valid base64-encoded strings"
+                duplicateSubmission:
+                  summary: Duplicate submission attempt
+                  value:
+                    success: false
+                    error:
+                      code: "DUPLICATE_SUBMISSION"
+                      message: "eKYC results have already been submitted for this lead"
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          description: Lead not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                error:
+                  code: "LEAD_NOT_FOUND"
+                  message: "The specified lead does not exist"
+        '409':
+          description: Conflict - Duplicate submission
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                error:
+                  code: "DUPLICATE_SUBMISSION"
+                  message: "eKYC results have already been submitted for this lead"
+        '413':
+          description: Payload too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                error:
+                  code: "PAYLOAD_TOO_LARGE"
+                  message: "The request payload exceeds the maximum allowed size of 5MB"
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+      security:
+        - BearerAuth: []
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token obtained from lead creation or authentication
+
+  schemas:
+    VnptEkycRequestBody:
+      type: object
+      description: Complete eKYC verification results from VNPT SDK
+      properties:
+        type_document:
+          type: integer
+          description: Document type ID (0=CMND_CU, 1=CCCD, 2=PASSPORT, etc.)
+          example: 0
+        liveness_card_front:
+          $ref: '#/components/schemas/VNPTLivenessCard'
+        liveness_card_back:
+          $ref: '#/components/schemas/VNPTLivenessCard'
+        ocr:
+          $ref: '#/components/schemas/VNPTOCR'
+        liveness_face:
+          $ref: '#/components/schemas/VNPTLivenessFace'
+        masked:
+          $ref: '#/components/schemas/VNPTMasked'
+        compare:
+          $ref: '#/components/schemas/VNPTCompare'
+        base64_doc_img:
+          $ref: '#/components/schemas/VNPTBase64DocImg'
+        base64_face_img:
+          $ref: '#/components/schemas/VNPTBase64FaceImg'
+        data_hash_document:
+          $ref: '#/components/schemas/VNPTHashDocument'
+        hash_img:
+          type: string
+          description: JSON stringified hash object
+          example: "{\"front\":\"abc123\",\"back\":\"def456\"}"
+        qr_code:
+          type: string
+          description: QR code data if scanned
+          example: "https://example.com/verify/abc123"
+
+    VNPTLivenessCard:
+      type: object
+      description: Liveness detection result for document card
+      properties:
+        challengeCode:
+          type: string
+          example: "ABC123"
+        dataBase64:
+          type: string
+          description: Base64-encoded liveness data
+        dataSign:
+          type: string
+          description: Digital signature
+        imgs:
+          type: object
+          properties:
+            img:
+              type: string
+              description: Base64-encoded image
+        logID:
+          type: string
+          description: Log identifier for tracking
+        message:
+          type: string
+          example: "Liveness check completed"
+        object:
+          type: object
+          description: Parsed liveness detection results
+          properties:
+            face_swapping:
+              type: string
+              enum: [yes, no]
+              example: "no"
+            face_swapping_prob:
+              type: number
+              format: double
+              example: 0.05
+            fake_liveness:
+              type: string
+              enum: [yes, no]
+              example: "no"
+            fake_liveness_prob:
+              type: number
+              format: double
+              example: 0.1
+            fake_print_photo:
+              type: string
+              enum: [yes, no]
+              example: "no"
+            fake_print_photo_prob:
+              type: number
+              format: double
+              example: 0.08
+            liveness:
+              type: string
+              enum: [success, failure]
+              example: "success"
+            liveness_msg:
+              type: string
+              example: "Liveness check passed"
+        server_version:
+          type: string
+          example: "3.2.0"
+        statusCode:
+          type: integer
+          description: HTTP-style status code
+          example: 200
+
+    VNPTOCR:
+      type: object
+      description: OCR (Optical Character Recognition) results from document
+      properties:
+        message:
+          type: string
+          example: "OCR completed successfully"
+        challengeCode:
+          type: string
+        dataBase64:
+          type: string
+        dataSign:
+          type: string
+        imgs:
+          type: object
+          properties:
+            img_front:
+              type: string
+              description: Base64-encoded front document image
+            img_back:
+              type: string
+              description: Base64-encoded back document image
+        logID:
+          type: string
+        object:
+          $ref: '#/components/schemas/OCRObject'
+        server_version:
+          type: string
+        statusCode:
+          type: integer
+
+    OCRObject:
+      type: object
+      description: Extracted information from document OCR
+      properties:
+        # Personal Information
+        id:
+          type: string
+          description: National ID number
+          example: "001234567890"
+        name:
+          type: string
+          description: Full name
+          example: "NGUYEN VAN A"
+        birth_day:
+          type: string
+          description: Date of birth in DD/MM/YYYY format
+          example: "01/01/1990"
+        gender:
+          type: string
+          description: Gender
+          example: "Nam"
+        nationality:
+          type: string
+          example: "Việt Nam"
+        
+        # Document Information
+        card_type:
+          type: string
+          description: Type of card
+          example: "CCCD"
+        type_id:
+          type: integer
+          description: Document type ID
+          example: 1
+        issue_date:
+          type: string
+          description: Document issue date
+          example: "01/01/2020"
+        valid_date:
+          type: string
+          description: Document expiry date
+          example: "01/01/2030"
+        issue_place:
+          type: string
+          description: Place of issue
+          example: "Công an thành phố Hà Nội"
+        
+        # Address Information
+        recent_location:
+          type: string
+          description: Current address
+          example: "P. Hoàng Liệt, Q. Hoàng Mai, Hà Nội"
+        origin_location:
+          type: string
+          description: Hometown/origin address
+          example: "P. Mỹ Đình 2, Q. Nam Từ Liêm, Hà Nội"
+        post_code:
+          type: array
+          description: Address breakdown
+          items:
+            $ref: '#/components/schemas/PostCode'
+        new_post_code:
+          type: array
+          description: New address breakdown format
+          items:
+            $ref: '#/components/schemas/PostCode'
+        
+        # Quality & Confidence
+        id_fake_prob:
+          type: number
+          format: double
+          description: Probability that ID is fake
+          example: 0.05
+        name_prob:
+          type: number
+          format: double
+          description: Confidence score for name extraction
+          example: 0.98
+        birth_day_prob:
+          type: number
+          format: double
+          example: 0.99
+        recent_location_prob:
+          type: number
+          format: double
+          example: 0.85
+        quality_front:
+          $ref: '#/components/schemas/OCRQuality'
+        quality_back:
+          $ref: '#/components/schemas/OCRQuality'
+        checking_result_front:
+          $ref: '#/components/schemas/CheckingResult'
+        checking_result_back:
+          $ref: '#/components/schemas/CheckingResult'
+        
+        # Tampering Detection
+        tampering:
+          type: object
+          properties:
+            is_legal:
+              type: string
+              example: "yes"
+            warning:
+              type: array
+              items:
+                type: string
+              example: ["Possible screen recapture detected"]
+
+    PostCode:
+      type: object
+      description: Address breakdown
+      properties:
+        city:
+          type: array
+          items:
+            type: string
+          example: ["01", "Hà Nội"]
+        district:
+          type: array
+          items:
+            type: string
+          example: ["10", "Hoàng Mai"]
+        ward:
+          type: array
+          items:
+            type: string
+          example: ["087", "Hoàng Liệt"]
+        type:
+          type: string
+          example: "address"
+        detail:
+          type: string
+          example: "Số 123, đường ABC"
+
+    OCRQuality:
+      type: object
+      description: Image quality metrics
+      properties:
+        blur_score:
+          type: number
+          format: double
+          description: Lower is better (less blur)
+          example: 15.5
+        luminance_score:
+          type: number
+          format: double
+          example: 120.3
+        glare_score:
+          type: number
+          format: double
+          description: Lower is better (less glare)
+          example: 8.2
+        final_result:
+          type: object
+          properties:
+            bad_luminance_likelyhood:
+              type: string
+              enum: [PASS, FAIL]
+            blurred_likelyhood:
+              type: string
+              enum: [PASS, FAIL]
+            bright_spot_likelyhood:
+              type: string
+              enum: [PASS, FAIL]
+            low_resolution_likelyhood:
+              type: string
+              enum: [PASS, FAIL]
+
+    CheckingResult:
+      type: object
+      description: Authenticity check results
+      properties:
+        recaptured_result:
+          type: string
+          enum: [PASS, FAIL]
+          example: "PASS"
+        recaptured_prob:
+          type: number
+          format: double
+          example: 0.1
+        edited_result:
+          type: string
+          enum: [PASS, FAIL]
+          example: "PASS"
+        edited_prob:
+          type: number
+          format: double
+          example: 0.05
+        photocopied_result:
+          type: string
+          enum: [PASS, FAIL]
+          example: "PASS"
+        photocopied_prob:
+          type: number
+          format: double
+          example: 0.08
+
+    VNPTLivenessFace:
+      type: object
+      description: Face liveness detection results
+      properties:
+        challengeCode:
+          type: string
+        dataBase64:
+          type: string
+        dataSign:
+          type: string
+        imgs:
+          type: object
+          properties:
+            img_face:
+              type: string
+            img_front:
+              type: string
+        object:
+          type: object
+          properties:
+            age:
+              type: integer
+              example: 30
+            background_warning:
+              type: string
+              enum: [yes, no]
+              example: "no"
+            blur_face:
+              type: string
+              enum: [yes, no]
+              example: "no"
+            blur_face_prob:
+              type: number
+              format: double
+              example: 0.1
+            gender:
+              type: string
+              example: "male"
+            is_eye_open:
+              type: string
+              enum: [yes, no]
+              example: "yes"
+            liveness:
+              type: string
+              enum: [success, failure]
+              example: "success"
+            liveness_msg:
+              type: string
+              example: "Liveness check passed"
+            liveness_prob:
+              type: number
+              format: double
+              example: 0.95
+            multiple_faces_detail:
+              type: object
+              properties:
+                multiple_face_1:
+                  type: boolean
+                  example: false
+                multiple_face_2:
+                  type: boolean
+                  example: false
+        server_version:
+          type: string
+        message:
+          type: string
+        logID:
+          type: string
+        statusCode:
+          type: integer
+
+    VNPTMasked:
+      type: object
+      description: Masked face detection results
+      properties:
+        challengeCode:
+          type: string
+        dataBase64:
+          type: string
+        dataSign:
+          type: string
+        imgs:
+          type: object
+          properties:
+            img:
+              type: string
+        message:
+          type: string
+        object:
+          type: object
+          properties:
+            masked:
+              type: string
+              enum: [yes, no]
+              example: "no"
+        server_version:
+          type: string
+        statusCode:
+          type: integer
+
+    VNPTCompare:
+      type: object
+      description: Face comparison results
+      properties:
+        challengeCode:
+          type: string
+        dataBase64:
+          type: string
+        dataSign:
+          type: string
+        imgs:
+          type: object
+          properties:
+            img_face:
+              type: string
+            img_front:
+              type: string
+        object:
+          type: object
+          properties:
+            match_warning:
+              type: string
+              enum: [yes, no]
+              example: "no"
+            msg:
+              type: string
+              enum: [MATCH, NOMATCH]
+              example: "MATCH"
+            multiple_faces:
+              type: boolean
+              example: false
+            multiple_faces_detail:
+              type: object
+              properties:
+                multiple_face_1:
+                  type: boolean
+                multiple_face_2:
+                  type: boolean
+            prob:
+              type: number
+              format: double
+              description: Similarity probability score
+              example: 0.92
+            result:
+              type: string
+              example: "MATCH"
+        server_version:
+          type: string
+        message:
+          type: string
+        logID:
+          type: string
+        statusCode:
+          type: integer
+
+    VNPTBase64DocImg:
+      type: object
+      description: Base64-encoded document images
+      properties:
+        img_front:
+          type: string
+          description: Base64-encoded front document image (data URL format)
+          example: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAA..."
+        img_back:
+          type: string
+          description: Base64-encoded back document image (data URL format)
+          example: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAA..."
+
+    VNPTBase64FaceImg:
+      type: object
+      description: Base64-encoded face images
+      properties:
+        img_face_far:
+          type: string
+          description: Base64-encoded far face image (data URL format)
+          example: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAA..."
+        img_face_near:
+          type: string
+          description: Base64-encoded near face image (data URL format)
+          example: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAA..."
+
+    VNPTHashDocument:
+      type: object
+      description: Document hashes for integrity verification
+      properties:
+        img_front:
+          type: string
+          description: Hash of front document image
+          example: "sha256:abc123def456..."
+        img_back:
+          type: string
+          description: Hash of back document image
+          example: "sha256:def456ghi789..."
+
+    ErrorResponse:
+      type: object
+      required:
+        - success
+        - error
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: object
+          required:
+            - code
+            - message
+          properties:
+            code:
+              type: string
+              description: Machine-readable error code
+              example: "VALIDATION_ERROR"
+            message:
+              type: string
+              description: Human-readable error message
+              example: "Invalid eKYC data provided"
+            details:
+              type: object
+              description: Additional error details
+              additionalProperties: true
+
+  responses:
+    Unauthorized:
+      description: Authentication failed or missing
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            success: false
+            error:
+              code: "UNAUTHORIZED"
+              message: "Authentication token is missing or invalid"
+
+    Forbidden:
+      description: Insufficient permissions to access this resource
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            success: false
+            error:
+              code: "FORBIDDEN"
+              message: "You do not have permission to submit eKYC results for this lead"
+
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            success: false
+            error:
+              code: "INTERNAL_SERVER_ERROR"
+              message: "An unexpected error occurred. Please try again later."
+
+    ServiceUnavailable:
+      description: Service temporarily unavailable
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            success: false
+            error:
+              code: "SERVICE_UNAVAILABLE"
+              message: "The eKYC service is temporarily unavailable. Please try again later."
