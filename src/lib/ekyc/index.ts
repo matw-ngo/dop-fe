@@ -30,3 +30,14 @@ export type { EkycSdkManagerOptions } from "./sdk-manager";
 export { EkycSdkManager } from "./sdk-manager";
 // Types
 export * from "./types";
+
+// API Integration
+export {
+  mapEkycResponseToApiRequest,
+  isEkycResponseValid,
+  extractEkycSummary,
+} from "./ekyc-api-mapper";
+
+// Hooks
+export { useEkycConfig } from "../../hooks/use-ekyc-config";
+export { useSubmitEkycResult } from "../../hooks/use-submit-ekyc-result";

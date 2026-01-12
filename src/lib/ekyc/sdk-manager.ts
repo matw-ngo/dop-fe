@@ -27,6 +27,8 @@ export interface EkycSdkManagerOptions {
   config?: Partial<EkycSdkConfig>;
   assets?: SdkAssets;
   eventHandlers?: EkycEventHandlers;
+  leadId?: string; // Optional lead ID for backend submission
+  onComplete?: (result: EkycResult, leadId?: string) => void; // Callback when eKYC flow completes
   credentialsSource?:
     | "env"
     | "api"
@@ -45,12 +47,16 @@ export class EkycSdkManager {
   private config: EkycSdkConfig;
   private containerId: string;
   private isInitialized = false;
+  private leadId?: string;
+  private onComplete?: (result: EkycResult, leadId?: string) => void;
 
   constructor(options: EkycSdkManagerOptions) {
     this.loader = EkycSdkLoader.getInstance();
     this.eventManager = new EkycEventManager(options.eventHandlers);
     this.configManager = EkycConfigManager.getInstance();
     this.containerId = options.containerId || "ekyc_sdk_intergrated";
+    this.leadId = options.leadId;
+    this.onComplete = options.onComplete;
 
     // Will be set during initialize()
     this.config = {} as EkycSdkConfig;
@@ -104,9 +110,17 @@ export class EkycSdkManager {
           console.log("🔚 [END FLOW CALLBACK] Flow kết thúc - Callback chính!");
           console.log("🏁".repeat(20));
           console.log("[END FLOW CALLBACK] Result:", result);
+          console.log("[END FLOW CALLBACK] Lead ID:", this.leadId);
           console.log("🏁".repeat(20));
+
+          // Call the original callback
           if (callbackFn) {
             callbackFn(result);
+          }
+
+          // Call custom onComplete callback with leadId
+          if (this.onComplete) {
+            this.onComplete(result, this.leadId);
           }
         },
       };

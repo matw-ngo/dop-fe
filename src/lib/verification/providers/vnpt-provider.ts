@@ -14,6 +14,9 @@ import type {
 } from "../types";
 import { VerificationStatus } from "../types";
 
+import { mapEkycResponseToApiRequest } from "@/lib/ekyc/ekyc-api-mapper";
+import type { EkycResponse } from "@/lib/ekyc/types";
+
 // import { EkycSdkManager } from "@/lib/ekyc/sdk-manager";
 // import { BiometricSecurityManager } from "@/lib/security/biometric-security";
 // import type { EkycFullResult } from "@/lib/ekyc/types";
@@ -55,6 +58,13 @@ class BiometricSecurityManager {
 // VNPT Provider Implementation
 // ============================================================================
 
+export interface VNPTProviderOptions extends ProviderConfig {
+  leadId?: string;
+  onBackendSubmit?: (leadId: string, ekycData: any) => Promise<void>;
+  onSubmitSuccess?: () => void;
+  onSubmitError?: (error: Error) => void;
+}
+
 export class VNPTVerificationProvider implements VerificationProvider {
   readonly name = "vnpt";
   readonly version = "3.2.0";
@@ -85,13 +95,22 @@ export class VNPTVerificationProvider implements VerificationProvider {
   private securityManager: BiometricSecurityManager | null = null;
   private activeSessions = new Map<string, any>();
   private config: ProviderConfig | null = null;
+  private leadId?: string;
+  private onBackendSubmit?: (leadId: string, ekycData: any) => Promise<void>;
+  private onSubmitSuccess?: () => void;
+  private onSubmitError?: (error: Error) => void;
+  private isSubmittingToBackend = false;
 
   /**
    * Initialize the VNPT provider
    */
-  async initialize(config: ProviderConfig): Promise<void> {
+  async initialize(config: VNPTProviderOptions): Promise<void> {
     try {
       this.config = config;
+      this.leadId = config.leadId;
+      this.onBackendSubmit = config.onBackendSubmit;
+      this.onSubmitSuccess = config.onSubmitSuccess;
+      this.onSubmitError = config.onSubmitError;
 
       // Initialize SDK Manager
       this.sdkManager = EkycSdkManager.getInstance();
@@ -223,6 +242,11 @@ export class VNPTVerificationProvider implements VerificationProvider {
         sessionId,
       );
 
+      // Submit to backend if leadId is provided
+      if (this.leadId && vnptResult) {
+        await this.submitToBackend(vnptResult, sessionId);
+      }
+
       // Clean up session
       this.activeSessions.delete(sessionId);
 
@@ -330,6 +354,66 @@ export class VNPTVerificationProvider implements VerificationProvider {
    */
   private generateSessionId(): string {
     return `vnpt_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`;
+  }
+
+  /**
+   * Submit eKYC result to backend
+   */
+  private async submitToBackend(
+    ekycResult: EkycResponse,
+    sessionId: string,
+  ): Promise<void> {
+    if (!this.leadId) {
+      console.warn(
+        "[VNPT Provider] No leadId provided, skipping backend submission",
+      );
+      return;
+    }
+
+    if (this.isSubmittingToBackend) {
+      console.warn("[VNPT Provider] Backend submission already in progress");
+      return;
+    }
+
+    try {
+      this.isSubmittingToBackend = true;
+      console.log("[VNPT Provider] Submitting eKYC result to backend...", {
+        leadId: this.leadId,
+        sessionId,
+      });
+
+      // Map SDK response to API request format
+      const apiRequest = mapEkycResponseToApiRequest(ekycResult);
+
+      // Use custom submit handler if provided, otherwise log for manual integration
+      if (this.onBackendSubmit) {
+        await this.onBackendSubmit(this.leadId, apiRequest);
+        console.log(
+          "[VNPT Provider] Backend submission completed successfully",
+        );
+        this.onSubmitSuccess?.();
+      } else {
+        // Log the data for debugging/integration purposes
+        console.log("[VNPT Provider] eKYC data ready for backend submission:", {
+          leadId: this.leadId,
+          data: apiRequest,
+        });
+        console.warn(
+          "[VNPT Provider] No onBackendSubmit handler provided. Data prepared but not submitted.",
+        );
+        console.warn(
+          "[VNPT Provider] Please use the useSubmitEkycResult hook to submit this data.",
+        );
+      }
+    } catch (error) {
+      console.error("[VNPT Provider] Backend submission failed:", error);
+      this.onSubmitError?.(
+        error instanceof Error ? error : new Error(String(error)),
+      );
+      // Don't throw - backend submission failure should not fail the entire eKYC flow
+    } finally {
+      this.isSubmittingToBackend = false;
+    }
   }
 
   /**

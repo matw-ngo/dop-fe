@@ -183,14 +183,14 @@ const mockFlows: Record<string, components["schemas"]["FlowDetail"]> = {
 
 const fallbackMockFlow = mockFlows["localhost:3000"];
 
-async function getFlowByDomain(domain: string) {
+async function getFlowByTenant(tenant: string) {
   if (shouldMockFlow) {
-    return mockFlows[domain] ?? fallbackMockFlow;
+    return mockFlows[tenant] ?? fallbackMockFlow;
   }
 
-  const { data, error, response } = await apiClient.GET("/flows/{domain}", {
+  const { data, error, response } = await apiClient.GET("/flows/{tenant}", {
     params: {
-      path: { domain },
+      path: { tenant },
     },
   });
 
@@ -203,9 +203,9 @@ async function getFlowByDomain(domain: string) {
   return data;
 }
 
-export function useFlow(domain: string) {
+export function useFlow(tenant: string) {
   const queryFn = async () => {
-    const data = await getFlowByDomain(domain);
+    const data = await getFlowByTenant(tenant);
     if (!data) {
       throw new Error("No data returned from API");
     }
@@ -213,9 +213,9 @@ export function useFlow(domain: string) {
   };
 
   return useQuery<components["schemas"]["FlowDetail"], Error, MappedFlow>({
-    queryKey: ["flow", domain],
+    queryKey: ["flow", tenant],
     queryFn: queryFn,
     select: mapApiFlowToFlow,
-    enabled: !!domain,
+    enabled: !!tenant,
   });
 }
