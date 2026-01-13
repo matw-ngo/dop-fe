@@ -37,8 +37,8 @@ const apiClient = createClient<paths>({
   baseUrl: apiConfig.baseUrl,
   // Add headers for API versioning
   headers: {
-    "X-API-Version": "1.0",
-    "X-Client-Version": "1.0.0",
+    // "X-API-Version": "1.0",
+    // "X-Client-Version": "1.0.0",
   },
 });
 
@@ -76,8 +76,8 @@ apiClient.use({
     }
 
     // Add request metadata
-    req.request.headers.set("X-Request-ID", crypto.randomUUID());
-    req.request.headers.set("X-Client-Timestamp", new Date().toISOString());
+    // req.request.headers.set("X-Request-ID", crypto.randomUUID());
+    // req.request.headers.set("X-Client-Timestamp", new Date().toISOString());
   },
 
   // Runs on every response
