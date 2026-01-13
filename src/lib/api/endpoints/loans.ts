@@ -135,7 +135,7 @@ export const loanApi = {
    */
   getDetailedApplicationStatus: async (applicationId: string) => {
     const response = await apiClient.GET(
-      "/api/v1/loans/applications/{id}/detailed-status" as any,
+      "/loans/applications/{id}/detailed-status" as any,
       {
         params: {
           path: { id: applicationId },

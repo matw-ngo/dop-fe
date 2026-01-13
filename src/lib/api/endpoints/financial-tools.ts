@@ -15,7 +15,7 @@ import type {
 } from "@/lib/financial-data/vietnamese-financial-data";
 
 // Create API client
-const client = createClient("/api/v1");
+const client = createClient("/api");
 
 // Types for API responses
 export interface ApiResponse<T = any> {

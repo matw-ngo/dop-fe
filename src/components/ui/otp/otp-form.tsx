@@ -359,7 +359,15 @@ export const OtpForm: React.FC<OtpFormProps> = ({
                 >
                   {t.resendText}{" "}
                   {isSubmitting ? (
-                    <span className="inline-block animate-spin">⏳</span>
+                    <span
+                      className="inline-block h-4 w-4 animate-spin"
+                      style={{
+                        borderLeftColor: primaryColor,
+                        borderStyle: "solid",
+                        borderWidth: "2px",
+                        borderRadius: "50%",
+                      }}
+                    ></span>
                   ) : (
                     <button
                       type="button"
@@ -400,7 +408,15 @@ export const OtpForm: React.FC<OtpFormProps> = ({
             {t.expiredMessage}
           </p>
           {isSubmitting ? (
-            <span className="inline-block animate-spin">⏳</span>
+            <span
+              className="inline-block h-4 w-4 animate-spin"
+              style={{
+                borderLeftColor: primaryColor,
+                borderStyle: "solid",
+                borderWidth: "2px",
+                borderRadius: "50%",
+              }}
+            ></span>
           ) : (
             <button
               type="button"
@@ -436,6 +452,7 @@ export const OtpForm: React.FC<OtpFormProps> = ({
         <div className="mt-5">
           <Button
             type="button"
+            loading={isSubmitting}
             disabled={
               !isOtpComplete() || isSubmitting || otpStatus === "force_refresh"
             }
@@ -443,11 +460,7 @@ export const OtpForm: React.FC<OtpFormProps> = ({
             style={{ backgroundColor: primaryColor }}
             onClick={handleSubmit}
           >
-            {isSubmitting ? (
-              <span className="inline-block animate-spin">⏳</span>
-            ) : (
-              t.submitButtonText
-            )}
+            {t.submitButtonText}
           </Button>
         </div>
       )}

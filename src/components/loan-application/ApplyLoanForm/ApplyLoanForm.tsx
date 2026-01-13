@@ -311,6 +311,8 @@ const ApplyLoanForm: React.FC<ApplyLoanFormProps> = ({
                 className="mx-auto block rounded-lg font-semibold w-full h-14 text-white"
                 style={{ backgroundColor: theme.colors.primary }}
                 onClick={onSubmitFinal}
+                loading={isCreatingLead}
+                disabled={isCreatingLead}
               >
                 {t("otp.continue")}
               </Button>

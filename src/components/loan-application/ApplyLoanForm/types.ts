@@ -47,6 +47,7 @@ export interface PhoneVerificationModalProps {
   onVerify: (phoneNumber: string) => void;
   title?: string;
   description?: string;
+  isSubmitting?: boolean;
 }
 
 export interface OtpVerificationModalProps {

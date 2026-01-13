@@ -132,7 +132,7 @@ export const useTokenStore = create<TokenStoreState>()(
           set({ isLoading: true });
 
           // Make API call to refresh tokens
-          const response = await fetch("/api/v1/auth/refresh", {
+          const response = await fetch("/api/auth/refresh", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

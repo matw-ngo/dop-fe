@@ -5,8 +5,7 @@ import type { TrackingConfig } from "./types";
  * Can be overridden by environment variables
  */
 export const DEFAULT_TRACKING_CONFIG: TrackingConfig = {
-  apiBaseUrl:
-    process.env.NEXT_PUBLIC_API_URL || "https://dop-stg.datanest.vn/v1",
+  apiBaseUrl: process.env.NEXT_PUBLIC_API_URL || "https://dop-stg.datanest.vn/",
   serviceName: "finzone",
   enabled: process.env.NODE_ENV === "production",
   privacy: {

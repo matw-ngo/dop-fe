@@ -994,7 +994,7 @@ ping your-backend-api.com
 
 # 3. Check backend API status
 curl -H "Authorization: Bearer $TOKEN" \
-  https://your-api.com/api/v1/leads/{leadId}/ekyc/config
+  https://your-api.com/api/leads/{leadId}/ekyc/config
 
 # 4. Review browser console for errors
 # Open DevTools → Console tab

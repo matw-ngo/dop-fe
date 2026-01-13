@@ -178,8 +178,8 @@ Array<{
 ## Environment Configuration
 
 The API endpoints use the same configuration as the main API client:
-- Development: `http://localhost:3001/api/v1`
-- Staging: `https://dop-stg.datanest.vn/v1`
-- Production: `https://api.dop-fe.com/v1`
+- Development: `http://localhost:3001/api`
+- Staging: `https://dop-stg.datanest.vn/`
+- Production: `https://api.dop-fe.com/`
 
 Make sure your environment variables are set correctly if using custom endpoints.

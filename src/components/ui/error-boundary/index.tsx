@@ -77,7 +77,7 @@ export class ErrorBoundary extends Component<Props, State> {
       };
 
       // Send to monitoring service
-      fetch("/api/v1/errors/log", {
+      fetch("/api/errors/log", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

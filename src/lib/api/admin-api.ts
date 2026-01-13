@@ -17,7 +17,7 @@ import type {
 } from "./admin-types";
 
 const baseUrl =
-  process.env.NEXT_PUBLIC_API_URL || "https://dop-stg.datanest.vn/v1";
+  process.env.NEXT_PUBLIC_API_URL || "https://dop-stg.datanest.vn/";
 
 // Helper function to get auth token
 const getAuthToken = (): string | null => {

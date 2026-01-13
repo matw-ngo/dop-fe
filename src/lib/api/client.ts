@@ -14,20 +14,19 @@ const getApiConfig = () => {
   switch (environment) {
     case "production":
       return {
-        baseUrl: "https://api.dop-fe.com/v1",
+        baseUrl: "https://api.dop-fe.com/",
         mockMode: false,
       };
     case "staging":
       return {
         baseUrl:
-          process.env.NEXT_PUBLIC_API_URL || "https://dop-stg.datanest.vn/v1",
+          process.env.NEXT_PUBLIC_API_URL || "https://dop-stg.datanest.vn/",
         mockMode: false,
       };
     case "development":
     default:
       return {
-        baseUrl:
-          process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api/v1",
+        baseUrl: process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api",
         mockMode: false,
       };
   }

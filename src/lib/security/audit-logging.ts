@@ -129,7 +129,7 @@ export interface AuditLoggingConfig {
 const DEFAULT_AUDIT_CONFIG: AuditLoggingConfig = {
   enableConsoleLogging: true,
   enableRemoteLogging: true,
-  remoteEndpoint: "/api/v1/audit/log",
+  remoteEndpoint: "/api/audit/log",
   batchSize: 50,
   batchIntervalMs: 30000, // 30 seconds
   retentionDays: 2555, // 7 years (Vietnamese requirement)

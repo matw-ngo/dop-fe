@@ -804,7 +804,7 @@ export const useLoanStatusTrackingStore = create<LoanStatusTrackingStore>()(
         connectSSE: (applicationId) => {
           try {
             const eventSource = new EventSource(
-              `/api/v1/loans/applications/${applicationId}/status-stream`,
+              `/loans/applications/${applicationId}/status-stream`,
             );
 
             eventSource.onopen = () => {

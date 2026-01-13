@@ -11,6 +11,7 @@ export const PhoneVerificationModal: React.FC<PhoneVerificationModalProps> = ({
   onVerify,
   title,
   description,
+  isSubmitting = false,
 }) => {
   const t = useTranslations("features.loan-application");
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -34,6 +35,8 @@ export const PhoneVerificationModal: React.FC<PhoneVerificationModalProps> = ({
     // Call the verify handler
     onVerify(phoneNumber);
   };
+
+  const isDisabled = isSubmitting || !!validationError;
 
   const handlePhoneChange = (value: string) => {
     setPhoneNumber(value);
@@ -81,13 +84,15 @@ export const PhoneVerificationModal: React.FC<PhoneVerificationModalProps> = ({
             onChange={(e) => handlePhoneChange(e.target.value)}
             error={!!validationError}
             errorMessage={validationError}
+            disabled={isSubmitting}
           />
         </div>
         <div className="mt-6">
           <Button
             className="mx-auto block rounded-lg font-semibold md:text-sm w-full bg-primary"
             onClick={handleVerify}
-            disabled={!!validationError}
+            loading={isSubmitting}
+            disabled={isDisabled}
           >
             {t("otp.continue")}
           </Button>
