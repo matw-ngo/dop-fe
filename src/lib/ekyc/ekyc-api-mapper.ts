@@ -368,47 +368,67 @@ function mapCompare(data: CompareFaceResponse): VNPTCompare {
 }
 
 /**
- * Safely extracts base64 document images from EkycResponse
- *
- * This is a placeholder function since the SDK response structure
- * doesn't explicitly include base64 images. In a real implementation,
- * you would extract these from the appropriate SDK response fields.
+ * Safely extracts a property from an object with type safety
  */
-function safeMapBase64DocImg(data: EkycResponse): VNPTBase64DocImg | undefined {
-  // The SDK response doesn't directly provide base64 images
-  // These would need to be extracted from the actual SDK response
-  // or stored separately during the eKYC process
+function safeExtractProperty<T>(
+  data: Record<string, unknown> | null | undefined,
+  key: string,
+  defaultValue: T,
+): T {
+  if (!data || typeof data !== "object") {
+    return defaultValue;
+  }
+  const value = data[key];
+  return (value as T) ?? defaultValue;
+}
+
+/**
+ * Safely extracts base64 document images from ExtendedEkycResponse
+ *
+ * Uses the extended type that includes optional base64 fields from SDK.
+ */
+function safeMapBase64DocImg(
+  data: ExtendedEkycResponse,
+): VNPTBase64DocImg | undefined {
+  // Check if any base64 data exists before returning the object
+  const hasData = data.base64_doc_img_front || data.base64_doc_img_back;
+  if (!hasData) return undefined;
+
   return {
-    img_front: (data as any).base64_doc_img_front || "",
-    img_back: (data as any).base64_doc_img_back || "",
+    img_front: data.base64_doc_img_front || "",
+    img_back: data.base64_doc_img_back || "",
   };
 }
 
 /**
- * Safely extracts base64 face images from EkycResponse
- *
- * This is a placeholder function since the SDK response structure
- * doesn't explicitly include base64 images.
+ * Safely extracts base64 face images from ExtendedEkycResponse
  */
 function safeMapBase64FaceImg(
-  data: EkycResponse,
+  data: ExtendedEkycResponse,
 ): VNPTBase64FaceImg | undefined {
+  // Check if any base64 data exists before returning the object
+  const hasData = data.base64_face_img_far || data.base64_face_img_near;
+  if (!hasData) return undefined;
+
   return {
-    img_face_far: (data as any).base64_face_img_far || "",
-    img_face_near: (data as any).base64_face_img_near || "",
+    img_face_far: data.base64_face_img_far || "",
+    img_face_near: data.base64_face_img_near || "",
   };
 }
 
 /**
- * Safely extracts document hash from EkycResponse
- *
- * This is a placeholder function since the SDK response structure
- * doesn't explicitly include document hashes.
+ * Safely extracts document hash from ExtendedEkycResponse
  */
-function safeMapHashDocument(data: EkycResponse): VNPTHashDocument | undefined {
+function safeMapHashDocument(
+  data: ExtendedEkycResponse,
+): VNPTHashDocument | undefined {
+  // Check if any hash data exists before returning the object
+  const hasData = data.hash_doc_front || data.hash_doc_back;
+  if (!hasData) return undefined;
+
   return {
-    img_front: (data as any).hash_doc_front || "",
-    img_back: (data as any).hash_doc_back || "",
+    img_front: data.hash_doc_front || "",
+    img_back: data.hash_doc_back || "",
   };
 }
 

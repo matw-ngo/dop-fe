@@ -6,7 +6,19 @@ import {
   logConfigFetchStart,
   logConfigFetchSuccess,
   logConfigFetchError,
+  logConfigCacheHit,
+  logConfigCacheMiss,
 } from "@/lib/ekyc/audit-logger";
+
+/**
+ * Cache TTL in milliseconds (5 minutes)
+ */
+export const CACHE_TTL_MS = 5 * 60 * 1000;
+
+/**
+ * Cache garbage collection time in milliseconds (10 minutes)
+ */
+export const CACHE_GC_TIME_MS = 10 * 60 * 1000;
 
 type EkycConfigResponseBody = components["schemas"]["EkycConfigResponseBody"];
 
@@ -21,9 +33,10 @@ async function getEkycConfig(leadId: string): Promise<EkycConfigResponseBody> {
   const duration = performance.now() - startTime;
 
   if (error) {
-    const errorMessage = typeof error === "object" && error !== null && "message" in error
-      ? (error as { message?: string }).message || "Unknown error"
-      : "Unknown error";
+    const errorMessage =
+      typeof error === "object" && error !== null && "message" in error
+        ? (error as { message?: string }).message || "Unknown error"
+        : "Unknown error";
     logConfigFetchError(leadId, errorMessage);
     throw new Error(errorMessage);
   }
@@ -41,19 +54,21 @@ export function useEkycConfig(leadId: string) {
     queryKey: ["ekyc-config", leadId],
     queryFn: () => getEkycConfig(leadId),
     enabled: !!leadId,
-    staleTime: 5 * 60 * 1000, // 5 minutes cache TTL
-    gcTime: 10 * 60 * 1000, // 10 minutes garbage collection
+    staleTime: CACHE_TTL_MS,
+    gcTime: CACHE_GC_TIME_MS,
   });
 
-  // Log cache status using useEffect
+  // Log cache hit/miss using useEffect
   useEffect(() => {
     if (query.isSuccess && query.data) {
       // If data is fetched from cache (isFetching is false but we have data), it's a cache hit
       if (!query.isFetching && query.isFetched) {
-        // Data was served from cache
+        logConfigCacheHit(leadId);
+      } else if (query.isFetching) {
+        logConfigCacheMiss(leadId);
       }
     }
-  }, [query.isSuccess, query.data, query.isFetching, query.isFetched]);
+  }, [query.isSuccess, query.data, query.isFetching, query.isFetched, leadId]);
 
   return query;
 }

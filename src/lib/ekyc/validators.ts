@@ -9,7 +9,29 @@
  * @module validators
  */
 
-import type { EkycResponse, OcrResponse, LivenessFaceResponse, CompareFaceResponse } from "./types";
+import type {
+  EkycResponse,
+  OcrResponse,
+  LivenessFaceResponse,
+  CompareFaceResponse,
+} from "./types";
+
+/**
+ * Extended EkycResponse type that includes optional base64 fields from SDK
+ */
+interface ExtendedEkycResponse extends EkycResponse {
+  base64_doc_img_front?: string;
+  base64_doc_img_back?: string;
+  base64_face_img_far?: string;
+  base64_face_img_near?: string;
+  hash_doc_front?: string;
+  hash_doc_back?: string;
+}
+
+/**
+ * Maximum base64 image size in bytes (5MB)
+ */
+export const MAX_BASE64_SIZE_BYTES = 5 * 1024 * 1024;
 
 /**
  * Validation error type
@@ -122,22 +144,36 @@ function validateOcrResponse(ocr: OcrResponse | undefined): ValidationResult {
   if (!ocr) {
     return {
       isValid: false,
-      errors: [{ field: "ocr", message: "OCR data is missing", code: "MISSING_OCR" }],
+      errors: [
+        { field: "ocr", message: "OCR data is missing", code: "MISSING_OCR" },
+      ],
       warnings: [],
     };
   }
 
   // Required fields
   if (!ocr.id || ocr.id.trim() === "") {
-    errors.push({ field: "ocr.id", message: "ID number is required", code: "MISSING_ID" });
+    errors.push({
+      field: "ocr.id",
+      message: "ID number is required",
+      code: "MISSING_ID",
+    });
   }
 
   if (!ocr.name || ocr.name.trim() === "") {
-    errors.push({ field: "ocr.name", message: "Full name is required", code: "MISSING_NAME" });
+    errors.push({
+      field: "ocr.name",
+      message: "Full name is required",
+      code: "MISSING_NAME",
+    });
   }
 
   if (!ocr.birth_day || ocr.birth_day.trim() === "") {
-    errors.push({ field: "ocr.birth_day", message: "Date of birth is required", code: "MISSING_DOB" });
+    errors.push({
+      field: "ocr.birth_day",
+      message: "Date of birth is required",
+      code: "MISSING_DOB",
+    });
   }
 
   // Warnings for low confidence
@@ -146,7 +182,9 @@ function validateOcrResponse(ocr: OcrResponse | undefined): ValidationResult {
   }
 
   if (ocr.id_fake_prob !== undefined && ocr.id_fake_prob > 30) {
-    warnings.push(`ID fake detection probability is high (${ocr.id_fake_prob}%)`);
+    warnings.push(
+      `ID fake detection probability is high (${ocr.id_fake_prob}%)`,
+    );
   }
 
   // Warnings from tampering data
@@ -170,7 +208,9 @@ function validateOcrResponse(ocr: OcrResponse | undefined): ValidationResult {
  * @param livenessFace - The liveness face response to validate
  * @returns Validation result with errors
  */
-function validateLivenessFace(livenessFace: LivenessFaceResponse | undefined): ValidationResult {
+function validateLivenessFace(
+  livenessFace: LivenessFaceResponse | undefined,
+): ValidationResult {
   const errors: ValidationError[] = [];
   const warnings: string[] = [];
 
@@ -178,7 +218,11 @@ function validateLivenessFace(livenessFace: LivenessFaceResponse | undefined): V
     return {
       isValid: false,
       errors: [
-        { field: "liveness_face", message: "Liveness face data is missing", code: "MISSING_LIVENESS" },
+        {
+          field: "liveness_face",
+          message: "Liveness face data is missing",
+          code: "MISSING_LIVENESS",
+        },
       ],
       warnings: [],
     };
@@ -211,7 +255,9 @@ function validateLivenessFace(livenessFace: LivenessFaceResponse | undefined): V
  * @param compare - The compare face response to validate
  * @returns Validation result with errors
  */
-function validateFaceCompare(compare: CompareFaceResponse | undefined): ValidationResult {
+function validateFaceCompare(
+  compare: CompareFaceResponse | undefined,
+): ValidationResult {
   const errors: ValidationError[] = [];
   const warnings: string[] = [];
 
@@ -219,7 +265,11 @@ function validateFaceCompare(compare: CompareFaceResponse | undefined): Validati
     return {
       isValid: false,
       errors: [
-        { field: "compare", message: "Face comparison data is missing", code: "MISSING_COMPARE" },
+        {
+          field: "compare",
+          message: "Face comparison data is missing",
+          code: "MISSING_COMPARE",
+        },
       ],
       warnings: [],
     };
@@ -235,7 +285,10 @@ function validateFaceCompare(compare: CompareFaceResponse | undefined): Validati
   }
 
   // Check match score
-  const probValue = typeof compare.prob === "string" ? parseFloat(compare.prob) : compare.prob || 0;
+  const probValue =
+    typeof compare.prob === "string"
+      ? parseFloat(compare.prob)
+      : compare.prob || 0;
   if (probValue < 70) {
     warnings.push(`Face match score is low (${probValue}%)`);
   }
@@ -263,7 +316,7 @@ function validateBase64Images(ekycResponse: EkycResponse): ValidationResult {
   const warnings: string[] = [];
 
   // Check for base64 images in extended response
-  const extendedResponse = ekycResponse as any;
+  const extendedResponse = ekycResponse as ExtendedEkycResponse;
 
   // Check document front image
   if (extendedResponse.base64_doc_img_front) {
@@ -273,7 +326,9 @@ function validateBase64Images(ekycResponse: EkycResponse): ValidationResult {
         message: "Document front image is not valid base64",
         code: "INVALID_BASE64",
       });
-    } else if (isBase64TooLarge(extendedResponse.base64_doc_img_front, 5 * 1024 * 1024)) {
+    } else if (
+      isBase64TooLarge(extendedResponse.base64_doc_img_front, 5 * 1024 * 1024)
+    ) {
       warnings.push("Document front image is larger than 5MB");
     }
   }
@@ -286,7 +341,9 @@ function validateBase64Images(ekycResponse: EkycResponse): ValidationResult {
         message: "Document back image is not valid base64",
         code: "INVALID_BASE64",
       });
-    } else if (isBase64TooLarge(extendedResponse.base64_doc_img_back, 5 * 1024 * 1024)) {
+    } else if (
+      isBase64TooLarge(extendedResponse.base64_doc_img_back, 5 * 1024 * 1024)
+    ) {
       warnings.push("Document back image is larger than 5MB");
     }
   }
@@ -343,7 +400,9 @@ function validateBase64Images(ekycResponse: EkycResponse): ValidationResult {
  * }
  * ```
  */
-export function validateEkycResult(ekycResponse: EkycResponse): ValidationResult {
+export function validateEkycResult(
+  ekycResponse: EkycResponse,
+): ValidationResult {
   const allErrors: ValidationError[] = [];
   const allWarnings: string[] = [];
 
@@ -408,7 +467,9 @@ export function formatValidationErrors(result: ValidationResult): string {
     return "Validation passed";
   }
 
-  const errorMessages = result.errors.map((e) => `${e.field}: ${e.message}`).join("\n");
+  const errorMessages = result.errors
+    .map((e) => `${e.field}: ${e.message}`)
+    .join("\n");
   return `Validation failed:\n${errorMessages}`;
 }
 

@@ -2,9 +2,11 @@
  * SDK Event Handlers - Manages callbacks and events for VNPT eKYC SDK
  */
 
+import type { EkycSdkConfig } from "./sdk-config";
+
 export interface EkycResult {
   code: number;
-  data?: any;
+  data?: unknown;
   type_document?: number;
   message?: string;
 }
@@ -12,12 +14,13 @@ export interface EkycResult {
 export interface EkycEventHandlers {
   onResult?: (result: EkycResult) => void;
   onFinish?: (result: EkycResult) => void;
-  onSuccess?: (data: any) => void;
+  onSuccess?: (data: unknown) => void;
   onError?: (error: string) => void;
 }
 
 export class EkycEventManager {
   private handlers: EkycEventHandlers = {};
+  private currentConfig: EkycSdkConfig | null = null;
 
   constructor(handlers: EkycEventHandlers = {}) {
     this.handlers = handlers;
@@ -25,6 +28,14 @@ export class EkycEventManager {
 
   setHandlers(handlers: Partial<EkycEventHandlers>): void {
     this.handlers = { ...this.handlers, ...handlers };
+  }
+
+  setCurrentConfig(config: EkycSdkConfig): void {
+    this.currentConfig = config;
+  }
+
+  getCurrentConfig(): EkycSdkConfig | null {
+    return this.currentConfig;
   }
 
   getResultHandler() {
@@ -85,11 +96,5 @@ export class EkycEventManager {
         window.SDK.launch(faceConfig);
       }
     }
-  }
-
-  private getCurrentConfig(): any {
-    // This would need to be stored somewhere accessible
-    // For now, we'll return null and handle it in the main manager
-    return null;
   }
 }

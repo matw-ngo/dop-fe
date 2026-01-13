@@ -11,13 +11,29 @@ import {
 
 type VnptEkycRequestBody = components["schemas"]["VnptEkycRequestBody"];
 
+/**
+ * Maximum number of retry attempts for eKYC submission
+ */
+const MAX_RETRY_ATTEMPTS = 3;
+
 interface SubmitEkycParams {
   leadId: string;
   sessionId?: string;
   ekycData: VnptEkycRequestBody;
 }
 
-async function submitEkycResult({ leadId, sessionId, ekycData }: SubmitEkycParams) {
+/**
+ * Type-safe mutation context for retry tracking
+ */
+interface SubmitEkycContext {
+  failureCount?: number;
+}
+
+async function submitEkycResult({
+  leadId,
+  sessionId,
+  ekycData,
+}: SubmitEkycParams) {
   const startTime = performance.now();
   logSubmitStart(leadId, sessionId || "unknown");
 
@@ -29,9 +45,11 @@ async function submitEkycResult({ leadId, sessionId, ekycData }: SubmitEkycParam
   const duration = performance.now() - startTime;
 
   if (error) {
-    const errorMessage = typeof error === "object" && error !== null && "message" in error
-      ? (error as { message?: string }).message || "Failed to submit eKYC result"
-      : "Failed to submit eKYC result";
+    const errorMessage =
+      typeof error === "object" && error !== null && "message" in error
+        ? (error as { message?: string }).message ||
+          "Failed to submit eKYC result"
+        : "Failed to submit eKYC result";
     logSubmitError(leadId, sessionId || "unknown", errorMessage);
     throw new Error(errorMessage);
   }
@@ -63,16 +81,17 @@ export function useSubmitEkycResult() {
     retry: (failureCount, error) => {
       // Retry up to 3 times for network errors or 5xx errors
       if (failureCount >= 3) return false;
-      
+
       // Check if error is retryable
-      const errorMessage = error instanceof Error ? error.message : String(error);
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
       const isRetryable =
         errorMessage.includes("Network Error") ||
         errorMessage.includes("timeout") ||
         errorMessage.includes("503") ||
         errorMessage.includes("502") ||
         errorMessage.includes("500");
-      
+
       return isRetryable;
     },
     retryDelay: exponentialBackoff,
@@ -80,7 +99,8 @@ export function useSubmitEkycResult() {
       logSubmitStart(leadId, sessionId || "unknown");
     },
     onError: (error, { leadId, sessionId }, context) => {
-      const failureCount = (context as any)?.failureCount || 0;
+      const failureCount =
+        (context as SubmitEkycContext | undefined)?.failureCount || 0;
       if (failureCount > 0) {
         logSubmitRetry(leadId, sessionId || "unknown", failureCount + 1);
       }

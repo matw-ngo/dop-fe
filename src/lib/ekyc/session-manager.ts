@@ -56,7 +56,10 @@ function calculateExpirationTime(): string {
 /**
  * Creates a new session state object
  */
-function createSessionState(leadId: string, initialStatus: EkycSessionStatus): EkycSessionState {
+function createSessionState(
+  leadId: string,
+  initialStatus: EkycSessionStatus,
+): EkycSessionState {
   const now = new Date().toISOString();
   return {
     sessionId: generateSessionId(),
@@ -86,14 +89,15 @@ function createSessionState(leadId: string, initialStatus: EkycSessionStatus): E
 export function initSession(
   leadId: string,
   initialStatus: EkycSessionStatus = EkycSessionStatus.INITIALIZED,
-): EkycSessionState {
+): EkycSessionState | null {
   const session = createSessionState(leadId, initialStatus);
-  
+
   // Store in localStorage
   try {
     localStorage.setItem(getStorageKey(leadId), JSON.stringify(session));
   } catch (error) {
     console.error("[Session] Failed to store session:", error);
+    return null;
   }
 
   logSessionInit(leadId, session.sessionId);
@@ -162,7 +166,9 @@ export function updateSessionStatus(
  * @param leadId - The lead ID to increment attempts for
  * @returns The updated session state, or null if session not found
  */
-export function incrementSubmissionAttempts(leadId: string): EkycSessionState | null {
+export function incrementSubmissionAttempts(
+  leadId: string,
+): EkycSessionState | null {
   const session = getSession(leadId);
   if (!session) return null;
 
@@ -187,7 +193,10 @@ export function incrementSubmissionAttempts(leadId: string): EkycSessionState | 
  * @param verificationId - Optional verification ID from backend
  * @returns The updated session state, or null if session not found
  */
-export function markSubmitted(leadId: string, verificationId?: string): EkycSessionState | null {
+export function markSubmitted(
+  leadId: string,
+  verificationId?: string,
+): EkycSessionState | null {
   const session = getSession(leadId);
   if (!session) return null;
 
@@ -324,7 +333,7 @@ export function getAllActiveSessions(): EkycSessionState[] {
       if (!stored) continue;
 
       const session = JSON.parse(stored) as EkycSessionState;
-      
+
       // Only include non-expired sessions
       if (!isSessionExpired(session)) {
         sessions.push(session);
@@ -355,7 +364,7 @@ export function cleanupExpiredSessions(): number {
       if (!stored) continue;
 
       const session = JSON.parse(stored) as EkycSessionState;
-      
+
       // Remove expired sessions
       if (isSessionExpired(session)) {
         localStorage.removeItem(key);

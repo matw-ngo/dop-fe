@@ -26,9 +26,23 @@ import {
   cleanupExpiredSessions,
   getSessionStats,
 } from "../session-manager";
-import { EkycSessionStatus } from "../types";
+import { EkycSessionStatus, type EkycSessionState } from "../types";
 
 describe("session-manager", () => {
+  // Helper function to create an expired session for testing
+  function createExpiredSession(leadId: string): EkycSessionState {
+    return {
+      sessionId: `ekyc_${Date.now()}_abc123`,
+      leadId,
+      status: EkycSessionStatus.INITIALIZED,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      expiresAt: new Date(Date.now() - 1000).toISOString(), // 1 second ago
+      submissionAttempts: 0,
+      isSubmitted: false,
+    };
+  }
+
   beforeEach(() => {
     // Clear localStorage before each test
     localStorage.clear();
@@ -44,15 +58,15 @@ describe("session-manager", () => {
 
       const session = initSession(leadId);
 
-      expect(session).toBeDefined();
-      expect(session.leadId).toBe(leadId);
-      expect(session.status).toBe(EkycSessionStatus.INITIALIZED);
-      expect(session.sessionId).toMatch(/^ekyc_\d+_[a-z0-9]+$/);
-      expect(session.createdAt).toBeDefined();
-      expect(session.updatedAt).toBeDefined();
-      expect(session.expiresAt).toBeDefined();
-      expect(session.submissionAttempts).toBe(0);
-      expect(session.isSubmitted).toBe(false);
+      expect(session).not.toBeNull();
+      expect(session!.leadId).toBe(leadId);
+      expect(session!.status).toBe(EkycSessionStatus.INITIALIZED);
+      expect(session!.sessionId).toMatch(/^ekyc_\d+_[a-z0-9]+$/);
+      expect(session!.createdAt).toBeDefined();
+      expect(session!.updatedAt).toBeDefined();
+      expect(session!.expiresAt).toBeDefined();
+      expect(session!.submissionAttempts).toBe(0);
+      expect(session!.isSubmitted).toBe(false);
     });
 
     /**
@@ -64,7 +78,8 @@ describe("session-manager", () => {
 
       const session = initSession(leadId, customStatus);
 
-      expect(session.status).toBe(customStatus);
+      expect(session).not.toBeNull();
+      expect(session!.status).toBe(customStatus);
     });
 
     /**
@@ -73,7 +88,8 @@ describe("session-manager", () => {
     it("should store session in localStorage", () => {
       const leadId = "lead-789";
 
-      initSession(leadId);
+      const session = initSession(leadId);
+      expect(session).not.toBeNull();
 
       const storageKey = `ekyc_session_${leadId}`;
       const stored = localStorage.getItem(storageKey);
@@ -88,7 +104,9 @@ describe("session-manager", () => {
      */
     it("should handle localStorage errors gracefully", () => {
       const leadId = "lead-error";
-      const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+      const consoleErrorSpy = vi
+        .spyOn(console, "error")
+        .mockImplementation(() => {});
 
       // Mock localStorage.setItem to throw error
       const originalSetItem = localStorage.setItem;
@@ -98,7 +116,7 @@ describe("session-manager", () => {
 
       const session = initSession(leadId);
 
-      expect(session).toBeDefined();
+      expect(session).toBeNull();
       expect(consoleErrorSpy).toHaveBeenCalled();
 
       // Restore original setItem
@@ -115,7 +133,9 @@ describe("session-manager", () => {
       const session1 = initSession(leadId);
       const session2 = initSession(leadId);
 
-      expect(session1.sessionId).not.toBe(session2.sessionId);
+      expect(session1).not.toBeNull();
+      expect(session2).not.toBeNull();
+      expect(session1!.sessionId).not.toBe(session2!.sessionId);
     });
   });
 
@@ -127,10 +147,12 @@ describe("session-manager", () => {
       const leadId = "lead-retrieve";
 
       const createdSession = initSession(leadId);
+      expect(createdSession).not.toBeNull();
+
       const retrievedSession = getSession(leadId);
 
       expect(retrievedSession).toBeDefined();
-      expect(retrievedSession?.sessionId).toBe(createdSession.sessionId);
+      expect(retrievedSession?.sessionId).toBe(createdSession?.sessionId);
       expect(retrievedSession?.leadId).toBe(leadId);
     });
 
@@ -150,6 +172,7 @@ describe("session-manager", () => {
       const leadId = "lead-expired";
 
       const session = initSession(leadId);
+      expect(session).not.toBeNull();
 
       // Manually set expiresAt to past
       const storageKey = `ekyc_session_${leadId}`;
@@ -174,7 +197,9 @@ describe("session-manager", () => {
     it("should handle corrupted localStorage data gracefully", () => {
       const leadId = "lead-corrupted";
       const storageKey = `ekyc_session_${leadId}`;
-      const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+      const consoleErrorSpy = vi
+        .spyOn(console, "error")
+        .mockImplementation(() => {});
 
       localStorage.setItem(storageKey, "invalid json");
 
@@ -207,27 +232,31 @@ describe("session-manager", () => {
     /**
      * Test T306: Update timestamp when status changes
      */
-    it("should update timestamp when status changes", () => {
+    it("should update timestamp when status changes", async () => {
       const leadId = "lead-timestamp";
       const session = initSession(leadId);
-      const originalUpdatedAt = session.updatedAt;
+      expect(session).not.toBeNull();
+      const originalUpdatedAt = session!.updatedAt;
 
       // Wait a bit to ensure timestamp difference
-      setTimeout(() => {
-        const updatedSession = updateSessionStatus(
-          leadId,
-          EkycSessionStatus.IN_PROGRESS,
-        );
+      await new Promise((resolve) => setTimeout(resolve, 10));
 
-        expect(updatedSession?.updatedAt).not.toBe(originalUpdatedAt);
-      }, 10);
+      const updatedSession = updateSessionStatus(
+        leadId,
+        EkycSessionStatus.IN_PROGRESS,
+      );
+
+      expect(updatedSession?.updatedAt).not.toBe(originalUpdatedAt);
     });
 
     /**
      * Test T306: Return null for non-existent session
      */
     it("should return null when updating non-existent session", () => {
-      const result = updateSessionStatus("non-existent", EkycSessionStatus.COMPLETED);
+      const result = updateSessionStatus(
+        "non-existent",
+        EkycSessionStatus.COMPLETED,
+      );
 
       expect(result).toBeNull();
     });
@@ -276,16 +305,17 @@ describe("session-manager", () => {
     /**
      * Test T307: Update timestamp when incrementing
      */
-    it("should update timestamp when incrementing attempts", () => {
+    it("should update timestamp when incrementing attempts", async () => {
       const leadId = "lead-attempts-timestamp";
       const session = initSession(leadId);
-      const originalUpdatedAt = session.updatedAt;
+      expect(session).not.toBeNull();
+      const originalUpdatedAt = session!.updatedAt;
 
-      setTimeout(() => {
-        const updatedSession = incrementSubmissionAttempts(leadId);
+      await new Promise((resolve) => setTimeout(resolve, 10));
 
-        expect(updatedSession?.updatedAt).not.toBe(originalUpdatedAt);
-      }, 10);
+      const updatedSession = incrementSubmissionAttempts(leadId);
+
+      expect(updatedSession?.updatedAt).not.toBe(originalUpdatedAt);
     });
   });
 
@@ -402,6 +432,7 @@ describe("session-manager", () => {
     it("should prevent submission for expired sessions", () => {
       const leadId = "lead-expired-submit";
       const session = initSession(leadId);
+      expect(session).not.toBeNull();
 
       // Manually expire session
       const storageKey = `ekyc_session_${leadId}`;
@@ -457,8 +488,9 @@ describe("session-manager", () => {
      */
     it("should return false for active session", () => {
       const session = initSession("lead-active");
+      expect(session).not.toBeNull();
 
-      const isExpired = isSessionExpired(session);
+      const isExpired = isSessionExpired(session!);
 
       expect(isExpired).toBe(false);
     });
@@ -469,6 +501,7 @@ describe("session-manager", () => {
     it("should return true for expired session", () => {
       const leadId = "lead-is-expired";
       const session = initSession(leadId);
+      expect(session).not.toBeNull();
 
       // Manually set expiresAt to past
       const storageKey = `ekyc_session_${leadId}`;
@@ -587,7 +620,7 @@ describe("session-manager", () => {
       const activeSessions = getAllActiveSessions();
 
       expect(activeSessions).toHaveLength(3);
-      expect(activeSessions.every(s => !isSessionExpired(s))).toBe(true);
+      expect(activeSessions.every((s) => !isSessionExpired(s))).toBe(true);
     });
 
     /**
@@ -644,20 +677,14 @@ describe("session-manager", () => {
     it("should clean up expired sessions", () => {
       initSession("lead-to-cleanup-active");
 
-      // Create expired sessions
-      initSession("lead-expired-1");
+      // Create expired sessions (without calling initSession again)
+      const expiredSession1 = createExpiredSession("lead-expired-1");
       const storageKey1 = `ekyc_session_lead-expired-1`;
-      const stored1 = localStorage.getItem(storageKey1);
-      const parsed1 = JSON.parse(stored1!);
-      parsed1.expiresAt = new Date(Date.now() - 1000).toISOString();
-      localStorage.setItem(storageKey1, JSON.stringify(parsed1));
+      localStorage.setItem(storageKey1, JSON.stringify(expiredSession1));
 
-      initSession("lead-expired-2");
+      const expiredSession2 = createExpiredSession("lead-expired-2");
       const storageKey2 = `ekyc_session_lead-expired-2`;
-      const stored2 = localStorage.getItem(storageKey2);
-      const parsed2 = JSON.parse(stored2!);
-      parsed2.expiresAt = new Date(Date.now() - 1000).toISOString();
-      localStorage.setItem(storageKey2, JSON.stringify(parsed2));
+      localStorage.setItem(storageKey2, JSON.stringify(expiredSession2));
 
       const cleanedCount = cleanupExpiredSessions();
 
@@ -702,6 +729,7 @@ describe("session-manager", () => {
     it("should return session statistics", () => {
       const leadId = "lead-stats";
       const session = initSession(leadId);
+      expect(session).not.toBeNull();
 
       const stats = getSessionStats(leadId);
 
@@ -723,16 +751,16 @@ describe("session-manager", () => {
     /**
      * Test T307: Calculate age correctly
      */
-    it("should calculate session age correctly", () => {
+    it("should calculate session age correctly", async () => {
       const leadId = "lead-age";
       initSession(leadId);
 
-      setTimeout(() => {
-        const stats = getSessionStats(leadId);
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
-        expect(stats?.age).toBeGreaterThan(0);
-        expect(stats?.age).toBeLessThan(1000); // Less than 1 second
-      }, 100);
+      const stats = getSessionStats(leadId);
+
+      expect(stats?.age).toBeGreaterThan(0);
+      expect(stats?.age).toBeLessThan(1000); // Less than 1 second
     });
 
     /**
@@ -777,14 +805,21 @@ describe("session-manager", () => {
 
       // 1. Initialize
       const session = initSession(leadId);
-      expect(session.status).toBe(EkycSessionStatus.INITIALIZED);
+      expect(session).not.toBeNull();
+      expect(session!.status).toBe(EkycSessionStatus.INITIALIZED);
 
       // 2. Start processing
-      const inProgress = updateSessionStatus(leadId, EkycSessionStatus.IN_PROGRESS);
+      const inProgress = updateSessionStatus(
+        leadId,
+        EkycSessionStatus.IN_PROGRESS,
+      );
       expect(inProgress?.status).toBe(EkycSessionStatus.IN_PROGRESS);
 
       // 3. Complete processing
-      const completed = updateSessionStatus(leadId, EkycSessionStatus.COMPLETED);
+      const completed = updateSessionStatus(
+        leadId,
+        EkycSessionStatus.COMPLETED,
+      );
       expect(completed?.status).toBe(EkycSessionStatus.COMPLETED);
 
       // 4. Check can submit
@@ -837,6 +872,7 @@ describe("session-manager", () => {
       const stored = localStorage.getItem(storageKey);
       const parsedSession = JSON.parse(stored!);
       parsedSession.expiresAt = new Date(Date.now() - 1000).toISOString();
+      parsedSession.status = EkycSessionStatus.EXPIRED;
       localStorage.setItem(storageKey, JSON.stringify(parsedSession));
 
       // Cannot submit expired session
@@ -855,9 +891,12 @@ describe("session-manager", () => {
     it("should handle multiple sessions for different leads", () => {
       const leadIds = ["lead-1", "lead-2", "lead-3"];
 
-      leadIds.forEach(id => initSession(id));
+      leadIds.forEach((id) => {
+        const session = initSession(id);
+        expect(session).not.toBeNull();
+      });
 
-      leadIds.forEach(id => {
+      leadIds.forEach((id) => {
         const session = getSession(id);
         expect(session).toBeDefined();
         expect(session?.leadId).toBe(id);
@@ -889,8 +928,9 @@ describe("session-manager", () => {
       const leadId = "lead-with-special-chars-123-abc";
 
       const session = initSession(leadId);
+      expect(session).not.toBeNull();
 
-      expect(session.leadId).toBe(leadId);
+      expect(session!.leadId).toBe(leadId);
 
       const retrieved = getSession(leadId);
       expect(retrieved?.leadId).toBe(leadId);
@@ -903,8 +943,9 @@ describe("session-manager", () => {
       const leadId = "a".repeat(1000);
 
       const session = initSession(leadId);
+      expect(session).not.toBeNull();
 
-      expect(session.leadId).toBe(leadId);
+      expect(session!.leadId).toBe(leadId);
 
       const retrieved = getSession(leadId);
       expect(retrieved?.leadId).toBe(leadId);

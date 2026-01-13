@@ -85,7 +85,11 @@ function sanitizeData(data: Record<string, unknown>): Record<string, unknown> {
   // Remove or mask PII fields
   for (const field of piiFields) {
     if (field in sanitized) {
-      if (field.includes("base64") || field.includes("img") || field.includes("hash")) {
+      if (
+        field.includes("base64") ||
+        field.includes("img") ||
+        field.includes("hash")
+      ) {
         // Completely remove binary data
         delete sanitized[field];
       } else {
@@ -113,15 +117,39 @@ function maskValue(value: string): string {
 }
 
 /**
+ * Minimum length for base64 image data (real base64 images are longer)
+ */
+const MIN_BASE64_LENGTH = 100;
+
+/**
  * Checks if a string might contain base64 encoded data
  *
  * @param str - The string to check
  * @returns true if the string appears to be base64 encoded
  */
 function isBase64Data(str: string): boolean {
-  // Check if it looks like base64 (long alphanumeric string with potential padding)
-  const base64Pattern = /^[A-Za-z0-9+/={200,}$/;
-  return base64Pattern.test(str);
+  // Real base64 images are longer than 100 characters
+  if (str.length < MIN_BASE64_LENGTH) {
+    return false;
+  }
+
+  // Check if it matches base64 pattern (alphanumeric + / + with optional padding)
+  const base64Pattern = /^[A-Za-z0-9+/]+={0,2}$/;
+  if (!base64Pattern.test(str)) {
+    return false;
+  }
+
+  // Try to decode to ensure it's actually valid base64
+  try {
+    if (typeof window !== "undefined" && window.atob) {
+      window.atob(str);
+    } else if (typeof Buffer !== "undefined") {
+      Buffer.from(str, "base64");
+    }
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 /**
@@ -151,10 +179,12 @@ function sanitizeObject(obj: unknown): unknown {
     const sanitized: Record<string, unknown> = {};
     for (const [key, value] of Object.entries(obj)) {
       // Skip known PII fields
-      if (key.toLowerCase().includes("base64") || 
-          key.toLowerCase().includes("img") || 
-          key.toLowerCase().includes("hash") ||
-          key.toLowerCase().includes("face")) {
+      if (
+        key.toLowerCase().includes("base64") ||
+        key.toLowerCase().includes("img") ||
+        key.toLowerCase().includes("hash") ||
+        key.toLowerCase().includes("face")
+      ) {
         sanitized[key] = "[REDACTED]";
       } else {
         sanitized[key] = sanitizeObject(value);
@@ -192,7 +222,9 @@ export function createAuditLogEntry(
     leadId,
     sessionId,
     message,
-    metadata: metadata ? sanitizeObject(metadata) as Record<string, unknown> : undefined,
+    metadata: metadata
+      ? (sanitizeObject(metadata) as Record<string, unknown>)
+      : undefined,
   };
 }
 
@@ -348,7 +380,11 @@ export function logSubmitStart(leadId: string, sessionId: string): void {
 /**
  * Logs submission success event
  */
-export function logSubmitSuccess(leadId: string, sessionId: string, duration: number): void {
+export function logSubmitSuccess(
+  leadId: string,
+  sessionId: string,
+  duration: number,
+): void {
   const entry = createAuditLogEntry(
     AuditLogLevel.INFO,
     AuditEventType.SUBMIT_SUCCESS,
@@ -363,7 +399,11 @@ export function logSubmitSuccess(leadId: string, sessionId: string, duration: nu
 /**
  * Logs submission error event
  */
-export function logSubmitError(leadId: string, sessionId: string, error: string): void {
+export function logSubmitError(
+  leadId: string,
+  sessionId: string,
+  error: string,
+): void {
   const entry = createAuditLogEntry(
     AuditLogLevel.ERROR,
     AuditEventType.SUBMIT_ERROR,
@@ -378,7 +418,11 @@ export function logSubmitError(leadId: string, sessionId: string, error: string)
 /**
  * Logs submission retry event
  */
-export function logSubmitRetry(leadId: string, sessionId: string, attempt: number): void {
+export function logSubmitRetry(
+  leadId: string,
+  sessionId: string,
+  attempt: number,
+): void {
   const entry = createAuditLogEntry(
     AuditLogLevel.WARN,
     AuditEventType.SUBMIT_RETRY,
@@ -393,7 +437,11 @@ export function logSubmitRetry(leadId: string, sessionId: string, attempt: numbe
 /**
  * Logs validation error event
  */
-export function logValidationError(leadId: string, sessionId: string, errors: string[]): void {
+export function logValidationError(
+  leadId: string,
+  sessionId: string,
+  errors: string[],
+): void {
   const entry = createAuditLogEntry(
     AuditLogLevel.WARN,
     AuditEventType.SUBMIT_VALIDATION_ERROR,
@@ -423,7 +471,11 @@ export function logSessionInit(leadId: string, sessionId: string): void {
 /**
  * Logs session update event
  */
-export function logSessionUpdate(leadId: string, sessionId: string, status: string): void {
+export function logSessionUpdate(
+  leadId: string,
+  sessionId: string,
+  status: string,
+): void {
   const entry = createAuditLogEntry(
     AuditLogLevel.DEBUG,
     AuditEventType.SESSION_UPDATE,

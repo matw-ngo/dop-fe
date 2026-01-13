@@ -153,7 +153,7 @@ export class EkycSdkManager {
     }
 
     // Store config reference for event handlers
-    (this.eventManager as any).getCurrentConfig = () => this.config;
+    this.eventManager.setCurrentConfig(this.config);
 
     window.SDK.launch(this.config);
     // console.log("✅ [EKYC] SDK.launch() completed");
