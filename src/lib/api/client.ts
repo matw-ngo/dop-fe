@@ -8,6 +8,7 @@ import { parseTimeoutConfig } from "./timeouts/config-parser";
 import { resolveTimeout } from "./timeouts/resolver";
 import { createTimeoutController } from "./timeouts/abort-timeout";
 import { useTimeoutStore } from "./timeouts/timeout-store";
+import { DEFAULT_RETRY } from "./timeouts/constants";
 
 // API Configuration based on environment
 const getApiConfig = () => {
@@ -96,7 +97,7 @@ apiClient.use({
       resolution.timeout,
     );
 
-    // Merge the timeout signal with existing signal if present
+    // Merge timeout signal with existing signal if present
     let finalSignal = timeoutSignal;
 
     if (req.request.signal) {
@@ -218,7 +219,7 @@ apiClient.use({
     }
 
     // --- Timeout Error Detection ---
-    // Check if the request was aborted (which includes timeout aborts)
+    // Check if request was aborted (which includes timeout aborts)
     if (res.request.signal.aborted) {
       const url = new URL(res.request.url, window.location.origin);
       const endpoint = url.pathname;
@@ -250,10 +251,11 @@ apiClient.use({
 });
 
 // Retry utility for API calls with exponential backoff
+// Uses correct defaults from DEFAULT_RETRY constants
 export const withRetry = async <T>(
   apiCall: () => Promise<T>,
-  maxRetries = 3,
-  delay = 1000,
+  maxRetries = DEFAULT_RETRY.MAX_RETRIES,
+  delay = DEFAULT_RETRY.INITIAL_DELAY,
 ): Promise<T> => {
   let lastError: Error;
 
@@ -280,8 +282,11 @@ export const withRetry = async <T>(
         description: `Attempting again in ${Math.ceil(delay / 1000)}s`,
       });
 
-      // Exponential backoff with jitter
-      const backoffDelay = delay * 2 ** i;
+      // Exponential backoff with max delay cap
+      const backoffDelay = Math.min(
+        delay * Math.pow(DEFAULT_RETRY.BACKOFF_MULTIPLIER, i),
+        DEFAULT_RETRY.MAX_DELAY,
+      );
       const jitter = Math.random() * 200; // Add 0-200ms jitter
       await new Promise((resolve) =>
         setTimeout(resolve, backoffDelay + jitter),

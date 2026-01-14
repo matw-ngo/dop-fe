@@ -7,14 +7,14 @@ type CreateLeadResponseBody = components["schemas"]["CreateLeadResponseBody"];
 
 interface CreateLeadParams {
   flowId: string;
-  tenant: string; // UUID of the tenant
+  tenant: string; // UUID of tenant
   deviceInfo: Record<string, never>;
   trackingParams: Record<string, never>;
   info: components["schemas"]["SubmitLeadInfoRequestBody"];
 }
 
 /**
- * Creates a new lead in the V1 API system.
+ * Creates a new lead in V1 API system.
  *
  * @remarks
  * This hook should be called at the **beginning of the wizard** or at the **end of the personal info step**.
@@ -80,5 +80,6 @@ async function createLead(
 export function useCreateLead() {
   return useMutation({
     mutationFn: createLead,
+    retry: false, // Disable retries - handled by global React Query config
   });
 }

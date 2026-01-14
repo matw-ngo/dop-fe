@@ -34,7 +34,8 @@
     "telcoNotSupported": "Chỉ hỗ trợ nhà mạng: {telcos}",
     "amountRequired": "Vui lòng chọn khoản vay",
     "periodRequired": "Vui lòng chọn thời gian vay",
-    "purposeRequired": "Vui lòng chọn mục đích vay"
+    "purposeRequired": "Vui lòng chọn mục đích vay",
+    "submissionFailed": "Thất bại. Vui lòng thử lại."
   },
   "submit": {
     "button": "Bắt đầu tìm kiếm khoản vay",

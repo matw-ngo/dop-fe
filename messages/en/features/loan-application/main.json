@@ -32,7 +32,8 @@
     "telcoNotSupported": "Only supported telcos: {telcos}",
     "amountRequired": "Please select loan amount",
     "periodRequired": "Please select loan period",
-    "purposeRequired": "Please select loan purpose"
+    "purposeRequired": "Please select loan purpose",
+    "submissionFailed": "Submission failed. Please try again."
   },
   "submit": {
     "button": "Start Loan Search",
