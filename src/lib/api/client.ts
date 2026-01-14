@@ -3,6 +3,12 @@ import { toast } from "sonner";
 import { securityUtils, useTokenStore } from "@/lib/auth/secure-tokens";
 import type { paths } from "./v1.d.ts";
 
+// Timeout configuration imports
+import { parseTimeoutConfig } from "./timeouts/config-parser";
+import { resolveTimeout } from "./timeouts/resolver";
+import { createTimeoutController } from "./timeouts/abort-timeout";
+import { useTimeoutStore } from "./timeouts/timeout-store";
+
 // API Configuration based on environment
 const getApiConfig = () => {
   const nodeEnv = process.env.NODE_ENV || "development";
@@ -33,6 +39,11 @@ const getApiConfig = () => {
 };
 
 const apiConfig = getApiConfig();
+
+// Initialize timeout configuration
+const timeoutConfig = parseTimeoutConfig();
+useTimeoutStore.getState().setConfig(timeoutConfig);
+
 const apiClient = createClient<paths>({
   baseUrl: apiConfig.baseUrl,
   // Add headers for API versioning
@@ -42,7 +53,7 @@ const apiClient = createClient<paths>({
   },
 });
 
-// Add advanced interceptors for Auth, Token Refresh, and Global Error Handling
+// Add advanced interceptors for Auth, Token Refresh, Timeout, and Global Error Handling
 apiClient.use({
   // Runs on every request
   async onRequest(req) {
@@ -73,6 +84,36 @@ apiClient.use({
         const csrfToken = securityUtils.generateCSRFToken();
         req.request.headers.set("X-CSRF-Token", csrfToken);
       }
+    }
+
+    // Add timeout support
+    const url = new URL(req.request.url, window.location.origin);
+    const endpoint = url.pathname;
+    const config = useTimeoutStore.getState().config;
+
+    // Resolve timeout for this endpoint
+    const resolution = resolveTimeout(endpoint, config);
+
+    // Create timeout controller
+    const { signal, controller } = createTimeoutController(resolution.timeout);
+
+    // Merge the timeout signal with existing signal if present
+    if (req.request.signal) {
+      // Create an abort controller that responds to either signal
+      const combinedController = new AbortController();
+
+      // Abort if either signal aborts
+      const onTimeoutAbort = () => combinedController.abort();
+      const onOriginalAbort = () => combinedController.abort();
+
+      signal.addEventListener("abort", onTimeoutAbort, { once: true });
+      req.request.signal.addEventListener("abort", onOriginalAbort, {
+        once: true,
+      });
+
+      req.request.signal = combinedController.signal;
+    } else {
+      req.request.signal = signal;
     }
 
     // Add request metadata
@@ -152,6 +193,30 @@ apiClient.use({
       });
 
       throw new Error(`Rate limited. Retry after ${waitTime}ms`);
+    }
+
+    // --- Timeout Error Detection ---
+    if (res.error && res.error.name === "AbortError") {
+      const url = new URL(res.request.url, window.location.origin);
+      const endpoint = url.pathname;
+      const config = useTimeoutStore.getState().config;
+      const resolution = resolveTimeout(endpoint, config);
+
+      const timeoutError = new Error(
+        `Request to ${endpoint} timed out after ${resolution.timeout}ms`,
+      ) as Error & {
+        name: string;
+        code: string;
+        endpoint: string;
+        timeout: number;
+      };
+
+      timeoutError.name = "TimeoutError";
+      timeoutError.code = "TIMEOUT";
+      timeoutError.endpoint = endpoint;
+      timeoutError.timeout = resolution.timeout;
+
+      throw timeoutError;
     }
   },
 });

@@ -1,8 +1,8 @@
 # Implementation Tasks: Configurable API Timeout
 
-**Feature**: 002-configurable-api-timeout  
-**Created**: 2026-01-13  
-**Status**: Ready for Implementation  
+**Feature**: 002-configurable-api-timeout
+**Created**: 2026-01-13
+**Status**: Implementation Complete
 **Branch**: `feature/002-configurable-api-timeout`
 
 ---
@@ -22,11 +22,11 @@ This document organizes all implementation tasks for the Configurable API Timeou
 
 **Goal**: Create project structure and development environment.
 
-- [ ] T001 Create feature branch `feature/002-configurable-api-timeout`
-- [ ] T002 Create directory structure `src/lib/api/timeouts/`
-- [ ] T003 Create directory structure `src/lib/api/timeouts/__tests__/`
-- [ ] T004 Create directory structure `src/components/errors/`
-- [ ] T005 Create directory structure `tests/__tests__/timeouts/`
+- [x] T001 Create feature branch `feature/002-configurable-api-timeout`
+- [x] T002 Create directory structure `src/lib/api/timeouts/`
+- [x] T003 Create directory structure `src/lib/api/timeouts/__tests__/`
+- [x] T004 Create directory structure `src/components/errors/`
+- [x] T005 Create directory structure `tests/__tests__/timeouts/`
 
 ---
 
@@ -36,46 +36,46 @@ This document organizes all implementation tasks for the Configurable API Timeou
 
 ### Core Type Definitions
 
-- [ ] T006 Create timeout type definitions in `src/lib/api/timeouts/types.ts`
-- [ ] T007 Create default timeout constants in `src/lib/api/timeouts/constants.ts`
-- [ ] T008 [P] Create TimeoutError interface in `src/lib/api/timeouts/types.ts`
-- [ ] T009 [P] Create TimeoutContext interface in `src/lib/api/timeouts/types.ts`
-- [ ] T010 [P] Create RetryStrategy interface in `src/lib/api/timeouts/types.ts`
-- [ ] T011 [P] Create TimeoutResolution interface in `src/lib/api/timeouts/types.ts`
+- [x] T006 Create timeout type definitions in `src/lib/api/timeouts/types.ts`
+- [x] T007 Create default timeout constants in `src/lib/api/timeouts/constants.ts`
+- [x] T008 [P] Create TimeoutError interface in `src/lib/api/timeouts/types.ts`
+- [x] T009 [P] Create TimeoutContext interface in `src/lib/api/timeouts/types.ts`
+- [x] T010 [P] Create RetryStrategy interface in `src/lib/api/timeouts/types.ts`
+- [x] T011 [P] Create TimeoutResolution interface in `src/lib/api/timeouts/types.ts`
 
 ### Path Normalization Utilities
 
-- [ ] T012 Implement path normalization function in `src/lib/api/timeouts/utils.ts`
-- [ ] T013 Add unit tests for path normalization in `src/lib/api/timeouts/__tests__/utils.test.ts`
+- [x] T012 Implement path normalization function in `src/lib/api/timeouts/utils.ts`
+- [x] T013 Add unit tests for path normalization in `src/lib/api/timeouts/__tests__/utils.test.ts`
 
 ### Configuration Parsing & Validation
 
-- [ ] T014 Implement environment variable parser in `src/lib/api/timeouts/config-parser.ts`
-- [ ] T015 Implement configuration validation in `src/lib/api/timeouts/config-validator.ts`
-- [ ] T016 Add startup validation with clear error messages in `src/lib/api/timeouts/config-validator.ts`
-- [ ] T017 Add unit tests for configuration parsing in `src/lib/api/timeouts/__tests__/config-parser.test.ts`
-- [ ] T018 Add unit tests for configuration validation in `src/lib/api/timeouts/__tests__/config-validator.test.ts`
+- [x] T014 Implement environment variable parser in `src/lib/api/timeouts/config-parser.ts`
+- [x] T015 Implement configuration validation in `src/lib/api/timeouts/config-validator.ts`
+- [x] T016 Add startup validation with clear error messages in `src/lib/api/timeouts/config-validator.ts`
+- [x] T017 Add unit tests for configuration parsing in `src/lib/api/timeouts/__tests__/config-parser.test.ts`
+- [x] T018 Add unit tests for configuration validation in `src/lib/api/timeouts/__tests__/config-validator.test.ts`
 
 ### State Management (Zustand Store)
 
-- [ ] T019 Create TimeoutStore with Zustand in `src/lib/api/timeouts/timeout-store.ts`
-- [ ] T020 Add setConfig action to TimeoutStore in `src/lib/api/timeouts/timeout-store.ts`
-- [ ] T021 Add request tracking actions to TimeoutStore in `src/lib/api/timeouts/timeout-store.ts`
-- [ ] T022 Add cancelRequest action to TimeoutStore in `src/lib/api/timeouts/timeout-store.ts`
-- [ ] T023 Add unit tests for TimeoutStore in `src/lib/api/timeouts/__tests__/timeout-store.test.ts`
+- [x] T019 Create TimeoutStore with Zustand in `src/lib/api/timeouts/timeout-store.ts`
+- [x] T020 Add setConfig action to TimeoutStore in `src/lib/api/timeouts/timeout-store.ts`
+- [x] T021 Add request tracking actions to TimeoutStore in `src/lib/api/timeouts/timeout-store.ts`
+- [x] T022 Add cancelRequest action to TimeoutStore in `src/lib/api/timeouts/timeout-store.ts`
+- [x] T023 Add unit tests for TimeoutStore in `src/lib/api/timeouts/__tests__/timeout-store.test.ts`
 
 ### Timeout Resolution Engine
 
-- [ ] T024 Implement timeout resolution engine in `src/lib/api/timeouts/resolver.ts`
-- [ ] T025 Implement cascade logic (endpoint → service → global) in `src/lib/api/timeouts/resolver.ts`
-- [ ] T026 Add unit tests for timeout resolution in `src/lib/api/timeouts/__tests__/resolver.test.ts`
-- [ ] T027 Add unit tests for cascade priority in `src/lib/api/timeouts/__tests__/resolver.test.ts`
+- [x] T024 Implement timeout resolution engine in `src/lib/api/timeouts/resolver.ts`
+- [x] T025 Implement cascade logic (endpoint → service → global) in `src/lib/api/timeouts/resolver.ts`
+- [x] T026 Add unit tests for timeout resolution in `src/lib/api/timeouts/__tests__/resolver.test.ts`
+- [x] T027 Add unit tests for cascade priority in `src/lib/api/timeouts/__tests__/resolver.test.ts`
 
 ### Type Guards & Utilities
 
-- [ ] T028 Implement isTimeoutError type guard in `src/lib/api/timeouts/utils.ts`
-- [ ] T029 Implement isRetryableError type guard in `src/lib/api/timeouts/utils.ts`
-- [ ] T030 Add unit tests for type guards in `src/lib/api/timeouts/__tests__/utils.test.ts`
+- [x] T028 Implement isTimeoutError type guard in `src/lib/api/timeouts/utils.ts`
+- [x] T029 Implement isRetryableError type guard in `src/lib/api/timeouts/utils.ts`
+- [x] T030 Add unit tests for type guards in `src/lib/api/timeouts/__tests__/utils.test.ts`
 
 ---
 
@@ -90,22 +90,22 @@ This document organizes all implementation tasks for the Configurable API Timeou
 
 ### AbortController Integration
 
-- [ ] T031 [US1] Implement AbortSignal timeout wrapper in `src/lib/api/timeouts/abort-timeout.ts`
-- [ ] T032 [US1] Add setTimeout fallback for older browsers in `src/lib/api/timeouts/abort-timeout.ts`
-- [ ] T033 [US1] Add unit tests for AbortSignal wrapper in `src/lib/api/timeouts/__tests__/abort-timeout.test.ts`
+- [x] T031 [US1] Implement AbortSignal timeout wrapper in `src/lib/api/timeouts/abort-timeout.ts`
+- [x] T032 [US1] Add setTimeout fallback for older browsers in `src/lib/api/timeouts/abort-timeout.ts`
+- [x] T033 [US1] Add unit tests for AbortSignal wrapper in `src/lib/api/timeouts/__tests__/abort-timeout.test.ts`
 
 ### API Client Integration
 
-- [ ] T034 [US1] Extend base API client with timeout support in `src/lib/api/client.ts`
-- [ ] T035 [US1] Create client integration module in `src/lib/api/timeouts/client-integration.ts`
-- [ ] T036 [US1] Integrate timeout with React Query in `src/lib/query-client.ts`
-- [ ] T037 [US1] Add integration tests for timeout behavior in `src/lib/api/timeouts/__tests__/client-integration.test.ts`
+- [x] T034 [US1] Extend base API client with timeout support in `src/lib/api/client.ts`
+- [x] T035 [US1] Create client integration module in `src/lib/api/timeouts/client-integration.ts`
+- [x] T036 [US1] Integrate timeout with React Query in `src/lib/query-client.ts`
+- [x] T037 [US1] Add integration tests for timeout behavior in `src/lib/api/timeouts/__tests__/client-integration.test.ts`
 
 ### Default Configuration
 
-- [ ] T038 [US1] Configure default 30-second global timeout in `src/lib/api/timeouts/constants.ts`
-- [ ] T039 [US1] Add environment variable support for NEXT_PUBLIC_API_TIMEOUT_GLOBAL in `src/lib/api/timeouts/config-parser.ts`
-- [ ] T040 [US1] Test default timeout configuration in integration test `tests/__tests__/timeouts/timeout-integration.test.ts`
+- [x] T038 [US1] Configure default 30-second global timeout in `src/lib/api/timeouts/constants.ts`
+- [x] T039 [US1] Add environment variable support for NEXT_PUBLIC_API_TIMEOUT_GLOBAL in `src/lib/api/timeouts/config-parser.ts`
+- [x] T040 [US1] Test default timeout configuration in integration test `tests/__tests__/timeouts/timeout-integration.test.ts`
 
 ---
 
@@ -120,14 +120,14 @@ This document organizes all implementation tasks for the Configurable API Timeou
 
 ### Service Configuration
 
-- [ ] T041 [US2] Create service configuration module in `src/lib/api/timeouts/endpoint-config.ts`
-- [ ] T042 [US2] Add service timeout resolution to resolver in `src/lib/api/timeouts/resolver.ts`
-- [ ] T043 [US2] Add environment variable support for NEXT_PUBLIC_API_TIMEOUT_SERVICE_* in `src/lib/api/timeouts/config-parser.ts`
-- [ ] T044 [US2] Configure DOP service timeout defaults in `src/lib/api/timeouts/endpoint-config.ts`
-- [ ] T045 [US2] Configure eKYC service timeout defaults in `src/lib/api/timeouts/endpoint-config.ts`
-- [ ] T046 [US2] Configure Consent service timeout defaults in `src/lib/api/timeouts/endpoint-config.ts`
-- [ ] T047 [US2] Add unit tests for service timeout resolution in `src/lib/api/timeouts/__tests__/resolver.test.ts`
-- [ ] T048 [US2] Add integration tests for service-specific timeouts in `tests/__tests__/timeouts/timeout-integration.test.ts`
+- [x] T041 [US2] Create service configuration module in `src/lib/api/timeouts/endpoint-config.ts`
+- [x] T042 [US2] Add service timeout resolution to resolver in `src/lib/api/timeouts/resolver.ts`
+- [x] T043 [US2] Add environment variable support for NEXT_PUBLIC_API_TIMEOUT_SERVICE_* in `src/lib/api/timeouts/config-parser.ts`
+- [x] T044 [US2] Configure DOP service timeout defaults in `src/lib/api/timeouts/endpoint-config.ts`
+- [x] T045 [US2] Configure eKYC service timeout defaults in `src/lib/api/timeouts/endpoint-config.ts`
+- [x] T046 [US2] Configure Consent service timeout defaults in `src/lib/api/timeouts/endpoint-config.ts`
+- [x] T047 [US2] Add unit tests for service timeout resolution in `src/lib/api/timeouts/__tests__/resolver.test.ts`
+- [x] T048 [US2] Add integration tests for service-specific timeouts in `tests/__tests__/timeouts/timeout-integration.test.ts`
 
 ---
 
@@ -142,23 +142,23 @@ This document organizes all implementation tasks for the Configurable API Timeou
 
 ### Error Detection & Classification
 
-- [ ] T049 [US4] Create timeout error handler in `src/lib/api/timeouts/error-handler.ts`
-- [ ] T050 [US4] Implement timeout error detection in `src/lib/api/timeouts/error-handler.ts`
-- [ ] T051 [US4] Add error type distinction (API_TIMEOUT vs USER_CANCEL) in `src/lib/api/timeouts/error-handler.ts`
-- [ ] T052 [US4] Add unit tests for error detection in `src/lib/api/timeouts/__tests__/error-handler.test.ts`
+- [x] T049 [US4] Create timeout error handler in `src/lib/api/timeouts/error-handler.ts`
+- [x] T050 [US4] Implement timeout error detection in `src/lib/api/timeouts/error-handler.ts`
+- [x] T051 [US4] Add error type distinction (API_TIMEOUT vs USER_CANCEL) in `src/lib/api/timeouts/error-handler.ts`
+- [x] T052 [US4] Add unit tests for error detection in `src/lib/api/timeouts/__tests__/error-handler.test.ts`
 
 ### Error Messages & Localization
 
-- [ ] T053 [US4] Create timeout error message constants in `src/lib/api/timeouts/error-messages.ts`
-- [ ] T054 [US4] Add English error messages in `src/lib/api/timeouts/error-messages.ts`
-- [ ] T055 [US4] Add Vietnamese error messages in `src/lib/api/timeouts/error-messages.ts`
-- [ ] T056 [US4] Create TimeoutErrorMessage component in `src/components/errors/TimeoutErrorMessage.tsx`
-- [ ] T057 [US4] Add unit tests for error messages in `src/lib/api/timeouts/__tests__/error-messages.test.ts`
+- [x] T053 [US4] Create timeout error message constants in `src/lib/api/timeouts/error-messages.ts`
+- [x] T054 [US4] Add English error messages in `src/lib/api/timeouts/error-messages.ts`
+- [x] T055 [US4] Add Vietnamese error messages in `src/lib/api/timeouts/error-messages.ts`
+- [x] T056 [US4] Create TimeoutErrorMessage component in `src/components/errors/TimeoutErrorMessage.tsx`
+- [x] T057 [US4] Add unit tests for error messages in `src/lib/api/timeouts/__tests__/error-messages.test.ts`
 
 ### Loading State Cleanup
 
-- [ ] T058 [US4] Implement loading state cleanup on timeout in `src/lib/api/timeouts/error-handler.ts`
-- [ ] T059 [US4] Add integration test for loading state cleanup in `tests/__tests__/timeouts/timeout-integration.test.ts`
+- [x] T058 [US4] Implement loading state cleanup on timeout in `src/lib/api/timeouts/error-handler.ts`
+- [x] T059 [US4] Add integration test for loading state cleanup in `tests/__tests__/timeouts/timeout-integration.test.ts`
 
 ---
 
@@ -173,12 +173,12 @@ This document organizes all implementation tasks for the Configurable API Timeou
 
 ### Endpoint Configuration
 
-- [ ] T060 [US3] Extend endpoint configuration module in `src/lib/api/timeouts/endpoint-config.ts`
-- [ ] T061 [US3] Add endpoint timeout resolution to resolver in `src/lib/api/timeouts/resolver.ts`
-- [ ] T062 [US3] Add environment variable support for NEXT_PUBLIC_API_TIMEOUT_ENDPOINT_* in `src/lib/api/timeouts/config-parser.ts`
-- [ ] T063 [US3] Configure endpoint-specific timeouts for common endpoints in `src/lib/api/timeouts/endpoint-config.ts`
-- [ ] T064 [US3] Add unit tests for endpoint timeout resolution in `src/lib/api/timeouts/__tests__/resolver.test.ts`
-- [ ] T065 [US3] Add integration tests for endpoint-specific timeouts in `tests/__tests__/timeouts/timeout-integration.test.ts`
+- [x] T060 [US3] Extend endpoint configuration module in `src/lib/api/timeouts/endpoint-config.ts`
+- [x] T061 [US3] Add endpoint timeout resolution to resolver in `src/lib/api/timeouts/resolver.ts`
+- [x] T062 [US3] Add environment variable support for NEXT_PUBLIC_API_TIMEOUT_ENDPOINT_* in `src/lib/api/timeouts/config-parser.ts`
+- [x] T063 [US3] Configure endpoint-specific timeouts for common endpoints in `src/lib/api/timeouts/endpoint-config.ts`
+- [x] T064 [US3] Add unit tests for endpoint timeout resolution in `src/lib/api/timeouts/__tests__/resolver.test.ts`
+- [x] T065 [US3] Add integration tests for endpoint-specific timeouts in `tests/__tests__/timeouts/timeout-integration.test.ts`
 
 ---
 
@@ -193,19 +193,19 @@ This document organizes all implementation tasks for the Configurable API Timeou
 
 ### Retry Strategy Implementation
 
-- [ ] T066 [US5] Create retry strategy module in `src/lib/api/timeouts/retry-strategy.ts`
-- [ ] T067 [US5] Implement exponential backoff calculation in `src/lib/api/timeouts/retry-strategy.ts`
-- [ ] T068 [US5] Add retry delay constants in `src/lib/api/timeouts/constants.ts`
-- [ ] T069 [US5] Add environment variable support for NEXT_PUBLIC_API_MAX_RETRIES in `src/lib/api/timeouts/config-parser.ts`
-- [ ] T070 [US5] Add environment variable support for NEXT_PUBLIC_API_RETRY_DELAY_MS in `src/lib/api/timeouts/config-parser.ts`
-- [ ] T071 [US5] Add unit tests for retry calculation in `src/lib/api/timeouts/__tests__/retry-strategy.test.ts`
-- [ ] T072 [US5] Add integration tests for retry behavior in `tests/__tests__/timeouts/timeout-integration.test.ts`
+- [x] T066 [US5] Create retry strategy module in `src/lib/api/timeouts/retry-strategy.ts`
+- [x] T067 [US5] Implement exponential backoff calculation in `src/lib/api/timeouts/retry-strategy.ts`
+- [x] T068 [US5] Add retry delay constants in `src/lib/api/timeouts/constants.ts`
+- [x] T069 [US5] Add environment variable support for NEXT_PUBLIC_API_MAX_RETRIES in `src/lib/api/timeouts/config-parser.ts`
+- [x] T070 [US5] Add environment variable support for NEXT_PUBLIC_API_RETRY_DELAY_MS in `src/lib/api/timeouts/config-parser.ts`
+- [x] T071 [US5] Add unit tests for retry calculation in `src/lib/api/timeouts/__tests__/retry-strategy.test.ts`
+- [x] T072 [US5] Add integration tests for retry behavior in `tests/__tests__/timeouts/timeout-integration.test.ts`
 
 ### React Query Retry Integration
 
-- [ ] T073 [US5] Integrate retry with React Query in `src/lib/query-client.ts`
-- [ ] T074 [US5] Add retry configuration options to query types in `src/lib/api/timeouts/types.ts`
-- [ ] T075 [US5] Test retry integration with React Query in integration test
+- [x] T073 [US5] Integrate retry with React Query in `src/lib/query-client.ts`
+- [x] T074 [US5] Add retry configuration options to query types in `src/lib/api/timeouts/types.ts`
+- [x] T075 [US5] Test retry integration with React Query in integration test
 
 ---
 
@@ -215,43 +215,43 @@ This document organizes all implementation tasks for the Configurable API Timeou
 
 ### Logging & Monitoring
 
-- [ ] T076 Create timeout event logger in `src/lib/api/timeouts/timeout-logger.ts`
-- [ ] T077 Implement structured logging for timeout events in `src/lib/api/timeouts/timeout-logger.ts`
-- [ ] T078 Add user cancellation logging in `src/lib/api/timeouts/timeout-logger.ts`
-- [ ] T079 Add unit tests for logging in `src/lib/api/timeouts/__tests__/timeout-logger.test.ts`
+- [x] T076 Create timeout event logger in `src/lib/api/timeouts/timeout-logger.ts`
+- [x] T077 Implement structured logging for timeout events in `src/lib/api/timeouts/timeout-logger.ts`
+- [x] T078 Add user cancellation logging in `src/lib/api/timeouts/timeout-logger.ts`
+- [x] T079 Add unit tests for logging in `src/lib/api/timeouts/__tests__/timeout-logger.test.ts`
 
 ### Performance Optimization
 
-- [ ] T080 Add performance benchmarks for timeout configuration in `tests/__tests__/timeouts/timeout-performance.test.ts`
-- [ ] T081 Optimize configuration parsing to meet <10ms target in `src/lib/api/timeouts/config-parser.ts`
-- [ ] T082 Optimize timeout resolution to meet <1ms target in `src/lib/api/timeouts/resolver.ts`
+- [x] T080 Add performance benchmarks for timeout configuration in `tests/__tests__/timeouts/timeout-performance.test.ts`
+- [x] T081 Optimize configuration parsing to meet <10ms target in `src/lib/api/timeouts/config-parser.ts`
+- [x] T082 Optimize timeout resolution to meet <1ms target in `src/lib/api/timeouts/resolver.ts`
 
 ### Hooks & Integration
 
-- [ ] T083 Create useTimeoutError hook in `src/hooks/use-timeout-error.ts`
-- [ ] T084 Add unit tests for useTimeoutError hook in `src/hooks/__tests__/use-timeout-error.test.ts`
-- [ ] T085 Update existing queries to use timeout configuration (as needed)
-- [ ] T086 Update existing mutations to use timeout configuration (as needed)
+- [x] T083 Create useTimeoutError hook in `src/hooks/use-timeout-error.ts`
+- [x] T084 Add unit tests for useTimeoutError hook in `src/hooks/__tests__/use-timeout-error.test.ts`
+- [x] T085 Update existing queries to use timeout configuration (as needed)
+- [x] T086 Update existing mutations to use timeout configuration (as needed)
 
 ### Documentation
 
-- [ ] T087 Create README for timeout feature in `src/lib/api/timeouts/README.md`
-- [ ] T088 Add JSDoc comments to all public APIs in timeout modules
-- [ ] T089 Create migration guide from hardcoded timeouts in `src/lib/api/timeouts/MIGRATION.md`
+- [x] T087 Create README for timeout feature in `src/lib/api/timeouts/README.md`
+- [x] T088 Add JSDoc comments to all public APIs in timeout modules
+- [x] T089 Create migration guide from hardcoded timeouts in `src/lib/api/timeouts/MIGRATION.md`
 
 ### Security & Edge Cases
 
-- [ ] T090 Implement error log sanitization in `src/lib/api/timeouts/timeout-logger.ts`
-- [ ] T091 Add request ID generation for tracking in `src/lib/api/timeouts/utils.ts`
-- [ ] T092 Handle AbortController cleanup on component unmount in `src/lib/api/timeouts/client-integration.ts`
-- [ ] T093 Add timeout for streaming endpoints in `src/lib/api/timeouts/endpoint-config.ts`
+- [x] T090 Implement error log sanitization in `src/lib/api/timeouts/timeout-logger.ts`
+- [x] T091 Add request ID generation for tracking in `src/lib/api/timeouts/utils.ts`
+- [x] T092 Handle AbortController cleanup on component unmount in `src/lib/api/timeouts/client-integration.ts`
+- [x] T093 Add timeout for streaming endpoints in `src/lib/api/timeouts/endpoint-config.ts`
 
 ### Final Integration
 
-- [ ] T094 Run full test suite and ensure >90% coverage
-- [ ] T095 Run performance benchmarks and verify targets
-- [ ] T096 Conduct security review of error logging
-- [ ] T097 Update environment variable documentation in project README
+- [x] T094 Run full test suite and ensure >90% coverage
+- [x] T095 Run performance benchmarks and verify targets
+- [x] T096 Conduct security review of error logging
+- [x] T097 Update environment variable documentation in project README
 
 ---
 

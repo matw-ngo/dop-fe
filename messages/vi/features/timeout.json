@@ -1,0 +1,25 @@
+{
+  "title": "Yêu cầu hết thời gian",
+  "titleCancelled": "Yêu cầu đã hủy",
+  "message": "Yêu cầu mất quá nhiều thời gian. Vui lòng thử lại.",
+  "messageCancelled": "Yêu cầu đã bị hủy.",
+  "retry": "Thử lại",
+  "cancel": "Hủy",
+  "retrying": "Đang thử lại... ({current}/{max})",
+  "finalFailure": "Yêu cầu thất bại sau nhiều lần thử. Vui lòng thử lại sau.",
+  "endpointTimeout": "Yêu cầu tới {endpoint} hết thời gian sau {duration}",
+  "serviceTimeout": "Dịch vụ {service} mất nhiều thời gian hơn mong đợi",
+  "globalTimeout": "Yêu cầu hết thời gian",
+  "slowConnection": "Kết nối internet của bạn có vẻ chậm",
+  "serverSlow": "Máy chủ đang mất nhiều thời gian hơn bình thường để phản hồi",
+  "tryAgain": "Thử lại",
+  "close": "Đóng",
+  "contactSupport": "Nếu vấn đề vẫn tiếp diễn, vui lòng liên hệ hỗ trợ.",
+  "details": {
+    "timeout": "Thời gian chờ: {timeout}ms",
+    "elapsed": "Thời gian đã trôi qua: {elapsed}ms",
+    "endpoint": "Điểm cuối: {endpoint}",
+    "method": "Phương thức: {method}",
+    "retries": "Số lần thử lại: {count}"
+  }
+}

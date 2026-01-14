@@ -1,0 +1,25 @@
+{
+  "title": "Request Timeout",
+  "titleCancelled": "Request Cancelled",
+  "message": "The request took too long to complete. Please try again.",
+  "messageCancelled": "Request was cancelled.",
+  "retry": "Retry",
+  "cancel": "Cancel",
+  "retrying": "Retrying... ({current}/{max})",
+  "finalFailure": "Request failed after multiple attempts. Please try again later.",
+  "endpointTimeout": "Request to {endpoint} timed out after {duration}",
+  "serviceTimeout": "{service} service is taking longer than expected",
+  "globalTimeout": "Request timed out",
+  "slowConnection": "Your internet connection seems slow",
+  "serverSlow": "Server is taking longer than usual to respond",
+  "tryAgain": "Try Again",
+  "close": "Close",
+  "contactSupport": "If the problem persists, please contact support.",
+  "details": {
+    "timeout": "Timeout Duration: {timeout}ms",
+    "elapsed": "Time Elapsed: {elapsed}ms",
+    "endpoint": "Endpoint: {endpoint}",
+    "method": "Method: {method}",
+    "retries": "Retry Attempts: {count}"
+  }
+}
