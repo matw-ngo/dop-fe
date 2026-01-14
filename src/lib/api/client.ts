@@ -98,6 +98,8 @@ apiClient.use({
     const { signal, controller } = createTimeoutController(resolution.timeout);
 
     // Merge the timeout signal with existing signal if present
+    let finalSignal = signal;
+
     if (req.request.signal) {
       // Create an abort controller that responds to either signal
       const combinedController = new AbortController();
@@ -111,10 +113,13 @@ apiClient.use({
         once: true,
       });
 
-      req.request.signal = combinedController.signal;
-    } else {
-      req.request.signal = signal;
+      finalSignal = combinedController.signal;
     }
+
+    // Create a new Request with the signal (openapi-fetch middleware returns Request)
+    const modifiedRequest = new Request(req.request, { signal: finalSignal });
+
+    return modifiedRequest;
 
     // Add request metadata
     // req.request.headers.set("X-Request-ID", crypto.randomUUID());
@@ -196,7 +201,8 @@ apiClient.use({
     }
 
     // --- Timeout Error Detection ---
-    if (res.error && res.error.name === "AbortError") {
+    // Check if response was aborted due to timeout
+    if (res.request.signal?.aborted) {
       const url = new URL(res.request.url, window.location.origin);
       const endpoint = url.pathname;
       const config = useTimeoutStore.getState().config;
