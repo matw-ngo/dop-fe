@@ -275,6 +275,11 @@ export const withRetry = async <T>(
         throw lastError;
       }
 
+      // Show retry notification to user
+      toast.info(`Retrying... (${i + 1}/${maxRetries})`, {
+        description: `Attempting again in ${Math.ceil(delay / 1000)}s`,
+      });
+
       // Exponential backoff with jitter
       const backoffDelay = delay * 2 ** i;
       const jitter = Math.random() * 200; // Add 0-200ms jitter

@@ -32,7 +32,7 @@ export const DEFAULT_RETRY = {
   /** Maximum number of retry attempts */
   MAX_RETRIES: 3,
 
-  /** Initial delay before first retry: 1 second */
+  /** Initial delay before first retry: 3 seconds */
   INITIAL_DELAY: 3000,
 
   /** Exponential backoff multiplier */

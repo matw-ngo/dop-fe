@@ -52,6 +52,15 @@ npm run dev
 - **Testing**: Vitest 3.2.4 + Playwright 1.55.1
 - **Build Tools**: Biome 2.2.0 (linting/formatting) + Husky 9.1.7
 
+## API Configuration
+
+### Timeout & Retry Settings
+- **Default Timeout**: 30 giây cho các API request thông thường
+- **Retry Logic**: Tự động retry tối đa 3 lần với exponential backoff
+- **Retry Delays**: 3000ms → 6000ms → 10000ms (được giới hạn bởi max delay 10 giây)
+- **Retryable Errors**: Chỉ retry các lỗi timeout tự động (API_TIMEOUT), không retry lỗi do user cancel
+- **Special Endpoints**: File upload và streaming endpoints có timeout dài hơn (2-10 phút)
+
 ## Project Structure
 ```
 src/
