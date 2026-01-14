@@ -71,15 +71,9 @@ async function createLead(
 
     return data;
   } catch (error) {
-    console.error(
-      "Create lead API failed, using mock data for testing:",
-      error,
-    );
-    // Mock response to unblock testing
-    return {
-      id: "mock-lead-id-" + Date.now(),
-      token: "mock-token-" + Date.now(),
-    };
+    // Log the error and rethrow to ensure real API errors are not silently swallowed
+    console.error("Create lead API failed:", error);
+    throw error;
   }
 }
 

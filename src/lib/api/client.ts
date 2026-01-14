@@ -12,9 +12,6 @@ import { useTimeoutStore } from "./timeouts/timeout-store";
 // API Configuration based on environment
 const getApiConfig = () => {
   const nodeEnv = process.env.NODE_ENV || "development";
-
-  // Note: Removed mock API dependencies for FE-only deployment
-
   const environment = process.env.NEXT_PUBLIC_API_ENVIRONMENT || nodeEnv;
 
   switch (environment) {
@@ -95,29 +92,49 @@ apiClient.use({
     const resolution = resolveTimeout(endpoint, config);
 
     // Create timeout controller
-    const { signal, controller } = createTimeoutController(resolution.timeout);
+    const { signal: timeoutSignal } = createTimeoutController(
+      resolution.timeout,
+    );
 
     // Merge the timeout signal with existing signal if present
-    let finalSignal = signal;
+    let finalSignal = timeoutSignal;
 
     if (req.request.signal) {
-      // Create an abort controller that responds to either signal
+      // Create a combined abort controller
       const combinedController = new AbortController();
 
-      // Abort if either signal aborts
-      const onTimeoutAbort = () => combinedController.abort();
-      const onOriginalAbort = () => combinedController.abort();
+      // Handler for timeout abort
+      const handleTimeoutAbort = () => {
+        combinedController.abort();
+        // Clean up the other listener
+        if (req.request.signal) {
+          req.request.signal.removeEventListener("abort", handleOriginalAbort);
+        }
+      };
 
-      signal.addEventListener("abort", onTimeoutAbort, { once: true });
-      req.request.signal.addEventListener("abort", onOriginalAbort, {
+      // Handler for original signal abort
+      const handleOriginalAbort = () => {
+        combinedController.abort();
+        // Clean up the other listener
+        timeoutSignal.removeEventListener("abort", handleTimeoutAbort);
+      };
+
+      // Listen to both signals
+      timeoutSignal.addEventListener("abort", handleTimeoutAbort, {
+        once: true,
+      });
+      req.request.signal.addEventListener("abort", handleOriginalAbort, {
         once: true,
       });
 
       finalSignal = combinedController.signal;
     }
 
-    // Create a new Request with the signal (openapi-fetch middleware returns Request)
-    const modifiedRequest = new Request(req.request, { signal: finalSignal });
+    // Create a new Request with the combined signal
+    // This is necessary because Request.signal is read-only
+    const modifiedRequest = new Request(req.request, {
+      signal: finalSignal,
+    });
 
     return modifiedRequest;
 
@@ -201,8 +218,8 @@ apiClient.use({
     }
 
     // --- Timeout Error Detection ---
-    // Check if response was aborted due to timeout
-    if (res.request.signal?.aborted) {
+    // Check if the request was aborted (which includes timeout aborts)
+    if (res.request.signal.aborted) {
       const url = new URL(res.request.url, window.location.origin);
       const endpoint = url.pathname;
       const config = useTimeoutStore.getState().config;
@@ -222,12 +239,17 @@ apiClient.use({
       timeoutError.endpoint = endpoint;
       timeoutError.timeout = resolution.timeout;
 
+      // Show user-friendly error toast
+      toast.error("Request timeout", {
+        description: `The request took too long to complete. Please try again.`,
+      });
+
       throw timeoutError;
     }
   },
 });
 
-// Retry utility for API calls
+// Retry utility for API calls with exponential backoff
 export const withRetry = async <T>(
   apiCall: () => Promise<T>,
   maxRetries = 3,
@@ -241,13 +263,24 @@ export const withRetry = async <T>(
     } catch (error) {
       lastError = error instanceof Error ? error : new Error(String(error));
 
+      // Don't retry on certain errors
+      if (
+        lastError.name === "TimeoutError" ||
+        lastError.message.includes("Authentication failed")
+      ) {
+        throw lastError;
+      }
+
       if (i === maxRetries) {
         throw lastError;
       }
 
-      // Exponential backoff
+      // Exponential backoff with jitter
       const backoffDelay = delay * 2 ** i;
-      await new Promise((resolve) => setTimeout(resolve, backoffDelay));
+      const jitter = Math.random() * 200; // Add 0-200ms jitter
+      await new Promise((resolve) =>
+        setTimeout(resolve, backoffDelay + jitter),
+      );
     }
   }
 
