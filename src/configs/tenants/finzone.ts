@@ -3,6 +3,7 @@ import { TenantConfig } from "./types";
 
 export const finzoneConfig: TenantConfig = {
   id: "finzone",
+  uuid: "00000000-0000-0000-0000-000000000001",
   name: "Fin Zone",
   theme: finzoneTheme,
   i18nNamespace: "tenants.finzone",

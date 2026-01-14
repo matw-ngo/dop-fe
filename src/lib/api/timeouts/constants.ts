@@ -16,7 +16,7 @@ export const DEFAULT_TIMEOUTS = {
   GLOBAL: 30000,
 
   /** Minimum allowed timeout: 1 second */
-  MINIMUM: 1000,
+  MINIMUM: 3000,
 
   /** Maximum allowed timeout: 10 minutes */
   MAXIMUM: 600000,
@@ -33,7 +33,7 @@ export const DEFAULT_RETRY = {
   MAX_RETRIES: 3,
 
   /** Initial delay before first retry: 1 second */
-  INITIAL_DELAY: 1000,
+  INITIAL_DELAY: 3000,
 
   /** Exponential backoff multiplier */
   BACKOFF_MULTIPLIER: 2,

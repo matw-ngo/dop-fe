@@ -7,7 +7,7 @@ type CreateLeadResponseBody = components["schemas"]["CreateLeadResponseBody"];
 
 interface CreateLeadParams {
   flowId: string;
-  domain: string;
+  tenant: string; // UUID of the tenant
   deviceInfo: Record<string, never>;
   trackingParams: Record<string, never>;
   info: components["schemas"]["SubmitLeadInfoRequestBody"];
@@ -33,7 +33,7 @@ interface CreateLeadParams {
  * // Call when ready to create lead
  * createLead({
  *   flowId: "...",
- *   domain: "lending",
+ *   tenant: "00000000-0000-0000-0000-000000000001",
  *   deviceInfo: {},
  *   trackingParams: {},
  *   info: { phone_number: "...", ... }
@@ -50,7 +50,7 @@ async function createLead(
 ): Promise<CreateLeadResponseBody> {
   const requestBody: CreateLeadRequestBody = {
     flow_id: params.flowId,
-    domain: params.domain,
+    tenant: params.tenant,
     deviece_info: params.deviceInfo, // Note: typo in API schema "deviece_info"
     tracking_params: params.trackingParams,
     info: params.info,

@@ -17,6 +17,7 @@ import { ALLOWED_TELCOS, phoneValidation } from "@/lib/utils/phone-validation";
 import { useCreateLead } from "@/hooks/use-create-lead";
 import { useRouter } from "next/navigation";
 import { mapFormDataToLeadInfo } from "@/mappers/leadMapper";
+import { useTenant } from "@/hooks/useTenant";
 import { AmountField } from "./components/AmountField";
 import { PeriodField } from "./components/PeriodField";
 import { PurposeField } from "./components/PurposeField";
@@ -56,6 +57,7 @@ const ApplyLoanForm: React.FC<ApplyLoanFormProps> = ({
   const t = useTranslations("features.loan-application");
   const loanPurposes = useLoanPurposes();
   const { getTelcoList } = usePhoneValidationMessages();
+  const tenant = useTenant();
 
   const [showPhoneModal, setShowPhoneModal] = React.useState(false);
   const [showOTPModal, setShowOTPModal] = React.useState(false);
@@ -158,7 +160,7 @@ const ApplyLoanForm: React.FC<ApplyLoanFormProps> = ({
       createLead(
         {
           flowId,
-          domain: "lending",
+          tenant: tenant.uuid,
           deviceInfo: {},
           trackingParams: {},
           info: apiPayload,

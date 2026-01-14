@@ -12,6 +12,7 @@ export interface SocialMediaLinks {
 
 export interface TenantConfig {
   id: string;
+  uuid: string; // UUID for API requests (e.g., V1 API tenant field)
   theme: FormTheme;
   name: string; // System name / identifier
 
