@@ -7,7 +7,7 @@ import { useTranslations } from "next-intl";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, Menu, X } from "lucide-react";
 import { Logo } from "@/components/icons/home";
-import { useTenant } from "@/hooks/useTenant";
+import { useTenant } from "@/hooks/use-tenant";
 import { cn } from "@/lib/utils";
 
 /**

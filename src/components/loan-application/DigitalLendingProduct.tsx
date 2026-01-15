@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useTranslations } from "next-intl";
-import { useTenant } from "@/hooks/useTenant";
+import { useTenant } from "@/hooks/use-tenant";
 import { ApplyLoanForm } from "./ApplyLoanForm";
 import { PercentageSvg, BankSvg, FlashSvg, SearchMoneySvg } from "./icons";
 import { Card, CardContent } from "@/components/ui/card";

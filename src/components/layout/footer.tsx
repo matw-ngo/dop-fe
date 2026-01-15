@@ -9,7 +9,7 @@ import {
   TiktokIcon,
   YoutubeIcon,
 } from "@/components/icons/home";
-import { useTenant } from "@/hooks/useTenant";
+import { useTenant } from "@/hooks/use-tenant";
 
 /**
  * Footer Component

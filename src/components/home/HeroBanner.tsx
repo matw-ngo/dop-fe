@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useTenant } from "@/hooks/useTenant";
+import { useTenant } from "@/hooks/use-tenant";
 
 export function HeroBanner() {
   const tenant = useTenant();

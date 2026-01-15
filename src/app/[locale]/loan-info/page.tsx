@@ -104,7 +104,8 @@ export default function LoanInfoPage() {
     createLead(
       {
         flowId,
-        domain: "lending",
+        // FIXME: Hard-coded tenantId - should be replaced with dynamic tenant lookup
+        tenant: "11111111-1111-1111-1111-111111111111",
         deviceInfo: {},
         trackingParams: {},
         info: apiPayload,

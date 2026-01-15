@@ -17,7 +17,8 @@ import { ALLOWED_TELCOS, phoneValidation } from "@/lib/utils/phone-validation";
 import { useCreateLead } from "@/hooks/use-create-lead";
 import { useRouter } from "next/navigation";
 import { mapFormDataToLeadInfo } from "@/mappers/leadMapper";
-import { useTenant } from "@/hooks/useTenant";
+import { useTenant } from "@/hooks/use-tenant";
+import { useTenantFlow } from "@/hooks/use-tenant-flow";
 import { AmountField } from "./components/AmountField";
 import { PeriodField } from "./components/PeriodField";
 import { PurposeField } from "./components/PurposeField";
@@ -58,6 +59,9 @@ const ApplyLoanForm: React.FC<ApplyLoanFormProps> = ({
   const loanPurposes = useLoanPurposes();
   const { getTelcoList } = usePhoneValidationMessages();
   const tenant = useTenant();
+  const { data: flowConfig, isLoading: isLoadingFlow } = useTenantFlow(
+    tenant.uuid,
+  );
 
   const [showPhoneModal, setShowPhoneModal] = React.useState(false);
   const [showOTPModal, setShowOTPModal] = React.useState(false);
@@ -142,46 +146,62 @@ const ApplyLoanForm: React.FC<ApplyLoanFormProps> = ({
   };
 
   const onSubmitFinal = () => {
-    if (validatePhoneNum()) {
-      console.log("Form submitted:", { userData, formId });
-
-      // If we already have lead props, just show OTP (legacy behavior support)
-      if (leadId && leadToken) {
-        setShowPhoneModal(false);
-        setShowOTPModal(true);
-        return;
-      }
-
-      // Create Lead
-      const flowId = "00000000-0000-0000-0000-000000000000"; // Default flow ID
-      const stepId = "00000000-0000-0000-0000-000000000000"; // Default step ID
-      const apiPayload = mapFormDataToLeadInfo(userData, flowId, stepId);
-
-      createLead(
-        {
-          flowId,
-          tenant: tenant.uuid,
-          deviceInfo: {},
-          trackingParams: {},
-          info: apiPayload,
-        },
-        {
-          onSuccess: (data) => {
-            console.log("Lead created:", data);
-            setCreatedLeadId(data.id);
-            setCreatedLeadToken(data.token);
-
-            // Proceed to OTP
-            setShowPhoneModal(false);
-            setShowOTPModal(true);
-          },
-          onError: (error) => {
-            console.error("Lead creation failed:", error);
-            toast.error(t("errors.submissionFailed"));
-          },
-        },
-      );
+    if (!validatePhoneNum()) {
+      return;
     }
+
+    // Ensure flow configuration is loaded
+    if (!flowConfig) {
+      console.error("Flow configuration not available");
+      toast.error(t("errors.submissionFailed"));
+      return;
+    }
+
+    console.log("Form submitted:", { userData, formId });
+
+    // If we already have lead props, just show OTP (legacy behavior support)
+    if (leadId && leadToken) {
+      setShowPhoneModal(false);
+      setShowOTPModal(true);
+      return;
+    }
+
+    // Get flow and step IDs from dynamic flow configuration
+    const flowId = flowConfig.id;
+    const stepId = flowConfig.steps[0]?.id;
+
+    if (!stepId) {
+      console.error("No step ID available in flow configuration");
+      toast.error(t("errors.submissionFailed"));
+      return;
+    }
+
+    const apiPayload = mapFormDataToLeadInfo(userData, flowId, stepId);
+
+    createLead(
+      {
+        flowId,
+        tenant: tenant.uuid,
+        deviceInfo: {},
+        trackingParams: {},
+        info: apiPayload,
+      },
+      {
+        onSuccess: (data) => {
+          console.log("Lead created:", data);
+          setCreatedLeadId(data.id);
+          setCreatedLeadToken(data.token);
+
+          // Proceed to OTP
+          setShowPhoneModal(false);
+          setShowOTPModal(true);
+        },
+        onError: (error) => {
+          console.error("Lead creation failed:", error);
+          toast.error(t("errors.submissionFailed"));
+        },
+      },
+    );
   };
 
   // OTP event handlers
@@ -313,8 +333,8 @@ const ApplyLoanForm: React.FC<ApplyLoanFormProps> = ({
                 className="mx-auto block rounded-lg font-semibold w-full h-14 text-white"
                 style={{ backgroundColor: theme.colors.primary }}
                 onClick={onSubmitFinal}
-                loading={isCreatingLead}
-                disabled={isCreatingLead}
+                loading={isCreatingLead || isLoadingFlow}
+                disabled={isCreatingLead || isLoadingFlow}
               >
                 {t("otp.continue")}
               </Button>

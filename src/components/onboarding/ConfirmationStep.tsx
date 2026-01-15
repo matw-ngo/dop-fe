@@ -13,7 +13,7 @@ import type {
   FieldType,
 } from "@/components/user-onboarding/constants/field-types";
 import type { GeneratedStepConfig } from "@/components/user-onboarding/types/field-config";
-import { useConfirmationFields } from "@/hooks/useConfirmationFields";
+import { useConfirmationFields } from "@/hooks/use-confirmation-fields";
 import apiClient from "@/lib/api/client";
 import type { components } from "@/lib/api/v1.d.ts";
 import type { MappedFlow } from "@/mappers/flowMapper";
