@@ -39,8 +39,8 @@ export {
 } from "./ekyc-api-mapper";
 
 // Hooks
-export { useEkycConfig } from "../../hooks/features/ekyc/use-ekyc-config";
-export { useSubmitEkycResult } from "../../hooks/features/ekyc/use-submit-ekyc-result";
+export { useEkycConfig } from "../../hooks/features/ekyc/use-config";
+export { useSubmitEkycResult } from "../../hooks/features/ekyc/use-submit-result";
 
 // Session Management
 export {

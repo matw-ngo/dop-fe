@@ -11,14 +11,14 @@ import {
 import { toast } from "sonner";
 import { Button, Modal, OtpContainer, TextInput } from "@/components/ui";
 import { useLoanPurposes } from "@/hooks/i18n/use-loan-purposes";
-import { usePhoneValidationMessages } from "@/hooks/phone/use-phone-validation-messages";
+import { usePhoneValidationMessages } from "@/hooks/phone/use-validation-messages";
 import { trackLoanApplication } from "@/lib/tracking/events";
 import { ALLOWED_TELCOS, phoneValidation } from "@/lib/utils/phone-validation";
 import { useCreateLead } from "@/hooks/features/lead/use-create-lead";
 import { useRouter } from "next/navigation";
 import { mapFormDataToLeadInfo } from "@/mappers/leadMapper";
 import { useTenant } from "@/hooks/tenant/use-tenant";
-import { useTenantFlow } from "@/hooks/tenant/use-tenant-flow";
+import { useTenantFlow } from "@/hooks/tenant/use-flow";
 import { AmountField } from "./components/AmountField";
 import { PeriodField } from "./components/PeriodField";
 import { PurposeField } from "./components/PurposeField";

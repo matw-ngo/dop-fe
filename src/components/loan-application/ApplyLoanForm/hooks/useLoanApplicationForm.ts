@@ -3,7 +3,7 @@ import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useState } from "react";
 import { Control, useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { usePhoneValidationMessages } from "@/hooks/phone/use-phone-validation-messages";
+import { usePhoneValidationMessages } from "@/hooks/phone/use-validation-messages";
 import { trackLoanApplication } from "@/lib/tracking/events";
 import { ALLOWED_TELCOS, phoneValidation } from "@/lib/utils/phone-validation";
 import { FORM_STEPS, LOAN_AMOUNT, LOAN_PERIOD } from "../constants";

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { useLocalizedOtpTypes } from "@/hooks/phone/use-localized-telcos";
-import { useOtpFormTranslations } from "@/hooks/otp/use-otp-form-translations";
+import { useOtpFormTranslations } from "@/hooks/otp/use-form-translations";
 import { Button } from "../button";
 import { useFormTheme } from "@/components/form-generation/themes";
 import { cn } from "@/lib/utils";

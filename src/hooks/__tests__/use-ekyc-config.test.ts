@@ -13,7 +13,7 @@ import React from "react";
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { renderHook, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useEkycConfig } from "../features/ekyc/use-ekyc-config";
+import { useEkycConfig } from "../features/ekyc/use-config";
 import apiClient from "@/lib/api/client";
 
 // Mock the API client
