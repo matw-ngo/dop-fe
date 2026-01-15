@@ -41,7 +41,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useSavingsCalculator } from "@/hooks/use-savings-calculator";
+import { useSavingsCalculator } from "@/hooks/financial/use-savings-calculator";
 import { formatCurrency } from "@/lib/utils";
 import { useFinancialToolsStore } from "@/store/use-financial-tools-store";
 import type { ISaving, ISavingsParams, ISavingsResult } from "@/types/tools";

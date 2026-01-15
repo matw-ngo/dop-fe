@@ -13,7 +13,7 @@ import React from "react";
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { renderHook, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useSubmitEkycResult } from "../use-submit-ekyc-result";
+import { useSubmitEkycResult } from "../features/ekyc/use-submit-ekyc-result";
 import apiClient from "@/lib/api/client";
 
 // Mock the API client
@@ -44,7 +44,11 @@ describe("useSubmitEkycResult", () => {
       },
     });
     return function Wrapper({ children }: { children: React.ReactNode }) {
-      return React.createElement(QueryClientProvider, { client: queryClient }, children);
+      return React.createElement(
+        QueryClientProvider,
+        { client: queryClient },
+        children,
+      );
     };
   };
 
@@ -487,7 +491,7 @@ describe("useSubmitEkycResult", () => {
           setTimeout(() => {
             resolve({ data: mockResponse, error: undefined });
           }, 500); // Simulate 500ms response
-        })
+        }),
     );
 
     const wrapper = createWrapper();
@@ -778,7 +782,7 @@ describe("useSubmitEkycResult", () => {
     (apiClient.POST as any).mockReturnValue(
       new Promise((resolve) => {
         resolveSubmit = resolve;
-      })
+      }),
     );
 
     const wrapper = createWrapper();

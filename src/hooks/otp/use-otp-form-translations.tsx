@@ -3,7 +3,7 @@ import { useTranslations } from "next-intl";
 import {
   useLocalizedCompanies,
   useLocalizedOtpTypes,
-} from "./use-localized-telcos";
+} from "../phone/use-localized-telcos";
 
 /**
  * Hook to get all localized OTP form translations

@@ -27,8 +27,8 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useOTPVerification } from "@/hooks/use-otp-verification";
-import { usePhoneValidation } from "@/hooks/use-phone-validation";
+import { useOTPVerification } from "@/hooks/otp/use-otp-verification";
+import { usePhoneValidation } from "@/hooks/phone/use-phone-validation";
 import { OTPInput } from "./OTPInput";
 import { OTPResend } from "./OTPResend";
 import { OTPVerificationDialog } from "./OTPVerificationDialog";

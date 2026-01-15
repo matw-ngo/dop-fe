@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { ApplyLoanForm } from "@/components/loan-application/ApplyLoanForm";
-import { useTenant } from "@/hooks/use-tenant";
+import { useTenant } from "@/hooks/tenant/use-tenant";
 import { PercentageIcon, BankIcon, FlashIcon } from "@/components/icons/home";
 
 export function LoanProductPanel() {

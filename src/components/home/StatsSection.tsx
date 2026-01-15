@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import Image from "next/image";
-import { useTenant } from "@/hooks/use-tenant";
+import { useTenant } from "@/hooks/tenant/use-tenant";
 
 export function StatsSection() {
   const t = useTranslations("components.home.stats");

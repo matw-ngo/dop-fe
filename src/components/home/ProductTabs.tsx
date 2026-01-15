@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { useTenant } from "@/hooks/use-tenant";
+import { useTenant } from "@/hooks/tenant/use-tenant";
 import { cn } from "@/lib/utils";
 import {
   PercentageIcon,

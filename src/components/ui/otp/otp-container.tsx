@@ -1,10 +1,10 @@
 import { useTranslations } from "next-intl";
 import type React from "react";
 import { useEffect, useState } from "react";
-import { useLocalizedTelcos } from "@/hooks/use-localized-telcos";
+import { useLocalizedTelcos } from "@/hooks/phone/use-localized-telcos";
 import { getLocalizableTelcoByPhoneNumber } from "@/lib/telcos/localizable-telcos";
-import { useSubmitOTP } from "@/hooks/use-submit-otp";
-import { useResendOTP } from "@/hooks/use-resend-otp";
+import { useSubmitOTP } from "@/hooks/otp/use-submit-otp";
+import { useResendOTP } from "@/hooks/otp/use-resend-otp";
 import { OtpForm } from "./otp-form";
 
 // ============================================================================

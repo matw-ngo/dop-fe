@@ -27,7 +27,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useAdminAccess } from "@/hooks/use-auth-guards";
+import { useAdminAccess } from "@/hooks/auth/use-auth-guards";
 import { useAuth } from "@/lib/auth/auth-context";
 import { useLocalizedPath } from "@/lib/client-utils";
 
