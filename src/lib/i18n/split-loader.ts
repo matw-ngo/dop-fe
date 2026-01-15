@@ -207,14 +207,14 @@ async function loadComponents(locale: string): Promise<any> {
   }
 
   if (process.env.NODE_ENV === "development") {
-    console.log("🔍 Components structure loaded:", {
-      topLevelKeys: Object.keys(components),
-      layout: components.layout ? Object.keys(components.layout) : "missing",
-      home: components.home ? Object.keys(components.home) : "missing",
-      layoutHeaderSample: components.layout?.header?.nav
-        ? "nav exists"
-        : "nav missing",
-    });
+    // console.log("🔍 Components structure loaded:", {
+    //   topLevelKeys: Object.keys(components),
+    //   layout: components.layout ? Object.keys(components.layout) : "missing",
+    //   home: components.home ? Object.keys(components.home) : "missing",
+    //   layoutHeaderSample: components.layout?.header?.nav
+    //     ? "nav exists"
+    //     : "nav missing",
+    // });
   }
 
   return components;
@@ -385,42 +385,42 @@ const loadAllTranslations = cache(async (locale: string) => {
         },
       );
 
-      console.log(`📚 Loaded ${locale} translations:`, {
-        summary: {
-          features: Object.keys(features).length,
-          pages: Object.keys(pages).length,
-          common: Object.keys(common).length,
-          components: Object.keys(components).length,
-          forms: Object.keys(forms).length,
-          tenants: Object.keys(tenants).length,
-          totalKeys: Object.keys(merged).length,
-        },
-        features: featureDetails,
-        pages: pageDetails,
-        common: commonDetails,
-        components: componentsDetails,
-      });
+      // console.log(`📚 Loaded ${locale} translations:`, {
+      //   summary: {
+      //     features: Object.keys(features).length,
+      //     pages: Object.keys(pages).length,
+      //     common: Object.keys(common).length,
+      //     components: Object.keys(components).length,
+      //     forms: Object.keys(forms).length,
+      //     tenants: Object.keys(tenants).length,
+      //     totalKeys: Object.keys(merged).length,
+      //   },
+      //   features: featureDetails,
+      //   pages: pageDetails,
+      //   common: commonDetails,
+      //   components: componentsDetails,
+      // });
 
       // Log the actual merged structure for debugging
       const loanApp = merged.features?.["loan-application"];
-      console.log(`🔍 Merged structure for ${locale}:`, {
-        topLevelKeys: Object.keys(merged),
-        featuresKeys: Object.keys(merged.features || {}),
-        loanApplicationStructure: merged.features?.["loan-application"],
-        loanApplicationKeys: Object.keys(loanApp || {}),
-        hasLoanApplication: !!loanApp,
-        sampleLoanApplicationKeys: loanApp
-          ? {
-              title: loanApp.title,
-              expectedAmountLabel: loanApp.expectedAmount?.label,
-              loanPeriodLabel: loanApp.loanPeriod?.label,
-              loanPeriodPlaceholder: loanApp.loanPeriod?.placeholder,
-              otpContinue: loanApp.otp?.continue,
-            }
-          : null,
-        commonKeys: Object.keys(merged.common || {}),
-        componentsKeys: Object.keys(merged.components || {}),
-      });
+      // console.log(`🔍 Merged structure for ${locale}:`, {
+      //   topLevelKeys: Object.keys(merged),
+      //   featuresKeys: Object.keys(merged.features || {}),
+      //   loanApplicationStructure: merged.features?.["loan-application"],
+      //   loanApplicationKeys: Object.keys(loanApp || {}),
+      //   hasLoanApplication: !!loanApp,
+      //   sampleLoanApplicationKeys: loanApp
+      //     ? {
+      //         title: loanApp.title,
+      //         expectedAmountLabel: loanApp.expectedAmount?.label,
+      //         loanPeriodLabel: loanApp.loanPeriod?.label,
+      //         loanPeriodPlaceholder: loanApp.loanPeriod?.placeholder,
+      //         otpContinue: loanApp.otp?.continue,
+      //       }
+      //     : null,
+      //   commonKeys: Object.keys(merged.common || {}),
+      //   componentsKeys: Object.keys(merged.components || {}),
+      // });
     }
 
     return merged;
@@ -433,9 +433,9 @@ const loadAllTranslations = cache(async (locale: string) => {
     const translations = JSON.parse(content);
 
     if (process.env.NODE_ENV === "development") {
-      console.log(`📚 Loaded ${locale} from flat file:`, {
-        totalKeys: Object.keys(translations).length,
-      });
+      // console.log(`📚 Loaded ${locale} from flat file:`, {
+      //   totalKeys: Object.keys(translations).length,
+      // });
     }
 
     return translations;
