@@ -59,13 +59,16 @@ const ApplyLoanForm: React.FC<ApplyLoanFormProps> = ({
   const loanPurposes = useLoanPurposes();
   const { getTelcoList } = usePhoneValidationMessages();
   const tenant = useTenant();
-  const { data: flowConfig, isLoading: isLoadingFlow } = useTenantFlow(
-    tenant.uuid,
-  );
 
   const [showPhoneModal, setShowPhoneModal] = React.useState(false);
   const [showOTPModal, setShowOTPModal] = React.useState(false);
   const [formId, setFormId] = React.useState("");
+
+  // Lazy load flow config only when phone modal opens
+  const { data: flowConfig, isLoading: isLoadingFlow } = useTenantFlow(
+    tenant.uuid,
+    { enabled: showPhoneModal },
+  );
 
   // Lead creation state
   const router = useRouter();
@@ -147,6 +150,12 @@ const ApplyLoanForm: React.FC<ApplyLoanFormProps> = ({
 
   const onSubmitFinal = () => {
     if (!validatePhoneNum()) {
+      return;
+    }
+
+    // Wait for flow config if still loading
+    if (isLoadingFlow) {
+      toast.info(t("messages.loading") || "Loading...");
       return;
     }
 
@@ -333,8 +342,8 @@ const ApplyLoanForm: React.FC<ApplyLoanFormProps> = ({
                 className="mx-auto block rounded-lg font-semibold w-full h-14 text-white"
                 style={{ backgroundColor: theme.colors.primary }}
                 onClick={onSubmitFinal}
-                loading={isCreatingLead || isLoadingFlow}
-                disabled={isCreatingLead || isLoadingFlow}
+                loading={isCreatingLead}
+                disabled={isCreatingLead}
               >
                 {t("otp.continue")}
               </Button>

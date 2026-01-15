@@ -31,7 +31,10 @@ type FlowDetail = components["schemas"]["FlowDetail"];
  * const stepId = flowConfig?.steps[0]?.id;
  * ```
  */
-export function useTenantFlow(tenantUuid: string) {
+export function useTenantFlow(
+  tenantUuid: string,
+  options?: { enabled?: boolean },
+) {
   return useQuery({
     queryKey: ["tenant-flow", tenantUuid],
     queryFn: async (): Promise<FlowDetail> => {
@@ -55,7 +58,7 @@ export function useTenantFlow(tenantUuid: string) {
 
       return data;
     },
-    enabled: !!tenantUuid,
+    enabled: options?.enabled ?? !!tenantUuid,
     staleTime: 1000 * 60 * 5, // Cache for 5 minutes
     retry: 1, // Only retry once on failure
   });
