@@ -57,7 +57,6 @@ export function buildLoanFormConfigFromStep(
       id: "expected_amount",
       name: "expected_amount",
       type: FieldType.CUSTOM,
-      label: "Số tiền vay",
       options: {
         componentName: "AmountField",
         min: 5,
@@ -68,7 +67,7 @@ export function buildLoanFormConfigFromStep(
         ? [{ type: ValidationRuleType.REQUIRED }]
         : [],
       i18n: {
-        enabled: false,
+        enabled: true,
       },
     });
   }
@@ -79,7 +78,6 @@ export function buildLoanFormConfigFromStep(
       id: "loan_period",
       name: "loan_period",
       type: FieldType.CUSTOM,
-      label: "Thời hạn vay",
       options: {
         componentName: "PeriodField",
         min: 3,
@@ -90,7 +88,7 @@ export function buildLoanFormConfigFromStep(
         ? [{ type: ValidationRuleType.REQUIRED }]
         : [],
       i18n: {
-        enabled: false,
+        enabled: true,
       },
     });
   }
@@ -101,22 +99,19 @@ export function buildLoanFormConfigFromStep(
       id: "loan_purpose",
       name: "loan_purpose",
       type: FieldType.CUSTOM,
-      label: "Mục đích vay",
       options: {
         componentName: "PurposeField",
         options: loanPurposes,
-        placeholder: "Chọn mục đích vay",
       },
       validation: step.fields.purpose.required
         ? [
             {
               type: ValidationRuleType.REQUIRED,
-              message: "Vui lòng chọn mục đích vay",
             },
           ]
         : [],
       i18n: {
-        enabled: false,
+        enabled: true,
       },
     });
   }
@@ -127,23 +122,19 @@ export function buildLoanFormConfigFromStep(
       id: "fullName",
       name: "fullName",
       type: FieldType.TEXT,
-      label: "Họ và tên",
-      placeholder: "Nhập họ và tên",
       validation: step.fields.fullName.required
         ? [
             {
               type: ValidationRuleType.REQUIRED,
-              message: "Vui lòng nhập họ tên",
             },
             {
               type: ValidationRuleType.MIN_LENGTH,
               value: 2,
-              message: "Họ tên phải có ít nhất 2 ký tự",
             },
           ]
         : [],
       i18n: {
-        enabled: false,
+        enabled: true,
       },
     });
   }
@@ -154,23 +145,19 @@ export function buildLoanFormConfigFromStep(
       id: "nationalId",
       name: "nationalId",
       type: FieldType.TEXT,
-      label: "Căn cước công dân",
-      placeholder: "Nhập số CCCD",
       validation: step.fields.nationalId.required
         ? [
             {
               type: ValidationRuleType.REQUIRED,
-              message: "Vui lòng nhập số CCCD",
             },
             {
               type: ValidationRuleType.PATTERN,
               value: "^[0-9]{12}$",
-              message: "CCCD phải có 12 số",
             },
           ]
         : [],
       i18n: {
-        enabled: false,
+        enabled: true,
       },
     });
   }
@@ -181,19 +168,16 @@ export function buildLoanFormConfigFromStep(
       id: "email",
       name: "email",
       type: FieldType.EMAIL,
-      label: "Email",
-      placeholder: "Nhập địa chỉ email",
       validation: step.fields.email.required
         ? [
             {
               type: ValidationRuleType.REQUIRED,
-              message: "Vui lòng nhập email",
             },
-            { type: ValidationRuleType.EMAIL, message: "Email không hợp lệ" },
+            { type: ValidationRuleType.EMAIL },
           ]
         : [],
       i18n: {
-        enabled: false,
+        enabled: true,
       },
     });
   }
@@ -204,8 +188,6 @@ export function buildLoanFormConfigFromStep(
       id: "location",
       name: "location",
       type: FieldType.SELECT,
-      label: "Tỉnh/Thành phố",
-      placeholder: "Chọn tỉnh/thành phố",
       options: {
         choices: [
           { label: "Hà Nội", value: "hanoi" },
@@ -219,12 +201,11 @@ export function buildLoanFormConfigFromStep(
         ? [
             {
               type: ValidationRuleType.REQUIRED,
-              message: "Vui lòng chọn tỉnh/thành phố",
             },
           ]
         : [],
       i18n: {
-        enabled: false,
+        enabled: true,
       },
     });
   }
@@ -235,18 +216,15 @@ export function buildLoanFormConfigFromStep(
       id: "birthday",
       name: "birthday",
       type: FieldType.DATE,
-      label: "Ngày sinh",
-      placeholder: "Chọn ngày sinh",
       validation: step.fields.birthday.required
         ? [
             {
               type: ValidationRuleType.REQUIRED,
-              message: "Vui lòng chọn ngày sinh",
             },
           ]
         : [],
       i18n: {
-        enabled: false,
+        enabled: true,
       },
     });
   }
@@ -257,7 +235,6 @@ export function buildLoanFormConfigFromStep(
       id: "gender",
       name: "gender",
       type: FieldType.RADIO,
-      label: "Giới tính",
       options: {
         choices: [
           { label: "Nam", value: "male" },
@@ -269,12 +246,11 @@ export function buildLoanFormConfigFromStep(
         ? [
             {
               type: ValidationRuleType.REQUIRED,
-              message: "Vui lòng chọn giới tính",
             },
           ]
         : [],
       i18n: {
-        enabled: false,
+        enabled: true,
       },
     });
   }
@@ -285,8 +261,6 @@ export function buildLoanFormConfigFromStep(
       id: "income",
       name: "income",
       type: FieldType.SELECT,
-      label: "Mức thu nhập hàng tháng",
-      placeholder: "Chọn mức thu nhập",
       options: {
         choices: [
           { label: "Dưới 5 triệu", value: "<5m" },
@@ -299,12 +273,11 @@ export function buildLoanFormConfigFromStep(
         ? [
             {
               type: ValidationRuleType.REQUIRED,
-              message: "Vui lòng chọn mức thu nhập",
             },
           ]
         : [],
       i18n: {
-        enabled: false,
+        enabled: true,
       },
     });
   }
@@ -314,23 +287,24 @@ export function buildLoanFormConfigFromStep(
     id: "agreeStatus",
     name: "agreeStatus",
     type: FieldType.CUSTOM,
-    label: "",
     options: {
       componentName: "TermsAgreement",
     },
     validation: [
       {
         type: ValidationRuleType.REQUIRED,
-        message: "Bạn phải đồng ý với điều khoản",
       },
     ],
     i18n: {
-      enabled: false,
+      enabled: true,
     },
   });
 
   return {
     id: "loan-application",
+    i18n: {
+      namespace: "loan-application",
+    },
     steps: [
       {
         id: step.id,
