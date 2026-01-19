@@ -22,7 +22,9 @@
     "text": "By clicking Submit, you agree to",
     "link": "Terms of Service",
     "linkText": "Terms of Service",
-    "fullText": "To register and use services from {companyName}, please read and agree to our {link}.",
+    "privacyPolicy": "Privacy Policy",
+    "privacyPolicyText": "Privacy Policy",
+    "fullText": "To register and use services from {companyName}, please read and agree to our <terms>Terms of Service</terms> & <privacy>Privacy Policy</privacy>.",
     "agree": "I agree and want to use the service.",
     "disagree": "I do not agree with all or part of the Terms of Service."
   },

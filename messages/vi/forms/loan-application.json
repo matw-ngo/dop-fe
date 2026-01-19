@@ -1,82 +1,90 @@
 {
-  "forms": {
-    "loan-application": {
-      "expected_amount": {
-        "label": "Số tiền vay",
-        "placeholder": "Nhập số tiền vay"
-      },
-      "loan_period": {
-        "label": "Thời hạn vay",
-        "placeholder": "Tháng"
-      },
-      "loan_purpose": {
-        "label": "Mục đích vay",
-        "placeholder": "Chọn mục đích vay"
-      },
-      "fullName": {
-        "label": "Họ và tên",
-        "placeholder": "Nhập họ và tên",
-        "errors": {
-          "required": "Vui lòng nhập họ tên",
-          "minLength": "Họ tên phải có ít nhất 2 ký tự"
-        }
-      },
-      "nationalId": {
-        "label": "Căn cước công dân",
-        "placeholder": "Nhập số CCCD",
-        "errors": {
-          "required": "Vui lòng nhập số CCCD",
-          "pattern": "CCCD phải có 12 số"
-        }
-      },
-      "email": {
-        "label": "Email",
-        "placeholder": "Nhập địa chỉ email",
-        "errors": {
-          "required": "Vui lòng nhập email",
-          "email": "Email không hợp lệ"
-        }
-      },
-      "location": {
-        "label": "Tỉnh/Thành phố",
-        "placeholder": "Chọn tỉnh/thành phố",
-        "errors": {
-          "required": "Vui lòng chọn tỉnh/thành phố"
-        }
-      },
-      "birthday": {
-        "label": "Ngày sinh",
-        "placeholder": "Chọn ngày sinh",
-        "errors": {
-          "required": "Vui lòng chọn ngày sinh"
-        }
-      },
-      "gender": {
-        "label": "Giới tính",
-        "placeholder": "Chọn giới tính",
-        "errors": {
-          "required": "Vui lòng chọn giới tính"
-        }
-      },
-      "income": {
-        "label": "Mức thu nhập hàng tháng",
-        "placeholder": "Chọn mức thu nhập",
-        "errors": {
-          "required": "Vui lòng chọn mức thu nhập"
-        }
-      },
-      "agreeStatus": {
-        "label": ""
-      }
-    },
-    "validation": {
-      "required": "Trường này là bắt buộc",
-      "email": "Email không hợp lệ",
-      "minLength": "Tối thiểu {min} ký tự",
-      "maxLength": "Tối đa {max} ký tự",
-      "min": "Giá trị phải lớn hơn hoặc bằng {min}",
-      "max": "Giá trị phải nhỏ hơn hoặc bằng {max}",
-      "pattern": "Định dạng không hợp lệ"
+  "expected_amount": {
+    "label": "Số tiền vay",
+    "placeholder": "Nhập số tiền vay",
+    "help": ""
+  },
+  "loan_period": {
+    "label": "Thời hạn vay",
+    "placeholder": "Tháng",
+    "help": ""
+  },
+  "loan_purpose": {
+    "label": "Mục đích vay",
+    "placeholder": "Chọn mục đích vay",
+    "help": ""
+  },
+  "fullName": {
+    "label": "Họ và tên",
+    "placeholder": "Nhập họ và tên",
+    "help": "",
+    "errors": {
+      "required": "Vui lòng nhập họ tên",
+      "minLength": "Họ tên phải có ít nhất 2 ký tự"
     }
+  },
+  "nationalId": {
+    "label": "Căn cước công dân",
+    "placeholder": "Nhập số CCCD",
+    "help": "",
+    "errors": {
+      "required": "Vui lòng nhập số CCCD",
+      "pattern": "CCCD phải có 12 số"
+    }
+  },
+  "email": {
+    "label": "Email",
+    "placeholder": "Nhập địa chỉ email",
+    "help": "",
+    "errors": {
+      "required": "Vui lòng nhập email",
+      "email": "Email không hợp lệ"
+    }
+  },
+  "location": {
+    "label": "Tỉnh/Thành phố",
+    "placeholder": "Chọn tỉnh/thành phố",
+    "help": "",
+    "errors": {
+      "required": "Vui lòng chọn tỉnh/thành phố"
+    }
+  },
+  "birthday": {
+    "label": "Ngày sinh",
+    "placeholder": "Chọn ngày sinh",
+    "help": "",
+    "errors": {
+      "required": "Vui lòng chọn ngày sinh"
+    }
+  },
+  "gender": {
+    "label": "Giới tính",
+    "placeholder": "Chọn giới tính",
+    "help": "",
+    "errors": {
+      "required": "Vui lòng chọn giới tính"
+    }
+  },
+  "income": {
+    "label": "Mức thu nhập hàng tháng",
+    "placeholder": "Chọn mức thu nhập",
+    "help": "",
+    "errors": {
+      "required": "Vui lòng chọn mức thu nhập"
+    }
+  },
+  "agreeStatus": {
+    "label": "",
+    "placeholder": "",
+    "help": ""
+  },
+  "validation": {
+    "required": "Trường này là bắt buộc",
+    "email": "Email không hợp lệ",
+    "minLength": "Tối thiểu {min} ký tự",
+    "maxLength": "Tối đa {max} ký tự",
+    "min": "Giá trị phải lớn hơn hoặc bằng {min}",
+    "max": "Giá trị phải nhỏ hơn hoặc bằng {max}",
+    "pattern": "Định dạng không hợp lệ"
   }
 }
