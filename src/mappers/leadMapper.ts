@@ -31,11 +31,16 @@ export function mapFormDataToLeadInfo(
   return {
     flow_id: flowId,
     step_id: stepId,
+    purpose: formData.loan_purpose,
 
     // Personal Info
     full_name: formData.fullName,
     national_id: formData.idCard,
-    phone_number: formData.phoneNumber, // Ensure this field exists in your form or is passed externally
+    phone_number: formData.phone_number, // Form data uses phone_number
+
+    // Loan Info
+    loan_amount: formData.expected_amount,
+    loan_period: formData.loan_period,
 
     // Location
     // location: formData.city, // API expects UUID, form might have string code like "hanoi"

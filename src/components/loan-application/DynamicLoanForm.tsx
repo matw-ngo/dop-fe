@@ -10,8 +10,8 @@ import {
   legacyLoanTheme,
   useFormTheme,
 } from "@/components/form-generation/themes";
+import { OtpVerificationModal } from "@/components/loan-application/ApplyLoanForm/components/OtpVerificationModal";
 import { PhoneVerificationModal } from "@/components/loan-application/ApplyLoanForm/components/PhoneVerificationModal";
-import { Modal, OtpContainer } from "@/components/ui";
 import { useCreateLead } from "@/hooks/features/lead/use-create-lead";
 import { useFlow } from "@/hooks/flow/use-flow";
 import { useLoanPurposes } from "@/hooks/i18n/use-loan-purposes";
@@ -44,47 +44,7 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
     string | undefined
   >();
 
-  // Fetch flow configuration dynamically based on tenant from useTenant hook
-  const tenantId = tenant.uuid;
-  const { data: flowData, isLoading: isLoadingFlow } = useFlow(tenantId);
-
-  // Get loan purposes at top level (before useMemo to avoid hook violations)
-  const loanPurposes = useLoanPurposes();
-
-  // Lead creation state
   const { mutate: createLead, isPending: isCreatingLead } = useCreateLead();
-
-  // Find the step with page === "/" or "/index" (the first step for ApplyLoanForm)
-  const indexStep = useMemo(() => {
-    if (!flowData?.steps) return null;
-
-    // First try to find step with page === "/index" or "/"
-    const matchingStep = flowData.steps.find(
-      (step) => step.page === "/index" || step.page === "/",
-    );
-
-    // If found, use it; otherwise use the first step
-    return matchingStep || flowData.steps[0] || null;
-  }, [flowData]);
-
-  // Build DynamicFormConfig from step configuration
-  const formConfig = useMemo(() => {
-    if (!indexStep) return null;
-    return buildLoanFormConfigFromStep(indexStep, loanPurposes);
-  }, [indexStep, loanPurposes]);
-
-  const handleFormComplete = (data: Record<string, unknown>) => {
-    console.log("Form completed with data:", data);
-    setFormData(data);
-
-    // Only show phone verification modal if sendOtp is enabled in the flow
-    if (indexStep?.sendOtp) {
-      setShowPhoneModal(true);
-    } else {
-      // Skip phone verification, proceed directly to onSubmitSuccess
-      onSubmitSuccess?.(data);
-    }
-  };
 
   const validatePhoneNum = (phoneValue: string): boolean => {
     const value = String(phoneValue || "");
@@ -113,18 +73,12 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
       return;
     }
 
-    if (isLoadingFlow) {
-      toast.info(t("messages.loading") || "Loading...");
-      return;
-    }
-
     if (!flowData || !indexStep) {
       console.error("Flow configuration not available");
       toast.error(t("errors.submissionFailed"));
       return;
     }
 
-    // Add phone to form data
     const updatedData = { ...formData, phone_number: phoneValue };
 
     const flowId = flowData.id;
@@ -135,7 +89,7 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
     createLead(
       {
         flowId,
-        tenant: tenantId,
+        tenant: tenant.uuid,
         deviceInfo: {},
         trackingParams: {},
         info: apiPayload,
@@ -180,7 +134,37 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
     toast.error(t("messages.otpExpired"));
   };
 
-  // Loading state while fetching flow
+  const tenantId = tenant.uuid;
+  const { data: flowData, isLoading: isLoadingFlow } = useFlow(tenantId);
+
+  const loanPurposes = useLoanPurposes();
+
+  const indexStep = useMemo(() => {
+    if (!flowData?.steps) return null;
+
+    const matchingStep = flowData.steps.find(
+      (step) => step.page === "/index" || step.page === "/",
+    );
+
+    return matchingStep || flowData.steps[0] || null;
+  }, [flowData]);
+
+  const formConfig = useMemo(() => {
+    if (!indexStep) return null;
+    return buildLoanFormConfigFromStep(indexStep, loanPurposes);
+  }, [indexStep, loanPurposes]);
+
+  const handleFormComplete = (data: Record<string, unknown>) => {
+    console.log("Form completed with data:", data);
+    setFormData(data);
+
+    if (indexStep?.sendOtp) {
+      setShowPhoneModal(true);
+    } else {
+      onSubmitSuccess?.(data);
+    }
+  };
+
   if (isLoadingFlow) {
     return (
       <div className="max-w-2xl mx-auto p-4">
@@ -192,7 +176,6 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
     );
   }
 
-  // Error state if no form config
   if (!formConfig) {
     return (
       <div className="max-w-2xl mx-auto p-4">
@@ -208,7 +191,6 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
       <FormThemeProvider theme={legacyLoanTheme}>
         <StepWizard config={formConfig} onComplete={handleFormComplete} />
 
-        {/* Phone Modal - Only shown when sendOtp is enabled */}
         <PhoneVerificationModal
           open={showPhoneModal}
           onClose={() => setShowPhoneModal(false)}
@@ -218,27 +200,17 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
           isSubmitting={isCreatingLead}
         />
 
-        {/* OTP Modal */}
-        <Modal
+        <OtpVerificationModal
           open={showOTPModal}
-          onOpenChange={(open) => {
-            if (!open) {
-              setShowOTPModal(false);
-            }
-          }}
-          size="md"
-        >
-          <OtpContainer
-            phoneNumber={(formData.phone_number as string) || ""}
-            leadId={createdLeadId}
-            token={createdLeadToken}
-            size={4}
-            otpType={2}
-            onSuccess={handleOtpSuccess}
-            onFailure={handleOtpFailure}
-            onExpired={handleOtpExpired}
-          />
-        </Modal>
+          onClose={() => setShowOTPModal(false)}
+          phoneNumber={(formData.phone_number as string) || ""}
+          leadId={createdLeadId}
+          token={createdLeadToken}
+          otpType={2 as 1 | 2 | undefined}
+          onSuccess={handleOtpSuccess}
+          onFailure={handleOtpFailure}
+          onExpired={handleOtpExpired}
+        />
       </FormThemeProvider>
     </div>
   );
