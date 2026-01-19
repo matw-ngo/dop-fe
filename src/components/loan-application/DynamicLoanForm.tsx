@@ -10,7 +10,8 @@ import {
   legacyLoanTheme,
   useFormTheme,
 } from "@/components/form-generation/themes";
-import { Button, Modal, OtpContainer, TextInput } from "@/components/ui";
+import { PhoneVerificationModal } from "@/components/loan-application/ApplyLoanForm/components/PhoneVerificationModal";
+import { Modal, OtpContainer } from "@/components/ui";
 import { useCreateLead } from "@/hooks/features/lead/use-create-lead";
 import { useFlow } from "@/hooks/flow/use-flow";
 import { useLoanPurposes } from "@/hooks/i18n/use-loan-purposes";
@@ -75,7 +76,14 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
   const handleFormComplete = (data: Record<string, unknown>) => {
     console.log("Form completed with data:", data);
     setFormData(data);
-    setShowPhoneModal(true);
+
+    // Only show phone verification modal if sendOtp is enabled in the flow
+    if (indexStep?.sendOtp) {
+      setShowPhoneModal(true);
+    } else {
+      // Skip phone verification, proceed directly to onSubmitSuccess
+      onSubmitSuccess?.(data);
+    }
   };
 
   const validatePhoneNum = (phoneValue: string): boolean => {
@@ -200,54 +208,15 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
       <FormThemeProvider theme={legacyLoanTheme}>
         <StepWizard config={formConfig} onComplete={handleFormComplete} />
 
-        {/* Phone Modal */}
-        <Modal
+        {/* Phone Modal - Only shown when sendOtp is enabled */}
+        <PhoneVerificationModal
           open={showPhoneModal}
-          onOpenChange={(open) => {
-            if (!open) {
-              setShowPhoneModal(false);
-            }
-          }}
-          size="lg"
-        >
-          <div className="p-2">
-            <h3
-              className="text-center text-2xl font-bold leading-8 mb-3"
-              style={{ color: theme.colors.primary }}
-            >
-              {t("otp.title")}
-            </h3>
-            <p
-              className="text-center text-sm font-normal leading-6 mb-4"
-              style={{ color: theme.colors.textSecondary }}
-            >
-              {t("otp.description")}
-            </p>
-            <div className="mb-4">
-              <TextInput
-                placeholder={t("otp.placeholder")}
-                value={(formData.phone_number as string) || ""}
-                onChange={(e) =>
-                  setFormData({ ...formData, phone_number: e.target.value })
-                }
-                className="text-lg"
-              />
-            </div>
-            <div>
-              <Button
-                className="mx-auto block rounded-lg font-semibold w-full h-14 text-white"
-                style={{ backgroundColor: theme.colors.primary }}
-                onClick={() =>
-                  handlePhoneSubmit((formData.phone_number as string) || "")
-                }
-                loading={isCreatingLead}
-                disabled={isCreatingLead}
-              >
-                {t("otp.continue")}
-              </Button>
-            </div>
-          </div>
-        </Modal>
+          onClose={() => setShowPhoneModal(false)}
+          onVerify={handlePhoneSubmit}
+          title={t("otp.title")}
+          description={t("otp.description")}
+          isSubmitting={isCreatingLead}
+        />
 
         {/* OTP Modal */}
         <Modal
