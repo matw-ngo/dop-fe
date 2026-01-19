@@ -330,7 +330,7 @@ export function buildLoanFormConfigFromStep(
   });
 
   return {
-    id: "loan-application-form",
+    id: "loan-application",
     steps: [
       {
         id: step.id,
