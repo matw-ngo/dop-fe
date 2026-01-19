@@ -91,6 +91,7 @@ export function StepWizard({
       <StepContent
         step={currentStepConfig}
         showTitle={config.navigation?.showStepHeader}
+        namespace={config.i18n?.namespace}
       />
 
       {/* Navigation Buttons */}
