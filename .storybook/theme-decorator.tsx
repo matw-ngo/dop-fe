@@ -72,14 +72,15 @@ export const withTheme: Decorator = (Story, context) => {
     mode = "light",
   } = context.globals;
 
-  return (
-    <ThemeProvider
-      defaultUserGroup={userGroup}
-      storageKey="storybook-theme-config"
-    >
-      <ThemeWrapper themeId={themeId} mode={mode} userGroup={userGroup}>
-        <Story />
-      </ThemeWrapper>
-    </ThemeProvider>
-  );
+  // return (
+  //   <ThemeProvider
+  //     defaultUserGroup={userGroup}
+  //     storageKey="storybook-theme-config"
+  //   >
+  //     <ThemeWrapper themeId={themeId} mode={mode} userGroup={userGroup}>
+  //       <Story />
+  //     </ThemeWrapper>
+  //   </ThemeProvider>
+  // );
+  return <Story />;
 };
