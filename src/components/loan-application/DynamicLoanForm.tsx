@@ -80,6 +80,7 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
     }
 
     const updatedData = { ...formData, phone_number: phoneValue };
+    setFormData(updatedData); // Persist phone number for OtpVerificationModal
 
     const flowId = flowData.id;
     const stepId = indexStep.id;
