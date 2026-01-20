@@ -34,12 +34,7 @@ async function submitOTP({ leadId, token, otp }: SubmitOTPParams) {
 
     return data;
   } catch (error) {
-    console.error("Submit OTP API failed, using mock data:", error);
-    // Mock success response
-    return {
-      success: true,
-      message: "OTP verified successfully (Mock)",
-    };
+    throw error;
   }
 }
 

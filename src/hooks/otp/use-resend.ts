@@ -32,12 +32,7 @@ async function resendOTP({ leadId, target }: ResendOTPParams) {
 
     return data;
   } catch (error) {
-    console.error("Resend OTP API failed, using mock data:", error);
-    // Mock success response
-    return {
-      success: true,
-      message: "OTP resent successfully (Mock)",
-    };
+    throw error;
   }
 }
 

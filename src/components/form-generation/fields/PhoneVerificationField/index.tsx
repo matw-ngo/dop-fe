@@ -49,11 +49,9 @@ export function PhoneVerificationField({
   const handleVerifyOTP = useCallback(
     async (otpCode: string): Promise<boolean> => {
       // TODO: Implement actual OTP verification API call
-      // For now, we simulate a successful verification if OTP is "123456"
-      if (otpCode === "123456") {
-        return true;
-      }
-      return false;
+      // This is a placeholder - real implementation should call the API
+      console.warn("OTP verification using placeholder - implement API call");
+      return otpCode.length >= 4 && otpCode.length <= 6;
     },
     [],
   );
