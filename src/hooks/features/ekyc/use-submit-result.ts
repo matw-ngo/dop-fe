@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import apiClient from "@/lib/api/client";
+import { dopClient } from "@/lib/api/services/dop";
 import type { components } from "@/lib/api/v1/dop";
 import {
   logSubmitError,
@@ -37,7 +37,7 @@ async function submitEkycResult({
   const startTime = performance.now();
   logSubmitStart(leadId, sessionId || "unknown");
 
-  const { data, error } = await apiClient.POST("/leads/{id}/ekyc/vnpt", {
+  const { data, error } = await dopClient.POST("/leads/{id}/ekyc/vnpt", {
     params: { path: { id: leadId } },
     body: ekycData,
   });

@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import apiClient from "@/lib/api/client";
+import { dopClient } from "@/lib/api/services/dop";
 import type { components } from "@/lib/api/v1/dop";
 
 type SubmitOTPRequestBody = components["schemas"]["SubmitOTPRequestBody"];
@@ -12,7 +12,7 @@ interface SubmitOTPParams {
 
 async function submitOTP({ leadId, token, otp }: SubmitOTPParams) {
   try {
-    const { data, error } = await apiClient.POST("/leads/{id}/submit-otp", {
+    const { data, error } = await dopClient.POST("/leads/{id}/submit-otp", {
       params: {
         path: {
           id: leadId,

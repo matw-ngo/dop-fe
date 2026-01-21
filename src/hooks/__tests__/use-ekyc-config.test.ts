@@ -9,16 +9,16 @@
  * @jest-environment jsdom
  */
 
-import React from "react";
-import { describe, it, expect, beforeEach, vi } from "vitest";
-import { renderHook, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { renderHook, waitFor } from "@testing-library/react";
+import React from "react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { dopClient } from "@/lib/api/services/dop";
 import { useEkycConfig } from "../features/ekyc/use-config";
-import apiClient from "@/lib/api/client";
 
 // Mock the API client
-vi.mock("@/lib/api/client", () => ({
-  default: {
+vi.mock("@/lib/api/services/dop", () => ({
+  dopClient: {
     GET: vi.fn(),
   },
 }));
@@ -67,7 +67,7 @@ describe("useEkycConfig", () => {
       enable_api_masked_face: true,
     };
 
-    (apiClient.GET as any).mockResolvedValue({
+    (dopClient.GET as any).mockResolvedValue({
       data: mockConfig,
       error: undefined,
     });
@@ -78,7 +78,7 @@ describe("useEkycConfig", () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
     expect(result.current.data).toEqual(mockConfig);
-    expect(apiClient.GET).toHaveBeenCalledWith("/leads/{id}/ekyc/config", {
+    expect(dopClient.GET).toHaveBeenCalledWith("/leads/{id}/ekyc/config", {
       params: { path: { id: "lead-123" } },
     });
   });
@@ -91,7 +91,7 @@ describe("useEkycConfig", () => {
       message: "Configuration not found for this lead",
     };
 
-    (apiClient.GET as any).mockResolvedValue({
+    (dopClient.GET as any).mockResolvedValue({
       data: undefined,
       error: mockError,
     });
@@ -111,7 +111,7 @@ describe("useEkycConfig", () => {
    * Test T102: Handle network errors
    */
   it("should handle network errors", async () => {
-    (apiClient.GET as any).mockResolvedValue({
+    (dopClient.GET as any).mockResolvedValue({
       data: undefined,
       error: "Network Error",
     });
@@ -131,7 +131,7 @@ describe("useEkycConfig", () => {
    * Test T102: Handle empty response
    */
   it("should handle empty response", async () => {
-    (apiClient.GET as any).mockResolvedValue({
+    (dopClient.GET as any).mockResolvedValue({
       data: null,
       error: undefined,
     });
@@ -160,7 +160,7 @@ describe("useEkycConfig", () => {
       enable_api_masked_face: true,
     };
 
-    (apiClient.GET as any).mockResolvedValue({
+    (dopClient.GET as any).mockResolvedValue({
       data: mockConfig,
       error: undefined,
     });
@@ -172,7 +172,7 @@ describe("useEkycConfig", () => {
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
-    expect(apiClient.GET).toHaveBeenCalledTimes(1);
+    expect(dopClient.GET).toHaveBeenCalledTimes(1);
   });
 
   /**
@@ -188,7 +188,7 @@ describe("useEkycConfig", () => {
       enable_api_masked_face: true,
     };
 
-    (apiClient.GET as any).mockResolvedValue({
+    (dopClient.GET as any).mockResolvedValue({
       data: mockConfig,
       error: undefined,
     });
@@ -201,14 +201,14 @@ describe("useEkycConfig", () => {
 
     // First call - should fetch
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
-    expect(apiClient.GET).toHaveBeenCalledTimes(1);
+    expect(dopClient.GET).toHaveBeenCalledTimes(1);
 
     // Re-render with same lead ID - should use cache
     rerender();
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
     // Should not make another API call
-    expect(apiClient.GET).toHaveBeenCalledTimes(1);
+    expect(dopClient.GET).toHaveBeenCalledTimes(1);
   });
 
   /**
@@ -232,7 +232,7 @@ describe("useEkycConfig", () => {
       enable_api_masked_face: true,
     };
 
-    (apiClient.GET as any)
+    (dopClient.GET as any)
       .mockResolvedValueOnce({ data: mockConfig1, error: undefined })
       .mockResolvedValueOnce({ data: mockConfig2, error: undefined });
 
@@ -247,7 +247,7 @@ describe("useEkycConfig", () => {
     });
     await waitFor(() => expect(result2.current.isSuccess).toBe(true));
 
-    expect(apiClient.GET).toHaveBeenCalledTimes(2);
+    expect(dopClient.GET).toHaveBeenCalledTimes(2);
     expect(result1.current.data?.access_token).toBe("token-1");
     expect(result2.current.data?.access_token).toBe("token-2");
   });
@@ -260,7 +260,7 @@ describe("useEkycConfig", () => {
     const { result } = renderHook(() => useEkycConfig(""), { wrapper });
 
     expect(result.current.fetchStatus).toBe("idle");
-    expect(apiClient.GET).not.toHaveBeenCalled();
+    expect(dopClient.GET).not.toHaveBeenCalled();
   });
 
   /**
@@ -273,7 +273,7 @@ describe("useEkycConfig", () => {
     });
 
     expect(result.current.fetchStatus).toBe("idle");
-    expect(apiClient.GET).not.toHaveBeenCalled();
+    expect(dopClient.GET).not.toHaveBeenCalled();
   });
 
   /**
@@ -290,7 +290,7 @@ describe("useEkycConfig", () => {
     };
 
     let resolveFetch: (value: any) => void;
-    (apiClient.GET as any).mockReturnValue(
+    (dopClient.GET as any).mockReturnValue(
       new Promise((resolve) => {
         resolveFetch = resolve;
       }),
@@ -316,7 +316,7 @@ describe("useEkycConfig", () => {
    * Test T102: Handle malformed error response
    */
   it("should handle malformed error response", async () => {
-    (apiClient.GET as any).mockResolvedValue({
+    (dopClient.GET as any).mockResolvedValue({
       data: undefined,
       error: null,
     });
@@ -336,7 +336,7 @@ describe("useEkycConfig", () => {
    * Test T102: Handle error without message property
    */
   it("should handle error without message property", async () => {
-    (apiClient.GET as any).mockResolvedValue({
+    (dopClient.GET as any).mockResolvedValue({
       data: undefined,
       error: { code: "ERROR_CODE" },
     });
@@ -365,7 +365,7 @@ describe("useEkycConfig", () => {
       enable_api_masked_face: true,
     };
 
-    (apiClient.GET as any).mockResolvedValue({
+    (dopClient.GET as any).mockResolvedValue({
       data: mockConfig,
       error: undefined,
     });
@@ -376,12 +376,12 @@ describe("useEkycConfig", () => {
     });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
-    expect(apiClient.GET).toHaveBeenCalledTimes(1);
+    expect(dopClient.GET).toHaveBeenCalledTimes(1);
 
     // Manually refetch
     await result.current.refetch();
 
-    expect(apiClient.GET).toHaveBeenCalledTimes(2);
+    expect(dopClient.GET).toHaveBeenCalledTimes(2);
   });
 
   /**
@@ -397,7 +397,7 @@ describe("useEkycConfig", () => {
       enable_api_masked_face: true,
     };
 
-    (apiClient.GET as any).mockResolvedValue({
+    (dopClient.GET as any).mockResolvedValue({
       data: mockConfig,
       error: undefined,
     });
@@ -416,7 +416,7 @@ describe("useEkycConfig", () => {
     await waitFor(() => expect(result2.current.isSuccess).toBe(true));
 
     // Should only make one API call despite two hooks
-    expect(apiClient.GET).toHaveBeenCalledTimes(1);
+    expect(dopClient.GET).toHaveBeenCalledTimes(1);
   });
 
   /**
@@ -432,7 +432,7 @@ describe("useEkycConfig", () => {
       enable_api_masked_face: true,
     };
 
-    (apiClient.GET as any).mockResolvedValue({
+    (dopClient.GET as any).mockResolvedValue({
       data: mockConfig,
       error: undefined,
     });
@@ -445,7 +445,7 @@ describe("useEkycConfig", () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
     // Verify fetch happened (cache miss)
-    expect(apiClient.GET).toHaveBeenCalledTimes(1);
+    expect(dopClient.GET).toHaveBeenCalledTimes(1);
 
     // Re-render - cache hit
     const { rerender } = renderHook(() => useEkycConfig("lead-analytics"), {
@@ -454,7 +454,7 @@ describe("useEkycConfig", () => {
     rerender();
 
     // Should not fetch again (cache hit)
-    expect(apiClient.GET).toHaveBeenCalledTimes(1);
+    expect(dopClient.GET).toHaveBeenCalledTimes(1);
   });
 
   /**
@@ -470,7 +470,7 @@ describe("useEkycConfig", () => {
       enable_api_masked_face: true,
     };
 
-    (apiClient.GET as any).mockImplementation(
+    (dopClient.GET as any).mockImplementation(
       () =>
         new Promise((resolve) => {
           setTimeout(() => {
@@ -492,7 +492,7 @@ describe("useEkycConfig", () => {
     const duration = endTime - startTime;
 
     expect(duration).toBeLessThan(500);
-    expect(apiClient.GET).toHaveBeenCalledTimes(1);
+    expect(dopClient.GET).toHaveBeenCalledTimes(1);
   });
 
   /**
@@ -508,7 +508,7 @@ describe("useEkycConfig", () => {
       enable_api_masked_face: true,
     };
 
-    (apiClient.GET as any).mockImplementation(
+    (dopClient.GET as any).mockImplementation(
       () =>
         new Promise((resolve) => {
           setTimeout(() => {

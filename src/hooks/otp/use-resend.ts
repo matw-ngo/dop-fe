@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import apiClient from "@/lib/api/client";
+import { dopClient } from "@/lib/api/services/dop";
 import type { components } from "@/lib/api/v1/dop";
 
 type ResendOTPRequestBody = components["schemas"]["ResendOTPRequestBody"];
@@ -11,7 +11,7 @@ interface ResendOTPParams {
 
 async function resendOTP({ leadId, target }: ResendOTPParams) {
   try {
-    const { data, error } = await apiClient.POST("/leads/{id}/resend-otp", {
+    const { data, error } = await dopClient.POST("/leads/{id}/resend-otp", {
       params: {
         path: {
           id: leadId,

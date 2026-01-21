@@ -13,8 +13,8 @@ import {
 } from "./tools";
 
 // Mock the API client
-vi.mock("./client", () => ({
-  default: {
+vi.mock("@/lib/api/services/dop", () => ({
+  dopClient: {
     POST: vi.fn(),
     GET: vi.fn(),
   },
@@ -54,8 +54,8 @@ describe("Tools API", () => {
         error: null,
       };
 
-      const { default: apiClient } = await import("./client");
-      vi.mocked(apiClient.POST).mockResolvedValue(mockResponse);
+      const { dopClient } = await import("@/lib/api/services/dop");
+      vi.mocked(dopClient.POST).mockResolvedValue(mockResponse);
 
       const params = {
         amount: 1000000,
@@ -73,7 +73,7 @@ describe("Tools API", () => {
         totalCount: 15,
       });
 
-      expect(apiClient.POST).toHaveBeenCalledWith("/tools/saving", {
+      expect(dopClient.POST).toHaveBeenCalledWith("/tools/saving", {
         body: params,
       });
     });
@@ -86,8 +86,8 @@ describe("Tools API", () => {
         },
       };
 
-      const { default: apiClient } = await import("./client");
-      vi.mocked(apiClient.POST).mockResolvedValue({
+      const { dopClient } = await import("@/lib/api/services/dop");
+      vi.mocked(dopClient.POST).mockResolvedValue({
         data: null,
         error: mockError,
       });
@@ -129,8 +129,8 @@ describe("Tools API", () => {
         error: null,
       };
 
-      const { default: apiClient } = await import("./client");
-      vi.mocked(apiClient.POST).mockResolvedValue(mockResponse);
+      const { dopClient } = await import("@/lib/api/services/dop");
+      vi.mocked(dopClient.POST).mockResolvedValue(mockResponse);
 
       const params = {
         gross: 10000000,
@@ -154,8 +154,8 @@ describe("Tools API", () => {
         error: null,
       };
 
-      const { default: apiClient } = await import("./client");
-      vi.mocked(apiClient.POST).mockResolvedValue(mockResponse);
+      const { dopClient } = await import("@/lib/api/services/dop");
+      vi.mocked(dopClient.POST).mockResolvedValue(mockResponse);
 
       const result = await calculateSalary({ gross: 10000000 });
 
@@ -191,8 +191,8 @@ describe("Tools API", () => {
         error: null,
       };
 
-      const { default: apiClient } = await import("./client");
-      vi.mocked(apiClient.GET).mockResolvedValue(mockResponse);
+      const { dopClient } = await import("@/lib/api/services/dop");
+      vi.mocked(dopClient.GET).mockResolvedValue(mockResponse);
 
       const result = await fetchInterestRates();
 
@@ -208,8 +208,8 @@ describe("Tools API", () => {
         error: null,
       };
 
-      const { default: apiClient } = await import("./client");
-      vi.mocked(apiClient.GET).mockResolvedValue(mockResponse);
+      const { dopClient } = await import("@/lib/api/services/dop");
+      vi.mocked(dopClient.GET).mockResolvedValue(mockResponse);
 
       await expect(fetchInterestRates()).rejects.toThrow(
         "Invalid response format",

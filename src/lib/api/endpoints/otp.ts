@@ -4,6 +4,7 @@
  * Vietnamese telco support with server-side security features
  */
 
+import { dopClient } from "@/lib/api/services/dop";
 import { getPhoneMetadata } from "@/lib/telcos/phone-validation";
 import {
   formatPhoneNumber,
@@ -16,7 +17,6 @@ import {
   sanitizeApplicationData,
   sanitizeVietnamesePhone,
 } from "@/lib/utils/sanitization";
-import apiClient from "../client";
 import type { paths } from "../v1/dop";
 
 // Enhanced OTP request types with security
@@ -146,7 +146,7 @@ export const otpApi = {
       };
 
       // Make API call with enhanced security headers
-      const response = await apiClient.POST("/otp/request", {
+      const response = await dopClient.POST("/otp/request", {
         body: sanitizeApplicationData(requestPayload),
         headers: {
           "X-Device-Fingerprint": options?.deviceFingerprint || "",
@@ -259,7 +259,7 @@ export const otpApi = {
       };
 
       // Make API call with security headers
-      const response = await apiClient.POST("/otp/verify", {
+      const response = await dopClient.POST("/otp/verify", {
         body: sanitizeApplicationData(verificationPayload),
         headers: {
           "X-Device-Fingerprint": options?.deviceFingerprint || "",
@@ -375,7 +375,7 @@ export const otpApi = {
       const telco = getTelcoByPhoneNumber(sanitizedPhone);
       const otpSettings = getOTPSettings(sanitizedPhone);
 
-      const response = await apiClient.POST("/otp/resend", {
+      const response = await dopClient.POST("/otp/resend", {
         body: sanitizeApplicationData({
           phoneNumber: sanitizedPhone,
           requestId,
@@ -452,7 +452,7 @@ export const otpApi = {
     sessionId?: string,
   ): Promise<VietnameseOTPResponse> => {
     try {
-      const response = await apiClient.GET("/flows/{domain}", {
+      const response = await dopClient.GET("/flows/{domain}", {
         params: {
           path: { domain: requestId },
         },
@@ -534,7 +534,7 @@ export const otpApi = {
       };
 
       // Create mock API response that would come from server
-      const response = await apiClient.POST("/leads", {
+      const response = await dopClient.POST("/leads", {
         body: sanitizeApplicationData(validationResult),
       });
 

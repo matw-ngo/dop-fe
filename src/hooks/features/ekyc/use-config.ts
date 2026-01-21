@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
-import apiClient from "@/lib/api/client";
+import { dopClient } from "@/lib/api/services/dop";
 import type { components } from "@/lib/api/v1/dop";
 import {
   logConfigCacheHit,
@@ -26,7 +26,7 @@ async function getEkycConfig(leadId: string): Promise<EkycConfigResponseBody> {
   const startTime = performance.now();
   logConfigFetchStart(leadId);
 
-  const { data, error } = await apiClient.GET("/leads/{id}/ekyc/config", {
+  const { data, error } = await dopClient.GET("/leads/{id}/ekyc/config", {
     params: { path: { id: leadId } },
   });
 

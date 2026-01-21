@@ -1,9 +1,9 @@
 // @ts-nocheck
 
+import { dopClient } from "@/lib/api/services/dop";
 import { securityUtils, useTokenStore } from "@/lib/auth/secure-tokens";
 import { VietnameseFinancialValidator } from "@/lib/loan-products/validation";
 import { VietnameseComplianceEngine } from "@/lib/loan-products/vietnamese-compliance";
-import apiClient from "../client";
 import type { paths } from "../v1/dop";
 
 /**
@@ -14,7 +14,7 @@ export const loanApi = {
   getLoanProducts: async (
     params?: paths["/loans"]["get"]["parameters"]["query"],
   ) => {
-    const response = await apiClient.GET("/loans", {
+    const response = await dopClient.GET("/loans", {
       params: {
         query: params,
       },
@@ -24,7 +24,7 @@ export const loanApi = {
 
   // Get single loan product
   getLoanProduct: async (id: string) => {
-    const response = await apiClient.GET("/loans/{id}", {
+    const response = await dopClient.GET("/loans/{id}", {
       params: {
         path: { id },
       },
@@ -36,7 +36,7 @@ export const loanApi = {
   submitLoanApplication: async (
     application: paths["/loans/applications"]["post"]["requestBody"]["content"]["application/json"],
   ) => {
-    const response = await apiClient.POST("/loans/applications", {
+    const response = await dopClient.POST("/loans/applications", {
       body: application,
     });
     return response.data;
@@ -44,7 +44,7 @@ export const loanApi = {
 
   // Get loan application status
   getApplicationStatus: async (applicationId: string) => {
-    const response = await apiClient.GET("/loans/applications/{id}/status", {
+    const response = await dopClient.GET("/loans/applications/{id}/status", {
       params: {
         path: { id: applicationId },
       },
@@ -56,7 +56,7 @@ export const loanApi = {
   getUserApplications: async (
     params?: paths["/loans/applications"]["get"]["parameters"]["query"],
   ) => {
-    const response = await apiClient.GET("/loans/applications", {
+    const response = await dopClient.GET("/loans/applications", {
       params: {
         query: params,
       },
@@ -68,7 +68,7 @@ export const loanApi = {
   checkEligibility: async (
     criteria: paths["/loans/eligibility"]["post"]["requestBody"]["content"]["application/json"],
   ) => {
-    const response = await apiClient.POST("/loans/eligibility", {
+    const response = await dopClient.POST("/loans/eligibility", {
       body: criteria,
     });
     return response.data;
@@ -78,7 +78,7 @@ export const loanApi = {
   calculatePayment: async (
     loanDetails: paths["/loans/calculator"]["post"]["requestBody"]["content"]["application/json"],
   ) => {
-    const response = await apiClient.POST("/loans/calculator", {
+    const response = await dopClient.POST("/loans/calculator", {
       body: loanDetails,
     });
     return response.data;
@@ -88,7 +88,7 @@ export const loanApi = {
   compareProducts: async (
     products: paths["/loans/compare"]["post"]["requestBody"]["content"]["application/json"],
   ) => {
-    const response = await apiClient.POST("/loans/compare", {
+    const response = await dopClient.POST("/loans/compare", {
       body: { products },
     });
     return response.data;
@@ -96,7 +96,7 @@ export const loanApi = {
 
   // Get loan providers
   getLoanProviders: async () => {
-    const response = await apiClient.GET("/loans/providers");
+    const response = await dopClient.GET("/loans/providers");
     return response.data;
   },
 
@@ -105,7 +105,7 @@ export const loanApi = {
     applicationId: string,
     documents: paths["/loans/applications/{id}/documents"]["post"]["requestBody"]["content"]["multipart/form-data"],
   ) => {
-    const response = await apiClient.POST(
+    const response = await dopClient.POST(
       "/loans/applications/{id}/documents",
       {
         params: {
@@ -120,7 +120,7 @@ export const loanApi = {
 
   // Get application timeline
   getApplicationTimeline: async (applicationId: string) => {
-    const response = await apiClient.GET("/loans/applications/{id}/timeline", {
+    const response = await dopClient.GET("/loans/applications/{id}/timeline", {
       params: {
         path: { id: applicationId },
       },
@@ -134,7 +134,7 @@ export const loanApi = {
    * Get real-time application status with detailed information
    */
   getDetailedApplicationStatus: async (applicationId: string) => {
-    const response = await apiClient.GET(
+    const response = await dopClient.GET(
       "/loans/applications/{id}/detailed-status" as any,
       {
         params: {
@@ -210,7 +210,7 @@ export const loanApi = {
    * Get application documents status
    */
   getApplicationDocumentsStatus: async (applicationId: string) => {
-    const response = await apiClient.GET(
+    const response = await dopClient.GET(
       "/api/v1/loans/applications/{id}/documents-status" as any,
       {
         params: {
@@ -233,7 +233,7 @@ export const loanApi = {
       offset?: number;
     },
   ) => {
-    const response = await apiClient.GET(
+    const response = await dopClient.GET(
       "/api/v1/loans/applications/{id}/communications" as any,
       {
         params: {
@@ -263,7 +263,7 @@ export const loanApi = {
       }>;
     },
   ) => {
-    const response = await apiClient.POST(
+    const response = await dopClient.POST(
       "/api/v1/loans/applications/{id}/communications" as any,
       {
         params: {
@@ -279,7 +279,7 @@ export const loanApi = {
    * Mark communication as read
    */
   markCommunicationAsRead: async (communicationId: string) => {
-    const response = await apiClient.PUT(
+    const response = await dopClient.PUT(
       "/api/v1/communications/{id}/read" as any,
       {
         params: {
@@ -298,7 +298,7 @@ export const loanApi = {
       ? `/api/v1/loans/applications/${applicationId}/notification-preferences`
       : "/api/v1/user/notification-preferences";
 
-    const response = await apiClient.GET(url as any);
+    const response = await dopClient.GET(url as any);
     return response.data;
   },
 
@@ -327,7 +327,7 @@ export const loanApi = {
       ? `/api/v1/loans/applications/${preferences.applicationId}/notification-preferences`
       : "/api/v1/user/notification-preferences";
 
-    const response = await apiClient.PUT(url as any, {
+    const response = await dopClient.PUT(url as any, {
       body: preferences,
     });
     return response.data;
@@ -337,7 +337,7 @@ export const loanApi = {
    * Get application milestones and estimated completion time
    */
   getApplicationMilestones: async (applicationId: string) => {
-    const response = await apiClient.GET(
+    const response = await dopClient.GET(
       "/api/v1/loans/applications/{id}/milestones" as any,
       {
         params: {
@@ -352,7 +352,7 @@ export const loanApi = {
    * Get status transition history
    */
   getStatusTransitionHistory: async (applicationId: string) => {
-    const response = await apiClient.GET(
+    const response = await dopClient.GET(
       "/api/v1/loans/applications/{id}/status-history" as any,
       {
         params: {
@@ -367,7 +367,7 @@ export const loanApi = {
    * Get SLA information for current status
    */
   getApplicationSLA: async (applicationId: string) => {
-    const response = await apiClient.GET(
+    const response = await dopClient.GET(
       "/api/v1/loans/applications/{id}/sla" as any,
       {
         params: {
@@ -385,7 +385,7 @@ export const loanApi = {
     applicationId: string,
     channels: string[],
   ) => {
-    const response = await apiClient.POST(
+    const response = await dopClient.POST(
       "/api/v1/loans/applications/{id}/status-notification" as any,
       {
         params: {
@@ -410,7 +410,7 @@ export const loanApi = {
       endDate?: string;
     },
   ) => {
-    const response = await apiClient.GET(
+    const response = await dopClient.GET(
       "/api/v1/loans/applications/{id}/activity-log" as any,
       {
         params: {
@@ -426,7 +426,7 @@ export const loanApi = {
    * Get next required actions for current status
    */
   getRequiredActions: async (applicationId: string) => {
-    const response = await apiClient.GET(
+    const response = await dopClient.GET(
       "/api/v1/loans/applications/{id}/required-actions" as any,
       {
         params: {
@@ -499,7 +499,7 @@ export const loanApi = {
     applicationId: string,
     documentId: string,
   ) => {
-    const response = await apiClient.GET(
+    const response = await dopClient.GET(
       "/api/v1/loans/applications/{id}/documents/{documentId}/verification" as any,
       {
         params: {
@@ -521,7 +521,7 @@ export const loanApi = {
     const formData = new FormData();
     formData.append("file", file);
 
-    const response = await apiClient.POST(
+    const response = await dopClient.POST(
       "/api/v1/loans/applications/{id}/documents/{documentId}/resubmit" as any,
       {
         params: {
@@ -537,7 +537,7 @@ export const loanApi = {
    * Get Vietnamese document types and requirements
    */
   getVietnameseDocumentTypes: async (loanType?: string) => {
-    const response = await apiClient.GET(
+    const response = await dopClient.GET(
       "/api/v1/loans/vietnamese-document-types" as any,
       {
         params: {
@@ -552,7 +552,7 @@ export const loanApi = {
    * Get status configuration for Vietnamese market
    */
   getVietnameseStatusConfig: async () => {
-    const response = await apiClient.GET(
+    const response = await dopClient.GET(
       "/api/v1/loans/vietnamese-status-config" as any,
     );
     return response.data;
@@ -562,7 +562,7 @@ export const loanApi = {
    * Get processing time standards
    */
   getProcessingTimeStandards: async (loanType: string) => {
-    const response = await apiClient.GET(
+    const response = await dopClient.GET(
       "/api/v1/loans/processing-time-standards" as any,
       {
         params: {
@@ -577,7 +577,7 @@ export const loanApi = {
    * Get communication templates
    */
   getCommunicationTemplates: async (category?: string) => {
-    const response = await apiClient.GET(
+    const response = await dopClient.GET(
       "/api/v1/loans/communication-templates" as any,
       {
         params: {
@@ -596,7 +596,7 @@ export const loanApi = {
     templateId: string,
     variables: Record<string, any>,
   ) => {
-    const response = await apiClient.POST(
+    const response = await dopClient.POST(
       "/api/v1/loans/applications/{id}/templated-message" as any,
       {
         params: {
@@ -612,7 +612,7 @@ export const loanApi = {
    * Get notification delivery status
    */
   getNotificationDeliveryStatus: async (notificationId: string) => {
-    const response = await apiClient.GET(
+    const response = await dopClient.GET(
       "/api/v1/notifications/{id}/delivery-status" as any,
       {
         params: {
@@ -631,7 +631,7 @@ export const loanApi = {
     reason: string,
     priority: "high" | "urgent",
   ) => {
-    const response = await apiClient.POST(
+    const response = await dopClient.POST(
       "/api/v1/loans/applications/{id}/escalate" as any,
       {
         params: {
@@ -652,7 +652,7 @@ export const loanApi = {
     reason: string,
     requestedDays: number,
   ) => {
-    const response = await apiClient.POST(
+    const response = await dopClient.POST(
       "/api/v1/loans/applications/{id}/documents/{documentId}/extension-request" as any,
       {
         params: {
@@ -676,7 +676,7 @@ export const loanApi = {
       userId?: string;
     },
   ) => {
-    const response = await apiClient.GET(
+    const response = await dopClient.GET(
       "/api/v1/loans/applications/{id}/audit-trail" as any,
       {
         params: {
@@ -701,7 +701,7 @@ export const loanApi = {
       topic: string;
     },
   ) => {
-    const response = await apiClient.POST(
+    const response = await dopClient.POST(
       "/api/v1/loans/applications/{id}/schedule-callback" as any,
       {
         params: {
@@ -717,7 +717,7 @@ export const loanApi = {
    * Get upcoming milestones and deadlines
    */
   getUpcomingMilestones: async (applicationId: string) => {
-    const response = await apiClient.GET(
+    const response = await dopClient.GET(
       "/api/v1/loans/applications/{id}/upcoming-milestones" as any,
       {
         params: {
@@ -740,7 +740,7 @@ export const loanApi = {
       channels: string[];
     },
   ) => {
-    const response = await apiClient.POST(
+    const response = await dopClient.POST(
       "/api/v1/loans/applications/{id}/reminders" as any,
       {
         params: {
@@ -756,7 +756,7 @@ export const loanApi = {
    * Get estimated completion date based on current status and processing patterns
    */
   getEstimatedCompletionDate: async (applicationId: string) => {
-    const response = await apiClient.GET(
+    const response = await dopClient.GET(
       "/api/v1/loans/applications/{id}/estimated-completion" as any,
       {
         params: {
@@ -776,7 +776,7 @@ export const loanAdminApi = {
   getAllApplications: async (
     params?: paths["/admin/loans/applications"]["get"]["parameters"]["query"],
   ) => {
-    const response = await apiClient.GET("/admin/loans/applications", {
+    const response = await dopClient.GET("/admin/loans/applications", {
       params: {
         query: params,
       },
@@ -789,7 +789,7 @@ export const loanAdminApi = {
     applicationId: string,
     status: paths["/admin/loans/applications/{id}/status"]["put"]["requestBody"]["content"]["application/json"],
   ) => {
-    const response = await apiClient.PUT(
+    const response = await dopClient.PUT(
       "/admin/loans/applications/{id}/status",
       {
         params: {
@@ -806,7 +806,7 @@ export const loanAdminApi = {
     applicationId: string,
     partnerData: paths["/admin/loans/applications/{id}/forward"]["post"]["requestBody"]["content"]["application/json"],
   ) => {
-    const response = await apiClient.POST(
+    const response = await dopClient.POST(
       "/admin/loans/applications/{id}/forward",
       {
         params: {
@@ -822,7 +822,7 @@ export const loanAdminApi = {
   getApplicationStats: async (
     params?: paths["/admin/loans/stats"]["get"]["parameters"]["query"],
   ) => {
-    const response = await apiClient.GET("/admin/loans/stats", {
+    const response = await dopClient.GET("/admin/loans/stats", {
       params: {
         query: params,
       },
@@ -834,7 +834,7 @@ export const loanAdminApi = {
   getPartnerPerformance: async (
     params?: paths["/admin/loans/partners"]["get"]["parameters"]["query"],
   ) => {
-    const response = await apiClient.GET("/admin/loans/partners", {
+    const response = await dopClient.GET("/admin/loans/partners", {
       params: {
         query: params,
       },
@@ -852,7 +852,7 @@ export const loanAdminApi = {
     data: Record<string, any>;
     loanType?: string;
   }) => {
-    const response = await apiClient.POST("/loans/validate", {
+    const response = await dopClient.POST("/loans/validate", {
       body: stepData,
     });
     return response.data;
@@ -862,7 +862,7 @@ export const loanAdminApi = {
    * Get Vietnamese provinces/cities for address dropdowns
    */
   getProvinces: async () => {
-    const response = await apiClient.GET("/location/provinces");
+    const response = await dopClient.GET("/location/provinces");
     return response.data;
   },
 
@@ -870,7 +870,7 @@ export const loanAdminApi = {
    * Get districts by province code
    */
   getDistricts: async (provinceCode: string) => {
-    const response = await apiClient.GET("/location/districts", {
+    const response = await dopClient.GET("/location/districts", {
       params: {
         query: { provinceCode },
       },
@@ -882,7 +882,7 @@ export const loanAdminApi = {
    * Get wards by district code
    */
   getWards: async (districtCode: string) => {
-    const response = await apiClient.GET("/location/wards", {
+    const response = await dopClient.GET("/location/wards", {
       params: {
         query: { districtCode },
       },
@@ -894,7 +894,7 @@ export const loanAdminApi = {
    * Get list of supported banks in Vietnam
    */
   getBanks: async () => {
-    const response = await apiClient.GET("/banks");
+    const response = await dopClient.GET("/banks");
     return response.data;
   },
 
@@ -902,7 +902,7 @@ export const loanAdminApi = {
    * Get income source options
    */
   getIncomeSources: async () => {
-    const response = await apiClient.GET("/config/income-sources");
+    const response = await dopClient.GET("/config/income-sources");
     return response.data;
   },
 
@@ -910,7 +910,7 @@ export const loanAdminApi = {
    * Get employment types
    */
   getEmploymentTypes: async () => {
-    const response = await apiClient.GET("/config/employment-types");
+    const response = await dopClient.GET("/config/employment-types");
     return response.data;
   },
 
@@ -918,7 +918,7 @@ export const loanAdminApi = {
    * Get loan purposes
    */
   getLoanPurposes: async () => {
-    const response = await apiClient.GET("/config/loan-purposes");
+    const response = await dopClient.GET("/config/loan-purposes");
     return response.data;
   },
 
@@ -934,7 +934,7 @@ export const loanAdminApi = {
     existingLoans?: number;
     creditScore?: number;
   }) => {
-    const response = await apiClient.POST("/loans/eligibility-check", {
+    const response = await dopClient.POST("/loans/eligibility-check", {
       body: criteria,
     });
     return response.data;
@@ -950,7 +950,7 @@ export const loanAdminApi = {
     interestType: "reducing" | "flat" | "fixed";
     firstPaymentDate?: string;
   }) => {
-    const response = await apiClient.POST("/loans/payment-schedule", {
+    const response = await dopClient.POST("/loans/payment-schedule", {
       body: loanDetails,
     });
     return response.data;
@@ -1072,7 +1072,7 @@ export const loanAdminApi = {
    * Delete uploaded document
    */
   deleteDocument: async (applicationId: string, documentId: string) => {
-    const response = await apiClient.DELETE(
+    const response = await dopClient.DELETE(
       "/loans/applications/{id}/documents/{documentId}",
       {
         params: {
@@ -1087,7 +1087,7 @@ export const loanAdminApi = {
    * Get uploaded documents for application
    */
   getApplicationDocuments: async (applicationId: string) => {
-    const response = await apiClient.GET("/loans/applications/{id}/documents", {
+    const response = await dopClient.GET("/loans/applications/{id}/documents", {
       params: {
         path: { id: applicationId },
       },
@@ -1101,7 +1101,7 @@ export const loanAdminApi = {
   saveDraftApplication: async (
     applicationData: Partial<LoanApplicationData>,
   ) => {
-    const response = await apiClient.POST("/loans/applications/draft", {
+    const response = await dopClient.POST("/loans/applications/draft", {
       body: applicationData,
     });
     return response.data;
@@ -1114,7 +1114,7 @@ export const loanAdminApi = {
     const url = draftId
       ? `/loans/applications/draft/${draftId}`
       : "/loans/applications/draft";
-    const response = await apiClient.GET(url);
+    const response = await dopClient.GET(url);
     return response.data;
   },
 
@@ -1122,7 +1122,7 @@ export const loanAdminApi = {
    * Submit final loan application
    */
   submitFinalApplication: async (applicationData: LoanApplicationData) => {
-    const response = await apiClient.POST("/loans/applications/submit", {
+    const response = await dopClient.POST("/loans/applications/submit", {
       body: applicationData,
     });
     return response.data;
@@ -1132,7 +1132,7 @@ export const loanAdminApi = {
    * Get application summary for review
    */
   getApplicationSummary: async (applicationId: string) => {
-    const response = await apiClient.GET("/loans/applications/{id}/summary", {
+    const response = await dopClient.GET("/loans/applications/{id}/summary", {
       params: {
         path: { id: applicationId },
       },
@@ -1144,7 +1144,7 @@ export const loanAdminApi = {
    * Cancel application
    */
   cancelApplication: async (applicationId: string, reason: string) => {
-    const response = await apiClient.POST("/loans/applications/{id}/cancel", {
+    const response = await dopClient.POST("/loans/applications/{id}/cancel", {
       params: {
         path: { id: applicationId },
       },
@@ -1163,7 +1163,7 @@ export const loanAdminApi = {
     income?: number;
     employmentType?: string;
   }) => {
-    const response = await apiClient.POST("/loans/compare", {
+    const response = await dopClient.POST("/loans/compare", {
       body: criteria,
     });
     return response.data;
@@ -1173,7 +1173,7 @@ export const loanAdminApi = {
    * Get loan application statistics (for dashboard)
    */
   getApplicationStats: async () => {
-    const response = await apiClient.GET("/loans/applications/stats");
+    const response = await dopClient.GET("/loans/applications/stats");
     return response.data;
   },
 
@@ -1181,7 +1181,7 @@ export const loanAdminApi = {
    * Get loan form configuration
    */
   getFormConfiguration: async (loanType?: string) => {
-    const response = await apiClient.GET("/loans/form-config", {
+    const response = await dopClient.GET("/loans/form-config", {
       params: {
         query: { loanType },
       },
@@ -1193,7 +1193,7 @@ export const loanAdminApi = {
    * Generate application PDF
    */
   generateApplicationPDF: async (applicationId: string) => {
-    const response = await apiClient.GET("/loans/applications/{id}/pdf", {
+    const response = await dopClient.GET("/loans/applications/{id}/pdf", {
       params: {
         path: { id: applicationId },
       },
@@ -1226,7 +1226,7 @@ export const loanProductApi = {
     sortBy?: "popularity" | "interest_rate" | "processing_time" | "max_amount";
     sortOrder?: "asc" | "desc";
   }) => {
-    const response = await apiClient.GET("/loans/vietnamese-products", {
+    const response = await dopClient.GET("/loans/vietnamese-products", {
       params: {
         query: params,
       },
@@ -1238,7 +1238,7 @@ export const loanProductApi = {
    * Get loan product by ID
    */
   getVietnameseLoanProduct: async (id: string) => {
-    const response = await apiClient.GET("/loans/vietnamese-products/{id}", {
+    const response = await dopClient.GET("/loans/vietnamese-products/{id}", {
       params: {
         path: { id },
       },
@@ -1263,7 +1263,7 @@ export const loanProductApi = {
     limit?: number;
     offset?: number;
   }) => {
-    const response = await apiClient.POST("/loans/vietnamese-products/search", {
+    const response = await dopClient.POST("/loans/vietnamese-products/search", {
       body: params,
     });
     return response.data;
@@ -1282,7 +1282,7 @@ export const loanProductApi = {
       limit?: number;
     },
   ) => {
-    const response = await apiClient.GET(
+    const response = await dopClient.GET(
       "/loans/vietnamese-products/type/{loanType}",
       {
         params: {
@@ -1307,7 +1307,7 @@ export const loanProductApi = {
       limit?: number;
     },
   ) => {
-    const response = await apiClient.GET(
+    const response = await dopClient.GET(
       "/loans/vietnamese-products/bank/{bankCode}",
       {
         params: {
@@ -1326,7 +1326,7 @@ export const loanProductApi = {
     loanType?: string;
     limit?: number;
   }) => {
-    const response = await apiClient.GET(
+    const response = await dopClient.GET(
       "/loans/vietnamese-products/featured",
       {
         params: {
@@ -1347,7 +1347,7 @@ export const loanProductApi = {
     includeFees?: boolean;
     includePromotions?: boolean;
   }) => {
-    const response = await apiClient.POST(
+    const response = await dopClient.POST(
       "/loans/vietnamese-products/compare",
       {
         body: params,
@@ -1383,7 +1383,7 @@ export const loanProductApi = {
     };
     limit?: number;
   }) => {
-    const response = await apiClient.POST(
+    const response = await dopClient.POST(
       "/loans/vietnamese-products/recommendations",
       {
         body: params,
@@ -1445,7 +1445,7 @@ export const loanProductApi = {
       };
     };
   }) => {
-    const response = await apiClient.POST(
+    const response = await dopClient.POST(
       "/loans/vietnamese-products/eligibility",
       {
         body: params,
@@ -1465,7 +1465,7 @@ export const loanProductApi = {
       includePromotionalRate?: boolean;
     }>;
   }) => {
-    const response = await apiClient.POST(
+    const response = await dopClient.POST(
       "/loans/vietnamese-products/calculate",
       {
         body: params,
@@ -1481,7 +1481,7 @@ export const loanProductApi = {
     bankCodes?: string[];
     loanTypes?: string[];
   }) => {
-    const response = await apiClient.GET(
+    const response = await dopClient.GET(
       "/loans/vietnamese-products/interest-rates",
       {
         params: {
@@ -1501,7 +1501,7 @@ export const loanProductApi = {
     validOnly?: boolean;
     limit?: number;
   }) => {
-    const response = await apiClient.GET(
+    const response = await dopClient.GET(
       "/loans/vietnamese-products/promotions",
       {
         params: {
@@ -1519,7 +1519,7 @@ export const loanProductApi = {
     includeInactive?: boolean;
     type?: "state" | "commercial" | "foreign" | "investment";
   }) => {
-    const response = await apiClient.GET("/loans/vietnamese-products/banks", {
+    const response = await dopClient.GET("/loans/vietnamese-products/banks", {
       params: {
         query: params,
       },
@@ -1535,7 +1535,7 @@ export const loanProductApi = {
     loanType?: string;
     period?: "week" | "month" | "quarter" | "year";
   }) => {
-    const response = await apiClient.GET(
+    const response = await dopClient.GET(
       "/loans/vietnamese-products/statistics",
       {
         params: {
@@ -1557,7 +1557,7 @@ export const loanProductApi = {
     notes?: string;
     isPublic?: boolean;
   }) => {
-    const response = await apiClient.POST(
+    const response = await dopClient.POST(
       "/loans/vietnamese-products/comparisons/save",
       {
         body: params,
@@ -1574,7 +1574,7 @@ export const loanProductApi = {
     offset?: number;
     includePublic?: boolean;
   }) => {
-    const response = await apiClient.GET(
+    const response = await dopClient.GET(
       "/loans/vietnamese-products/comparisons",
       {
         params: {
@@ -1589,7 +1589,7 @@ export const loanProductApi = {
    * Get saved comparison by ID
    */
   getSavedComparison: async (id: string) => {
-    const response = await apiClient.GET(
+    const response = await dopClient.GET(
       "/loans/vietnamese-products/comparisons/{id}",
       {
         params: {
@@ -1604,7 +1604,7 @@ export const loanProductApi = {
    * Delete saved comparison
    */
   deleteSavedComparison: async (id: string) => {
-    const response = await apiClient.DELETE(
+    const response = await dopClient.DELETE(
       "/loans/vietnamese-products/comparisons/{id}",
       {
         params: {
@@ -1625,7 +1625,7 @@ export const loanProductApi = {
       allowEdit?: boolean;
     },
   ) => {
-    const response = await apiClient.POST(
+    const response = await dopClient.POST(
       "/loans/vietnamese-products/comparisons/{id}/share",
       {
         params: {
@@ -1646,7 +1646,7 @@ export const loanProductApi = {
     period?: "week" | "month" | "quarter" | "year";
     breakdown?: "bank" | "loan_type" | "region";
   }) => {
-    const response = await apiClient.POST(
+    const response = await dopClient.POST(
       "/loans/vietnamese-products/analytics",
       {
         body: params,

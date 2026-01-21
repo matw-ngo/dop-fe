@@ -14,7 +14,7 @@ import type {
 } from "@/components/user-onboarding/constants/field-types";
 import type { GeneratedStepConfig } from "@/components/user-onboarding/types/field-config";
 import { useConfirmationFields } from "@/hooks/form/use-confirmation-fields";
-import apiClient from "@/lib/api/client";
+import { dopClient } from "@/lib/api/services/dop";
 import type { components } from "@/lib/api/v1/dop";
 import type { MappedFlow } from "@/mappers/flowMapper";
 import { toCreateLeadRequest } from "@/mappers/onboardingMapper";
@@ -80,7 +80,7 @@ export function ConfirmationStep({
       const payload = toCreateLeadRequest(formData, flowId, stepId, domain);
 
       // Make API call to create lead
-      const { data, error } = await apiClient.POST("/leads", {
+      const { data, error } = await dopClient.POST("/leads", {
         body: payload,
       });
 

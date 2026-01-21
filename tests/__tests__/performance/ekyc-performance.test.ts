@@ -9,15 +9,15 @@
  * @jest-environment jsdom
  */
 
-import { describe, it, expect, beforeEach, vi } from "vitest";
-import { renderHook, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { renderHook, waitFor } from "@testing-library/react";
 import React from "react";
-import apiClient from "@/lib/api/client";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { dopClient } from "@/lib/api/services/dop";
 
 // Mock the API client
-vi.mock("@/lib/api/client", () => ({
-  default: {
+vi.mock("@/lib/api/services/dop", () => ({
+  dopClient: {
     GET: vi.fn(),
     POST: vi.fn(),
   },
@@ -66,7 +66,7 @@ describe("eKYC Performance Benchmarks", () => {
       };
 
       // Simulate realistic API latency (200-300ms)
-      (apiClient.GET as any).mockImplementation(
+      (dopClient.GET as any).mockImplementation(
         () =>
           new Promise((resolve) => {
             setTimeout(() => {
@@ -102,7 +102,7 @@ describe("eKYC Performance Benchmarks", () => {
         enable_api_masked_face: true,
       };
 
-      (apiClient.GET as any).mockImplementation(
+      (dopClient.GET as any).mockImplementation(
         () =>
           new Promise((resolve) => {
             setTimeout(() => {
@@ -158,7 +158,7 @@ describe("eKYC Performance Benchmarks", () => {
           },
         });
 
-        (apiClient.GET as any).mockImplementation(
+        (dopClient.GET as any).mockImplementation(
           () =>
             new Promise((resolve) => {
               setTimeout(
@@ -249,7 +249,7 @@ describe("eKYC Performance Benchmarks", () => {
       };
 
       // Simulate realistic submission latency (1-2s)
-      (apiClient.POST as any).mockImplementation(
+      (dopClient.POST as any).mockImplementation(
         () =>
           new Promise((resolve) => {
             setTimeout(() => {
@@ -332,7 +332,7 @@ describe("eKYC Performance Benchmarks", () => {
           },
         });
 
-        (apiClient.POST as any).mockImplementation(
+        (dopClient.POST as any).mockImplementation(
           () =>
             new Promise((resolve) => {
               setTimeout(
@@ -389,7 +389,7 @@ describe("eKYC Performance Benchmarks", () => {
       };
 
       let apiCallCount = 0;
-      (apiClient.GET as any).mockImplementation(() => {
+      (dopClient.GET as any).mockImplementation(() => {
         apiCallCount++;
         return Promise.resolve({
           data: mockConfig,
@@ -439,7 +439,7 @@ describe("eKYC Performance Benchmarks", () => {
       };
 
       let apiCallCount = 0;
-      (apiClient.GET as any).mockImplementation(() => {
+      (dopClient.GET as any).mockImplementation(() => {
         apiCallCount++;
         return Promise.resolve({
           data: mockConfig,
@@ -484,7 +484,7 @@ describe("eKYC Performance Benchmarks", () => {
       };
 
       let apiCallCount = 0;
-      (apiClient.GET as any).mockImplementation(() => {
+      (dopClient.GET as any).mockImplementation(() => {
         apiCallCount++;
         return Promise.resolve({
           data: mockConfig,
@@ -543,7 +543,7 @@ describe("eKYC Performance Benchmarks", () => {
         enable_api_masked_face: true,
       };
 
-      (apiClient.GET as any).mockResolvedValue({
+      (dopClient.GET as any).mockResolvedValue({
         data: mockConfig,
         error: undefined,
       });

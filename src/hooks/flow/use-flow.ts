@@ -1,11 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "@/lib/api/client";
+import { dopClient } from "@/lib/api/services/dop";
 import type { components } from "@/lib/api/v1/dop";
 import type { MappedFlow } from "@/mappers/flowMapper";
 import { mapApiFlowToFlow } from "@/mappers/flowMapper";
 
 async function getFlowByTenant(tenant: string) {
-  const { data, error, response } = await apiClient.GET("/flows/{tenant}", {
+  const { data, error, response } = await dopClient.GET("/flows/{tenant}", {
     params: {
       path: { tenant },
     },

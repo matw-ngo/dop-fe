@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import apiClient from "@/lib/api/client";
+import { dopClient } from "@/lib/api/services/dop";
 import type { components } from "@/lib/api/v1/dop";
 
 type CreateLeadRequestBody = components["schemas"]["CreateLeadRequestBody"];
@@ -57,7 +57,7 @@ async function createLead(
   };
 
   try {
-    const { data, error } = await apiClient.POST("/leads", {
+    const { data, error } = await dopClient.POST("/leads", {
       body: requestBody,
     });
 
