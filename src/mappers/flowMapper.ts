@@ -1,4 +1,4 @@
-import type { components } from "@/lib/api/v1.d.ts";
+import type { components } from "@/lib/api/v1/dop";
 
 // API Types
 type ApiFlowDetail = components["schemas"]["FlowDetail"];

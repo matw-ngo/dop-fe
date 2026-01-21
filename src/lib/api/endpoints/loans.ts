@@ -4,7 +4,7 @@ import { securityUtils, useTokenStore } from "@/lib/auth/secure-tokens";
 import { VietnameseFinancialValidator } from "@/lib/loan-products/validation";
 import { VietnameseComplianceEngine } from "@/lib/loan-products/vietnamese-compliance";
 import apiClient from "../client";
-import type { paths } from "../v1.d.ts";
+import type { paths } from "../v1/dop";
 
 /**
  * Loan Application API endpoints

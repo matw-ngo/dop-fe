@@ -15,7 +15,7 @@ import type {
 import type { GeneratedStepConfig } from "@/components/user-onboarding/types/field-config";
 import { useConfirmationFields } from "@/hooks/form/use-confirmation-fields";
 import apiClient from "@/lib/api/client";
-import type { components } from "@/lib/api/v1.d.ts";
+import type { components } from "@/lib/api/v1/dop";
 import type { MappedFlow } from "@/mappers/flowMapper";
 import { toCreateLeadRequest } from "@/mappers/onboardingMapper";
 import { ConfirmationCategoryCard } from "./ConfirmationCategoryCard";

@@ -17,7 +17,7 @@ import {
   sanitizeVietnamesePhone,
 } from "@/lib/utils/sanitization";
 import apiClient from "../client";
-import type { paths } from "../v1.d.ts";
+import type { paths } from "../v1/dop";
 
 // Enhanced OTP request types with security
 export interface OTPRequestOptions {

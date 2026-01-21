@@ -1,6 +1,6 @@
 // @ts-nocheck
 import apiClient from "../client";
-import type { paths } from "../v1.d.ts";
+import type { paths } from "../v1/dop";
 
 /**
  * Authentication API endpoints

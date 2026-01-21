@@ -1,13 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import apiClient from "@/lib/api/client";
-import type { components } from "@/lib/api/v1.d.ts";
+import type { components } from "@/lib/api/v1/dop";
 import {
-  logConfigFetchStart,
-  logConfigFetchSuccess,
-  logConfigFetchError,
   logConfigCacheHit,
   logConfigCacheMiss,
+  logConfigFetchError,
+  logConfigFetchStart,
+  logConfigFetchSuccess,
 } from "@/lib/ekyc/audit-logger";
 
 /**

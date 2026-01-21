@@ -2,7 +2,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { loanApi } from "../endpoints/loans";
-import type { paths } from "../v1.d.ts";
+import type { paths } from "../v1/dop";
 
 /**
  * Hook for submitting loan applications

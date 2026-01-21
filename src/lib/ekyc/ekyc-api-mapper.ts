@@ -5,15 +5,15 @@
  * into the format expected by the backend API endpoint POST /leads/{id}/ekyc/vnpt
  */
 
-import type { components } from "@/lib/api/v1.d.ts";
+import type { components } from "@/lib/api/v1/dop";
 import type {
+  CompareFaceResponse,
   EkycResponse,
+  HashImgResponse,
   LivenessCardResponse,
-  OcrResponse,
   LivenessFaceResponse,
   MaskedFaceResponse,
-  CompareFaceResponse,
-  HashImgResponse,
+  OcrResponse,
 } from "./types";
 
 /**

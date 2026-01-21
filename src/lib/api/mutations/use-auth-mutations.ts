@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useAuthStore } from "@/store/use-auth-store";
 import { authApi, socialAuthApi } from "../endpoints/auth";
-import type { paths } from "../v1.d.ts";
+import type { paths } from "../v1/dop";
 
 /**
  * Hook for user login

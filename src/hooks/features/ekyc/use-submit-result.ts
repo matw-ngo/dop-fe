@@ -1,11 +1,11 @@
 import { useMutation } from "@tanstack/react-query";
 import apiClient from "@/lib/api/client";
-import type { components } from "@/lib/api/v1.d.ts";
+import type { components } from "@/lib/api/v1/dop";
 import {
-  logSubmitStart,
-  logSubmitSuccess,
   logSubmitError,
   logSubmitRetry,
+  logSubmitStart,
+  logSubmitSuccess,
   logValidationError,
 } from "@/lib/ekyc/audit-logger";
 
@@ -70,7 +70,7 @@ async function submitEkycResult({
  */
 function exponentialBackoff(attempt: number): number {
   // Calculate delay: 2^attempt * 1000ms, capped at 10 seconds
-  const delay = Math.min(Math.pow(2, attempt) * 1000, 10000);
+  const delay = Math.min(2 ** attempt * 1000, 10000);
   // Add some jitter to avoid thundering herd
   return delay + Math.random() * 500;
 }

@@ -9,7 +9,7 @@ import { parseTimeoutConfig } from "./timeouts/config-parser";
 import { DEFAULT_RETRY } from "./timeouts/constants";
 import { resolveTimeout } from "./timeouts/resolver";
 import { useTimeoutStore } from "./timeouts/timeout-store";
-import type { paths } from "./v1.d.ts";
+import type { paths } from "./v1/dop";
 
 // API Configuration based on environment
 const getApiConfig = () => {
