@@ -9,16 +9,16 @@
  * @jest-environment jsdom
  */
 
-import React from "react";
-import { describe, it, expect, beforeEach, vi } from "vitest";
-import { renderHook, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { renderHook, waitFor } from "@testing-library/react";
+import React from "react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { dopClient } from "@/lib/api/services/dop";
 import { useSubmitEkycResult } from "../features/ekyc/use-submit-result";
-import apiClient from "@/lib/api/client";
 
 // Mock the API client
-vi.mock("@/lib/api/client", () => ({
-  default: {
+vi.mock("@/lib/api/services/dop", () => ({
+  dopClient: {
     POST: vi.fn(),
   },
 }));
@@ -107,7 +107,7 @@ describe("useSubmitEkycResult", () => {
       },
     };
 
-    (apiClient.POST as any).mockResolvedValue({
+    (dopClient.POST as any).mockResolvedValue({
       data: mockResponse,
       error: undefined,
     });
@@ -126,7 +126,7 @@ describe("useSubmitEkycResult", () => {
     await submitPromise;
 
     expect(result.current.data).toEqual(mockResponse);
-    expect(apiClient.POST).toHaveBeenCalledWith("/leads/{id}/ekyc/vnpt", {
+    expect(dopClient.POST).toHaveBeenCalledWith("/leads/{id}/ekyc/vnpt", {
       params: { path: { id: "lead-123" } },
       body: mockEkycData,
     });
@@ -180,7 +180,7 @@ describe("useSubmitEkycResult", () => {
       },
     };
 
-    (apiClient.POST as any).mockResolvedValue({
+    (dopClient.POST as any).mockResolvedValue({
       data: undefined,
       error: mockError,
     });
@@ -247,7 +247,7 @@ describe("useSubmitEkycResult", () => {
     };
 
     let attemptCount = 0;
-    (apiClient.POST as any).mockImplementation(() => {
+    (dopClient.POST as any).mockImplementation(() => {
       attemptCount++;
       if (attemptCount < 3) {
         return Promise.resolve({
@@ -321,7 +321,7 @@ describe("useSubmitEkycResult", () => {
     };
 
     let attemptCount = 0;
-    (apiClient.POST as any).mockImplementation(() => {
+    (dopClient.POST as any).mockImplementation(() => {
       attemptCount++;
       return Promise.resolve({
         data: undefined,
@@ -397,7 +397,7 @@ describe("useSubmitEkycResult", () => {
     const delays: number[] = [];
     let attemptCount = 0;
 
-    (apiClient.POST as any).mockImplementation(() => {
+    (dopClient.POST as any).mockImplementation(() => {
       const startTime = Date.now();
       attemptCount++;
       if (attemptCount < 3) {
@@ -485,7 +485,7 @@ describe("useSubmitEkycResult", () => {
       },
     };
 
-    (apiClient.POST as any).mockImplementation(
+    (dopClient.POST as any).mockImplementation(
       () =>
         new Promise((resolve) => {
           setTimeout(() => {
@@ -556,7 +556,7 @@ describe("useSubmitEkycResult", () => {
     };
 
     let attemptCount = 0;
-    (apiClient.POST as any).mockImplementation(() => {
+    (dopClient.POST as any).mockImplementation(() => {
       attemptCount++;
       if (attemptCount === 1) {
         return Promise.resolve({
@@ -629,7 +629,7 @@ describe("useSubmitEkycResult", () => {
     };
 
     let attemptCount = 0;
-    (apiClient.POST as any).mockImplementation(() => {
+    (dopClient.POST as any).mockImplementation(() => {
       attemptCount++;
       if (attemptCount === 1) {
         return Promise.resolve({
@@ -702,7 +702,7 @@ describe("useSubmitEkycResult", () => {
     };
 
     let attemptCount = 0;
-    (apiClient.POST as any).mockImplementation(() => {
+    (dopClient.POST as any).mockImplementation(() => {
       attemptCount++;
       return Promise.resolve({
         data: undefined,
@@ -779,7 +779,7 @@ describe("useSubmitEkycResult", () => {
     };
 
     let resolveSubmit: (value: any) => void;
-    (apiClient.POST as any).mockReturnValue(
+    (dopClient.POST as any).mockReturnValue(
       new Promise((resolve) => {
         resolveSubmit = resolve;
       }),

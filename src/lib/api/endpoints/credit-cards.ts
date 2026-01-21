@@ -7,7 +7,6 @@
  */
 
 import { vietnameseCreditCards } from "@/data/credit-cards";
-import apiClient from "@/lib/api/client";
 import type {
   CardCategory,
   CardCategoryInfo,

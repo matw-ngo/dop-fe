@@ -66,6 +66,5 @@ export const URLS = {
 export const TEST_DATA = {
   VALID_PHONE: "0912345678",
   INVALID_PHONE: "123456",
-  VALID_OTP: "1234",
-  INVALID_OTP: "12",
+  // OTP values removed - use real API for OTP verification
 } as const;

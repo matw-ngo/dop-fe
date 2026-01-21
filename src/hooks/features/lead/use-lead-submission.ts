@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
-import apiClient from "@/lib/api/client";
-import type { components } from "@/lib/api/v1.d.ts";
+import { dopClient } from "@/lib/api/services/dop";
+import type { components } from "@/lib/api/v1/dop";
 
 type SubmitLeadInfoRequestBody =
   components["schemas"]["SubmitLeadInfoRequestBody"];
@@ -12,7 +12,7 @@ interface SubmitInfoParams {
 
 async function submitLeadInfo({ leadId, data }: SubmitInfoParams) {
   try {
-    const { data: responseData, error } = await apiClient.POST(
+    const { data: responseData, error } = await dopClient.POST(
       "/leads/{id}/submit-info",
       {
         params: {

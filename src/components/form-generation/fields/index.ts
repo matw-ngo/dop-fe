@@ -11,6 +11,7 @@ import { DateField } from "./DateField";
 import { EkycField } from "./EkycField";
 import { FileField } from "./FileField";
 import { NumberField } from "./NumberField";
+import { PhoneVerificationField } from "./PhoneVerificationField";
 import { RadioField } from "./RadioField";
 import { SelectField } from "./SelectField";
 import { SwitchField } from "./SwitchField";
@@ -28,6 +29,7 @@ export const MemoizedDateField = memo(DateField);
 export const MemoizedSwitchField = memo(SwitchField);
 export const MemoizedFileField = memo(FileField);
 export const MemoizedEkycField = memo(EkycField);
+export const MemoizedPhoneVerificationField = memo(PhoneVerificationField);
 
 // Also export non-memoized versions for direct use if needed
 export {
@@ -41,4 +43,5 @@ export {
   SwitchField,
   FileField,
   EkycField,
+  PhoneVerificationField,
 };

@@ -1,0 +1,90 @@
+{
+  "expected_amount": {
+    "label": "Loan Amount",
+    "placeholder": "Enter loan amount",
+    "help": ""
+  },
+  "loan_period": {
+    "label": "Loan Term",
+    "placeholder": "Months",
+    "help": ""
+  },
+  "loan_purpose": {
+    "label": "Loan Purpose",
+    "placeholder": "Select purpose",
+    "help": ""
+  },
+  "fullName": {
+    "label": "Full Name",
+    "placeholder": "Enter full name",
+    "help": "",
+    "errors": {
+      "required": "Please enter your full name",
+      "minLength": "Name must be at least 2 characters"
+    }
+  },
+  "nationalId": {
+    "label": "National ID",
+    "placeholder": "Enter ID number",
+    "help": "",
+    "errors": {
+      "required": "Please enter your ID number",
+      "pattern": "ID must be 12 digits"
+    }
+  },
+  "email": {
+    "label": "Email",
+    "placeholder": "Enter email address",
+    "help": "",
+    "errors": {
+      "required": "Please enter your email",
+      "email": "Invalid email address"
+    }
+  },
+  "location": {
+    "label": "Province/City",
+    "placeholder": "Select province/city",
+    "help": "",
+    "errors": {
+      "required": "Please select province/city"
+    }
+  },
+  "birthday": {
+    "label": "Date of Birth",
+    "placeholder": "Select date of birth",
+    "help": "",
+    "errors": {
+      "required": "Please select date of birth"
+    }
+  },
+  "gender": {
+    "label": "Gender",
+    "placeholder": "Select gender",
+    "help": "",
+    "errors": {
+      "required": "Please select gender"
+    }
+  },
+  "income": {
+    "label": "Monthly Income",
+    "placeholder": "Select income range",
+    "help": "",
+    "errors": {
+      "required": "Please select income range"
+    }
+  },
+  "agreeStatus": {
+    "label": "",
+    "placeholder": "",
+    "help": ""
+  },
+  "validation": {
+    "required": "This field is required",
+    "email": "Invalid email address",
+    "minLength": "Minimum {min} characters required",
+    "maxLength": "Maximum {max} characters allowed",
+    "min": "Value must be at least {min}",
+    "max": "Value must be at most {max}",
+    "pattern": "Invalid format"
+  }
+}

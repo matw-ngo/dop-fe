@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
-import apiClient from "@/lib/api/client";
-import type { components } from "@/lib/api/v1.d.ts";
+import { dopClient } from "@/lib/api/services/dop";
+import type { components } from "@/lib/api/v1/dop";
 
 type SubmitOTPRequestBody = components["schemas"]["SubmitOTPRequestBody"];
 
@@ -12,7 +12,7 @@ interface SubmitOTPParams {
 
 async function submitOTP({ leadId, token, otp }: SubmitOTPParams) {
   try {
-    const { data, error } = await apiClient.POST("/leads/{id}/submit-otp", {
+    const { data, error } = await dopClient.POST("/leads/{id}/submit-otp", {
       params: {
         path: {
           id: leadId,
@@ -34,12 +34,7 @@ async function submitOTP({ leadId, token, otp }: SubmitOTPParams) {
 
     return data;
   } catch (error) {
-    console.error("Submit OTP API failed, using mock data:", error);
-    // Mock success response
-    return {
-      success: true,
-      message: "OTP verified successfully (Mock)",
-    };
+    throw error;
   }
 }
 

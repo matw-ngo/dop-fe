@@ -12,12 +12,14 @@ interface StepContentProps {
   step: FormStep;
   className?: string;
   showTitle?: boolean;
+  namespace?: string;
 }
 
 export function StepContent({
   step,
   className,
   showTitle = true,
+  namespace,
 }: StepContentProps) {
   const { updateFieldValue, getStepData, stepMeta, formData } =
     useFormWizardStore();
@@ -105,6 +107,7 @@ export function StepContent({
               // Optionally validate field on blur
             }}
             error={meta?.errors?.[field.name]}
+            namespace={namespace || "common"}
           />
         ))}
       </div>

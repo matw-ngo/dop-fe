@@ -54,6 +54,9 @@ export interface OtpVerificationModalProps {
   open: boolean;
   onClose: () => void;
   phoneNumber: string;
+  leadId?: string;
+  token?: string;
+  otpType?: number;
   onSuccess: (otp: string) => void;
   onFailure: (error: string) => void;
   onExpired: () => void;

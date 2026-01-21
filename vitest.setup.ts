@@ -2,11 +2,24 @@ import "@testing-library/jest-dom";
 import { cleanup } from "@testing-library/react";
 import { afterAll, afterEach, beforeAll, vi } from "vitest";
 
-// Mock ResizeObserver
-global.ResizeObserver = vi.fn().mockImplementation(() => ({
+// Mock ResizeObserver - must be on global object for Node.js environment
+const mockResizeObserver = vi.fn().mockImplementation(() => ({
   observe: vi.fn(),
   unobserve: vi.fn(),
   disconnect: vi.fn(),
+}));
+
+Object.defineProperty(global, "ResizeObserver", {
+  writable: true,
+  value: mockResizeObserver,
+});
+
+// Also set it directly in case it's accessed differently
+global.ResizeObserver = mockResizeObserver;
+
+// Mock @radix-ui/react-use-size which uses ResizeObserver internally
+vi.mock("@radix-ui/react-use-size", () => ({
+  useSize: () => ({ width: 100, height: 40 }),
 }));
 
 // Mock scrollIntoView
@@ -50,12 +63,21 @@ vi.mock("next/image", () => {
 });
 
 // Mock next-intl
-vi.mock("next-intl", () => ({
-  useTranslations: () => (key: string) => key,
-  useLocale: () => "en",
-  useMessages: () => ({}),
-  getTranslations: () => ({}),
-}));
+vi.mock("next-intl", () => {
+  const createMockT = () => {
+    const mockFn = (key: string) => key;
+    mockFn.rich = (key: string, values?: Record<string, unknown>) => key;
+    mockFn.raw = (key: string) => key;
+    mockFn.n = (key: string, count: number) => key;
+    return mockFn;
+  };
+  return {
+    useTranslations: () => createMockT(),
+    useLocale: () => "en",
+    useMessages: () => ({}),
+    getTranslations: () => createMockT(),
+  };
+});
 
 // Mock next-themes
 vi.mock("next-themes", () => {
@@ -153,14 +175,35 @@ vi.mock("framer-motion", () => {
   };
 });
 
-// Setup MSW
-import { server } from "./mocks/server";
+// ============================================================================
+// Global Test Utilities
+// ============================================================================
 
-// Start MSW server before all tests
-beforeAll(() => server.listen({ onUnhandledRequest: "warn" }));
+// Increase timeout for async operations
+vi.setConfig({
+  testTimeout: 10000,
+});
 
-// Reset handlers after each test
-afterEach(() => server.resetHandlers());
+// Mock window.matchMedia
+Object.defineProperty(window, "matchMedia", {
+  writable: true,
+  value: vi.fn().mockImplementation((query) => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addListener: vi.fn(),
+    removeListener: vi.fn(),
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    dispatchEvent: vi.fn(),
+  })),
+});
 
-// Clean up after all tests
-afterAll(() => server.close());
+// ============================================================================
+// Cleanup after each test
+// ============================================================================
+
+afterEach(() => {
+  vi.clearAllMocks();
+  vi.restoreAllMocks();
+});

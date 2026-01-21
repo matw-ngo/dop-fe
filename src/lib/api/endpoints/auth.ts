@@ -1,6 +1,6 @@
 // @ts-nocheck
-import apiClient from "../client";
-import type { paths } from "../v1.d.ts";
+import { dopClient } from "@/lib/api/services/dop";
+import type { paths } from "../v1/dop";
 
 /**
  * Authentication API endpoints
@@ -10,7 +10,7 @@ export const authApi = {
   login: async (
     credentials: paths["/auth/login"]["post"]["requestBody"]["content"]["application/json"],
   ) => {
-    const response = await apiClient.POST("/auth/login", {
+    const response = await dopClient.POST("/auth/login", {
       body: credentials,
     });
     return response.data;
@@ -18,13 +18,13 @@ export const authApi = {
 
   // Logout
   logout: async () => {
-    const response = await apiClient.POST("/auth/logout");
+    const response = await dopClient.POST("/auth/logout");
     return response.data;
   },
 
   // Refresh token
   refreshToken: async (refreshToken: string) => {
-    const response = await apiClient.POST("/auth/refresh", {
+    const response = await dopClient.POST("/auth/refresh", {
       body: { refreshToken },
     });
     return response.data;
@@ -34,7 +34,7 @@ export const authApi = {
   register: async (
     userData: paths["/auth/register"]["post"]["requestBody"]["content"]["application/json"],
   ) => {
-    const response = await apiClient.POST("/auth/register", {
+    const response = await dopClient.POST("/auth/register", {
       body: userData,
     });
     return response.data;
@@ -42,7 +42,7 @@ export const authApi = {
 
   // Verify email
   verifyEmail: async (token: string) => {
-    const response = await apiClient.POST("/auth/verify-email", {
+    const response = await dopClient.POST("/auth/verify-email", {
       body: { token },
     });
     return response.data;
@@ -50,7 +50,7 @@ export const authApi = {
 
   // Request password reset
   requestPasswordReset: async (email: string) => {
-    const response = await apiClient.POST("/auth/forgot-password", {
+    const response = await dopClient.POST("/auth/forgot-password", {
       body: { email },
     });
     return response.data;
@@ -58,7 +58,7 @@ export const authApi = {
 
   // Reset password
   resetPassword: async (token: string, newPassword: string) => {
-    const response = await apiClient.POST("/auth/reset-password", {
+    const response = await dopClient.POST("/auth/reset-password", {
       body: { token, newPassword },
     });
     return response.data;
@@ -66,7 +66,7 @@ export const authApi = {
 
   // Change password
   changePassword: async (currentPassword: string, newPassword: string) => {
-    const response = await apiClient.POST("/auth/change-password", {
+    const response = await dopClient.POST("/auth/change-password", {
       body: { currentPassword, newPassword },
     });
     return response.data;
@@ -74,7 +74,7 @@ export const authApi = {
 
   // Get current user profile
   getProfile: async () => {
-    const response = await apiClient.GET("/auth/profile");
+    const response = await dopClient.GET("/auth/profile");
     return response.data;
   },
 
@@ -82,7 +82,7 @@ export const authApi = {
   updateProfile: async (
     profileData: paths["/auth/profile"]["put"]["requestBody"]["content"]["application/json"],
   ) => {
-    const response = await apiClient.PUT("/auth/profile", {
+    const response = await dopClient.PUT("/auth/profile", {
       body: profileData,
     });
     return response.data;
@@ -90,13 +90,13 @@ export const authApi = {
 
   // Get user permissions
   getPermissions: async () => {
-    const response = await apiClient.GET("/auth/permissions");
+    const response = await dopClient.GET("/auth/permissions");
     return response.data;
   },
 
   // Delete account
   deleteAccount: async (password: string) => {
-    const response = await apiClient.DELETE("/auth/account", {
+    const response = await dopClient.DELETE("/auth/account", {
       body: { password },
     });
     return response.data;
@@ -109,7 +109,7 @@ export const authApi = {
 export const socialAuthApi = {
   // Get social login URLs
   getSocialLoginUrls: async () => {
-    const response = await apiClient.GET("/auth/social");
+    const response = await dopClient.GET("/auth/social");
     return response.data;
   },
 
@@ -119,7 +119,7 @@ export const socialAuthApi = {
     code: string,
     state?: string,
   ) => {
-    const response = await apiClient.POST("/auth/social/{provider}/callback", {
+    const response = await dopClient.POST("/auth/social/{provider}/callback", {
       params: {
         path: { provider },
       },
@@ -130,7 +130,7 @@ export const socialAuthApi = {
 
   // Link social account
   linkSocialAccount: async (provider: string, token: string) => {
-    const response = await apiClient.POST("/auth/social/{provider}/link", {
+    const response = await dopClient.POST("/auth/social/{provider}/link", {
       params: {
         path: { provider },
       },
@@ -141,7 +141,7 @@ export const socialAuthApi = {
 
   // Unlink social account
   unlinkSocialAccount: async (provider: string) => {
-    const response = await apiClient.DELETE("/auth/social/{provider}", {
+    const response = await dopClient.DELETE("/auth/social/{provider}", {
       params: {
         path: { provider },
       },
@@ -158,7 +158,7 @@ export const authAdminApi = {
   getAllUsers: async (
     params?: paths["/admin/users"]["get"]["parameters"]["query"],
   ) => {
-    const response = await apiClient.GET("/admin/users", {
+    const response = await dopClient.GET("/admin/users", {
       params: {
         query: params,
       },
@@ -170,7 +170,7 @@ export const authAdminApi = {
   createUser: async (
     userData: paths["/admin/users"]["post"]["requestBody"]["content"]["application/json"],
   ) => {
-    const response = await apiClient.POST("/admin/users", {
+    const response = await dopClient.POST("/admin/users", {
       body: userData,
     });
     return response.data;
@@ -181,7 +181,7 @@ export const authAdminApi = {
     userId: string,
     userData: paths["/admin/users/{id}"]["put"]["requestBody"]["content"]["application/json"],
   ) => {
-    const response = await apiClient.PUT("/admin/users/{id}", {
+    const response = await dopClient.PUT("/admin/users/{id}", {
       params: {
         path: { id: userId },
       },
@@ -192,7 +192,7 @@ export const authAdminApi = {
 
   // Delete user
   deleteUser: async (userId: string) => {
-    const response = await apiClient.DELETE("/admin/users/{id}", {
+    const response = await dopClient.DELETE("/admin/users/{id}", {
       params: {
         path: { id: userId },
       },
@@ -202,7 +202,7 @@ export const authAdminApi = {
 
   // Update user role
   updateUserRole: async (userId: string, role: string) => {
-    const response = await apiClient.PATCH("/admin/users/{id}/role", {
+    const response = await dopClient.PATCH("/admin/users/{id}/role", {
       params: {
         path: { id: userId },
       },
@@ -213,7 +213,7 @@ export const authAdminApi = {
 
   // Block user
   blockUser: async (userId: string, reason: string) => {
-    const response = await apiClient.POST("/admin/users/{id}/block", {
+    const response = await dopClient.POST("/admin/users/{id}/block", {
       params: {
         path: { id: userId },
       },
@@ -224,7 +224,7 @@ export const authAdminApi = {
 
   // Unblock user
   unblockUser: async (userId: string) => {
-    const response = await apiClient.DELETE("/admin/users/{id}/block", {
+    const response = await dopClient.DELETE("/admin/users/{id}/block", {
       params: {
         path: { id: userId },
       },
@@ -234,7 +234,7 @@ export const authAdminApi = {
 
   // Get user sessions
   getUserSessions: async (userId: string) => {
-    const response = await apiClient.GET("/admin/users/{id}/sessions", {
+    const response = await dopClient.GET("/admin/users/{id}/sessions", {
       params: {
         path: { id: userId },
       },
@@ -244,7 +244,7 @@ export const authAdminApi = {
 
   // Revoke user session
   revokeSession: async (userId: string, sessionId: string) => {
-    const response = await apiClient.DELETE(
+    const response = await dopClient.DELETE(
       "/admin/users/{id}/sessions/{sessionId}",
       {
         params: {
@@ -259,7 +259,7 @@ export const authAdminApi = {
   getAuthStats: async (
     params?: paths["/admin/auth/stats"]["get"]["parameters"]["query"],
   ) => {
-    const response = await apiClient.GET("/admin/auth/stats", {
+    const response = await dopClient.GET("/admin/auth/stats", {
       params: {
         query: params,
       },

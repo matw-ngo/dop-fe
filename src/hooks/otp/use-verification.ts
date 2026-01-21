@@ -111,8 +111,17 @@ export const useOTPVerification = (options: UseOTPVerificationOptions = {}) => {
     if (state.sessionExpiry > 0 && state.requestId && !state.success) {
       const checkExpiry = () => {
         const now = Date.now();
-        const requestTime =
-          parseInt(state.requestId.substring(0, 8), 36) * 1000;
+        // Handle both timestamp-prefixed requestId and UUID formats
+        let requestTime: number;
+        if (state.requestId.length >= 8) {
+          const prefix = state.requestId.substring(0, 8);
+          const parsed = parseInt(prefix, 36);
+          // Check if it's a valid timestamp (not NaN and reasonably recent)
+          requestTime =
+            !isNaN(parsed) && parsed > 1600000000000 ? parsed * 1000 : now;
+        } else {
+          requestTime = now;
+        }
         const elapsed = (now - requestTime) / 1000;
 
         if (elapsed >= state.sessionExpiry) {
@@ -519,7 +528,16 @@ export const useOTPVerification = (options: UseOTPVerificationOptions = {}) => {
     // Timer helpers
     getRemainingTime: () => {
       if (!state.requestId || !state.sessionExpiry) return 0;
-      const requestTime = parseInt(state.requestId.substring(0, 8), 36) * 1000;
+      // Handle both timestamp-prefixed requestId and UUID formats
+      let requestTime: number;
+      if (state.requestId.length >= 8) {
+        const prefix = state.requestId.substring(0, 8);
+        const parsed = parseInt(prefix, 36);
+        requestTime =
+          !isNaN(parsed) && parsed > 1600000000000 ? parsed * 1000 : Date.now();
+      } else {
+        requestTime = Date.now();
+      }
       const elapsed = (Date.now() - requestTime) / 1000;
       return Math.max(0, state.sessionExpiry - elapsed);
     },

@@ -1,14 +1,15 @@
 import createClient from "openapi-fetch";
 import { toast } from "sonner";
 import { securityUtils, useTokenStore } from "@/lib/auth/secure-tokens";
-import type { paths } from "./v1.d.ts";
+import { shouldSkipAuth } from "./config";
+import { createTimeoutController } from "./timeouts/abort-timeout";
 
 // Timeout configuration imports
 import { parseTimeoutConfig } from "./timeouts/config-parser";
-import { resolveTimeout } from "./timeouts/resolver";
-import { createTimeoutController } from "./timeouts/abort-timeout";
-import { useTimeoutStore } from "./timeouts/timeout-store";
 import { DEFAULT_RETRY } from "./timeouts/constants";
+import { resolveTimeout } from "./timeouts/resolver";
+import { useTimeoutStore } from "./timeouts/timeout-store";
+import type { paths } from "./v1/dop";
 
 // API Configuration based on environment
 const getApiConfig = () => {
@@ -147,7 +148,15 @@ apiClient.use({
   // Runs on every response
   async onResponse(res) {
     // --- Token Refresh Logic ---
-    if (res.response.status === 401 && !res.request.url.includes("/refresh")) {
+    // Check if this endpoint should skip auth handling (uses leadToken instead of authToken)
+    const skipAuth = shouldSkipAuth(res.request.url);
+
+    // Auth token refresh for non-skip endpoints
+    if (
+      res.response.status === 401 &&
+      !skipAuth &&
+      !res.request.url.includes("/refresh")
+    ) {
       const { refreshTokens, clearTokens } = useTokenStore.getState();
 
       try {
@@ -155,9 +164,6 @@ apiClient.use({
         if (!refreshed) {
           throw new Error("Token refresh failed");
         }
-
-        // Note: In a real implementation, you would retry the original request
-        // This requires more complex request cloning logic
       } catch (error) {
         console.error("Token refresh failed, logging out.", error);
         clearTokens();
@@ -167,6 +173,13 @@ apiClient.use({
         }
         throw new Error("Authentication failed");
       }
+    }
+
+    // For skip-auth endpoints (e.g., /leads/*), log warning but don't redirect
+    if (res.response.status === 401 && skipAuth) {
+      console.warn(
+        `Endpoint ${res.request.url} returned 401. This may indicate an expired or invalid token.`,
+      );
     }
 
     // --- Security Headers Validation ---
@@ -284,7 +297,7 @@ export const withRetry = async <T>(
 
       // Exponential backoff with max delay cap
       const backoffDelay = Math.min(
-        delay * Math.pow(DEFAULT_RETRY.BACKOFF_MULTIPLIER, i),
+        delay * DEFAULT_RETRY.BACKOFF_MULTIPLIER ** i,
         DEFAULT_RETRY.MAX_DELAY,
       );
       const jitter = Math.random() * 200; // Add 0-200ms jitter

@@ -1,4 +1,4 @@
-import type { components } from "@/lib/api/v1.d.ts";
+import type { components } from "@/lib/api/v1/dop";
 
 // API Types
 type ApiFlowDetail = components["schemas"]["FlowDetail"];
@@ -7,6 +7,7 @@ type ApiStep = components["schemas"]["Step"];
 // Mapped Types for Frontend
 export interface MappedStep {
   id: string;
+  page: string;
   useEkyc: boolean;
   sendOtp: boolean;
   fields: {
@@ -44,6 +45,7 @@ export interface MappedFlow {
 export function mapApiStepToStep(apiStep: ApiStep): MappedStep {
   return {
     id: apiStep.id,
+    page: apiStep.page,
     useEkyc: apiStep.use_ekyc,
     sendOtp: apiStep.send_otp,
     fields: {

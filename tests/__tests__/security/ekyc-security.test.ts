@@ -51,7 +51,7 @@ describe("eKYC Security Tests", () => {
         "Test event",
         metadata,
         "lead-123",
-        "session-abc"
+        "session-abc",
       );
 
       expect(entry.metadata).toBeDefined();
@@ -81,7 +81,7 @@ describe("eKYC Security Tests", () => {
         "Test event",
         metadata,
         "lead-123",
-        "session-abc"
+        "session-abc",
       );
 
       // Check that PII fields are masked
@@ -110,7 +110,7 @@ describe("eKYC Security Tests", () => {
         "Test event",
         metadata,
         "lead-123",
-        "session-abc"
+        "session-abc",
       );
 
       // Base64 and hash fields should be removed
@@ -134,7 +134,7 @@ describe("eKYC Security Tests", () => {
         "Test event",
         metadata,
         "lead-123",
-        "session-abc"
+        "session-abc",
       );
 
       // Long string should be detected as base64 and removed
@@ -166,7 +166,7 @@ describe("eKYC Security Tests", () => {
         "Test event",
         metadata,
         "lead-123",
-        "session-abc"
+        "session-abc",
       );
 
       // Check nested PII is masked
@@ -196,7 +196,7 @@ describe("eKYC Security Tests", () => {
         "Test event",
         metadata,
         "lead-123",
-        "session-abc"
+        "session-abc",
       );
 
       // Arrays should be sanitized
@@ -313,7 +313,7 @@ describe("eKYC Security Tests", () => {
           "Test event",
           metadata,
           "lead-123",
-          "session-abc"
+          "session-abc",
         );
 
         expect(entry.metadata?.image).toBe("[BASE64_DATA_REMOVED]");
@@ -333,7 +333,7 @@ describe("eKYC Security Tests", () => {
         "Test event",
         metadata,
         "lead-123",
-        "session-abc"
+        "session-abc",
       );
 
       expect(entry.metadata?.shortString).toBe("abc123");
@@ -362,7 +362,7 @@ describe("eKYC Security Tests", () => {
         "Test event",
         metadata,
         "lead-123",
-        "session-abc"
+        "session-abc",
       );
 
       // Fields with sensitive keywords should be redacted
@@ -388,7 +388,7 @@ describe("eKYC Security Tests", () => {
         "Test event",
         metadata,
         "lead-123",
-        "session-abc"
+        "session-abc",
       );
 
       expect(entry.metadata?.BASE64_DATA).toBe("[REDACTED]");
@@ -409,7 +409,7 @@ describe("eKYC Security Tests", () => {
         "Test event",
         null as any,
         "lead-123",
-        "session-abc"
+        "session-abc",
       );
 
       expect(entry1.metadata).toBeUndefined();
@@ -420,7 +420,7 @@ describe("eKYC Security Tests", () => {
         "Test event",
         undefined as any,
         "lead-123",
-        "session-abc"
+        "session-abc",
       );
 
       expect(entry2.metadata).toBeUndefined();
@@ -437,7 +437,7 @@ describe("eKYC Security Tests", () => {
           "Test event",
           metadata,
           "lead-123",
-          "session-abc"
+          "session-abc",
         );
       }).not.toThrow();
     });
@@ -455,7 +455,7 @@ describe("eKYC Security Tests", () => {
           "Test event",
           metadata,
           "lead-123",
-          "session-abc"
+          "session-abc",
         );
       }).not.toThrow();
     });
@@ -473,12 +473,14 @@ describe("eKYC Security Tests", () => {
         "Test event",
         metadata,
         "lead-123",
-        "session-abc"
+        "session-abc",
       );
 
       // Should still mask PII with special characters
       expect(entry.metadata?.fullName).not.toBe("NGUYỄN VĂN ANH");
-      expect(entry.metadata?.address).not.toBe("123 Đường Nguyễn Văn Linh, TP.HCM");
+      expect(entry.metadata?.address).not.toBe(
+        "123 Đường Nguyễn Văn Linh, TP.HCM",
+      );
       expect(entry.metadata?.idNumber).not.toBe("001234567890");
     });
   });
@@ -512,7 +514,7 @@ describe("eKYC Security Tests", () => {
           "Test event",
           piiData,
           "lead-123",
-          "session-abc"
+          "session-abc",
         );
 
         logAuditEvent(entry);

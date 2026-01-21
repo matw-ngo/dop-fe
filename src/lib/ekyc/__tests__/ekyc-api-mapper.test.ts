@@ -131,7 +131,8 @@ describe("ekyc-api-mapper", () => {
     it("should map complete eKYC response to API request format", () => {
       const ekycResponse: Partial<EkycResponse> = {
         type_document: 9,
-        liveness_card_front: createMinimalLivenessCard() as LivenessCardResponse,
+        liveness_card_front:
+          createMinimalLivenessCard() as LivenessCardResponse,
         liveness_card_back: createMinimalLivenessCard() as LivenessCardResponse,
         ocr: createMinimalOcr() as OcrResponse,
         liveness_face: createMinimalLivenessFace() as LivenessFaceResponse,

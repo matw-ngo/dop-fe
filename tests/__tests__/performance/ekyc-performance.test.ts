@@ -9,15 +9,15 @@
  * @jest-environment jsdom
  */
 
-import { describe, it, expect, beforeEach, vi } from "vitest";
-import { renderHook, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { renderHook, waitFor } from "@testing-library/react";
 import React from "react";
-import apiClient from "@/lib/api/client";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { dopClient } from "@/lib/api/services/dop";
 
 // Mock the API client
-vi.mock("@/lib/api/client", () => ({
-  default: {
+vi.mock("@/lib/api/services/dop", () => ({
+  dopClient: {
     GET: vi.fn(),
     POST: vi.fn(),
   },
@@ -38,7 +38,11 @@ describe("eKYC Performance Benchmarks", () => {
       },
     });
     return function Wrapper({ children }: { children: React.ReactNode }) {
-      return React.createElement(QueryClientProvider, { client: queryClient }, children);
+      return React.createElement(
+        QueryClientProvider,
+        { client: queryClient },
+        children,
+      );
     };
   };
 
@@ -62,19 +66,21 @@ describe("eKYC Performance Benchmarks", () => {
       };
 
       // Simulate realistic API latency (200-300ms)
-      (apiClient.GET as any).mockImplementation(
+      (dopClient.GET as any).mockImplementation(
         () =>
           new Promise((resolve) => {
             setTimeout(() => {
               resolve({ data: mockConfig, error: undefined });
             }, 250);
-          })
+          }),
       );
 
       const wrapper = createWrapper();
       const startTime = performance.now();
 
-      const { result } = renderHook(() => useEkycConfig("lead-perf-1"), { wrapper });
+      const { result } = renderHook(() => useEkycConfig("lead-perf-1"), {
+        wrapper,
+      });
 
       await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
@@ -96,22 +102,28 @@ describe("eKYC Performance Benchmarks", () => {
         enable_api_masked_face: true,
       };
 
-      (apiClient.GET as any).mockImplementation(
+      (dopClient.GET as any).mockImplementation(
         () =>
           new Promise((resolve) => {
             setTimeout(() => {
               resolve({ data: mockConfig, error: undefined });
             }, 250);
-          })
+          }),
       );
 
       const wrapper = createWrapper();
       const startTime = performance.now();
 
       // Fetch 3 different configs concurrently
-      const { result: result1 } = renderHook(() => useEkycConfig("lead-1"), { wrapper });
-      const { result: result2 } = renderHook(() => useEkycConfig("lead-2"), { wrapper });
-      const { result: result3 } = renderHook(() => useEkycConfig("lead-3"), { wrapper });
+      const { result: result1 } = renderHook(() => useEkycConfig("lead-1"), {
+        wrapper,
+      });
+      const { result: result2 } = renderHook(() => useEkycConfig("lead-2"), {
+        wrapper,
+      });
+      const { result: result3 } = renderHook(() => useEkycConfig("lead-3"), {
+        wrapper,
+      });
 
       await Promise.all([
         waitFor(() => expect(result1.current.isSuccess).toBe(true)),
@@ -146,19 +158,24 @@ describe("eKYC Performance Benchmarks", () => {
           },
         });
 
-        (apiClient.GET as any).mockImplementation(
+        (dopClient.GET as any).mockImplementation(
           () =>
             new Promise((resolve) => {
-              setTimeout(() => {
-                resolve({ data: mockConfig, error: undefined });
-              }, 200 + Math.random() * 100); // 200-300ms variance
-            })
+              setTimeout(
+                () => {
+                  resolve({ data: mockConfig, error: undefined });
+                },
+                200 + Math.random() * 100,
+              ); // 200-300ms variance
+            }),
         );
 
         const wrapper = createWrapper();
         const startTime = performance.now();
 
-        const { result } = renderHook(() => useEkycConfig(`lead-perf-${i}`), { wrapper });
+        const { result } = renderHook(() => useEkycConfig(`lead-perf-${i}`), {
+          wrapper,
+        });
 
         await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
@@ -166,7 +183,8 @@ describe("eKYC Performance Benchmarks", () => {
         durations.push(endTime - startTime);
       }
 
-      const averageDuration = durations.reduce((a, b) => a + b, 0) / durations.length;
+      const averageDuration =
+        durations.reduce((a, b) => a + b, 0) / durations.length;
       const maxDuration = Math.max(...durations);
       const minDuration = Math.min(...durations);
 
@@ -231,13 +249,13 @@ describe("eKYC Performance Benchmarks", () => {
       };
 
       // Simulate realistic submission latency (1-2s)
-      (apiClient.POST as any).mockImplementation(
+      (dopClient.POST as any).mockImplementation(
         () =>
           new Promise((resolve) => {
             setTimeout(() => {
               resolve({ data: mockResponse, error: undefined });
             }, 1500);
-          })
+          }),
       );
 
       const wrapper = createWrapper();
@@ -314,13 +332,16 @@ describe("eKYC Performance Benchmarks", () => {
           },
         });
 
-        (apiClient.POST as any).mockImplementation(
+        (dopClient.POST as any).mockImplementation(
           () =>
             new Promise((resolve) => {
-              setTimeout(() => {
-                resolve({ data: mockResponse, error: undefined });
-              }, 1000 + Math.random() * 1000); // 1-2s variance
-            })
+              setTimeout(
+                () => {
+                  resolve({ data: mockResponse, error: undefined });
+                },
+                1000 + Math.random() * 1000,
+              ); // 1-2s variance
+            }),
         );
 
         const wrapper = createWrapper();
@@ -338,7 +359,8 @@ describe("eKYC Performance Benchmarks", () => {
         durations.push(endTime - startTime);
       }
 
-      const averageDuration = durations.reduce((a, b) => a + b, 0) / durations.length;
+      const averageDuration =
+        durations.reduce((a, b) => a + b, 0) / durations.length;
       const maxDuration = Math.max(...durations);
       const minDuration = Math.min(...durations);
 
@@ -367,7 +389,7 @@ describe("eKYC Performance Benchmarks", () => {
       };
 
       let apiCallCount = 0;
-      (apiClient.GET as any).mockImplementation(() => {
+      (dopClient.GET as any).mockImplementation(() => {
         apiCallCount++;
         return Promise.resolve({
           data: mockConfig,
@@ -378,19 +400,21 @@ describe("eKYC Performance Benchmarks", () => {
       const wrapper = createWrapper();
 
       // First fetch - cache miss
-      const { result: result1 } = renderHook(() => useEkycConfig("lead-cache-test"), {
-        wrapper,
-      });
+      const { result: result1 } = renderHook(
+        () => useEkycConfig("lead-cache-test"),
+        {
+          wrapper,
+        },
+      );
       await waitFor(() => expect(result1.current.isSuccess).toBe(true));
 
       expect(apiCallCount).toBe(1);
 
       // Subsequent fetches - cache hits
       for (let i = 0; i < 9; i++) {
-        const { result } = renderHook(
-          () => useEkycConfig("lead-cache-test"),
-          { wrapper }
-        );
+        const { result } = renderHook(() => useEkycConfig("lead-cache-test"), {
+          wrapper,
+        });
         await waitFor(() => expect(result.current.isSuccess).toBe(true));
       }
 
@@ -415,7 +439,7 @@ describe("eKYC Performance Benchmarks", () => {
       };
 
       let apiCallCount = 0;
-      (apiClient.GET as any).mockImplementation(() => {
+      (dopClient.GET as any).mockImplementation(() => {
         apiCallCount++;
         return Promise.resolve({
           data: mockConfig,
@@ -440,7 +464,9 @@ describe("eKYC Performance Benchmarks", () => {
 
       // Cache hit rate: (20 - 3) / 20 = 17/20 = 85%
       const cacheHitRate = (totalFetches - apiCallCount) / totalFetches;
-      console.log(`[PERF] Cache hit rate (${totalFetches} fetches, ${leads.length} leads): ${(cacheHitRate * 100).toFixed(1)}%`);
+      console.log(
+        `[PERF] Cache hit rate (${totalFetches} fetches, ${leads.length} leads): ${(cacheHitRate * 100).toFixed(1)}%`,
+      );
 
       expect(cacheHitRate).toBeGreaterThanOrEqual(0.8); // 80%
     });
@@ -458,7 +484,7 @@ describe("eKYC Performance Benchmarks", () => {
       };
 
       let apiCallCount = 0;
-      (apiClient.GET as any).mockImplementation(() => {
+      (dopClient.GET as any).mockImplementation(() => {
         apiCallCount++;
         return Promise.resolve({
           data: mockConfig,
@@ -469,23 +495,31 @@ describe("eKYC Performance Benchmarks", () => {
       const wrapper = createWrapper();
 
       // First fetch
-      const { result } = renderHook(() => useEkycConfig("lead-stale"), { wrapper });
+      const { result } = renderHook(() => useEkycConfig("lead-stale"), {
+        wrapper,
+      });
       await waitFor(() => expect(result.current.isSuccess).toBe(true));
       expect(apiCallCount).toBe(1);
 
       // Within stale time - cache hit
       vi.advanceTimersByTime(2 * 60 * 1000); // 2 minutes
-      const { result: result2 } = renderHook(() => useEkycConfig("lead-stale"), {
-        wrapper,
-      });
+      const { result: result2 } = renderHook(
+        () => useEkycConfig("lead-stale"),
+        {
+          wrapper,
+        },
+      );
       await waitFor(() => expect(result2.current.isSuccess).toBe(true));
       expect(apiCallCount).toBe(1); // Still 1
 
       // After stale time - cache miss, refetch
       vi.advanceTimersByTime(4 * 60 * 1000); // 4 more minutes (total 6, past 5 min stale)
-      const { result: result3 } = renderHook(() => useEkycConfig("lead-stale"), {
-        wrapper,
-      });
+      const { result: result3 } = renderHook(
+        () => useEkycConfig("lead-stale"),
+        {
+          wrapper,
+        },
+      );
       await waitFor(() => expect(result3.current.isSuccess).toBe(true));
       expect(apiCallCount).toBe(2); // Refetched
 
@@ -509,7 +543,7 @@ describe("eKYC Performance Benchmarks", () => {
         enable_api_masked_face: true,
       };
 
-      (apiClient.GET as any).mockResolvedValue({
+      (dopClient.GET as any).mockResolvedValue({
         data: mockConfig,
         error: undefined,
       });
@@ -518,9 +552,12 @@ describe("eKYC Performance Benchmarks", () => {
 
       // Mount and unmount hooks multiple times
       for (let i = 0; i < 50; i++) {
-        const { result, unmount } = renderHook(() => useEkycConfig(`lead-mem-${i % 5}`), {
-          wrapper,
-        });
+        const { result, unmount } = renderHook(
+          () => useEkycConfig(`lead-mem-${i % 5}`),
+          {
+            wrapper,
+          },
+        );
         await waitFor(() => expect(result.current.isSuccess).toBe(true));
         unmount();
       }
