@@ -5,8 +5,26 @@
  * and skip-auth pattern for lead endpoints.
  */
 
-import type { Middleware } from "openapi-fetch";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
+
+interface MockAuthTokens {
+  accessToken: string;
+  refreshToken: string;
+  expiresAt: number;
+  tokenType: "Bearer";
+}
+
+interface MockTokenStoreState {
+  tokens: MockAuthTokens | null;
+  isAuthenticated: () => boolean;
+  isLoading: boolean;
+  setTokens: (tokens: MockAuthTokens) => void;
+  clearTokens: () => void;
+  getAccessToken: () => string | null;
+  getRefreshToken: () => string | null;
+  isTokenExpired: () => boolean;
+  refreshTokens: () => Promise<boolean>;
+}
 
 // Mock the token store and security utilities before importing
 vi.mock("@/lib/auth/secure-tokens", () => ({
@@ -19,13 +37,17 @@ vi.mock("@/lib/auth/secure-tokens", () => ({
       isTokenExpired: vi.fn(),
       refreshTokens: vi.fn(),
       clearTokens: vi.fn(),
+      getRefreshToken: vi.fn(),
+      setTokens: vi.fn(),
+      isAuthenticated: vi.fn(),
+      tokens: null,
+      isLoading: false,
     })),
   },
 }));
 
 vi.mock("@/lib/api/config", () => ({
   shouldSkipAuth: vi.fn((url: string) => {
-    // Skip auth for lead endpoints
     return url.includes("/leads/") || url.includes("/flows/");
   }),
 }));
@@ -42,18 +64,41 @@ const { createAuthMiddleware, createAuthResponseMiddleware } = await import(
   "@/lib/api/middleware/auth"
 );
 
+function createMockTokenState(
+  overrides: Partial<MockTokenStoreState> = {},
+): any {
+  return {
+    getAccessToken: () => null,
+    isTokenExpired: () => false,
+    refreshTokens: async () => false,
+    clearTokens: vi.fn(),
+    getRefreshToken: () => null,
+    setTokens: vi.fn(),
+    isAuthenticated: () => false,
+    tokens: null,
+    isLoading: false,
+    ...overrides,
+  };
+}
+
 describe("Auth Middleware", () => {
   describe("createAuthMiddleware", () => {
     it("should attach Bearer token to request headers when token exists", async () => {
       const { useTokenStore } = await import("@/lib/auth/secure-tokens");
 
-      // Setup mock state
-      vi.mocked(useTokenStore.getState).mockReturnValue({
-        getAccessToken: vi.fn(() => "valid-access-token"),
-        isTokenExpired: vi.fn(() => false),
-        refreshTokens: vi.fn(),
-        clearTokens: vi.fn(),
-      });
+      vi.mocked(useTokenStore.getState).mockReturnValueOnce(
+        createMockTokenState({
+          getAccessToken: () => "valid-access-token",
+          isTokenExpired: () => false,
+          tokens: {
+            accessToken: "valid-access-token",
+            refreshToken: "valid-refresh-token",
+            expiresAt: Date.now() + 3600000,
+            tokenType: "Bearer",
+          },
+          isAuthenticated: () => true,
+        }) as any,
+      );
 
       const middleware = createAuthMiddleware();
       const mockRequest = {
@@ -62,7 +107,7 @@ describe("Auth Middleware", () => {
         headers: new Headers(),
       } as any;
 
-      await middleware.onRequest(mockRequest);
+      await middleware.onRequest?.(mockRequest);
 
       expect(mockRequest.request.headers.get("Authorization")).toBe(
         "Bearer valid-access-token",
@@ -72,12 +117,12 @@ describe("Auth Middleware", () => {
     it("should not attach auth header when no token exists", async () => {
       const { useTokenStore } = await import("@/lib/auth/secure-tokens");
 
-      vi.mocked(useTokenStore.getState).mockReturnValue({
-        getAccessToken: vi.fn(() => null),
-        isTokenExpired: vi.fn(() => false),
-        refreshTokens: vi.fn(),
-        clearTokens: vi.fn(),
-      });
+      vi.mocked(useTokenStore.getState).mockReturnValueOnce(
+        createMockTokenState({
+          getAccessToken: () => null,
+          isAuthenticated: () => false,
+        }) as any,
+      );
 
       const middleware = createAuthMiddleware();
       const mockRequest = {
@@ -86,7 +131,7 @@ describe("Auth Middleware", () => {
         headers: new Headers(),
       } as any;
 
-      await middleware.onRequest(mockRequest);
+      await middleware.onRequest?.(mockRequest);
 
       expect(mockRequest.request.headers.get("Authorization")).toBeNull();
     });
@@ -96,12 +141,19 @@ describe("Auth Middleware", () => {
         "@/lib/auth/secure-tokens"
       );
 
-      vi.mocked(useTokenStore.getState).mockReturnValue({
-        getAccessToken: vi.fn(() => "valid-token"),
-        isTokenExpired: vi.fn(() => false),
-        refreshTokens: vi.fn(),
-        clearTokens: vi.fn(),
-      });
+      vi.mocked(useTokenStore.getState).mockReturnValueOnce(
+        createMockTokenState({
+          getAccessToken: () => "valid-token",
+          isTokenExpired: () => false,
+          tokens: {
+            accessToken: "valid-token",
+            refreshToken: "refresh-token",
+            expiresAt: Date.now() + 3600000,
+            tokenType: "Bearer",
+          },
+          isAuthenticated: () => true,
+        }),
+      );
 
       const middleware = createAuthMiddleware();
       const mockRequest = {
@@ -112,7 +164,7 @@ describe("Auth Middleware", () => {
         headers: new Headers(),
       } as any;
 
-      await middleware.onRequest(mockRequest);
+      await middleware.onRequest?.(mockRequest);
 
       expect(mockRequest.request.headers.get("X-CSRF-Token")).toBe(
         "mock-csrf-token",
@@ -123,12 +175,19 @@ describe("Auth Middleware", () => {
     it("should not add CSRF token for GET requests", async () => {
       const { useTokenStore } = await import("@/lib/auth/secure-tokens");
 
-      vi.mocked(useTokenStore.getState).mockReturnValue({
-        getAccessToken: vi.fn(() => "valid-token"),
-        isTokenExpired: vi.fn(() => false),
-        refreshTokens: vi.fn(),
-        clearTokens: vi.fn(),
-      });
+      vi.mocked(useTokenStore.getState).mockReturnValueOnce(
+        createMockTokenState({
+          getAccessToken: () => "valid-token",
+          isTokenExpired: () => false,
+          tokens: {
+            accessToken: "valid-token",
+            refreshToken: "refresh-token",
+            expiresAt: Date.now() + 3600000,
+            tokenType: "Bearer",
+          },
+          isAuthenticated: () => true,
+        }),
+      );
 
       const middleware = createAuthMiddleware();
       const mockRequest = {
@@ -139,7 +198,7 @@ describe("Auth Middleware", () => {
         headers: new Headers(),
       } as any;
 
-      await middleware.onRequest(mockRequest);
+      await middleware.onRequest?.(mockRequest);
 
       expect(mockRequest.request.headers.get("X-CSRF-Token")).toBeNull();
     });
@@ -148,16 +207,23 @@ describe("Auth Middleware", () => {
       const { useTokenStore } = await import("@/lib/auth/secure-tokens");
 
       let tokenCallCount = 0;
-      vi.mocked(useTokenStore.getState).mockReturnValue({
-        getAccessToken: vi.fn(() => {
-          tokenCallCount++;
-          // Return null on first call (expired), token on second call (after refresh)
-          return tokenCallCount > 1 ? "refreshed-token" : null;
+      vi.mocked(useTokenStore.getState).mockReturnValueOnce(
+        createMockTokenState({
+          getAccessToken: () => {
+            tokenCallCount++;
+            return tokenCallCount > 1 ? "refreshed-token" : null;
+          },
+          isTokenExpired: () => true,
+          refreshTokens: async () => true,
+          tokens: {
+            accessToken: "refreshed-token",
+            refreshToken: "refresh-token",
+            expiresAt: Date.now() + 3600000,
+            tokenType: "Bearer",
+          },
+          isAuthenticated: () => true,
         }),
-        isTokenExpired: vi.fn(() => true),
-        refreshTokens: vi.fn(() => Promise.resolve(true)),
-        clearTokens: vi.fn(),
-      });
+      );
 
       const middleware = createAuthMiddleware();
       const mockRequest = {
@@ -166,7 +232,7 @@ describe("Auth Middleware", () => {
         headers: new Headers(),
       } as any;
 
-      await middleware.onRequest(mockRequest);
+      await middleware.onRequest?.(mockRequest);
 
       expect(mockRequest.request.headers.get("Authorization")).toBe(
         "Bearer refreshed-token",
@@ -176,12 +242,14 @@ describe("Auth Middleware", () => {
     it("should throw error when token refresh fails", async () => {
       const { useTokenStore } = await import("@/lib/auth/secure-tokens");
 
-      vi.mocked(useTokenStore.getState).mockReturnValue({
-        getAccessToken: vi.fn(() => "expired-token"),
-        isTokenExpired: vi.fn(() => true),
-        refreshTokens: vi.fn(() => Promise.resolve(false)),
-        clearTokens: vi.fn(),
-      });
+      vi.mocked(useTokenStore.getState).mockReturnValueOnce(
+        createMockTokenState({
+          getAccessToken: () => "expired-token",
+          isTokenExpired: () => true,
+          refreshTokens: async () => false,
+          isAuthenticated: () => false,
+        }),
+      );
 
       const middleware = createAuthMiddleware();
       const mockRequest = {
@@ -190,7 +258,7 @@ describe("Auth Middleware", () => {
         headers: new Headers(),
       } as any;
 
-      await expect(middleware.onRequest(mockRequest)).rejects.toThrow(
+      await expect(middleware.onRequest?.(mockRequest)).rejects.toThrow(
         "Authentication failed",
       );
     });
@@ -200,13 +268,20 @@ describe("Auth Middleware", () => {
     it("should not attempt refresh for skip-auth endpoints", async () => {
       const { useTokenStore } = await import("@/lib/auth/secure-tokens");
 
-      const refreshTokens = vi.fn();
-      vi.mocked(useTokenStore.getState).mockReturnValue({
-        getAccessToken: vi.fn(),
-        isTokenExpired: vi.fn(),
-        refreshTokens,
-        clearTokens: vi.fn(),
-      });
+      const refreshTokens = vi.fn(async () => true);
+      vi.mocked(useTokenStore.getState).mockReturnValueOnce(
+        createMockTokenState({
+          getAccessToken: () => "token",
+          refreshTokens,
+          tokens: {
+            accessToken: "token",
+            refreshToken: "refresh-token",
+            expiresAt: Date.now() + 3600000,
+            tokenType: "Bearer",
+          },
+          isAuthenticated: () => true,
+        }),
+      );
 
       const middleware = createAuthResponseMiddleware();
       const mockResponse = {
@@ -216,7 +291,7 @@ describe("Auth Middleware", () => {
         },
       } as any;
 
-      await middleware.onResponse(mockResponse);
+      await middleware.onResponse?.(mockResponse);
 
       expect(refreshTokens).not.toHaveBeenCalled();
     });
@@ -224,13 +299,20 @@ describe("Auth Middleware", () => {
     it("should trigger token refresh on 401 for non-skip-auth endpoints", async () => {
       const { useTokenStore } = await import("@/lib/auth/secure-tokens");
 
-      const refreshTokens = vi.fn(() => Promise.resolve(true));
-      vi.mocked(useTokenStore.getState).mockReturnValue({
-        getAccessToken: vi.fn(() => "new-token"),
-        isTokenExpired: vi.fn(),
-        refreshTokens,
-        clearTokens: vi.fn(),
-      });
+      const refreshTokens = vi.fn(async () => true);
+      vi.mocked(useTokenStore.getState).mockReturnValueOnce(
+        createMockTokenState({
+          getAccessToken: () => "new-token",
+          refreshTokens,
+          tokens: {
+            accessToken: "new-token",
+            refreshToken: "refresh-token",
+            expiresAt: Date.now() + 3600000,
+            tokenType: "Bearer",
+          },
+          isAuthenticated: () => true,
+        }),
+      );
 
       const middleware = createAuthResponseMiddleware();
       const mockResponse = {
@@ -240,7 +322,7 @@ describe("Auth Middleware", () => {
         },
       } as any;
 
-      await middleware.onResponse(mockResponse);
+      await middleware.onResponse?.(mockResponse);
 
       expect(refreshTokens).toHaveBeenCalled();
     });
@@ -249,13 +331,15 @@ describe("Auth Middleware", () => {
       const { useTokenStore } = await import("@/lib/auth/secure-tokens");
 
       const clearTokens = vi.fn();
-      const refreshTokens = vi.fn(() => Promise.resolve(false));
-      vi.mocked(useTokenStore.getState).mockReturnValue({
-        getAccessToken: vi.fn(),
-        isTokenExpired: vi.fn(),
-        refreshTokens,
-        clearTokens,
-      });
+      const refreshTokens = vi.fn(async () => false);
+      vi.mocked(useTokenStore.getState).mockReturnValueOnce(
+        createMockTokenState({
+          getAccessToken: () => "token",
+          refreshTokens,
+          clearTokens,
+          isAuthenticated: () => false,
+        }),
+      );
 
       const middleware = createAuthResponseMiddleware();
       const mockResponse = {
@@ -265,9 +349,8 @@ describe("Auth Middleware", () => {
         },
       } as any;
 
-      await middleware.onResponse(mockResponse);
+      await middleware.onResponse?.(mockResponse);
 
-      // Should not clear tokens or throw for skip-auth endpoints
       expect(clearTokens).not.toHaveBeenCalled();
     });
 
@@ -275,13 +358,15 @@ describe("Auth Middleware", () => {
       const { useTokenStore } = await import("@/lib/auth/secure-tokens");
 
       const clearTokens = vi.fn();
-      const refreshTokens = vi.fn(() => Promise.resolve(false));
-      vi.mocked(useTokenStore.getState).mockReturnValue({
-        getAccessToken: vi.fn(),
-        isTokenExpired: vi.fn(),
-        refreshTokens,
-        clearTokens,
-      });
+      const refreshTokens = vi.fn(async () => false);
+      vi.mocked(useTokenStore.getState).mockReturnValueOnce(
+        createMockTokenState({
+          getAccessToken: () => "token",
+          refreshTokens,
+          clearTokens,
+          isAuthenticated: () => false,
+        }),
+      );
 
       const middleware = createAuthResponseMiddleware();
       const mockResponse = {
@@ -291,7 +376,7 @@ describe("Auth Middleware", () => {
         },
       } as any;
 
-      await expect(middleware.onResponse(mockResponse)).rejects.toThrow(
+      await expect(middleware.onResponse?.(mockResponse)).rejects.toThrow(
         "Authentication failed",
       );
       expect(clearTokens).toHaveBeenCalled();
@@ -301,12 +386,19 @@ describe("Auth Middleware", () => {
       const { useTokenStore } = await import("@/lib/auth/secure-tokens");
 
       const refreshTokens = vi.fn();
-      vi.mocked(useTokenStore.getState).mockReturnValue({
-        getAccessToken: vi.fn(),
-        isTokenExpired: vi.fn(),
-        refreshTokens,
-        clearTokens: vi.fn(),
-      });
+      vi.mocked(useTokenStore.getState).mockReturnValueOnce(
+        createMockTokenState({
+          getAccessToken: () => "token",
+          refreshTokens,
+          tokens: {
+            accessToken: "token",
+            refreshToken: "refresh-token",
+            expiresAt: Date.now() + 3600000,
+            tokenType: "Bearer",
+          },
+          isAuthenticated: () => true,
+        }),
+      );
 
       const middleware = createAuthResponseMiddleware();
       const mockResponse = {
@@ -316,7 +408,7 @@ describe("Auth Middleware", () => {
         },
       } as any;
 
-      await middleware.onResponse(mockResponse);
+      await middleware.onResponse?.(mockResponse);
 
       expect(refreshTokens).not.toHaveBeenCalled();
     });
