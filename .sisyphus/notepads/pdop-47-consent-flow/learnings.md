@@ -169,3 +169,31 @@ This allows proper HTML structure and Tailwind classes.
 - Clicking outside closes modal (DialogPrimitive.Overlay)
 - Close button in top-right (shown by default in DialogContent)
 - Focus management handled automatically
+
+## Task 4: Consent Modal Integration into Home Page
+
+### Implementation Details
+- Modified src/app/[locale]/page.tsx to show ConsentModal on mount if no consent exists
+- Added "use client" directive (required for useState and useEffect hooks)
+- Added imports: useState, useEffect from "react"; useRouter from "next/navigation"; ConsentModal; useConsentStore
+- Implemented state: showConsentModal controls modal visibility
+- useEffect checks consent on mount with empty dependency array (no unnecessary re-renders)
+- handleConsentSuccess navigates to /user-onboarding after user grants consent
+- Modal renders conditionally before HeroBanner in main section
+
+### Patterns Applied
+- Zustand getState() pattern for checking consent without subscribing
+- Router.push() for navigation (Next.js App Router pattern)
+- Unused parameter prefix underscore (_consentId) to satisfy linter
+- Conditional rendering with && operator for modal visibility
+
+### Verification
+- TypeScript: No errors introduced by changes (existing project errors are unrelated)
+- Biome linter: Passes with no warnings
+- All existing components (Header, Footer, HeroBanner, ProductTabs, etc.) remain intact
+- Modal placement follows instruction (before HeroBanner, inside main section)
+
+### Key Findings
+- useEffect dependency array must be empty when using getState() directly (don't include useConsentStore)
+- Import order: React hooks → Next.js → project components → Zustand stores
+- Linter requires unused parameter prefix or explicit comment when parameter not used

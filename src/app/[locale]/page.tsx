@@ -1,12 +1,18 @@
-import { TenantThemeProvider } from "@/components/layout/TenantThemeProvider";
-import { Header } from "@/components/layout/header";
-import { Footer } from "@/components/layout/footer";
-import { HeroBanner } from "@/components/home/HeroBanner";
-import { ProductTabs } from "@/components/home/ProductTabs";
-import { LoanProductPanel } from "@/components/home/LoanProductPanel";
-import { IntroductionSection } from "@/components/home/IntroductionSection";
-import { StatsSection } from "@/components/home/StatsSection";
+"use client";
+
+import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
+import { useEffect, useState } from "react";
+import { ConsentModal } from "@/components/consent/ConsentModal";
+import { HeroBanner } from "@/components/home/HeroBanner";
+import { IntroductionSection } from "@/components/home/IntroductionSection";
+import { LoanProductPanel } from "@/components/home/LoanProductPanel";
+import { ProductTabs } from "@/components/home/ProductTabs";
+import { StatsSection } from "@/components/home/StatsSection";
+import { Footer } from "@/components/layout/footer";
+import { Header } from "@/components/layout/header";
+import { TenantThemeProvider } from "@/components/layout/TenantThemeProvider";
+import { useConsentStore } from "@/store/use-consent-store";
 
 /**
  * Home Page
@@ -17,11 +23,30 @@ import { useTranslations } from "next-intl";
 export default function Home() {
   const t = useTranslations("components.layout.header.nav.products");
   const t_common = useTranslations("common");
+  const router = useRouter();
+  const [showConsentModal, setShowConsentModal] = useState(false);
+
+  useEffect(() => {
+    const consentExists = useConsentStore.getState().hasConsent();
+    setShowConsentModal(!consentExists);
+  }, []);
+
+  const handleConsentSuccess = (_consentId: string) => {
+    router.push("/user-onboarding");
+  };
 
   return (
     <TenantThemeProvider>
       <Header />
       <main className="min-h-screen pt-[60px] md:pt-[72px]">
+        {showConsentModal && (
+          <ConsentModal
+            open={showConsentModal}
+            setOpen={setShowConsentModal}
+            onSuccess={handleConsentSuccess}
+          />
+        )}
+
         {/* Hero Banner */}
         <HeroBanner />
 
