@@ -166,7 +166,7 @@ Task 1: Create Consent Store
 **Parallelizable**: NO (foundational dependency)
 
 **Acceptance Criteria:**
-- [ ] File `src/store/use-consent-store.ts` created with:
+- [x] File `src/store/use-consent-store.ts` created with:
   - Interface `ConsentState` with all required state fields
   - `create<ConsentState>()` with persist middleware
   - `giveConsent()` action stores consent ID
@@ -174,9 +174,9 @@ Task 1: Create Consent Store
   - `hasConsent()` getter checks if user has active consent
   - `getConsentId()` getter retrieves stored consent ID
   - Persistence uses encrypted sessionStorage with proper error handling
-- [ ] Store follows existing Zustand patterns from `use-ekyc-store.ts` (persist with createJSONStorage, subscribeWithSelector)
-- [ ] TypeScript compiles without errors: `pnpm type-check`
-- [ ] Linter passes without warnings: `pnpm lint src/store/use-consent-store.ts`
+- [x] Store follows existing Zustand patterns from `use-ekyc-store.ts` (persist with createJSONStorage, subscribeWithSelector)
+- [x] TypeScript compiles without errors: `pnpm type-check`
+- [x] Linter passes without warnings: `pnpm lint src/store/use-consent-store.ts`
 
 **References** (CRITICAL - Be Exhaustive):
 
@@ -229,17 +229,17 @@ Task 1: Create Consent Store
 **Parallelizable**: NO (depends on Task 1 and 3)
 
 **Acceptance Criteria:**
-- [ ] File `src/components/consent/ConsentModal.tsx` created with:
+- [x] File `src/components/consent/ConsentModal.tsx` created with:
   - shadcn/ui Dialog integration with proper imports
-  - Modal title: "Đồng ý xử lý dữ liệu cá nhân"
+  - Modal title: "Chính sách bảo mật"
   - Static consent content in Vietnamese
   - Two action buttons (Đồng ý/Từ chối)
   - Loading state support (disabled buttons during submission)
   - Error state with toast notifications
   - Responsive design ( Dialog size="md" )
-- [ ] Modal integrates with consent store: checks `hasConsent()`, calls `submitCreditCardConsent()`, handles success/error
-- [ ] TypeScript compiles: `pnpm type-check src/components/consent/ConsentModal.tsx`
-- [ ] Linter passes: `pnpm lint src/components/consent/ConsentModal.tsx`
+- [x] Modal integrates with consent store: checks `hasConsent()`, calls `submitCreditCardConsent()`, handles success/error
+- [x] TypeScript compiles: `pnpm type-check src/components/consent/ConsentModal.tsx`
+- [x] Linter passes: `pnpm lint src/components/consent/ConsentModal.tsx`
 - [ ] Manual verification: Open modal at `http://localhost:3000/vi` → Click "Đồng ý" → Toast success → Consent stored → Modal closes → Reload page → Modal doesn't show
 
 **References** (CRITICAL - Be Exhaustive):
