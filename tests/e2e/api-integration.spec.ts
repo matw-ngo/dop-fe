@@ -78,16 +78,16 @@ test.describe("API Integration - User Onboarding Flow", () => {
     await page.goto(`${LOCALHOST}${getLocalizedPath("/user-onboarding")}`);
 
     // Verify page loaded
-    await expect(page).toHaveTitle(/Onboarding/);
+    await expect(page).toHaveTitle(/Đăng ký tài khoản vay/);
 
     // Fill loan amount
-    await page.getByLabel("Loan Amount").fill("50000000");
+    await page.getByLabel("Số tiền vay").fill("50000000");
 
     // Click next to start onboarding
-    await page.getByRole("button", { name: "Next" }).click();
+    await page.getByRole("button", { name: "Tiếp theo" }).click();
 
     // Should navigate to lead creation
-    await expect(page.getByText("Personal Information")).toBeVisible({
+    await expect(page.getByText("Thông tin cá nhân")).toBeVisible({
       timeout: 10000,
     });
   });
@@ -116,8 +116,7 @@ test.describe("API Integration - User Onboarding Flow", () => {
     );
 
     // Should display consent form
-    await expect(page.getByText("Consent Form")).toBeVisible();
-    await expect(page.getByText("Privacy Policy")).toBeVisible();
+    await expect(page.getByText("Chính sách bảo mật")).toBeVisible();
   });
 
   test("verifies eKYC submission with dopClient", async ({ page }) => {
@@ -158,7 +157,7 @@ test.describe("API Integration - User Onboarding Flow", () => {
     await page.goto(`${LOCALHOST}${getLocalizedPath("/user-onboarding/ekyc")}`);
 
     // Verify eKYC page loaded
-    await expect(page.getByText("Identity Verification")).toBeVisible();
+    await expect(page.getByText("Xác thực danh tính")).toBeVisible();
   });
 });
 
@@ -292,14 +291,14 @@ test.describe("API Integration - Error Recovery", () => {
 
     await page.goto(`${LOCALHOST}${getLocalizedPath("/user-onboarding")}`);
 
-    await page.getByLabel("Loan Amount").fill("5000000");
-    await page.getByRole("button", { name: "Next" }).click();
+    await page.getByLabel("Số tiền vay").fill("5000000");
+    await page.getByRole("button", { name: "Tiếp theo" }).click();
 
     // Should show timeout error
-    await expect(page.getByText("Request timed out")).toBeVisible({
+    await expect(page.getByText("Yêu cầu hết thời gian")).toBeVisible({
       timeout: 40000,
     });
-    await expect(page.getByRole("button", { name: "Try Again" })).toBeVisible();
+    await expect(page.getByRole("button", { name: "Thử lại" })).toBeVisible();
   });
 
   test("validates API responses match expected schemas", async ({ page }) => {
@@ -317,11 +316,11 @@ test.describe("API Integration - Error Recovery", () => {
 
     await page.goto(`${LOCALHOST}${getLocalizedPath("/user-onboarding")}`);
 
-    await page.getByLabel("Loan Amount").fill("5000000");
-    await page.getByRole("button", { name: "Next" }).click();
+    await page.getByLabel("Số tiền vay").fill("5000000");
+    await page.getByRole("button", { name: "Tiếp theo" }).click();
 
     // Should handle missing fields gracefully
-    await expect(page.getByText("Personal Information")).toBeVisible({
+    await expect(page.getByText("Thông tin cá nhân")).toBeVisible({
       timeout: 10000,
     });
   });
@@ -339,10 +338,10 @@ test.describe("API Integration - Environment Configuration", () => {
 
     await page.goto(`${LOCALHOST}${getLocalizedPath("/user-onboarding")}`);
 
-    await page.getByLabel("Loan Amount").fill("5000000");
-    await page.getByRole("button", { name: "Next" }).click();
+    await page.getByLabel("Số tiền vay").fill("5000000");
+    await page.getByRole("button", { name: "Tiếp theo" }).click();
 
-    await expect(page.getByText("Personal Information")).toBeVisible({
+    await expect(page.getByText("Thông tin cá nhân")).toBeVisible({
       timeout: 10000,
     });
 

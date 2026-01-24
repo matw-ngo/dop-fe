@@ -42,7 +42,7 @@ test.describe("eKYC Loan Application", () => {
     await expect(page.getByText("Identity Verification")).toBeVisible();
 
     // Step 3: Start eKYC verification
-    await page.getByRole("button", { name: "Verify Identity Now" }).click();
+    await page.getByRole("button", { name: "Verify Identity" }).click();
 
     // Mock eKYC verification flow
     // In real test, this would interact with actual eKYC SDK
@@ -124,7 +124,7 @@ test.describe("eKYC Loan Application", () => {
     });
 
     // Start verification
-    await page.getByRole("button", { name: "Verify Identity Now" }).click();
+    await page.getByRole("button", { name: "Verify Identity" }).click();
 
     // Upload document
     await page
@@ -162,7 +162,7 @@ test.describe("eKYC Loan Application", () => {
     });
 
     // Start verification
-    await page.getByRole("button", { name: "Verify Identity Now" }).click();
+    await page.getByRole("button", { name: "Verify Identity" }).click();
 
     // Upload document
     await page
@@ -214,7 +214,7 @@ test.describe("eKYC Loan Application", () => {
       });
     });
 
-    await page.getByRole("button", { name: "Verify Identity Now" }).click();
+    await page.getByRole("button", { name: "Verify Identity" }).click();
     await page
       .getByLabel("Upload ID Document")
       .setInputFiles("./test-data/sample-id-card.png");
@@ -270,7 +270,7 @@ test.describe("eKYC Loan Application", () => {
       });
     });
 
-    await page.getByRole("button", { name: "Verify Identity Now" }).click();
+    await page.getByRole("button", { name: "Verify Identity" }).click();
     await page
       .getByLabel("Upload ID Document")
       .setInputFiles("./test-data/sample-id-card.png");
@@ -312,7 +312,7 @@ test.describe("Mobile Responsiveness", () => {
     await page.getByRole("button", { name: "Next" }).click();
 
     // eKYC modal should adapt to mobile screen
-    await page.getByRole("button", { name: "Verify Identity Now" }).click();
+    await page.getByRole("button", { name: "Verify Identity" }).click();
     await expect(page.locator('[data-testid="ekyc-modal"]')).toHaveClass(
       /mobile/,
     );
@@ -365,7 +365,7 @@ test.describe("Cross-Browser Compatibility", () => {
       await page.getByRole("button", { name: "Next" }).click();
 
       // eKYC verification should work in all browsers
-      await page.getByRole("button", { name: "Verify Identity Now" }).click();
+      await page.getByRole("button", { name: "Verify Identity" }).click();
       await expect(page.locator('[data-testid="ekyc-modal"]')).toBeVisible();
 
       // File upload might behave differently across browsers
@@ -403,7 +403,7 @@ test.describe("Dark Mode Testing", () => {
     await page.getByRole("button", { name: "Next" }).click();
 
     // eKYC modal should have dark mode styling
-    await page.getByRole("button", { name: "Verify Identity Now" }).click();
+    await page.getByRole("button", { name: "Verify Identity" }).click();
     await expect(page.locator('[data-testid="ekyc-modal"]')).toHaveClass(
       /dark/,
     );
@@ -435,7 +435,7 @@ test.describe("Accessibility Compliance", () => {
 
     // Verify eKYC accessibility
     await expect(
-      page.getByRole("button", { name: "Verify Identity Now" }),
+      page.getByRole("button", { name: "Verify Identity" }),
     ).toHaveAttribute("aria-describedby");
     await expect(
       page.getByRole("dialog", { name: "Identity Verification" }),
@@ -444,11 +444,11 @@ test.describe("Accessibility Compliance", () => {
     // Test keyboard navigation
     await page.keyboard.press("Tab");
     await expect(
-      page.getByRole("button", { name: "Verify Identity Now" }),
+      page.getByRole("button", { name: "Verify Identity" }),
     ).toBeFocused();
 
     // Test focus management in modal
-    await page.getByRole("button", { name: "Verify Identity Now" }).click();
+    await page.getByRole("button", { name: "Verify Identity" }).click();
     await expect(page.locator('[data-testid="ekyc-modal"]')).toBeVisible();
     await expect(page.getByRole("button", { name: "Close" })).toBeFocused();
 
@@ -469,7 +469,7 @@ test.describe("Accessibility Compliance", () => {
     await page.getByRole("button", { name: "Next" }).click();
 
     // Verify high contrast styling
-    await page.getByRole("button", { name: "Verify Identity Now" }).click();
+    await page.getByRole("button", { name: "Verify Identity" }).click();
     await expect(page.locator('[data-testid="ekyc-modal"]')).toHaveCSS(
       "filter",
       "contrast(2)",
@@ -487,7 +487,7 @@ test.describe("Accessibility Compliance", () => {
     await page.getByRole("button", { name: "Next" }).click();
 
     // Verify animations are disabled
-    await page.getByRole("button", { name: "Verify Identity Now" }).click();
+    await page.getByRole("button", { name: "Verify Identity" }).click();
     await expect(page.locator('[data-testid="ekyc-modal"]')).toHaveCSS(
       "transition",
       "none",
@@ -510,7 +510,7 @@ test.describe("Performance Testing", () => {
 
     await page.getByLabel("Loan Amount").fill("80000000");
     await page.getByRole("button", { name: "Next" }).click();
-    await page.getByRole("button", { name: "Verify Identity Now" }).click();
+    await page.getByRole("button", { name: "Verify Identity" }).click();
 
     await page
       .locator('[data-testid="ekyc-modal"]')
@@ -542,7 +542,7 @@ test.describe("Performance Testing", () => {
 
     const uploadStartTime = Date.now();
 
-    await page.getByRole("button", { name: "Verify Identity Now" }).click();
+    await page.getByRole("button", { name: "Verify Identity" }).click();
     await page.getByLabel("Upload ID Document").setInputFiles({
       name: "large-image.jpg",
       mimeType: "image/jpeg",
