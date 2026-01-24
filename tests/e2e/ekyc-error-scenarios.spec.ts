@@ -12,9 +12,15 @@
 
 import { expect, test } from "@playwright/test";
 
+const LOCALHOST = "http://localhost:3001";
+
+function getLocalizedPath(path: string, locale: string = "vi"): string {
+  return `/${locale}${path.startsWith("/") ? path : `/${path}`}`;
+}
+
 test.describe("eKYC Error Scenarios", () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto("/loan-application");
+    await page.goto(`${LOCALHOST}${getLocalizedPath("/loan-wizard")}`);
     await page.getByLabel("Loan Amount").fill("50000000");
     await page.getByRole("button", { name: "Next" }).click();
   });
@@ -363,7 +369,7 @@ test.describe("eKYC Error Scenarios", () => {
     await page.getByRole("button", { name: "Verify Identity Now" }).click();
 
     // Try to start another verification while one is active
-    await page.goto("/loan-application");
+    await page.goto(`${LOCALHOST}${getLocalizedPath("/loan-wizard")}`);
     await page.getByLabel("Loan Amount").fill("60000000");
     await page.getByRole("button", { name: "Next" }).click();
 

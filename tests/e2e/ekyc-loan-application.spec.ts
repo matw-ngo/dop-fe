@@ -12,12 +12,18 @@
 
 import { expect, test } from "@playwright/test";
 
+const LOCALHOST = "http://localhost:3001";
+
+function getLocalizedPath(path: string, locale: string = "vi"): string {
+  return `/${locale}${path.startsWith("/") ? path : `/${path}`}`;
+}
+
 test.describe.configure({ mode: "parallel" });
 
 test.describe("eKYC Loan Application", () => {
   test.beforeEach(async ({ page }) => {
     // Navigate to loan application page
-    await page.goto("/loan-application");
+    await page.goto(`${LOCALHOST}${getLocalizedPath("/loan-wizard")}`);
 
     // Wait for page to load
     await page.waitForLoadState("networkidle");
@@ -293,7 +299,7 @@ test.describe("eKYC Loan Application", () => {
 test.describe("Mobile Responsiveness", () => {
   test.beforeEach(async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 812 }); // iPhone X dimensions
-    await page.goto("/loan-application");
+    await page.goto(`${LOCALHOST}${getLocalizedPath("/loan-wizard")}`);
   });
 
   test("eKYC flow works on mobile devices", async ({ page }) => {
@@ -352,7 +358,7 @@ test.describe("Cross-Browser Compatibility", () => {
     test(`eKYC flow works in ${browserName}`, async ({ page }) => {
       test.skip(browserName === "webkit", "Skip Safari in CI for now");
 
-      await page.goto("/loan-application");
+      await page.goto(`${LOCALHOST}${getLocalizedPath("/loan-wizard")}`);
 
       // Complete basic flow
       await page.getByLabel("Loan Amount").fill("35000000");
@@ -386,7 +392,7 @@ test.describe("Dark Mode Testing", () => {
       document.documentElement.classList.add("dark");
     });
 
-    await page.goto("/loan-application");
+    await page.goto(`${LOCALHOST}${getLocalizedPath("/loan-wizard")}`);
 
     // Verify dark mode styling
     await expect(page.locator("body")).toHaveClass(/dark/);
@@ -417,7 +423,7 @@ test.describe("Dark Mode Testing", () => {
 test.describe("Accessibility Compliance", () => {
   test("eKYC flow is screen reader friendly", async ({ page }) => {
     // Enable accessibility testing
-    await page.goto("/loan-application");
+    await page.goto(`${LOCALHOST}${getLocalizedPath("/loan-wizard")}`);
 
     // Test ARIA labels and roles
     await expect(page.getByRole("main")).toBeVisible();
@@ -456,7 +462,7 @@ test.describe("Accessibility Compliance", () => {
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.addStyleTag({ content: "filter: contrast(2);" });
 
-    await page.goto("/loan-application");
+    await page.goto(`${LOCALHOST}${getLocalizedPath("/loan-wizard")}`);
 
     // Navigate to eKYC step
     await page.getByLabel("Loan Amount").fill("45000000");
@@ -474,7 +480,7 @@ test.describe("Accessibility Compliance", () => {
     // Enable reduced motion
     await page.emulateMedia({ reducedMotion: "reduce" });
 
-    await page.goto("/loan-application");
+    await page.goto(`${LOCALHOST}${getLocalizedPath("/loan-wizard")}`);
 
     // Navigate to eKYC step
     await page.getByLabel("Loan Amount").fill("70000000");
@@ -493,7 +499,7 @@ test.describe("Performance Testing", () => {
   test("eKYC flow loads within acceptable time limits", async ({ page }) => {
     const startTime = Date.now();
 
-    await page.goto("/loan-application");
+    await page.goto(`${LOCALHOST}${getLocalizedPath("/loan-wizard")}`);
     await page.waitForLoadState("networkidle");
 
     const pageLoadTime = Date.now() - startTime;
@@ -517,7 +523,7 @@ test.describe("Performance Testing", () => {
   test("eKYC flow handles large image uploads efficiently", async ({
     page,
   }) => {
-    await page.goto("/loan-application");
+    await page.goto(`${LOCALHOST}${getLocalizedPath("/loan-wizard")}`);
     await page.getByLabel("Loan Amount").fill("90000000");
     await page.getByRole("button", { name: "Next" }).click();
 

@@ -164,24 +164,21 @@ export const consentHandlers = [
     const scenario = request.headers.get("x-test-scenario") || "success";
 
     switch (scenario) {
-      case "not_found":
+      case "validation_error":
         return Response.json(
-          createErrorResponse("not_found", `Consent ${id} not found`),
-          { status: 404 },
+          createErrorResponse("invalid_argument", "Missing consent_id"),
+          { status: 400 },
         );
 
-      case "forbidden":
+      case "not_found":
         return Response.json(
-          createErrorResponse("permission_denied", "Cannot delete consent"),
-          { status: 403 },
+          createErrorResponse("not_found", "Consent not found"),
+          { status: 404 },
         );
 
       case "success":
       default:
-        return Response.json({
-          success: true,
-          message: "Consent deleted successfully",
-        });
+        return Response.json(createMockConsent({ id: id as string }));
     }
   }),
 
@@ -189,7 +186,7 @@ export const consentHandlers = [
    * PATCH /consent/{id} - Update consent
    * Update an existing consent by id
    */
-  http.patch(`${BASE_URL}/consent/:id`, async ({ params, request }) => {
+  http.patch(`$BASE_URL/consent/:id`, async (params, request) => {
     const { id } = params;
     const scenario = request.headers.get("x-test-scenario") || "success";
 
@@ -221,7 +218,7 @@ export const consentHandlers = [
   /**
    * GET /consent-version - Search consent versions
    */
-  http.get(`${BASE_URL}/consent-version`, ({ request }) => {
+  http.get(`$BASE_URL/consent-version`, ({ request }) => {
     const scenario = request.headers.get("x-test-scenario") || "success";
 
     if (scenario === "empty") {
@@ -381,6 +378,50 @@ export const consentHandlers = [
       ],
       pagination: { page: 1, page_size: 10, total_count: 1 },
     });
+  }),
+
+  /**
+   * POST /consent-data-category - Create consent data category
+   * Link a data category to a consent record
+   */
+  http.post(`${BASE_URL}/consent-data-category`, async ({ request }) => {
+    const scenario = request.headers.get("x-test-scenario") || "success";
+    const body = await request.json();
+
+    const bodyHasConsentId =
+      typeof body === "object" && body !== null && "consent_id" in body;
+    const bodyHasDataCategoryId =
+      typeof body === "object" && body !== null && "data_category_id" in body;
+
+    switch (scenario) {
+      case "validation_error":
+        return Response.json(
+          createErrorResponse(
+            "invalid_argument",
+            "Missing consent_id or data_category_id",
+          ),
+          { status: 400 },
+        );
+
+      case "not_found":
+        return Response.json(
+          createErrorResponse("not_found", "Consent not found"),
+          { status: 404 },
+        );
+
+      case "success":
+      default:
+        return Response.json(
+          {
+            id: "770e8400-e29b-41d4-a716-446655440008",
+            consent_id: body.consent_id,
+            data_category_id: body.data_category_id,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+          },
+          { status: 201 },
+        );
+    }
   }),
 ];
 

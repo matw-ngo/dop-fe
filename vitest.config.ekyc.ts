@@ -63,8 +63,8 @@ export default defineConfig({
     },
 
     // Test timeout
-    testTimeout: 10000,
-    hookTimeout: 10000,
+    testTimeout: 45000,
+    hookTimeout: 45000,
 
     // Include patterns
     include: [

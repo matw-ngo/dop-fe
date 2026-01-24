@@ -1,13 +1,14 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { usePathname } from "next/navigation";
-import Link from "next/link";
-import { useTranslations } from "next-intl";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, Menu, X } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { useEffect, useState } from "react";
 import { Logo } from "@/components/icons/home";
 import { useTenant } from "@/hooks/tenant/use-tenant";
+import { useLocalizedPath } from "@/lib/client-utils";
 import { cn } from "@/lib/utils";
 
 /**
@@ -29,6 +30,7 @@ export function Header() {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const getLocalizedPath = useLocalizedPath();
 
   const primaryColor = tenant.theme.colors.primary;
 
@@ -47,16 +49,25 @@ export function Header() {
     {
       label: t("about.label", { companyName: tenant.name }),
       children: [
-        { label: t("about.introduction"), href: "/gioi-thieu" },
-        { label: t("about.contact"), href: "/lien-he" },
+        {
+          label: t("about.introduction"),
+          href: getLocalizedPath("/gioi-thieu"),
+        },
+        { label: t("about.contact"), href: getLocalizedPath("/lien-he") },
       ],
     },
     {
       label: t("products.label"),
       children: [
-        { label: t("products.lending"), href: "/vay-tieu-dung" },
-        { label: t("products.creditCard"), href: "/the-tin-dung" },
-        { label: t("products.insurance"), href: "/bao-hiem" },
+        {
+          label: t("products.lending"),
+          href: getLocalizedPath("/vay-tieu-dung"),
+        },
+        {
+          label: t("products.creditCard"),
+          href: getLocalizedPath("/the-tin-dung"),
+        },
+        { label: t("products.insurance"), href: getLocalizedPath("/bao-hiem") },
       ],
     },
     {
@@ -64,23 +75,23 @@ export function Header() {
       children: [
         {
           label: t("tools.loanCalculator"),
-          href: "/cong-cu/tinh-toan-khoan-vay",
+          href: getLocalizedPath("/cong-cu/tinh-toan-khoan-vay"),
         },
         {
           label: t("tools.savingsCalculator"),
-          href: "/cong-cu/tinh-lai-tien-gui",
+          href: getLocalizedPath("/cong-cu/tinh-lai-tien-gui"),
         },
         {
           label: t("tools.salaryGrossToNet"),
-          href: "/cong-cu/tinh-luong-gross-net",
+          href: getLocalizedPath("/cong-cu/tinh-luong-gross-net"),
         },
         {
           label: t("tools.salaryNetToGross"),
-          href: "/cong-cu/tinh-luong-net-gross",
+          href: getLocalizedPath("/cong-cu/tinh-luong-net-gross"),
         },
       ],
     },
-    { label: t("support"), href: "/lien-he" },
+    { label: t("support"), href: getLocalizedPath("/lien-he") },
     { label: t("blog"), href: "https://blog.finzone.vn", external: true },
   ];
 

@@ -7,6 +7,12 @@
 
 import { expect, test } from "@playwright/test";
 
+const LOCALHOST = "http://localhost:3001";
+
+function getLocalizedPath(path: string, locale: string = "vi"): string {
+  return `/${locale}${path.startsWith("/") ? path : `/${path}`}`;
+}
+
 test.describe("API Integration - User Onboarding Flow", () => {
   test.beforeEach(async ({ page }) => {
     // Mock the flows endpoint
@@ -69,7 +75,7 @@ test.describe("API Integration - User Onboarding Flow", () => {
       });
     });
 
-    await page.goto("/user-onboarding");
+    await page.goto(`${LOCALHOST}${getLocalizedPath("/user-onboarding")}`);
 
     // Verify page loaded
     await expect(page).toHaveTitle(/Onboarding/);
@@ -105,7 +111,9 @@ test.describe("API Integration - User Onboarding Flow", () => {
       });
     });
 
-    await page.goto("/user-onboarding/consent");
+    await page.goto(
+      `${LOCALHOST}${getLocalizedPath("/user-onboarding/consent")}`,
+    );
 
     // Should display consent form
     await expect(page.getByText("Consent Form")).toBeVisible();
@@ -147,7 +155,7 @@ test.describe("API Integration - User Onboarding Flow", () => {
       });
     });
 
-    await page.goto("/user-onboarding/ekyc");
+    await page.goto(`${LOCALHOST}${getLocalizedPath("/user-onboarding/ekyc")}`);
 
     // Verify eKYC page loaded
     await expect(page.getByText("Identity Verification")).toBeVisible();
@@ -197,7 +205,7 @@ test.describe("API Integration - Auth Flow", () => {
       });
     });
 
-    await page.goto("/admin/dashboard");
+    await page.goto(`${LOCALHOST}${getLocalizedPath("/admin/dashboard")}`);
 
     // Should eventually load after token refresh
     await expect(page.getByText("Dashboard")).toBeVisible({ timeout: 15000 });
@@ -216,7 +224,7 @@ test.describe("API Integration - Auth Flow", () => {
       });
     });
 
-    await page.goto("/admin/profile");
+    await page.goto(`${LOCALHOST}${getLocalizedPath("/admin/profile")}`);
 
     // Should redirect to login or show auth error
     await expect(page.getByText("Login")).toBeVisible({ timeout: 10000 });
@@ -252,7 +260,7 @@ test.describe("API Integration - Error Recovery", () => {
       }
     });
 
-    await page.goto("/user-onboarding");
+    await page.goto(`${LOCALHOST}${getLocalizedPath("/user-onboarding")}`);
 
     // Fill form
     await page.getByLabel("Loan Amount").fill("10000000");
@@ -282,7 +290,7 @@ test.describe("API Integration - Error Recovery", () => {
       }, 35000); // 35 seconds - longer than default timeout
     });
 
-    await page.goto("/user-onboarding");
+    await page.goto(`${LOCALHOST}${getLocalizedPath("/user-onboarding")}`);
 
     await page.getByLabel("Loan Amount").fill("5000000");
     await page.getByRole("button", { name: "Next" }).click();
@@ -307,7 +315,7 @@ test.describe("API Integration - Error Recovery", () => {
       });
     });
 
-    await page.goto("/user-onboarding");
+    await page.goto(`${LOCALHOST}${getLocalizedPath("/user-onboarding")}`);
 
     await page.getByLabel("Loan Amount").fill("5000000");
     await page.getByRole("button", { name: "Next" }).click();
@@ -329,7 +337,7 @@ test.describe("API Integration - Environment Configuration", () => {
       route.continue();
     });
 
-    await page.goto("/user-onboarding");
+    await page.goto(`${LOCALHOST}${getLocalizedPath("/user-onboarding")}`);
 
     await page.getByLabel("Loan Amount").fill("5000000");
     await page.getByRole("button", { name: "Next" }).click();
