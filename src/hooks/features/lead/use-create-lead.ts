@@ -11,6 +11,7 @@ interface CreateLeadParams {
   deviceInfo: Record<string, never>;
   trackingParams: Record<string, never>;
   info: components["schemas"]["SubmitLeadInfoRequestBody"];
+  consent_id?: string; // Consent ID for GDPR compliance
 }
 
 /**
@@ -54,6 +55,7 @@ async function createLead(
     deviece_info: params.deviceInfo, // Note: typo in API schema "deviece_info"
     tracking_params: params.trackingParams,
     info: params.info,
+    consent_id: params.consent_id,
   };
 
   try {

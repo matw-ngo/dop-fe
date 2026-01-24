@@ -238,6 +238,7 @@ export interface components {
       deviece_info: Record<string, never>;
       tracking_params: Record<string, never>;
       info: components["schemas"]["SubmitLeadInfoRequestBody"];
+      consent_id?: string;
     };
     CreateLeadResponseBody: {
       id: components["schemas"]["uuid"];

@@ -20,6 +20,7 @@ import { useTenant } from "@/hooks/tenant/use-tenant";
 import { buildLoanFormConfigFromStep } from "@/lib/builders/loan-form-config-builder";
 import { ALLOWED_TELCOS, phoneValidation } from "@/lib/utils/phone-validation";
 import { mapFormDataToLeadInfo } from "@/mappers/leadMapper";
+import { useConsentStore } from "@/store/use-consent-store";
 
 interface DynamicLoanFormProps {
   onSubmitSuccess?: (data: Record<string, unknown>) => void;
@@ -33,6 +34,7 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
   const { getTelcoList } = usePhoneValidationMessages();
   const tenant = useTenant();
   const router = useRouter();
+  const { hasConsent, getConsentId } = useConsentStore();
 
   const [showPhoneModal, setShowPhoneModal] = React.useState(false);
   const [showOTPModal, setShowOTPModal] = React.useState(false);
@@ -73,6 +75,11 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
       return;
     }
 
+    if (!hasConsent()) {
+      toast.error("Bạn cần đồng ý với chính sách bảo mật để tiếp tục.");
+      return;
+    }
+
     if (!flowData || !indexStep) {
       console.error("Flow configuration not available");
       toast.error(t("errors.submissionFailed"));
@@ -94,6 +101,7 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
         deviceInfo: {},
         trackingParams: {},
         info: apiPayload,
+        consent_id: getConsentId() || undefined,
       },
       {
         onSuccess: (data) => {
