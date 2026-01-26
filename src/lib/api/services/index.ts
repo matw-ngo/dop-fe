@@ -5,6 +5,9 @@
  * Each service has its own typed client with proper base URL configuration.
  */
 
+import { consentClient } from "./consent";
+import { dopClient } from "./dop";
+
 export { dopClient } from "./dop";
 export type { DopPaths } from "./dop";
 
