@@ -37,7 +37,8 @@ const getBaseUrl = (): string => {
  * Handles all DOP service endpoints with proper base URL configuration
  */
 export const dopClient = createClient<DopPaths>({
-  baseUrl: `${getBaseUrl()}v1`,
+  // baseUrl: `${getBaseUrl()}v1`,
+  baseUrl: `${getBaseUrl()}`,
 });
 
 // Apply middleware stack

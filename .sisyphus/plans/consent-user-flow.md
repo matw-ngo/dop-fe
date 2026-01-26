@@ -321,7 +321,7 @@ Homepage Load → Pre-check (GET /consent-version + GET /consent) → Smart Tab 
 
 ### Phase 2: ConsentModal Component
 
-- [ ] 3. Create ConsentModal component structure
+- [x] 3. Create ConsentModal component structure
 
   **What to do**:
   - Create `src/components/features/consent/ConsentModal.tsx`
@@ -391,7 +391,7 @@ Homepage Load → Pre-check (GET /consent-version + GET /consent) → Smart Tab 
 
   **Commit**: NO (wait for sub-components)
 
-- [ ] 4. Create ConsentForm tab component
+- [x] 4. Create ConsentForm tab component
 
   **What to do**:
   - Create `src/components/features/consent/ConsentForm.tsx`
@@ -456,7 +456,7 @@ Homepage Load → Pre-check (GET /consent-version + GET /consent) → Smart Tab 
 
   **Commit**: NO (wait for History tab)
 
-- [ ] 5. Create ConsentHistory tab component
+- [x] 5. Create ConsentHistory tab component
 
   **What to do**:
   - Create `src/components/features/consent/ConsentHistory.tsx`
@@ -520,7 +520,7 @@ Homepage Load → Pre-check (GET /consent-version + GET /consent) → Smart Tab 
 
 ### Phase 3: Homepage Integration
 
-- [ ] 6. Integrate ConsentModal into homepage
+- [x] 6. Integrate ConsentModal into homepage
 
   **What to do**:
   - Modify `src/app/[locale]/page.tsx` to include ConsentModal

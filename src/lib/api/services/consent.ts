@@ -40,7 +40,7 @@ const getBaseUrl = (): string => {
  * Handles all Consent service endpoints with proper base URL configuration
  */
 export const consentClient = createClient<ConsentPaths>({
-  baseUrl: `${getBaseUrl()}consent/v1`,
+  baseUrl: `${getBaseUrl()}consent/`,
 });
 
 // Apply middleware stack

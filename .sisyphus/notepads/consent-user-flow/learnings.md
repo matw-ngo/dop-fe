@@ -41,6 +41,34 @@ interface UseConsentVersionReturn {
 - Type import from `v1/consent.d.ts` caused incompatibility with apiClient paths
 - Solution: Define local interfaces matching schema types
 
+## Test Pattern for useConsentVersion (2026-01-26)
+
+### Test Setup Requirements
+- Import QueryClient, QueryClientProvider from @tanstack/react-query
+- Create wrapper function with fresh QueryClient for each test
+- Mock apiClient at module level before tests run
+- Use vi.unmock("@tanstack/react-query") to bypass global mock from vitest.setup.ts
+
+### Test Scenarios Covered
+1. **Fetch Success**: Mock apiClient.GET to return ConsentVersionListResponse with consent_versions and pagination
+2. **Query Parameters**:
+   - consentPurposeId: Tests filtering by consent purpose
+   - search: Tests search query parameter
+   - page/pageSize: Tests pagination parameters
+   - Combined: Tests all parameters together
+3. **Loading State**: Mock async promise to test isLoading true → false transition
+4. **Error Handling**:
+   - Rejected promise: mockRejectedValue for network errors
+   - Hook returns error object directly (not null)
+5. **Enabled Flag**: Test that API isn't called when enabled=false
+
+### Key Learnings
+- **Error Return Pattern**: Hook returns `error || null` so errors are passed through, not suppressed
+- **Mock Response Structure**: Must match OpenAPI ConsentVersionListResponse with consent_versions array and pagination object
+- **Query Key Assertion**: Verify exact params structure (consent_purpose_id, search, page, page_size) in apiClient calls
+- **TanStack Query Mock Issue**: Global mock in vitest.setup.ts conflicts - must create wrapper with real QueryClientProvider
+- **Test Coverage**: Minimum 9 tests covering success, loading, error, and parameter variations
+
 # i18n Translation Files for Consent UI
 
 ## Implementation Notes
@@ -262,3 +290,177 @@ interface UseConsentVersionReturn {
 ## Next Steps
 - Task 5: Implement full ConsentHistory component
 - Homepage integration: Import ConsentForm in ConsentModal and page.tsx
+
+# Test Pattern for useUserConsent (2026-01-26)
+
+## Test Setup Requirements
+- Import QueryClient, QueryClientProvider from @tanstack/react-query
+- Create wrapper function with fresh QueryClient for each test
+- Mock apiClient at module level before tests run
+- Use vi.unmock("@tanstack/react-query") to bypass global mock from vitest.setup.ts
+
+## Test Scenarios Covered (10 tests)
+1. **Fetch Success**: Mock apiClient.GET to return ConsentRecord with all fields
+2. **Data Structure Validation**: Test that returned data matches expected ConsentRecord type (id, controller_id, processor_id, lead_id, consent_version_id, source, action, created_at, updated_at)
+3. **Missing Consent**: Handle case where API returns undefined - TanStack Query throws error, hook sets error state
+4. **Loading State**: Mock async promise to test isLoading true → false transition
+5. **API Error Handling**: mockRejectedValue for network/server errors
+6. **Missing leadId**: Test that enabled=false when leadId is undefined, API not called
+7. **Enabled Flag**: Test that API not called when enabled=false explicitly
+8. **Revoke Action**: Test fetching consent with action="revoke" (different from grant)
+9. **Network Error**: Handle rejected promise, error state set correctly
+10. **Refetch Function**: Verify refetch is returned as function and triggers new API call
+
+## Key Learnings
+- **Hook Return Type**: Returns `ConsentRecord` (single consent), not `ConsentListResponse`
+- **Query Key**: `["user-consent", leadId]` as const - leadId must be present for caching
+- **Parameter Structure**: GET /consent with query params: `{ lead_id: string }`
+- **Conditional Fetching**: enabled requires both `enabled=true` AND `leadId` truthy
+- **TanStack Query Mock Issue**: Global mock in vitest.setup.ts conflicts - must create wrapper with real QueryClientProvider
+- **Error Return Pattern**: Hook returns `error || null` so errors are passed through, not suppressed
+- **Data Undefined Handling**: TanStack Query throws error when data is undefined - test expects error state, not null
+- **Mock Response Structure**: Must match ConsentRecord interface exactly (no consents array, no pagination object)
+- **Test Coverage**: 10 tests covering success, loading, error, parameter variations, and enabled behavior
+
+## Mock Patterns Used
+```typescript
+// Success mock
+(apiClient.GET as any).mockResolvedValue({
+  data: { id: "...", controller_id: "...", processor_id: "...", lead_id: "...", consent_version_id: "...", source: "...", action: "...", created_at: "...", updated_at: "..." },
+  error: undefined,
+});
+
+// Error mock
+(apiClient.GET as any).mockRejectedValue(new Error("Error message"));
+```
+
+## Verification Command
+```bash
+pnpm test:run src/hooks/consent/__tests__/use-user-consent.test.ts
+# Result: ✓ 10 passed (10) - 461ms
+```
+
+# Test Pattern for useDataCategories (2026-01-26)
+
+## Test Setup Requirements
+- Import QueryClient, QueryClientProvider from @tanstack/react-query
+- Create wrapper function with fresh QueryClient for each test
+- Mock apiClient at module level before tests run
+- Use vi.unmock("@tanstack/react-query") to bypass global mock from vitest.setup.ts
+
+## Test Scenarios Covered (7 tests)
+1. **Fetch Success**: Mock apiClient.GET to return DataCategoryListResponse with categories and pagination
+2. **Query Parameters**: Test filtering by consent_purpose_id parameter
+3. **Pagination Metadata**: Verify response includes categories array and pagination object
+4. **Loading State**: Mock async promise to test isLoading true → false transition
+5. **API Error Handling**: Mock rejected promise for network/server errors
+6. **Network Error**: Handle rejected promise, error state set correctly
+7. **Enabled Flag**: Test that API not called when enabled=false
+
+## Key Learnings
+- **Hook Return Type**: Returns full DataCategoryListResponse object (not extracting categories array)
+- **Note**: Hook has bug - should return result.data.categories but currently returns result.data directly
+- **Query Key**: ["data-categories", consentPurposeId] as const for caching
+- **Parameter Structure**: GET /data-categories with query params: `{ consent_purpose_id: string }`
+- **TanStack Query Mock Issue**: Global mock in vitest.setup.ts conflicts - must create wrapper with real QueryClientProvider
+- **Error Return Pattern**: Hook returns error || null so errors are passed through, not suppressed
+- **Mock Response Structure**: Must match OpenAPI DataCategoryListResponse with categories array and pagination object
+- **Test Coverage**: 7 tests covering success, loading, error, and enabled behavior
+
+## Mock Patterns Used
+```typescript
+// Success mock with categories and pagination
+(apiClient.GET as any).mockResolvedValue({
+  data: {
+    categories: [
+      { id: "dc-1", name: "personal_data", description: "...", created_at: "...", updated_at: "..." },
+      { id: "dc-2", name: "financial_data", description: "...", created_at: "...", updated_at: "..." },
+    ],
+    pagination: { page: 1, page_size: 10, total_count: 2 }
+  },
+  error: undefined,
+});
+
+// Error mock
+(apiClient.GET as any).mockRejectedValue(new Error("Failed to fetch data categories"));
+```
+
+## Verification Command
+```bash
+pnpm test:run src/hooks/consent/__tests__/use-data-categories.test.ts
+# Result: ✓ 7 passed (7) - 347ms
+```
+
+# Test Pattern for useConsentLogs (2026-01-26)
+
+## Test Setup Requirements
+- Import QueryClient, QueryClientProvider from @tanstack/react-query
+- Create wrapper function with fresh QueryClient for each test
+- Mock apiClient at module level before tests run
+- Use vi.unmock("@tanstack/react-query") to bypass global mock from vitest.setup.ts
+
+## Test Scenarios Covered (9 tests)
+1. **Fetch Success**: Mock apiClient.GET to return ConsentLogsListResponse with consent_logs array and pagination
+2. **Data Structure Validation**: Test that response includes consent_logs[] with correct fields (id, consent_id, action, action_by, source, created_at, updated_at) and pagination object
+3. **Pagination Parameters**: Test that page and pageSize are passed correctly to API (lead_id, page, page_size)
+4. **Empty History**: Handle case where API returns empty consent_logs array - verify not null but empty
+5. **Loading State**: Mock async promise to test isLoading true → false transition
+6. **API Error Handling**: Mock rejected promise for network/server errors
+7. **Network Error**: Handle rejected promise, error state set correctly
+8. **Enabled Flag**: Test that API not called when enabled=false
+9. **Missing leadId**: Test that enabled=false when leadId undefined, API not called
+
+## Key Learnings
+- **Hook Return Type**: Returns ConsentLogsListResponse object with consent_logs[] and pagination
+- **Query Key**: `["consent-logs", leadId, page, pageSize]` as const - leadId required for caching
+- **Parameter Structure**: GET /consent-logs with query params: `{ lead_id: string, page: number, page_size: number }`
+- **Conditional Fetching**: enabled requires both `enabled=true` AND `leadId` truthy
+- **TanStack Query Mock Issue**: Global mock in vitest.setup.ts conflicts - must create wrapper with real QueryClientProvider
+- **Error Return Pattern**: Hook returns `error || null` so errors are passed through, not suppressed
+- **Mock Response Structure**: Must match OpenAPI ConsentLogsListResponse with consent_logs array and pagination object
+- **Test Coverage**: 9 tests covering success, loading, error, pagination, empty state, and enabled behavior
+
+## Mock Patterns Used
+```typescript
+// Success mock with logs and pagination
+(apiClient.GET as any).mockResolvedValue({
+  data: {
+    consent_logs: [
+      {
+        id: "cl-1",
+        consent_id: "c-1",
+        action: "grant",
+        action_by: "user1",
+        source: "web",
+        created_at: "2025-01-01T00:00:00Z",
+        updated_at: "2025-01-01T00:00:00Z",
+      },
+    ],
+    pagination: {
+      page: 1,
+      page_size: 10,
+      total_count: 1,
+    },
+  },
+  error: undefined,
+});
+
+// Empty history mock
+(apiClient.GET as any).mockResolvedValue({
+  data: {
+    consent_logs: [],
+    pagination: { page: 1, page_size: 10, total_count: 0 },
+  },
+  error: undefined,
+});
+
+// Error mock
+(apiClient.GET as any).mockRejectedValue(new Error("Failed to fetch consent logs"));
+```
+
+## Verification Command
+```bash
+pnpm test:run src/hooks/consent/__tests__/use-consent-logs.test.ts
+# Result: ✓ 9 passed (9) - 402ms
+```
+
