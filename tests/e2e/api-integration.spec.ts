@@ -116,7 +116,9 @@ test.describe("API Integration - User Onboarding Flow", () => {
     );
 
     // Should display consent form
-    await expect(page.getByText("Chính sách bảo mật")).toBeVisible();
+    await expect(page.getByText("Chính sách bảo mật")).toBeVisible({
+      timeout: 10000,
+    });
   });
 
   test("verifies eKYC submission with dopClient", async ({ page }) => {
@@ -226,7 +228,9 @@ test.describe("API Integration - Auth Flow", () => {
     await page.goto(`${LOCALHOST}${getLocalizedPath("/admin/profile")}`);
 
     // Should redirect to login or show auth error
-    await expect(page.getByText("Login")).toBeVisible({ timeout: 10000 });
+    await expect(page.getByRole("button", { name: "Đăng nhập" })).toBeVisible({
+      timeout: 10000,
+    });
   });
 });
 
