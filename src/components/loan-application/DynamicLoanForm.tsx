@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import React, { useMemo } from "react";
 import { toast } from "sonner";
+import { ConsentModal } from "@/components/consent/ConsentModal";
 import { StepWizard } from "@/components/form-generation";
 import {
   FormThemeProvider,
@@ -38,6 +39,7 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
 
   const [showPhoneModal, setShowPhoneModal] = React.useState(false);
   const [showOTPModal, setShowOTPModal] = React.useState(false);
+  const [showConsentModal, setShowConsentModal] = React.useState(false);
   const [formData, setFormData] = React.useState<Record<string, unknown>>({});
   const [createdLeadId, setCreatedLeadId] = React.useState<
     string | undefined
@@ -72,11 +74,6 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
 
   const handlePhoneSubmit = (phoneValue: string) => {
     if (!validatePhoneNum(phoneValue)) {
-      return;
-    }
-
-    if (!hasConsent()) {
-      toast.error("Bạn cần đồng ý với chính sách bảo mật để tiếp tục.");
       return;
     }
 
@@ -117,6 +114,11 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
         },
       },
     );
+  };
+
+  const handleConsentSuccess = () => {
+    setShowConsentModal(false);
+    setShowPhoneModal(true);
   };
 
   const handleOtpSuccess = (otp: string) => {
@@ -168,7 +170,11 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
     setFormData(data);
 
     if (indexStep?.sendOtp) {
-      setShowPhoneModal(true);
+      if (!hasConsent()) {
+        setShowConsentModal(true);
+      } else {
+        setShowPhoneModal(true);
+      }
     } else {
       onSubmitSuccess?.(data);
     }
@@ -198,7 +204,17 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
   return (
     <div data-testid="dynamic-loan-form">
       <FormThemeProvider theme={legacyLoanTheme}>
-        <StepWizard config={formConfig} onComplete={handleFormComplete} />
+        <StepWizard
+          config={formConfig}
+          initialData={formData}
+          onComplete={handleFormComplete}
+        />
+
+        <ConsentModal
+          open={showConsentModal}
+          setOpen={setShowConsentModal}
+          onSuccess={handleConsentSuccess}
+        />
 
         <PhoneVerificationModal
           open={showPhoneModal}

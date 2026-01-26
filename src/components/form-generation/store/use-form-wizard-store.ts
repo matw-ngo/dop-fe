@@ -149,7 +149,6 @@ export const useFormWizardStore = create<FormWizardStore>()(
             state.visitedSteps = [0];
             state.completedSteps = [];
 
-            // Initialize step metadata
             steps.forEach((step) => {
               state.stepMeta[step.id] = {
                 id: step.id,
@@ -159,10 +158,18 @@ export const useFormWizardStore = create<FormWizardStore>()(
                 errors: {},
                 touched: false,
               };
-              state.stepData[step.id] = {};
+
+              const stepDataFromInitial: Record<string, any> = {};
+              step.fields.forEach((field) => {
+                const value = initialData[field.name];
+                if (value !== undefined) {
+                  stepDataFromInitial[field.name] = value;
+                }
+              });
+
+              state.stepData[step.id] = stepDataFromInitial;
             });
 
-            // Mark first step as current
             if (steps[0]) {
               state.stepMeta[steps[0].id].completionStatus = "current";
               state.stepMeta[steps[0].id].visited = true;
