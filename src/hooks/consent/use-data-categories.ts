@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "@/lib/api/client";
+import { consentClient } from "@/lib/api/services";
 
 interface UseDataCategoriesOptions {
   consentPurposeId?: string;
@@ -32,7 +32,7 @@ export const useDataCategories = ({
   const { data, isLoading, error, refetch, isRefetching } = useQuery({
     queryKey,
     queryFn: async () => {
-      const result = await apiClient.GET("/data-categories" as any, {
+      const result = await consentClient.GET("/data-categories" as any, {
         params: {
           query: {
             consent_purpose_id: consentPurposeId,

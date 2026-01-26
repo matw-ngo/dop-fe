@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "@/lib/api/client";
+import { consentClient } from "@/lib/api/services";
 
 interface UseUserConsentOptions {
   leadId?: string;
@@ -35,7 +35,7 @@ export const useUserConsent = ({
   const { data, isLoading, error, refetch, isRefetching } = useQuery({
     queryKey,
     queryFn: async () => {
-      const result = await apiClient.GET("/consent" as any, {
+      const result = await consentClient.GET("/consent" as any, {
         params: {
           query: {
             lead_id: leadId,

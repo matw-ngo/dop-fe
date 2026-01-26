@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "@/lib/api/client";
+import { consentClient } from "@/lib/api/services";
 
 interface UseConsentVersionOptions {
   consentPurposeId?: string;
@@ -57,7 +57,7 @@ export const useConsentVersion = ({
   const { data, isLoading, error, refetch, isRefetching } = useQuery({
     queryKey,
     queryFn: async () => {
-      const result = await apiClient.GET("/consent-version" as any, {
+      const result = await consentClient.GET("/consent-version" as any, {
         params: {
           query: {
             consent_purpose_id: consentPurposeId,

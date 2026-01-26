@@ -464,3 +464,65 @@ pnpm test:run src/hooks/consent/__tests__/use-consent-logs.test.ts
 # Result: ✓ 9 passed (9) - 402ms
 ```
 
+
+# Test Pattern for useConfigIds (2026-01-26)
+
+## Test Setup Requirements
+- Import QueryClient, QueryClientProvider from @tanstack/react-query
+- Create wrapper function with fresh QueryClient for each test
+- Mock apiClient at module level before tests run
+- Use vi.unmock("@tanstack/react-query") to bypass global mock from vitest.setup.ts
+
+## Test Scenarios Covered (7 tests)
+1. **Fetch Success**: Mock apiClient.GET to return ConfigIds object with controller_id, processor_id, consent_purpose_id
+2. **Data Structure Validation**: Test that returned data contains all three optional fields (controller_id, processor_id, consent_purpose_id)
+3. **Partial Data**: Test handling when only controller_id is populated (others undefined)
+4. **Loading State**: Mock async promise to test isLoading true → false transition
+5. **Error Handling**:
+   - Rejected promise: mockRejectedValue for API errors
+   - Hook returns error object directly (not null)
+6. **Enabled Flag**: Test that API isn't called when enabled=false
+7. **Default Behavior**: Test that API is called when enabled=true (default parameter)
+
+## Key Learnings
+- **Single Endpoint**: useConfigIds calls `/config/ids` once to fetch all config IDs (not separate endpoints)
+- **Response Structure**: API returns simple object with optional fields: `{ controller_id?: string, processor_id?: string, consent_purpose_id?: string }`
+- **Hook Return Type**: Returns full ConfigIds object directly (not wrapped in response like other hooks)
+- **Query Key**: `["config-ids"]` as const - simple, no parameters
+- **Stale Time**: 300000ms (5 minutes) - config doesn't change often
+- **TanStack Query Mock Issue**: Global mock in vitest.setup.ts conflicts - must create wrapper with real QueryClientProvider
+- **Error Return Pattern**: Hook returns `error || null` so errors are passed through, not suppressed
+- **Optional Fields**: All config IDs are optional - tests must handle undefined values correctly
+- **Test Coverage**: 7 tests covering success, partial data, loading, error, and enabled behavior
+
+## Mock Patterns Used
+```typescript
+// Success mock with all IDs
+(apiClient.GET as any).mockResolvedValue({
+  data: {
+    controller_id: "controller-123",
+    processor_id: "processor-456",
+    consent_purpose_id: "purpose-789",
+  },
+  error: undefined,
+});
+
+// Partial data mock (only controller_id)
+(apiClient.GET as any).mockResolvedValue({
+  data: {
+    controller_id: "ctrl-only",
+    processor_id: undefined,
+    consent_purpose_id: undefined,
+  },
+  error: undefined,
+});
+
+// Error mock
+(apiClient.GET as any).mockRejectedValue(new Error("Failed to fetch config IDs"));
+```
+
+## Verification Command
+```bash
+pnpm test:run src/hooks/consent/__tests__/use-config-ids.test.ts
+# Result: ✓ 7 passed (7) - 336ms
+```
