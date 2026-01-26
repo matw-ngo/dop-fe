@@ -1,0 +1,34 @@
+{
+  "modal": {
+    "title": "Quản lý Đồng thuận",
+    "close": "Đóng"
+  },
+  "tabs": {
+    "form": "Form Đồng thuận",
+    "history": "Lịch sử Đồng thuận"
+  },
+  "form": {
+    "title": "Cấp Đồng thuận",
+    "consentVersion": {
+      "label": "Phiên bản đồng thuận"
+    },
+    "agreeAll": {
+      "label": "Đồng ý tất cả các điều khoản"
+    },
+    "grant": {
+      "button": "Cấp Đồng thuận",
+      "loading": "Đang cấp đồng thuận..."
+    }
+  },
+  "history": {
+    "title": "Lịch sử Đồng thuận",
+    "empty": "Không có lịch sử đồng thuận",
+    "loadMore": "Tải thêm"
+  },
+  "errors": {
+    "network": "Lỗi mạng xảy ra. Vui lòng kiểm tra kết nối và thử lại.",
+    "authentication": "Xác thực thất bại. Vui lòng đăng nhập và thử lại.",
+    "consentFailed": "Không thể cấp đồng thuận. Vui lòng thử lại.",
+    "general": "Đã xảy ra lỗi. Vui lòng thử lại sau."
+  }
+}

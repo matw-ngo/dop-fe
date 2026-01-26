@@ -203,7 +203,7 @@ Homepage Load → Pre-check (GET /consent-version + GET /consent) → Smart Tab 
 
 ### Phase 1: Foundation (API Hooks & Translations)
 
-- [ ] 1. Create React Query hooks for consent API calls
+- [x] 1. Create React Query hooks for consent API calls
 
   **What to do**:
   - Create `src/hooks/consent/use-consent-version.ts` - Hook to fetch latest consent version
@@ -275,7 +275,7 @@ Homepage Load → Pre-check (GET /consent-version + GET /consent) → Smart Tab 
 
   **Commit**: NO (wait for component development)
 
-- [ ] 2. Create i18n translations for consent UI
+- [x] 2. Create i18n translations for consent UI
 
   **What to do**:
   - Create `messages/en/features/consent.json` with all consent UI strings

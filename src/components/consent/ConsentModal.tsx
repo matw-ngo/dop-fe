@@ -1,17 +1,27 @@
 "use client";
 
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { useEffect, useState } from "react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { submitCreditCardConsent } from "@/lib/consent/credit-card-consent";
+import { useConfigIds } from "@/hooks/consent/use-config-ids";
+import { useConsentLogs } from "@/hooks/consent/use-consent-logs";
+import { useConsentVersion } from "@/hooks/consent/use-consent-version";
+import { useDataCategories } from "@/hooks/consent/use-data-categories";
+import { useUserConsent } from "@/hooks/consent/use-user-consent";
+import apiClient from "@/lib/api/client";
+import { useAuthStore } from "@/store/use-auth-store";
 import { useConsentStore } from "@/store/use-consent-store";
+
+import { ConsentForm } from "./ConsentForm";
+import { ConsentHistory } from "./ConsentHistory";
 
 interface ConsentModalProps {
   open: boolean;
@@ -20,71 +30,232 @@ interface ConsentModalProps {
 }
 
 export function ConsentModal({ open, setOpen, onSuccess }: ConsentModalProps) {
-  const { setError, clearError, error } = useConsentStore();
-  const [isLoading, setIsLoading] = useState(false);
+  const t = useTranslations("features.consent");
+  const { user } = useAuthStore();
+  const userId = user?.id;
 
-  const handleAgree = async () => {
-    setIsLoading(true);
-    clearError();
-    try {
-      const consentId = await submitCreditCardConsent();
-      if (consentId) {
-        onSuccess?.(consentId);
-        setOpen(false);
-      } else {
-        setError("Không thể gửi yêu cầu đồng ý. Vui lòng thử lại.");
+  const {
+    setConsentId,
+    setConsentStatus,
+    setConsentData,
+    setError,
+    clearError,
+    consentData,
+  } = useConsentStore();
+
+  const [activeTab, setActiveTab] = useState<"form" | "history">("form");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const {
+    data: consentVersion,
+    isLoading: isLoadingVersion,
+    error: versionError,
+  } = useConsentVersion({ enabled: open });
+
+  const {
+    data: userConsent,
+    isLoading: isLoadingUserConsent,
+    refetch: refetchUserConsent,
+  } = useUserConsent({
+    leadId: userId,
+    enabled: open && !!userId,
+  });
+
+  const { data: dataCategories, isLoading: isLoadingCategories } =
+    useDataCategories({
+      consentPurposeId:
+        consentVersion?.consent_versions?.[0]?.consent_purpose_id,
+      enabled: open,
+    });
+
+  const { data: consentLogs, isLoading: isLoadingLogs } = useConsentLogs({
+    leadId: userId,
+    enabled: open && !!userId,
+  });
+
+  const { data: configIds, isLoading: isLoadingConfig } = useConfigIds({
+    enabled: open,
+  });
+
+  useEffect(() => {
+    const handleDataUpdated = (event: Event) => {
+      const customEvent = event as CustomEvent<{ consentData: any }>;
+      if (customEvent.detail?.consentData) {
+        setConsentData(customEvent.detail.consentData);
       }
-    } catch (err) {
+    };
+
+    const handleError = (event: Event) => {
+      const customEvent = event as CustomEvent<{ error: string }>;
+      if (customEvent.detail?.error) {
+        setError(customEvent.detail.error);
+      }
+    };
+
+    window.addEventListener("consent:data-updated", handleDataUpdated);
+    window.addEventListener("consent:error", handleError);
+
+    return () => {
+      window.removeEventListener("consent:data-updated", handleDataUpdated);
+      window.removeEventListener("consent:error", handleError);
+    };
+  }, [setConsentData, setError]);
+
+  useEffect(() => {
+    if (open && userId) {
+      refetchUserConsent();
+    }
+  }, [open, userId, refetchUserConsent]);
+
+  useEffect(() => {
+    if (
+      consentLogs &&
+      consentLogs.consent_logs &&
+      consentLogs.consent_logs.length > 0
+    ) {
+      setActiveTab("history");
+    } else {
+      setActiveTab("form");
+    }
+  }, [consentLogs]);
+
+  const handleGrantConsent = async () => {
+    if (
+      !userId ||
+      !configIds?.consent_purpose_id ||
+      !configIds?.controller_id ||
+      !configIds?.processor_id
+    ) {
+      setError("Missing required configuration");
+      return;
+    }
+
+    setIsSubmitting(true);
+    clearError();
+
+    try {
+      const result = await apiClient.POST("/consent" as any, {
+        body: {
+          lead_id: userId,
+          consent_purpose_id: configIds.consent_purpose_id,
+          controller_id: configIds.controller_id,
+          processor_id: configIds.processor_id,
+          action: "grant",
+        },
+      });
+
+      if (result.data?.id) {
+        setConsentId(result.data.id);
+        setConsentStatus("agreed");
+        setConsentData({
+          id: result.data.id,
+          controller_id: configIds.controller_id || "",
+          processor_id: configIds.processor_id || "",
+          lead_id: userId || "",
+          consent_version_id: consentVersion?.consent_versions?.[0]?.id || "",
+          source: "web",
+          action: "grant",
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        });
+
+        onSuccess?.(result.data.id);
+        setOpen(false);
+      }
+    } catch (error) {
       setError(
-        err instanceof Error
-          ? err.message
-          : "Đã xảy ra lỗi khi gửi yêu cầu đồng ý.",
+        error instanceof Error ? error.message : "Failed to grant consent",
       );
     } finally {
-      setIsLoading(false);
+      setIsSubmitting(false);
     }
   };
 
-  const handleDecline = () => {
-    setError("Bạn cần đồng ý với chính sách bảo mật để tiếp tục.");
-    setOpen(false);
-  };
+  const isLoading =
+    isLoadingVersion ||
+    isLoadingUserConsent ||
+    isLoadingCategories ||
+    isLoadingLogs ||
+    isLoadingConfig;
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="max-w-md">
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Chính sách bảo mật</DialogTitle>
-          <DialogDescription asChild>
-            <div className="space-y-3 text-sm leading-relaxed">
-              <p>
-                Để tiếp tục đăng ký thẻ tín dụng, chúng tôi cần sự đồng ý của
-                bạn về việc thu thập và sử dụng dữ liệu cá nhân.
-              </p>
-              <div>
-                <p className="font-medium">Dữ liệu của bạn sẽ được:</p>
-                <ul className="list-disc list-inside space-y-1 mt-1">
-                  <li>Thu thập theo quy định của pháp luật Việt Nam và GDPR</li>
-                  <li>Chỉ sử dụng cho mục đích đăng ký và xét duyệt hồ sơ</li>
-                  <li>Không chia sẻ cho bên thứ ba mà không có sự đồng ý</li>
-                </ul>
-              </div>
-              <p className="font-medium">
-                Bạn có đồng ý với chính sách bảo mật này không?
-              </p>
-            </div>
+          <DialogTitle>{t("modal.title")}</DialogTitle>
+          <DialogDescription>
+            {activeTab === "form"
+              ? t("form.description")
+              : t("history.description")}
           </DialogDescription>
         </DialogHeader>
-        {error && <div className="text-red-500 text-sm mt-2">{error}</div>}
-        <DialogFooter>
-          <Button variant="outline" onClick={handleDecline}>
-            Từ chối
-          </Button>
-          <Button onClick={handleAgree} disabled={isLoading}>
-            {isLoading ? "Đang xử lý..." : "Đồng ý"}
-          </Button>
-        </DialogFooter>
+
+        {isLoading && (
+          <div className="flex items-center justify-center py-8">
+            <Loader2 className="mr-2 h-6 w-6 animate-spin" />
+            <span>{t("common.loading")}</span>
+          </div>
+        )}
+
+        {!isLoading && (
+          <div className="space-y-4">
+            {consentData && (
+              <Alert>
+                <AlertTitle>{t("errors.existingConsent")}</AlertTitle>
+                <AlertDescription>
+                  {t("errors.existingConsentDesc")}
+                </AlertDescription>
+              </Alert>
+            )}
+
+            <div className="border-b">
+              <div className="flex gap-4">
+                <button
+                  type="button"
+                  onClick={() => setActiveTab("form")}
+                  className={`flex-1 border-b-2 pb-2 font-medium transition-colors ${
+                    activeTab === "form"
+                      ? "border-primary text-primary"
+                      : "border-transparent text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  {t("tabs.form")}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveTab("history")}
+                  className={`flex-1 border-b-2 pb-2 font-medium transition-colors ${
+                    activeTab === "history"
+                      ? "border-primary text-primary"
+                      : "border-transparent text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  {t("tabs.history")}
+                </button>
+              </div>
+            </div>
+
+            {activeTab === "form" && (
+              <ConsentForm
+                consentVersion={consentVersion?.consent_versions?.[0]}
+                dataCategories={dataCategories}
+                onGrant={handleGrantConsent}
+                isSubmitting={isSubmitting}
+              />
+            )}
+
+            {activeTab === "history" && (
+              <ConsentHistory
+                consentLogs={consentLogs?.consent_logs}
+                userConsent={userConsent}
+                isLoading={isLoadingLogs}
+              />
+            )}
+          </div>
+        )}
       </DialogContent>
     </Dialog>
   );
 }
+
+export default ConsentModal;

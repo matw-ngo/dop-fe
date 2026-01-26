@@ -12,7 +12,9 @@ import { StatsSection } from "@/components/home/StatsSection";
 import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
 import { TenantThemeProvider } from "@/components/layout/TenantThemeProvider";
-import { useConsentStore } from "@/store/use-consent-store";
+import { useConsentVersion } from "@/hooks/consent/use-consent-version";
+import { useUserConsent } from "@/hooks/consent/use-user-consent";
+import { useAuthStore } from "@/store/use-auth-store";
 
 /**
  * Home Page
@@ -24,11 +26,45 @@ export default function Home() {
   const t = useTranslations("components.layout.header.nav.products");
   const t_common = useTranslations("common");
   const router = useRouter();
+  const { user } = useAuthStore();
+  const userId = user?.id;
   const [showConsentModal, setShowConsentModal] = useState(false);
 
+  const { data: consentVersionData } = useConsentVersion({
+    enabled: !!userId,
+  });
+
+  const { data: userConsent } = useUserConsent({
+    leadId: userId,
+    enabled: !!userId,
+  });
+
   useEffect(() => {
-    const consentExists = useConsentStore.getState().hasConsent();
-    setShowConsentModal(!consentExists);
+    if (!userId) {
+      setShowConsentModal(false);
+      return;
+    }
+
+    const latestVersionId = consentVersionData?.consent_versions?.[0]?.id;
+    const userVersionId = userConsent?.consent_version_id;
+
+    const shouldShowModal = !userVersionId || userVersionId !== latestVersionId;
+    setShowConsentModal(shouldShowModal);
+  }, [userId, consentVersionData, userConsent]);
+
+  useEffect(() => {
+    const handleDataUpdated = (event: Event) => {
+      const customEvent = event as CustomEvent<{ consentData: any }>;
+      if (customEvent.detail?.consentData?.id) {
+        setShowConsentModal(false);
+      }
+    };
+
+    window.addEventListener("consent:data-updated", handleDataUpdated);
+
+    return () => {
+      window.removeEventListener("consent:data-updated", handleDataUpdated);
+    };
   }, []);
 
   const handleConsentSuccess = (_consentId: string) => {

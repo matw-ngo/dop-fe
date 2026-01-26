@@ -1,0 +1,34 @@
+{
+  "modal": {
+    "title": "Consent Management",
+    "close": "Close"
+  },
+  "tabs": {
+    "form": "Consent Form",
+    "history": "Consent History"
+  },
+  "form": {
+    "title": "Grant Consent",
+    "consentVersion": {
+      "label": "Consent Version"
+    },
+    "agreeAll": {
+      "label": "Agree to all terms"
+    },
+    "grant": {
+      "button": "Grant Consent",
+      "loading": "Granting consent..."
+    }
+  },
+  "history": {
+    "title": "Consent History",
+    "empty": "No consent history available",
+    "loadMore": "Load More"
+  },
+  "errors": {
+    "network": "Network error occurred. Please check your connection and try again.",
+    "authentication": "Authentication failed. Please log in and try again.",
+    "consentFailed": "Failed to grant consent. Please try again.",
+    "general": "An error occurred. Please try again later."
+  }
+}
