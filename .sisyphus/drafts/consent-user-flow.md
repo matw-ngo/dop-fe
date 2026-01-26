@@ -182,9 +182,13 @@
 - i18n translations for consent UI
 - Unit tests (Vitest) for hooks and logic
 - E2E tests (Playwright) for user flows
+- Fetch controller/processor IDs from config API (searchDataControllers, searchDataProcessors)
+- Pre-check logic (GET /consent-version vs GET /consent version comparison)
 
 ### EXCLUDE:
 - Admin flow for managing consent versions (separate scope)
 - Data controller/processor configuration (backend responsibility)
 - Encryption implementation enhancement (TODO in existing store, defer)
 - Backend OpenAPI schema changes (frontend assumes API exists)
+- Transaction rollback logic (user chose: báo lỗi, không rollback)
+- Granular category selection (user chose: tất cả hoặc không)
