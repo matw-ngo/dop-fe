@@ -381,7 +381,7 @@ export class ConflictResolutionManager {
 
     // Vietnamese compliance score
     let complianceScore = 100;
-    const manualReviewRequired = filteredConflicts.filter(
+    const _manualReviewRequired = filteredConflicts.filter(
       (c) => c.metadata.vietnameseCompliance.requiresManualReview,
     ).length;
     const auditTrailComplete = filteredConflicts.filter(
@@ -835,11 +835,10 @@ export class ConflictResolutionManager {
   }
 
   private isConcurrentModification(
-    proposedData: any,
+    _proposedData: any,
     currentVersion: DataVersion,
   ): boolean {
-    const timeDiff =
-      new Date().getTime() - new Date(currentVersion.timestamp).getTime();
+    const timeDiff = Date.now() - new Date(currentVersion.timestamp).getTime();
     return timeDiff < 5000; // Within 5 seconds
   }
 

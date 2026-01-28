@@ -13,11 +13,7 @@ import type {
   CardNetwork,
   ComparisonResult,
   CreditCard,
-  CreditCardDetailResponse,
   CreditCardFilters,
-  CreditCardsResponse,
-  PaginationOptions,
-  SearchOptions,
   SortOption,
 } from "@/types/credit-card";
 
@@ -380,7 +376,7 @@ export const creditCardsApi = {
 
       // Generate search suggestions if query provided
       let suggestions: string[] | undefined;
-      if (query && query.trim()) {
+      if (query?.trim()) {
         suggestions = [
           `Thẻ tín dụng ${query}`,
           `${query} không phí thường niên`,

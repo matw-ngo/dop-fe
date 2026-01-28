@@ -7,7 +7,6 @@
 
 import {
   CacheFactory,
-  type CacheOptions,
   createCacheKey,
   parseCacheKey,
   type TranslationCache,
@@ -369,7 +368,7 @@ export class TranslationCacheManager {
     ];
 
     // Warm up different strategy caches
-    for (const [strategyName, strategy] of Object.entries(CACHE_STRATEGIES)) {
+    for (const [strategyName, _strategy] of Object.entries(CACHE_STRATEGIES)) {
       const cache = this.getCache(
         strategyName as keyof typeof CACHE_STRATEGIES,
       );

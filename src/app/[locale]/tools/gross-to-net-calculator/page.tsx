@@ -8,7 +8,6 @@ import type { Metadata } from "next";
 import { useLocale, useTranslations } from "next-intl";
 import { ToolsPageLayout } from "@/components/features/tools/ToolsPageLayout";
 import { ToolsThemeProvider } from "@/components/features/tools/ToolsThemeProvider";
-import Header from "@/components/layout/header";
 import { GrossToNetCalculator } from "@/components/tools";
 import {
   Breadcrumb,

@@ -21,6 +21,7 @@
  * ```
  */
 
+import type { DynamicFormConfig } from "@/components/form-generation";
 import {
   allowCustomComponent,
   ConditionOperator,
@@ -28,7 +29,6 @@ import {
   registerComponent,
   ValidationRuleType,
 } from "@/components/form-generation";
-import type { DynamicFormConfig } from "@/components/form-generation";
 import { SectionHeader } from "./SectionHeader";
 
 // Register the SectionHeader component

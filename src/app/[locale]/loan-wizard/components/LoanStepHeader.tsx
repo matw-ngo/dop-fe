@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import type { FieldComponentProps } from "@/components/form-generation/types";
 
 export interface LoanStepHeaderProps {

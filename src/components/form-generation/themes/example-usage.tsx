@@ -6,10 +6,9 @@
 
 "use client";
 
-import { FormThemeProvider } from "./ThemeProvider";
 import { legacyLoanThemeSimplified } from "./legacy-loan-simplified";
+import { FormThemeProvider } from "./ThemeProvider";
 import { createTheme, expandTheme } from "./theme-utils";
-import type { FormTheme } from "./types";
 import type { FormTheme as SimplifiedFormTheme } from "./types-simplified";
 
 // Example 1: Using the predefined simplified legacy loan theme

@@ -66,7 +66,7 @@ export class TranslationMonitor {
   /**
    * Record a cache hit
    */
-  recordCacheHit(locale: string, namespace: string, key: string): void {
+  recordCacheHit(locale: string, namespace: string, _key: string): void {
     if (!this.enabled) return;
 
     this.metrics.cacheHits++;
@@ -95,7 +95,7 @@ export class TranslationMonitor {
   /**
    * Record a cache miss
    */
-  recordCacheMiss(locale: string, namespace: string, key: string): void {
+  recordCacheMiss(locale: string, namespace: string, _key: string): void {
     if (!this.enabled) return;
 
     this.metrics.cacheMisses++;
@@ -138,7 +138,7 @@ export class TranslationMonitor {
   recordTranslationFetch(
     locale: string,
     namespace: string,
-    key: string,
+    _key: string,
     fetchTime: number,
     success: boolean,
     timingId?: string,

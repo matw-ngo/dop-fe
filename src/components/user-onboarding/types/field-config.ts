@@ -2,7 +2,6 @@ import type {
   AnimationVariant,
   ComponentVariant,
 } from "@/components/renderer/types/ui-theme";
-import type { MappedStep } from "@/mappers/flowMapper";
 import type { FieldCategory, FieldType } from "../constants/field-types";
 
 /**

@@ -11,7 +11,6 @@ import {
   ANIMATION_PRESETS,
   type AnimationConfig,
   type AnimationDirection,
-  AnimationType,
   STAGGER_PRESETS,
   type StaggerConfig,
   TRANSITION_PRESETS,
@@ -147,7 +146,6 @@ function applyDirectionOffset(
     case "right":
       state.x = -offset;
       break;
-    case "center":
     default:
       state.x = 0;
       state.y = 0;

@@ -5,7 +5,6 @@
  * accuracy, compliance, and data integrity for Vietnamese financial regulations.
  */
 
-import { VietnameseTaxBracket } from "../financial-data/vietnamese-financial-data";
 import type {
   LoanCalculationParams,
   TaxCalculationParams,

@@ -8,11 +8,7 @@ import { useLocale } from "next-intl";
 import { useEffect } from "react";
 import { DEFAULT_PAGE_SIZE } from "@/constants/insurance";
 import type {
-  CoveragePeriod,
-  FeeType,
-  InsuranceCategory,
   InsuranceFilters,
-  InsuranceType,
   PaginationOptions,
   SortOption,
 } from "@/types/insurance";
@@ -102,10 +98,10 @@ export const searchParamsToInsuranceFilters = (
   if (premiumMin || premiumMax) {
     filters.premiumRange = {
       min: premiumMin
-        ? parseInt(premiumMin)
+        ? parseInt(premiumMin, 10)
         : DEFAULT_FILTERS_FOR_URL.premiumRange.min,
       max: premiumMax
-        ? parseInt(premiumMax)
+        ? parseInt(premiumMax, 10)
         : DEFAULT_FILTERS_FOR_URL.premiumRange.max,
     };
   }
@@ -125,12 +121,12 @@ export const searchParamsToInsuranceFilters = (
       }
       (filters.coverageRange as any)[coverageType] = {
         min: coverageMin
-          ? parseInt(coverageMin)
+          ? parseInt(coverageMin, 10)
           : DEFAULT_FILTERS_FOR_URL.coverageRange[
               coverageType as keyof typeof DEFAULT_FILTERS_FOR_URL.coverageRange
             ].min,
         max: coverageMax
-          ? parseInt(coverageMax)
+          ? parseInt(coverageMax, 10)
           : DEFAULT_FILTERS_FOR_URL.coverageRange[
               coverageType as keyof typeof DEFAULT_FILTERS_FOR_URL.coverageRange
             ].max,
@@ -143,8 +139,8 @@ export const searchParamsToInsuranceFilters = (
   const ageMax = searchParams.get("ageMax");
   if (ageMin || ageMax) {
     filters.ageRange = {
-      min: ageMin ? parseInt(ageMin) : DEFAULT_FILTERS_FOR_URL.ageRange.min,
-      max: ageMax ? parseInt(ageMax) : DEFAULT_FILTERS_FOR_URL.ageRange.max,
+      min: ageMin ? parseInt(ageMin, 10) : DEFAULT_FILTERS_FOR_URL.ageRange.min,
+      max: ageMax ? parseInt(ageMax, 10) : DEFAULT_FILTERS_FOR_URL.ageRange.max,
     };
   }
 
@@ -157,7 +153,7 @@ export const searchParamsToInsuranceFilters = (
   numericFields.forEach((field) => {
     const value = searchParams.get(field);
     if (value) {
-      (filters as any)[field] = parseInt(value);
+      (filters as any)[field] = parseInt(value, 10);
     }
   });
 
@@ -340,8 +336,8 @@ export const useInsuranceUrlInit = (
     // Initialize page from URL
     const urlPage = searchParams.get("page");
     if (urlPage) {
-      const pageNum = parseInt(urlPage);
-      if (!isNaN(pageNum) && pageNum > 0) {
+      const pageNum = parseInt(urlPage, 10);
+      if (!Number.isNaN(pageNum) && pageNum > 0) {
         options.setPagination({ page: pageNum });
       }
     }
@@ -349,8 +345,8 @@ export const useInsuranceUrlInit = (
     // Initialize limit from URL
     const urlLimit = searchParams.get("limit");
     if (urlLimit) {
-      const limitNum = parseInt(urlLimit);
-      if (!isNaN(limitNum) && limitNum > 0) {
+      const limitNum = parseInt(urlLimit, 10);
+      if (!Number.isNaN(limitNum) && limitNum > 0) {
         options.setPagination({ limit: limitNum });
       }
     }
@@ -360,7 +356,13 @@ export const useInsuranceUrlInit = (
     if (urlSearch) {
       options.setSearchQuery(urlSearch);
     }
-  }, [searchParams]); // Removed 'options' from dependencies - Zustand store methods are stable
+  }, [
+    searchParams,
+    options.setFilters,
+    options.setPagination,
+    options.setSearchQuery,
+    options.setSortOption,
+  ]); // Removed 'options' from dependencies - Zustand store methods are stable
 };
 
 /**
@@ -401,7 +403,7 @@ export const useInsuranceUrlSync = (state: {
       }
 
       // Update URL without page reload
-      const newUrl = `/${locale}/insurance${params.toString() ? "?" + params.toString() : ""}`;
+      const newUrl = `/${locale}/insurance${params.toString() ? `?${params.toString()}` : ""}`;
       window.history.replaceState({}, "", newUrl);
     };
 
@@ -432,8 +434,8 @@ export const usePaginationFromUrl = () => {
   const urlLimit = searchParams.get("limit");
 
   return {
-    page: urlPage ? parseInt(urlPage) : 1,
-    limit: urlLimit ? parseInt(urlLimit) : DEFAULT_PAGE_SIZE,
+    page: urlPage ? parseInt(urlPage, 10) : 1,
+    limit: urlLimit ? parseInt(urlLimit, 10) : DEFAULT_PAGE_SIZE,
   };
 };
 

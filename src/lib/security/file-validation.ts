@@ -6,7 +6,6 @@
  */
 
 import type { VietnameseDocumentType } from "@/lib/ekyc/document-types";
-import { loanStatusRateLimiter } from "./status-rate-limiting";
 
 // Magic numbers for file type validation
 export const FILE_MAGIC_NUMBERS: Record<string, number[][]> = {
@@ -661,7 +660,7 @@ export class SecureFileValidator {
           );
         }
       }
-    } catch (error) {
+    } catch (_error) {
       // EXIF reading failed, but that's not critical
       result.warnings.push("Could not read EXIF data");
     }
@@ -903,7 +902,7 @@ export class SecureFileValidator {
     const sizes = ["Bytes", "KB", "MB", "GB"];
     if (bytes === 0) return "0 Bytes";
     const i = Math.floor(Math.log(bytes) / Math.log(1024));
-    return Math.round((bytes / 1024 ** i) * 100) / 100 + " " + sizes[i];
+    return `${Math.round((bytes / 1024 ** i) * 100) / 100} ${sizes[i]}`;
   }
 
   private looksLikeEncryptedData(buffer: ArrayBuffer): boolean {

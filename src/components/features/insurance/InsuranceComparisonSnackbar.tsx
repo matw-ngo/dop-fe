@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
-import React, { useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -20,7 +20,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { cn } from "@/lib/utils";
 import { useInsuranceStore } from "@/store/use-insurance-store";
 
 interface InsuranceComparisonSnackbarProps {
@@ -33,7 +32,7 @@ export default function InsuranceComparisonSnackbar({
   const t = useTranslations("features.insurance.comparison");
   const locale = useLocale();
   const [isVisible, setIsVisible] = useState(true);
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, _setIsExpanded] = useState(false);
 
   // Get comparison state from store - ALL hooks must be declared before any conditional returns
   const comparisonProducts = useInsuranceStore(
@@ -46,7 +45,7 @@ export default function InsuranceComparisonSnackbar({
     (state: any) => state,
   );
 
-  const handleClose = useCallback(() => {
+  const _handleClose = useCallback(() => {
     setIsVisible(false);
     onClose?.();
   }, [onClose]);

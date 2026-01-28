@@ -560,7 +560,7 @@ export const useFormWizardStore = create<FormWizardStore>()(
 
           // Evaluate all conditions - all must pass
           return step.condition.every((cond) => {
-            const fieldValue = formData[cond.field];
+            const _fieldValue = formData[cond.field];
             return evaluateConditions([cond], formData);
           });
         },

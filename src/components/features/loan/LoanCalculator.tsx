@@ -4,41 +4,20 @@
 "use client";
 
 import {
-  AlertCircle,
   BarChart3,
   Calculator,
-  Calendar,
-  CheckCircle,
-  Clock,
-  DollarSign,
   Download,
   Eye,
   EyeOff,
-  FileText,
   HelpCircle,
-  Info,
-  Percent,
-  PieChart,
   RefreshCw,
-  Settings,
-  Shield,
-  TrendingUp,
-  Zap,
 } from "lucide-react";
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Progress } from "@/components/ui/progress";
 import {
   Select,
   SelectContent,
@@ -48,7 +27,6 @@ import {
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { Slider } from "@/components/ui/slider";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Tooltip,
   TooltipContent,
@@ -135,7 +113,7 @@ export function LoanCalculator({
   // Calculate loan when parameters change
   useEffect(() => {
     calculateLoan();
-  }, [params]);
+  }, [calculateLoan]);
 
   const calculateLoan = () => {
     try {
@@ -158,9 +136,9 @@ export function LoanCalculator({
     }
   };
 
-  const formatSliderValue = (value: number[]) => {
+  const _formatSliderValue = (value: number[]) => {
     const [min, max] = value;
-    return formatVND(min) + " - " + formatVND(max);
+    return `${formatVND(min)} - ${formatVND(max)}`;
   };
 
   if (compact) {
@@ -229,7 +207,7 @@ export function LoanCalculator({
                   value={params.principal.toLocaleString("vi-VN")}
                   onChange={(e) => {
                     const value =
-                      parseInt(e.target.value.replace(/[^\d]/g, "")) || 0;
+                      parseInt(e.target.value.replace(/[^\d]/g, ""), 10) || 0;
                     updateParam("principal", value);
                   }}
                   className="text-lg font-medium"
@@ -268,7 +246,7 @@ export function LoanCalculator({
                   type="number"
                   value={params.term}
                   onChange={(e) =>
-                    updateParam("term", parseInt(e.target.value) || 0)
+                    updateParam("term", parseInt(e.target.value, 10) || 0)
                   }
                   min={1}
                   max={360}
@@ -393,7 +371,7 @@ export function LoanCalculator({
                       onChange={(e) =>
                         updateParam(
                           "promotionalPeriod",
-                          parseInt(e.target.value) || undefined,
+                          parseInt(e.target.value, 10) || undefined,
                         )
                       }
                       min={1}
@@ -454,7 +432,7 @@ export function LoanCalculator({
                     }
                     onChange={(e) => {
                       const value =
-                        parseInt(e.target.value.replace(/[^\d]/g, "")) || 0;
+                        parseInt(e.target.value.replace(/[^\d]/g, ""), 10) || 0;
                       updateParam("otherFees", value);
                     }}
                     placeholder="0"
@@ -469,7 +447,10 @@ export function LoanCalculator({
                   type="number"
                   value={params.gracePeriod || 0}
                   onChange={(e) =>
-                    updateParam("gracePeriod", parseInt(e.target.value) || 0)
+                    updateParam(
+                      "gracePeriod",
+                      parseInt(e.target.value, 10) || 0,
+                    )
                   }
                   min={0}
                   max={params.term}

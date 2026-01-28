@@ -53,7 +53,7 @@ export const createAccessibleButtonProps = (
 /**
  * Create accessible modal props
  */
-export const createAccessibleModalProps = (title: string, isOpen: boolean) => {
+export const createAccessibleModalProps = (_title: string, isOpen: boolean) => {
   const titleId = generateAriaId("modal-title");
   const descriptionId = generateAriaId("modal-description");
 
@@ -368,7 +368,7 @@ export const createAccessibleTabs = (
   role: "tablist",
   "aria-orientation": "horizontal",
 
-  getTabProps: (tabId: string, label: string) => ({
+  getTabProps: (tabId: string, _label: string) => ({
     role: "tab",
     id: `tab-${tabId}`,
     "aria-selected": activeTab === tabId,
@@ -429,7 +429,7 @@ export const createAccessibleDropdown = (
 
     getOptionProps: (
       value: string,
-      label: string,
+      _label: string,
       isSelected: boolean,
       onSelect: (value: string) => void,
     ) => ({

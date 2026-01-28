@@ -113,7 +113,7 @@ export function getInputClassName(
  */
 export function getControlStyles(
   hasError: boolean = false,
-  isDisabled: boolean = false,
+  _isDisabled: boolean = false,
 ) {
   const baseControl = [
     // Focus state

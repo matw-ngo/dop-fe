@@ -35,7 +35,7 @@ export function generateFieldsForStep(
 /**
  * Create validation rules for a field
  */
-function createValidations(fieldName: string, config: any): FieldValidation[] {
+function _createValidations(fieldName: string, config: any): FieldValidation[] {
   const validations: FieldValidation[] = [];
 
   // Add required validation if field is required

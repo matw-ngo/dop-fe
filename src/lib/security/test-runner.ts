@@ -4,9 +4,9 @@
  * Comprehensive security testing suite for OTP verification system
  */
 
-import { execSync } from "child_process";
-import fs from "fs";
-import path from "path";
+import { execSync } from "node:child_process";
+import fs from "node:fs";
+import path from "node:path";
 
 interface TestResult {
   suite: string;
@@ -83,7 +83,7 @@ class SecurityTestRunner {
       );
 
       this.parseTestResult("Rate Limiting", result);
-    } catch (error: any) {
+    } catch (_error: any) {
       this.securityIssues.push("Rate limiting tests failed");
       this.addTestResult("Rate Limiting", 0, 0, 1, 0);
     }
@@ -102,7 +102,7 @@ class SecurityTestRunner {
       );
 
       this.parseTestResult("Device Fingerprinting", result);
-    } catch (error: any) {
+    } catch (_error: any) {
       this.securityIssues.push("Device fingerprinting tests failed");
       this.addTestResult("Device Fingerprinting", 0, 0, 1, 0);
     }
@@ -121,7 +121,7 @@ class SecurityTestRunner {
       );
 
       this.parseTestResult("Session Management", result);
-    } catch (error: any) {
+    } catch (_error: any) {
       this.securityIssues.push("Session security tests failed");
       this.addTestResult("Session Management", 0, 0, 1, 0);
     }
@@ -140,7 +140,7 @@ class SecurityTestRunner {
       );
 
       this.parseTestResult("CSRF Protection", result);
-    } catch (error: any) {
+    } catch (_error: any) {
       this.securityIssues.push("CSRF protection tests failed");
       this.addTestResult("CSRF Protection", 0, 0, 1, 0);
     }
@@ -159,7 +159,7 @@ class SecurityTestRunner {
       );
 
       this.parseTestResult("Input Sanitization", result);
-    } catch (error: any) {
+    } catch (_error: any) {
       this.securityIssues.push("Input sanitization tests failed");
       this.addTestResult("Input Sanitization", 0, 0, 1, 0);
     }
@@ -178,7 +178,7 @@ class SecurityTestRunner {
       );
 
       this.parseTestResult("Vietnamese Compliance", result);
-    } catch (error: any) {
+    } catch (_error: any) {
       this.securityIssues.push("Vietnamese compliance tests failed");
       this.addTestResult("Vietnamese Compliance", 0, 0, 1, 0);
     }
@@ -197,7 +197,7 @@ class SecurityTestRunner {
       );
 
       this.parseTestResult("Security Integration", result);
-    } catch (error: any) {
+    } catch (_error: any) {
       this.securityIssues.push("Security integration tests failed");
       this.addTestResult("Security Integration", 0, 0, 1, 0);
     }
@@ -215,8 +215,8 @@ class SecurityTestRunner {
       if (line.includes("Tests:")) {
         const match = line.match(/Tests:\s+(\d+)\s+passed,\s+(\d+)\s+failed/);
         if (match) {
-          passed = parseInt(match[1]);
-          failed = parseInt(match[2]);
+          passed = parseInt(match[1], 10);
+          failed = parseInt(match[2], 10);
           tests = passed + failed;
         }
       }
@@ -353,7 +353,7 @@ class SecurityTestRunner {
   }
 
   private printSummary(report: SecurityReport): void {
-    console.log("\n" + "=".repeat(60));
+    console.log(`\n${"=".repeat(60)}`);
     console.log("🔒 SECURITY TEST SUMMARY");
     console.log("=".repeat(60));
     console.log(`📊 Total Tests: ${report.summary.totalTests}`);
@@ -395,7 +395,7 @@ class SecurityTestRunner {
       console.log(`  ${rec}`);
     });
 
-    console.log("\n" + "=".repeat(60));
+    console.log(`\n${"=".repeat(60)}`);
   }
 }
 

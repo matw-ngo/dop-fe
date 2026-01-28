@@ -12,7 +12,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import {
   type Locale,
   loadClientTranslations,
-  loadNamespaceTranslations,
   type Namespace,
   preloadTranslations,
   type TranslationMessages,
@@ -99,7 +98,15 @@ export function useDynamicTranslations(
 
       throw err;
     }
-  }, [locale, namespace, state.isLoaded, state.error, retryCount, retryDelay]);
+  }, [
+    locale,
+    namespace,
+    state.isLoaded,
+    state.error,
+    retryCount,
+    retryDelay,
+    state.translations,
+  ]);
 
   // Preload if requested
   useEffect(() => {

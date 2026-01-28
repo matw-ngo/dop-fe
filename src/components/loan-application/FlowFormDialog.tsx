@@ -35,8 +35,8 @@ export function FlowFormDialog({ open, onOpenChange }: FlowFormDialogProps) {
   const { mutate: createLead, isPending: isCreatingLead } = useCreateLead();
   const { mutate: submitInfo, isPending: isSubmitting } = useSubmitLeadInfo();
 
-  const [leadId, setLeadId] = useState<string | null>(null);
-  const [isFinding, setIsFinding] = useState(false);
+  const [_leadId, setLeadId] = useState<string | null>(null);
+  const [_isFinding, setIsFinding] = useState(false);
 
   const dynamicFormConfig = useMemo(() => {
     if (!flowData) return null;

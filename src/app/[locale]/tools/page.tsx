@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, Variants } from "framer-motion";
 import {
   ArrowRight,
   Calculator,
@@ -18,8 +18,34 @@ import { useMemo, useState } from "react";
 import { ToolsPageLayout } from "@/components/features/tools/ToolsPageLayout";
 import { ToolsThemeProvider } from "@/components/features/tools/ToolsThemeProvider";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+
+interface ToolItem {
+  id: string;
+  title: string;
+  description: string;
+  icon: React.ElementType;
+  category: string;
+  status: "available";
+  complexity: string;
+  badge?: string;
+  gradient: string;
+  features: string[];
+  href: string;
+}
+
+interface ComingSoonToolItem {
+  id: string;
+  title: string;
+  description: string;
+  icon: React.ElementType;
+  category: string;
+  status: "coming-soon";
+  complexity: string;
+  badge?: string;
+  gradient: string;
+  features: string[];
+}
 
 export default function ToolsPage() {
   const t = useTranslations("features.tools.list");
@@ -32,7 +58,7 @@ export default function ToolsPage() {
   const [selectedComplexity, setSelectedComplexity] = useState("all");
   const [viewMode, setViewMode] = useState<"grid" | "list" | "compact">("grid");
 
-  const tools = [
+  const tools: ToolItem[] = [
     {
       id: "loan-calculator",
       title: t("loanCalculator.title"),
@@ -91,7 +117,7 @@ export default function ToolsPage() {
     },
   ];
 
-  const comingSoon = [
+  const _comingSoon: ComingSoonToolItem[] = [
     {
       id: "roi-calculator",
       title: t("roiCalculator.title"),
@@ -151,7 +177,13 @@ export default function ToolsPage() {
     }
 
     return filtered;
-  }, [searchQuery, selectedCategory, selectedStatus, selectedComplexity]);
+  }, [
+    searchQuery,
+    selectedCategory,
+    selectedStatus,
+    selectedComplexity,
+    tools,
+  ]);
 
   const clearFilters = () => {
     setSearchQuery("");
@@ -178,7 +210,7 @@ export default function ToolsPage() {
     },
   };
 
-  const cardVariants = {
+  const cardVariants: Variants = {
     hidden: {
       opacity: 0,
       y: 20,
@@ -204,7 +236,7 @@ export default function ToolsPage() {
   };
 
   const renderToolCard = (
-    tool: (typeof tools)[0],
+    tool: ToolItem | ComingSoonToolItem,
     isComingSoon = false,
     index = 0,
   ) => {
@@ -330,7 +362,7 @@ export default function ToolsPage() {
         animate="visible"
         whileHover="hover"
       >
-        <Link href={tool.href} className="block">
+        <Link href={(tool as ToolItem).href} className="block">
           {cardContent}
         </Link>
       </motion.div>

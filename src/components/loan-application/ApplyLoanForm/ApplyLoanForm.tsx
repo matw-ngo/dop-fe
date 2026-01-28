@@ -1,24 +1,19 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import React from "react";
-import {
-  FieldErrors,
-  Form,
-  FormProvider,
-  UseFormReturn,
-  useForm,
-} from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { useFormTheme } from "@/components/form-generation/themes";
 import { Button, Modal, OtpContainer, TextInput } from "@/components/ui";
+import { useCreateLead } from "@/hooks/features/lead/use-create-lead";
 import { useLoanPurposes } from "@/hooks/i18n/use-loan-purposes";
 import { usePhoneValidationMessages } from "@/hooks/phone/use-validation-messages";
+import { useTenantFlow } from "@/hooks/tenant/use-flow";
+import { useTenant } from "@/hooks/tenant/use-tenant";
 import { trackLoanApplication } from "@/lib/tracking/events";
 import { ALLOWED_TELCOS, phoneValidation } from "@/lib/utils/phone-validation";
-import { useCreateLead } from "@/hooks/features/lead/use-create-lead";
-import { useRouter } from "next/navigation";
 import { mapFormDataToLeadInfo } from "@/mappers/leadMapper";
-import { useTenant } from "@/hooks/tenant/use-tenant";
-import { useTenantFlow } from "@/hooks/tenant/use-flow";
 import { AmountField } from "./components/AmountField";
 import { PeriodField } from "./components/PeriodField";
 import { PurposeField } from "./components/PurposeField";
@@ -29,7 +24,6 @@ import {
   createLoanApplicationSchema,
   type LoanApplicationFormData,
 } from "./schema";
-import { useFormTheme } from "@/components/form-generation/themes";
 
 interface ApplyLoanFormProps {
   defaultValues?: Partial<LoanApplicationFormData>;
@@ -126,7 +120,7 @@ const ApplyLoanForm: React.FC<ApplyLoanFormProps> = ({
     }
 
     const phoneVerify = phoneValidation(value);
-    if (isNaN(parseInt(value, 10)) || phoneVerify.valid === false) {
+    if (Number.isNaN(parseInt(value, 10)) || phoneVerify.valid === false) {
       setError("phone_number", { message: t("errors.phoneInvalid") });
       return false;
     }

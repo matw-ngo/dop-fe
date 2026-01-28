@@ -467,8 +467,8 @@ export class VietnameseComplianceEngine {
       `Overall Compliance Score: ${overallScore}%`,
       `Status: ${overallCompliant ? "COMPLIANT" : "NON-COMPLIANT"}`,
       "",
-      "Critical Issues: " + criticalIssues,
-      "Major Issues: " + majorIssues,
+      `Critical Issues: ${criticalIssues}`,
+      `Major Issues: ${majorIssues}`,
       "",
       "Failed Checks:",
       ...productCompliance.failedChecks.map(
@@ -500,8 +500,8 @@ export class VietnameseComplianceEngine {
       `Điểm tuân thủ tổng thể: ${overallScore}%`,
       `Trạng thái: ${overallCompliant ? "TUÂN THỦ" : "KHÔNG TUÂN THỦ"}`,
       "",
-      "Vấn đề nghiêm trọng: " + criticalIssues,
-      "Vấn đề quan trọng: " + majorIssues,
+      `Vấn đề nghiêm trọng: ${criticalIssues}`,
+      `Vấn đề quan trọng: ${majorIssues}`,
       "",
       "Các kiểm tra không đạt:",
       ...productCompliance.failedChecks.map(
@@ -818,7 +818,7 @@ export class VietnameseComplianceEngine {
    * Validate total payable calculation
    */
   private static validateTotalPayable(
-    params: LoanCalculationParams,
+    _params: LoanCalculationParams,
     result: LoanCalculationResult,
   ): ComplianceCheck {
     const expectedTotal = result.paymentSchedule.reduce(
@@ -939,7 +939,7 @@ export class VietnameseComplianceEngine {
    */
   private static validateEarlyRepaymentCalculation(
     params: LoanCalculationParams,
-    result: LoanCalculationResult,
+    _result: LoanCalculationResult,
   ): ComplianceCheck {
     // Test early repayment calculation for validity
     try {
@@ -977,7 +977,7 @@ export class VietnameseComplianceEngine {
           ? undefined
           : "Rà soát phương pháp tính toán trả nợ trước hạn",
       };
-    } catch (error) {
+    } catch (_error) {
       return {
         name: "Early Repayment Calculation",
         nameVi: "Tính toán trả nợ trước hạn",

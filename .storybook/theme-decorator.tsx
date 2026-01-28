@@ -1,12 +1,11 @@
 import type { Decorator } from "@storybook/react";
 import type React from "react";
 import { useEffect, useState } from "react";
-import { ThemeProvider } from "../src/components/renderer/theme";
 import { themes } from "../src/components/renderer/theme/themes";
 import { applyTheme } from "../src/components/renderer/theme/utils";
 
 // Component to handle theme application
-function ThemeWrapper({
+function _ThemeWrapper({
   children,
   themeId,
   mode,

@@ -4,7 +4,6 @@ import {
   initializePerformanceMonitoring,
   isPerformanceMonitoringEnabled,
   measureThemeOperation,
-  type PerformanceMetrics,
   type PerformanceMonitor,
 } from "@/lib/theme-performance";
 

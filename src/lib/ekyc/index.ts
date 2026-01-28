@@ -2,14 +2,42 @@
  * eKYC Library - Main exports
  */
 
+// Hooks
+export { useEkycConfig } from "../../hooks/features/ekyc/use-config";
 export type {
   UseEkycSdkOptions,
   UseEkycSdkReturn,
 } from "../../hooks/features/ekyc/use-sdk";
 // React integration
 export { useEkycSdk } from "../../hooks/features/ekyc/use-sdk";
+export { useSubmitEkycResult } from "../../hooks/features/ekyc/use-submit-result";
+// Audit Logging
+export {
+  type AuditEventType,
+  type AuditLogEntry,
+  type AuditLogLevel,
+  logConfigFetchError,
+  logConfigFetchStart,
+  logConfigFetchSuccess,
+  logDuplicatePrevented,
+  logSessionClear,
+  logSessionExpire,
+  logSessionInit,
+  logSessionUpdate,
+  logSubmitError,
+  logSubmitRetry,
+  logSubmitStart,
+  logSubmitSuccess,
+  logValidationError,
+} from "./audit-logger";
 export type { EkycCredentials, EkycEnvironmentConfig } from "./config-manager";
 export { EkycConfigManager } from "./config-manager";
+// API Integration
+export {
+  extractEkycSummary,
+  isEkycResponseValid,
+  mapEkycResponseToApiRequest,
+} from "./ekyc-api-mapper";
 export type {
   CaptureImageStyle,
   EkycSdkConfig,
@@ -28,64 +56,32 @@ export type { SdkAssets } from "./sdk-loader";
 export { EkycSdkLoader } from "./sdk-loader";
 export type { EkycSdkManagerOptions } from "./sdk-manager";
 export { EkycSdkManager } from "./sdk-manager";
-// Types
-export * from "./types";
-
-// API Integration
-export {
-  mapEkycResponseToApiRequest,
-  isEkycResponseValid,
-  extractEkycSummary,
-} from "./ekyc-api-mapper";
-
-// Hooks
-export { useEkycConfig } from "../../hooks/features/ekyc/use-config";
-export { useSubmitEkycResult } from "../../hooks/features/ekyc/use-submit-result";
 
 // Session Management
 export {
-  initSession,
-  getSession,
-  updateSessionStatus,
-  incrementSubmissionAttempts,
-  markSubmitted,
   canSubmit,
-  isSessionExpired,
-  expireSession,
-  clearSession,
-  getAllActiveSessions,
   cleanupExpiredSessions,
+  clearSession,
+  expireSession,
+  getAllActiveSessions,
+  getSession,
   getSessionStats,
+  incrementSubmissionAttempts,
+  initSession,
+  isSessionExpired,
+  markSubmitted,
+  updateSessionStatus,
 } from "./session-manager";
-
+// Types
+export * from "./types";
 // Validation
 export {
-  isValidBase64,
-  getBase64Size,
-  isBase64TooLarge,
-  validateEkycResult,
   formatValidationErrors,
   formatValidationWarnings,
-  type ValidationResult,
+  getBase64Size,
+  isBase64TooLarge,
+  isValidBase64,
   type ValidationError,
+  type ValidationResult,
+  validateEkycResult,
 } from "./validators";
-
-// Audit Logging
-export {
-  logConfigFetchStart,
-  logConfigFetchSuccess,
-  logConfigFetchError,
-  logSubmitStart,
-  logSubmitSuccess,
-  logSubmitError,
-  logSubmitRetry,
-  logValidationError,
-  logSessionInit,
-  logSessionUpdate,
-  logSessionExpire,
-  logSessionClear,
-  logDuplicatePrevented,
-  type AuditLogEntry,
-  type AuditLogLevel,
-  type AuditEventType,
-} from "./audit-logger";

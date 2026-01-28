@@ -98,7 +98,7 @@ export function useFormValidation(
         }, 50); // 50ms debounce
       });
     };
-  }, [processedFields, t, evaluateCondition]);
+  }, [processedFields, t]);
 
   const mode: "onChange" | "onBlur" | "onSubmit" = validateOnChange
     ? "onChange"

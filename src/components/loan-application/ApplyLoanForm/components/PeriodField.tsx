@@ -1,9 +1,9 @@
 import { useTranslations } from "next-intl";
 import type React from "react";
+import { useFormTheme } from "@/components/form-generation/themes";
 import { Slider } from "@/components/ui";
 import { LOAN_PERIOD } from "../constants";
 import type { PeriodFieldProps } from "../types";
-import { useFormTheme } from "@/components/form-generation/themes";
 
 export const PeriodField: React.FC<PeriodFieldProps> = ({
   value,

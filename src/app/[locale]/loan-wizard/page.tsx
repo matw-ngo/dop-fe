@@ -13,7 +13,6 @@ import {
 import { allowCustomComponent } from "@/components/form-generation/constants";
 import { registerComponent } from "@/components/form-generation/registry/ComponentRegistry";
 import { LibTrackingAdapter } from "@/components/form-generation/tracking/adapters/LibTrackingAdapter";
-import { FormTrackingProvider } from "@/components/form-generation/tracking/TrackingProvider";
 import { LoanStepHeader } from "./components/LoanStepHeader";
 import {
   CREDIT_HISTORY,
@@ -31,7 +30,7 @@ import { validateNationalId } from "./utils";
 allowCustomComponent("LoanStepHeader");
 registerComponent("LoanStepHeader", LoanStepHeader);
 
-const trackingBackend = new LibTrackingAdapter();
+const _trackingBackend = new LibTrackingAdapter();
 
 export default function LoanWizardPage() {
   const [submittedData, setSubmittedData] = useState<Record<

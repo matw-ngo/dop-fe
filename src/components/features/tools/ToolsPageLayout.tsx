@@ -1,10 +1,10 @@
 "use client";
 
-import { Calculator, Filter, TrendingUp } from "lucide-react";
+import { Calculator, Filter } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { type ReactNode, useState } from "react";
-import Footer from "@/components/layout/footer";
-import Header from "@/components/layout/header";
+import { Footer } from "@/components/layout/footer";
+import { Header } from "@/components/layout/header";
 import { useThemeUtils } from "@/components/renderer/theme";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";

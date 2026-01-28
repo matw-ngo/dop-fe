@@ -1,7 +1,7 @@
 "use client";
 
-import { useTenant } from "@/hooks/tenant/use-tenant";
 import { FormThemeProvider } from "@/components/form-generation/themes/ThemeProvider";
+import { useTenant } from "@/hooks/tenant/use-tenant";
 
 export function TenantThemeProvider({
   children,

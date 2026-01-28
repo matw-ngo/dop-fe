@@ -1,11 +1,7 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 import type { FieldConfig } from "../types/data-driven-ui";
-import type {
-  ComponentVariant,
-  LayoutProps,
-  ResponsiveValue,
-} from "../types/ui-theme";
+import type { ComponentVariant, LayoutProps } from "../types/ui-theme";
 import {
   generateAnimationClasses,
   generateLayoutClasses,

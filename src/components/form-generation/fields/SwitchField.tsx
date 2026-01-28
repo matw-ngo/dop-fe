@@ -1,7 +1,7 @@
 "use client";
 
-import { Label } from "@/components/ui/label";
 import * as SwitchPrimitive from "@radix-ui/react-switch";
+import { Label } from "@/components/ui/label";
 import { type FieldComponentProps, ValidationRuleType } from "../types";
 import { cn } from "../utils/helpers";
 

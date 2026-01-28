@@ -31,7 +31,6 @@ const InsuranceSkeleton: React.FC<InsuranceSkeletonProps> = ({
         return "grid-cols-1";
       case "compact":
         return "grid-cols-1";
-      case "grid":
       default:
         return "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4";
     }

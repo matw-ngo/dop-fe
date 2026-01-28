@@ -8,7 +8,6 @@
 import {
   EARLY_REPAYMENT_PENALTIES,
   LOAN_PROCESSING_FEES,
-  VIETNAMESE_LOAN_TYPES,
 } from "../financial-data/vietnamese-financial-data";
 import {
   calculateLoanDetails,
@@ -166,14 +165,14 @@ export const calculateAutoLoan = (
   specifics: AutoLoanParams,
 ): LoanCalculationResult & { autoLoanDetails: AutoLoanParams } => {
   // Adjust LTV ratio for vehicles
-  let maxLTV = specifics.isNewCar ? 0.8 : 0.7; // Lower LTV for used cars
+  let _maxLTV = specifics.isNewCar ? 0.8 : 0.7; // Lower LTV for used cars
 
   // Adjust based on vehicle age
   if (specifics.vehicleYear && !specifics.isNewCar) {
     const currentYear = new Date().getFullYear();
     const vehicleAge = currentYear - specifics.vehicleYear;
-    if (vehicleAge > 5) maxLTV = 0.5;
-    else if (vehicleAge > 3) maxLTV = 0.6;
+    if (vehicleAge > 5) _maxLTV = 0.5;
+    else if (vehicleAge > 3) _maxLTV = 0.6;
   }
 
   // Adjust interest rate based on vehicle type and age
@@ -373,7 +372,7 @@ export const compareLoanOptions = (
         ? "loan1"
         : "equal";
 
-  const recommendations: string[] = [];
+  const _recommendations: string[] = [];
   const reasoning: string[] = [];
 
   // Analyze which loan is better

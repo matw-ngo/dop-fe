@@ -133,7 +133,7 @@ export function DataTable<TData, TValue>({
         .rows.map((row: any) => row.original);
       onSelectRows(selectedRowsData);
     }
-  }, [rowSelection, table, enableRowSelection, onSelectRows]);
+  }, [table, enableRowSelection, onSelectRows]);
 
   // Add checkbox column if row selection is enabled
   const columnsWithSelection = React.useMemo(() => {
@@ -454,7 +454,7 @@ export function DataTable<TData, TValue>({
                   className={
                     onRowClick ? "cursor-pointer hover:bg-muted/50" : ""
                   }
-                  onClick={() => onRowClick && onRowClick(row.original)}
+                  onClick={() => onRowClick?.(row.original)}
                 >
                   {row.getVisibleCells().map((cell: any) => (
                     <TableCell key={cell.id}>

@@ -4,7 +4,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { loanProductApi } from "@/lib/api/endpoints/loans";
-import VietnameseFinancialAuditLogger from "@/lib/loan-products/audit-logging";
 import type {
   LoanCalculationParams,
   LoanCalculationResult,
@@ -14,8 +13,6 @@ import {
   quickMonthlyPaymentCalculation,
   VietnameseLoanCalculator,
 } from "@/lib/loan-products/interest-calculations";
-import { VietnameseFinancialValidator } from "@/lib/loan-products/validation";
-import { VietnameseComplianceEngine } from "@/lib/loan-products/vietnamese-compliance";
 import type { VietnameseLoanProduct } from "@/lib/loan-products/vietnamese-loan-products";
 import { useLoanProductStore } from "@/store/use-loan-product-store";
 
@@ -340,9 +337,7 @@ export function useLoanCalculator(
     if (!products || !Array.isArray(products)) return [];
 
     return products
-      .filter(
-        (product: any) => product && product.active && product.interestRate,
-      )
+      .filter((product: any) => product?.active && product.interestRate)
       .sort((a: any, b: any) => a.interestRate.annual - b.interestRate.annual)
       .slice(0, 5)
       .map((product: any) => ({

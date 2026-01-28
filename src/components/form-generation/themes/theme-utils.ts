@@ -4,9 +4,9 @@
  * Utilities for working with simplified themes
  */
 
+import { defaultTheme } from "./default";
 import type { FormTheme } from "./types";
 import type { FormTheme as SimplifiedFormTheme } from "./types-simplified";
-import { defaultTheme } from "./default";
 
 /**
  * Converts a simplified theme to a full theme structure
@@ -112,7 +112,7 @@ export function createTheme(
   partialSimplifiedTheme: Partial<SimplifiedFormTheme>,
 ): FormTheme {
   // Create a complete simplified theme by merging with defaults
-  const simplifiedDefaults = expandTheme(defaultTheme);
+  const _simplifiedDefaults = expandTheme(defaultTheme);
   const mergedSimplifiedTheme: SimplifiedFormTheme = {
     name: partialSimplifiedTheme.name || "custom",
     colors: {

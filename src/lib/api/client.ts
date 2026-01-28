@@ -28,7 +28,6 @@ const getApiConfig = () => {
           process.env.NEXT_PUBLIC_API_URL || "https://dop-stg.datanest.vn/",
         mockMode: false,
       };
-    case "development":
     default:
       return {
         baseUrl: process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api",
@@ -222,7 +221,7 @@ apiClient.use({
     // --- Rate Limiting Detection ---
     if (res.response.status === 429) {
       const retryAfter = res.response.headers.get("Retry-After");
-      const waitTime = retryAfter ? parseInt(retryAfter) * 1000 : 60000;
+      const waitTime = retryAfter ? parseInt(retryAfter, 10) * 1000 : 60000;
 
       toast.error("Rate limit exceeded", {
         description: `Please wait ${Math.ceil(waitTime / 1000)} seconds before trying again.`,

@@ -1,8 +1,6 @@
-import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import React from "react";
+import { render } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { ThemeProvider, useTheme } from "../theme-provider";
+import { ThemeProvider } from "../theme-provider";
 
 // Mock CSS module to test the dark mode variant configuration
 describe("Dark Mode Data Attribute Configuration", () => {

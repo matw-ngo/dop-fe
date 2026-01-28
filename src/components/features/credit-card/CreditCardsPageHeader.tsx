@@ -4,7 +4,6 @@
  */
 
 import { useTranslations } from "next-intl";
-import React from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import type { CreditCard } from "@/types/credit-card";

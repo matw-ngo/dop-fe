@@ -11,22 +11,22 @@
  * @jest-environment jsdom
  */
 
-import { describe, it, expect, beforeEach, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
-  initSession,
-  getSession,
-  updateSessionStatus,
-  incrementSubmissionAttempts,
-  markSubmitted,
   canSubmit,
-  isSessionExpired,
-  expireSession,
-  clearSession,
-  getAllActiveSessions,
   cleanupExpiredSessions,
+  clearSession,
+  expireSession,
+  getAllActiveSessions,
+  getSession,
   getSessionStats,
+  incrementSubmissionAttempts,
+  initSession,
+  isSessionExpired,
+  markSubmitted,
+  updateSessionStatus,
 } from "../session-manager";
-import { EkycSessionStatus, type EkycSessionState } from "../types";
+import { type EkycSessionState, EkycSessionStatus } from "../types";
 
 describe("session-manager", () => {
   // Helper function to create an expired session for testing
@@ -59,14 +59,14 @@ describe("session-manager", () => {
       const session = initSession(leadId);
 
       expect(session).not.toBeNull();
-      expect(session!.leadId).toBe(leadId);
-      expect(session!.status).toBe(EkycSessionStatus.INITIALIZED);
-      expect(session!.sessionId).toMatch(/^ekyc_\d+_[a-z0-9]+$/);
-      expect(session!.createdAt).toBeDefined();
-      expect(session!.updatedAt).toBeDefined();
-      expect(session!.expiresAt).toBeDefined();
-      expect(session!.submissionAttempts).toBe(0);
-      expect(session!.isSubmitted).toBe(false);
+      expect(session?.leadId).toBe(leadId);
+      expect(session?.status).toBe(EkycSessionStatus.INITIALIZED);
+      expect(session?.sessionId).toMatch(/^ekyc_\d+_[a-z0-9]+$/);
+      expect(session?.createdAt).toBeDefined();
+      expect(session?.updatedAt).toBeDefined();
+      expect(session?.expiresAt).toBeDefined();
+      expect(session?.submissionAttempts).toBe(0);
+      expect(session?.isSubmitted).toBe(false);
     });
 
     /**
@@ -79,7 +79,7 @@ describe("session-manager", () => {
       const session = initSession(leadId, customStatus);
 
       expect(session).not.toBeNull();
-      expect(session!.status).toBe(customStatus);
+      expect(session?.status).toBe(customStatus);
     });
 
     /**
@@ -135,7 +135,7 @@ describe("session-manager", () => {
 
       expect(session1).not.toBeNull();
       expect(session2).not.toBeNull();
-      expect(session1!.sessionId).not.toBe(session2!.sessionId);
+      expect(session1?.sessionId).not.toBe(session2?.sessionId);
     });
   });
 
@@ -236,7 +236,7 @@ describe("session-manager", () => {
       const leadId = "lead-timestamp";
       const session = initSession(leadId);
       expect(session).not.toBeNull();
-      const originalUpdatedAt = session!.updatedAt;
+      const originalUpdatedAt = session?.updatedAt;
 
       // Wait a bit to ensure timestamp difference
       await new Promise((resolve) => setTimeout(resolve, 10));
@@ -309,7 +309,7 @@ describe("session-manager", () => {
       const leadId = "lead-attempts-timestamp";
       const session = initSession(leadId);
       expect(session).not.toBeNull();
-      const originalUpdatedAt = session!.updatedAt;
+      const originalUpdatedAt = session?.updatedAt;
 
       await new Promise((resolve) => setTimeout(resolve, 10));
 
@@ -806,7 +806,7 @@ describe("session-manager", () => {
       // 1. Initialize
       const session = initSession(leadId);
       expect(session).not.toBeNull();
-      expect(session!.status).toBe(EkycSessionStatus.INITIALIZED);
+      expect(session?.status).toBe(EkycSessionStatus.INITIALIZED);
 
       // 2. Start processing
       const inProgress = updateSessionStatus(
@@ -930,7 +930,7 @@ describe("session-manager", () => {
       const session = initSession(leadId);
       expect(session).not.toBeNull();
 
-      expect(session!.leadId).toBe(leadId);
+      expect(session?.leadId).toBe(leadId);
 
       const retrieved = getSession(leadId);
       expect(retrieved?.leadId).toBe(leadId);
@@ -945,7 +945,7 @@ describe("session-manager", () => {
       const session = initSession(leadId);
       expect(session).not.toBeNull();
 
-      expect(session!.leadId).toBe(leadId);
+      expect(session?.leadId).toBe(leadId);
 
       const retrieved = getSession(leadId);
       expect(retrieved?.leadId).toBe(leadId);

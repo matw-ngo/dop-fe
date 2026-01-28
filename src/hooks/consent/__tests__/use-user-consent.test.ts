@@ -188,7 +188,7 @@ describe("useUserConsent", () => {
     expect(result.current.isLoading).toBe(true);
 
     // Resolve promise
-    resolveFetch!({ data: mockConsent, error: undefined });
+    resolveFetch?.({ data: mockConsent, error: undefined });
 
     await waitFor(() => expect(result.current.isLoading).toBe(false));
 

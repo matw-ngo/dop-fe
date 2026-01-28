@@ -4,7 +4,7 @@
  * Displays the verification result with confidence scores and extracted data.
  */
 
-import React, { useState } from "react";
+import { useState } from "react";
 import type { VerificationResult } from "@/lib/verification/types";
 
 interface VerificationResultProps {

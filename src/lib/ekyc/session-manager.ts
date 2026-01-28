@@ -7,15 +7,15 @@
  * @module session-manager
  */
 
-import { EkycSessionStatus } from "./types";
-import type { EkycSessionState } from "./types";
 import {
+  logDuplicatePrevented,
+  logSessionClear,
+  logSessionExpire,
   logSessionInit,
   logSessionUpdate,
-  logSessionExpire,
-  logSessionClear,
-  logDuplicatePrevented,
 } from "./audit-logger";
+import type { EkycSessionState } from "./types";
+import { EkycSessionStatus } from "./types";
 
 /**
  * Session TTL in milliseconds (30 minutes)

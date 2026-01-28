@@ -267,8 +267,7 @@ export function validateFieldValue(
       return {
         success: false,
         data: null,
-        error:
-          (error.issues && error.issues[0]?.message) || "Validation failed",
+        error: error.issues?.[0]?.message || "Validation failed",
       };
     }
     return {

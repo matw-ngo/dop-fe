@@ -1,9 +1,9 @@
 "use client";
 
-import { useFormTheme } from "@/components/form-generation/themes/ThemeProvider";
 import { Loader2 } from "lucide-react";
-import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
+import { useEffect, useState } from "react";
+import { useFormTheme } from "@/components/form-generation/themes/ThemeProvider";
 
 export function FindingLoanScreen({ onFinish }: { onFinish: () => void }) {
   const { theme } = useFormTheme();

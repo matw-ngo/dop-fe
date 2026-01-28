@@ -124,7 +124,7 @@ export function DynamicForm({
     if (Object.keys(defaultValues).length > 0) {
       setFormData((prev) => ({ ...prev, ...defaultValues }));
     }
-  }, [config.fields, config.sections]);
+  }, [config.fields, config.sections, formData[field.name]]);
 
   // Cleanup abort controllers on unmount
   useEffect(() => {
@@ -177,7 +177,7 @@ export function DynamicForm({
         validateField(fieldName, value);
       }
     },
-    [formData, customOnChange, config, errors],
+    [formData, customOnChange, config, errors, validateField],
   );
 
   // Handle field blur
@@ -190,7 +190,7 @@ export function DynamicForm({
         validateField(fieldName, formData[fieldName]);
       }
     },
-    [config.validationMode, formData],
+    [config.validationMode, formData, validateField],
   );
 
   // Validate single field with race condition prevention

@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
-import React, { useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 import { CreditCardsThemeProvider } from "@/components/features/credit-card/CreditCardsThemeProvider";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -21,7 +21,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { cn } from "@/lib/utils";
 import { useCreditCardsStore } from "@/store/use-credit-cards-store";
 
 interface CreditCardComparisonSnackbarProps {
@@ -45,7 +44,7 @@ export default function CreditCardComparisonSnackbar({
     (state) => state,
   );
 
-  const handleClose = useCallback(() => {
+  const _handleClose = useCallback(() => {
     setIsVisible(false);
     onClose?.();
   }, [onClose]);

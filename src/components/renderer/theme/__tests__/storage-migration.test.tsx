@@ -166,7 +166,7 @@ describe("ThemeStorageMigration", () => {
       const newConfig = JSON.parse(
         localStorageMock.setItem.mock.calls.find(
           (call) => call[0] === "dop-theme-config",
-        )![1],
+        )?.[1],
       );
       expect(newConfig.currentTheme).toBe("creative");
       expect(newConfig.userGroup).toBe("creative");
@@ -207,7 +207,7 @@ describe("ThemeStorageMigration", () => {
       const newConfig = JSON.parse(
         localStorageMock.setItem.mock.calls.find(
           (call) => call[0] === "dop-theme-config",
-        )![1],
+        )?.[1],
       );
       expect(newConfig.currentTheme).toBe("custom");
       expect(newConfig.userGroup).toBe("finance");
@@ -336,7 +336,7 @@ describe("ThemeStorageMigration", () => {
           const newConfig = JSON.parse(
             localStorageMock.setItem.mock.calls.find(
               (call) => call[0] === "dop-theme-config",
-            )![1],
+            )?.[1],
           );
           expect(newConfig.currentTheme).toBe(expected);
         }
@@ -366,7 +366,7 @@ describe("ThemeStorageMigration", () => {
           const newConfig = JSON.parse(
             localStorageMock.setItem.mock.calls.find(
               (call) => call[0] === "dop-theme-config",
-            )![1],
+            )?.[1],
           );
           expect(newConfig.userGroup).toBe(expectedGroup);
         }
@@ -405,7 +405,7 @@ describe("ThemeStorageMigration", () => {
           const newConfig = JSON.parse(
             localStorageMock.setItem.mock.calls.find(
               (call) => call[0] === "dop-theme-config",
-            )![1],
+            )?.[1],
           );
           expect(newConfig.userGroup).toBe(expectedGroup);
         }

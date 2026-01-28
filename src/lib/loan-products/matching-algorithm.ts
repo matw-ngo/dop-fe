@@ -2,7 +2,6 @@
 // Intelligent matching system for Vietnamese loan products
 
 import type {
-  InterestRateType,
   VietnameseLoanProduct,
   VietnameseLoanType,
 } from "./vietnamese-loan-products";
@@ -665,9 +664,6 @@ export class LoanProductMatcher {
         totalInterest = ((amount * effectiveRate) / 100) * (term / 12);
         monthlyPayment = (amount + totalInterest) / term;
         break;
-
-      case "reducing":
-      case "fixed":
       default:
         // Reducing balance calculation (amortized loan)
         if (monthlyRate === 0) {

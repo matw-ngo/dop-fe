@@ -3,19 +3,13 @@
 import {
   Award,
   Building,
-  Car,
-  CheckCircle,
   ChevronDown,
   ChevronUp,
-  Clock,
   CreditCard,
   DollarSign,
   Filter,
   Fuel,
-  Globe,
   Heart,
-  HelpCircle,
-  Home,
   MapPin,
   Music,
   Percent,
@@ -47,8 +41,6 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Slider } from "@/components/ui/slider";
 import {
   ALL_PROVINCES,
@@ -56,7 +48,6 @@ import {
   CARD_CATEGORIES,
   CARD_NETWORKS,
   CREDIT_LIMIT_TIERS,
-  DEFAULT_FILTERS,
   EMPLOYMENT_TYPES,
   INCOME_REQUIREMENT_RANGES,
   INTEREST_RATE_RANGES,

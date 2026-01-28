@@ -57,9 +57,9 @@ export const consentHandlers = [
    */
   http.get(`${BASE_URL}/consent`, ({ request }) => {
     const url = new URL(request.url);
-    const search = url.searchParams.get("search");
-    const action = url.searchParams.get("action");
-    const page = url.searchParams.get("page");
+    const _search = url.searchParams.get("search");
+    const _action = url.searchParams.get("action");
+    const _page = url.searchParams.get("page");
     const pageSize = url.searchParams.get("page_size");
 
     const scenario = request.headers.get("x-test-scenario") || "success";
@@ -79,8 +79,6 @@ export const consentHandlers = [
           ),
           { status: 404 },
         );
-
-      case "success":
       default: {
         const count = parseInt(pageSize || "10", 10);
         return Response.json(createMockConsentList(count));
@@ -113,8 +111,6 @@ export const consentHandlers = [
           createErrorResponse("permission_denied", "Access denied"),
           { status: 403 },
         );
-
-      case "success":
       default: {
         const body = await request.json();
         return Response.json(createMockConsent(body), { status: 201 });
@@ -148,8 +144,6 @@ export const consentHandlers = [
           createErrorResponse("permission_denied", "Access denied"),
           { status: 403 },
         );
-
-      case "success":
       default:
         return Response.json(createMockConsent({ id: id as string }));
     }
@@ -175,8 +169,6 @@ export const consentHandlers = [
           createErrorResponse("not_found", "Consent not found"),
           { status: 404 },
         );
-
-      case "success":
       default:
         return Response.json(createMockConsent({ id: id as string }));
     }
@@ -202,8 +194,6 @@ export const consentHandlers = [
           createErrorResponse("not_found", `Consent ${id} not found`),
           { status: 404 },
         );
-
-      case "success":
       default: {
         const body = await request.json();
         return Response.json({
@@ -388,9 +378,9 @@ export const consentHandlers = [
     const scenario = request.headers.get("x-test-scenario") || "success";
     const body = await request.json();
 
-    const bodyHasConsentId =
+    const _bodyHasConsentId =
       typeof body === "object" && body !== null && "consent_id" in body;
-    const bodyHasDataCategoryId =
+    const _bodyHasDataCategoryId =
       typeof body === "object" && body !== null && "data_category_id" in body;
 
     switch (scenario) {
@@ -408,8 +398,6 @@ export const consentHandlers = [
           createErrorResponse("not_found", "Consent not found"),
           { status: 404 },
         );
-
-      case "success":
       default:
         return Response.json(
           {

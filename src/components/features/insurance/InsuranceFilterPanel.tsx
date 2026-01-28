@@ -2,7 +2,6 @@
 
 import {
   Car,
-  CheckCircle,
   ChevronDown,
   ChevronUp,
   Clock,
@@ -14,7 +13,6 @@ import {
   HelpCircle,
   Home,
   MapPin,
-  Phone,
   Plane,
   RotateCcw,
   Shield,
@@ -43,9 +41,6 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Slider } from "@/components/ui/slider";
 import {
   ALL_PROVINCES,
-  COVERAGE_PERIODS,
-  DEFAULT_FILTERS,
-  FEE_TYPES,
   INSURANCE_CATEGORIES,
   INSURANCE_TYPES,
   MEDICAL_EXPENSES_COVERAGE_RANGES,
@@ -57,8 +52,6 @@ import {
 } from "@/constants/insurance";
 import { cn } from "@/lib/utils";
 import {
-  CoveragePeriod,
-  FeeType,
   InsuranceCategory,
   type InsuranceFilters,
   type InsuranceType,
@@ -885,15 +878,6 @@ const InsuranceFilterPanel: React.FC<FilterPanelProps> = React.memo(
         handleBooleanChange,
         getCategoryIcon,
         onFiltersChange,
-        INSURANCE_CATEGORIES,
-        INSURANCE_TYPES,
-        PREMIUM_RANGES,
-        PERSONAL_ACCIDENT_COVERAGE_RANGES,
-        PROPERTY_DAMAGE_COVERAGE_RANGES,
-        MEDICAL_EXPENSES_COVERAGE_RANGES,
-        VEHICLE_TYPES,
-        PROVINCE_GROUPS,
-        ALL_PROVINCES,
       ],
     );
 

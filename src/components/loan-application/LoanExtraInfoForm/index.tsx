@@ -5,7 +5,6 @@ import {
   CREDIT_STATUSES,
   EMPLOYMENT_STATUSES,
   EMPLOYMENT_TYPE,
-  GENDERS,
   INCOME_AMOUNT,
 } from "@app/configs/data";
 import { VN_PROVINCES } from "@app/helpers/location";
@@ -14,8 +13,8 @@ import { validProvinceCodeNID12 } from "@app/helpers/validate";
 import { ActionContext } from "@app/states/zu-action";
 import { useLoanStore } from "@app/states/zu-store";
 import { DollarSign, User } from "lucide-react";
-import React, { useEffect, useMemo } from "react";
 import { useTranslations } from "next-intl";
+import React, { useMemo } from "react";
 import { Button, SelectGroup, TextInput } from "@/components/ui";
 import { cn } from "@/lib/utils";
 import s from "./style.module.scss";
@@ -28,9 +27,9 @@ const vehicleRegistrationOptions = (t: any) => [
   { label: t("personal.vehicleRegistration.options.yes"), value: "cavet" },
   { label: t("personal.vehicleRegistration.options.no"), value: "none" },
 ];
-const yearOptions = () => {
+const _yearOptions = () => {
   const year = new Date().getFullYear() - ValidationConfig.MINIMUM_AGE;
-  return Array.from(new Array(ValidationConfig.MAXIMUM_AGE), (val, index) => ({
+  return Array.from(new Array(ValidationConfig.MAXIMUM_AGE), (_val, index) => ({
     name: (year - index).toString(),
     value: (year - index).toString(),
   }));
@@ -49,7 +48,7 @@ export const LoanExtraInfoForm = () => {
     loanExtraInfoSubmitted,
   } = useLoanStore();
   const { finishLoanExtraInfoSubmit } = React.useContext(ActionContext);
-  const [isIncomeStep, setIncomeStep] = React.useState(false);
+  const [_isIncomeStep, _setIncomeStep] = React.useState(false);
   const [infoStep, setInforStep] = React.useState<
     "personal" | "income" | "finance"
   >("personal");
@@ -134,6 +133,7 @@ export const LoanExtraInfoForm = () => {
       ["0", "1"].includes(birthCode[0])
         ? `19${birthCode.substring(1, 3)}`
         : `20${birthCode.substring(1, 3)}`,
+      10,
     );
     if (birthYear < minYear || birthYear > maxYear) {
       setUserLoanValidate(
@@ -221,15 +221,15 @@ export const LoanExtraInfoForm = () => {
   const step1Validation = () => {
     const result =
       locationValidation() * nationalIdValidation() * fullNameValidation();
-    return result != 0;
+    return result !== 0;
   };
   const step2Validation = () => {
     const result =
       incomeAmountValidation() * empStatusValidation() * empTypeValidation();
-    return result != 0;
+    return result !== 0;
   };
   const step3Validation = () => {
-    return creditHistoryValidation() != 0;
+    return creditHistoryValidation() !== 0;
   };
   const isEmployment = useMemo(
     () => userData.career_status === "employed",
@@ -409,7 +409,7 @@ export const LoanExtraInfoForm = () => {
               eventTracking(EventType.lending_page_select_current_loan, {
                 current_loan: value,
               });
-              setUserLoanData("having_loan", parseInt(value));
+              setUserLoanData("having_loan", parseInt(value, 10));
             }}
             error={
               !userDataValidate.having_loan.valid
@@ -428,7 +428,7 @@ export const LoanExtraInfoForm = () => {
               eventTracking(EventType.lending_page_select_credit_history, {
                 credit_history: value,
               });
-              setUserLoanData("credit_status", parseInt(value));
+              setUserLoanData("credit_status", parseInt(value, 10));
             }}
             error={
               !userDataValidate.credit_status.valid

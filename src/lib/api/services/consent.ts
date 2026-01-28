@@ -1,14 +1,14 @@
 import createClient from "openapi-fetch";
-import type { paths as ConsentPaths } from "../v1/consent";
 import {
   createAuthMiddleware,
   createAuthResponseMiddleware,
 } from "../middleware/auth";
+import { createErrorMiddleware } from "../middleware/error";
 import {
   createTimeoutMiddleware,
   createTimeoutResponseMiddleware,
 } from "../middleware/timeout";
-import { createErrorMiddleware } from "../middleware/error";
+import type { paths as ConsentPaths } from "../v1/consent";
 
 /**
  * Get base URL for Consent service based on environment
@@ -29,7 +29,6 @@ const getBaseUrl = (): string => {
     case "staging":
       // For staging, consent service is at dop-stg.datanest.vn/consent/
       return customUrl || "https://dop-stg.datanest.vn/";
-    case "development":
     default:
       return customUrl || "http://localhost:3001/api";
   }

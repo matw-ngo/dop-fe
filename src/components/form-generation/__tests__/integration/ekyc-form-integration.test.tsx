@@ -11,18 +11,12 @@
  * - Form state management with eKYC
  */
 
-import {
-  act,
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-} from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import React, { useState } from "react";
+import { useState } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { DynamicForm, FormProvider } from "../../index";
-import type { DynamicFormConfig, EkycFieldConfig } from "../../types";
+import type { DynamicFormConfig } from "../../types";
 import { FieldType } from "../../types";
 
 // Mock the verification manager and provider

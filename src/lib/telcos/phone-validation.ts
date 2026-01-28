@@ -51,7 +51,7 @@ const VIETNAMESE_PHONE_RULES: PhoneValidationRule[] = [
       const cleanPhone = phone.replace(/\D/g, "");
       return ALL_VIETNAMESE_PREFIXES.some((prefix) => {
         if (cleanPhone.startsWith("84")) {
-          return cleanPhone.startsWith("84" + prefix.slice(1));
+          return cleanPhone.startsWith(`84${prefix.slice(1)}`);
         }
         return cleanPhone.startsWith(prefix);
       });
@@ -162,7 +162,7 @@ export const validatePhoneTyping = (input: string): PhoneValidationResult => {
   // Check if prefix matches any Vietnamese telco
   const hasValidPrefix = ALL_VIETNAMESE_PREFIXES.some((prefix) => {
     if (cleanPhone.startsWith("84")) {
-      return cleanPhone.startsWith("84" + prefix.slice(1));
+      return cleanPhone.startsWith(`84${prefix.slice(1)}`);
     }
     return cleanPhone.startsWith(prefix);
   });

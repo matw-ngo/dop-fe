@@ -23,7 +23,7 @@ import {
   keyboardNavigation,
 } from "@/lib/utils/accessibility";
 import { ThemeProvider, useTheme } from "..";
-import { themes, userGroups } from "../themes";
+import { themes } from "../themes";
 import { applyTheme } from "../utils";
 
 // Mock next-themes
@@ -215,7 +215,7 @@ describe("Theme System Accessibility", () => {
       if (lightTheme.text?.primary && lightTheme.background?.primary) {
         const textColor = oklchToHex(lightTheme.text.primary);
         const bgColor = oklchToHex(lightTheme.background.primary);
-        const ratio = colorContrast.getContrastRatio(textColor, bgColor);
+        const _ratio = colorContrast.getContrastRatio(textColor, bgColor);
         expect(colorContrast.meetsWCAG_AAA(textColor, bgColor, true)).toBe(
           true,
           "Large text should meet AAA standards",
@@ -549,7 +549,7 @@ describe("Theme System Accessibility", () => {
     });
 
     it("should warn about inaccessible custom colors", () => {
-      const consoleSpy = vi.spyOn(console, "warn");
+      const _consoleSpy = vi.spyOn(console, "warn");
 
       render(
         <ThemeProvider defaultUserGroup="business">

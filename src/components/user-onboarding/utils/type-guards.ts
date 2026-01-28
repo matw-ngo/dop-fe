@@ -115,7 +115,7 @@ export function isFieldDisabled(step: MappedStep, fieldName: string): boolean {
 export function isValidFormDataValue(value: any): boolean {
   if (value === null || value === undefined) return false;
   if (typeof value === "string") return value.length > 0;
-  if (typeof value === "number") return !isNaN(value);
+  if (typeof value === "number") return !Number.isNaN(value);
   if (typeof value === "boolean") return true;
   if (Array.isArray(value)) return value.length > 0;
   if (typeof value === "object") return Object.keys(value).length > 0;
@@ -231,7 +231,7 @@ export function safeNumberConversion(value: any, defaultValue = 0): number {
   if (typeof value === "number") return value;
   if (typeof value === "string") {
     const num = parseFloat(value);
-    return isNaN(num) ? defaultValue : num;
+    return Number.isNaN(num) ? defaultValue : num;
   }
   return defaultValue;
 }

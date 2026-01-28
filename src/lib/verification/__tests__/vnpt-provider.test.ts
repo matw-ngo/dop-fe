@@ -12,12 +12,7 @@
 
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { VNPTVerificationProvider } from "../providers/vnpt-provider";
-import type {
-  ProviderConfig,
-  VerificationOptions,
-  VerificationResult,
-  VerificationSession,
-} from "../types";
+import type { ProviderConfig, VerificationOptions } from "../types";
 import { VerificationStatus } from "../types";
 
 // Mock external dependencies
@@ -77,7 +72,7 @@ describe("VNPTVerificationProvider", () => {
     // Cleanup provider after each test
     try {
       await provider.cleanup();
-    } catch (error) {
+    } catch (_error) {
       // Ignore cleanup errors
     }
   });
@@ -281,7 +276,7 @@ describe("VNPTVerificationProvider", () => {
         { vnptStatus: "cancelled", expected: VerificationStatus.CANCELLED },
       ];
 
-      for (const mapping of statusMappings) {
+      for (const _mapping of statusMappings) {
         const options: VerificationOptions = { documentType: "CCCD" };
         const session = await provider.startVerification(options);
 

@@ -84,7 +84,7 @@ describe("Error Response Edge Cases", () => {
         response: mockResponse,
       } as any;
 
-      const result = await middleware.onResponse?.(mockRequest);
+      const _result = await middleware.onResponse?.(mockRequest);
 
       expect(toast.error).toHaveBeenCalledWith(
         "A server error occurred",

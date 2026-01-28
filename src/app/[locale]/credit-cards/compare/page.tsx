@@ -4,7 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
-import React, { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useShallow } from "zustand/shallow";
 import { CreditCardComparison } from "@/components/features/credit-card/CreditCardComparison";
 import { CreditCardsThemeProvider } from "@/components/features/credit-card/CreditCardsThemeProvider";

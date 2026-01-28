@@ -10,19 +10,19 @@
  * @jest-environment jsdom
  */
 
-import { describe, it, expect, beforeEach, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
-  mapEkycResponseToApiRequest,
-  isEkycResponseValid,
   extractEkycSummary,
+  isEkycResponseValid,
+  mapEkycResponseToApiRequest,
 } from "../ekyc-api-mapper";
 import type {
+  CompareFaceResponse,
   EkycResponse,
   LivenessCardResponse,
-  OcrResponse,
   LivenessFaceResponse,
   MaskedFaceResponse,
-  CompareFaceResponse,
+  OcrResponse,
   PostCodeInfo,
 } from "../types";
 

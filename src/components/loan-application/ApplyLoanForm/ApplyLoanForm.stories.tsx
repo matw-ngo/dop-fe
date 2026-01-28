@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { expect, fn, userEvent, within } from "@storybook/test";
+import { expect, userEvent, within } from "@storybook/test";
 import React from "react";
 import ApplyLoanForm from "./index";
 
@@ -103,7 +103,7 @@ export const PhoneModalVisible: Story = {
         return () => {
           (React as any).useState = originalShowModal;
         };
-      }, []);
+      }, [showModal]);
 
       return <ApplyLoanForm />;
     };
@@ -140,7 +140,7 @@ export const OTPModalVisible: Story = {
           }
           return originalUseState(initial);
         };
-      }, []);
+      }, [showOTPModal]);
 
       return <ApplyLoanForm />;
     };

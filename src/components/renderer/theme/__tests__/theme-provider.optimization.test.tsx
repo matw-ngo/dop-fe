@@ -1,6 +1,6 @@
 import { act, renderHook } from "@testing-library/react";
 import type React from "react";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { darkTheme, lightTheme } from "../default-themes";
 import { ThemeProvider, useTheme } from "../theme-provider";
 
@@ -235,7 +235,7 @@ describe("ThemeProvider CSS Variable Optimization", () => {
       });
 
       // Capture dark theme calls
-      const darkThemeCalls = new Map(
+      const _darkThemeCalls = new Map(
         mockStyle.setProperty.mock.calls.map(([prop, value]) => [prop, value]),
       );
       mockStyle.setProperty.mockClear();

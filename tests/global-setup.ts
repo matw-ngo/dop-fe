@@ -1,6 +1,6 @@
-import { chromium, type FullConfig } from "@playwright/test";
+import type { FullConfig } from "@playwright/test";
 
-async function globalSetup(config: FullConfig) {
+async function globalSetup(_config: FullConfig) {
   // Set up global test environment
   console.log("Setting up Playwright tests...");
 

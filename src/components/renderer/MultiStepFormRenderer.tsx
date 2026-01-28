@@ -143,8 +143,6 @@ export const MultiStepFormRenderer: React.FC<MultiStepFormRendererProps> = ({
             ))}
           </div>
         );
-
-      case "steps":
       default:
         return (
           <nav aria-label="Form progress" className="mb-8">

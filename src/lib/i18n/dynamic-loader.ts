@@ -14,7 +14,6 @@ import { cache } from "react";
 import {
   trackCacheHit,
   trackLoadTime,
-  trackMissingKey,
   trackTranslationRequest,
 } from "../translation-monitor";
 

@@ -52,7 +52,7 @@ export function DateField({
     try {
       const date = val instanceof Date ? val : new Date(val);
 
-      if (isNaN(date.getTime())) return "";
+      if (Number.isNaN(date.getTime())) return "";
 
       if (inputType === "datetime-local") {
         // Format: YYYY-MM-DDTHH:mm
@@ -78,7 +78,7 @@ export function DateField({
 
     try {
       const d = date instanceof Date ? date : new Date(date);
-      if (isNaN(d.getTime())) return undefined;
+      if (Number.isNaN(d.getTime())) return undefined;
 
       if (type === "date") {
         return d.toISOString().slice(0, 10);

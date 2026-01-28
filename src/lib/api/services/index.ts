@@ -8,11 +8,10 @@
 import { consentClient } from "./consent";
 import { dopClient } from "./dop";
 
-export { dopClient } from "./dop";
-export type { DopPaths } from "./dop";
-
-export { consentClient } from "./consent";
 export type { ConsentPaths } from "./consent";
+export { consentClient } from "./consent";
+export type { DopPaths } from "./dop";
+export { dopClient } from "./dop";
 
 /**
  * Service registry for dynamic service access

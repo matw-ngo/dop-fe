@@ -77,8 +77,6 @@ export function WizardProgress({
           className={className}
         />
       );
-
-    case "bar":
     default:
       return (
         <ProgressBar

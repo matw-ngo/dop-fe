@@ -118,7 +118,9 @@ export const useOTPVerification = (options: UseOTPVerificationOptions = {}) => {
           const parsed = parseInt(prefix, 36);
           // Check if it's a valid timestamp (not NaN and reasonably recent)
           requestTime =
-            !isNaN(parsed) && parsed > 1600000000000 ? parsed * 1000 : now;
+            !Number.isNaN(parsed) && parsed > 1600000000000
+              ? parsed * 1000
+              : now;
         } else {
           requestTime = now;
         }
@@ -226,7 +228,10 @@ export const useOTPVerification = (options: UseOTPVerificationOptions = {}) => {
         return null;
       }
     },
-    [onError],
+    [
+      onError, // Start resend cooldown timer
+      startResendCooldown,
+    ],
   );
 
   // Verify OTP
@@ -418,7 +423,11 @@ export const useOTPVerification = (options: UseOTPVerificationOptions = {}) => {
         description: err.message,
       });
     }
-  }, [state, onError]);
+  }, [
+    state,
+    onError, // Start resend cooldown timer
+    startResendCooldown,
+  ]);
 
   // Start resend cooldown timer
   const startResendCooldown = useCallback(() => {
@@ -534,7 +543,9 @@ export const useOTPVerification = (options: UseOTPVerificationOptions = {}) => {
         const prefix = state.requestId.substring(0, 8);
         const parsed = parseInt(prefix, 36);
         requestTime =
-          !isNaN(parsed) && parsed > 1600000000000 ? parsed * 1000 : Date.now();
+          !Number.isNaN(parsed) && parsed > 1600000000000
+            ? parsed * 1000
+            : Date.now();
       } else {
         requestTime = Date.now();
       }

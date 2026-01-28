@@ -37,7 +37,7 @@ export function calculateTax(taxableIncome: number): number {
   if (
     taxableIncome == null ||
     typeof taxableIncome !== "number" ||
-    isNaN(taxableIncome) ||
+    Number.isNaN(taxableIncome) ||
     taxableIncome <= 0
   ) {
     return 0;

@@ -7,7 +7,6 @@ import type {
   AnimationVariant,
   LayoutProps,
   ResponsiveValue,
-  EnhancedFieldConfig,
 } from "./ui-theme";
 import type { ResponsiveFieldConfig } from "./responsive";
 

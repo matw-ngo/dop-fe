@@ -4,7 +4,7 @@
  * Comprehensive rate limiting with exponential backoff and abuse detection for loan status updates
  */
 
-import { createRateLimiter, RateLimitConfig } from "./rate-limiting";
+import { createRateLimiter } from "./rate-limiting";
 
 // Rate limiting configuration for status updates
 export interface StatusRateLimitConfig {
@@ -450,7 +450,7 @@ export class LoanStatusRateLimiter {
    */
   getUserStats(
     userId: string,
-    applicationId?: string,
+    _applicationId?: string,
   ): {
     totalActivities: number;
     activitiesByType: Record<string, number>;
@@ -544,7 +544,7 @@ export class LoanStatusRateLimiter {
   clearUserData(userId: string): void {
     this.userTrackers.delete(userId);
     // Clean up global trackers
-    for (const [key, timestamps] of this.globalTrackers.entries()) {
+    for (const [key, _timestamps] of this.globalTrackers.entries()) {
       if (key.includes(userId)) {
         this.globalTrackers.delete(key);
       }
@@ -706,7 +706,7 @@ export class LoanStatusRateLimiter {
 
   private async checkGlobalRateLimit(
     type: string,
-    userId: string,
+    _userId: string,
   ): Promise<{
     allowed: boolean;
     retryAfter?: number;

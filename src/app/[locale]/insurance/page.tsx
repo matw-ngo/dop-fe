@@ -8,14 +8,10 @@ import InsurancePageHero from "@/components/features/insurance/InsurancePageHero
 import { InsuranceThemeProvider } from "@/components/features/insurance/InsuranceThemeProvider";
 import Footer from "@/components/layout/footer";
 import Header from "@/components/layout/header";
-import { useInsuranceUrlSyncFull } from "@/hooks/features/insurance/use-insurance-url-sync";
 import { useInsuranceNavbarTheme } from "@/hooks/features/insurance/useInsuranceNavbarTheme";
 import { useInsurancePageComputed } from "@/hooks/features/insurance/useInsurancePageComputed";
 import { useInsurancePageHandlers } from "@/hooks/features/insurance/useInsurancePageHandlers";
-import {
-  type UseInsurancePageStateReturn,
-  useInsurancePageState,
-} from "@/hooks/features/insurance/useInsurancePageState";
+import { useInsurancePageState } from "@/hooks/features/insurance/useInsurancePageState";
 import {
   useFilteredInsuranceProducts,
   useInsuranceActions,
@@ -29,7 +25,7 @@ import {
  * Insurance listing page with filtering, search, and pagination
  */
 export default function InsurancePage() {
-  const t = useTranslations("features.insurance.listing");
+  const _t = useTranslations("features.insurance.listing");
 
   // Configuration - use theme-aware navbar config
   const insuranceNavbarConfig = useInsuranceNavbarTheme();

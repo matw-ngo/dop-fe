@@ -31,10 +31,7 @@ export function ThemeProvider({
       }
 
       // Check system preference
-      if (
-        window.matchMedia &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches
-      ) {
+      if (window.matchMedia?.("(prefers-color-scheme: dark)").matches) {
         return "dark";
       }
     }
@@ -160,7 +157,7 @@ export function ThemeProvider({
 
     // Save to localStorage
     localStorage.setItem(storageKey, themeName);
-  }, [theme, themeName, storageKey]);
+  }, [theme, themeName, storageKey, resolvedTheme]);
 
   const setTheme = (newTheme: Theme) => {
     setThemeState(newTheme);
@@ -199,7 +196,7 @@ export function ThemeProvider({
 
     mediaQuery.addEventListener("change", handleChange);
     return () => mediaQuery.removeEventListener("change", handleChange);
-  }, [storageKey]);
+  }, [storageKey, setThemeByName]);
 
   const value: ThemeContextValue = {
     theme,

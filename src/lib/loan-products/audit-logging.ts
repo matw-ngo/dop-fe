@@ -462,7 +462,7 @@ export class VietnameseFinancialAuditLogger {
    */
   private assessRiskLevel(
     params: LoanCalculationParams,
-    result: LoanCalculationResult | null,
+    _result: LoanCalculationResult | null,
   ): "low" | "medium" | "high" {
     // High risk indicators
     if (params.principal > 5000000000) return "high"; // > 5 tỷ VND
@@ -552,7 +552,7 @@ export class VietnameseFinancialAuditLogger {
         if (parsed.logs && Array.isArray(parsed.logs)) {
           // Validate and filter logs
           this.logs = parsed.logs.filter(
-            (log: any) => log && log.id && log.timestamp && log.calculationType,
+            (log: any) => log?.id && log.timestamp && log.calculationType,
           );
         }
       }

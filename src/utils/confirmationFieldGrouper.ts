@@ -74,7 +74,7 @@ export function groupFieldsByCategory(
 function getRelevantFieldTypes(
   formData: Record<string, any>,
   fieldConfig?: GeneratedStepConfig[],
-  flowData?: MappedFlow,
+  _flowData?: MappedFlow,
 ): FieldType[] {
   // Start with all possible field types
   let relevantFields: FieldType[] = Object.values(FieldType);

@@ -68,12 +68,12 @@ export const OtpForm: React.FC<OtpFormProps> = ({
   // ============================================================================
 
   const t = useOtpFormTranslations();
-  const otpTypes = useLocalizedOtpTypes();
+  const _otpTypes = useLocalizedOtpTypes();
   const { theme } = useFormTheme();
 
   const primaryColor = theme.colors.primary;
   const textPrimary = theme.colors.textPrimary || "#073126";
-  const textSecondary = theme.colors.textSecondary || "#4d7e70";
+  const _textSecondary = theme.colors.textSecondary || "#4d7e70";
   const borderColor = theme.colors.border || "#bfd1cc";
   const errorColor = theme.colors.error || "#ff7474";
 
@@ -232,7 +232,7 @@ export const OtpForm: React.FC<OtpFormProps> = ({
     if (isShowOtpInput && (otpStatus === "failed" || otpStatus === "expired")) {
       resetOtpInput();
     }
-  }, [otpStatus]);
+  }, [otpStatus, isShowOtpInput, resetOtpInput]);
 
   // Handle expiration
   useEffect(() => {
@@ -545,7 +545,7 @@ export const OtpFormContainer: React.FC = () => {
           isSubmitting={otpStatus === "submitting"}
           onSubmit={handleSubmit}
           onResend={handleResend}
-          onInput={(otp) => {}}
+          onInput={(_otp) => {}}
           onExpired={handleExpired}
         />
       </div>

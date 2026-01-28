@@ -166,8 +166,6 @@ export function DynamicLayout({
           {children}
         </InlineLayout>
       );
-
-    case LayoutType.STACK:
     default:
       return (
         <StackLayout gap={gap} className={className}>

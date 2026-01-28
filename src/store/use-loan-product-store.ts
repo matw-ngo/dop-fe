@@ -777,7 +777,6 @@ export const useLoanProductStore = create<LoanProductStore>()(
                 comparison = aRating - bRating;
                 break;
               }
-              case "popularity":
               default:
                 comparison =
                   a.metadata.popularityScore - b.metadata.popularityScore;

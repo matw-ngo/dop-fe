@@ -12,7 +12,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 import type { ReactNode } from "react";
-import { Button } from "@/components/ui/button";
 import {
   Sidebar,
   SidebarContent,

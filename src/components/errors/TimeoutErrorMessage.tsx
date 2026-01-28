@@ -8,15 +8,14 @@
  * @module TimeoutErrorMessage
  */
 
-import React from "react";
 import { AlertCircle, RefreshCw, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import type { TimeoutError } from "@/lib/api/timeouts/types";
+import { Button } from "@/components/ui/button";
 import {
   formatErrorDetails,
   isRetryableTimeoutError,
 } from "@/lib/api/timeouts/error-handler";
+import type { TimeoutError } from "@/lib/api/timeouts/types";
 import { formatDuration } from "@/lib/api/timeouts/utils";
 
 export interface TimeoutErrorMessageProps {
@@ -157,7 +156,7 @@ TimeoutErrorMessage.Simple = function SimpleTimeoutErrorMessage({
   className = "",
 }: Pick<TimeoutErrorMessageProps, "error" | "locale" | "className">) {
   const details = formatErrorDetails(error, locale);
-  const messages = getLocalizedMessages(locale);
+  const _messages = getLocalizedMessages(locale);
 
   return (
     <Alert variant="destructive" className={className}>

@@ -87,7 +87,6 @@ function getAnimationVariant(
             center: { y: 0, opacity: 1 },
             exit: { y: 50, opacity: 0 },
           };
-        case "up":
         default:
           return {
             enter: { y: 50, opacity: 0 },
@@ -120,8 +119,6 @@ function getAnimationVariant(
         center: { rotateY: 0, opacity: 1 },
         exit: { rotateY: -90, opacity: 0 },
       };
-
-    case "fade":
     default:
       return defaultVariants.fade;
   }

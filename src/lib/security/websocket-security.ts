@@ -216,7 +216,7 @@ export class SecureWebSocketManager {
     if (!this.messageCallbacks.has(type)) {
       this.messageCallbacks.set(type, []);
     }
-    this.messageCallbacks.get(type)!.push(callback);
+    this.messageCallbacks.get(type)?.push(callback);
   }
 
   /**
@@ -584,7 +584,7 @@ export class SecureWebSocketManager {
 export function createSecureLoanStatusWebSocket(
   applicationId: string,
 ): SecureWebSocketManager {
-  const wsUrl = `${process.env.NEXT_PUBLIC_WS_URL}/loans/applications/${applicationId}/status`;
+  const _wsUrl = `${process.env.NEXT_PUBLIC_WS_URL}/loans/applications/${applicationId}/status`;
 
   const secureWS = new SecureWebSocketManager({
     allowedOrigins: [

@@ -1,9 +1,9 @@
 "use client";
 
 import { AlertCircle } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useStepMeta } from "../store/use-form-wizard-store";
-import { useTranslations } from "next-intl";
 
 interface StepErrorsProps {
   stepId: string;

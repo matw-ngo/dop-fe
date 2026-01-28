@@ -19,16 +19,16 @@
 "use client";
 
 import {
-  type LoanFormDemoCase,
-  DemoHelpers,
-} from "@/configs/forms/loan-form-demo-cases";
-import { useState } from "react";
-import {
+  AlertTriangle,
+  CheckCircle,
   ChevronDown,
   ChevronRight,
-  CheckCircle,
-  AlertTriangle,
 } from "lucide-react";
+import { useState } from "react";
+import {
+  DemoHelpers,
+  type LoanFormDemoCase,
+} from "@/configs/forms/loan-form-demo-cases";
 
 interface DemoLoaderProps {
   /** Callback when a demo is selected */

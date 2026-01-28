@@ -165,7 +165,7 @@ test.describe("API Integration - User Onboarding Flow", () => {
 
 test.describe("API Integration - Auth Flow", () => {
   test("handles token refresh on 401", async ({ page }) => {
-    let refreshAttempts = 0;
+    let _refreshAttempts = 0;
     let requestCount = 0;
 
     // Mock initial protected request to return 401
@@ -195,13 +195,13 @@ test.describe("API Integration - Auth Flow", () => {
 
     // Mock token refresh
     await page.route("**/v1/auth/refresh", (route) => {
-      refreshAttempts++;
+      _refreshAttempts++;
       route.fulfill({
         status: 200,
         contentType: "application/json",
         body: JSON.stringify({
-          access_token: "new-access-token-" + Date.now(),
-          refresh_token: "new-refresh-token-" + Date.now(),
+          access_token: `new-access-token-${Date.now()}`,
+          refresh_token: `new-refresh-token-${Date.now()}`,
         }),
       });
     });

@@ -1,9 +1,9 @@
 import { useTranslations } from "next-intl";
 import type React from "react";
+import { useFormTheme } from "@/components/form-generation/themes";
 import { Slider } from "@/components/ui";
 import { LOAN_AMOUNT } from "../constants";
 import type { AmountFieldProps } from "../types";
-import { useFormTheme } from "@/components/form-generation/themes";
 
 export const AmountField: React.FC<AmountFieldProps> = ({
   value,

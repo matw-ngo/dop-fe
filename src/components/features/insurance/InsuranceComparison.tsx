@@ -37,7 +37,7 @@ export const InsuranceComparison: React.FC<InsuranceComparisonProps> = ({
   onClear,
   className = "",
 }) => {
-  const t = useTranslations("features.insurance.comparison");
+  const _t = useTranslations("features.insurance.comparison");
 
   // Get category icon
   const getCategoryIcon = (category: string) => {
@@ -104,7 +104,7 @@ export const InsuranceComparison: React.FC<InsuranceComparisonProps> = ({
   const findBestValue = (metric: string) => {
     if (products.length === 0) return null;
 
-    const bestProduct = products[0];
+    const _bestProduct = products[0];
     let bestValue: any = null;
 
     switch (metric) {
@@ -161,7 +161,7 @@ export const InsuranceComparison: React.FC<InsuranceComparisonProps> = ({
               <th className="text-left p-4 border-b font-medium sticky left-0 bg-card">
                 Tiêu chí
               </th>
-              {products.map((product, index) => (
+              {products.map((product, _index) => (
                 <th
                   key={product.id}
                   className="text-center p-4 border-b min-w-[200px]"

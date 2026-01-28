@@ -1,8 +1,8 @@
 import { useTranslations } from "next-intl";
 import type React from "react";
-import { URLS } from "../constants";
 import { useFormTheme } from "@/components/form-generation/themes";
 import { useTenant } from "@/hooks/tenant/use-tenant";
+import { URLS } from "../constants";
 
 export interface TermsAgreementProps {
   value: string;

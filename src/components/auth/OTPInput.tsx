@@ -106,7 +106,7 @@ export const OTPInput = React.forwardRef<HTMLDivElement, OTPInputProps>(
         }
         setOtpValues(newValue);
       }
-    }, [value, length, otpValues.length]);
+    }, [value, length, otpValues.join]);
 
     // Handle timer progress
     useEffect(() => {
@@ -203,7 +203,7 @@ export const OTPInput = React.forwardRef<HTMLDivElement, OTPInputProps>(
           onComplete(otpValues.join(""));
         }
       },
-      [otpValues, length, onChange, onComplete],
+      [otpValues, length, onChange, onComplete, handlePaste],
     );
 
     // Handle paste
@@ -247,7 +247,7 @@ export const OTPInput = React.forwardRef<HTMLDivElement, OTPInputProps>(
 
     // Handle blur
     const handleBlur = useCallback(
-      (index: number) => {
+      (_index: number) => {
         // Check if any input is still focused
         const anyFocused = inputRefs.current.some(
           (ref) => ref === document.activeElement,
@@ -271,7 +271,7 @@ export const OTPInput = React.forwardRef<HTMLDivElement, OTPInputProps>(
 
     // Handle container click (focus first empty input)
     const handleContainerClick = useCallback(() => {
-      const firstEmptyIndex = otpValues.findIndex((val) => val === "");
+      const firstEmptyIndex = otpValues.indexOf("");
       const targetIndex = firstEmptyIndex === -1 ? length - 1 : firstEmptyIndex;
       inputRefs.current[targetIndex]?.focus();
     }, [otpValues, length]);

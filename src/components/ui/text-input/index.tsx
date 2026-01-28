@@ -1,7 +1,7 @@
 import * as LabelPrimitive from "@radix-ui/react-label";
 import React from "react";
-import { cn } from "@/lib/utils";
 import { useFormTheme } from "@/components/form-generation/themes";
+import { cn } from "@/lib/utils";
 
 export interface TextInputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {

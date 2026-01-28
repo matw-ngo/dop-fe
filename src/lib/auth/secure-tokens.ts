@@ -222,7 +222,7 @@ export const tokenValidation = {
     try {
       const payload = token.split(".")[1];
       return JSON.parse(atob(payload));
-    } catch (error) {
+    } catch (_error) {
       return null;
     }
   },

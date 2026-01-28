@@ -4,7 +4,7 @@
 
 "use client";
 
-import { Building, Clock, Globe, Home, MapPin } from "lucide-react";
+import { Clock, Home, MapPin } from "lucide-react";
 import type React from "react";
 import { useFormContext } from "react-hook-form";
 import { Checkbox } from "@/components/ui/checkbox";

@@ -8,7 +8,7 @@
  * - Refresh token also expired
  */
 
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 // Setup mocks at module level
 vi.mock("@/lib/auth/secure-tokens", () => ({
@@ -106,13 +106,13 @@ describe("Token Edge Cases", () => {
       const { useTokenStore } = await import("@/lib/auth/secure-tokens");
 
       let currentAccessToken = "expired-token";
-      let refreshCallCount = 0;
+      let _refreshCallCount = 0;
 
       vi.mocked(useTokenStore.getState).mockReturnValue({
         getAccessToken: vi.fn(() => currentAccessToken),
         isTokenExpired: vi.fn(() => true),
         refreshTokens: vi.fn(() => {
-          refreshCallCount++;
+          _refreshCallCount++;
           return new Promise<boolean>((resolve) => {
             setTimeout(() => {
               currentAccessToken = "new-expired-token";

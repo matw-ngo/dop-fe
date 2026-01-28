@@ -77,7 +77,7 @@ export function hasPermission(user: User | null, permission: string): boolean {
   }
 
   // Check for wildcard permissions
-  const [action, resource] = permission.split(":");
+  const [action, _resource] = permission.split(":");
   if (permissions.includes(`${action}:all`)) {
     return true;
   }

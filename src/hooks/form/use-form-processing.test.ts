@@ -1,9 +1,6 @@
 import { renderHook } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type {
-  FieldConfig,
-  RawFieldConfig,
-} from "@/components/renderer/types/data-driven-ui";
+import type { RawFieldConfig } from "@/components/renderer/types/data-driven-ui";
 import { useFormProcessing } from "./use-form-processing";
 
 describe("useFormProcessing", () => {

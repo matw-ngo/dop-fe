@@ -8,7 +8,6 @@
 import {
   BarChart3,
   Calendar,
-  DollarSign,
   Download,
   PieChart,
   Printer,

@@ -58,7 +58,7 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
     }
 
     const phoneVerify = phoneValidation(value);
-    if (isNaN(parseInt(value, 10)) || phoneVerify.valid === false) {
+    if (Number.isNaN(parseInt(value, 10)) || phoneVerify.valid === false) {
       toast.error(t("errors.phoneInvalid"));
       return false;
     }
@@ -170,6 +170,7 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
     setFormData(data);
 
     if (indexStep?.sendOtp) {
+      // FIXME
       // if (!hasConsent()) {
       //   setShowConsentModal(true);
       // } else {

@@ -10,7 +10,6 @@ import {
   DollarSignIcon,
   FileCheckIcon,
   FileTextIcon,
-  LayoutDashboardIcon,
   SettingsIcon,
   TrendingUpIcon,
   UserPlusIcon,
@@ -236,9 +235,9 @@ export default function AdminDashboard() {
           {t("quickActions.title")}
         </h2>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {quickActions.map((action, index) => (
+          {quickActions.map((action) => (
             <Card
-              key={index}
+              key={action.title}
               className={`hover:shadow-md transition-shadow ${
                 !action.enabled ? "opacity-50 cursor-not-allowed" : ""
               }`}

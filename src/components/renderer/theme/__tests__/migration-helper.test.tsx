@@ -96,8 +96,8 @@ describe("Migration Helper", () => {
 
       expect(replacementMap).toBeDefined();
       expect(typeof replacementMap).toBe("object");
-      expect(replacementMap["ThemeProvider"]).toBeTruthy();
-      expect(replacementMap["useTheme"]).toBeTruthy();
+      expect(replacementMap.ThemeProvider).toBeTruthy();
+      expect(replacementMap.useTheme).toBeTruthy();
     });
   });
 

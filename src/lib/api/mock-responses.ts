@@ -345,7 +345,7 @@ export const mockAdminApi = {
 
   // Field management
   updateField: async (
-    stepId: string,
+    _stepId: string,
     fieldId: string,
     updates: any,
   ): Promise<AdminFieldDetail> => {

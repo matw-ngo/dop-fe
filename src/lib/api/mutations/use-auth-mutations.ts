@@ -90,7 +90,7 @@ export function useRegister() {
     mutationFn: (
       userData: paths["/auth/register"]["post"]["requestBody"]["content"]["application/json"],
     ) => authApi.register(userData),
-    onSuccess: (data) => {
+    onSuccess: (_data) => {
       toast.success("Đăng ký thành công", {
         description: "Vui lòng kiểm tra email để xác thực tài khoản",
       });

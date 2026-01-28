@@ -9,7 +9,6 @@ import { useCallback, useEffect, useState } from "react";
 import {
   calculateCompoundInterest,
   compareSavingsProducts,
-  getBestSavingsRates,
 } from "@/lib/financial-data/bank-rates";
 import { calculateRealReturns } from "@/lib/financial-data/market-indicators";
 import { useFinancialToolsStore } from "@/store/use-financial-tools-store";
@@ -259,14 +258,16 @@ export const useSavingsCalculator = (
     enableCache,
     includeInflation,
     enableAnalytics,
-    setResult,
     setSavingsResults,
     setError,
-    setErrorLocal,
     addToHistory,
     setLoading,
     onSuccess,
     onError,
+    cache.get,
+    cache.has,
+    cache.set,
+    generateCacheKey,
   ]);
 
   // Compare bank rates
@@ -364,7 +365,7 @@ export const useSavingsCalculator = (
       try {
         setLoading("export", true);
 
-        const exportData = {
+        const _exportData = {
           format,
           data: {
             params: localParams,
@@ -423,7 +424,7 @@ export const useSavingsCalculator = (
     setErrorLocal(undefined);
     clearSavingsCalculation();
     cache.clear();
-  }, [clearSavingsCalculation]);
+  }, [clearSavingsCalculation, cache.clear]);
 
   // Auto-calculate when params change
   useEffect(() => {

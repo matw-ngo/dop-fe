@@ -71,7 +71,7 @@ export function useAsyncOptions<T = any>(
   // Create unique query key based on cache key and dependencies
   const queryKey = useMemo(
     () => [cacheKey, ...dependencies],
-    [cacheKey, ...dependencies], // eslint-disable-line react-hooks/exhaustive-deps
+    [cacheKey, ...dependencies, dependencies], // eslint-disable-line react-hooks/exhaustive-deps
   );
 
   // Default transform function

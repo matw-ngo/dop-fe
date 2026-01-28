@@ -16,13 +16,9 @@ import {
 } from "@/data/insurance-products";
 import {
   type ComparisonState,
-  CoveragePeriod,
-  FeeType,
-  InsuranceCategory,
   type InsuranceCategoryInfo,
   type InsuranceFilters,
   type InsuranceProduct,
-  InsuranceType,
   type PaginationOptions,
   SortOption,
 } from "@/types/insurance";
@@ -840,7 +836,7 @@ export const useInsuranceStore = create<InsuranceStore>()(
         version: 1,
         onRehydrateStorage: () => (state) => {
           // Validate and fix comparison data on rehydration
-          if (state && state.comparison) {
+          if (state?.comparison) {
             // Ensure comparison state is valid
             state.comparison.canAddMore =
               state.comparison.selectedProducts.length <

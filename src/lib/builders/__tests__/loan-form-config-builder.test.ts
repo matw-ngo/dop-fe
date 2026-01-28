@@ -2,9 +2,9 @@
  * Unit tests for loan-form-config-builder
  */
 
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
+import type { MappedStep } from "@/mappers";
 import { buildLoanFormConfigFromStep } from "../loan-form-config-builder";
-import { MappedStep } from "@/mappers";
 
 // Mock the useLoanPurposes hook
 vi.mock("@/hooks/i18n/use-loan-purposes", () => ({

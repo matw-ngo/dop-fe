@@ -1,6 +1,4 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useFormContext } from "../../context/FormContext";
-import type { EkycFieldConfig, EkycFieldProps } from "../../types";
 import { verificationManager } from "@/lib/verification/manager";
 import { VNPTVerificationProvider } from "@/lib/verification/providers/vnpt-provider";
 import {
@@ -8,6 +6,8 @@ import {
   type VerificationResult,
   VerificationStatus,
 } from "@/lib/verification/types";
+import { useFormContext } from "../../context/FormContext";
+import type { EkycFieldConfig, EkycFieldProps } from "../../types";
 
 export function useEkycField({
   field,
@@ -23,7 +23,7 @@ export function useEkycField({
   try {
     const context = useFormContext();
     setFieldValue = context.setFieldValue;
-  } catch (e) {
+  } catch (_e) {
     // FormContext not available
   }
 
@@ -66,7 +66,7 @@ export function useEkycField({
 
   // Restore result from form value if exists
   useEffect(() => {
-    if (value && value.sessionId && !result) {
+    if (value?.sessionId && !result) {
       // Try to restore result from verification manager
       verificationManager
         .getResult(value.sessionId)

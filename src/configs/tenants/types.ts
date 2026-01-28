@@ -1,4 +1,4 @@
-import { FormTheme } from "@/components/form-generation/themes/types";
+import type { FormTheme } from "@/components/form-generation/themes/types";
 
 // Address interface removed as addresses are now handled by i18n
 

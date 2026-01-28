@@ -27,14 +27,14 @@ import type {
 } from "@/types/tools";
 
 // Type adapter functions for backward compatibility
-const adaptLoanParams = (params: ILoanParams): LoanCalculationParams => ({
+const _adaptLoanParams = (params: ILoanParams): LoanCalculationParams => ({
   principal: params.amount,
   annualRate: params.rate,
   termInMonths: params.term,
   rateType: "reducing_balance" as const,
 });
 
-const adaptLoanResult = (result: LoanCalculationResult): ILoanResult => ({
+const _adaptLoanResult = (result: LoanCalculationResult): ILoanResult => ({
   monthlyPayment: result.monthlyPayment,
   totalPayment: result.totalPayment,
   totalInterest: result.totalInterest,
@@ -572,7 +572,7 @@ export const useFinancialToolsStore = create<CalculatorStore>()(
               false,
               "syncOfflineData-success",
             );
-          } catch (error) {
+          } catch (_error) {
             set(
               (state) => ({
                 errors: {

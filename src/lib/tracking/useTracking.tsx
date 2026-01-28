@@ -96,7 +96,7 @@ export const withPageTracking = <P extends object>(
 
     useEffect(() => {
       trackPageView(pageName, trackingData);
-    }, [trackPageView]);
+    }, [trackPageView, pageName, trackingData]);
 
     return <Component {...props} />;
   };
@@ -127,7 +127,7 @@ export const useFormTracking = (formName: string) => {
         ...data,
       });
     },
-    [formName],
+    [formName, trackEvent],
   );
 
   return {

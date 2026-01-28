@@ -75,7 +75,7 @@ describe("useFormClassNames", () => {
   it("should handle responsive fields classes", () => {
     mockGetResponsiveClasses.mockReturnValue("md:grid-cols-2 lg:grid-cols-4");
 
-    const result = useFormClassNames({
+    const _result = useFormClassNames({
       responsive: {
         fields: { base: 1, md: 2, lg: 4 } as ResponsiveValue<number>,
       },

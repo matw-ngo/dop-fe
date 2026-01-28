@@ -135,7 +135,7 @@ export const OtpContainer: React.FC<OtpContainerProps> = ({
               const attemptsLeft = maxAttempts - newAttempts;
               onFailure?.(
                 error.message ||
-                  t("errorMessage") + ` Còn ${attemptsLeft} lần thử.`,
+                  `${t("errorMessage")} Còn ${attemptsLeft} lần thử.`,
               );
             }
           },
@@ -144,7 +144,7 @@ export const OtpContainer: React.FC<OtpContainerProps> = ({
     } else {
       // No leadId/token provided - cannot submit OTP without API
       setOtpStatus("failed");
-      onFailure?.(t("errorMessage") + ". Vui lòng thử lại.");
+      onFailure?.(`${t("errorMessage")}. Vui lòng thử lại.`);
     }
   };
 

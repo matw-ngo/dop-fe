@@ -8,8 +8,8 @@
  * @module config-parser
  */
 
+import { DEFAULT_CONFIG, ENV_PREFIXES } from "./constants";
 import type { TimeoutConfig } from "./types";
-import { DEFAULT_CONFIG, ENV_PREFIXES, VALIDATION_RANGES } from "./constants";
 import { normalizeEndpointPath } from "./utils";
 
 /**
@@ -64,7 +64,7 @@ function parseGlobalTimeout(): number {
 
   const parsed = parseInt(envValue, 10);
 
-  if (isNaN(parsed)) {
+  if (Number.isNaN(parsed)) {
     return DEFAULT_CONFIG.global;
   }
 
@@ -91,7 +91,7 @@ function parseServiceTimeouts(): Record<string, number> | undefined {
 
       if (serviceName) {
         const parsed = parseInt(value, 10);
-        if (!isNaN(parsed)) {
+        if (!Number.isNaN(parsed)) {
           services[serviceName] = parsed;
         }
       }
@@ -121,7 +121,7 @@ function parseEndpointTimeouts(): Record<string, number> | undefined {
 
       if (endpointPath) {
         const parsed = parseInt(value, 10);
-        if (!isNaN(parsed)) {
+        if (!Number.isNaN(parsed)) {
           endpoints[endpointPath] = parsed;
         }
       }
@@ -145,7 +145,7 @@ function parseRetryCount(): number {
 
   const parsed = parseInt(envValue, 10);
 
-  if (isNaN(parsed)) {
+  if (Number.isNaN(parsed)) {
     return DEFAULT_CONFIG.maxRetries;
   }
 
@@ -166,7 +166,7 @@ function parseRetryDelay(): number {
 
   const parsed = parseInt(envValue, 10);
 
-  if (isNaN(parsed)) {
+  if (Number.isNaN(parsed)) {
     return DEFAULT_CONFIG.retryDelay;
   }
 
@@ -200,7 +200,7 @@ export function getEndpointTimeout(endpoint: string): number | undefined {
 
   const parsed = parseInt(envValue, 10);
 
-  if (isNaN(parsed)) {
+  if (Number.isNaN(parsed)) {
     return undefined;
   }
 
@@ -233,7 +233,7 @@ export function getServiceTimeout(service: string): number | undefined {
 
   const parsed = parseInt(envValue, 10);
 
-  if (isNaN(parsed)) {
+  if (Number.isNaN(parsed)) {
     return undefined;
   }
 
@@ -254,7 +254,7 @@ export function getGlobalTimeout(): number {
 
   const parsed = parseInt(envValue, 10);
 
-  if (isNaN(parsed)) {
+  if (Number.isNaN(parsed)) {
     return DEFAULT_CONFIG.global;
   }
 
@@ -281,7 +281,7 @@ export function parseTimeoutValue(
 
   const parsed = parseInt(value, 10);
 
-  if (isNaN(parsed)) {
+  if (Number.isNaN(parsed)) {
     return allowDefault ? DEFAULT_CONFIG.global : undefined;
   }
 

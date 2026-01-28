@@ -5,14 +5,12 @@
  */
 
 import { useCallback, useEffect, useRef } from "react";
-import { loanApi } from "@/lib/api/endpoints/loans";
 import type {
   DocumentVerificationStatus,
   LoanApplicationStatus,
 } from "@/lib/loan-status/vietnamese-status-config";
 import type {
   NotificationChannel,
-  NotificationMessage,
   NotificationPriority,
 } from "@/lib/notifications/loan-notifications";
 import { loanNotificationManager } from "@/lib/notifications/loan-notifications";
@@ -20,9 +18,7 @@ import { useAuditLogging } from "@/lib/security/audit-logging";
 import { useConflictResolution } from "@/lib/security/conflict-resolution";
 import { useIntegratedSecurity } from "@/lib/security/integrated-security";
 import { useLoanStatusRateLimiting } from "@/lib/security/status-rate-limiting";
-import { createSecureLoanStatusWebSocket } from "@/lib/security/websocket-security";
 import type {
-  ApplicationStatusData,
   CommunicationEntry,
   DocumentStatus,
   NotificationPreferences,
@@ -99,7 +95,12 @@ export function useLoanStatus(
         );
       });
     }
-  }, [applicationId, securityEnabled]);
+  }, [
+    applicationId,
+    securityEnabled,
+    initializeSecurityContext,
+    logApplicationEvent,
+  ]);
 
   // SECURE Initialize auto-refresh with rate limiting
   useEffect(() => {
@@ -191,6 +192,17 @@ export function useLoanStatus(
     options?.refreshInterval,
     options?.realTime,
     securityEnabled,
+    checkAutoRefresh,
+    checkStatusRefresh,
+    createSecureWebSocket,
+    disconnectRealTime,
+    handleSecureStatusUpdate,
+    logSecurityEvent,
+    refreshApplicationStatus,
+    secureAutoRefresh,
+    setError,
+    storeAutoRefresh,
+    storeRefreshInterval,
   ]);
 
   // Secure auto-refresh function
@@ -249,6 +261,9 @@ export function useLoanStatus(
     checkStatusRefresh,
     getCurrentVersion,
     secureStatusUpdate,
+    logApplicationEvent,
+    logSecurityEvent,
+    refreshApplicationStatus,
   ]);
 
   // Handle secure status updates from WebSocket
@@ -283,7 +298,13 @@ export function useLoanStatus(
         });
       }
     },
-    [applicationId, securityEnabled],
+    [
+      applicationId,
+      securityEnabled, // Log real-time update
+      logApplicationEvent,
+      logSecurityEvent, // Apply update with security validation
+      setApplicationStatus,
+    ],
   );
 
   // Manual refresh function
@@ -515,7 +536,7 @@ export function useLoanDocuments(
 
   // Check if all required documents are uploaded
   const areRequiredDocumentsUploaded = useCallback(() => {
-    const requiredDocuments = documents.filter((doc) => {
+    const requiredDocuments = documents.filter((_doc) => {
       // This would need to be implemented based on document type requirements
       // For now, assume all documents are required
       return true;
@@ -897,7 +918,6 @@ export function useOfflineMode() {
     // State
     isOffline,
     queueSize: getQueueSize(),
-    queue: offlineQueue,
 
     // Actions
     goOffline,
@@ -1013,7 +1033,7 @@ export function useStatusTransitions(currentStatus?: LoanApplicationStatus) {
 
   // Check if transition is allowed
   const canTransitionTo = useCallback(
-    (targetStatus: LoanApplicationStatus): boolean => {
+    (_targetStatus: LoanApplicationStatus): boolean => {
       if (!status) return false;
 
       // This would integrate with the status transition rules

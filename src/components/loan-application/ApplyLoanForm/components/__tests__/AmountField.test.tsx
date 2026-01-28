@@ -33,11 +33,10 @@ vi.mock("@/components/ui", () => ({
       step={step}
       disabled={disabled}
       onChange={(e) => {
-        const newValue = parseInt(e.target.value);
+        const newValue = parseInt(e.target.value, 10);
         onChange?.(newValue);
         onValueChange?.([newValue]);
       }}
-      role="slider"
       {...props}
     />
   ),

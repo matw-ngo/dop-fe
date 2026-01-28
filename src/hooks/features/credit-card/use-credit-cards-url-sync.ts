@@ -8,12 +8,7 @@ import { useLocale } from "next-intl";
 import { useEffect } from "react";
 import { DEFAULT_PAGE_SIZE } from "@/constants/credit-cards";
 import type { CreditCardsStore } from "@/store/use-credit-cards-store";
-import type {
-  CardCategory,
-  CardNetwork,
-  CreditCardFilters,
-  SortOption,
-} from "@/types/credit-card";
+import type { CreditCardFilters, SortOption } from "@/types/credit-card";
 
 // Default filters with proper typing for URL initialization
 const DEFAULT_FILTERS_FOR_URL: CreditCardFilters = {
@@ -96,8 +91,8 @@ export const searchParamsToFilters = (
         target as keyof typeof DEFAULT_FILTERS_FOR_URL
       ] as { min: number; max: number };
       (filters as any)[target] = {
-        min: minValue ? parseInt(minValue) : defaultValue.min,
-        max: maxValue ? parseInt(maxValue) : defaultValue.max,
+        min: minValue ? parseInt(minValue, 10) : defaultValue.min,
+        max: maxValue ? parseInt(maxValue, 10) : defaultValue.max,
       };
     }
   });
@@ -107,7 +102,7 @@ export const searchParamsToFilters = (
   numericFields.forEach((field) => {
     const value = searchParams.get(field);
     if (value) {
-      (filters as any)[field] = parseInt(value);
+      (filters as any)[field] = parseInt(value, 10);
     }
   });
 
@@ -238,7 +233,7 @@ export const useCreditCardsUrlInit = (
     // Initialize page from URL
     const urlPage = searchParams.get("page");
     if (urlPage) {
-      store.setCurrentPage(parseInt(urlPage));
+      store.setCurrentPage(parseInt(urlPage, 10));
     }
 
     // Initialize search query from URL
@@ -246,7 +241,13 @@ export const useCreditCardsUrlInit = (
     if (urlSearch) {
       store.setSearchQuery(urlSearch);
     }
-  }, [searchParams]); // Removed 'store' from dependencies - Zustand store methods are stable
+  }, [
+    searchParams,
+    store.setCurrentPage,
+    store.setFilters,
+    store.setSearchQuery,
+    store.setSortBy,
+  ]); // Removed 'store' from dependencies - Zustand store methods are stable
 };
 
 /**
@@ -281,7 +282,7 @@ export const useCreditCardsUrlSync = (state: {
     }
 
     // Update URL without page reload
-    const newUrl = `/${locale}/credit-cards${params.toString() ? "?" + params.toString() : ""}`;
+    const newUrl = `/${locale}/credit-cards${params.toString() ? `?${params.toString()}` : ""}`;
     window.history.replaceState({}, "", newUrl);
   }, [
     state.filters,
@@ -299,5 +300,5 @@ export const useCreditCardsUrlSync = (state: {
 export const useItemsPerPageFromUrl = () => {
   const searchParams = useSearchParams();
   const urlItemsPerPage = searchParams.get("itemsPerPage");
-  return urlItemsPerPage ? parseInt(urlItemsPerPage) : DEFAULT_PAGE_SIZE;
+  return urlItemsPerPage ? parseInt(urlItemsPerPage, 10) : DEFAULT_PAGE_SIZE;
 };

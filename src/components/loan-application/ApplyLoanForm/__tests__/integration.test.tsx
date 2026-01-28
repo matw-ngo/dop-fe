@@ -1,5 +1,5 @@
-import { fireEvent, render, screen } from "@testing-library/react";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { render, screen } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
 import { Form } from "@/components/ui";
 import { AmountField } from "../components/AmountField";
 import { OtpVerificationModal } from "../components/OtpVerificationModal";
@@ -51,7 +51,7 @@ vi.mock("@/components/ui", () => ({
     <input
       type="range"
       value={value}
-      onChange={(e) => onChange?.([parseInt(e.target.value)])}
+      onChange={(e) => onChange?.([parseInt(e.target.value, 10)])}
       {...props}
     />
   ),
@@ -156,7 +156,7 @@ describe("Loan Application Form Integration", () => {
     expect(screen.getByText("Loan Period:")).toBeInTheDocument();
     expect(screen.getByText("Loan Purpose:")).toBeInTheDocument();
     expect(
-      screen.getByText((content, element) => {
+      screen.getByText((content, _element) => {
         return content.includes("Bằng việc nhấn Gửi, bạn đồng ý với");
       }),
     ).toBeInTheDocument();

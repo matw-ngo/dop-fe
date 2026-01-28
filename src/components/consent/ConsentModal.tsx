@@ -16,7 +16,6 @@ import { useConsentLogs } from "@/hooks/consent/use-consent-logs";
 import { useConsentVersion } from "@/hooks/consent/use-consent-version";
 import { useDataCategories } from "@/hooks/consent/use-data-categories";
 import { useUserConsent } from "@/hooks/consent/use-user-consent";
-import apiClient from "@/lib/api/client";
 import { consentClient } from "@/lib/api/services";
 import { useAuthStore } from "@/store/use-auth-store";
 import { useConsentStore } from "@/store/use-consent-store";
@@ -109,11 +108,7 @@ export function ConsentModal({ open, setOpen, onSuccess }: ConsentModalProps) {
   }, [open, userId, refetchUserConsent]);
 
   useEffect(() => {
-    if (
-      consentLogs &&
-      consentLogs.consent_logs &&
-      consentLogs.consent_logs.length > 0
-    ) {
+    if (consentLogs?.consent_logs && consentLogs.consent_logs.length > 0) {
       setActiveTab("history");
     } else {
       setActiveTab("form");

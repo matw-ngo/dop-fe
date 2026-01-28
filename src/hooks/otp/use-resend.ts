@@ -10,30 +10,26 @@ interface ResendOTPParams {
 }
 
 async function resendOTP({ leadId, target }: ResendOTPParams) {
-  try {
-    const { data, error } = await dopClient.POST("/leads/{id}/resend-otp", {
-      params: {
-        path: {
-          id: leadId,
-        },
+  const { data, error } = await dopClient.POST("/leads/{id}/resend-otp", {
+    params: {
+      path: {
+        id: leadId,
       },
-      body: {
-        target: target,
-      },
-    });
+    },
+    body: {
+      target: target,
+    },
+  });
 
-    if (error) {
-      throw new Error((error as any).message || "Failed to resend OTP");
-    }
-
-    if (!data) {
-      throw new Error("No data returned from resend OTP API");
-    }
-
-    return data;
-  } catch (error) {
-    throw error;
+  if (error) {
+    throw new Error((error as any).message || "Failed to resend OTP");
   }
+
+  if (!data) {
+    throw new Error("No data returned from resend OTP API");
+  }
+
+  return data;
 }
 
 export function useResendOTP() {

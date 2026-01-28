@@ -684,7 +684,7 @@ export const useCreditCardsStore = create<CreditCardsStore>()(
         version: 1,
         onRehydrateStorage: () => (state) => {
           // Validate and fix comparison data on rehydration
-          if (state && state.comparison) {
+          if (state?.comparison) {
             // Ensure comparison state is valid
             state.comparison.canAddMore =
               state.comparison.selectedCards.length < state.comparison.maxCards;

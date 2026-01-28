@@ -2,10 +2,9 @@
 
 import type { ColumnDef } from "@tanstack/react-table";
 import { EditIcon, SaveIcon, SettingsIcon, Trash2Icon } from "lucide-react";
-import { useParams, useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
-import { EmptyState, ErrorState } from "@/components/admin/error-states";
+import { ErrorState } from "@/components/admin/error-states";
 import {
   FieldRequirementToggle,
   FieldVisibilityToggleComponent,
@@ -39,7 +38,6 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import {
   useBulkUpdateFields,
@@ -47,9 +45,8 @@ import {
   useStep,
   useUpdateStep,
 } from "@/hooks/admin/use-admin-flows";
-import { cn } from "@/lib/utils";
 import { useAdminFlowStore } from "@/store/use-admin-flow-store";
-import type { FieldListItem, StepDetail, StepListItem } from "@/types/admin";
+import type { FieldListItem, StepListItem } from "@/types/admin";
 
 interface StepManagementDialogProps {
   flowId: string;
@@ -68,7 +65,7 @@ export function StepManagementDialog({
     initialStepId || null,
   );
   const [showSaveDialog, setShowSaveDialog] = useState(false);
-  const [isCreatingNew, setIsCreatingNew] = useState(false);
+  const [_isCreatingNew, setIsCreatingNew] = useState(false);
 
   const t = useTranslations("admin.stepDetail");
 

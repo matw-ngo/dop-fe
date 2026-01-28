@@ -1,8 +1,8 @@
 import { useTranslations } from "next-intl";
 import type React from "react";
+import { useFormTheme } from "@/components/form-generation/themes";
 import { Button } from "@/components/ui";
 import type { SubmitButtonProps } from "../types";
-import { useFormTheme } from "@/components/form-generation/themes";
 
 export const SubmitButton: React.FC<SubmitButtonProps> = ({
   isSubmitting,

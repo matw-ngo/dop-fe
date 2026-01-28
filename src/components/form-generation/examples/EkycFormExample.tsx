@@ -5,7 +5,6 @@
  * in a dynamic form with auto-fill functionality.
  */
 
-import React from "react";
 import { DynamicForm } from "@/components/form-generation";
 import type { DynamicFormConfig } from "@/components/form-generation/types";
 import {

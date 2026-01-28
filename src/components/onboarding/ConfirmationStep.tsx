@@ -3,7 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { CheckCircle2, Edit3, Loader2, ShieldCheck } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -50,7 +50,7 @@ export function ConfirmationStep({
   showEditButtons = false,
 }: ConfirmationStepProps) {
   const [submitting, setSubmitting] = useState(isSubmitting);
-  const [editingField, setEditingField] = useState<FieldType | null>(null);
+  const [_editingField, setEditingField] = useState<FieldType | null>(null);
   const t = useTranslations("onboarding.confirm");
 
   // Use our new dynamic field hook

@@ -95,16 +95,16 @@
 
 /* React Window CSS Reset */
 .react-window {
-  overflow: auto !important;
+  overflow: auto;
 }
 
 .react-window__Container {
-  overflow: auto !important;
+  overflow: auto;
 }
 
 .react-window__Item {
-  position: absolute !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100% !important;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
 }

@@ -2,8 +2,6 @@
 
 import { dopClient } from "@/lib/api/services/dop";
 import { securityUtils, useTokenStore } from "@/lib/auth/secure-tokens";
-import { VietnameseFinancialValidator } from "@/lib/loan-products/validation";
-import { VietnameseComplianceEngine } from "@/lib/loan-products/vietnamese-compliance";
 import type { paths } from "../v1/dop";
 
 /**
@@ -467,7 +465,7 @@ export const loanApi = {
           try {
             const response = JSON.parse(xhr.responseText);
             resolve(response);
-          } catch (error) {
+          } catch (_error) {
             reject(new Error("Invalid response format"));
           }
         } else {
@@ -818,18 +816,6 @@ export const loanAdminApi = {
     return response.data;
   },
 
-  // Get application statistics
-  getApplicationStats: async (
-    params?: paths["/admin/loans/stats"]["get"]["parameters"]["query"],
-  ) => {
-    const response = await dopClient.GET("/admin/loans/stats", {
-      params: {
-        query: params,
-      },
-    });
-    return response.data;
-  },
-
   // Get partner performance
   getPartnerPerformance: async (
     params?: paths["/admin/loans/partners"]["get"]["parameters"]["query"],
@@ -1017,7 +1003,7 @@ export const loanAdminApi = {
             }
 
             resolve(response);
-          } catch (error) {
+          } catch (_error) {
             reject(new Error("Invalid response format"));
           }
         } else if (xhr.status === 401) {
@@ -1168,6 +1154,8 @@ export const loanAdminApi = {
     });
     return response.data;
   },
+
+  // Get application statistics
 
   /**
    * Get loan application statistics (for dashboard)

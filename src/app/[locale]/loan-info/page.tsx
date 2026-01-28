@@ -25,7 +25,7 @@ export default function LoanInfoPage() {
   const [leadId, setLeadId] = useState<string | null>(
     searchParams.get("leadId"),
   );
-  const [leadToken, setLeadToken] = useState<string | null>(
+  const [_leadToken, setLeadToken] = useState<string | null>(
     searchParams.get("token"),
   );
   const [submittedData, setSubmittedData] = useState<Record<
@@ -56,7 +56,7 @@ export default function LoanInfoPage() {
   /**
    * Handles loading demo data into the form
    */
-  const handleLoadDemo = (
+  const _handleLoadDemo = (
     demoId: string,
     formData: Record<string, unknown>,
   ) => {

@@ -45,7 +45,7 @@ export function useUploadLoanDocuments() {
       applicationId: string;
       documents: paths["/loans/applications/{id}/documents"]["post"]["requestBody"]["content"]["multipart/form-data"];
     }) => loanApi.uploadDocuments(applicationId, documents),
-    onSuccess: (data, variables) => {
+    onSuccess: (_data, variables) => {
       toast.success("Tài liệu đã được tải lên thành công");
 
       // Invalidate application details
@@ -99,7 +99,7 @@ export function useCalculatePayment() {
     mutationFn: (
       loanDetails: paths["/loans/calculator"]["post"]["requestBody"]["content"]["application/json"],
     ) => loanApi.calculatePayment(loanDetails),
-    onSuccess: (data) => {
+    onSuccess: (_data) => {
       toast.success("Tính toán thành công");
     },
     onError: (error) => {
@@ -124,7 +124,7 @@ export function useUpdateApplicationStatus() {
       applicationId: string;
       status: paths["/admin/loans/applications/{id}/status"]["put"]["requestBody"]["content"]["application/json"];
     }) => loanAdminApi.updateApplicationStatus(applicationId, status),
-    onSuccess: (data, variables) => {
+    onSuccess: (_data, variables) => {
       toast.success("Cập nhật trạng thái thành công");
 
       // Invalidate related queries

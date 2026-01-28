@@ -4,13 +4,11 @@
  * Page for calculating gross salary from desired net salary in Vietnam
  */
 
-import { Lightbulb, Target, TrendingUp } from "lucide-react";
 import type { Metadata } from "next";
 import { useLocale, useTranslations } from "next-intl";
 import { ToolsPageLayout } from "@/components/features/tools/ToolsPageLayout";
 import { ToolsThemeProvider } from "@/components/features/tools/ToolsThemeProvider";
 import { NetToGrossCalculator } from "@/components/tools";
-import { Badge } from "@/components/ui/badge";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -19,16 +17,6 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export const metadata: Metadata = {
   title: "Tính lương Net sang Gross | Công cụ tính lương",

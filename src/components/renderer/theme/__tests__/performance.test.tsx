@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { ThemeConfig } from "../types";
-import { applyTheme, generateCSSVariables } from "../utils";
+import { applyTheme } from "../utils";
 
 // Mock requestAnimationFrame
 let rafCallbacks: Array<(timestamp: number) => void> = [];
@@ -181,7 +181,7 @@ describe("Theme Performance Optimizations", () => {
       applyTheme(mockTheme, "light");
 
       // Simulate having previous properties
-      const mockAppliedProperties = new Set(["--old-prop"]);
+      const _mockAppliedProperties = new Set(["--old-prop"]);
 
       // Apply second theme
       applyTheme(mockTheme, "dark");
@@ -234,7 +234,7 @@ describe("Theme Performance Optimizations", () => {
       // Execute RAF
       rafCallbacks[0](0);
 
-      const setPropertyCalls = mockRootStyle.setProperty.mock.calls;
+      const _setPropertyCalls = mockRootStyle.setProperty.mock.calls;
 
       // Should have applied customizations
       expect(mockRootStyle.setProperty).toHaveBeenCalledWith(

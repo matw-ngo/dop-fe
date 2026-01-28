@@ -5,12 +5,13 @@ export interface ISliderProps {
   step: number;
   min: number;
   max: number;
-  value: number;
+  value?: number | number[];
   onValueChange?: (values: number[]) => void;
   onChange?: (value: number) => void;
   trackingHandler?: (startValue: number, endValue: number) => void;
   thumbImg?: string;
   disabled?: boolean;
+  className?: string;
 }
 
 export default function CustomSlider({
@@ -23,6 +24,7 @@ export default function CustomSlider({
   thumbImg,
   trackingHandler,
   disabled = false,
+  className = "",
 }: ISliderProps) {
   const [startValue, setStartValue] = React.useState(0);
   const valueRef = React.useRef(0);
@@ -38,20 +40,27 @@ export default function CustomSlider({
     valueRef.current = newValue;
   };
 
-  const handleValueCommit = (values: number[]) => {
+  const handleValueCommit = (_values: number[]) => {
     if (trackingHandler) {
       trackingHandler(startValue, valueRef.current);
     }
   };
 
   const handlePointerDown = () => {
-    setStartValue(value);
+    const initialValue = Array.isArray(value) ? value[0] : value;
+    setStartValue(initialValue ?? 0);
   };
+
+  const sliderValue = Array.isArray(value)
+    ? value
+    : value !== undefined
+      ? [value]
+      : [];
 
   return (
     <RadixSlider.Root
-      className={`relative flex items-center select-none touch-none w-full h-7 z-10 ${disabled ? "opacity-50 pointer-events-none" : ""}`}
-      value={[value]}
+      className={`relative flex items-center select-none touch-none w-full h-7 z-10 ${className} ${disabled ? "opacity-50 pointer-events-none" : ""}`}
+      value={sliderValue}
       onValueChange={handleValueChange}
       onValueCommit={handleValueCommit}
       onPointerDown={disabled ? undefined : handlePointerDown}

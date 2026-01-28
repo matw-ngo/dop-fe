@@ -26,7 +26,7 @@ export const validatePhoneNumber = (
   const cleanedNumber = phoneNumber.replace(/\s+/g, "");
 
   // Check if it's a valid format
-  if (isNaN(parseInt(cleanedNumber, 10))) {
+  if (Number.isNaN(parseInt(cleanedNumber, 10))) {
     return {
       valid: false,
       error: "Phone number must contain only digits",

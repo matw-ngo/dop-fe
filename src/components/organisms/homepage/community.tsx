@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import React from "react";
 import type { CommunityConfig } from "@/configs/homepage-config";
 
 interface CommunityProps {

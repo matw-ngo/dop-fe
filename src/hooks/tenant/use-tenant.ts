@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { TenantConfig } from "@/configs/tenants/types";
+import { useEffect, useState } from "react";
 import { getTenantConfig, getTenantIdFromHostname } from "@/configs/tenants";
+import type { TenantConfig } from "@/configs/tenants/types";
 
 export function useTenant() {
   // Safe default for initial render/SSR

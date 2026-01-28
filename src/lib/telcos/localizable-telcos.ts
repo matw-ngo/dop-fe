@@ -171,7 +171,7 @@ export const getLocalizableTelcoByPhoneNumber = (
 
   // Try with international format (+84 -> 0)
   if (cleanPhone.startsWith("84")) {
-    const localPhone = "0" + cleanPhone.slice(2);
+    const localPhone = `0${cleanPhone.slice(2)}`;
     return getLocalizableTelcoByPhoneNumber(localPhone);
   }
 

@@ -100,10 +100,10 @@ export function useTranslationMonitor(
 
           return result;
         },
-        [t, trackRequest, shouldTrackMissing, locale],
+        [t, actualNamespace],
       );
     },
-    [trackRequest, shouldTrackMissing],
+    [trackRequest, shouldTrackMissing, defaultNamespace, locale],
   );
 
   /**

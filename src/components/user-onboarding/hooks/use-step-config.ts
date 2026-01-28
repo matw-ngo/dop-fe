@@ -36,7 +36,7 @@ export function useStepConfig(
     const steps: GeneratedStepConfig[] = [];
 
     // Generate configuration for each step in the flow
-    flowData.steps.forEach((step, index) => {
+    flowData.steps.forEach((step, _index) => {
       const fields = generateFieldsForStep(step, fieldBuilderMap);
       const sortedFields = sortFields(fields);
       const metadata = getStepMetadata(step, t);
@@ -80,7 +80,7 @@ export function useStepConfig(
  */
 function createConfirmationStep(
   t: (key: string) => string,
-  stepIndex: number,
+  _stepIndex: number,
 ): GeneratedStepConfig {
   const confirmationField = createConfirmationField("confirmation", {
     leftIcon: CheckCircle,

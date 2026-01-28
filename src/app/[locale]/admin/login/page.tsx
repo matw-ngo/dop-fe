@@ -68,7 +68,7 @@ export default function AdminLoginPage() {
           variant: "destructive",
         });
       }
-    } catch (error) {
+    } catch (_error) {
       toast({
         title: t("errors.systemError.title"),
         description: t("errors.systemError.description"),

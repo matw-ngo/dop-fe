@@ -306,7 +306,7 @@ describe("useEkycConfig", () => {
     expect(result.current.fetchStatus).toBe("fetching");
 
     // Resolve the promise
-    resolveFetch!({ data: mockConfig, error: undefined });
+    resolveFetch?.({ data: mockConfig, error: undefined });
 
     await waitFor(() => expect(result.current.isLoading).toBe(false));
     expect(result.current.isSuccess).toBe(true);

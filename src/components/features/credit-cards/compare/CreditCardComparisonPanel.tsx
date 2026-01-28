@@ -15,7 +15,6 @@ import {
   Plus,
   Printer,
   Share2,
-  Star,
   TrendingUp,
   X,
 } from "lucide-react";
@@ -112,7 +111,7 @@ export const CreditCardComparisonPanel: React.FC<
 
   // Calculate progress
   const progressPercentage = (displayCards.length / maxComparison) * 100;
-  const canAddMoreLocal = displayCards.length < maxComparison;
+  const _canAddMoreLocal = displayCards.length < maxComparison;
   const isFull = displayCards.length >= maxComparison;
 
   // Format currency
@@ -147,7 +146,7 @@ export const CreditCardComparisonPanel: React.FC<
       setTimeout(() => {
         setCopiedStates((prev) => ({ ...prev, [key]: false }));
       }, 2000);
-    } catch (err) {
+    } catch (_err) {
       toast({
         title: t("error"),
         description: t("copyFailed"),
@@ -240,7 +239,7 @@ export const CreditCardComparisonPanel: React.FC<
         title: t("exportSuccess"),
         description: `${t("exportFileDownloaded")}: ${fileName}`,
       });
-    } catch (error) {
+    } catch (_error) {
       toast({
         title: t("error"),
         description: t("csvExportFailed"),
@@ -340,7 +339,7 @@ export const CreditCardComparisonPanel: React.FC<
         title: t("preparePDF"),
         description: t("pdfSaveInstructions"),
       });
-    } catch (error) {
+    } catch (_error) {
       toast({
         title: t("error"),
         description: t("pdfExportFailed"),
@@ -560,7 +559,7 @@ export const CreditCardComparisonPanel: React.FC<
             {comparisonCards.length > 0 && (
               <div className="space-y-3">
                 <div className="grid gap-3">
-                  {comparisonCards.map((card, index) => (
+                  {comparisonCards.map((card, _index) => (
                     <div
                       key={card.id}
                       className="flex items-center space-x-3 p-3 bg-muted/30 rounded-lg group hover:bg-muted/50 transition-colors"

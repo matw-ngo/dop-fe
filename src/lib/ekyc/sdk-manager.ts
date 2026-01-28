@@ -7,7 +7,7 @@ import { createDefaultEkycConfig, type EkycSdkConfig } from "./sdk-config";
 import {
   type EkycEventHandlers,
   EkycEventManager,
-  EkycResult,
+  type EkycResult,
 } from "./sdk-events";
 import { EkycSdkLoader, type SdkAssets } from "./sdk-loader";
 

@@ -8,7 +8,7 @@
  * - Timeout cascade priority
  */
 
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 // Setup mocks at module level
 vi.mock("@/lib/api/timeouts", () => ({
@@ -90,7 +90,7 @@ describe("Timeout Edge Cases", () => {
     });
 
     it("should propagate abort signal on timeout", async () => {
-      const abortCalled = false;
+      const _abortCalled = false;
 
       const middleware = createTimeoutMiddleware();
 
@@ -103,7 +103,7 @@ describe("Timeout Edge Cases", () => {
       } as any;
 
       // Mock the abort controller
-      const originalSignal = mockRequest.request.signal;
+      const _originalSignal = mockRequest.request.signal;
       const abortController = new AbortController();
 
       mockRequest.request = new Request("https://api.example.com/v1/slow", {

@@ -150,7 +150,6 @@ const DEFAULT_AUDIT_CONFIG: AuditLoggingConfig = {
 export class AuditLogger {
   private config: AuditLoggingConfig;
   private eventQueue: AuditEvent[] = [];
-  private batchTimer: NodeJS.Timeout | null = null;
   private sessionId: string;
 
   constructor(config: Partial<AuditLoggingConfig> = {}) {

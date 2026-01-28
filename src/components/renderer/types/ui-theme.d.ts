@@ -1,5 +1,3 @@
-import { ComponentPropsWithoutRef } from "react";
-
 // Theme color palette
 export interface ThemeColors {
   // Primary colors

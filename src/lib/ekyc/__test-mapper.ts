@@ -5,8 +5,8 @@
  * Hoặc: node -r esbuild-register src/lib/ekyc/__test-mapper.ts
  */
 
-import { readFileSync } from "fs";
-import { join } from "path";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import {
   type EkycFullResult,
   getEkycSummary,
@@ -48,7 +48,7 @@ console.log("   - Full Name:", summary.fullName);
 console.log("   - Date of Birth:", summary.dateOfBirth);
 console.log("   - Address:", summary.address);
 console.log("   - Face Match:", summary.faceMatch ? "YES ✓" : "NO ✗");
-console.log("   - Match Score:", summary.matchScore?.toFixed(2) + "%");
+console.log("   - Match Score:", `${summary.matchScore?.toFixed(2)}%`);
 console.log("   - Match Message:", summary.matchMessage);
 console.log();
 
@@ -63,7 +63,7 @@ if (ocrData) {
   console.log("   - Birth Day:", ocrData.birth_day);
   console.log(
     "   - Recent Location:",
-    ocrData.recent_location?.substring(0, 50) + "...",
+    `${ocrData.recent_location?.substring(0, 50)}...`,
   );
   console.log("   - Nationality:", ocrData.nationality);
   console.log("   - Card Type:", ocrData.card_type);

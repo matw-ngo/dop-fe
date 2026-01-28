@@ -6,9 +6,7 @@
 
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
-import { useTokenStore } from "@/lib/auth/secure-tokens";
 import type {
-  DocumentTypeConfig,
   DocumentVerificationStatus,
   LoanApplicationStatus,
   StatusConfig,
@@ -23,11 +21,7 @@ import {
   AuditSeverity,
   auditLogger,
 } from "@/lib/security/audit-logging";
-import {
-  conflictResolutionManager,
-  type DataVersion,
-} from "@/lib/security/conflict-resolution";
-import { loanStatusRateLimiter } from "@/lib/security/status-rate-limiting";
+import type { DataVersion } from "@/lib/security/conflict-resolution";
 
 /**
  * Timeline milestone interface
@@ -437,7 +431,7 @@ export const useLoanStatusTrackingStore = create<LoanStatusTrackingStore>()(
           );
         },
 
-        refreshApplicationStatus: async (applicationId) => {
+        refreshApplicationStatus: async (_applicationId) => {
           set(
             { isLoading: true, error: null },
             false,
@@ -495,7 +489,7 @@ export const useLoanStatusTrackingStore = create<LoanStatusTrackingStore>()(
           );
         },
 
-        refreshTimeline: async (applicationId) => {
+        refreshTimeline: async (_applicationId) => {
           set(
             { isLoadingTimeline: true, timelineError: null },
             false,
@@ -569,7 +563,7 @@ export const useLoanStatusTrackingStore = create<LoanStatusTrackingStore>()(
           );
         },
 
-        refreshDocuments: async (applicationId) => {
+        refreshDocuments: async (_applicationId) => {
           set(
             { isLoadingDocuments: true, documentsError: null },
             false,
@@ -661,7 +655,7 @@ export const useLoanStatusTrackingStore = create<LoanStatusTrackingStore>()(
           }
         },
 
-        refreshCommunications: async (applicationId) => {
+        refreshCommunications: async (_applicationId) => {
           set(
             { isLoadingCommunications: true, communicationsError: null },
             false,

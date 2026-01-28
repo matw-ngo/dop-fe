@@ -5,16 +5,9 @@
  */
 
 import { AuditEventType, AuditSeverity, auditLogger } from "./audit-logging";
-import {
-  ConflictType,
-  conflictResolutionManager,
-  ResolutionStrategy,
-} from "./conflict-resolution";
+import { conflictResolutionManager } from "./conflict-resolution";
 import { secureFileValidator } from "./file-validation";
-import {
-  integratedSecurityManager,
-  useIntegratedSecurity,
-} from "./integrated-security";
+import { integratedSecurityManager } from "./integrated-security";
 import { loanStatusRateLimiter } from "./status-rate-limiting";
 import { SecureWebSocketManager } from "./websocket-security";
 
@@ -114,7 +107,7 @@ export class SecurityTestSuite {
             success: false,
             reason: "Connection should fail without authentication",
           };
-        } catch (error) {
+        } catch (_error) {
           return {
             success: true,
             reason: "Connection properly rejected without authentication",
@@ -128,12 +121,12 @@ export class SecurityTestSuite {
     await this.runTest(
       "WebSocket Message Integrity",
       async () => {
-        const ws = new SecureWebSocketManager({
+        const _ws = new SecureWebSocketManager({
           enableMessageSigning: true,
         });
 
         // Test message signing
-        const testMessage = {
+        const _testMessage = {
           id: "test",
           type: "test",
           payload: { test: "data" },

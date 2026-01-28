@@ -67,7 +67,7 @@ const createMockFlowDetail = (overrides?: Record<string, unknown>) => ({
  */
 const createMockLeadResponse = (overrides?: Record<string, unknown>) => ({
   id: "330e8400-e29b-41d4-a716-446655440003",
-  token: "lead-token-" + Date.now(),
+  token: `lead-token-${Date.now()}`,
   ...overrides,
 });
 
@@ -75,8 +75,8 @@ const createMockLeadResponse = (overrides?: Record<string, unknown>) => ({
  * Generate a mock eKYC config
  */
 const createMockEkycConfig = (overrides?: Record<string, unknown>) => ({
-  access_token: "ekyc-access-token-" + Date.now(),
-  challenge_code: "challenge-" + Date.now(),
+  access_token: `ekyc-access-token-${Date.now()}`,
+  challenge_code: `challenge-${Date.now()}`,
   has_result_screen: true,
   enable_api_liveness_document: true,
   enable_api_liveness_face: true,
@@ -126,8 +126,6 @@ export const dopHandlers = [
           createErrorResponse("failed_precondition", "Flow is not active"),
           { status: 400 },
         );
-
-      case "success":
       default:
         return Response.json(createMockFlowDetail({ id: tenant as string }));
     }
@@ -166,8 +164,6 @@ export const dopHandlers = [
           createErrorResponse("internal_error", "Internal server error"),
           { status: 500 },
         );
-
-      case "success":
       default: {
         const body = await request.json();
         return Response.json(createMockLeadResponse(body), { status: 200 });
@@ -205,8 +201,6 @@ export const dopHandlers = [
             ),
             { status: 400 },
           );
-
-        case "success":
         default: {
           const body = await request.json();
           return Response.json({
@@ -253,8 +247,6 @@ export const dopHandlers = [
           createErrorResponse("resource_exhausted", "Too many OTP attempts"),
           { status: 400 },
         );
-
-      case "success":
       default: {
         const body = await request.json();
         return Response.json({
@@ -292,8 +284,6 @@ export const dopHandlers = [
           ),
           { status: 400 },
         );
-
-      case "success":
       default: {
         const body = await request.json();
         return Response.json({
@@ -331,8 +321,6 @@ export const dopHandlers = [
           ),
           { status: 400 },
         );
-
-      case "success":
       default:
         return Response.json(createMockEkycConfig());
     }
@@ -357,16 +345,14 @@ export const dopHandlers = [
           createErrorResponse("internal_error", "Error processing eKYC result"),
           { status: 500 },
         );
-
-      case "success":
       default: {
-        const body = await request.json();
+        const _body = await request.json();
         return Response.json({
           success: true,
           message: "eKYC result submitted successfully",
           data: {
             lead_id: id,
-            verification_id: "ver-" + Date.now(),
+            verification_id: `ver-${Date.now()}`,
             status: "processing",
           },
         });

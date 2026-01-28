@@ -1,5 +1,4 @@
 import type { Middleware } from "openapi-fetch";
-import { toast } from "sonner";
 import { securityUtils, useTokenStore } from "@/lib/auth/secure-tokens";
 import { shouldSkipAuth } from "../config";
 

@@ -9,7 +9,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 import { useFormWizardStore } from "../store/use-form-wizard-store";
 
 interface ReviewStepProps {

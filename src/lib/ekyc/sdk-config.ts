@@ -133,7 +133,7 @@ export class EkycConfigBuilder {
     },
     callbackFn?: (result: any) => void,
   ) {
-    const defaultCallback = (result: any) => {
+    const _defaultCallback = (result: any) => {
       console.log("[EKYC Default Callback] Kết quả:", result);
     };
 

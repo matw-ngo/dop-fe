@@ -344,7 +344,7 @@ describe("Domain-Specific Edge Cases", () => {
       );
 
       expect(results).toHaveLength(5);
-      results.forEach((result, i) => {
+      results.forEach((result, _i) => {
         expect(result?.status).toBe(200);
       });
     });

@@ -15,7 +15,7 @@ import { DynamicLoanForm } from "@/components/loan-application/DynamicLoanForm";
 // Mock Data - Flow configurations (same structure as API response)
 // ============================================================================
 
-const mockTenant = {
+const _mockTenant = {
   uuid: "test-tenant-001",
   name: "Test Tenant",
 };
@@ -132,7 +132,7 @@ const fullFlow = {
 };
 
 // Empty flow (no steps)
-const emptyFlow = {
+const _emptyFlow = {
   id: "flow-empty",
   name: "Empty Flow",
   description: "Flow with no steps",

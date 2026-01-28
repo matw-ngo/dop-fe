@@ -41,10 +41,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useSavingsCalculator } from "@/hooks/financial/use-savings-calculator";
 import { formatCurrency } from "@/lib/utils";
 import { useFinancialToolsStore } from "@/store/use-financial-tools-store";
-import type { ISaving, ISavingsParams, ISavingsResult } from "@/types/tools";
+import type { ISavingsParams, ISavingsResult } from "@/types/tools";
 import {
   CalculatorAsyncErrorHandler,
   CalculatorErrorBoundary,
@@ -90,9 +89,9 @@ const SavingsCalculatorInner: React.FC<SavingsCalculatorProps> = ({
   const itemsPerPage = 10;
 
   // Cache for API results
-  const [resultsCache, setResultsCache] = useState<Map<string, ISavingsResult>>(
-    new Map(),
-  );
+  const [resultsCache, _setResultsCache] = useState<
+    Map<string, ISavingsResult>
+  >(new Map());
 
   // Get savings store
   const {
@@ -148,7 +147,11 @@ const SavingsCalculatorInner: React.FC<SavingsCalculatorProps> = ({
         throw error;
       }
     },
-    [resultsCache, generateCacheKey],
+    [
+      resultsCache,
+      generateCacheKey, // Handle error with our error handler
+      handleError,
+    ],
   );
 
   // Calculate when filters change (with debouncing)
@@ -198,7 +201,7 @@ const SavingsCalculatorInner: React.FC<SavingsCalculatorProps> = ({
   // Reset page when filters change
   useEffect(() => {
     setCurrentPage(1);
-  }, [params]);
+  }, []);
 
   // Handle amount change
   const handleAmountChange = (value: number[]) => {
@@ -207,9 +210,9 @@ const SavingsCalculatorInner: React.FC<SavingsCalculatorProps> = ({
 
   // Handle amount input change
   const handleAmountInputChange = (value: string) => {
-    const numValue = parseInt(value.replace(/,/g, ""));
+    const numValue = parseInt(value.replace(/,/g, ""), 10);
     if (
-      !isNaN(numValue) &&
+      !Number.isNaN(numValue) &&
       numValue >= SAVINGS_DEFAULTS.MIN_AMOUNT &&
       numValue <= SAVINGS_DEFAULTS.MAX_AMOUNT
     ) {
@@ -354,7 +357,7 @@ const SavingsCalculatorInner: React.FC<SavingsCalculatorProps> = ({
                 </Label>
                 <Select
                   value={period.toString()}
-                  onValueChange={(value) => setPeriod(parseInt(value))}
+                  onValueChange={(value) => setPeriod(parseInt(value, 10))}
                 >
                   <SelectTrigger
                     id="period"

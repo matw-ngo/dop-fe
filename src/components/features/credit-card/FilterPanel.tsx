@@ -7,7 +7,6 @@ import {
   DollarSign,
   Filter,
   Gift,
-  MapPin,
   RotateCcw,
   Shield,
   Smartphone,
@@ -21,7 +20,7 @@ import type React from "react";
 import { useMemo, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Collapsible,
@@ -30,14 +29,9 @@ import {
 } from "@/components/ui/collapsible";
 import { Slider } from "@/components/ui/slider";
 import {
-  ANNUAL_FEE_RANGES,
   CARD_CATEGORIES,
   CARD_NETWORKS,
   CREDIT_LIMIT_TIERS,
-  DEFAULT_FILTERS,
-  EMPLOYMENT_TYPES,
-  INCOME_REQUIREMENT_RANGES,
-  PROVINCE_GROUPS,
   REWARDS_TYPES,
 } from "@/constants/credit-cards";
 import { cn } from "@/lib/utils";
@@ -163,6 +157,13 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
           [subField]: value[0],
         },
       });
+    } else {
+      onFiltersChange({
+        [field]: {
+          min: value[0],
+          max: value[1],
+        },
+      });
     }
   };
 
@@ -277,7 +278,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
                 onCheckedChange={(checked) =>
                   handleRangeChange(
                     "annualFeeRange",
-                    checked ? [0] : [0, 10000000],
+                    checked ? [0, 0] : [0, 10000000],
                     "max",
                   )
                 }

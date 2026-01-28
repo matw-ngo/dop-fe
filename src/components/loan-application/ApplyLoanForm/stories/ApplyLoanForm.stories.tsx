@@ -238,7 +238,7 @@ export const CompleteForm: StoryObj = {
         <PhoneVerificationModal
           open={showPhoneModal}
           onClose={() => setShowPhoneModal(false)}
-          onVerify={(phone) => {
+          onVerify={(_phone) => {
             setShowPhoneModal(false);
             setShowOtpModal(true);
           }}

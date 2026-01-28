@@ -1,17 +1,15 @@
 "use client";
 
-import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { useTenant } from "@/hooks/tenant/use-tenant";
-import { cn } from "@/lib/utils";
+import { useState } from "react";
 import {
-  PercentageIcon,
   BankIcon,
-  FlashIcon,
-  SearchMoneyIcon,
   CardsIcon,
   CarInsurIcon,
+  SearchMoneyIcon,
 } from "@/components/icons/home";
+import { useTenant } from "@/hooks/tenant/use-tenant";
+import { cn } from "@/lib/utils";
 
 interface ProductTabsProps {
   children: React.ReactNode[];

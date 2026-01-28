@@ -41,8 +41,8 @@ function validateNetToGrossParams(params: {
   // Validate net salary
   if (
     typeof params.net !== "number" ||
-    isNaN(params.net) ||
-    !isFinite(params.net)
+    Number.isNaN(params.net) ||
+    !Number.isFinite(params.net)
   ) {
     throw new Error("Invalid net salary: must be a finite number");
   }
@@ -64,8 +64,8 @@ function validateNetToGrossParams(params: {
   // Validate dependents
   if (
     typeof params.dependents !== "number" ||
-    isNaN(params.dependents) ||
-    !isFinite(params.dependents)
+    Number.isNaN(params.dependents) ||
+    !Number.isFinite(params.dependents)
   ) {
     throw new Error("Invalid dependents: must be a finite number");
   }
@@ -82,7 +82,7 @@ function validateNetToGrossParams(params: {
 /**
  * Gets an initial estimate for gross salary based on net salary
  */
-function getInitialGrossEstimate(
+function _getInitialGrossEstimate(
   net: number,
   dependents: number,
   region: number,
@@ -223,7 +223,7 @@ export function calculateNetToGross(
   };
 
   // Handle NaN net
-  if (typeof params.net === "number" && isNaN(params.net)) {
+  if (typeof params.net === "number" && Number.isNaN(params.net)) {
     throw new Error("Net salary must be a valid number");
   }
 

@@ -241,7 +241,7 @@ const LoanCalculator: React.FC = () => {
       }
 
       // Format results
-      const formattedResults = formatLoanResults(calculationResult);
+      const _formattedResults = formatLoanResults(calculationResult);
 
       // Check eligibility if income data is available
       let eligibility;
@@ -491,7 +491,7 @@ const LoanCalculator: React.FC = () => {
                       onChange={(e) =>
                         handleInputChange(
                           "termInMonths",
-                          parseInt(e.target.value) || 0,
+                          parseInt(e.target.value, 10) || 0,
                         )
                       }
                       min="6"
@@ -527,7 +527,7 @@ const LoanCalculator: React.FC = () => {
                           onChange={(e) =>
                             handleInputChange(
                               "promotionalPeriod",
-                              parseInt(e.target.value) || 0,
+                              parseInt(e.target.value, 10) || 0,
                             )
                           }
                           min="1"
@@ -912,7 +912,7 @@ const LoanCalculator: React.FC = () => {
 
         {/* Payment Schedule Tab */}
         <TabsContent value="schedule">
-          {results && results.schedule ? (
+          {results?.schedule ? (
             <Card>
               <CardHeader>
                 <CardTitle>Lịch trả nợ (12 tháng đầu)</CardTitle>

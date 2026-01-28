@@ -265,6 +265,7 @@ export const validateNationalId = (id: string): string | true => {
     ["0", "1"].includes(birthCode[0])
       ? `19${birthCode.substring(1, 3)}`
       : `20${birthCode.substring(1, 3)}`,
+    10,
   );
 
   if (birthYear < minYear || birthYear > maxYear) {

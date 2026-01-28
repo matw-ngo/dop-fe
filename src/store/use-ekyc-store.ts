@@ -12,14 +12,10 @@ import {
 import type {
   DocumentVerificationResponse,
   EkycSession,
-  EkycVerificationStatus,
   FaceComparisonResponse,
   FaceVerificationResponse,
 } from "@/lib/api/endpoints/ekyc";
-import {
-  VIETNAMESE_DOCUMENT_TYPES,
-  type VietnameseDocumentType,
-} from "@/lib/ekyc/document-types";
+import type { VietnameseDocumentType } from "@/lib/ekyc/document-types";
 import {
   type EkycCompareData,
   type EkycFullResult,
@@ -1150,7 +1146,7 @@ export const useEkycStore = create<EkycState>()(
 // Subscribe to changes and update progress automatically
 useEkycStore.subscribe(
   (state) => state.steps,
-  (steps) => {
+  (_steps) => {
     useEkycStore.getState().updateProgress();
   },
 );

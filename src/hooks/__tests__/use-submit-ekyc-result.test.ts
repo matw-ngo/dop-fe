@@ -338,7 +338,7 @@ describe("useSubmitEkycResult", () => {
         sessionId: "session-max",
         ekycData: mockEkycData as any,
       });
-    } catch (error) {
+    } catch (_error) {
       // Expected to fail after max retries
     }
 
@@ -719,7 +719,7 @@ describe("useSubmitEkycResult", () => {
         sessionId: "session-400",
         ekycData: mockEkycData as any,
       });
-    } catch (error) {
+    } catch (_error) {
       // Expected to fail
     }
 
@@ -798,7 +798,7 @@ describe("useSubmitEkycResult", () => {
     expect(result.current.isPending).toBe(true);
 
     // Resolve the promise
-    resolveSubmit!({ data: mockResponse, error: undefined });
+    resolveSubmit?.({ data: mockResponse, error: undefined });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.isPending).toBe(false);

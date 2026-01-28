@@ -90,7 +90,7 @@ describe("Theme Debounce", () => {
 
     // Track theme changes
     let themeChangeCount = 0;
-    const initialTheme = result.current.resolvedTheme;
+    const _initialTheme = result.current.resolvedTheme;
 
     // Call debounced toggle multiple times rapidly
     act(() => {

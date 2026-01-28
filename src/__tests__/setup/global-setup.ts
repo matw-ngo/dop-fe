@@ -22,7 +22,7 @@ export const server = setupServer(
       case "success":
         return Response.json({
           success: true,
-          sessionId: "test-session-" + Date.now(),
+          sessionId: `test-session-${Date.now()}`,
           status: "processing",
         });
 
@@ -56,7 +56,7 @@ export const server = setupServer(
       default:
         return Response.json({
           success: true,
-          sessionId: "test-session-" + Date.now(),
+          sessionId: `test-session-${Date.now()}`,
         });
     }
   }),

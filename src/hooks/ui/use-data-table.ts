@@ -1,5 +1,4 @@
 import {
-  Column,
   type ColumnDef,
   type ColumnFiltersState,
   type ExpandedState,
@@ -101,7 +100,7 @@ export function useDataTable<TData>({
         // We'll handle this in a useEffect to avoid circular dependency
         setTimeout(() => {
           const currentTable = table as any; // Type assertion to avoid circular dependency
-          if (currentTable && currentTable.getFilteredRowModel) {
+          if (currentTable?.getFilteredRowModel) {
             const selectedRows = currentTable
               .getFilteredRowModel()
               .rows.filter((row: any) => newSelection[row.id]);
@@ -110,7 +109,7 @@ export function useDataTable<TData>({
         }, 0);
       }
     },
-    [rowSelection, onSelectionChange],
+    [rowSelection, onSelectionChange, table],
   );
 
   // Handle row clicks
@@ -318,7 +317,7 @@ export function useDataTable<TData>({
   // Save state when it changes (with proper dependencies)
   useEffect(() => {
     saveTableState();
-  }, [sorting, columnFilters, columnVisibility, globalFilter, saveTableState]);
+  }, [saveTableState]);
 
   // Handle row selection changes properly
   useEffect(() => {

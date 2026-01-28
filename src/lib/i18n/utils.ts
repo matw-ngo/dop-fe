@@ -4,7 +4,7 @@
  * Helper functions for common translation operations
  */
 
-import type { Locale, Namespace, TranslationMessages } from "./dynamic-loader";
+import type { Namespace, TranslationMessages } from "./dynamic-loader";
 
 /**
  * Deep merge translation messages
@@ -216,7 +216,7 @@ export function validateTranslationCompleteness(
 } {
   const { ignoreKeys = [], strict = false } = options;
 
-  const primaryFlat = flattenTranslations(primary);
+  const _primaryFlat = flattenTranslations(primary);
   const fallbackFlat = flattenTranslations(fallback);
 
   const missingKeys = findMissingKeys(fallback, primary).filter(
@@ -249,7 +249,7 @@ export function validateTranslationCompleteness(
  */
 export function generateTranslationStats(
   messages: TranslationMessages,
-  namespace?: string,
+  _namespace?: string,
 ): {
   totalKeys: number;
   totalCharacters: number;
@@ -333,7 +333,7 @@ export function interpolate(
   // Handle conditional blocks {{#if condition}}...{{/if}}
   result = result.replace(
     /\{\{#if\s+([^}]+)\}\}([\s\S]*?)\{\{\/if\}\}/g,
-    (match, condition, content) => {
+    (_match, condition, content) => {
       const value = getNestedValue(values, condition.trim());
       return value ? content : "";
     },
@@ -342,7 +342,7 @@ export function interpolate(
   // Handle loops {{#each items}}...{{/each}}
   result = result.replace(
     /\{\{#each\s+([^}]+)\}\}([\s\S]*?)\{\{\/each\}\}/g,
-    (match, arrayKey, content) => {
+    (_match, arrayKey, content) => {
       const array = getNestedValue(values, arrayKey.trim());
       if (!Array.isArray(array)) return "";
 

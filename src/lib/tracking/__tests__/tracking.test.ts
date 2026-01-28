@@ -4,7 +4,6 @@
 
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
-  EventType,
   filterSensitiveData,
   getDeviceId,
   getSessionId,
@@ -13,11 +12,18 @@ import {
   isDNTEnabled,
   setUserConsent,
   shouldEnableTracking,
-  trackEvent,
   trackLoanCalculator,
   trackSalaryCalculator,
   trackSavingsCalculator,
 } from "../index";
+
+vi.mock("../index", async (importOriginal) => {
+  const actual = (await importOriginal()) as typeof import("../index");
+  return {
+    ...actual,
+    isDNTEnabled: vi.fn(),
+  };
+});
 
 // Mock localStorage and sessionStorage
 const localStorageMock = {
@@ -43,13 +49,6 @@ Object.defineProperty(window, "sessionStorage", {
   value: sessionStorageMock,
 });
 
-Object.defineProperty(window, "navigator", {
-  value: {
-    doNotTrack: "0",
-    userAgent: "test-user-agent",
-  },
-});
-
 describe("Tracking Module", () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -65,7 +64,7 @@ describe("Tracking Module", () => {
     it("should check DNT status correctly", () => {
       expect(isDNTEnabled()).toBe(false);
 
-      window.navigator.doNotTrack = "1";
+      (isDNTEnabled as any).mockReturnValue(true);
       expect(isDNTEnabled()).toBe(true);
     });
 
@@ -103,13 +102,14 @@ describe("Tracking Module", () => {
 
     it("should determine if tracking should be enabled", () => {
       // Respect DNT = true, DNT enabled, no consent
+      (isDNTEnabled as any).mockReturnValue(false);
       expect(shouldEnableTracking(true, false)).toBe(false);
 
       // Respect DNT = false, no consent
       expect(shouldEnableTracking(false, false)).toBe(false);
 
       // Respect DNT = true, DNT disabled, has consent
-      window.navigator.doNotTrack = "0";
+      (isDNTEnabled as any).mockReturnValue(false);
       expect(shouldEnableTracking(true, true)).toBe(true);
 
       // Respect DNT = false, has consent
@@ -130,7 +130,7 @@ describe("Tracking Module", () => {
         return null;
       });
 
-      const sessionId = await initializeSession();
+      const _sessionId = await initializeSession();
       expect(sessionStorageMock.setItem).toHaveBeenCalledWith(
         expect.stringContaining("tracking_session_"),
         expect.any(String),

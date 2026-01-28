@@ -10,14 +10,11 @@ import {
   formatPhoneNumber,
   getOTPSettings,
   getTelcoByPhoneNumber,
-  sanitizePhoneNumber,
-  VIETNAMESE_TELCOS,
 } from "@/lib/telcos/vietnamese-telcos";
 import {
   sanitizeApplicationData,
   sanitizeVietnamesePhone,
 } from "@/lib/utils/sanitization";
-import type { paths } from "../v1/dop";
 
 // Enhanced OTP request types with security
 export interface OTPRequestOptions {
@@ -534,7 +531,7 @@ export const otpApi = {
       };
 
       // Create mock API response that would come from server
-      const response = await dopClient.POST("/leads", {
+      const _response = await dopClient.POST("/leads", {
         body: sanitizeApplicationData(validationResult),
       });
 

@@ -4,7 +4,7 @@
  * Modal wrapper for eKYC verification process using Radix UI Dialog.
  */
 
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import type { EkycFieldConfig } from "@/components/form-generation/types";
 import {
   Dialog,
@@ -200,7 +200,7 @@ export function VerificationModal({
           )}
 
           {/* Success State */}
-          {result && result.success && (
+          {result?.success && (
             <div className="text-center py-8">
               <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100 mb-4">
                 <svg

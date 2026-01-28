@@ -9,8 +9,8 @@
  * @module utils
  */
 
-import type { TimeoutError } from "./types";
 import { ERROR_TYPES } from "./constants";
+import type { TimeoutError } from "./types";
 
 /**
  * Normalizes endpoint paths for environment variable lookup
@@ -183,7 +183,7 @@ export function isValidTimeout(
 ): boolean {
   return (
     typeof value === "number" &&
-    !isNaN(value) &&
+    !Number.isNaN(value) &&
     Number.isInteger(value) &&
     value >= min &&
     value <= max
@@ -208,7 +208,7 @@ export function isValidTimeout(
 export function isValidRetryCount(value: number): boolean {
   return (
     typeof value === "number" &&
-    !isNaN(value) &&
+    !Number.isNaN(value) &&
     Number.isInteger(value) &&
     value >= 0 &&
     value <= 10
@@ -240,7 +240,7 @@ export function calculateBackoffDelay(
   multiplier: number,
   maxDelay?: number,
 ): number {
-  const delay = initialDelay * Math.pow(multiplier, attempt);
+  const delay = initialDelay * multiplier ** attempt;
 
   if (maxDelay !== undefined) {
     return Math.min(delay, maxDelay);
@@ -318,7 +318,7 @@ export function parseEnvNumber(value: string | undefined): number | undefined {
 
   const parsed = parseInt(value, 10);
 
-  if (isNaN(parsed)) {
+  if (Number.isNaN(parsed)) {
     return undefined;
   }
 

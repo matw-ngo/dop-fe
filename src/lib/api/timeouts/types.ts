@@ -357,7 +357,7 @@ export interface TimeoutErrorHandlers {
 /**
  * React Query timeout options for queries
  */
-export interface TimeoutQueryOptions<TData, TError> {
+export interface TimeoutQueryOptions<_TData, _TError> {
   /**
    * Override timeout for this specific query (milliseconds)
    * Range: 1000 - 600000
@@ -378,7 +378,7 @@ export interface TimeoutQueryOptions<TData, TError> {
 /**
  * React Query timeout options for mutations
  */
-export interface TimeoutMutationOptions<TData, TError, TVariables> {
+export interface TimeoutMutationOptions<_TData, _TError, _TVariables> {
   /**
    * Override timeout for this specific mutation (milliseconds)
    * Range: 1000 - 600000

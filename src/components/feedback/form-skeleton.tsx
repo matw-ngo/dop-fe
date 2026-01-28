@@ -26,8 +26,6 @@ const renderField = (type: SkeletonFieldType, key: number) => {
           <Skeleton className="h-5 w-24" />
         </div>
       );
-    case "input":
-    case "select":
     default:
       return <Skeleton key={key} className="h-10 w-full" />;
   }

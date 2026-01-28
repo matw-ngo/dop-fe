@@ -1,14 +1,14 @@
 import createClient from "openapi-fetch";
-import type { paths as DopPaths } from "../v1/dop";
 import {
   createAuthMiddleware,
   createAuthResponseMiddleware,
 } from "../middleware/auth";
+import { createErrorMiddleware } from "../middleware/error";
 import {
   createTimeoutMiddleware,
   createTimeoutResponseMiddleware,
 } from "../middleware/timeout";
-import { createErrorMiddleware } from "../middleware/error";
+import type { paths as DopPaths } from "../v1/dop";
 
 /**
  * Get base URL for DOP service based on environment
@@ -26,7 +26,6 @@ const getBaseUrl = (): string => {
       return customUrl || "https://dop.datanest.vn/";
     case "staging":
       return customUrl || "https://dop-stg.datanest.vn/";
-    case "development":
     default:
       return customUrl || "http://localhost:3001/api";
   }

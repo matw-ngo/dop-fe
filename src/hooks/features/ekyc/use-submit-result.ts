@@ -6,7 +6,6 @@ import {
   logSubmitRetry,
   logSubmitStart,
   logSubmitSuccess,
-  logValidationError,
 } from "@/lib/ekyc/audit-logger";
 
 type VnptEkycRequestBody = components["schemas"]["VnptEkycRequestBody"];
@@ -14,7 +13,7 @@ type VnptEkycRequestBody = components["schemas"]["VnptEkycRequestBody"];
 /**
  * Maximum number of retry attempts for eKYC submission
  */
-const MAX_RETRY_ATTEMPTS = 3;
+const _MAX_RETRY_ATTEMPTS = 3;
 
 interface SubmitEkycParams {
   leadId: string;
@@ -98,7 +97,7 @@ export function useSubmitEkycResult() {
     onMutate: ({ leadId, sessionId }) => {
       logSubmitStart(leadId, sessionId || "unknown");
     },
-    onError: (error, { leadId, sessionId }, context) => {
+    onError: (_error, { leadId, sessionId }, context) => {
       const failureCount =
         (context as SubmitEkycContext | undefined)?.failureCount || 0;
       if (failureCount > 0) {

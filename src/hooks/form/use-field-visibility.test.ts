@@ -164,7 +164,7 @@ describe("useFieldVisibility", () => {
     const watchedValues = { hasCompany: "yes" };
     const fieldWithCondition = mockFields[2]; // company field
 
-    mockEvaluateCondition.mockImplementation((condition, values) => {
+    mockEvaluateCondition.mockImplementation((_condition, values) => {
       return values.hasCompany === "yes";
     });
 

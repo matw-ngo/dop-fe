@@ -1,11 +1,10 @@
 "use client";
 
-import React from "react";
 import { useTranslations } from "next-intl";
+import { Card, CardContent } from "@/components/ui/card";
 import { useTenant } from "@/hooks/tenant/use-tenant";
 import { ApplyLoanForm } from "./ApplyLoanForm";
-import { PercentageSvg, BankSvg, FlashSvg, SearchMoneySvg } from "./icons";
-import { Card, CardContent } from "@/components/ui/card";
+import { BankSvg, FlashSvg, PercentageSvg, SearchMoneySvg } from "./icons";
 
 export const DigitalLendingProduct = () => {
   const t = useTranslations("tenants.finzone.products.loan");

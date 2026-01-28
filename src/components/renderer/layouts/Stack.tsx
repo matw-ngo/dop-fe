@@ -3,7 +3,7 @@
 import React, { forwardRef } from "react";
 import { cn } from "@/components/renderer/component-variants/create-variant";
 import { useThemeUtils } from "@/components/renderer/theme/use-theme";
-import type { LayoutProps, ResponsiveValue } from "@/types/ui-theme";
+import type { ResponsiveValue } from "@/types/ui-theme";
 
 export interface StackProps extends React.HTMLAttributes<HTMLDivElement> {
   as?: React.ElementType;

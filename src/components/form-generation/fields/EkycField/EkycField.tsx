@@ -1,4 +1,3 @@
-import React from "react";
 import { useFormTheme } from "../../themes/ThemeProvider";
 import {
   type EkycFieldConfig,
@@ -6,14 +5,13 @@ import {
   ValidationRuleType,
 } from "../../types";
 import { cn } from "../../utils/helpers";
-import { useEkycField } from "./useEkycField";
-import { getEkycStyles } from "./styles";
-
 // Import sub-components
 import { VerificationButton } from "./components/VerificationButton";
 import { VerificationInline } from "./components/VerificationInline";
 import { VerificationModal } from "./components/VerificationModal";
 import { VerificationResult as ResultDisplay } from "./components/VerificationResult";
+import { getEkycStyles } from "./styles";
+import { useEkycField } from "./useEkycField";
 
 // TODO: Improve UI consistency and theme integration to match TextField/SelectField implementation
 export function EkycField(props: EkycFieldProps) {

@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 import { cleanup } from "@testing-library/react";
-import { afterAll, afterEach, beforeAll, vi } from "vitest";
+import { afterEach, vi } from "vitest";
 
 // Mock ResizeObserver - must be on global object for Node.js environment
 const mockResizeObserver = vi.fn().mockImplementation(() => ({
@@ -66,9 +66,9 @@ vi.mock("next/image", () => {
 vi.mock("next-intl", () => {
   const createMockT = () => {
     const mockFn = (key: string) => key;
-    mockFn.rich = (key: string, values?: Record<string, unknown>) => key;
+    mockFn.rich = (key: string, _values?: Record<string, unknown>) => key;
     mockFn.raw = (key: string) => key;
-    mockFn.n = (key: string, count: number) => key;
+    mockFn.n = (key: string, _count: number) => key;
     return mockFn;
   };
   return {

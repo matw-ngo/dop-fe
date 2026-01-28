@@ -311,7 +311,7 @@ describe("useConsentLogs", () => {
     expect(result.current.isLoading).toBe(true);
 
     // Resolve promise
-    resolveFetch!({ data: mockResponse, error: undefined });
+    resolveFetch?.({ data: mockResponse, error: undefined });
 
     await waitFor(() => expect(result.current.isLoading).toBe(false));
 

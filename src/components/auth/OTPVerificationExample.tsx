@@ -41,7 +41,7 @@ export const OTPVerificationExample: React.FC = () => {
   // Individual component states
   const [phoneNumber, setPhoneNumber] = useState("");
   const [otpCode, setOtpCode] = useState("");
-  const [selectedTelco, setSelectedTelco] = useState<string>("auto");
+  const [_selectedTelco, _setSelectedTelco] = useState<string>("auto");
 
   // Hooks
   const otpVerification = useOTPVerification({
@@ -61,7 +61,7 @@ export const OTPVerificationExample: React.FC = () => {
   });
 
   // Handle phone submission for individual components
-  const handlePhoneSubmit = async (phone: string, metadata?: any) => {
+  const handlePhoneSubmit = async (phone: string, _metadata?: any) => {
     try {
       const requestId = await otpVerification.requestOTP(phone);
       if (requestId) {

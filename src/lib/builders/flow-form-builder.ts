@@ -2,11 +2,7 @@ import type {
   DynamicFormConfig,
   FormField,
 } from "@/components/form-generation";
-import {
-  ConditionOperator,
-  FieldType,
-  ValidationRuleType,
-} from "@/components/form-generation";
+import { FieldType, ValidationRuleType } from "@/components/form-generation";
 import type { MappedFlow, MappedStep } from "@/mappers/flowMapper";
 
 /**

@@ -5,38 +5,12 @@
  * affordability analysis, and ROI calculations for the Vietnamese market.
  */
 
-import {
-  AlertCircle,
-  ArrowRight,
-  BarChart3,
-  Briefcase,
-  Calculator,
-  Car,
-  CheckCircle,
-  CreditCard,
-  DollarSign,
-  Heart,
-  Home,
-  Info,
-  PiggyBank,
-  Scale,
-  Shield,
-  Star,
-  Target,
-  TrendingUp,
-} from "lucide-react";
+import { AlertCircle, BarChart3, Heart, Scale, Target } from "lucide-react";
 import type React from "react";
 import { useCallback, useEffect, useState } from "react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -50,14 +24,6 @@ import {
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { Slider } from "@/components/ui/slider";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 // Import calculation functions
 import {
@@ -65,19 +31,8 @@ import {
   calculateFinancialHealthScore,
   calculateLoanDetails,
 } from "@/lib/financial/calculations";
-import {
-  assessLoanEligibility,
-  compareLoanOptions,
-} from "@/lib/financial/loan-calculations";
-import {
-  getBestLoanRates,
-  getBestSavingsRates,
-} from "@/lib/financial-data/bank-rates";
-import { getMarketRiskAssessment } from "@/lib/financial-data/market-indicators";
-import {
-  VIETNAMESE_LOAN_TYPES,
-  type VietnameseBank,
-} from "@/lib/financial-data/vietnamese-financial-data";
+import { compareLoanOptions } from "@/lib/financial/loan-calculations";
+import type { VietnameseBank } from "@/lib/financial-data/vietnamese-financial-data";
 
 // Types
 interface LoanComparisonData {
@@ -126,7 +81,7 @@ interface ROIData {
 
 const FinancialComparison: React.FC = () => {
   const [activeTab, setActiveTab] = useState("loan-comparison");
-  const [loading, setLoading] = useState(false);
+  const [_loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<string[]>([]);
 
   // Loan comparison state
@@ -184,8 +139,8 @@ const FinancialComparison: React.FC = () => {
   const [roiResult, setRoiResult] = useState<any>(null);
 
   // Bank data
-  const [banks, setBanks] = useState<VietnameseBank[]>([]);
-  const [bestLoanRates, setBestLoanRates] = useState<any[]>([]);
+  const [_banks, setBanks] = useState<VietnameseBank[]>([]);
+  const [_bestLoanRates, _setBestLoanRates] = useState<any[]>([]);
 
   // Load bank data
   useEffect(() => {
@@ -380,10 +335,10 @@ const FinancialComparison: React.FC = () => {
     }
   }, [
     activeTab,
-    loanComparisonData,
-    financialHealthData,
-    affordabilityData,
-    roiData,
+    calculateAffordability,
+    calculateFinancialHealth,
+    calculateLoanComparison,
+    calculateROI,
   ]);
 
   return (
@@ -484,7 +439,7 @@ const FinancialComparison: React.FC = () => {
                         ...prev,
                         loan1: {
                           ...prev.loan1,
-                          termInMonths: parseInt(e.target.value) || 0,
+                          termInMonths: parseInt(e.target.value, 10) || 0,
                         },
                       }));
                     }}
@@ -568,7 +523,7 @@ const FinancialComparison: React.FC = () => {
                         ...prev,
                         loan2: {
                           ...prev.loan2,
-                          termInMonths: parseInt(e.target.value) || 0,
+                          termInMonths: parseInt(e.target.value, 10) || 0,
                         },
                       }));
                     }}
@@ -817,7 +772,7 @@ const FinancialComparison: React.FC = () => {
                     onChange={(e) => {
                       setFinancialHealthData((prev) => ({
                         ...prev,
-                        creditScore: parseInt(e.target.value) || 0,
+                        creditScore: parseInt(e.target.value, 10) || 0,
                       }));
                     }}
                     min="300"
@@ -1089,7 +1044,7 @@ const FinancialComparison: React.FC = () => {
                     onChange={(e) => {
                       setAffordabilityData((prev) => ({
                         ...prev,
-                        termInMonths: parseInt(e.target.value) || 0,
+                        termInMonths: parseInt(e.target.value, 10) || 0,
                       }));
                     }}
                   />
@@ -1232,7 +1187,7 @@ const FinancialComparison: React.FC = () => {
                     onChange={(e) => {
                       setRoiData((prev) => ({
                         ...prev,
-                        investmentPeriod: parseInt(e.target.value) || 0,
+                        investmentPeriod: parseInt(e.target.value, 10) || 0,
                       }));
                     }}
                   />

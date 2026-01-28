@@ -5,7 +5,6 @@
 
 import { Filter as FilterIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
-import React from "react";
 import CreditCardGrid from "@/components/features/credit-card/CreditCardGrid";
 import Pagination from "@/components/features/credit-card/Pagination";
 import { Button } from "@/components/ui/button";
@@ -64,7 +63,7 @@ export function CreditCardsPageResults({
           <span className="text-sm text-muted-foreground">{t("show")}:</span>
           <select
             value={itemsPerPage}
-            onChange={(e) => onItemsPerPageChange(parseInt(e.target.value))}
+            onChange={(e) => onItemsPerPageChange(parseInt(e.target.value, 10))}
             className="h-9 w-20 rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
           >
             <option value={12}>12</option>

@@ -6,6 +6,7 @@
 
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useCallback, useMemo } from "react";
 import { FieldErrorBoundary } from "../components/FieldErrorBoundary";
 import { FieldWrapper } from "../components/FieldWrapper";
@@ -31,7 +32,6 @@ import type { FieldComponentProps, FormField } from "../types";
 import { FieldType } from "../types";
 import { cn } from "../utils/helpers";
 import { ValidationEngine } from "../validation/ValidationEngine";
-import { useTranslations } from "next-intl";
 
 // Register built-in components
 const registry = ComponentRegistry.getInstance();
@@ -354,7 +354,7 @@ function useValidationErrorTranslation() {
         try {
           const params = JSON.parse(paramsStr);
           return t(key, params);
-        } catch (e) {
+        } catch (_e) {
           return error;
         }
       }

@@ -18,7 +18,6 @@ import {
 import { useTranslations } from "next-intl";
 import type React from "react";
 import { useEffect, useMemo, useState } from "react";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -37,15 +36,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { calculateGrossToNet } from "@/lib/calculators/salary-gross-to-net";
 import { ALLOWANCES, REGIONAL_MINIMUM_WAGES } from "@/lib/constants/tools";
 import { formatPercentage } from "@/lib/financial-data/market-indicators";
@@ -249,7 +239,7 @@ const GrossToNetCalculatorInner: React.FC<GrossToNetCalculatorProps> = ({
                     value={formatCurrency(gross)}
                     onChange={(e) => {
                       const value =
-                        parseInt(e.target.value.replace(/\D/g, "")) || 0;
+                        parseInt(e.target.value.replace(/\D/g, ""), 10) || 0;
                       setGross(Math.max(0, value));
                     }}
                     className="text-lg font-semibold border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 focus:border-purple-500 dark:focus:border-purple-500 focus:ring-4 focus:ring-purple-100 dark:focus:ring-purple-900/30 rounded-xl h-12 transition-all duration-200 pr-16"
@@ -283,7 +273,7 @@ const GrossToNetCalculatorInner: React.FC<GrossToNetCalculatorProps> = ({
                 </Label>
                 <Select
                   value={region.toString()}
-                  onValueChange={(value) => setRegion(parseInt(value))}
+                  onValueChange={(value) => setRegion(parseInt(value, 10))}
                 >
                   <SelectTrigger className="h-12 border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 focus:border-purple-500 dark:focus:border-purple-500 focus:ring-4 focus:ring-purple-100 dark:focus:ring-purple-900/30 rounded-xl transition-all duration-200">
                     <SelectValue placeholder={t("form.selectRegion")} />
@@ -325,7 +315,7 @@ const GrossToNetCalculatorInner: React.FC<GrossToNetCalculatorProps> = ({
                     type="number"
                     value={dependents}
                     onChange={(e) => {
-                      const value = parseInt(e.target.value) || 0;
+                      const value = parseInt(e.target.value, 10) || 0;
                       setDependents(Math.max(0, Math.min(10, value)));
                     }}
                     min={0}

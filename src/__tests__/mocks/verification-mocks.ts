@@ -270,7 +270,7 @@ export const mockVerificationScenarios = {
     setup: (delay = 1000) => ({
       initialResponse: () =>
         Promise.resolve({
-          id: "session_" + Date.now(),
+          id: `session_${Date.now()}`,
           status: VerificationStatus.PROCESSING,
           provider: "vnpt",
           startedAt: new Date().toISOString(),
@@ -286,7 +286,7 @@ export const mockVerificationScenarios = {
       finalResult: () =>
         Promise.resolve({
           success: true,
-          sessionId: "session_" + Date.now(),
+          sessionId: `session_${Date.now()}`,
           provider: {
             name: "vnpt",
             version: "3.2.0",
@@ -367,7 +367,7 @@ export const mockVerificationScenarios = {
     setup: () => ({
       initialResponse: () =>
         Promise.resolve({
-          id: "session_" + Date.now(),
+          id: `session_${Date.now()}`,
           status: VerificationStatus.PROCESSING,
           provider: "vnpt",
           startedAt: new Date().toISOString(),
@@ -376,7 +376,7 @@ export const mockVerificationScenarios = {
       finalResult: () =>
         Promise.resolve({
           success: true,
-          sessionId: "session_" + Date.now(),
+          sessionId: `session_${Date.now()}`,
           provider: { name: "vnpt", version: "3.2.0" },
           personalData: {
             fullName: "LE VAN C",
@@ -439,7 +439,7 @@ export const mockVerificationScenarios = {
     setup: () => ({
       initialResponse: () =>
         Promise.resolve({
-          id: "session_" + Date.now(),
+          id: `session_${Date.now()}`,
           status: VerificationStatus.PROCESSING,
           provider: "vnpt",
           startedAt: new Date().toISOString(),
@@ -448,7 +448,7 @@ export const mockVerificationScenarios = {
       finalResult: () =>
         Promise.resolve({
           success: false,
-          sessionId: "session_" + Date.now(),
+          sessionId: `session_${Date.now()}`,
           provider: { name: "vnpt", version: "3.2.0" },
           personalData: {},
           verificationData: {
@@ -537,7 +537,7 @@ export class MockVNPTProvider {
     });
   }
 
-  async initialize(config: any): Promise<void> {
+  async initialize(_config: any): Promise<void> {
     // Simulate initialization delay
     await new Promise((resolve) => setTimeout(resolve, 100));
   }
@@ -568,7 +568,7 @@ export class MockVNPTProvider {
     }
   }
 
-  async getStatus(sessionId: string): Promise<VerificationStatus> {
+  async getStatus(_sessionId: string): Promise<VerificationStatus> {
     if (!this.currentScenario) {
       throw new Error("No active verification session");
     }
@@ -583,7 +583,7 @@ export class MockVNPTProvider {
     return VerificationStatus.SUCCESS;
   }
 
-  async getResult(sessionId: string): Promise<VerificationResult> {
+  async getResult(_sessionId: string): Promise<VerificationResult> {
     if (!this.currentScenario) {
       throw new Error("No active verification session");
     }
@@ -604,7 +604,7 @@ export class MockVNPTProvider {
     }
   }
 
-  async cancel(sessionId: string): Promise<void> {
+  async cancel(_sessionId: string): Promise<void> {
     this.progressSimulator.stop();
     this.currentScenario = null;
   }
@@ -721,7 +721,7 @@ export class MockVerificationManager {
 
 // Utility functions for test setup
 export const verificationTestUtils = {
-  createMockProvider: (scenario?: string) => {
+  createMockProvider: (_scenario?: string) => {
     const provider = new MockVNPTProvider();
     return provider;
   },

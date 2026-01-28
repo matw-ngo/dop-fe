@@ -1,5 +1,3 @@
-import React from "react";
-
 export const PercentageSvg = ({ color = "#017848" }: { color?: string }) => {
   return (
     <svg

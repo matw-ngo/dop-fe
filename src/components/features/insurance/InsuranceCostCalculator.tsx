@@ -128,7 +128,7 @@ export default function InsuranceCostCalculator() {
 
     // Add seat premium for cars with more than 5 seats
     if (vehicleType === "car" && seats) {
-      const seatCount = parseInt(seats);
+      const seatCount = parseInt(seats, 10);
       if (seatCount > 5) {
         premium += (seatCount - 5) * rates.seatRate;
       }
@@ -155,7 +155,7 @@ export default function InsuranceCostCalculator() {
   const voluntaryCalculation = useMemo(() => {
     if (insuranceType !== "voluntary" || !vehicleValue) return null;
 
-    const value = parseInt(vehicleValue);
+    const value = parseInt(vehicleValue, 10);
     const rate = 0.015; // 1.5% of vehicle value
     let premium = value * rate;
 
@@ -202,7 +202,7 @@ Báo giá bảo hiểm ${insuranceType === "compulsory" ? "bắt buộc" : "tự
 Loại xe: ${vehicleTypes.find((v) => v.value === vehicleType)?.label}
 Số chỗ ngồi: ${seats || "N/A"}
 Mục đích sử dụng: ${vehicleUsages.find((u) => u.value === usage)?.label}
-${vehicleValue ? `Giá trị xe: ${parseInt(vehicleValue).toLocaleString()} VNĐ` : ""}
+${vehicleValue ? `Giá trị xe: ${parseInt(vehicleValue, 10).toLocaleString()} VNĐ` : ""}
 
 Phí bảo hiểm: ${data?.premium.toLocaleString()} VNĐ
 Thuế VAT (10%): ${data?.tax.toLocaleString()} VNĐ

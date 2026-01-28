@@ -51,7 +51,7 @@ function validateSalary(salary: any): number {
   if (
     salary === null ||
     salary === undefined ||
-    isNaN(salary) ||
+    Number.isNaN(salary) ||
     typeof salary !== "number"
   ) {
     return 0;

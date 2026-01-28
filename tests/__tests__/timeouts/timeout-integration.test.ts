@@ -8,16 +8,16 @@
  * @module timeout-integration-tests
  */
 
-import { describe, it, expect, beforeEach, afterEach, vi } from "@jest/globals";
-import { useTimeoutStore } from "@/lib/api/timeouts/timeout-store";
-import { parseTimeoutConfig } from "@/lib/api/timeouts/config-parser";
-import { resolveTimeout } from "@/lib/api/timeouts/resolver";
+import { afterEach, beforeEach, describe, expect, it, vi } from "@jest/globals";
 import { createTimeoutController } from "@/lib/api/timeouts/abort-timeout";
-import {
-  normalizeEndpointPath,
-  extractServiceName,
-} from "@/lib/api/timeouts/utils";
+import { parseTimeoutConfig } from "@/lib/api/timeouts/config-parser";
 import { getDefaultEndpointConfig } from "@/lib/api/timeouts/endpoint-config";
+import { resolveTimeout } from "@/lib/api/timeouts/resolver";
+import { useTimeoutStore } from "@/lib/api/timeouts/timeout-store";
+import {
+  extractServiceName,
+  normalizeEndpointPath,
+} from "@/lib/api/timeouts/utils";
 
 describe("Timeout Integration Tests", () => {
   beforeEach(() => {

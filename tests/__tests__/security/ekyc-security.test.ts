@@ -10,17 +10,15 @@
  * @jest-environment jsdom
  */
 
-import { describe, it, expect, beforeEach, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import type { AuditEventType, AuditLogEntry } from "@/lib/ekyc/audit-logger";
 import {
   createAuditLogEntry,
   logAuditEvent,
   logConfigFetchStart,
-  logConfigFetchSuccess,
-  logSubmitStart,
-  logSubmitSuccess,
   logSessionInit,
+  logSubmitStart,
 } from "@/lib/ekyc/audit-logger";
-import type { AuditLogEntry, AuditEventType } from "@/lib/ekyc/audit-logger";
 
 describe("eKYC Security Tests", () => {
   beforeEach(() => {

@@ -12,9 +12,9 @@
  *   └── common/
  */
 
-import fs from "fs";
+import fs from "node:fs";
+import path from "node:path";
 import { getRequestConfig } from "next-intl/server";
-import path from "path";
 import { cache } from "react";
 
 const MESSAGES_DIR = path.join(process.cwd(), "messages");
@@ -329,7 +329,7 @@ const loadAllTranslations = cache(async (locale: string) => {
     // Log what we loaded for debugging
     if (process.env.NODE_ENV === "development") {
       // Prepare feature details with sample keys
-      const featureDetails = Object.entries(features).map(
+      const _featureDetails = Object.entries(features).map(
         ([featureName, files]) => {
           const typedFiles = files as Record<string, any>;
           const fileNames = Object.keys(typedFiles);
@@ -353,7 +353,7 @@ const loadAllTranslations = cache(async (locale: string) => {
       );
 
       // Prepare page details with sample keys
-      const pageDetails = Object.entries(pages).map(([pageName, content]) => {
+      const _pageDetails = Object.entries(pages).map(([pageName, content]) => {
         const keys = Object.keys(content || {});
         return {
           name: pageName,
@@ -362,7 +362,7 @@ const loadAllTranslations = cache(async (locale: string) => {
       });
 
       // Prepare common details with sample keys
-      const commonDetails = Object.entries(common).map(
+      const _commonDetails = Object.entries(common).map(
         ([commonName, content]) => {
           const keys = Object.keys(content || {});
           return {
@@ -374,7 +374,7 @@ const loadAllTranslations = cache(async (locale: string) => {
       );
 
       // Prepare components details with sample keys
-      const componentsDetails = Object.entries(components).map(
+      const _componentsDetails = Object.entries(components).map(
         ([componentName, content]) => {
           const keys = Object.keys(content || {});
           return {
@@ -402,7 +402,7 @@ const loadAllTranslations = cache(async (locale: string) => {
       // });
 
       // Log the actual merged structure for debugging
-      const loanApp = merged.features?.["loan-application"];
+      const _loanApp = merged.features?.["loan-application"];
       // console.log(`🔍 Merged structure for ${locale}:`, {
       //   topLevelKeys: Object.keys(merged),
       //   featuresKeys: Object.keys(merged.features || {}),

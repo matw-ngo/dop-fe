@@ -8,9 +8,8 @@
  * @version 1.0.0
  */
 
-import fs from "fs";
-import path from "path";
-import { compareScreenshots, createDiff } from "pixelmatch";
+import fs from "node:fs";
+import path from "node:path";
 import { PNG } from "pngjs";
 
 /**
@@ -178,8 +177,8 @@ function compareImages(
   img1: Uint8Array,
   img2: Uint8Array,
   diff: Uint8Array,
-  width: number,
-  height: number,
+  _width: number,
+  _height: number,
   options: { threshold: number; includeAA: boolean },
 ): number {
   let diffCount = 0;
@@ -288,7 +287,7 @@ export function generateVisualTestReport(
     if (!resultsByTheme.has(r.theme)) {
       resultsByTheme.set(r.theme, []);
     }
-    resultsByTheme.get(r.theme)!.push(r);
+    resultsByTheme.get(r.theme)?.push(r);
   });
 
   resultsByTheme.forEach((themeResults, theme) => {

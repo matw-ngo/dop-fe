@@ -8,14 +8,13 @@
  * @module config-validator
  */
 
-import type { TimeoutConfig, ValidationResult, ValidationError } from "./types";
 import {
+  DEFAULT_CONFIG,
+  ENV_PREFIXES,
   VALIDATION_ERRORS,
   VALIDATION_RANGES,
-  ENV_PREFIXES,
-  DEFAULT_CONFIG,
 } from "./constants";
-import { getTimeoutEnvVars } from "./config-parser";
+import type { ValidationError, ValidationResult } from "./types";
 
 /**
  * Validates timeout configuration and returns detailed results
@@ -80,7 +79,7 @@ function validateGlobalTimeout(errors: ValidationError[]): void {
 
   const parsed = parseInt(value, 10);
 
-  if (isNaN(parsed)) {
+  if (Number.isNaN(parsed)) {
     errors.push({
       variable: envVar,
       message: VALIDATION_ERRORS.INVALID_TIMEOUT(envVar, value),
@@ -120,7 +119,7 @@ function validateServiceTimeouts(errors: ValidationError[]): void {
 
     const parsed = parseInt(value, 10);
 
-    if (isNaN(parsed)) {
+    if (Number.isNaN(parsed)) {
       errors.push({
         variable: key,
         message: VALIDATION_ERRORS.INVALID_TIMEOUT(key, value),
@@ -164,7 +163,7 @@ function validateEndpointTimeouts(errors: ValidationError[]): void {
 
     const parsed = parseInt(value, 10);
 
-    if (isNaN(parsed)) {
+    if (Number.isNaN(parsed)) {
       errors.push({
         variable: key,
         message: VALIDATION_ERRORS.INVALID_TIMEOUT(key, value),
@@ -201,7 +200,7 @@ function validateRetryConfig(errors: ValidationError[]): void {
   if (maxRetriesValue !== undefined && maxRetriesValue !== "") {
     const parsed = parseInt(maxRetriesValue, 10);
 
-    if (isNaN(parsed)) {
+    if (Number.isNaN(parsed)) {
       errors.push({
         variable: maxRetriesVar,
         message: VALIDATION_ERRORS.INVALID_RETRIES(
@@ -234,7 +233,7 @@ function validateRetryConfig(errors: ValidationError[]): void {
   if (retryDelayValue !== undefined && retryDelayValue !== "") {
     const parsed = parseInt(retryDelayValue, 10);
 
-    if (isNaN(parsed)) {
+    if (Number.isNaN(parsed)) {
       errors.push({
         variable: retryDelayVar,
         message: VALIDATION_ERRORS.INVALID_RETRY_DELAY(
@@ -375,7 +374,7 @@ export function getValidationErrors(): ValidationError[] {
 export function isTimeoutValueValid(value: number): boolean {
   return (
     typeof value === "number" &&
-    !isNaN(value) &&
+    !Number.isNaN(value) &&
     Number.isInteger(value) &&
     value >= VALIDATION_RANGES.TIMEOUT_MIN &&
     value <= VALIDATION_RANGES.TIMEOUT_MAX
@@ -398,7 +397,7 @@ export function isTimeoutValueValid(value: number): boolean {
 export function isRetryCountValid(value: number): boolean {
   return (
     typeof value === "number" &&
-    !isNaN(value) &&
+    !Number.isNaN(value) &&
     Number.isInteger(value) &&
     value >= VALIDATION_RANGES.RETRY_MIN &&
     value <= VALIDATION_RANGES.RETRY_MAX
@@ -421,7 +420,7 @@ export function isRetryCountValid(value: number): boolean {
 export function isRetryDelayValid(value: number): boolean {
   return (
     typeof value === "number" &&
-    !isNaN(value) &&
+    !Number.isNaN(value) &&
     Number.isInteger(value) &&
     value >= VALIDATION_RANGES.RETRY_DELAY_MIN &&
     value <= VALIDATION_RANGES.RETRY_DELAY_MAX

@@ -13,7 +13,6 @@
  */
 
 import { render, screen } from "@testing-library/react";
-import React from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { defaultTheme } from "@/components/form-generation/themes/default";
 import type { TenantConfig } from "@/configs/tenants/types";
@@ -37,7 +36,6 @@ vi.mock("@/hooks/tenant/use-tenant");
 vi.mock("@/hooks/i18n/use-loan-purposes");
 vi.mock("@/hooks/features/lead/use-create-lead");
 
-import { toast } from "sonner";
 // Now import the component after mocking
 import { DynamicLoanForm } from "@/components/loan-application/DynamicLoanForm";
 import * as useCreateLeadModule from "@/hooks/features/lead/use-create-lead";

@@ -10,6 +10,7 @@ import { Logo } from "@/components/icons/home";
 import { useTenant } from "@/hooks/tenant/use-tenant";
 import { useLocalizedPath } from "@/lib/client-utils";
 import { cn } from "@/lib/utils";
+import { NavbarConfig } from "@/configs/navbar-config";
 
 /**
  * Header Component (NavBar)
@@ -24,7 +25,11 @@ interface NavItem {
   children?: { label: string; href: string; external?: boolean }[];
 }
 
-export function Header() {
+interface HeaderProps {
+  configOverride?: NavbarConfig;
+}
+
+export function Header({ configOverride }: HeaderProps) {
   const t = useTranslations("components.layout.header.nav");
   const tenant = useTenant();
   const pathname = usePathname();
@@ -43,7 +48,7 @@ export function Header() {
   useEffect(() => {
     setIsMobileMenuOpen(false);
     setOpenDropdown(null);
-  }, [pathname]);
+  }, []);
 
   const navItems: NavItem[] = [
     {

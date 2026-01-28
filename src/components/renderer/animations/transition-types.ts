@@ -1,4 +1,4 @@
-import type { AnimationVariant, ThemeAnimations } from "../types/ui-theme";
+import type { ThemeAnimations } from "../types/ui-theme";
 
 // Animation directions
 export type AnimationDirection = "up" | "down" | "left" | "right" | "center";

@@ -25,6 +25,7 @@ export enum EventType {
   TOOL_SALARY_INPUT_DEPENDENTS = "tool_salary_input_dependents",
   TOOL_SALARY_SELECT_REGION = "tool_salary_select_region",
   TOOL_SALARY_CALCULATE = "tool_salary_calculate",
+  TOOL_SALARY_FORM_SUBMIT = "tool_salary_form_submit",
 
   // Loan application events
   LENDING_PAGE_VIEW = "lending_page_view",

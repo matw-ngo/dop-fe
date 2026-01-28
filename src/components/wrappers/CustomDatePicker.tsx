@@ -63,7 +63,7 @@ export const CustomDatePicker = React.forwardRef<
       // Try to parse string as date
       try {
         const parsed = new Date(value as any);
-        return isNaN(parsed.getTime()) ? undefined : parsed;
+        return Number.isNaN(parsed.getTime()) ? undefined : parsed;
       } catch {
         return undefined;
       }

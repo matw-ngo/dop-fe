@@ -4,23 +4,11 @@
  * Comprehensive security management with Vietnamese compliance
  */
 
-import { securityUtils, useTokenStore } from "@/lib/auth/secure-tokens";
-import {
-  AuditEventType,
-  AuditSeverity,
-  auditLogger,
-  useAuditLogging,
-} from "./audit-logging";
-import {
-  conflictResolutionManager,
-  ResolutionStrategy,
-  useConflictResolution,
-} from "./conflict-resolution";
+import { useTokenStore } from "@/lib/auth/secure-tokens";
+import { AuditEventType, AuditSeverity, auditLogger } from "./audit-logging";
+import { conflictResolutionManager } from "./conflict-resolution";
 import { secureFileValidator } from "./file-validation";
-import {
-  loanStatusRateLimiter,
-  useLoanStatusRateLimiting,
-} from "./status-rate-limiting";
+import { loanStatusRateLimiter } from "./status-rate-limiting";
 import {
   createSecureLoanStatusWebSocket,
   type SecureWebSocketManager,
@@ -132,9 +120,9 @@ export class IntegratedSecurityManager {
 
     const context: SecurityContext = {
       sessionId: this.generateSessionId(),
-      userId: userData["userId"] || userId,
-      permissions: userData["permissions"] || [],
-      securityLevel: this.determineSecurityLevel(userData["permissions"]),
+      userId: userData.userId || userId,
+      permissions: userData.permissions || [],
+      securityLevel: this.determineSecurityLevel(userData.permissions),
       ipAddress: await this.getClientIP(),
       userAgent: this.getUserAgent(),
       vietnameseCompliance: {
@@ -398,7 +386,7 @@ export class IntegratedSecurityManager {
     context: SecurityContext,
     applicationId: string,
     file: File,
-    documentType?: string,
+    _documentType?: string,
   ): Promise<SecurityResult> {
     const startTime = Date.now();
     const violations: string[] = [];
@@ -534,7 +522,7 @@ export class IntegratedSecurityManager {
    * Generate comprehensive security report
    */
   async generateSecurityReport(
-    context: SecurityContext,
+    _context: SecurityContext,
     timeRange: { start: Date; end: Date },
   ): Promise<{
     auditReport: any;

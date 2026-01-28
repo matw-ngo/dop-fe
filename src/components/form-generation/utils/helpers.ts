@@ -6,7 +6,7 @@
 
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import type { ConditionOperator, FieldCondition } from "../types";
+import type { FieldCondition } from "../types";
 
 // ============================================================================
 // CSS Utilities
@@ -53,7 +53,7 @@ export function deepClone<T>(obj: T): T {
     return new Date(obj.getTime()) as any;
   }
 
-  if (obj instanceof Array) {
+  if (Array.isArray(obj)) {
     return obj.map((item) => deepClone(item)) as any;
   }
 
@@ -153,12 +153,12 @@ export function isEmpty(value: any): boolean {
  */
 export function isValidDate(value: any): boolean {
   if (value instanceof Date) {
-    return !isNaN(value.getTime());
+    return !Number.isNaN(value.getTime());
   }
 
   if (typeof value === "string" || typeof value === "number") {
     const date = new Date(value);
-    return !isNaN(date.getTime());
+    return !Number.isNaN(date.getTime());
   }
 
   return false;
@@ -168,7 +168,7 @@ export function isValidDate(value: any): boolean {
  * Check if value is a number
  */
 export function isNumber(value: any): boolean {
-  return typeof value === "number" && !isNaN(value);
+  return typeof value === "number" && !Number.isNaN(value);
 }
 
 // ============================================================================
@@ -264,7 +264,7 @@ export function formatCurrency(
       minimumFractionDigits: currency === "VND" ? 0 : 2,
       maximumFractionDigits: currency === "VND" ? 0 : 2,
     }).format(value);
-  } catch (error) {
+  } catch (_error) {
     return value.toString();
   }
 }
@@ -287,7 +287,7 @@ export function formatFileSize(bytes: number): string {
   const sizes = ["Bytes", "KB", "MB", "GB"];
   const i = Math.floor(Math.log(bytes) / Math.log(k));
 
-  return Math.round((bytes / k ** i) * 100) / 100 + " " + sizes[i];
+  return `${Math.round((bytes / k ** i) * 100) / 100} ${sizes[i]}`;
 }
 
 /**

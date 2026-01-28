@@ -101,7 +101,7 @@ describe("Client Config Edge Cases", () => {
 
   describe("Pattern Validation", () => {
     it("should handle empty patterns list", () => {
-      const originalPatterns = apiConfig.skipAuthEndpoints.patterns;
+      const _originalPatterns = apiConfig.skipAuthEndpoints.patterns;
       // Temporarily test with empty patterns by checking logic
       const emptyPatterns: string[] = [];
 
@@ -244,13 +244,13 @@ describe("Client Config Edge Cases", () => {
     });
 
     it("should handle very long pattern", () => {
-      const longPattern = "/" + "a".repeat(1000) + "/*";
+      const longPattern = `/${"a".repeat(1000)}/*`;
       const regexPattern = longPattern
         .replace(/\*/g, ".*")
         .replace(/\//g, "\\/");
       const regex = new RegExp(`^${regexPattern}$`);
 
-      expect(regex.test("/" + "a".repeat(1000) + "/test")).toBe(true);
+      expect(regex.test(`/${"a".repeat(1000)}/test`)).toBe(true);
     });
 
     it("should handle URL longer than pattern", () => {
@@ -258,7 +258,7 @@ describe("Client Config Edge Cases", () => {
       const regexPattern = pattern.replace(/\*/g, ".*").replace(/\//g, "\\/");
       const regex = new RegExp(`^${regexPattern}$`);
 
-      const longUrl = "/leads/" + "a".repeat(10000);
+      const longUrl = `/leads/${"a".repeat(10000)}`;
       expect(regex.test(longUrl)).toBe(true);
     });
   });

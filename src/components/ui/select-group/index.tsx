@@ -37,7 +37,7 @@ export const SelectGroup = React.forwardRef<
   const labelColor = contextTheme.colors.textSecondary || "#4d7e70";
   const textColor = "#3F4350";
   const errorColor = contextTheme.colors.error || "#ff7474";
-  const placeholderColor = contextTheme.colors.placeholder || "#BFD1CC";
+  const _placeholderColor = contextTheme.colors.placeholder || "#BFD1CC";
 
   return (
     <div className={cn("space-y-2", props.className)}>

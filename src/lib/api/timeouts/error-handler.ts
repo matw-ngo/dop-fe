@@ -8,9 +8,9 @@
  * @module error-handler
  */
 
-import type { TimeoutError, TimeoutLogEntry } from "./types";
 import { ERROR_TYPES } from "./constants";
-import { createTimeoutError, getTimestamp, sanitizeLogContext } from "./utils";
+import type { TimeoutError, TimeoutLogEntry } from "./types";
+import { createTimeoutError, sanitizeLogContext } from "./utils";
 
 /**
  * Checks if an error is a timeout error
@@ -424,7 +424,7 @@ export function formatErrorDetails(
  * ```
  */
 export function convertAbortToTimeoutError(
-  abortError: Error & { name: string },
+  _abortError: Error & { name: string },
   endpoint: string,
   timeoutDuration: number,
   method: string,

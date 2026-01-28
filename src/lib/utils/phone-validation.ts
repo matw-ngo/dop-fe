@@ -96,7 +96,7 @@ export const sanitizePhoneNumber = (phone: string): string => {
 
   if (clean.startsWith("84") && clean.length === 11) {
     // Convert international format to local
-    return "0" + clean.slice(2);
+    return `0${clean.slice(2)}`;
   } else if (clean.startsWith("0") && clean.length === 10) {
     // Already in local format
     return clean;

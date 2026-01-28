@@ -88,7 +88,7 @@ describe("Theme System Security Tests", () => {
     });
 
     it("should sanitize color values with JavaScript attempts", () => {
-      const maliciousColors = {
+      const _maliciousColors = {
         primary: "javascript:alert('xss')",
         background: "data:text/html,<script>alert('xss')</script>",
         border: "expression(alert('xss'))",
@@ -110,7 +110,7 @@ describe("Theme System Security Tests", () => {
     });
 
     it("should handle null and undefined values safely", () => {
-      const nullishColors = {
+      const _nullishColors = {
         primary: null,
         background: undefined,
         border: "",
@@ -128,7 +128,7 @@ describe("Theme System Security Tests", () => {
     });
 
     it("should not allow CSS property injection via color names", () => {
-      const injectionAttempts = {
+      const _injectionAttempts = {
         "background; color: red; font-size: 100px;": "oklch(0.5 0.1 0)",
         "display:none": "oklch(0.5 0.1 0)",
         "position:fixed;top:0;left:0;width:100%;height:100%":
@@ -650,7 +650,7 @@ describe("Theme System Security Tests", () => {
       });
 
       it("should handle extremely long color strings", () => {
-        const longHexString = "#" + "f".repeat(1000);
+        const longHexString = `#${"f".repeat(1000)}`;
         expect(parseColor(longHexString)).toBeNull();
 
         const longRgbString = `rgb(${Array(100).fill("255").join(" ")})`;

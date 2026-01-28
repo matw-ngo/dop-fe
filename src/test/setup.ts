@@ -36,7 +36,7 @@ vi.mock("sonner", () => ({
 
 // Mock date-fns
 vi.mock("date-fns", () => ({
-  format: (date: Date, formatStr: string) => date.toLocaleDateString(),
+  format: (date: Date, _formatStr: string) => date.toLocaleDateString(),
   vi: { locale: "vi" },
 }));
 
@@ -152,10 +152,6 @@ global.XMLHttpRequest = class XMLHttpRequest {
   send = vi.fn();
   setRequestHeader = vi.fn();
   addEventListener = vi.fn();
-
-  constructor() {
-    // Mock implementation
-  }
 } as any;
 
 // Mock localStorage
@@ -165,7 +161,7 @@ const localStorageMock = {
   removeItem: vi.fn(),
   clear: vi.fn(),
   length: 0,
-  key: vi.fn((index: number) => null),
+  key: vi.fn((_index: number) => null),
 };
 global.localStorage = localStorageMock;
 

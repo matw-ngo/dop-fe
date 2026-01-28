@@ -1,0 +1,830 @@
+
+> dop-fe@0.1.0 type-check /Users/trung.ngo/Documents/projects/dop-fe
+> tsc --noEmit
+
+src/__tests__/msw/handlers/consent.ts(116,48): error TS2345: Argument of type 'DefaultBodyType' is not assignable to parameter of type 'Record<string, unknown> | undefined'.
+  Type 'null' is not assignable to type 'Record<string, unknown> | undefined'.
+src/__tests__/msw/handlers/consent.ts(181,39): error TS2345: Argument of type '(params: any, request: any) => Promise<Response>' is not assignable to parameter of type 'HttpResponseResolver<PathParams, DefaultBodyType, undefined>'.
+  Target signature provides too few arguments. Expected 2 or more, but got 1.
+src/__tests__/msw/handlers/consent.ts(181,46): error TS7006: Parameter 'params' implicitly has an 'any' type.
+src/__tests__/msw/handlers/consent.ts(181,54): error TS7006: Parameter 'request' implicitly has an 'any' type.
+src/__tests__/msw/handlers/consent.ts(255,9): error TS2698: Spread types may only be created from object types.
+src/__tests__/msw/handlers/consent.ts(309,9): error TS2698: Spread types may only be created from object types.
+src/__tests__/msw/handlers/consent.ts(405,25): error TS18049: 'body' is possibly 'null' or 'undefined'.
+src/__tests__/msw/handlers/consent.ts(405,30): error TS2339: Property 'consent_id' does not exist on type 'string | number | boolean | Record<string, any> | DefaultRequestMultipartBody'.
+  Property 'consent_id' does not exist on type 'string'.
+src/__tests__/msw/handlers/consent.ts(406,31): error TS18049: 'body' is possibly 'null' or 'undefined'.
+src/__tests__/msw/handlers/consent.ts(406,36): error TS2339: Property 'data_category_id' does not exist on type 'string | number | boolean | Record<string, any> | DefaultRequestMultipartBody'.
+  Property 'data_category_id' does not exist on type 'string'.
+src/__tests__/msw/handlers/dop.ts(169,53): error TS2345: Argument of type 'DefaultBodyType' is not assignable to parameter of type 'Record<string, unknown> | undefined'.
+  Type 'null' is not assignable to type 'Record<string, unknown> | undefined'.
+src/__tests__/msw/handlers/dop.ts(211,15): error TS2698: Spread types may only be created from object types.
+src/__tests__/msw/handlers/dop.ts(257,20): error TS18049: 'body' is possibly 'null' or 'undefined'.
+src/__tests__/msw/handlers/dop.ts(257,25): error TS2339: Property 'token' does not exist on type 'string | number | boolean | Record<string, any> | DefaultRequestMultipartBody'.
+  Property 'token' does not exist on type 'string'.
+src/__tests__/msw/handlers/dop.ts(294,21): error TS18049: 'body' is possibly 'null' or 'undefined'.
+src/__tests__/msw/handlers/dop.ts(294,26): error TS2339: Property 'target' does not exist on type 'string | number | boolean | Record<string, any> | DefaultRequestMultipartBody'.
+  Property 'target' does not exist on type 'string'.
+src/app/[locale]/credit-cards/[slug]/page.tsx(10,8): error TS2613: Module '"/Users/trung.ngo/Documents/projects/dop-fe/src/components/layout/footer"' has no default export. Did you mean to use 'import { Footer } from "/Users/trung.ngo/Documents/projects/dop-fe/src/components/layout/footer"' instead?
+src/app/[locale]/credit-cards/[slug]/page.tsx(11,8): error TS2613: Module '"/Users/trung.ngo/Documents/projects/dop-fe/src/components/layout/header"' has no default export. Did you mean to use 'import { Header } from "/Users/trung.ngo/Documents/projects/dop-fe/src/components/layout/header"' instead?
+src/app/[locale]/credit-cards/compare/page.tsx(12,8): error TS2613: Module '"/Users/trung.ngo/Documents/projects/dop-fe/src/components/layout/footer"' has no default export. Did you mean to use 'import { Footer } from "/Users/trung.ngo/Documents/projects/dop-fe/src/components/layout/footer"' instead?
+src/app/[locale]/credit-cards/compare/page.tsx(13,8): error TS2613: Module '"/Users/trung.ngo/Documents/projects/dop-fe/src/components/layout/header"' has no default export. Did you mean to use 'import { Header } from "/Users/trung.ngo/Documents/projects/dop-fe/src/components/layout/header"' instead?
+src/app/[locale]/credit-cards/page.tsx(11,8): error TS2613: Module '"/Users/trung.ngo/Documents/projects/dop-fe/src/components/layout/footer"' has no default export. Did you mean to use 'import { Footer } from "/Users/trung.ngo/Documents/projects/dop-fe/src/components/layout/footer"' instead?
+src/app/[locale]/credit-cards/page.tsx(12,8): error TS2613: Module '"/Users/trung.ngo/Documents/projects/dop-fe/src/components/layout/header"' has no default export. Did you mean to use 'import { Header } from "/Users/trung.ngo/Documents/projects/dop-fe/src/components/layout/header"' instead?
+src/app/[locale]/insurance/[slug]/product-page-client.tsx(11,8): error TS2613: Module '"/Users/trung.ngo/Documents/projects/dop-fe/src/components/layout/footer"' has no default export. Did you mean to use 'import { Footer } from "/Users/trung.ngo/Documents/projects/dop-fe/src/components/layout/footer"' instead?
+src/app/[locale]/insurance/[slug]/product-page-client.tsx(12,8): error TS2613: Module '"/Users/trung.ngo/Documents/projects/dop-fe/src/components/layout/header"' has no default export. Did you mean to use 'import { Header } from "/Users/trung.ngo/Documents/projects/dop-fe/src/components/layout/header"' instead?
+src/app/[locale]/insurance/page.tsx(9,8): error TS2613: Module '"/Users/trung.ngo/Documents/projects/dop-fe/src/components/layout/footer"' has no default export. Did you mean to use 'import { Footer } from "/Users/trung.ngo/Documents/projects/dop-fe/src/components/layout/footer"' instead?
+src/app/[locale]/insurance/page.tsx(10,8): error TS2613: Module '"/Users/trung.ngo/Documents/projects/dop-fe/src/components/layout/header"' has no default export. Did you mean to use 'import { Header } from "/Users/trung.ngo/Documents/projects/dop-fe/src/components/layout/header"' instead?
+src/app/[locale]/layout.tsx(6,1): error TS2578: Unused '@ts-expect-error' directive.
+src/app/[locale]/tools/page.tsx(321,11): error TS2322: Type '{ hidden: { opacity: number; y: number; scale: number; }; visible: { opacity: number; y: number; scale: number; transition: { duration: number; ease: number[]; }; }; hover: { y: number; scale: number; transition: { ...; }; }; }' is not assignable to type 'Variants'.
+  Property 'visible' is incompatible with index signature.
+    Type '{ opacity: number; y: number; scale: number; transition: { duration: number; ease: number[]; }; }' is not assignable to type 'Variant'.
+      Type '{ opacity: number; y: number; scale: number; transition: { duration: number; ease: number[]; }; }' is not assignable to type 'TargetAndTransition'.
+        Type '{ opacity: number; y: number; scale: number; transition: { duration: number; ease: number[]; }; }' is not assignable to type '{ transition?: Transition<any> | undefined; transitionEnd?: ResolvedValues | undefined; }'.
+          Types of property 'transition' are incompatible.
+            Type '{ duration: number; ease: number[]; }' is not assignable to type 'Transition<any> | undefined'.
+              Type '{ duration: number; ease: number[]; }' is not assignable to type 'TransitionWithValueOverrides<any>'.
+                Type '{ duration: number; ease: number[]; }' is not assignable to type 'ValueAnimationTransition<any>'.
+                  Types of property 'ease' are incompatible.
+                    Type 'number[]' is not assignable to type 'Easing | Easing[] | undefined'.
+                      Type 'number[]' is not assignable to type 'EasingFunction | Easing[]'.
+                        Type 'number[]' is not assignable to type 'Easing[]'.
+                          Type 'number' is not assignable to type 'Easing'.
+src/app/[locale]/tools/page.tsx(333,9): error TS2322: Type '{ hidden: { opacity: number; y: number; scale: number; }; visible: { opacity: number; y: number; scale: number; transition: { duration: number; ease: number[]; }; }; hover: { y: number; scale: number; transition: { ...; }; }; }' is not assignable to type 'Variants'.
+  Property 'visible' is incompatible with index signature.
+    Type '{ opacity: number; y: number; scale: number; transition: { duration: number; ease: number[]; }; }' is not assignable to type 'Variant'.
+      Type '{ opacity: number; y: number; scale: number; transition: { duration: number; ease: number[]; }; }' is not assignable to type 'TargetAndTransition'.
+        Type '{ opacity: number; y: number; scale: number; transition: { duration: number; ease: number[]; }; }' is not assignable to type '{ transition?: Transition<any> | undefined; transitionEnd?: ResolvedValues | undefined; }'.
+          Types of property 'transition' are incompatible.
+            Type '{ duration: number; ease: number[]; }' is not assignable to type 'Transition<any> | undefined'.
+              Type '{ duration: number; ease: number[]; }' is not assignable to type 'TransitionWithValueOverrides<any>'.
+                Type '{ duration: number; ease: number[]; }' is not assignable to type 'ValueAnimationTransition<any>'.
+                  Types of property 'ease' are incompatible.
+                    Type 'number[]' is not assignable to type 'Easing | Easing[] | undefined'.
+                      Type 'number[]' is not assignable to type 'EasingFunction | Easing[]'.
+                        Type 'number[]' is not assignable to type 'Easing[]'.
+                          Type 'number' is not assignable to type 'Easing'.
+src/app/not-found.tsx(7,1): error TS2578: Unused '@ts-expect-error' directive.
+src/app/pages/homepage.tsx(3,8): error TS2613: Module '"/Users/trung.ngo/Documents/projects/dop-fe/src/components/layout/footer"' has no default export. Did you mean to use 'import { Footer } from "/Users/trung.ngo/Documents/projects/dop-fe/src/components/layout/footer"' instead?
+src/app/pages/homepage.tsx(4,8): error TS2613: Module '"/Users/trung.ngo/Documents/projects/dop-fe/src/components/layout/header"' has no default export. Did you mean to use 'import { Header } from "/Users/trung.ngo/Documents/projects/dop-fe/src/components/layout/header"' instead?
+src/components/auth/OTPInput.tsx(206,49): error TS2448: Block-scoped variable 'handlePaste' used before its declaration.
+src/components/auth/OTPInput.tsx(206,49): error TS2454: Variable 'handlePaste' is used before being assigned.
+src/components/auth/OTPVerificationDialog.tsx(172,36): error TS2448: Block-scoped variable 'handleSessionTimeout' used before its declaration.
+src/components/auth/OTPVerificationDialog.tsx(172,36): error TS2454: Variable 'handleSessionTimeout' is used before being assigned.
+src/components/features/insurance/compare/components/ComparisonLoading.tsx(3,8): error TS2613: Module '"/Users/trung.ngo/Documents/projects/dop-fe/src/components/layout/footer"' has no default export. Did you mean to use 'import { Footer } from "/Users/trung.ngo/Documents/projects/dop-fe/src/components/layout/footer"' instead?
+src/components/features/insurance/compare/components/ComparisonLoading.tsx(4,8): error TS2613: Module '"/Users/trung.ngo/Documents/projects/dop-fe/src/components/layout/header"' has no default export. Did you mean to use 'import { Header } from "/Users/trung.ngo/Documents/projects/dop-fe/src/components/layout/header"' instead?
+src/components/features/insurance/detail/components/LoadingState.tsx(2,8): error TS2613: Module '"/Users/trung.ngo/Documents/projects/dop-fe/src/components/layout/footer"' has no default export. Did you mean to use 'import { Footer } from "/Users/trung.ngo/Documents/projects/dop-fe/src/components/layout/footer"' instead?
+src/components/features/insurance/detail/components/LoadingState.tsx(3,8): error TS2613: Module '"/Users/trung.ngo/Documents/projects/dop-fe/src/components/layout/header"' has no default export. Did you mean to use 'import { Header } from "/Users/trung.ngo/Documents/projects/dop-fe/src/components/layout/header"' instead?
+src/components/features/loan/LoanCalculator.tsx(116,7): error TS2448: Block-scoped variable 'calculateLoan' used before its declaration.
+src/components/features/loan/LoanCalculator.tsx(116,7): error TS2454: Variable 'calculateLoan' is used before being assigned.
+src/components/financial-tools/SavingsCalculator.tsx(211,30): error TS2448: Block-scoped variable 'calculateEffectiveRate' used before its declaration.
+src/components/financial-tools/SavingsCalculator.tsx(211,30): error TS2454: Variable 'calculateEffectiveRate' is used before being assigned.
+src/components/form-generation/__tests__/integration/ekyc-form-integration.test.tsx(18,23): error TS2305: Module '"../../index"' has no exported member 'FormProvider'.
+src/components/form-generation/__tests__/integration/ekyc-form-integration.test.tsx(191,13): error TS2353: Object literal may only specify known properties, and 'required' does not exist in type 'TextFieldConfig | BaseFieldConfig'.
+src/components/form-generation/__tests__/integration/ekyc-form-integration.test.tsx(198,13): error TS2353: Object literal may only specify known properties, and 'required' does not exist in type 'BaseFieldConfig | DateFieldConfig'.
+src/components/form-generation/__tests__/integration/ekyc-form-integration.test.tsx(205,13): error TS2353: Object literal may only specify known properties, and 'required' does not exist in type 'TextFieldConfig | BaseFieldConfig'.
+src/components/form-generation/__tests__/integration/ekyc-form-integration.test.tsx(212,13): error TS2353: Object literal may only specify known properties, and 'required' does not exist in type 'TextFieldConfig | BaseFieldConfig'.
+src/components/form-generation/__tests__/integration/ekyc-form-integration.test.tsx(216,11): error TS2353: Object literal may only specify known properties, and 'text' does not exist in type 'SubmitButtonConfig'.
+src/components/form-generation/__tests__/integration/ekyc-form-integration.test.tsx(543,15): error TS2561: Object literal may only specify known properties, but 'minLength' does not exist in type 'AnyValidationRule[]'. Did you mean to write 'length'?
+src/components/form-generation/__tests__/integration/ekyc-form-integration.test.tsx(697,11): error TS2322: Type '{ id: string; name: string; type: FieldType.EKYC; label: string; verification: { provider: "vnpt"; required: true; }; }' is not assignable to type 'FormField'.
+  Types of property 'verification' are incompatible.
+    Property 'autofillMapping' is missing in type '{ provider: "vnpt"; required: true; }' but required in type '{ provider: "custom" | "vnpt" | "citizenid" | "aws"; providerOptions?: { documentType?: string | undefined; flowType?: "DOCUMENT_TO_FACE" | "FACE_TO_DOCUMENT" | "DOCUMENT" | "FACE" | undefined; enableLiveness?: boolean | undefined; enableFaceMatch?: boolean | undefined; enableAuthenticityCheck?: boolean | undefined;...'.
+src/components/form-generation/__tests__/integration/ekyc-form-integration.test.tsx(913,17): error TS2322: Type '{ config: DynamicFormConfig; onSubmit: (data: Record<string, any>) => void; onFieldChange: (fieldId: any, value: any) => void; }' is not assignable to type 'IntrinsicAttributes & DynamicFormProps'.
+  Property 'onFieldChange' does not exist on type 'IntrinsicAttributes & DynamicFormProps'.
+src/components/form-generation/__tests__/integration/ekyc-form-integration.test.tsx(913,33): error TS7006: Parameter 'fieldId' implicitly has an 'any' type.
+src/components/form-generation/__tests__/integration/ekyc-form-integration.test.tsx(913,42): error TS7006: Parameter 'value' implicitly has an 'any' type.
+src/components/form-generation/DynamicForm.tsx(127,48): error TS2304: Cannot find name 'field'.
+src/components/form-generation/DynamicForm.tsx(180,48): error TS2448: Block-scoped variable 'validateField' used before its declaration.
+src/components/form-generation/DynamicForm.tsx(180,48): error TS2454: Variable 'validateField' is used before being assigned.
+src/components/form-generation/DynamicForm.tsx(193,39): error TS2448: Block-scoped variable 'validateField' used before its declaration.
+src/components/form-generation/DynamicForm.tsx(193,39): error TS2454: Variable 'validateField' is used before being assigned.
+src/components/form-generation/fields/EkycField/EkycField.tsx(43,5): error TS2322: Type 'string | null' is not assignable to type 'string | undefined'.
+  Type 'null' is not assignable to type 'string | undefined'.
+src/components/form-generation/themes/example-usage.tsx(9,43): error TS2307: Cannot find module './legacy-loan-simplified' or its corresponding type declarations.
+src/components/form-generation/themes/example-usage.tsx(12,55): error TS2307: Cannot find module './types-simplified' or its corresponding type declarations.
+src/components/form-generation/themes/theme-utils.ts(9,55): error TS2307: Cannot find module './types-simplified' or its corresponding type declarations.
+src/components/form-generation/themes/theme-utils.ts(51,5): error TS2353: Object literal may only specify known properties, and 'control' does not exist in type 'FormTheme'.
+src/components/layout/footer.stories.tsx(3,8): error TS2613: Module '"/Users/trung.ngo/Documents/projects/dop-fe/src/components/layout/footer"' has no default export. Did you mean to use 'import { Footer } from "/Users/trung.ngo/Documents/projects/dop-fe/src/components/layout/footer"' instead?
+src/components/layout/header.stories.tsx(3,8): error TS2613: Module '"/Users/trung.ngo/Documents/projects/dop-fe/src/components/layout/header"' has no default export. Did you mean to use 'import { Header } from "/Users/trung.ngo/Documents/projects/dop-fe/src/components/layout/header"' instead?
+src/components/layout/header.stories.tsx(114,12): error TS7006: Parameter 'args' implicitly has an 'any' type.
+src/components/layout/header.stories.tsx(131,12): error TS7006: Parameter 'args' implicitly has an 'any' type.
+src/components/loan-application/ApplyLoanForm/__tests__/integration.test.tsx(116,8): error TS2740: Type '{ children: Element[]; }' is missing the following properties from type 'UseFormReturn<FieldValues, any, FieldValues>': watch, getValues, getFieldState, setError, and 12 more.
+src/components/loan-application/ApplyLoanForm/__tests__/integration.test.tsx(265,8): error TS2740: Type '{ children: Element; }' is missing the following properties from type 'UseFormReturn<FieldValues, any, FieldValues>': watch, getValues, getFieldState, setError, and 12 more.
+src/components/loan-application/ApplyLoanForm/__tests__/useLoanApplicationForm.test.ts(116,20): error TS2551: Property 'handlePhoneSubmit' does not exist on type 'UseLoanApplicationFormReturn'. Did you mean 'handleSubmit'?
+src/components/loan-application/ApplyLoanForm/__tests__/useLoanApplicationForm.test.ts(124,49): error TS2551: Property 'handlePhoneSubmit' does not exist on type 'UseLoanApplicationFormReturn'. Did you mean 'handleSubmit'?
+src/components/loan-application/ApplyLoanForm/__tests__/useLoanApplicationForm.test.ts(135,22): error TS2339: Property 'handleOtpSuccess' does not exist on type 'UseLoanApplicationFormReturn'.
+src/components/loan-application/ApplyLoanForm/__tests__/useLoanApplicationForm.test.ts(152,22): error TS2339: Property 'handleOtpFailure' does not exist on type 'UseLoanApplicationFormReturn'.
+src/components/loan-application/ApplyLoanForm/__tests__/useLoanApplicationForm.test.ts(168,22): error TS2339: Property 'handleOtpExpired' does not exist on type 'UseLoanApplicationFormReturn'.
+src/components/loan-application/ApplyLoanForm/ApplyLoanForm.stories.tsx(4,8): error TS2613: Module '"/Users/trung.ngo/Documents/projects/dop-fe/src/components/loan-application/ApplyLoanForm/index"' has no default export. Did you mean to use 'import { ApplyLoanForm } from "/Users/trung.ngo/Documents/projects/dop-fe/src/components/loan-application/ApplyLoanForm/index"' instead?
+src/components/loan-application/ApplyLoanForm/ApplyLoanForm.stories.tsx(38,18): error TS7031: Binding element 'canvasElement' implicitly has an 'any' type.
+src/components/loan-application/ApplyLoanForm/ApplyLoanForm.stories.tsx(56,18): error TS7031: Binding element 'canvasElement' implicitly has an 'any' type.
+src/components/loan-application/ApplyLoanForm/ApplyLoanForm.stories.tsx(61,43): error TS2353: Object literal may only specify known properties, and 'clientX' does not exist in type 'DirectOptions'.
+src/components/loan-application/ApplyLoanForm/ApplyLoanForm.stories.tsx(64,43): error TS2353: Object literal may only specify known properties, and 'clientX' does not exist in type 'DirectOptions'.
+src/components/loan-application/ApplyLoanForm/ApplyLoanForm.stories.tsx(113,18): error TS7031: Binding element 'canvasElement' implicitly has an 'any' type.
+src/components/loan-application/ApplyLoanForm/ApplyLoanForm.stories.tsx(150,18): error TS7031: Binding element 'canvasElement' implicitly has an 'any' type.
+src/components/loan-application/ApplyLoanForm/ApplyLoanForm.stories.tsx(168,18): error TS7031: Binding element 'canvasElement' implicitly has an 'any' type.
+src/components/loan-application/ApplyLoanForm/ApplyLoanForm.stories.tsx(182,18): error TS7031: Binding element 'canvasElement' implicitly has an 'any' type.
+src/components/loan-application/ApplyLoanForm/ApplyLoanForm.stories.tsx(182,33): error TS7031: Binding element 'step' implicitly has an 'any' type.
+src/components/loan-application/ApplyLoanForm/ApplyLoanForm.stories.tsx(188,45): error TS2353: Object literal may only specify known properties, and 'clientX' does not exist in type 'DirectOptions'.
+src/components/loan-application/ApplyLoanForm/ApplyLoanForm.stories.tsx(197,45): error TS2353: Object literal may only specify known properties, and 'clientX' does not exist in type 'DirectOptions'.
+src/components/loan-application/ApplyLoanForm/ApplyLoanForm.stories.tsx(207,18): error TS7031: Binding element 'canvasElement' implicitly has an 'any' type.
+src/components/loan-application/ApplyLoanForm/ApplyLoanForm.stories.tsx(225,18): error TS7031: Binding element 'canvasElement' implicitly has an 'any' type.
+src/components/loan-application/ApplyLoanForm/ApplyLoanForm.stories.tsx(241,18): error TS7031: Binding element 'canvasElement' implicitly has an 'any' type.
+src/components/loan-application/ApplyLoanForm/ApplyLoanForm.stories.tsx(241,33): error TS7031: Binding element 'step' implicitly has an 'any' type.
+src/components/loan-application/ApplyLoanForm/components/__tests__/TermsAgreement.test.tsx(109,9): error TS2322: Type '{ termsText: string; termsLink: string; value: string; onChange: Mock<Procedure>; }' is not assignable to type 'IntrinsicAttributes & TermsAgreementProps'.
+  Property 'termsText' does not exist on type 'IntrinsicAttributes & TermsAgreementProps'.
+src/components/loan-application/ApplyLoanForm/hooks/useLoanApplicationForm.ts(24,5): error TS2322: Type 'Resolver<{ loan_purpose: string; agreeStatus: "" | "0" | "1"; expected_amount?: number | undefined; loan_period?: number | undefined; phone_number?: string | undefined; }, any, { expected_amount: number; loan_period: number; loan_purpose: string; agreeStatus: "" | ... 1 more ... | "1"; phone_number?: string | undefi...' is not assignable to type 'Resolver<{ expected_amount: number; loan_period: number; loan_purpose: string; agreeStatus: "" | "0" | "1"; phone_number?: string | undefined; }, any, { expected_amount: number; loan_period: number; loan_purpose: string; agreeStatus: "" | ... 1 more ... | "1"; phone_number?: string | undefined; }>'.
+  Types of parameters 'options' and 'options' are incompatible.
+    Type 'ResolverOptions<{ expected_amount: number; loan_period: number; loan_purpose: string; agreeStatus: "" | "0" | "1"; phone_number?: string | undefined; }>' is not assignable to type 'ResolverOptions<{ loan_purpose: string; agreeStatus: "" | "0" | "1"; expected_amount?: number | undefined; loan_period?: number | undefined; phone_number?: string | undefined; }>'.
+      Type 'number | undefined' is not assignable to type 'number'.
+        Type 'undefined' is not assignable to type 'number'.
+src/components/loan-application/ApplyLoanForm/hooks/useLoanApplicationForm.ts(92,9): error TS2353: Object literal may only specify known properties, and 'telco' does not exist in type '{ valid: boolean; normalizedNumber?: string | undefined; error?: string | undefined; }'.
+src/components/loan-application/ApplyLoanForm/hooks/useLoanApplicationForm.ts(114,35): error TS2339: Property 'telco' does not exist on type '{ valid: boolean; normalizedNumber?: string | undefined; error?: string | undefined; }'.
+src/components/loan-application/ApplyLoanForm/hooks/useLoanApplicationForm.ts(118,37): error TS2339: Property 'telco' does not exist on type '{ valid: boolean; normalizedNumber?: string | undefined; error?: string | undefined; }'.
+src/components/loan-application/ApplyLoanForm/hooks/useLoanApplicationForm.ts(131,30): error TS2339: Property 'submitApplication' does not exist on type '{ pageView: () => Promise<void>; inputExpectedAmount: (amount: number) => Promise<void>; inputPurpose: (purpose: string) => Promise<void>; inputPhoneNumber: (phoneNumber: string) => Promise<...>; phoneNumberValid: (_phoneNumber: string, telco: string) => Promise<...>; formSubmit: (data: { ...; }) => Promise<...>; }'.
+src/components/loan-application/ApplyLoanForm/hooks/useLoanApplicationForm.ts(176,28): error TS2339: Property 'otpVerified' does not exist on type '{ pageView: () => Promise<void>; inputExpectedAmount: (amount: number) => Promise<void>; inputPurpose: (purpose: string) => Promise<void>; inputPhoneNumber: (phoneNumber: string) => Promise<...>; phoneNumberValid: (_phoneNumber: string, telco: string) => Promise<...>; formSubmit: (data: { ...; }) => Promise<...>; }'.
+src/components/loan-application/ApplyLoanForm/hooks/useLoanApplicationForm.ts(191,26): error TS2339: Property 'otpFailed' does not exist on type '{ pageView: () => Promise<void>; inputExpectedAmount: (amount: number) => Promise<void>; inputPurpose: (purpose: string) => Promise<void>; inputPhoneNumber: (phoneNumber: string) => Promise<...>; phoneNumberValid: (_phoneNumber: string, telco: string) => Promise<...>; formSubmit: (data: { ...; }) => Promise<...>; }'.
+src/components/loan-application/ApplyLoanForm/hooks/useLoanApplicationForm.ts(205,5): error TS2322: Type 'Control<{ expected_amount: number; loan_period: number; loan_purpose: string; agreeStatus: "" | "0" | "1"; phone_number?: string | undefined; }, any, TFieldValues>' is not assignable to type 'Control<{ expected_amount: number; loan_period: number; loan_purpose: string; agreeStatus: "" | "0" | "1"; phone_number?: string | undefined; }>'.
+  The types of '_options.resolver' are incompatible between these types.
+    Type 'Resolver<{ expected_amount: number; loan_period: number; loan_purpose: string; agreeStatus: "" | "0" | "1"; phone_number?: string | undefined; }, any, TFieldValues> | undefined' is not assignable to type 'Resolver<{ expected_amount: number; loan_period: number; loan_purpose: string; agreeStatus: "" | "0" | "1"; phone_number?: string | undefined; }, any, { expected_amount: number; loan_period: number; loan_purpose: string; agreeStatus: "" | ... 1 more ... | "1"; phone_number?: string | undefined; }> | undefined'.
+      Type 'Resolver<{ expected_amount: number; loan_period: number; loan_purpose: string; agreeStatus: "" | "0" | "1"; phone_number?: string | undefined; }, any, TFieldValues>' is not assignable to type 'Resolver<{ expected_amount: number; loan_period: number; loan_purpose: string; agreeStatus: "" | "0" | "1"; phone_number?: string | undefined; }, any, { expected_amount: number; loan_period: number; loan_purpose: string; agreeStatus: "" | ... 1 more ... | "1"; phone_number?: string | undefined; }>'.
+        Type 'ResolverResult<{ expected_amount: number; loan_period: number; loan_purpose: string; agreeStatus: "" | "0" | "1"; phone_number?: string | undefined; }, TFieldValues> | Promise<...>' is not assignable to type 'ResolverResult<{ expected_amount: number; loan_period: number; loan_purpose: string; agreeStatus: "" | "0" | "1"; phone_number?: string | undefined; }, { expected_amount: number; loan_period: number; loan_purpose: string; agreeStatus: "" | ... 1 more ... | "1"; phone_number?: string | undefined; }> | Promise<...>'.
+          Type 'ResolverSuccess<TFieldValues>' is not assignable to type 'ResolverResult<{ expected_amount: number; loan_period: number; loan_purpose: string; agreeStatus: "" | "0" | "1"; phone_number?: string | undefined; }, { expected_amount: number; loan_period: number; loan_purpose: string; agreeStatus: "" | ... 1 more ... | "1"; phone_number?: string | undefined; }> | Promise<...>'.
+            Type 'ResolverSuccess<TFieldValues>' is not assignable to type 'ResolverSuccess<{ expected_amount: number; loan_period: number; loan_purpose: string; agreeStatus: "" | "0" | "1"; phone_number?: string | undefined; }>'.
+              Type 'TFieldValues' is not assignable to type '{ expected_amount: number; loan_period: number; loan_purpose: string; agreeStatus: "" | "0" | "1"; phone_number?: string | undefined; }'.
+                Type 'FieldValues' is missing the following properties from type '{ expected_amount: number; loan_period: number; loan_purpose: string; agreeStatus: "" | "0" | "1"; phone_number?: string | undefined; }': expected_amount, loan_period, loan_purpose, agreeStatus
+src/components/loan-application/ApplyLoanForm/hooks/useLoanApplicationForm.ts(212,5): error TS2322: Type 'UseFormHandleSubmit<{ expected_amount: number; loan_period: number; loan_purpose: string; agreeStatus: "" | "0" | "1"; phone_number?: string | undefined; }, TFieldValues>' is not assignable to type 'UseFormHandleSubmit<{ expected_amount: number; loan_period: number; loan_purpose: string; agreeStatus: "" | "0" | "1"; phone_number?: string | undefined; }>'.
+  Types of parameters 'onValid' and 'onValid' are incompatible.
+    Types of parameters 'data' and 'data' are incompatible.
+      Type 'TFieldValues' is not assignable to type '{ expected_amount: number; loan_period: number; loan_purpose: string; agreeStatus: "" | "0" | "1"; phone_number?: string | undefined; }'.
+        Type 'FieldValues' is missing the following properties from type '{ expected_amount: number; loan_period: number; loan_purpose: string; agreeStatus: "" | "0" | "1"; phone_number?: string | undefined; }': expected_amount, loan_period, loan_purpose, agreeStatus
+src/components/loan-application/ApplyLoanForm/hooks/useTracking.ts(4,3): error TS2724: '"../types"' has no exported member named 'LoanApplicationFormData'. Did you mean 'LoanApplicationFormProps'?
+src/components/loan-application/ApplyLoanForm/hooks/useTracking.ts(16,26): error TS2339: Property 'inputPeriod' does not exist on type '{ pageView: () => Promise<void>; inputExpectedAmount: (amount: number) => Promise<void>; inputPurpose: (purpose: string) => Promise<void>; inputPhoneNumber: (phoneNumber: string) => Promise<...>; phoneNumberValid: (_phoneNumber: string, telco: string) => Promise<...>; formSubmit: (data: { ...; }) => Promise<...>; }'.
+src/components/loan-application/ApplyLoanForm/hooks/useTracking.ts(36,26): error TS2339: Property 'submitApplication' does not exist on type '{ pageView: () => Promise<void>; inputExpectedAmount: (amount: number) => Promise<void>; inputPurpose: (purpose: string) => Promise<void>; inputPhoneNumber: (phoneNumber: string) => Promise<...>; phoneNumberValid: (_phoneNumber: string, telco: string) => Promise<...>; formSubmit: (data: { ...; }) => Promise<...>; }'.
+src/components/loan-application/ApplyLoanForm/hooks/useTracking.ts(41,26): error TS2339: Property 'otpVerified' does not exist on type '{ pageView: () => Promise<void>; inputExpectedAmount: (amount: number) => Promise<void>; inputPurpose: (purpose: string) => Promise<void>; inputPhoneNumber: (phoneNumber: string) => Promise<...>; phoneNumberValid: (_phoneNumber: string, telco: string) => Promise<...>; formSubmit: (data: { ...; }) => Promise<...>; }'.
+src/components/loan-application/ApplyLoanForm/hooks/useTracking.ts(46,26): error TS2339: Property 'otpFailed' does not exist on type '{ pageView: () => Promise<void>; inputExpectedAmount: (amount: number) => Promise<void>; inputPurpose: (purpose: string) => Promise<void>; inputPhoneNumber: (phoneNumber: string) => Promise<...>; phoneNumberValid: (_phoneNumber: string, telco: string) => Promise<...>; formSubmit: (data: { ...; }) => Promise<...>; }'.
+src/components/loan-application/ApplyLoanForm/index.ts(19,1): error TS2308: Module "./constants" has already exported a member named 'LOAN_AMOUNT'. Consider explicitly re-exporting to resolve the ambiguity.
+src/components/loan-application/ApplyLoanForm/index.ts(19,1): error TS2308: Module "./constants" has already exported a member named 'LOAN_PERIOD'. Consider explicitly re-exporting to resolve the ambiguity.
+src/components/loan-application/ApplyLoanForm/stories/ApplyLoanForm.stories.tsx(205,33): error TS2686: 'React' refers to a UMD global, but the current file is a module. Consider adding an import instead.
+src/components/loan-application/ApplyLoanForm/stories/ApplyLoanForm.stories.tsx(206,33): error TS2686: 'React' refers to a UMD global, but the current file is a module. Consider adding an import instead.
+src/components/loan-application/ApplyLoanForm/stories/ApplyLoanForm.stories.tsx(207,35): error TS2686: 'React' refers to a UMD global, but the current file is a module. Consider adding an import instead.
+src/components/loan-application/ApplyLoanForm/stories/ApplyLoanForm.stories.tsx(208,43): error TS2686: 'React' refers to a UMD global, but the current file is a module. Consider adding an import instead.
+src/components/loan-application/ApplyLoanForm/stories/ApplyLoanForm.stories.tsx(209,49): error TS2686: 'React' refers to a UMD global, but the current file is a module. Consider adding an import instead.
+src/components/loan-application/ApplyLoanForm/stories/ApplyLoanForm.stories.tsx(210,45): error TS2686: 'React' refers to a UMD global, but the current file is a module. Consider adding an import instead.
+src/components/loan-application/ApplyLoanForm/stories/ApplyLoanForm.stories.tsx(249,24): error TS2304: Cannot find name 'phone'.
+src/components/loan-application/ApplyLoanForm/utils/phoneValidation.ts(89,29): error TS2322: Type 'string | undefined' is not assignable to type 'string | null'.
+  Type 'undefined' is not assignable to type 'string | null'.
+src/components/loan-application/DynamicLoanForm/__tests__/setup.ts(1,30): error TS2305: Module '"msw"' has no exported member 'setup'.
+src/components/loan-application/DynamicLoanForm/__tests__/setup.ts(66,10): error TS18049: 'body' is possibly 'null' or 'undefined'.
+src/components/loan-application/DynamicLoanForm/__tests__/setup.ts(66,15): error TS2339: Property 'flowId' does not exist on type 'string | number | boolean | Record<string, any> | DefaultRequestMultipartBody'.
+  Property 'flowId' does not exist on type 'string'.
+src/components/loan-application/DynamicLoanForm/__tests__/setup.ts(66,26): error TS18049: 'body' is possibly 'null' or 'undefined'.
+src/components/loan-application/DynamicLoanForm/__tests__/setup.ts(66,31): error TS2339: Property 'tenant' does not exist on type 'string | number | boolean | Record<string, any> | DefaultRequestMultipartBody'.
+  Property 'tenant' does not exist on type 'string'.
+src/components/loan-application/DynamicLoanForm/__tests__/setup.ts(66,42): error TS18049: 'body' is possibly 'null' or 'undefined'.
+src/components/loan-application/DynamicLoanForm/__tests__/setup.ts(66,47): error TS2339: Property 'info' does not exist on type 'string | number | boolean | Record<string, any> | DefaultRequestMultipartBody'.
+  Property 'info' does not exist on type 'string'.
+src/components/loan-application/LoanExtraInfoForm/index.tsx(2,51): error TS2307: Cannot find module '@app/configs/constants' or its corresponding type declarations.
+src/components/loan-application/LoanExtraInfoForm/index.tsx(9,8): error TS2307: Cannot find module '@app/configs/data' or its corresponding type declarations.
+src/components/loan-application/LoanExtraInfoForm/index.tsx(10,30): error TS2307: Cannot find module '@app/helpers/location' or its corresponding type declarations.
+src/components/loan-application/LoanExtraInfoForm/index.tsx(11,42): error TS2307: Cannot find module '@app/helpers/user-tracking' or its corresponding type declarations.
+src/components/loan-application/LoanExtraInfoForm/index.tsx(12,40): error TS2307: Cannot find module '@app/helpers/validate' or its corresponding type declarations.
+src/components/loan-application/LoanExtraInfoForm/index.tsx(13,31): error TS2307: Cannot find module '@app/states/zu-action' or its corresponding type declarations.
+src/components/loan-application/LoanExtraInfoForm/index.tsx(14,30): error TS2307: Cannot find module '@app/states/zu-store' or its corresponding type declarations.
+src/components/loan-application/LoanExtraInfoForm/index.tsx(22,40): error TS7006: Parameter 'x' implicitly has an 'any' type.
+src/components/loan-application/LoanExtraInfoForm/index.tsx(50,11): error TS2339: Property 'finishLoanExtraInfoSubmit' does not exist on type 'unknown'.
+src/components/loan-application/wrappers/AmountFieldWrapper.tsx(15,31): error TS2339: Property 'min' does not exist on type 'Record<string, unknown> | { maxLength?: number | undefined; minLength?: number | undefined; autoComplete?: string | undefined; prefix?: ReactNode; suffix?: ReactNode; startAdornment?: ReactNode; endAdornment?: ReactNode; } | ... 8 more ... | { ...; }'.
+  Property 'min' does not exist on type '{ maxLength?: number | undefined; minLength?: number | undefined; autoComplete?: string | undefined; prefix?: ReactNode; suffix?: ReactNode; startAdornment?: ReactNode; endAdornment?: ReactNode; }'.
+src/components/loan-application/wrappers/AmountFieldWrapper.tsx(16,31): error TS2339: Property 'max' does not exist on type 'Record<string, unknown> | { maxLength?: number | undefined; minLength?: number | undefined; autoComplete?: string | undefined; prefix?: ReactNode; suffix?: ReactNode; startAdornment?: ReactNode; endAdornment?: ReactNode; } | ... 8 more ... | { ...; }'.
+  Property 'max' does not exist on type '{ maxLength?: number | undefined; minLength?: number | undefined; autoComplete?: string | undefined; prefix?: ReactNode; suffix?: ReactNode; startAdornment?: ReactNode; endAdornment?: ReactNode; }'.
+src/components/loan-application/wrappers/AmountFieldWrapper.tsx(17,32): error TS2339: Property 'step' does not exist on type 'Record<string, unknown> | { maxLength?: number | undefined; minLength?: number | undefined; autoComplete?: string | undefined; prefix?: ReactNode; suffix?: ReactNode; startAdornment?: ReactNode; endAdornment?: ReactNode; } | ... 8 more ... | { ...; }'.
+  Property 'step' does not exist on type '{ maxLength?: number | undefined; minLength?: number | undefined; autoComplete?: string | undefined; prefix?: ReactNode; suffix?: ReactNode; startAdornment?: ReactNode; endAdornment?: ReactNode; }'.
+src/components/loan-application/wrappers/PeriodFieldWrapper.tsx(15,31): error TS2339: Property 'min' does not exist on type 'Record<string, unknown> | { maxLength?: number | undefined; minLength?: number | undefined; autoComplete?: string | undefined; prefix?: ReactNode; suffix?: ReactNode; startAdornment?: ReactNode; endAdornment?: ReactNode; } | ... 8 more ... | { ...; }'.
+  Property 'min' does not exist on type '{ maxLength?: number | undefined; minLength?: number | undefined; autoComplete?: string | undefined; prefix?: ReactNode; suffix?: ReactNode; startAdornment?: ReactNode; endAdornment?: ReactNode; }'.
+src/components/loan-application/wrappers/PeriodFieldWrapper.tsx(16,31): error TS2339: Property 'max' does not exist on type 'Record<string, unknown> | { maxLength?: number | undefined; minLength?: number | undefined; autoComplete?: string | undefined; prefix?: ReactNode; suffix?: ReactNode; startAdornment?: ReactNode; endAdornment?: ReactNode; } | ... 8 more ... | { ...; }'.
+  Property 'max' does not exist on type '{ maxLength?: number | undefined; minLength?: number | undefined; autoComplete?: string | undefined; prefix?: ReactNode; suffix?: ReactNode; startAdornment?: ReactNode; endAdornment?: ReactNode; }'.
+src/components/loan-application/wrappers/PeriodFieldWrapper.tsx(17,32): error TS2339: Property 'step' does not exist on type 'Record<string, unknown> | { maxLength?: number | undefined; minLength?: number | undefined; autoComplete?: string | undefined; prefix?: ReactNode; suffix?: ReactNode; startAdornment?: ReactNode; endAdornment?: ReactNode; } | ... 8 more ... | { ...; }'.
+  Property 'step' does not exist on type '{ maxLength?: number | undefined; minLength?: number | undefined; autoComplete?: string | undefined; prefix?: ReactNode; suffix?: ReactNode; startAdornment?: ReactNode; endAdornment?: ReactNode; }'.
+src/components/loan-application/wrappers/PurposeFieldWrapper.tsx(16,35): error TS2339: Property 'options' does not exist on type 'Record<string, unknown> | { maxLength?: number | undefined; minLength?: number | undefined; autoComplete?: string | undefined; prefix?: ReactNode; suffix?: ReactNode; startAdornment?: ReactNode; endAdornment?: ReactNode; } | ... 8 more ... | { ...; }'.
+  Property 'options' does not exist on type '{ maxLength?: number | undefined; minLength?: number | undefined; autoComplete?: string | undefined; prefix?: ReactNode; suffix?: ReactNode; startAdornment?: ReactNode; endAdornment?: ReactNode; }'.
+src/components/loan-application/wrappers/PurposeFieldWrapper.tsx(17,39): error TS2339: Property 'placeholder' does not exist on type 'Record<string, unknown> | { maxLength?: number | undefined; minLength?: number | undefined; autoComplete?: string | undefined; prefix?: ReactNode; suffix?: ReactNode; startAdornment?: ReactNode; endAdornment?: ReactNode; } | ... 8 more ... | { ...; }'.
+  Property 'placeholder' does not exist on type '{ maxLength?: number | undefined; minLength?: number | undefined; autoComplete?: string | undefined; prefix?: ReactNode; suffix?: ReactNode; startAdornment?: ReactNode; endAdornment?: ReactNode; }'.
+src/components/renderer/animations/framer-config.tsx(20,3): error TS2353: Object literal may only specify known properties, and 'transformPageCoords' does not exist in type 'MotionConfigProps'.
+src/components/renderer/animations/transitions.tsx(24,3): error TS2411: Property 'exit' of type 'Record<string, any> | undefined' is not assignable to 'string' index type 'Variant'.
+src/components/renderer/animations/transitions.tsx(124,5): error TS2322: Type 'Transition' is not assignable to type 'Variant'.
+  Type 'ValueAnimationTransition<any>' is not assignable to type 'Variant'.
+src/components/renderer/animations/transitions.tsx(171,39): error TS2345: Argument of type 'number' is not assignable to parameter of type 'string'.
+  Type 'number' is not assignable to type 'string'.
+src/components/renderer/animations/transitions.tsx(172,33): error TS2345: Argument of type 'number' is not assignable to parameter of type 'string'.
+  Type 'number' is not assignable to type 'string'.
+src/components/renderer/animations/transitions.tsx(179,37): error TS2345: Argument of type 'number' is not assignable to parameter of type 'string'.
+  Type 'number' is not assignable to type 'string'.
+src/components/renderer/animations/transitions.tsx(180,31): error TS2345: Argument of type 'number' is not assignable to parameter of type 'string'.
+  Type 'number' is not assignable to type 'string'.
+src/components/renderer/animations/transitions.tsx(290,7): error TS2322: Type 'boolean | "exit"' is not assignable to type 'TargetAndTransition | VariantLabels | undefined'.
+  Type 'false' is not assignable to type 'TargetAndTransition | VariantLabels | undefined'.
+src/components/renderer/animations/transitions.tsx(367,7): error TS2322: Type '{ delay: number; } | { delay: number; isSync?: boolean | undefined; elapsed?: number | undefined; driver?: Driver | undefined; type?: AnimationGeneratorType | undefined; ... 32 more ...; onStop?: (() => void) | undefined; } | { ...; }' is not assignable to type 'string | TransitionConfig | undefined'.
+  Type '{ delay: number; }' is not assignable to type 'string | TransitionConfig | undefined'.
+    Property 'type' is missing in type '{ delay: number; }' but required in type 'TransitionConfig'.
+src/components/renderer/builders/field-builder.ts(36,5): error TS2322: Type 'InputProps | SeparatorProps | ButtonProps | SelectProps | TextareaProps | CheckboxProps | ... 11 more ... | BadgeProps' is not assignable to type 'Partial<FieldProps> | undefined'.
+  Type 'ButtonProps' is not assignable to type 'Partial<FieldProps>'.
+    Types of property 'variant' are incompatible.
+      Type '"default" | "link" | "destructive" | "outline" | "secondary" | "ghost" | undefined' is not assignable to type 'ComponentVariant | undefined'.
+        Type '"default"' has no properties in common with type 'ComponentVariant'.
+src/components/renderer/builders/multi-step-form-builder.ts(144,5): error TS2322: Type '{ size?: string | undefined; color?: string | undefined; variant?: string | undefined; }' is not assignable to type 'ComponentVariant'.
+  Types of property 'size' are incompatible.
+    Type 'string | undefined' is not assignable to type '"sm" | "lg" | "md" | "xl" | "xs" | undefined'.
+      Type 'string' is not assignable to type '"sm" | "lg" | "md" | "xl" | "xs" | undefined'.
+src/components/renderer/builders/multi-step-form-builder.ts(156,5): error TS2322: Type '{ type?: string | undefined; direction?: string | undefined; duration?: number | undefined; }' is not assignable to type 'AnimationVariant'.
+  Types of property 'type' are incompatible.
+    Type 'string | undefined' is not assignable to type '"scale" | "bounce" | "flip" | "slide" | "fade" | undefined'.
+      Type 'string' is not assignable to type '"scale" | "bounce" | "flip" | "slide" | "fade" | undefined'.
+src/components/renderer/builders/multi-step-form-builder.ts(182,5): error TS2322: Type '{ display?: string | undefined; direction?: string | undefined; align?: string | undefined; justify?: string | undefined; gap?: string | undefined; }' is not assignable to type 'LayoutProps'.
+  Types of property 'display' are incompatible.
+    Type 'string | undefined' is not assignable to type '"hidden" | "grid" | "block" | "flex" | undefined'.
+      Type 'string' is not assignable to type '"hidden" | "grid" | "block" | "flex" | undefined'.
+src/components/renderer/component-variants/create-variant.ts(85,18): error TS7053: Element implicitly has an 'any' type because expression of type '"scale" | "bounce" | "flip" | "slide" | "fade"' can't be used to index type '{ readonly fade: { readonly keyframes: "fade-in"; readonly duration: "var(--duration-200)"; readonly easing: "var(--easing-in-out)"; }; readonly "slide-up": { readonly keyframes: "slide-in-from-bottom"; readonly duration: "var(--duration-300)"; readonly easing: "var(--easing-out)"; }; ... 4 more ...; readonly bounce...'.
+  Property 'flip' does not exist on type '{ readonly fade: { readonly keyframes: "fade-in"; readonly duration: "var(--duration-200)"; readonly easing: "var(--easing-in-out)"; }; readonly "slide-up": { readonly keyframes: "slide-in-from-bottom"; readonly duration: "var(--duration-300)"; readonly easing: "var(--easing-out)"; }; ... 4 more ...; readonly bounce...'.
+src/components/renderer/component-variants/create-variant.ts(92,30): error TS2367: This comparison appears to be unintentional because the types '"left" | "right" | "up" | "down"' and '"center"' have no overlap.
+src/components/renderer/component-variants/create-variant.ts(145,67): error TS2339: Property 'animation' does not exist on type 'Partial<ComponentVariant>'.
+src/components/renderer/component-variants/create-variant.ts(150,22): error TS2339: Property 'style' does not exist on type 'Partial<ComponentVariant>'.
+src/components/renderer/component-variants/create-variant.ts(166,19): error TS2339: Property 'responsive' does not exist on type 'Partial<ComponentVariant>'.
+src/components/renderer/component-variants/create-variant.ts(167,51): error TS2339: Property 'responsive' does not exist on type 'Partial<ComponentVariant>'.
+src/components/renderer/component-variants/create-variant.ts(170,19): error TS2339: Property 'responsive' does not exist on type 'Partial<ComponentVariant>'.
+src/components/renderer/component-variants/create-variant.ts(171,52): error TS2339: Property 'responsive' does not exist on type 'Partial<ComponentVariant>'.
+src/components/renderer/component-variants/create-variant.ts(174,19): error TS2339: Property 'responsive' does not exist on type 'Partial<ComponentVariant>'.
+src/components/renderer/component-variants/create-variant.ts(175,53): error TS2339: Property 'responsive' does not exist on type 'Partial<ComponentVariant>'.
+src/components/renderer/component-variants/create-variant.ts(187,19): error TS2339: Property 'layout' does not exist on type 'Partial<ComponentVariant>'.
+src/components/renderer/component-variants/create-variant.ts(188,34): error TS2339: Property 'layout' does not exist on type 'Partial<ComponentVariant>'.
+src/components/renderer/component-variants/create-variant.ts(191,19): error TS2339: Property 'layout' does not exist on type 'Partial<ComponentVariant>'.
+src/components/renderer/component-variants/create-variant.ts(192,40): error TS2339: Property 'layout' does not exist on type 'Partial<ComponentVariant>'.
+src/components/renderer/component-variants/create-variant.ts(195,19): error TS2339: Property 'layout' does not exist on type 'Partial<ComponentVariant>'.
+src/components/renderer/component-variants/create-variant.ts(196,51): error TS2339: Property 'layout' does not exist on type 'Partial<ComponentVariant>'.
+src/components/renderer/component-variants/create-variant.ts(199,19): error TS2339: Property 'layout' does not exist on type 'Partial<ComponentVariant>'.
+src/components/renderer/component-variants/create-variant.ts(200,57): error TS2339: Property 'layout' does not exist on type 'Partial<ComponentVariant>'.
+src/components/renderer/component-variants/create-variant.ts(203,19): error TS2339: Property 'layout' does not exist on type 'Partial<ComponentVariant>'.
+src/components/renderer/component-variants/create-variant.ts(204,35): error TS2339: Property 'layout' does not exist on type 'Partial<ComponentVariant>'.
+src/components/renderer/component-variants/create-variant.ts(207,19): error TS2339: Property 'layout' does not exist on type 'Partial<ComponentVariant>'.
+src/components/renderer/component-variants/create-variant.ts(208,47): error TS2339: Property 'layout' does not exist on type 'Partial<ComponentVariant>'.
+src/components/renderer/component-variants/create-variant.ts(211,19): error TS2339: Property 'layout' does not exist on type 'Partial<ComponentVariant>'.
+src/components/renderer/component-variants/create-variant.ts(212,51): error TS2339: Property 'layout' does not exist on type 'Partial<ComponentVariant>'.
+src/components/renderer/component-variants/create-variant.ts(215,19): error TS2339: Property 'layout' does not exist on type 'Partial<ComponentVariant>'.
+src/components/renderer/component-variants/create-variant.ts(216,50): error TS2339: Property 'layout' does not exist on type 'Partial<ComponentVariant>'.
+src/components/renderer/constants/responsive-classnames.ts(21,13): error TS2339: Property 'initial' does not exist on type 'ResponsiveValue<T>'.
+  Property 'initial' does not exist on type 'T'.
+src/components/renderer/constants/responsive-classnames.ts(22,33): error TS2339: Property 'initial' does not exist on type 'ResponsiveValue<T>'.
+  Property 'initial' does not exist on type 'T'.
+src/components/renderer/constants/responsive-classnames.ts(26,13): error TS2339: Property 'md' does not exist on type 'ResponsiveValue<T>'.
+  Property 'md' does not exist on type 'T'.
+src/components/renderer/constants/responsive-classnames.ts(27,39): error TS2339: Property 'md' does not exist on type 'ResponsiveValue<T>'.
+  Property 'md' does not exist on type 'T'.
+src/components/renderer/constants/responsive-classnames.ts(31,13): error TS2339: Property 'lg' does not exist on type 'ResponsiveValue<T>'.
+  Property 'lg' does not exist on type 'T'.
+src/components/renderer/constants/responsive-classnames.ts(32,39): error TS2339: Property 'lg' does not exist on type 'ResponsiveValue<T>'.
+  Property 'lg' does not exist on type 'T'.
+src/components/renderer/constants/responsive-classnames.ts(36,13): error TS2339: Property 'xl' does not exist on type 'ResponsiveValue<T>'.
+  Property 'xl' does not exist on type 'T'.
+src/components/renderer/constants/responsive-classnames.ts(37,39): error TS2339: Property 'xl' does not exist on type 'ResponsiveValue<T>'.
+  Property 'xl' does not exist on type 'T'.
+src/components/renderer/constants/responsive-classnames.ts(41,7): error TS7053: Element implicitly has an 'any' type because expression of type '"2xl"' can't be used to index type 'ResponsiveValue<T>'.
+  Property '2xl' does not exist on type 'ResponsiveValue<T>'.
+src/components/renderer/constants/responsive-classnames.ts(42,34): error TS7053: Element implicitly has an 'any' type because expression of type '"2xl"' can't be used to index type 'ResponsiveValue<T>'.
+  Property '2xl' does not exist on type 'ResponsiveValue<T>'.
+src/components/renderer/constants/responsive.ts(52,5): error TS2322: Type 'NonNullable<T> | null' is not assignable to type 'T'.
+  'T' could be instantiated with an arbitrary type which could be unrelated to 'NonNullable<T> | null'.
+src/components/renderer/constants/responsive.ts(95,11): error TS2367: This comparison appears to be unintentional because the types 'Breakpoint' and '"initial"' have no overlap.
+src/components/renderer/constants/responsive.ts(126,9): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type 'CSSProperties'.
+  No index signature with a parameter of type 'string' was found on type 'CSSProperties'.
+src/components/renderer/constants/responsive.ts(131,13): error TS2367: This comparison appears to be unintentional because the types 'Breakpoint' and '"initial"' have no overlap.
+src/components/renderer/constants/responsive.ts(142,7): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type 'CSSProperties'.
+  No index signature with a parameter of type 'string' was found on type 'CSSProperties'.
+src/components/renderer/constants/responsive.ts(169,11): error TS2367: This comparison appears to be unintentional because the types 'Breakpoint' and '"initial"' have no overlap.
+src/components/renderer/constants/responsive.ts(229,11): error TS2367: This comparison appears to be unintentional because the types 'Breakpoint' and '"initial"' have no overlap.
+src/components/renderer/constants/responsive.ts(254,7): error TS2322: Type '{ initial?: "none" | "grid" | "block" | "flex" | undefined; sm?: "none" | "grid" | "block" | "flex" | undefined; md?: "none" | "grid" | "block" | "flex" | undefined; lg?: "none" | "grid" | "block" | "flex" | undefined; xl?: "none" | ... 3 more ... | undefined; "2xl"?: "none" | ... 3 more ... | undefined; } | undefined' is not assignable to type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+src/components/renderer/constants/responsive.ts(361,52): error TS2322: Type 'undefined' is not assignable to type 'ResponsiveValue<T>'.
+src/components/renderer/form-renderer.integration.test.tsx(27,23): error TS2741: Property 'messageKey' is missing in type '{ type: string; }' but required in type 'ValidationRule'.
+src/components/renderer/form-renderer.integration.test.tsx(49,9): error TS2353: Object literal may only specify known properties, and 'field' does not exist in type 'FieldCondition'.
+src/components/renderer/form-renderer.integration.test.tsx(67,13): error TS2339: Property 'result' does not exist on type 'RenderResult<typeof import("/Users/trung.ngo/Documents/projects/dop-fe/node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/types/queries"), HTMLElement, HTMLElement>'.
+src/components/renderer/form-renderer.integration.test.tsx(193,25): error TS2741: Property 'messageKey' is missing in type '{ type: string; }' but required in type 'ValidationRule'.
+src/components/renderer/form-renderer.integration.test.tsx(202,25): error TS2741: Property 'messageKey' is missing in type '{ type: string; value: number; }' but required in type 'ValidationRule'.
+src/components/renderer/form-renderer.integration.test.tsx(308,11): error TS2353: Object literal may only specify known properties, and 'field' does not exist in type 'FieldCondition'.
+src/components/renderer/FormRenderer.test.tsx(123,23): error TS2741: Property 'messageKey' is missing in type '{ type: string; }' but required in type 'ValidationRule'.
+src/components/renderer/hooks/useFieldStyling.ts(61,36): error TS2345: Argument of type 'AnimationVariant | undefined' is not assignable to parameter of type '{ type?: "scale" | "bounce" | "slide" | "fade" | undefined; delay?: number | undefined; duration?: number | undefined; } | undefined'.
+  Type 'AnimationVariant' is not assignable to type '{ type?: "scale" | "bounce" | "slide" | "fade" | undefined; delay?: number | undefined; duration?: number | undefined; }'.
+    Types of property 'type' are incompatible.
+      Type '"scale" | "bounce" | "flip" | "slide" | "fade" | undefined' is not assignable to type '"scale" | "bounce" | "slide" | "fade" | undefined'.
+        Type '"flip"' is not assignable to type '"scale" | "bounce" | "slide" | "fade" | undefined'.
+src/components/renderer/layouts/Container.tsx(7,38): error TS2307: Cannot find module '@/types/ui-theme' or its corresponding type declarations.
+src/components/renderer/layouts/Container.tsx(48,42): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{ sm: string; md: string; lg: string; xl: string; full: string; fluid: string; }'.
+src/components/renderer/layouts/Container.tsx(49,42): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{ sm: string; md: string; lg: string; xl: string; full: string; fluid: string; }'.
+src/components/renderer/layouts/Container.tsx(50,42): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{ sm: string; md: string; lg: string; xl: string; full: string; fluid: string; }'.
+src/components/renderer/layouts/Container.tsx(51,42): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{ sm: string; md: string; lg: string; xl: string; full: string; fluid: string; }'.
+src/components/renderer/layouts/Container.tsx(52,41): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{ sm: string; md: string; lg: string; xl: string; full: string; fluid: string; }'.
+src/components/renderer/layouts/Flex.tsx(7,38): error TS2307: Cannot find module '@/types/ui-theme' or its corresponding type declarations.
+src/components/renderer/layouts/Grid.tsx(7,38): error TS2307: Cannot find module '@/types/ui-theme' or its corresponding type declarations.
+src/components/renderer/layouts/Stack.tsx(6,38): error TS2307: Cannot find module '@/types/ui-theme' or its corresponding type declarations.
+src/components/renderer/theme/__tests__/accessibility.test.tsx(21,3): error TS2305: Module '"@/lib/utils/accessibility"' has no exported member 'announce'.
+src/components/renderer/theme/__tests__/accessibility.test.tsx(51,39): error TS2345: Argument of type 'string' is not assignable to parameter of type 'Theme'.
+src/components/renderer/theme/__tests__/accessibility.test.tsx(87,28): error TS2339: Property 'text' does not exist on type 'ThemeColors'.
+src/components/renderer/theme/__tests__/accessibility.test.tsx(88,38): error TS2339: Property 'primary' does not exist on type 'string'.
+src/components/renderer/theme/__tests__/accessibility.test.tsx(91,28): error TS2339: Property 'text' does not exist on type 'ThemeColors'.
+src/components/renderer/theme/__tests__/accessibility.test.tsx(92,38): error TS2339: Property 'primary' does not exist on type 'string'.
+src/components/renderer/theme/__tests__/accessibility.test.tsx(95,28): error TS2339: Property 'text' does not exist on type 'ThemeColors'.
+src/components/renderer/theme/__tests__/accessibility.test.tsx(96,38): error TS2339: Property 'primary' does not exist on type 'string'.
+src/components/renderer/theme/__tests__/accessibility.test.tsx(99,28): error TS2339: Property 'text' does not exist on type 'ThemeColors'.
+src/components/renderer/theme/__tests__/accessibility.test.tsx(100,38): error TS2339: Property 'primary' does not exist on type 'string'.
+src/components/renderer/theme/__tests__/accessibility.test.tsx(102,28): error TS2339: Property 'text' does not exist on type 'ThemeColors'.
+src/components/renderer/theme/__tests__/accessibility.test.tsx(103,28): error TS2339: Property 'text' does not exist on type 'ThemeColors'.
+src/components/renderer/theme/__tests__/accessibility.test.tsx(113,13): error TS2554: Expected 1 arguments, but got 2.
+src/components/renderer/theme/__tests__/accessibility.test.tsx(125,27): error TS2339: Property 'text' does not exist on type 'ThemeColors'.
+src/components/renderer/theme/__tests__/accessibility.test.tsx(126,37): error TS2339: Property 'primary' does not exist on type 'string'.
+src/components/renderer/theme/__tests__/accessibility.test.tsx(129,27): error TS2339: Property 'text' does not exist on type 'ThemeColors'.
+src/components/renderer/theme/__tests__/accessibility.test.tsx(130,37): error TS2339: Property 'primary' does not exist on type 'string'.
+src/components/renderer/theme/__tests__/accessibility.test.tsx(133,27): error TS2339: Property 'text' does not exist on type 'ThemeColors'.
+src/components/renderer/theme/__tests__/accessibility.test.tsx(134,37): error TS2339: Property 'primary' does not exist on type 'string'.
+src/components/renderer/theme/__tests__/accessibility.test.tsx(137,27): error TS2339: Property 'text' does not exist on type 'ThemeColors'.
+src/components/renderer/theme/__tests__/accessibility.test.tsx(138,37): error TS2339: Property 'primary' does not exist on type 'string'.
+src/components/renderer/theme/__tests__/accessibility.test.tsx(140,27): error TS2339: Property 'text' does not exist on type 'ThemeColors'.
+src/components/renderer/theme/__tests__/accessibility.test.tsx(141,27): error TS2339: Property 'text' does not exist on type 'ThemeColors'.
+src/components/renderer/theme/__tests__/accessibility.test.tsx(151,13): error TS2554: Expected 1 arguments, but got 2.
+src/components/renderer/theme/__tests__/accessibility.test.tsx(162,56): error TS2339: Property 'primary' does not exist on type 'string'.
+src/components/renderer/theme/__tests__/accessibility.test.tsx(164,58): error TS2339: Property 'primary' does not exist on type 'string'.
+src/components/renderer/theme/__tests__/accessibility.test.tsx(168,11): error TS2554: Expected 1 arguments, but got 2.
+src/components/renderer/theme/__tests__/accessibility.test.tsx(173,54): error TS2339: Property 'primary' does not exist on type 'string'.
+src/components/renderer/theme/__tests__/accessibility.test.tsx(175,57): error TS2339: Property 'primary' does not exist on type 'string'.
+src/components/renderer/theme/__tests__/accessibility.test.tsx(179,11): error TS2554: Expected 1 arguments, but got 2.
+src/components/renderer/theme/__tests__/accessibility.test.tsx(190,25): error TS2339: Property 'text' does not exist on type 'ThemeColors'.
+src/components/renderer/theme/__tests__/accessibility.test.tsx(190,66): error TS2339: Property 'primary' does not exist on type 'string'.
+src/components/renderer/theme/__tests__/accessibility.test.tsx(191,50): error TS2339: Property 'text' does not exist on type 'ThemeColors'.
+src/components/renderer/theme/__tests__/accessibility.test.tsx(192,59): error TS2339: Property 'primary' does not exist on type 'string'.
+src/components/renderer/theme/__tests__/accessibility.test.tsx(196,13): error TS2554: Expected 1 arguments, but got 2.
+src/components/renderer/theme/__tests__/accessibility.test.tsx(200,24): error TS2339: Property 'text' does not exist on type 'ThemeColors'.
+src/components/renderer/theme/__tests__/accessibility.test.tsx(200,64): error TS2339: Property 'primary' does not exist on type 'string'.
+src/components/renderer/theme/__tests__/accessibility.test.tsx(201,49): error TS2339: Property 'text' does not exist on type 'ThemeColors'.
+src/components/renderer/theme/__tests__/accessibility.test.tsx(202,58): error TS2339: Property 'primary' does not exist on type 'string'.
+src/components/renderer/theme/__tests__/accessibility.test.tsx(206,13): error TS2554: Expected 1 arguments, but got 2.
+src/components/renderer/theme/__tests__/accessibility.test.tsx(215,22): error TS2339: Property 'text' does not exist on type 'ThemeColors'.
+src/components/renderer/theme/__tests__/accessibility.test.tsx(215,62): error TS2339: Property 'primary' does not exist on type 'string'.
+src/components/renderer/theme/__tests__/accessibility.test.tsx(216,49): error TS2339: Property 'text' does not exist on type 'ThemeColors'.
+src/components/renderer/theme/__tests__/accessibility.test.tsx(217,58): error TS2339: Property 'primary' does not exist on type 'string'.
+src/components/renderer/theme/__tests__/accessibility.test.tsx(221,11): error TS2554: Expected 1 arguments, but got 2.
+src/components/renderer/theme/__tests__/accessibility.test.tsx(381,9): error TS2345: Argument of type 'KeyboardEvent' is not assignable to parameter of type 'KeyboardEvent<Element>'.
+  Type 'KeyboardEvent' is missing the following properties from type 'KeyboardEvent<Element>': locale, nativeEvent, isDefaultPrevented, isPropagationStopped, persist
+src/components/renderer/theme/__tests__/accessibility.test.tsx(386,9): error TS2345: Argument of type 'KeyboardEvent' is not assignable to parameter of type 'KeyboardEvent<Element>'.
+  Type 'KeyboardEvent' is missing the following properties from type 'KeyboardEvent<Element>': locale, nativeEvent, isDefaultPrevented, isPropagationStopped, persist
+src/components/renderer/theme/__tests__/accessibility.test.tsx(419,47): error TS7006: Parameter 'message' implicitly has an 'any' type.
+src/components/renderer/theme/__tests__/accessibility.test.tsx(419,56): error TS7006: Parameter 'priority' implicitly has an 'any' type.
+src/components/renderer/theme/__tests__/accessibility.test.tsx(547,9): error TS2554: Expected 1 arguments, but got 2.
+src/components/renderer/theme/__tests__/accessibility.test.tsx(657,21): error TS2339: Property 'text' does not exist on type 'ThemeColors'.
+src/components/renderer/theme/__tests__/accessibility.test.tsx(657,62): error TS2339: Property 'primary' does not exist on type 'string'.
+src/components/renderer/theme/__tests__/accessibility.test.tsx(658,46): error TS2339: Property 'text' does not exist on type 'ThemeColors'.
+src/components/renderer/theme/__tests__/accessibility.test.tsx(659,55): error TS2339: Property 'primary' does not exist on type 'string'.
+src/components/renderer/theme/__tests__/accessibility.test.tsx(666,20): error TS2339: Property 'text' does not exist on type 'ThemeColors'.
+src/components/renderer/theme/__tests__/accessibility.test.tsx(666,60): error TS2339: Property 'primary' does not exist on type 'string'.
+src/components/renderer/theme/__tests__/accessibility.test.tsx(667,45): error TS2339: Property 'text' does not exist on type 'ThemeColors'.
+src/components/renderer/theme/__tests__/accessibility.test.tsx(668,54): error TS2339: Property 'primary' does not exist on type 'string'.
+src/components/renderer/theme/__tests__/lazy-loading.test.tsx(120,10): error TS7017: Element implicitly has an 'any' type because type 'typeof globalThis' has no index signature.
+src/components/renderer/theme/__tests__/lazy-loading.test.tsx(416,24): error TS7006: Parameter 'theme' implicitly has an 'any' type.
+src/components/renderer/theme/__tests__/migration-helper.test.tsx(13,8): error TS2307: Cannot find module '../migration-helper' or its corresponding type declarations.
+src/components/renderer/theme/__tests__/migration-helper.test.tsx(117,19): error TS2540: Cannot assign to 'NODE_ENV' because it is a read-only property.
+src/components/renderer/theme/__tests__/migration-helper.test.tsx(130,19): error TS2540: Cannot assign to 'NODE_ENV' because it is a read-only property.
+src/components/renderer/theme/__tests__/migration-helper.test.tsx(135,19): error TS2540: Cannot assign to 'NODE_ENV' because it is a read-only property.
+src/components/renderer/theme/__tests__/migration-helper.test.tsx(147,19): error TS2540: Cannot assign to 'NODE_ENV' because it is a read-only property.
+src/components/renderer/theme/__tests__/migration-helper.test.tsx(219,19): error TS2540: Cannot assign to 'NODE_ENV' because it is a read-only property.
+src/components/renderer/theme/__tests__/migration-helper.test.tsx(233,19): error TS2540: Cannot assign to 'NODE_ENV' because it is a read-only property.
+src/components/renderer/theme/__tests__/performance.test.tsx(78,11): error TS2353: Object literal may only specify known properties, and 'destructiveForeground' does not exist in type 'ThemeColors'.
+src/components/renderer/theme/__tests__/performance.test.tsx(99,11): error TS2353: Object literal may only specify known properties, and 'destructiveForeground' does not exist in type 'ThemeColors'.
+src/components/renderer/theme/__tests__/security.test.tsx(168,15): error TS2353: Object literal may only specify known properties, and 'destructiveForeground' does not exist in type 'ThemeColors'.
+src/components/renderer/theme/__tests__/security.test.tsx(189,15): error TS2353: Object literal may only specify known properties, and 'destructiveForeground' does not exist in type 'ThemeColors'.
+src/components/renderer/theme/__tests__/security.test.tsx(249,15): error TS2353: Object literal may only specify known properties, and 'destructiveForeground' does not exist in type 'ThemeColors'.
+src/components/renderer/theme/__tests__/security.test.tsx(270,15): error TS2353: Object literal may only specify known properties, and 'destructiveForeground' does not exist in type 'ThemeColors'.
+src/components/renderer/theme/__tests__/security.test.tsx(310,15): error TS2353: Object literal may only specify known properties, and 'destructiveForeground' does not exist in type 'ThemeColors'.
+src/components/renderer/theme/__tests__/security.test.tsx(331,15): error TS2353: Object literal may only specify known properties, and 'destructiveForeground' does not exist in type 'ThemeColors'.
+src/components/renderer/theme/__tests__/security.test.tsx(372,15): error TS2353: Object literal may only specify known properties, and 'destructiveForeground' does not exist in type 'ThemeColors'.
+src/components/renderer/theme/__tests__/security.test.tsx(393,15): error TS2353: Object literal may only specify known properties, and 'destructiveForeground' does not exist in type 'ThemeColors'.
+src/components/renderer/theme/__tests__/security.test.tsx(443,15): error TS2353: Object literal may only specify known properties, and 'destructiveForeground' does not exist in type 'ThemeColors'.
+src/components/renderer/theme/__tests__/security.test.tsx(464,15): error TS2353: Object literal may only specify known properties, and 'destructiveForeground' does not exist in type 'ThemeColors'.
+src/components/renderer/theme/__tests__/security.test.tsx(898,13): error TS2353: Object literal may only specify known properties, and 'destructiveForeground' does not exist in type 'ThemeColors'.
+src/components/renderer/theme/__tests__/security.test.tsx(919,13): error TS2353: Object literal may only specify known properties, and 'destructiveForeground' does not exist in type 'ThemeColors'.
+src/components/renderer/theme/__tests__/storage-migration.test.tsx(12,8): error TS2307: Cannot find module '@jest/globals' or its corresponding type declarations.
+src/components/renderer/theme/__tests__/storage-migration.test.tsx(17,8): error TS2307: Cannot find module '../storage-migration' or its corresponding type declarations.
+src/components/renderer/theme/__tests__/storage-migration.test.tsx(168,12): error TS7006: Parameter 'call' implicitly has an 'any' type.
+src/components/renderer/theme/__tests__/storage-migration.test.tsx(209,12): error TS7006: Parameter 'call' implicitly has an 'any' type.
+src/components/renderer/theme/__tests__/storage-migration.test.tsx(338,16): error TS7006: Parameter 'call' implicitly has an 'any' type.
+src/components/renderer/theme/__tests__/storage-migration.test.tsx(368,16): error TS7006: Parameter 'call' implicitly has an 'any' type.
+src/components/renderer/theme/__tests__/storage-migration.test.tsx(407,16): error TS7006: Parameter 'call' implicitly has an 'any' type.
+src/components/renderer/theme/__tests__/theme-provider.optimization.test.tsx(63,47): error TS2339: Property 'mockClear' does not exist on type '(...tokens: string[]) => void'.
+src/components/renderer/theme/__tests__/theme-provider.optimization.test.tsx(64,44): error TS2339: Property 'mockClear' does not exist on type '(...tokens: string[]) => void'.
+src/components/renderer/theme/__tests__/theme-provider.optimization.test.tsx(65,43): error TS2339: Property 'mockClear' does not exist on type '(qualifiedName: string, value: string) => void'.
+src/components/renderer/theme/__tests__/theme-provider.optimization.test.tsx(66,46): error TS2339: Property 'mockClear' does not exist on type '(qualifiedName: string) => void'.
+src/components/renderer/theme/__tests__/theme-provider.optimization.test.tsx(67,43): error TS2339: Property 'mockClear' does not exist on type '(qualifiedName: string) => string | null'.
+src/components/renderer/theme/__tests__/theme-provider.optimization.test.tsx(146,45): error TS2339: Property 'mockClear' does not exist on type '(qualifiedName: string, value: string) => void'.
+src/components/renderer/theme/__tests__/theme-provider.optimization.test.tsx(274,45): error TS2339: Property 'mockClear' does not exist on type '(qualifiedName: string, value: string) => void'.
+src/components/renderer/theme/__tests__/theme-provider.optimization.test.tsx(355,45): error TS2339: Property 'mockClear' does not exist on type '(qualifiedName: string, value: string) => void'.
+src/components/renderer/theme/__tests__/unified-provider.test.tsx(5,41): error TS5097: An import path can only end with a '.tsx' extension when 'allowImportingTsExtensions' is enabled.
+src/components/renderer/theme/init.ts(1,10): error TS2305: Module '"./themes"' has no exported member 'initializeThemes'.
+src/components/renderer/theme/lazy-loader.ts(1,34): error TS2307: Cannot find module '../types' or its corresponding type declarations.
+src/components/renderer/theme/utils.ts(155,44): error TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+src/components/renderer/utils/form-class-names.test.ts(80,9): error TS2322: Type 'ResponsiveValue<number>' is not assignable to type 'ResponsiveValue<string> | undefined'.
+  Type 'number' is not assignable to type 'ResponsiveValue<string> | undefined'.
+src/components/renderer/utils/form-class-names.test.ts(94,7): error TS2820: Type '"outlined"' is not assignable to type '"link" | "outline" | "ghost" | "solid" | undefined'. Did you mean '"outline"'?
+src/components/renderer/utils/form-class-names.test.ts(112,7): error TS2322: Type '"flex flex-col gap-4"' is not assignable to type '"grid" | "block" | "flex" | LayoutProps | undefined'.
+src/components/renderer/utils/form-class-names.test.ts(126,7): error TS2322: Type '"p-4"' is not assignable to type 'keyof ThemeSpacing | undefined'.
+src/components/renderer/utils/form-class-names.test.ts(127,7): error TS2322: Type '"m-2"' is not assignable to type 'keyof ThemeSpacing | undefined'.
+src/components/tools/SavingsCalculator.tsx(323,21): error TS2322: Type '{ id: string; min: number; max: number; step: number; value: number[]; onValueChange: (value: number[]) => void; className: string; }' is not assignable to type 'IntrinsicAttributes & ISliderProps'.
+  Property 'id' does not exist on type 'IntrinsicAttributes & ISliderProps'.
+src/components/ui/button-group/button-group.stories.tsx(147,41): error TS2322: Type '{ children: Element[]; className: string; variant: string; }' is not assignable to type 'IntrinsicAttributes & ClassAttributes<HTMLDivElement> & HTMLAttributes<HTMLDivElement> & VariantProps<...>'.
+  Property 'variant' does not exist on type 'IntrinsicAttributes & ClassAttributes<HTMLDivElement> & HTMLAttributes<HTMLDivElement> & VariantProps<...>'.
+src/components/ui/empty/empty.stories.tsx(17,5): error TS2353: Object literal may only specify known properties, and 'description' does not exist in type 'Partial<ArgTypes<ClassAttributes<HTMLDivElement> & HTMLAttributes<HTMLDivElement>>>'.
+src/components/ui/empty/empty.stories.tsx(43,5): error TS2353: Object literal may only specify known properties, and 'description' does not exist in type 'Partial<ClassAttributes<HTMLDivElement> & HTMLAttributes<HTMLDivElement>>'.
+src/components/ui/empty/empty.stories.tsx(50,5): error TS2353: Object literal may only specify known properties, and 'image' does not exist in type 'Partial<ClassAttributes<HTMLDivElement> & HTMLAttributes<HTMLDivElement>>'.
+src/components/ui/empty/empty.stories.tsx(59,5): error TS2353: Object literal may only specify known properties, and 'image' does not exist in type 'Partial<ClassAttributes<HTMLDivElement> & HTMLAttributes<HTMLDivElement>>'.
+src/components/ui/empty/empty.stories.tsx(68,5): error TS2353: Object literal may only specify known properties, and 'image' does not exist in type 'Partial<ClassAttributes<HTMLDivElement> & HTMLAttributes<HTMLDivElement>>'.
+src/components/ui/empty/empty.stories.tsx(76,7): error TS2322: Type '{ action: any; ref?: Ref<HTMLDivElement> | undefined; key?: Key | null | undefined; defaultChecked?: boolean | undefined; defaultValue?: string | number | readonly string[] | undefined; ... 276 more ...; onTransitionStartCapture?: TransitionEventHandler<...> | undefined; }' is not assignable to type 'IntrinsicAttributes & ClassAttributes<HTMLDivElement> & HTMLAttributes<HTMLDivElement>'.
+  Property 'action' does not exist on type 'IntrinsicAttributes & ClassAttributes<HTMLDivElement> & HTMLAttributes<HTMLDivElement>'.
+src/components/ui/empty/empty.stories.tsx(77,14): error TS2339: Property 'action' does not exist on type 'ClassAttributes<HTMLDivElement> & HTMLAttributes<HTMLDivElement>'.
+src/components/ui/empty/empty.stories.tsx(79,19): error TS2339: Property 'action' does not exist on type 'ClassAttributes<HTMLDivElement> & HTMLAttributes<HTMLDivElement>'.
+src/components/ui/empty/empty.stories.tsx(90,5): error TS2353: Object literal may only specify known properties, and 'image' does not exist in type 'Partial<ClassAttributes<HTMLDivElement> & HTMLAttributes<HTMLDivElement>>'.
+src/components/ui/empty/empty.stories.tsx(113,17): error TS2322: Type '{ image: string; title: string; description: string; action: string; actionButton: Element; }' is not assignable to type 'IntrinsicAttributes & ClassAttributes<HTMLDivElement> & HTMLAttributes<HTMLDivElement>'.
+  Property 'image' does not exist on type 'IntrinsicAttributes & ClassAttributes<HTMLDivElement> & HTMLAttributes<HTMLDivElement>'.
+src/components/ui/empty/empty.stories.tsx(130,5): error TS2353: Object literal may only specify known properties, and 'image' does not exist in type 'Partial<ClassAttributes<HTMLDivElement> & HTMLAttributes<HTMLDivElement>>'.
+src/components/ui/empty/empty.stories.tsx(145,5): error TS2353: Object literal may only specify known properties, and 'image' does not exist in type 'Partial<ClassAttributes<HTMLDivElement> & HTMLAttributes<HTMLDivElement>>'.
+src/components/ui/empty/empty.stories.tsx(153,7): error TS2322: Type '{ action: any; ref?: Ref<HTMLDivElement> | undefined; key?: Key | null | undefined; defaultChecked?: boolean | undefined; defaultValue?: string | number | readonly string[] | undefined; ... 276 more ...; onTransitionStartCapture?: TransitionEventHandler<...> | undefined; }' is not assignable to type 'IntrinsicAttributes & ClassAttributes<HTMLDivElement> & HTMLAttributes<HTMLDivElement>'.
+  Property 'action' does not exist on type 'IntrinsicAttributes & ClassAttributes<HTMLDivElement> & HTMLAttributes<HTMLDivElement>'.
+src/components/ui/empty/empty.stories.tsx(154,14): error TS2339: Property 'action' does not exist on type 'ClassAttributes<HTMLDivElement> & HTMLAttributes<HTMLDivElement>'.
+src/components/ui/empty/empty.stories.tsx(156,19): error TS2339: Property 'action' does not exist on type 'ClassAttributes<HTMLDivElement> & HTMLAttributes<HTMLDivElement>'.
+src/components/ui/empty/empty.stories.tsx(167,5): error TS2353: Object literal may only specify known properties, and 'image' does not exist in type 'Partial<ClassAttributes<HTMLDivElement> & HTMLAttributes<HTMLDivElement>>'.
+src/components/ui/empty/empty.stories.tsx(178,5): error TS2353: Object literal may only specify known properties, and 'description' does not exist in type 'Partial<ClassAttributes<HTMLDivElement> & HTMLAttributes<HTMLDivElement>>'.
+src/components/ui/select-group/SelectGroup.stories.tsx(176,10): error TS2741: Property 'options' is missing in type '{ value: string; onChange: (value: string) => void; }' but required in type 'ISelectGroupProps'.
+src/components/ui/slider/slider.stories.tsx(33,5): error TS2353: Object literal may only specify known properties, and 'defaultValue' does not exist in type 'Partial<ISliderProps>'.
+src/components/ui/slider/slider.stories.tsx(43,5): error TS2353: Object literal may only specify known properties, and 'defaultValue' does not exist in type 'Partial<ISliderProps>'.
+src/components/ui/slider/slider.stories.tsx(52,5): error TS2353: Object literal may only specify known properties, and 'defaultValue' does not exist in type 'Partial<ISliderProps>'.
+src/components/ui/spinner/spinner.stories.tsx(13,5): error TS2353: Object literal may only specify known properties, and 'size' does not exist in type 'Partial<ArgTypes<SVGProps<SVGSVGElement>>>'.
+src/components/ui/spinner/spinner.stories.tsx(44,16): error TS2322: Type '{ size: string; }' is not assignable to type 'IntrinsicAttributes & SVGProps<SVGSVGElement>'.
+  Property 'size' does not exist on type 'IntrinsicAttributes & SVGProps<SVGSVGElement>'.
+src/components/ui/spinner/spinner.stories.tsx(45,16): error TS2322: Type '{ size: string; }' is not assignable to type 'IntrinsicAttributes & SVGProps<SVGSVGElement>'.
+  Property 'size' does not exist on type 'IntrinsicAttributes & SVGProps<SVGSVGElement>'.
+src/components/ui/spinner/spinner.stories.tsx(46,16): error TS2322: Type '{ size: string; }' is not assignable to type 'IntrinsicAttributes & SVGProps<SVGSVGElement>'.
+  Property 'size' does not exist on type 'IntrinsicAttributes & SVGProps<SVGSVGElement>'.
+src/components/ui/spinner/spinner.stories.tsx(47,16): error TS2322: Type '{ size: string; }' is not assignable to type 'IntrinsicAttributes & SVGProps<SVGSVGElement>'.
+  Property 'size' does not exist on type 'IntrinsicAttributes & SVGProps<SVGSVGElement>'.
+src/components/ui/spinner/spinner.stories.tsx(74,18): error TS2322: Type '{ size: string; }' is not assignable to type 'IntrinsicAttributes & SVGProps<SVGSVGElement>'.
+  Property 'size' does not exist on type 'IntrinsicAttributes & SVGProps<SVGSVGElement>'.
+src/components/ui/spinner/spinner.stories.tsx(78,18): error TS2322: Type '{ size: string; }' is not assignable to type 'IntrinsicAttributes & SVGProps<SVGSVGElement>'.
+  Property 'size' does not exist on type 'IntrinsicAttributes & SVGProps<SVGSVGElement>'.
+src/components/ui/spinner/spinner.stories.tsx(90,18): error TS2322: Type '{ size: string; color: string; }' is not assignable to type 'IntrinsicAttributes & SVGProps<SVGSVGElement>'.
+  Property 'size' does not exist on type 'IntrinsicAttributes & SVGProps<SVGSVGElement>'.
+src/components/ui/spinner/spinner.stories.tsx(97,18): error TS2322: Type '{ size: string; }' is not assignable to type 'IntrinsicAttributes & SVGProps<SVGSVGElement>'.
+  Property 'size' does not exist on type 'IntrinsicAttributes & SVGProps<SVGSVGElement>'.
+src/components/ui/spinner/spinner.stories.tsx(109,18): error TS2322: Type '{ size: string; }' is not assignable to type 'IntrinsicAttributes & SVGProps<SVGSVGElement>'.
+  Property 'size' does not exist on type 'IntrinsicAttributes & SVGProps<SVGSVGElement>'.
+src/components/ui/spinner/spinner.stories.tsx(124,18): error TS2322: Type '{ size: string; }' is not assignable to type 'IntrinsicAttributes & SVGProps<SVGSVGElement>'.
+  Property 'size' does not exist on type 'IntrinsicAttributes & SVGProps<SVGSVGElement>'.
+src/components/ui/spinner/spinner.stories.tsx(139,41): error TS2322: Type '{ className: string; size: string; }' is not assignable to type 'IntrinsicAttributes & SVGProps<SVGSVGElement>'.
+  Property 'size' does not exist on type 'IntrinsicAttributes & SVGProps<SVGSVGElement>'.
+src/components/ui/spinner/spinner.stories.tsx(142,41): error TS2322: Type '{ className: string; size: string; }' is not assignable to type 'IntrinsicAttributes & SVGProps<SVGSVGElement>'.
+  Property 'size' does not exist on type 'IntrinsicAttributes & SVGProps<SVGSVGElement>'.
+src/components/ui/spinner/spinner.stories.tsx(167,24): error TS2322: Type '{ size: string; color: string; className: string; }' is not assignable to type 'IntrinsicAttributes & SVGProps<SVGSVGElement>'.
+  Property 'size' does not exist on type 'IntrinsicAttributes & SVGProps<SVGSVGElement>'.
+src/components/user-onboarding/builders/base-field-builder.ts(109,17): error TS18048: 'field.props' is possibly 'undefined'.
+src/components/user-onboarding/builders/base-field-builder.ts(132,15): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{ readonly DEFAULT: ComponentVariant; readonly LARGE: ComponentVariant; readonly COMPACT: ComponentVariant; readonly FULL_WIDTH: ComponentVariant; }'.
+src/components/user-onboarding/builders/base-field-builder.ts(133,15): error TS18048: 'field.props' is possibly 'undefined'.
+src/components/user-onboarding/builders/base-field-builder.ts(135,15): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{ readonly FADE_IN: AnimationVariant; readonly SLIDE_UP: AnimationVariant; readonly SCALE_IN: AnimationVariant; readonly BOUNCE_IN: AnimationVariant; }'.
+src/components/user-onboarding/builders/base-field-builder.ts(136,15): error TS18048: 'field.props' is possibly 'undefined'.
+src/components/user-onboarding/builders/base-field-builder.ts(138,15): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{ readonly DEFAULT: { readonly display: "block"; readonly padding: "p-2"; }; readonly COMPACT: { readonly display: "block"; readonly padding: "p-1"; }; readonly SPACIOUS: { readonly display: "block"; readonly padding: "p-4"; }; }'.
+src/components/user-onboarding/builders/base-field-builder.ts(139,15): error TS18048: 'field.props' is possibly 'undefined'.
+src/components/user-onboarding/components/onboarding-form.stories.tsx(16,5): error TS2741: Property 'page' is missing in type '{ id: string; useEkyc: false; sendOtp: false; createdAt: Date; updatedAt: Date; fields: any; }' but required in type 'MappedStep'.
+src/components/user-onboarding/components/onboarding-form.stories.tsx(40,5): error TS2741: Property 'page' is missing in type '{ id: string; useEkyc: true; sendOtp: false; createdAt: Date; updatedAt: Date; fields: any; }' but required in type 'MappedStep'.
+src/components/user-onboarding/components/onboarding-form.stories.tsx(54,5): error TS2741: Property 'page' is missing in type '{ id: string; useEkyc: false; sendOtp: false; createdAt: Date; updatedAt: Date; fields: any; }' but required in type 'MappedStep'.
+src/components/user-onboarding/hooks/use-step-config.ts(86,5): error TS2353: Object literal may only specify known properties, and 'leftIcon' does not exist in type 'Partial<ConfirmationProps>'.
+src/components/user-onboarding/hooks/use-step-config.ts(150,14): error TS2339: Property 'title' does not exist on type 'MappedStep'.
+src/components/user-onboarding/utils/field-generation.ts(22,28): error TS2339: Property 'disabled' does not exist on type '{ visible: boolean; required: boolean; } | { visible: boolean; required: boolean; } | { visible: boolean; required: boolean; } | { visible: boolean; required: boolean; } | { visible: boolean; required: boolean; } | ... 9 more ... | { ...; }'.
+  Property 'disabled' does not exist on type '{ visible: boolean; required: boolean; }'.
+src/components/user-onboarding/utils/step-helpers.ts(18,46): error TS2345: Argument of type 'readonly [FieldType.FULL_NAME, FieldType.EMAIL, FieldType.PHONE_NUMBER, FieldType.GENDER] | readonly [FieldType.NATIONAL_ID, FieldType.SECOND_NATIONAL_ID, FieldType.DATE_OF_BIRTH, FieldType.LOCATION] | readonly [...] | readonly [...] | readonly [...]' is not assignable to parameter of type 'FieldType[]'.
+  The type 'readonly [FieldType.FULL_NAME, FieldType.EMAIL, FieldType.PHONE_NUMBER, FieldType.GENDER]' is 'readonly' and cannot be assigned to the mutable type 'FieldType[]'.
+src/components/user-onboarding/utils/step-helpers.ts(40,46): error TS2345: Argument of type 'readonly [FieldType.FULL_NAME, FieldType.EMAIL, FieldType.PHONE_NUMBER, FieldType.GENDER] | readonly [FieldType.NATIONAL_ID, FieldType.SECOND_NATIONAL_ID, FieldType.DATE_OF_BIRTH, FieldType.LOCATION] | readonly [...] | readonly [...] | readonly [...]' is not assignable to parameter of type 'FieldType[]'.
+  The type 'readonly [FieldType.FULL_NAME, FieldType.EMAIL, FieldType.PHONE_NUMBER, FieldType.GENDER]' is 'readonly' and cannot be assigned to the mutable type 'FieldType[]'.
+src/components/user-onboarding/utils/step-helpers.ts(59,46): error TS2345: Argument of type 'readonly [FieldType.FULL_NAME, FieldType.EMAIL, FieldType.PHONE_NUMBER, FieldType.GENDER] | readonly [FieldType.NATIONAL_ID, FieldType.SECOND_NATIONAL_ID, FieldType.DATE_OF_BIRTH, FieldType.LOCATION] | readonly [...] | readonly [...] | readonly [...]' is not assignable to parameter of type 'FieldType[]'.
+  The type 'readonly [FieldType.FULL_NAME, FieldType.EMAIL, FieldType.PHONE_NUMBER, FieldType.GENDER]' is 'readonly' and cannot be assigned to the mutable type 'FieldType[]'.
+src/components/user-onboarding/utils/step-helpers.ts(82,46): error TS2345: Argument of type 'readonly [FieldType.FULL_NAME, FieldType.EMAIL, FieldType.PHONE_NUMBER, FieldType.GENDER] | readonly [FieldType.NATIONAL_ID, FieldType.SECOND_NATIONAL_ID, FieldType.DATE_OF_BIRTH, FieldType.LOCATION] | readonly [...] | readonly [...] | readonly [...]' is not assignable to parameter of type 'FieldType[]'.
+  The type 'readonly [FieldType.FULL_NAME, FieldType.EMAIL, FieldType.PHONE_NUMBER, FieldType.GENDER]' is 'readonly' and cannot be assigned to the mutable type 'FieldType[]'.
+src/components/user-onboarding/utils/step-helpers.ts(93,20): error TS2339: Property 'optional' does not exist on type 'MappedStep'.
+src/components/user-onboarding/utils/step-helpers.ts(180,20): error TS2339: Property 'optional' does not exist on type 'MappedStep'.
+src/components/wrappers/CustomConfirmation.tsx(57,9): error TS2322: Type '((fieldType: FieldType, currentValue: any) => void) | undefined' is not assignable to type '((fieldType: FieldType | null, currentValue: any) => void) | undefined'.
+  Type '(fieldType: FieldType, currentValue: any) => void' is not assignable to type '(fieldType: FieldType | null, currentValue: any) => void'.
+    Types of parameters 'fieldType' and 'fieldType' are incompatible.
+      Type 'FieldType | null' is not assignable to type 'FieldType'.
+        Type 'null' is not assignable to type 'FieldType'.
+src/configs/DefaultFieldConfig.ts(5,33): error TS2307: Cannot find module '@/types/data-driven-ui' or its corresponding type declarations.
+src/hooks/__tests__/use-ekyc-config.test.ts(309,5): error TS2454: Variable 'resolveFetch' is used before being assigned.
+src/hooks/__tests__/use-submit-ekyc-result.test.ts(801,5): error TS2454: Variable 'resolveSubmit' is used before being assigned.
+src/hooks/api/use-timeout-error.ts(179,5): error TS2448: Block-scoped variable 'canRetryWithCount' used before its declaration.
+src/hooks/api/use-timeout-error.ts(179,5): error TS2454: Variable 'canRetryWithCount' is used before being assigned.
+src/hooks/consent/__tests__/use-config-ids.test.ts(152,5): error TS2454: Variable 'resolveFetch' is used before being assigned.
+src/hooks/consent/__tests__/use-consent-logs.test.ts(314,5): error TS2454: Variable 'resolveFetch' is used before being assigned.
+src/hooks/consent/__tests__/use-consent-version.test.ts(361,5): error TS2454: Variable 'resolveFetch' is used before being assigned.
+src/hooks/consent/__tests__/use-data-categories.test.ts(272,5): error TS2454: Variable 'resolveFetch' is used before being assigned.
+src/hooks/consent/__tests__/use-user-consent.test.ts(191,5): error TS2454: Variable 'resolveFetch' is used before being assigned.
+src/hooks/features/credit-card/use-credit-cards-url-sync.ts(213,5): error TS2344: Type '"setFilters" | "setSearchQuery" | "setSortBy" | "setCurrentPage"' does not satisfy the constraint 'keyof CreditCardsStore'.
+  Type '"setCurrentPage"' is not assignable to type 'keyof CreditCardsStore'.
+src/hooks/features/credit-card/use-credit-cards-url-sync.ts(236,7): error TS18046: 'store.setCurrentPage' is of type 'unknown'.
+src/hooks/features/credit-card/useCreditCardsNavbarTheme.ts(27,9): error TS2322: Type '{ 50: string; 100: string; 200: string; 300: string; 400: string; 500: string; 600: string; 700: string; 800: string; 900: string; 950: string; }' is not assignable to type 'string'.
+src/hooks/features/ekyc/use-autofill.ts(45,40): error TS2339: Property 'completedAt' does not exist on type 'EkycState'.
+src/hooks/features/ekyc/use-autofill.ts(89,5): error TS2322: Type 'Partial<OnboardingFormData> | undefined' is not assignable to type 'Partial<OnboardingFormData> | null'.
+  Type 'undefined' is not assignable to type 'Partial<OnboardingFormData> | null'.
+src/hooks/features/insurance/useInsuranceNavbarTheme.ts(28,9): error TS2322: Type '{ 50: string; 100: string; 200: string; 300: string; 400: string; 500: string; 600: string; 700: string; 800: string; 900: string; 950: string; }' is not assignable to type 'string'.
+src/hooks/features/insurance/useInsuranceTheme.ts(16,16): error TS2345: Argument of type 'string' is not assignable to parameter of type 'Theme'.
+src/hooks/financial/use-status.ts(199,5): error TS2448: Block-scoped variable 'handleSecureStatusUpdate' used before its declaration.
+src/hooks/financial/use-status.ts(199,5): error TS2454: Variable 'handleSecureStatusUpdate' is used before being assigned.
+src/hooks/financial/use-status.ts(202,5): error TS2448: Block-scoped variable 'secureAutoRefresh' used before its declaration.
+src/hooks/financial/use-status.ts(202,5): error TS2454: Variable 'secureAutoRefresh' is used before being assigned.
+src/hooks/financial/use-status.ts(731,11): error TS2345: Argument of type 'import("/Users/trung.ngo/Documents/projects/dop-fe/src/store/use-loan-status-store").NotificationPreferences' is not assignable to parameter of type 'import("/Users/trung.ngo/Documents/projects/dop-fe/src/lib/notifications/loan-notifications").NotificationPreferences'.
+  Type 'NotificationPreferences' is missing the following properties from type 'NotificationPreferences': language, format
+src/hooks/financial/use-status.ts(957,57): error TS2345: Argument of type '{ autoRefresh?: boolean | undefined; refreshInterval?: number | undefined; realTime?: boolean | undefined; autoLoadTimeline?: boolean | undefined; autoLoadDocuments?: boolean | undefined; autoLoadCommunications?: boolean | undefined; } | undefined' is not assignable to parameter of type '{ autoConnect?: boolean | undefined; reconnectInterval?: number | undefined; maxReconnectAttempts?: number | undefined; } | undefined'.
+  Type '{ autoRefresh?: boolean | undefined; refreshInterval?: number | undefined; realTime?: boolean | undefined; autoLoadTimeline?: boolean | undefined; autoLoadDocuments?: boolean | undefined; autoLoadCommunications?: boolean | undefined; }' has no properties in common with type '{ autoConnect?: boolean | undefined; reconnectInterval?: number | undefined; maxReconnectAttempts?: number | undefined; }'.
+src/hooks/form/use-field-visibility.test.ts(32,9): error TS2353: Object literal may only specify known properties, and 'type' does not exist in type 'FieldCondition'.
+src/hooks/form/use-field-visibility.test.ts(46,13): error TS2353: Object literal may only specify known properties, and 'type' does not exist in type 'ComplexCondition'.
+src/hooks/form/use-field-visibility.test.ts(52,13): error TS2353: Object literal may only specify known properties, and 'type' does not exist in type 'ComplexCondition'.
+src/hooks/form/use-field-visibility.test.ts(74,47): error TS7006: Parameter 'condition' implicitly has an 'any' type.
+src/hooks/form/use-field-visibility.test.ts(74,58): error TS7006: Parameter 'values' implicitly has an 'any' type.
+src/hooks/form/use-field-visibility.test.ts(107,47): error TS7006: Parameter 'condition' implicitly has an 'any' type.
+src/hooks/form/use-field-visibility.test.ts(107,58): error TS7006: Parameter 'values' implicitly has an 'any' type.
+src/hooks/form/use-field-visibility.test.ts(135,47): error TS7006: Parameter 'condition' implicitly has an 'any' type.
+src/hooks/form/use-field-visibility.test.ts(135,58): error TS7006: Parameter 'values' implicitly has an 'any' type.
+src/hooks/form/use-field-visibility.test.ts(167,47): error TS7006: Parameter '_condition' implicitly has an 'any' type.
+src/hooks/form/use-field-visibility.test.ts(167,59): error TS7006: Parameter 'values' implicitly has an 'any' type.
+src/hooks/form/use-field-visibility.test.ts(222,47): error TS7006: Parameter 'condition' implicitly has an 'any' type.
+src/hooks/form/use-field-visibility.test.ts(222,58): error TS7006: Parameter 'values' implicitly has an 'any' type.
+src/hooks/form/use-form-processing.test.ts(100,51): error TS2741: Property 'messageKey' is missing in type '{ type: string; }' but required in type 'ValidationRule'.
+src/hooks/form/use-form-validation.test.ts(37,23): error TS2741: Property 'messageKey' is missing in type '{ type: string; }' but required in type 'ValidationRule'.
+src/hooks/form/use-form-validation.test.ts(46,11): error TS2741: Property 'messageKey' is missing in type '{ type: string; }' but required in type 'ValidationRule'.
+src/hooks/form/use-form-validation.test.ts(47,46): error TS2353: Object literal may only specify known properties, and 'message' does not exist in type 'ValidationRule'.
+src/hooks/form/use-form-validation.test.ts(62,23): error TS2741: Property 'messageKey' is missing in type '{ type: string; value: number; }' but required in type 'ValidationRule'.
+src/hooks/form/use-form-validation.test.ts(124,47): error TS7006: Parameter 'condition' implicitly has an 'any' type.
+src/hooks/form/use-form-validation.test.ts(124,58): error TS7006: Parameter 'values' implicitly has an 'any' type.
+src/hooks/otp/use-verification.ts(233,7): error TS2448: Block-scoped variable 'startResendCooldown' used before its declaration.
+src/hooks/otp/use-verification.ts(233,7): error TS2454: Variable 'startResendCooldown' is used before being assigned.
+src/hooks/otp/use-verification.ts(429,5): error TS2448: Block-scoped variable 'startResendCooldown' used before its declaration.
+src/hooks/otp/use-verification.ts(429,5): error TS2454: Variable 'startResendCooldown' is used before being assigned.
+src/hooks/otp/use-verification.ts(458,38): error TS2339: Property 'status' does not exist on type '{ requestId: string; sessionId?: string | undefined; telco: { code: string; name: string; otpLength: 4 | 6; shortCode?: string | undefined; supportsShortCode: boolean; color: string; }; expiry: number; ... 6 more ...; securityInfo?: { ...; } | undefined; }'.
+src/hooks/phone/use-validation-messages.ts(26,11): error TS2304: Cannot find name 'telcos'.
+src/hooks/phone/use-validation-messages.ts(26,51): error TS2304: Cannot find name 'telcos'.
+src/hooks/ui/use-data-table.ts(112,39): error TS2448: Block-scoped variable 'table' used before its declaration.
+src/hooks/ui/use-data-table.ts(112,39): error TS2454: Variable 'table' is used before being assigned.
+src/lib/api/services/consent.test.ts(38,28): error TS2339: Property 'BASE_URL' does not exist on type 'Client<paths, `${string}/${string}`>'.
+src/lib/api/services/consent.test.ts(39,28): error TS2339: Property 'BASE_URL' does not exist on type 'Client<paths, `${string}/${string}`>'.
+src/lib/api/services/consent.test.ts(49,28): error TS2339: Property 'BASE_URL' does not exist on type 'Client<paths, `${string}/${string}`>'.
+src/lib/api/services/consent.test.ts(61,28): error TS2339: Property 'BASE_URL' does not exist on type 'Client<paths, `${string}/${string}`>'.
+src/lib/api/services/consent.test.ts(71,28): error TS2339: Property 'BASE_URL' does not exist on type 'Client<paths, `${string}/${string}`>'.
+src/lib/api/services/consent.test.ts(79,44): error TS2339: Property 'middleware' does not exist on type 'Client<paths, `${string}/${string}`>'.
+src/lib/api/services/consent.test.ts(80,9): error TS18048: 'm.onRequest' is possibly 'undefined'.
+src/lib/api/services/consent.test.ts(89,47): error TS2339: Property 'middleware' does not exist on type 'Client<paths, `${string}/${string}`>'.
+src/lib/api/services/consent.test.ts(90,9): error TS18048: 'm.onRequest' is possibly 'undefined'.
+src/lib/api/services/consent.test.ts(99,45): error TS2339: Property 'middleware' does not exist on type 'Client<paths, `${string}/${string}`>'.
+src/lib/api/services/consent.test.ts(100,9): error TS18048: 'm.onResponse' is possibly 'undefined'.
+src/lib/api/services/consent.test.ts(110,49): error TS2339: Property 'middleware' does not exist on type 'Client<paths, `${string}/${string}`>'.
+src/lib/api/services/consent.test.ts(124,34): error TS2339: Property 'BASE_URL' does not exist on type 'Client<paths, `${string}/${string}`>'.
+src/lib/api/services/consent.test.ts(124,63): error TS2339: Property 'BASE_URL' does not exist on type 'Client<paths, `${string}/${string}`>'.
+src/lib/api/services/consent.test.ts(131,29): error TS2339: Property 'BASE_URL' does not exist on type 'Client<paths, `${string}/${string}`> | Client<paths, `${string}/${string}`>'.
+  Property 'BASE_URL' does not exist on type 'Client<paths, `${string}/${string}`>'.
+src/lib/api/services/consent.test.ts(137,15): error TS2339: Property 'ConsentPaths' does not exist on type 'typeof import("/Users/trung.ngo/Documents/projects/dop-fe/src/lib/api/services/consent")'.
+src/lib/api/services/consent.test.ts(144,15): error TS2339: Property 'ConsentPaths' does not exist on type 'typeof import("/Users/trung.ngo/Documents/projects/dop-fe/src/lib/api/services/consent")'.
+src/lib/api/services/dop.test.ts(38,24): error TS2339: Property 'BASE_URL' does not exist on type 'Client<paths, `${string}/${string}`>'.
+src/lib/api/services/dop.test.ts(39,24): error TS2339: Property 'BASE_URL' does not exist on type 'Client<paths, `${string}/${string}`>'.
+src/lib/api/services/dop.test.ts(49,24): error TS2339: Property 'BASE_URL' does not exist on type 'Client<paths, `${string}/${string}`>'.
+src/lib/api/services/dop.test.ts(59,24): error TS2339: Property 'BASE_URL' does not exist on type 'Client<paths, `${string}/${string}`>'.
+src/lib/api/services/dop.test.ts(69,24): error TS2339: Property 'BASE_URL' does not exist on type 'Client<paths, `${string}/${string}`>'.
+src/lib/api/services/dop.test.ts(77,40): error TS2339: Property 'middleware' does not exist on type 'Client<paths, `${string}/${string}`>'.
+src/lib/api/services/dop.test.ts(78,9): error TS18048: 'm.onRequest' is possibly 'undefined'.
+src/lib/api/services/dop.test.ts(87,43): error TS2339: Property 'middleware' does not exist on type 'Client<paths, `${string}/${string}`>'.
+src/lib/api/services/dop.test.ts(88,9): error TS18048: 'm.onRequest' is possibly 'undefined'.
+src/lib/api/services/dop.test.ts(97,41): error TS2339: Property 'middleware' does not exist on type 'Client<paths, `${string}/${string}`>'.
+src/lib/api/services/dop.test.ts(98,9): error TS18048: 'm.onResponse' is possibly 'undefined'.
+src/lib/api/services/dop.test.ts(108,45): error TS2339: Property 'middleware' does not exist on type 'Client<paths, `${string}/${string}`>'.
+src/lib/api/services/dop.test.ts(122,30): error TS2339: Property 'BASE_URL' does not exist on type 'Client<paths, `${string}/${string}`>'.
+src/lib/api/services/dop.test.ts(122,55): error TS2339: Property 'BASE_URL' does not exist on type 'Client<paths, `${string}/${string}`>'.
+src/lib/api/services/dop.test.ts(129,25): error TS2339: Property 'BASE_URL' does not exist on type 'Client<paths, `${string}/${string}`> | Client<paths, `${string}/${string}`>'.
+  Property 'BASE_URL' does not exist on type 'Client<paths, `${string}/${string}`>'.
+src/lib/api/services/dop.test.ts(135,15): error TS2339: Property 'DopPaths' does not exist on type 'typeof import("/Users/trung.ngo/Documents/projects/dop-fe/src/lib/api/services/dop")'.
+src/lib/api/services/dop.test.ts(142,15): error TS2339: Property 'DopPaths' does not exist on type 'typeof import("/Users/trung.ngo/Documents/projects/dop-fe/src/lib/api/services/dop")'.
+src/lib/api/services/dop.test.ts(194,13): error TS2339: Property 'DopPaths' does not exist on type 'typeof import("/Users/trung.ngo/Documents/projects/dop-fe/src/lib/api/services/dop")'.
+src/lib/api/services/dop.test.ts(203,13): error TS2339: Property 'DopPaths' does not exist on type 'typeof import("/Users/trung.ngo/Documents/projects/dop-fe/src/lib/api/services/dop")'.
+src/lib/api/services/dop.test.ts(212,13): error TS2339: Property 'DopPaths' does not exist on type 'typeof import("/Users/trung.ngo/Documents/projects/dop-fe/src/lib/api/services/dop")'.
+src/lib/builders/__tests__/loan-form-config-builder.test.ts(49,12): error TS2304: Cannot find name 'ISelectBoxOption'.
+src/lib/calculators/__tests__/salary-gross-to-net.test.ts(296,14): error TS18048: 'result.tax.brackets' is possibly 'undefined'.
+src/lib/calculators/__tests__/salary-gross-to-net.test.ts(303,27): error TS18048: 'result.tax.brackets' is possibly 'undefined'.
+src/lib/calculators/__tests__/salary-gross-to-net.test.ts(303,47): error TS18048: 'result.tax.brackets' is possibly 'undefined'.
+src/lib/financial/loan-calculations.ts(444,7): error TS2367: This comparison appears to be unintentional because the types 'LoanType | undefined' and '"reducing_balance"' have no overlap.
+src/lib/financial/loan-calculations.ts(609,5): error TS2322: Type '{ factor: string; impact: string; weight: number; score: number; }[]' is not assignable to type '{ factor: string; impact: "positive" | "negative" | "neutral"; weight: number; score: number; }[]'.
+  Type '{ factor: string; impact: string; weight: number; score: number; }' is not assignable to type '{ factor: string; impact: "positive" | "negative" | "neutral"; weight: number; score: number; }'.
+    Types of property 'impact' are incompatible.
+      Type 'string' is not assignable to type '"positive" | "negative" | "neutral"'.
+src/lib/financial/validation.ts(10,3): error TS2724: '"./calculations"' has no exported member named 'TaxCalculationParams'. Did you mean 'LoanCalculationParams'?
+src/lib/i18n/cache.ts(402,7): error TS2322: Type 'LRUNode<T> | null' is not assignable to type 'LRUNode<T>'.
+  Type 'null' is not assignable to type 'LRUNode<T>'.
+src/lib/i18n/cache.ts(616,15): error TS2484: Export declaration conflicts with exported declaration of 'CacheEntry'.
+src/lib/i18n/cache.ts(616,27): error TS2484: Export declaration conflicts with exported declaration of 'CacheOptions'.
+src/lib/i18n/cache.ts(616,41): error TS2484: Export declaration conflicts with exported declaration of 'CacheStats'.
+src/lib/i18n/cache.ts(616,53): error TS2484: Export declaration conflicts with exported declaration of 'CacheConfig'.
+src/lib/loan-products/matching-algorithm.ts(209,55): error TS2345: Argument of type '"business_owner" | "self_employed" | "unemployed" | "formal" | "informal"' is not assignable to parameter of type '"business_owner" | "self_employed" | "formal" | "informal"'.
+  Type '"unemployed"' is not assignable to type '"business_owner" | "self_employed" | "formal" | "informal"'.
+src/lib/loan-products/matching-algorithm.ts(285,52): error TS2304: Cannot find name 'profile'.
+src/lib/loan-products/matching-algorithm.ts(292,9): error TS2304: Cannot find name 'profile'.
+src/lib/loan-products/matching-algorithm.ts(293,43): error TS2304: Cannot find name 'profile'.
+src/lib/loan-products/vietnamese-compliance.ts(620,7): error TS2322: Type '"regulatory"' is not assignable to type '"eligibility" | "interest_rate" | "disclosure" | "consumer_protection" | "risk_management"'.
+src/lib/loan-products/vietnamese-compliance.ts(913,7): error TS2322: Type 'number | boolean | undefined' is not assignable to type 'boolean'.
+  Type 'undefined' is not assignable to type 'boolean'.
+src/lib/loan-products/vietnamese-compliance.ts(947,9): error TS2304: Cannot find name 'VietnameseLoanCalculator'.
+src/lib/telcos/phone-validation.ts(339,16): error TS2339: Property 'requireKnownTelco' does not exist on type '{ allowPartial: boolean; minLength: number; maxLength: number; requireVietnamese: boolean; } | { allowPartial: boolean; minLength: number; maxLength: number; requireVietnamese: boolean; } | { ...; }'.
+  Property 'requireKnownTelco' does not exist on type '{ allowPartial: boolean; minLength: number; maxLength: number; requireVietnamese: boolean; }'.
+src/lib/theme-performance.ts(108,10): error TS2564: Property 'debugUtils' has no initializer and is not definitely assigned in the constructor.
+src/lib/theme-performance.ts(259,50): error TS2532: Object is possibly 'undefined'.
+src/lib/theme-performance.ts(364,29): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{ "theme-switch": string[]; "dom-update": string[]; validation: string[]; }'.
+  No index signature with a parameter of type 'string' was found on type '{ "theme-switch": string[]; "dom-update": string[]; validation: string[]; }'.
+src/lib/theme-performance.ts(491,44): error TS2532: Object is possibly 'undefined'.
+src/lib/theme-performance.ts(613,24): error TS2683: 'this' implicitly has type 'any' because it does not have a type annotation.
+src/lib/theme-performance.ts(692,15): error TS2341: Property 'config' is private and only accessible within class 'PerformanceMonitor'.
+src/lib/theme-performance.ts(707,13): error TS2341: Property 'performanceMarks' is private and only accessible within class 'PerformanceMonitor'.
+src/lib/theme-performance.ts(719,20): error TS2341: Property 'config' is private and only accessible within class 'PerformanceMonitor'.
+src/lib/theme-performance.ts(721,30): error TS2341: Property 'config' is private and only accessible within class 'PerformanceMonitor'.
+src/lib/theme-performance.ts(776,43): error TS18048: 'monitor.config.slowOperationThreshold' is possibly 'undefined'.
+src/lib/theme-performance.ts(776,51): error TS2341: Property 'config' is private and only accessible within class 'PerformanceMonitor'.
+src/lib/tracking/examples/integration-example.tsx(116,5): error TS2304: Cannot find name 'setAmount'.
+src/lib/tracking/examples/integration-example.tsx(129,26): error TS2304: Cannot find name 'calculateLoan'.
+src/lib/tracking/examples/integration-example.tsx(140,26): error TS2304: Cannot find name 'submitLoanForm'.
+src/lib/tracking/examples/integration-example.tsx(192,26): error TS2304: Cannot find name 'calculateSalary'.
+src/lib/tracking/index.ts(61,9): error TS2304: Cannot find name 'initializeSession'.
+src/lib/tracking/index.ts(67,5): error TS2304: Cannot find name 'updateLastActivity'.
+src/lib/tracking/index.ts(77,15): error TS2304: Cannot find name 'endSession'.
+src/lib/tracking/index.ts(93,7): error TS2304: Cannot find name 'updateLastActivity'.
+src/lib/tracking/index.ts(96,12): error TS2304: Cannot find name 'isSessionValid'.
+src/lib/tracking/index.ts(97,15): error TS2304: Cannot find name 'initializeSession'.
+src/lib/tracking/index.ts(104,11): error TS2304: Cannot find name 'endSession'.
+src/lib/tracking/index.ts(117,5): error TS2552: Cannot find name 'trackEvent'. Did you mean 'TrackEvent'?
+src/lib/tracking/index.ts(118,5): error TS18004: No value exists in scope for the shorthand property 'trackSavingsCalculator'. Either declare one or provide an initializer.
+src/lib/tracking/index.ts(119,5): error TS18004: No value exists in scope for the shorthand property 'trackLoanCalculator'. Either declare one or provide an initializer.
+src/lib/tracking/index.ts(120,5): error TS18004: No value exists in scope for the shorthand property 'trackSalaryCalculator'. Either declare one or provide an initializer.
+src/lib/tracking/index.ts(121,5): error TS18004: No value exists in scope for the shorthand property 'trackGeneric'. Either declare one or provide an initializer.
+src/lib/tracking/index.ts(122,5): error TS18004: No value exists in scope for the shorthand property 'setUserConsent'. Either declare one or provide an initializer.
+src/lib/tracking/index.ts(123,21): error TS2304: Cannot find name 'hasUserConsent'.
+src/lib/tracking/index.ts(124,24): error TS2304: Cannot find name 'hasUserConsent'.
+src/lib/tracking/index.ts(124,45): error TS2304: Cannot find name 'isDNTEnabled'.
+src/lib/tracking/privacy.ts(16,12): error TS2339: Property 'doNotTrack' does not exist on type 'Window & typeof globalThis'.
+src/lib/tracking/privacy.ts(17,15): error TS2551: Property 'msDoNotTrack' does not exist on type 'Navigator'. Did you mean 'doNotTrack'?
+src/lib/tracking/session.ts(32,15): error TS2339: Property 'deviceMemory' does not exist on type 'Navigator'.
+src/lib/verification/__tests__/manager.test.ts(719,9): error TS2578: Unused '@ts-expect-error' directive.
+src/mappers/flowMapper.ts(122,7): error TS2367: This comparison appears to be unintentional because the types '"active" | "inactive" | "archived"' and '"FLOW_STATUS_ACTIVE"' have no overlap.
+src/mappers/onboardingMapper.ts(130,5): error TS2353: Object literal may only specify known properties, and 'domain' does not exist in type '{ flow_id: string; tenant: string; deviece_info: Record<string, never>; tracking_params: Record<string, never>; info: { flow_id: string; step_id: string; phone_number?: string | undefined; ... 15 more ...; credit_status?: "no_bad_debt" | ... 2 more ... | undefined; }; consent_id?: string | undefined; }'.
+src/store/use-auth-store.ts(248,23): error TS2339: Property 'isLocked' does not exist on type 'OTPVerificationState'.
+src/store/use-auth-store.ts(269,50): error TS2339: Property 'verified' does not exist on type '{ requestId: string; sessionId?: string | undefined; telco: { code: string; name: string; otpLength: 4 | 6; shortCode?: string | undefined; supportsShortCode: boolean; color: string; }; expiry: number; ... 6 more ...; securityInfo?: { ...; } | undefined; }'.
+src/store/use-auth-store.ts(311,36): error TS2345: Argument of type 'Date | null' is not assignable to parameter of type 'Date'.
+  Type 'null' is not assignable to type 'Date'.
+src/store/use-auth-store.ts(372,42): error TS18047: 'state.otp.otpSession' is possibly 'null'.
+src/store/use-auth-store.ts(414,30): error TS2339: Property 'status' does not exist on type '{ requestId: string; sessionId?: string | undefined; telco: { code: string; name: string; otpLength: 4 | 6; shortCode?: string | undefined; supportsShortCode: boolean; color: string; }; expiry: number; ... 6 more ...; securityInfo?: { ...; } | undefined; }'.
+src/store/use-auth-store.ts(415,42): error TS2339: Property 'status' does not exist on type '{ requestId: string; sessionId?: string | undefined; telco: { code: string; name: string; otpLength: 4 | 6; shortCode?: string | undefined; supportsShortCode: boolean; color: string; }; expiry: number; ... 6 more ...; securityInfo?: { ...; } | undefined; }'.
+src/store/use-auth-store.ts(421,36): error TS2551: Property 'otpSession' does not exist on type 'AuthState'. Did you mean 'setOTPSession'?
+src/store/use-auth-store.ts(423,33): error TS2551: Property 'otpSession' does not exist on type 'AuthState'. Did you mean 'setOTPSession'?
+src/store/use-auth-store.ts(563,30): error TS2551: Property 'otpSession' does not exist on type 'AuthState'. Did you mean 'setOTPSession'?
+src/store/use-auth-store.ts(565,27): error TS2551: Property 'otpSession' does not exist on type 'AuthState'. Did you mean 'setOTPSession'?
+src/store/use-auth-store.ts(578,30): error TS2551: Property 'otpSession' does not exist on type 'AuthState'. Did you mean 'setOTPSession'?
+src/store/use-auth-store.ts(580,27): error TS2551: Property 'otpSession' does not exist on type 'AuthState'. Did you mean 'setOTPSession'?
+src/store/use-auth-store.ts(604,22): error TS2339: Property 'isLocked' does not exist on type 'OTPVerificationState'.
+src/store/use-auth-store.ts(608,22): error TS2339: Property 'isLocked' does not exist on type 'OTPVerificationState'.
+src/store/use-auth-store.ts(609,36): error TS2339: Property 'isLocked' does not exist on type 'OTPVerificationState'.
+src/store/use-ekyc-store.ts(17,8): error TS2307: Cannot find module '@/lib/api/endpoints/ekyc' or its corresponding type declarations.
+src/store/use-loan-status-store.ts(636,17): error TS2353: Object literal may only specify known properties, and 'name' does not exist in type '{ id: string; initials: string; role: string; department?: string | undefined; }'.
+src/store/use-loan-status-store.ts(776,23): error TS2339: Property 'connectSSE' does not exist on type 'LoanStatusTrackingStore'.
+src/store/use-loan-status-store.ts(790,21): error TS2339: Property 'connectSSE' does not exist on type 'LoanStatusTrackingStore'.
+src/store/use-loan-status-store.ts(798,22): error TS7006: Parameter 'applicationId' implicitly has an 'any' type.
+src/store/use-loan-store.ts(318,13): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(partial: LoanApplicationStore | Partial<LoanApplicationStore> | ((state: LoanApplicationStore) => LoanApplicationStore | Partial<...>), replace?: false | undefined, action?: Action | undefined): unknown', gave the following error.
+    Argument of type '(state: LoanApplicationStore) => { applicationData: { personalInfo: { fullName?: string | undefined; dateOfBirth?: string | undefined; gender?: "male" | "female" | "other" | undefined; ... 11 more ...; residenceStatus?: "other" | ... 3 more ... | undefined; }; ... 5 more ...; metadata?: { ...; } | undefined; }; }' is not assignable to parameter of type 'LoanApplicationStore | Partial<LoanApplicationStore> | ((state: LoanApplicationStore) => LoanApplicationStore | Partial<...>)'.
+      Type '(state: LoanApplicationStore) => { applicationData: { personalInfo: { fullName?: string | undefined; dateOfBirth?: string | undefined; gender?: "male" | "female" | "other" | undefined; ... 11 more ...; residenceStatus?: "other" | ... 3 more ... | undefined; }; ... 5 more ...; metadata?: { ...; } | undefined; }; }' is not assignable to type '(state: LoanApplicationStore) => LoanApplicationStore | Partial<LoanApplicationStore>'.
+        Type '{ applicationData: { personalInfo: { fullName?: string | undefined; dateOfBirth?: string | undefined; gender?: "male" | "female" | "other" | undefined; nationalId?: string | undefined; ... 10 more ...; residenceStatus?: "other" | ... 3 more ... | undefined; }; ... 5 more ...; metadata?: { ...; } | undefined; }; }' is not assignable to type 'LoanApplicationStore | Partial<LoanApplicationStore>'.
+          Type '{ applicationData: { personalInfo: { fullName?: string | undefined; dateOfBirth?: string | undefined; gender?: "male" | "female" | "other" | undefined; nationalId?: string | undefined; ... 10 more ...; residenceStatus?: "other" | ... 3 more ... | undefined; }; ... 5 more ...; metadata?: { ...; } | undefined; }; }' is not assignable to type 'Partial<LoanApplicationStore>'.
+            The types of 'applicationData.personalInfo.fullName' are incompatible between these types.
+              Type 'string | undefined' is not assignable to type 'string'.
+                Type 'undefined' is not assignable to type 'string'.
+  Overload 2 of 2, '(state: LoanApplicationStore | ((state: LoanApplicationStore) => LoanApplicationStore), replace: true, action?: Action | undefined): unknown', gave the following error.
+    Argument of type '(state: LoanApplicationStore) => { applicationData: { personalInfo: { fullName?: string | undefined; dateOfBirth?: string | undefined; gender?: "male" | "female" | "other" | undefined; ... 11 more ...; residenceStatus?: "other" | ... 3 more ... | undefined; }; ... 5 more ...; metadata?: { ...; } | undefined; }; }' is not assignable to parameter of type 'LoanApplicationStore | ((state: LoanApplicationStore) => LoanApplicationStore)'.
+      Type '(state: LoanApplicationStore) => { applicationData: { personalInfo: { fullName?: string | undefined; dateOfBirth?: string | undefined; gender?: "male" | "female" | "other" | undefined; ... 11 more ...; residenceStatus?: "other" | ... 3 more ... | undefined; }; ... 5 more ...; metadata?: { ...; } | undefined; }; }' is not assignable to type '(state: LoanApplicationStore) => LoanApplicationStore'.
+        Type '{ applicationData: { personalInfo: { fullName?: string | undefined; dateOfBirth?: string | undefined; gender?: "male" | "female" | "other" | undefined; nationalId?: string | undefined; ... 10 more ...; residenceStatus?: "other" | ... 3 more ... | undefined; }; ... 5 more ...; metadata?: { ...; } | undefined; }; }' is not assignable to type 'LoanApplicationStore'.
+          Type '{ applicationData: { personalInfo: { fullName?: string | undefined; dateOfBirth?: string | undefined; gender?: "male" | "female" | "other" | undefined; nationalId?: string | undefined; ... 10 more ...; residenceStatus?: "other" | ... 3 more ... | undefined; }; ... 5 more ...; metadata?: { ...; } | undefined; }; }' is missing the following properties from type 'LoanApplicationStoreState': currentStep, totalSteps, stepCompletion, stepValidation, and 6 more.
+src/store/use-loan-store.ts(334,13): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(partial: LoanApplicationStore | Partial<LoanApplicationStore> | ((state: LoanApplicationStore) => LoanApplicationStore | Partial<...>), replace?: false | undefined, action?: Action | undefined): unknown', gave the following error.
+    Argument of type '(state: LoanApplicationStore) => { applicationData: { financialInfo: { monthlyIncomeRange?: string | undefined; exactMonthlyIncome?: number | undefined; incomeSource?: "other" | ... 5 more ... | undefined; ... 5 more ...; assets?: { ...; } | undefined; }; ... 5 more ...; metadata?: { ...; } | undefined; }; }' is not assignable to parameter of type 'LoanApplicationStore | Partial<LoanApplicationStore> | ((state: LoanApplicationStore) => LoanApplicationStore | Partial<...>)'.
+      Type '(state: LoanApplicationStore) => { applicationData: { financialInfo: { monthlyIncomeRange?: string | undefined; exactMonthlyIncome?: number | undefined; incomeSource?: "other" | ... 5 more ... | undefined; ... 5 more ...; assets?: { ...; } | undefined; }; ... 5 more ...; metadata?: { ...; } | undefined; }; }' is not assignable to type '(state: LoanApplicationStore) => LoanApplicationStore | Partial<LoanApplicationStore>'.
+        Type '{ applicationData: { financialInfo: { monthlyIncomeRange?: string | undefined; exactMonthlyIncome?: number; incomeSource?: "other" | "business" | "salary" | "investment" | "rental" | "pension" | undefined; ... 5 more ...; assets?: { ...; } | undefined; }; ... 5 more ...; metadata?: { ...; } | undefined; }; }' is not assignable to type 'LoanApplicationStore | Partial<LoanApplicationStore>'.
+          Type '{ applicationData: { financialInfo: { monthlyIncomeRange?: string | undefined; exactMonthlyIncome?: number; incomeSource?: "other" | "business" | "salary" | "investment" | "rental" | "pension" | undefined; ... 5 more ...; assets?: { ...; } | undefined; }; ... 5 more ...; metadata?: { ...; } | undefined; }; }' is not assignable to type 'Partial<LoanApplicationStore>'.
+            The types of 'applicationData.financialInfo.monthlyIncomeRange' are incompatible between these types.
+              Type 'string | undefined' is not assignable to type 'string'.
+                Type 'undefined' is not assignable to type 'string'.
+  Overload 2 of 2, '(state: LoanApplicationStore | ((state: LoanApplicationStore) => LoanApplicationStore), replace: true, action?: Action | undefined): unknown', gave the following error.
+    Argument of type '(state: LoanApplicationStore) => { applicationData: { financialInfo: { monthlyIncomeRange?: string | undefined; exactMonthlyIncome?: number | undefined; incomeSource?: "other" | ... 5 more ... | undefined; ... 5 more ...; assets?: { ...; } | undefined; }; ... 5 more ...; metadata?: { ...; } | undefined; }; }' is not assignable to parameter of type 'LoanApplicationStore | ((state: LoanApplicationStore) => LoanApplicationStore)'.
+      Type '(state: LoanApplicationStore) => { applicationData: { financialInfo: { monthlyIncomeRange?: string | undefined; exactMonthlyIncome?: number | undefined; incomeSource?: "other" | ... 5 more ... | undefined; ... 5 more ...; assets?: { ...; } | undefined; }; ... 5 more ...; metadata?: { ...; } | undefined; }; }' is not assignable to type '(state: LoanApplicationStore) => LoanApplicationStore'.
+        Type '{ applicationData: { financialInfo: { monthlyIncomeRange?: string | undefined; exactMonthlyIncome?: number; incomeSource?: "other" | "business" | "salary" | "investment" | "rental" | "pension" | undefined; ... 5 more ...; assets?: { ...; } | undefined; }; ... 5 more ...; metadata?: { ...; } | undefined; }; }' is not assignable to type 'LoanApplicationStore'.
+          Type '{ applicationData: { financialInfo: { monthlyIncomeRange?: string | undefined; exactMonthlyIncome?: number | undefined; incomeSource?: "other" | "business" | "salary" | "investment" | "rental" | "pension" | undefined; ... 5 more ...; assets?: { ...; } | undefined; }; ... 5 more ...; metadata?: { ...; } | undefined; ...' is missing the following properties from type 'LoanApplicationStoreState': currentStep, totalSteps, stepCompletion, stepValidation, and 6 more.
+src/store/use-loan-store.ts(350,13): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(partial: LoanApplicationStore | Partial<LoanApplicationStore> | ((state: LoanApplicationStore) => LoanApplicationStore | Partial<...>), replace?: false | undefined, action?: Action | undefined): unknown', gave the following error.
+    Argument of type '(state: LoanApplicationStore) => { applicationData: { employmentInfo: { employmentType?: "student" | "retired" | "self_employed" | "unemployed" | "formal" | "informal" | undefined; ... 8 more ...; businessInfo?: { ...; } | undefined; }; ... 5 more ...; metadata?: { ...; } | undefined; }; }' is not assignable to parameter of type 'LoanApplicationStore | Partial<LoanApplicationStore> | ((state: LoanApplicationStore) => LoanApplicationStore | Partial<...>)'.
+      Type '(state: LoanApplicationStore) => { applicationData: { employmentInfo: { employmentType?: "student" | "retired" | "self_employed" | "unemployed" | "formal" | "informal" | undefined; ... 8 more ...; businessInfo?: { ...; } | undefined; }; ... 5 more ...; metadata?: { ...; } | undefined; }; }' is not assignable to type '(state: LoanApplicationStore) => LoanApplicationStore | Partial<LoanApplicationStore>'.
+        Type '{ applicationData: { employmentInfo: { employmentType?: "student" | "retired" | "self_employed" | "unemployed" | "formal" | "informal" | undefined; employmentStatus?: "full_time" | ... 4 more ... | undefined; ... 7 more ...; businessInfo?: { businessName: string; registrationNumber?: string; businessType: string; ye...' is not assignable to type 'LoanApplicationStore | Partial<LoanApplicationStore>'.
+          Type '{ applicationData: { employmentInfo: { employmentType?: "student" | "retired" | "self_employed" | "unemployed" | "formal" | "informal" | undefined; employmentStatus?: "full_time" | ... 4 more ... | undefined; ... 7 more ...; businessInfo?: { businessName: string; registrationNumber?: string; businessType: string; ye...' is not assignable to type 'Partial<LoanApplicationStore>'.
+            The types of 'applicationData.employmentInfo.employmentType' are incompatible between these types.
+              Type '"student" | "retired" | "self_employed" | "unemployed" | "formal" | "informal" | undefined' is not assignable to type '"student" | "retired" | "self_employed" | "unemployed" | "formal" | "informal"'.
+                Type 'undefined' is not assignable to type '"student" | "retired" | "self_employed" | "unemployed" | "formal" | "informal"'.
+  Overload 2 of 2, '(state: LoanApplicationStore | ((state: LoanApplicationStore) => LoanApplicationStore), replace: true, action?: Action | undefined): unknown', gave the following error.
+    Argument of type '(state: LoanApplicationStore) => { applicationData: { employmentInfo: { employmentType?: "student" | "retired" | "self_employed" | "unemployed" | "formal" | "informal" | undefined; ... 8 more ...; businessInfo?: { ...; } | undefined; }; ... 5 more ...; metadata?: { ...; } | undefined; }; }' is not assignable to parameter of type 'LoanApplicationStore | ((state: LoanApplicationStore) => LoanApplicationStore)'.
+      Type '(state: LoanApplicationStore) => { applicationData: { employmentInfo: { employmentType?: "student" | "retired" | "self_employed" | "unemployed" | "formal" | "informal" | undefined; ... 8 more ...; businessInfo?: { ...; } | undefined; }; ... 5 more ...; metadata?: { ...; } | undefined; }; }' is not assignable to type '(state: LoanApplicationStore) => LoanApplicationStore'.
+        Type '{ applicationData: { employmentInfo: { employmentType?: "student" | "retired" | "self_employed" | "unemployed" | "formal" | "informal" | undefined; employmentStatus?: "full_time" | ... 4 more ... | undefined; ... 7 more ...; businessInfo?: { businessName: string; registrationNumber?: string; businessType: string; ye...' is not assignable to type 'LoanApplicationStore'.
+          Type '{ applicationData: { employmentInfo: { employmentType?: "student" | "retired" | "self_employed" | "unemployed" | "formal" | "informal" | undefined; employmentStatus?: "full_time" | ... 4 more ... | undefined; ... 7 more ...; businessInfo?: { ...; } | undefined; }; ... 5 more ...; metadata?: { ...; } | undefined; }; }' is missing the following properties from type 'LoanApplicationStoreState': currentStep, totalSteps, stepCompletion, stepValidation, and 6 more.
+src/store/use-loan-store.ts(366,13): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(partial: LoanApplicationStore | Partial<LoanApplicationStore> | ((state: LoanApplicationStore) => LoanApplicationStore | Partial<...>), replace?: false | undefined, action?: Action | undefined): unknown', gave the following error.
+    Argument of type '(state: LoanApplicationStore) => { applicationData: { documents: { nationalId?: { frontFile?: File | undefined; backFile?: File | undefined; uploadStatus: "failed" | ... 2 more ... | "uploading"; verificationStatus?: "verified" | ... 2 more ... | undefined; } | undefined; ... 4 more ...; additionalDocuments?: { ...;...' is not assignable to parameter of type 'LoanApplicationStore | Partial<LoanApplicationStore> | ((state: LoanApplicationStore) => LoanApplicationStore | Partial<...>)'.
+      Type '(state: LoanApplicationStore) => { applicationData: { documents: { nationalId?: { frontFile?: File | undefined; backFile?: File | undefined; uploadStatus: "failed" | ... 2 more ... | "uploading"; verificationStatus?: "verified" | ... 2 more ... | undefined; } | undefined; ... 4 more ...; additionalDocuments?: { ...;...' is not assignable to type '(state: LoanApplicationStore) => LoanApplicationStore | Partial<LoanApplicationStore>'.
+        Type '{ applicationData: { documents: { nationalId?: { frontFile?: File; backFile?: File; uploadStatus: "pending" | "uploading" | "completed" | "failed"; verificationStatus?: "pending" | "verified" | "rejected"; } | undefined; ... 4 more ...; additionalDocuments?: { ...; }[] | undefined; }; ... 5 more ...; metadata?: { .....' is not assignable to type 'LoanApplicationStore | Partial<LoanApplicationStore>'.
+          Type '{ applicationData: { documents: { nationalId?: { frontFile?: File; backFile?: File; uploadStatus: "pending" | "uploading" | "completed" | "failed"; verificationStatus?: "pending" | "verified" | "rejected"; } | undefined; ... 4 more ...; additionalDocuments?: { ...; }[] | undefined; }; ... 5 more ...; metadata?: { .....' is not assignable to type 'Partial<LoanApplicationStore>'.
+            The types of 'applicationData.documents.nationalId' are incompatible between these types.
+              Type '{ frontFile?: File | undefined; backFile?: File | undefined; uploadStatus: "failed" | "completed" | "pending" | "uploading"; verificationStatus?: "verified" | "pending" | "rejected" | undefined; } | undefined' is not assignable to type '{ frontFile?: File | undefined; backFile?: File | undefined; uploadStatus: "failed" | "completed" | "pending" | "uploading"; verificationStatus?: "verified" | "pending" | "rejected" | undefined; }'.
+                Type 'undefined' is not assignable to type '{ frontFile?: File | undefined; backFile?: File | undefined; uploadStatus: "failed" | "completed" | "pending" | "uploading"; verificationStatus?: "verified" | "pending" | "rejected" | undefined; }'.
+  Overload 2 of 2, '(state: LoanApplicationStore | ((state: LoanApplicationStore) => LoanApplicationStore), replace: true, action?: Action | undefined): unknown', gave the following error.
+    Argument of type '(state: LoanApplicationStore) => { applicationData: { documents: { nationalId?: { frontFile?: File | undefined; backFile?: File | undefined; uploadStatus: "failed" | ... 2 more ... | "uploading"; verificationStatus?: "verified" | ... 2 more ... | undefined; } | undefined; ... 4 more ...; additionalDocuments?: { ...;...' is not assignable to parameter of type 'LoanApplicationStore | ((state: LoanApplicationStore) => LoanApplicationStore)'.
+      Type '(state: LoanApplicationStore) => { applicationData: { documents: { nationalId?: { frontFile?: File | undefined; backFile?: File | undefined; uploadStatus: "failed" | ... 2 more ... | "uploading"; verificationStatus?: "verified" | ... 2 more ... | undefined; } | undefined; ... 4 more ...; additionalDocuments?: { ...;...' is not assignable to type '(state: LoanApplicationStore) => LoanApplicationStore'.
+        Type '{ applicationData: { documents: { nationalId?: { frontFile?: File; backFile?: File; uploadStatus: "pending" | "uploading" | "completed" | "failed"; verificationStatus?: "pending" | "verified" | "rejected"; } | undefined; ... 4 more ...; additionalDocuments?: { ...; }[] | undefined; }; ... 5 more ...; metadata?: { .....' is not assignable to type 'LoanApplicationStore'.
+          Type '{ applicationData: { documents: { nationalId?: { frontFile?: File | undefined; backFile?: File | undefined; uploadStatus: "failed" | "completed" | "pending" | "uploading"; verificationStatus?: "verified" | ... 2 more ... | undefined; } | undefined; ... 4 more ...; additionalDocuments?: { ...; }[] | undefined; }; ......' is missing the following properties from type 'LoanApplicationStoreState': currentStep, totalSteps, stepCompletion, stepValidation, and 6 more.
+src/store/use-loan-store.ts(382,13): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(partial: LoanApplicationStore | Partial<LoanApplicationStore> | ((state: LoanApplicationStore) => LoanApplicationStore | Partial<...>), replace?: false | undefined, action?: Action | undefined): unknown', gave the following error.
+    Argument of type '(state: LoanApplicationStore) => { applicationData: { loanDetails: { productId?: string | undefined; requestedAmount?: number | undefined; loanTerm?: number | undefined; ... 8 more ...; agreesToCreditCheck?: boolean | undefined; }; ... 5 more ...; metadata?: { ...; } | undefined; }; }' is not assignable to parameter of type 'LoanApplicationStore | Partial<LoanApplicationStore> | ((state: LoanApplicationStore) => LoanApplicationStore | Partial<...>)'.
+      Type '(state: LoanApplicationStore) => { applicationData: { loanDetails: { productId?: string | undefined; requestedAmount?: number | undefined; loanTerm?: number | undefined; ... 8 more ...; agreesToCreditCheck?: boolean | undefined; }; ... 5 more ...; metadata?: { ...; } | undefined; }; }' is not assignable to type '(state: LoanApplicationStore) => LoanApplicationStore | Partial<LoanApplicationStore>'.
+        Type '{ applicationData: { loanDetails: { productId?: string | undefined; requestedAmount?: number | undefined; loanTerm?: number | undefined; loanPurpose?: string | undefined; loanPurposeDetails?: string; ... 6 more ...; agreesToCreditCheck?: boolean | undefined; }; ... 5 more ...; metadata?: { ...; } | undefined; }; }' is not assignable to type 'LoanApplicationStore | Partial<LoanApplicationStore>'.
+          Type '{ applicationData: { loanDetails: { productId?: string | undefined; requestedAmount?: number | undefined; loanTerm?: number | undefined; loanPurpose?: string | undefined; loanPurposeDetails?: string; ... 6 more ...; agreesToCreditCheck?: boolean | undefined; }; ... 5 more ...; metadata?: { ...; } | undefined; }; }' is not assignable to type 'Partial<LoanApplicationStore>'.
+            The types of 'applicationData.loanDetails.productId' are incompatible between these types.
+              Type 'string | undefined' is not assignable to type 'string'.
+                Type 'undefined' is not assignable to type 'string'.
+  Overload 2 of 2, '(state: LoanApplicationStore | ((state: LoanApplicationStore) => LoanApplicationStore), replace: true, action?: Action | undefined): unknown', gave the following error.
+    Argument of type '(state: LoanApplicationStore) => { applicationData: { loanDetails: { productId?: string | undefined; requestedAmount?: number | undefined; loanTerm?: number | undefined; ... 8 more ...; agreesToCreditCheck?: boolean | undefined; }; ... 5 more ...; metadata?: { ...; } | undefined; }; }' is not assignable to parameter of type 'LoanApplicationStore | ((state: LoanApplicationStore) => LoanApplicationStore)'.
+      Type '(state: LoanApplicationStore) => { applicationData: { loanDetails: { productId?: string | undefined; requestedAmount?: number | undefined; loanTerm?: number | undefined; ... 8 more ...; agreesToCreditCheck?: boolean | undefined; }; ... 5 more ...; metadata?: { ...; } | undefined; }; }' is not assignable to type '(state: LoanApplicationStore) => LoanApplicationStore'.
+        Type '{ applicationData: { loanDetails: { productId?: string | undefined; requestedAmount?: number | undefined; loanTerm?: number | undefined; loanPurpose?: string | undefined; loanPurposeDetails?: string; ... 6 more ...; agreesToCreditCheck?: boolean | undefined; }; ... 5 more ...; metadata?: { ...; } | undefined; }; }' is not assignable to type 'LoanApplicationStore'.
+          Type '{ applicationData: { loanDetails: { productId?: string | undefined; requestedAmount?: number | undefined; loanTerm?: number | undefined; loanPurpose?: string | undefined; loanPurposeDetails?: string | undefined; ... 6 more ...; agreesToCreditCheck?: boolean | undefined; }; ... 5 more ...; metadata?: { ...; } | undef...' is missing the following properties from type 'LoanApplicationStoreState': currentStep, totalSteps, stepCompletion, stepValidation, and 6 more.
+src/store/use-loan-store.ts(398,13): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(partial: LoanApplicationStore | Partial<LoanApplicationStore> | ((state: LoanApplicationStore) => LoanApplicationStore | Partial<...>), replace?: false | undefined, action?: Action | undefined): unknown', gave the following error.
+    Argument of type '(state: LoanApplicationStore) => { applicationData: { metadata: { applicationDate?: string | undefined; status?: "under_review" | "approved" | "rejected" | "submitted" | "draft" | "requires_more_info" | undefined; ... 4 more ...; marketingConsent?: boolean | undefined; }; ... 5 more ...; loanDetails?: LoanDetailsDat...' is not assignable to parameter of type 'LoanApplicationStore | Partial<LoanApplicationStore> | ((state: LoanApplicationStore) => LoanApplicationStore | Partial<...>)'.
+      Type '(state: LoanApplicationStore) => { applicationData: { metadata: { applicationDate?: string | undefined; status?: "under_review" | "approved" | "rejected" | "submitted" | "draft" | "requires_more_info" | undefined; ... 4 more ...; marketingConsent?: boolean | undefined; }; ... 5 more ...; loanDetails?: LoanDetailsDat...' is not assignable to type '(state: LoanApplicationStore) => LoanApplicationStore | Partial<LoanApplicationStore>'.
+        Type '{ applicationData: { metadata: { applicationDate?: string | undefined; status?: "under_review" | "approved" | "rejected" | "submitted" | "draft" | "requires_more_info" | undefined; ... 4 more ...; marketingConsent?: boolean | undefined; }; ... 5 more ...; loanDetails?: LoanDetailsData | undefined; }; ... 50 more ......' is not assignable to type 'LoanApplicationStore | Partial<LoanApplicationStore>'.
+          Type '{ applicationData: { metadata: { applicationDate?: string | undefined; status?: "under_review" | "approved" | "rejected" | "submitted" | "draft" | "requires_more_info" | undefined; ... 4 more ...; marketingConsent?: boolean | undefined; }; ... 5 more ...; loanDetails?: LoanDetailsData | undefined; }; ... 50 more ......' is not assignable to type 'Partial<LoanApplicationStore>'.
+            The types of 'applicationData.metadata.applicationDate' are incompatible between these types.
+              Type 'string | undefined' is not assignable to type 'string'.
+                Type 'undefined' is not assignable to type 'string'.
+  Overload 2 of 2, '(state: LoanApplicationStore | ((state: LoanApplicationStore) => LoanApplicationStore), replace: true, action?: Action | undefined): unknown', gave the following error.
+    Argument of type '(state: LoanApplicationStore) => { applicationData: { metadata: { applicationDate?: string | undefined; status?: "under_review" | "approved" | "rejected" | "submitted" | "draft" | "requires_more_info" | undefined; ... 4 more ...; marketingConsent?: boolean | undefined; }; ... 5 more ...; loanDetails?: LoanDetailsDat...' is not assignable to parameter of type 'LoanApplicationStore | ((state: LoanApplicationStore) => LoanApplicationStore)'.
+      Type '(state: LoanApplicationStore) => { applicationData: { metadata: { applicationDate?: string | undefined; status?: "under_review" | "approved" | "rejected" | "submitted" | "draft" | "requires_more_info" | undefined; ... 4 more ...; marketingConsent?: boolean | undefined; }; ... 5 more ...; loanDetails?: LoanDetailsDat...' is not assignable to type '(state: LoanApplicationStore) => LoanApplicationStore'.
+        Type '{ applicationData: { metadata: { applicationDate?: string | undefined; status?: "under_review" | "approved" | "rejected" | "submitted" | "draft" | "requires_more_info" | undefined; ... 4 more ...; marketingConsent?: boolean | undefined; }; ... 5 more ...; loanDetails?: LoanDetailsData | undefined; }; ... 50 more ......' is not assignable to type 'LoanApplicationStore'.
+          Type '{ applicationData: { metadata: { applicationDate?: string | undefined; status?: "under_review" | "approved" | "rejected" | "submitted" | "draft" | "requires_more_info" | undefined; ... 4 more ...; marketingConsent?: boolean | undefined; }; ... 5 more ...; loanDetails?: LoanDetailsData | undefined; }; ... 50 more ......' is not assignable to type 'LoanApplicationStoreState'.
+            The types of 'applicationData.metadata.applicationDate' are incompatible between these types.
+              Type 'string | undefined' is not assignable to type 'string'.
+                Type 'undefined' is not assignable to type 'string'.
+src/store/use-multi-step-form-store.ts(7,41): error TS2307: Cannot find module '@/types/data-driven-ui' or its corresponding type declarations.
+src/store/use-multi-step-form-store.ts(45,19): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(partial: MultiStepFormStore | Partial<MultiStepFormStore> | ((state: MultiStepFormStore) => MultiStepFormStore | Partial<...>), replace?: false | undefined, action?: Action | undefined): unknown', gave the following error.
+    Object literal may only specify known properties, and 'currentStep' does not exist in type 'MultiStepFormStore | Partial<MultiStepFormStore> | ((state: MultiStepFormStore) => MultiStepFormStore | Partial<...>)'.
+  Overload 2 of 2, '(state: MultiStepFormStore | ((state: MultiStepFormStore) => MultiStepFormStore), replace: true, action?: Action | undefined): unknown', gave the following error.
+    Object literal may only specify known properties, and 'currentStep' does not exist in type 'MultiStepFormStore | ((state: MultiStepFormStore) => MultiStepFormStore)'.
+src/store/use-multi-step-form-store.ts(51,13): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(partial: MultiStepFormStore | Partial<MultiStepFormStore> | ((state: MultiStepFormStore) => MultiStepFormStore | Partial<...>), replace?: false | undefined, action?: Action | undefined): unknown', gave the following error.
+    Argument of type '(state: MultiStepFormStore) => { formData: any; }' is not assignable to parameter of type 'MultiStepFormStore | Partial<MultiStepFormStore> | ((state: MultiStepFormStore) => MultiStepFormStore | Partial<...>)'.
+      Type '(state: MultiStepFormStore) => { formData: any; }' is not assignable to type '(state: MultiStepFormStore) => MultiStepFormStore | Partial<MultiStepFormStore>'.
+        Type '{ formData: any; }' is not assignable to type 'MultiStepFormStore | Partial<MultiStepFormStore>'.
+  Overload 2 of 2, '(state: MultiStepFormStore | ((state: MultiStepFormStore) => MultiStepFormStore), replace: true, action?: Action | undefined): unknown', gave the following error.
+    Argument of type '(state: MultiStepFormStore) => { formData: any; }' is not assignable to parameter of type 'MultiStepFormStore | ((state: MultiStepFormStore) => MultiStepFormStore)'.
+      Type '(state: MultiStepFormStore) => { formData: any; }' is not assignable to type '(state: MultiStepFormStore) => MultiStepFormStore'.
+        Type '{ formData: any; }' is missing the following properties from type 'MultiStepFormStore': totalSteps, setTotalSteps, nextStep, previousStep, and 3 more.
+src/store/use-multi-step-form-store.ts(52,36): error TS2339: Property 'formData' does not exist on type 'MultiStepFormStore'.
+src/store/use-multi-step-form-store.ts(60,17): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(partial: MultiStepFormStore | Partial<MultiStepFormStore> | ((state: MultiStepFormStore) => MultiStepFormStore | Partial<...>), replace?: false | undefined, action?: Action | undefined): unknown', gave the following error.
+    Object literal may only specify known properties, and 'currentStep' does not exist in type 'MultiStepFormStore | Partial<MultiStepFormStore> | ((state: MultiStepFormStore) => MultiStepFormStore | Partial<...>)'.
+  Overload 2 of 2, '(state: MultiStepFormStore | ((state: MultiStepFormStore) => MultiStepFormStore), replace: true, action?: Action | undefined): unknown', gave the following error.
+    Object literal may only specify known properties, and 'currentStep' does not exist in type 'MultiStepFormStore | ((state: MultiStepFormStore) => MultiStepFormStore)'.
+src/store/use-multi-step-form-store.ts(70,19): error TS2339: Property 'currentStep' does not exist on type 'MultiStepFormStore'.
+src/store/use-multi-step-form-store.ts(72,19): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(partial: MultiStepFormStore | Partial<MultiStepFormStore> | ((state: MultiStepFormStore) => MultiStepFormStore | Partial<...>), replace?: false | undefined, action?: Action | undefined): unknown', gave the following error.
+    Object literal may only specify known properties, and 'currentStep' does not exist in type 'MultiStepFormStore | Partial<MultiStepFormStore> | ((state: MultiStepFormStore) => MultiStepFormStore | Partial<...>)'.
+  Overload 2 of 2, '(state: MultiStepFormStore | ((state: MultiStepFormStore) => MultiStepFormStore), replace: true, action?: Action | undefined): unknown', gave the following error.
+    Object literal may only specify known properties, and 'currentStep' does not exist in type 'MultiStepFormStore | ((state: MultiStepFormStore) => MultiStepFormStore)'.
+src/store/use-multi-step-form-store.ts(77,19): error TS2339: Property 'currentStep' does not exist on type 'MultiStepFormStore'.
+src/store/use-multi-step-form-store.ts(79,19): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(partial: MultiStepFormStore | Partial<MultiStepFormStore> | ((state: MultiStepFormStore) => MultiStepFormStore | Partial<...>), replace?: false | undefined, action?: Action | undefined): unknown', gave the following error.
+    Object literal may only specify known properties, and 'currentStep' does not exist in type 'MultiStepFormStore | Partial<MultiStepFormStore> | ((state: MultiStepFormStore) => MultiStepFormStore | Partial<...>)'.
+  Overload 2 of 2, '(state: MultiStepFormStore | ((state: MultiStepFormStore) => MultiStepFormStore), replace: true, action?: Action | undefined): unknown', gave the following error.
+    Object literal may only specify known properties, and 'currentStep' does not exist in type 'MultiStepFormStore | ((state: MultiStepFormStore) => MultiStepFormStore)'.
+src/store/use-multi-step-form-store.ts(84,24): error TS2339: Property 'currentStep' does not exist on type 'MultiStepFormStore'.
+src/store/use-multi-step-form-store.ts(88,19): error TS2339: Property 'currentStep' does not exist on type 'MultiStepFormStore'.
+src/store/use-multi-step-form-store.ts(93,24): error TS2339: Property 'formData' does not exist on type 'MultiStepFormStore'.
+src/store/use-multi-step-form-store.ts(100,30): error TS2339: Property 'currentStep' does not exist on type 'MultiStepFormStore'.
+src/store/use-multi-step-form-store.ts(101,27): error TS2339: Property 'formData' does not exist on type 'MultiStepFormStore'.
+src/store/use-multi-step-form-store.ts(127,42): error TS2339: Property 'currentStep' does not exist on type 'MultiStepFormStore'.
+src/store/use-multi-step-form-store.ts(129,42): error TS2339: Property 'formData' does not exist on type 'MultiStepFormStore'.
+src/utils/confirmationFieldGrouper.ts(9,3): error TS2305: Module '"@/components/user-onboarding/types/field-config"' has no exported member 'MappedFlow'.
+src/utils/confirmationFieldGrouper.ts(123,42): error TS2345: Argument of type 'FieldType' is not assignable to parameter of type 'never'.
+ ELIFECYCLE  Command failed with exit code 1.

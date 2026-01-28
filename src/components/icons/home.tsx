@@ -5,7 +5,7 @@
  * and theme-aware color support
  */
 
-import React from "react";
+import type React from "react";
 
 interface IconProps {
   color?: string;

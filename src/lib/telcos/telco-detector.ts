@@ -131,7 +131,7 @@ export const detectByPrefix = (phoneNumber: string): TelcoDetectionResult => {
 
   // Try with international format
   if (cleanPhone.startsWith("84")) {
-    const localPhone = "0" + cleanPhone.slice(2);
+    const localPhone = `0${cleanPhone.slice(2)}`;
     return detectByPrefix(localPhone);
   }
 
@@ -268,7 +268,7 @@ export const recordUserCorrection = (
  */
 export const recordSuccessfulDetection = (
   phoneNumber: string,
-  telcoCode: string,
+  _telcoCode: string,
 ): void => {
   const cleanPhone = phoneNumber.replace(/\D/g, "");
   const numberPrefix = cleanPhone.substring(0, 6);
@@ -359,7 +359,7 @@ export const getTelcoDistribution = (
       distribution[result.telco.code] =
         (distribution[result.telco.code] || 0) + 1;
     } else {
-      distribution["UNKNOWN"] = (distribution["UNKNOWN"] || 0) + 1;
+      distribution.UNKNOWN = (distribution.UNKNOWN || 0) + 1;
     }
   });
 

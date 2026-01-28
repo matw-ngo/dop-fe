@@ -343,7 +343,7 @@ export const calculatePropertyTax = (
   propertyValue: number,
   propertyType: "land" | "house" | "apartment",
   location: "urban" | "rural",
-  landArea?: number,
+  _landArea?: number,
 ): PropertyTaxCalculation => {
   let taxRate: number;
 

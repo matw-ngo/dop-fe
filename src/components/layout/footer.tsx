@@ -3,9 +3,9 @@
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import {
-  Logo,
-  InstagramIcon,
   FacebookIcon,
+  InstagramIcon,
+  Logo,
   TiktokIcon,
   YoutubeIcon,
 } from "@/components/icons/home";
@@ -23,7 +23,7 @@ export function Footer() {
   const t_legal = useTranslations(`tenants.${tenant.id}.legal`);
   const t_products = useTranslations(`tenants.${tenant.id}.products`);
   const currentYear = new Date().getFullYear();
-  const primaryColor = tenant.theme.colors.primary;
+  const _primaryColor = tenant.theme.colors.primary;
 
   const socialMedia = tenant.features.socialMedia;
 
