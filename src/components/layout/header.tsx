@@ -7,10 +7,10 @@ import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { Logo } from "@/components/icons/home";
+import type { NavbarConfig } from "@/configs/navbar-config";
 import { useTenant } from "@/hooks/tenant/use-tenant";
 import { useLocalizedPath } from "@/lib/client-utils";
 import { cn } from "@/lib/utils";
-import { NavbarConfig } from "@/configs/navbar-config";
 
 /**
  * Header Component (NavBar)

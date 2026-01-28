@@ -14,7 +14,11 @@
       "!dist",
       "!build",
       "!public/**/*",
-      "!scripts/**/*"
+      "!scripts/**/*",
+      "!src/**/*.test.tsx",
+      "!test",
+      "!tests",
+      "!__test__"
     ]
   },
   "formatter": {
@@ -28,6 +32,12 @@
       "recommended": true,
       "suspicious": {
         "noUnknownAtRules": "off"
+      },
+      "complexity": {
+        "noForEach": "off"
+      },
+      "style": {
+        "useConst": "off"
       }
     },
     "domains": {

@@ -1,7 +1,7 @@
 import { DEFAULT_TRACKING_CONFIG } from "./config";
 import { filterSensitiveData, isEventAllowed } from "./privacy";
 import { getDeviceId, getSessionId, updateLastActivity } from "./session";
-import { EventType, TrackingEvent } from "./types";
+import { EventType, type TrackingEvent } from "./types";
 
 /**
  * Event tracking utilities for financial tools
