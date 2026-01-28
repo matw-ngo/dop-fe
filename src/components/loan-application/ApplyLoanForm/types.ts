@@ -60,7 +60,7 @@ export interface OtpVerificationModalProps {
   onSuccess: (otp: string) => void;
   onFailure: (error: string) => void;
   onExpired: () => void;
-  size?: string;
+  size?: number;
 }
 
 // Field component props

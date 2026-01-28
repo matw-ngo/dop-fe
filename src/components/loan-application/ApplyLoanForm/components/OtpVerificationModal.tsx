@@ -14,6 +14,7 @@ export const OtpVerificationModal: React.FC<OtpVerificationModalProps> = ({
   onSuccess,
   onFailure,
   onExpired,
+  size = 4,
 }) => {
   const { theme } = useFormTheme();
 
@@ -31,7 +32,7 @@ export const OtpVerificationModal: React.FC<OtpVerificationModalProps> = ({
         phoneNumber={phoneNumber}
         leadId={leadId}
         token={token}
-        size={4}
+        size={size}
         otpType={otpType as 1 | 2 | undefined}
         onSuccess={onSuccess}
         onFailure={onFailure}

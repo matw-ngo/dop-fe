@@ -170,11 +170,12 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
     setFormData(data);
 
     if (indexStep?.sendOtp) {
-      if (!hasConsent()) {
-        setShowConsentModal(true);
-      } else {
-        setShowPhoneModal(true);
-      }
+      // if (!hasConsent()) {
+      //   setShowConsentModal(true);
+      // } else {
+      //   setShowPhoneModal(true);
+      // }
+      setShowPhoneModal(true);
     } else {
       onSubmitSuccess?.(data);
     }
@@ -235,6 +236,7 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
           onSuccess={handleOtpSuccess}
           onFailure={handleOtpFailure}
           onExpired={handleOtpExpired}
+          size={6}
         />
       </FormThemeProvider>
     </div>
