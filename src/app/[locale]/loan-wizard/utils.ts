@@ -1,6 +1,6 @@
 import { ValidationConfig } from "./constants";
 
-const validProvinceCodeNID12 = (code: string) => {
+export const validProvinceCodeNID12 = (code: string) => {
   return [
     "000",
     "001",

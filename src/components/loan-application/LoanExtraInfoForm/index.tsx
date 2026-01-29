@@ -1,17 +1,19 @@
 "use client";
-import { FULL_NAME_REGEX, ValidationConfig } from "@app/configs/constants";
 import {
   CREDIT_HISTORY,
   CREDIT_STATUSES,
   EMPLOYMENT_STATUSES,
   EMPLOYMENT_TYPE,
+  FULL_NAME_REGEX,
+  GENDER_OPTIONS,
   INCOME_AMOUNT,
-} from "@app/configs/data";
-import { VN_PROVINCES } from "@app/helpers/location";
-import { EventType, eventTracking } from "@app/helpers/user-tracking";
-import { validProvinceCodeNID12 } from "@app/helpers/validate";
-import { ActionContext } from "@app/states/zu-action";
-import { useLoanStore } from "@app/states/zu-store";
+  MARITAL_STATUS,
+  VN_PROVINCES,
+  ValidationConfig,
+} from "@/app/[locale]/loan-wizard/constants";
+import { validProvinceCodeNID12 } from "@/app/[locale]/loan-wizard/utils";
+import { trackEvent, EventType } from "@/lib/tracking";
+import { useLoanApplicationStore } from "@/store/use-loan-store";
 import { DollarSign, User } from "lucide-react";
 import { useTranslations } from "next-intl";
 import React, { useMemo } from "react";
@@ -38,29 +40,122 @@ const _yearOptions = () => {
 export const LoanExtraInfoForm = () => {
   const t = useTranslations("features.loan-extra-info");
   const {
-    setUserLoanData,
-    setUserLoanValidate,
-    leadData,
-    userData,
-    userDataValidate,
+    setFieldValue,
+    getFieldValue,
     isSubmitting,
-    currentLoanStep,
-    loanExtraInfoSubmitted,
-  } = useLoanStore();
-  const { finishLoanExtraInfoSubmit } = React.useContext(ActionContext);
+    fieldErrors,
+    setFieldError,
+    clearFieldError,
+    applicationData,
+  } = useLoanApplicationStore();
+
+  const userData = React.useMemo(() => {
+    return {
+      full_name: applicationData.personalInfo?.fullName,
+      national_id: applicationData.personalInfo?.nationalId,
+      province: applicationData.personalInfo?.currentAddress?.provinceCode,
+      career_status: applicationData.employmentInfo?.employmentType,
+      income: applicationData.financialInfo?.monthlyIncomeRange,
+      career_type: applicationData.employmentInfo?.industry,
+      credit_status: applicationData.financialInfo?.existingLoans
+        ?.hasExistingLoans
+        ? 1
+        : 0,
+      having_loan: applicationData.financialInfo?.existingLoans
+        ?.hasExistingLoans
+        ? 1
+        : 0,
+      extra_docs: applicationData.documents?.addressProof?.documentType,
+    };
+  }, [applicationData]);
+
+  const setUserLoanData = (field: string, value: any) => {
+    const mapping: Record<string, string> = {
+      full_name: "personalInfo.fullName",
+      national_id: "personalInfo.nationalId",
+      province: "personalInfo.currentAddress.provinceCode",
+      career_status: "employmentInfo.employmentType",
+      income: "financialInfo.monthlyIncomeRange",
+      career_type: "employmentInfo.industry",
+      credit_status: "financialInfo.existingLoans.hasExistingLoans",
+      having_loan: "financialInfo.existingLoans.hasExistingLoans",
+      extra_docs: "documents.addressProof.documentType",
+    };
+    const path = mapping[field] || field;
+    setFieldValue(path, value);
+  };
+
+  const setUserLoanValidate = (field: string, valid: boolean, msg: string) => {
+    if (valid) {
+      clearFieldError(field);
+    } else {
+      setFieldError(field, msg);
+    }
+  };
+
+  const userDataValidate = React.useMemo(() => {
+    const fields = [
+      "full_name",
+      "national_id",
+      "province",
+      "career_status",
+      "income",
+      "career_type",
+      "credit_status",
+      "having_loan",
+      "extra_docs",
+    ];
+    const result: Record<string, { valid: boolean; msg: string }> = {};
+    fields.forEach((f) => {
+      result[f] = {
+        valid: !fieldErrors[f],
+        msg: fieldErrors[f] || "",
+      };
+    });
+    return result;
+  }, [fieldErrors]);
+
+  const {
+    startSubmission,
+    setSubmissionSuccess,
+    setSubmissionError,
+    setCurrentStep,
+  } = useLoanApplicationStore();
+
   const [_isIncomeStep, _setIncomeStep] = React.useState(false);
   const [infoStep, setInforStep] = React.useState<
     "personal" | "income" | "finance"
   >("personal");
   const [isLoading, setIsLoading] = React.useState(false);
-  const onSubmit = () => {
-    eventTracking(EventType.lending_page_click_submit, {});
+
+  const onSubmit = async () => {
+    trackEvent(EventType.LENDING_PAGE_FORM_SUBMIT, {});
     if (isLoading || !step3Validation()) {
-      // if (isLoading) {
       return;
     }
+
     setIsLoading(true);
-    finishLoanExtraInfoSubmit(userData);
+    startSubmission();
+
+    try {
+      // Mock API call or actual submission logic
+      console.log("Submitting loan data:", userData);
+
+      // Simulate API delay
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+
+      setSubmissionSuccess();
+      setIsLoading(false);
+
+      // Navigate or show success
+      // setInforStep("personal");
+    } catch (error) {
+      console.error("Submission error:", error);
+      setSubmissionError(
+        error instanceof Error ? error.message : "Submission failed",
+      );
+      setIsLoading(false);
+    }
   };
   const moveToIncomeStep = () => {
     if (step1Validation()) {
@@ -103,7 +198,7 @@ export const LoanExtraInfoForm = () => {
       );
       return 0;
     }
-    eventTracking(EventType.lending_page_input_name_valid, { name: fullName });
+    trackEvent(EventType.LENDING_PAGE_INPUT_NAME_VALID, { name: fullName });
     setUserLoanValidate("full_name", true, "");
     return 1;
   };
@@ -153,13 +248,13 @@ export const LoanExtraInfoForm = () => {
       );
       return 0;
     }
-    eventTracking(EventType.lending_page_input_nid_valid, { nid: id });
+    trackEvent(EventType.LENDING_PAGE_INPUT_NID_VALID, { nid: id });
 
     setUserLoanValidate("national_id", true, "");
     return 1;
   };
   const empStatusValidation = () => {
-    const cs = userData.career_status;
+    const cs = userData.career_status as string;
     let valid = 1;
     if (!cs || !cs.trim()) {
       setUserLoanValidate(
@@ -175,12 +270,13 @@ export const LoanExtraInfoForm = () => {
     return valid;
   };
   const incomeAmountValidation = () => {
-    const ic = userData.income;
+    const ic = userData.income as string;
     let valid = 1;
     if (
-      (userData.career_status === "employed" ||
+      (userData.career_status === "formal" ||
+        userData.career_status === "informal" ||
         userData.career_status === "self_employed") &&
-      (!ic || ic <= 0)
+      (!ic || ic === "-1")
     ) {
       setUserLoanValidate("income", false, t("income.incomeAmount.error"));
       valid = 0;
@@ -191,9 +287,13 @@ export const LoanExtraInfoForm = () => {
     return valid;
   };
   const empTypeValidation = () => {
-    const ic = userData.career_type;
+    const ic = userData.career_type as string;
     let valid = 1;
-    if (userData.career_status === "employed" && (!ic || !ic.trim())) {
+    if (
+      (userData.career_status === "formal" ||
+        userData.career_status === "informal") &&
+      (!ic || !ic.trim() || ic === "-1")
+    ) {
       setUserLoanValidate("career_type", false, t("income.careerType.error"));
       valid = 0;
     } else {
@@ -232,17 +332,20 @@ export const LoanExtraInfoForm = () => {
     return creditHistoryValidation() !== 0;
   };
   const isEmployment = useMemo(
-    () => userData.career_status === "employed",
+    () =>
+      userData.career_status === "formal" ||
+      userData.career_status === "informal",
     [userData.career_status],
   );
   const shouldShowIncome = useMemo(
     () =>
-      userData.career_status === "employed" ||
+      userData.career_status === "formal" ||
+      userData.career_status === "informal" ||
       userData.career_status === "self_employed",
     [userData.career_status],
   );
   const onNameChangeHandle = (value: string) => {
-    eventTracking(EventType.lending_page_input_name, { name: value });
+    trackEvent(EventType.LENDING_PAGE_INPUT_NAME, { name: value });
     setUserLoanData("full_name", value);
   };
   return (
@@ -276,7 +379,7 @@ export const LoanExtraInfoForm = () => {
             value={userData.national_id || ""}
             onChange={(e) => {
               const value = e.target.value;
-              eventTracking(EventType.lending_page_input_nid, { nid: value });
+              trackEvent(EventType.LENDING_PAGE_INPUT_NID, { nid: value });
               setUserLoanData("national_id", value);
             }}
             error={!userDataValidate.national_id.valid}
@@ -294,7 +397,7 @@ export const LoanExtraInfoForm = () => {
             options={provinceList}
             value={userData.province || "-1"}
             onChange={(value) => {
-              eventTracking(EventType.lending_page_select_province, {
+              trackEvent(EventType.LENDING_PAGE_SELECT_PROVINCE, {
                 living_province: value,
               });
               setUserLoanData("province", value);
@@ -340,7 +443,7 @@ export const LoanExtraInfoForm = () => {
             options={EMPLOYMENT_STATUSES}
             value={userData.career_status || "-1"}
             onChange={(value) => {
-              eventTracking(EventType.lending_page_select_job, {
+              trackEvent(EventType.LENDING_PAGE_SELECT_JOB, {
                 job: value,
               });
               setUserLoanData("career_status", value);
@@ -359,7 +462,7 @@ export const LoanExtraInfoForm = () => {
             options={EMPLOYMENT_TYPE}
             value={userData.career_type || "-1"}
             onChange={(value) => {
-              eventTracking(EventType.lending_page_select_industry, {
+              trackEvent(EventType.LENDING_PAGE_SELECT_INDUSTRY, {
                 industry: value,
               });
               setUserLoanData("career_type", value);
@@ -378,7 +481,7 @@ export const LoanExtraInfoForm = () => {
             options={INCOME_AMOUNT}
             value={userData.income || "-1"}
             onChange={(value) => {
-              eventTracking(EventType.lending_page_select_income_range, {
+              trackEvent(EventType.LENDING_PAGE_SELECT_INCOME_RANGE, {
                 monthly_income_range: value,
               });
               setUserLoanData("income", value);
@@ -406,7 +509,7 @@ export const LoanExtraInfoForm = () => {
             options={CREDIT_STATUSES}
             value={userData.having_loan.toString()}
             onChange={(value) => {
-              eventTracking(EventType.lending_page_select_current_loan, {
+              trackEvent(EventType.LENDING_PAGE_SELECT_CURRENT_LOAN, {
                 current_loan: value,
               });
               setUserLoanData("having_loan", parseInt(value, 10));
@@ -425,7 +528,7 @@ export const LoanExtraInfoForm = () => {
             options={CREDIT_HISTORY}
             value={userData.credit_status.toString()}
             onChange={(value) => {
-              eventTracking(EventType.lending_page_select_credit_history, {
+              trackEvent(EventType.LENDING_PAGE_SELECT_CREDIT_HISTORY, {
                 credit_history: value,
               });
               setUserLoanData("credit_status", parseInt(value, 10));
