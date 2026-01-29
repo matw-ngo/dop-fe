@@ -9,7 +9,6 @@ import { StepWizard } from "@/components/form-generation";
 import {
   FormThemeProvider,
   legacyLoanTheme,
-  useFormTheme,
 } from "@/components/form-generation/themes";
 import { OtpVerificationModal } from "@/components/loan-application/ApplyLoanForm/components/OtpVerificationModal";
 import { PhoneVerificationModal } from "@/components/loan-application/ApplyLoanForm/components/PhoneVerificationModal";
@@ -19,28 +18,37 @@ import { useLoanPurposes } from "@/hooks/i18n/use-loan-purposes";
 import { usePhoneValidationMessages } from "@/hooks/phone/use-validation-messages";
 import { useTenant } from "@/hooks/tenant/use-tenant";
 import { buildLoanFormConfigFromStep } from "@/lib/builders/loan-form-config-builder";
+import "@/lib/builders/register-flow-components";
 import { ALLOWED_TELCOS, phoneValidation } from "@/lib/utils/phone-validation";
 import { mapFormDataToLeadInfo } from "@/mappers/leadMapper";
 import { useConsentStore } from "@/store/use-consent-store";
 
 interface DynamicLoanFormProps {
-  onSubmitSuccess?: (data: Record<string, unknown>) => void;
+  onSubmitSuccess?: (
+    data: Record<string, unknown>,
+    context?: { flowId: string; stepId: string },
+  ) => void;
+  page?: string;
+  initialData?: Record<string, unknown>;
 }
 
 export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
   onSubmitSuccess,
+  page = "/index",
+  initialData,
 }) => {
-  const { theme } = useFormTheme();
   const t = useTranslations("features.loan-application");
   const { getTelcoList } = usePhoneValidationMessages();
   const tenant = useTenant();
   const router = useRouter();
-  const { hasConsent, getConsentId } = useConsentStore();
+  const { getConsentId } = useConsentStore();
 
   const [showPhoneModal, setShowPhoneModal] = React.useState(false);
   const [showOTPModal, setShowOTPModal] = React.useState(false);
   const [showConsentModal, setShowConsentModal] = React.useState(false);
-  const [formData, setFormData] = React.useState<Record<string, unknown>>({});
+  const [formData, setFormData] = React.useState<Record<string, unknown>>(
+    initialData || {},
+  );
   const [createdLeadId, setCreatedLeadId] = React.useState<
     string | undefined
   >();
@@ -49,6 +57,25 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
   >();
 
   const { mutate: createLead, isPending: isCreatingLead } = useCreateLead();
+
+  const tenantId = tenant.uuid;
+  const { data: flowData, isLoading: isLoadingFlow } = useFlow(tenantId);
+  const loanPurposes = useLoanPurposes();
+
+  const indexStep = useMemo(() => {
+    if (!flowData?.steps) return null;
+
+    const matchingStep = flowData.steps.find(
+      (step) => step.page === page || (page === "/index" && step.page === "/"),
+    );
+
+    return matchingStep || (page === "/index" ? flowData.steps[0] : null);
+  }, [flowData, page]);
+
+  const formConfig = useMemo(() => {
+    if (!indexStep) return null;
+    return buildLoanFormConfigFromStep(indexStep, loanPurposes);
+  }, [indexStep, loanPurposes]);
 
   const validatePhoneNum = (phoneValue: string): boolean => {
     const value = String(phoneValue || "");
@@ -126,7 +153,14 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
     toast.info(t("messages.otpSuccess"));
     setShowOTPModal(false);
 
-    onSubmitSuccess?.(formData);
+    if (flowData && indexStep) {
+      onSubmitSuccess?.(formData, {
+        flowId: flowData.id,
+        stepId: indexStep.id,
+      });
+    } else {
+      onSubmitSuccess?.(formData);
+    }
 
     if (createdLeadId && createdLeadToken) {
       router.push(
@@ -145,26 +179,6 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
     toast.error(t("messages.otpExpired"));
   };
 
-  const tenantId = tenant.uuid;
-  const { data: flowData, isLoading: isLoadingFlow } = useFlow(tenantId);
-
-  const loanPurposes = useLoanPurposes();
-
-  const indexStep = useMemo(() => {
-    if (!flowData?.steps) return null;
-
-    const matchingStep = flowData.steps.find(
-      (step) => step.page === "/index" || step.page === "/",
-    );
-
-    return matchingStep || flowData.steps[0] || null;
-  }, [flowData]);
-
-  const formConfig = useMemo(() => {
-    if (!indexStep) return null;
-    return buildLoanFormConfigFromStep(indexStep, loanPurposes);
-  }, [indexStep, loanPurposes]);
-
   const handleFormComplete = (data: Record<string, unknown>) => {
     console.log("Form completed with data:", data);
     setFormData(data);
@@ -178,7 +192,11 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
       // }
       setShowPhoneModal(true);
     } else {
-      onSubmitSuccess?.(data);
+      if (flowData && indexStep) {
+        onSubmitSuccess?.(data, { flowId: flowData.id, stepId: indexStep.id });
+      } else {
+        onSubmitSuccess?.(data);
+      }
     }
   };
 

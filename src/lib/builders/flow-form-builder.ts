@@ -168,10 +168,17 @@ const FIELD_DEFINITIONS: Record<string, Partial<FormField>> = {
 /**
  * Builds a DynamicFormConfig from the MappedFlow data
  */
-export function buildFormConfigFromFlow(flow: MappedFlow): DynamicFormConfig {
+export function buildFormConfigFromFlow(
+  flow: MappedFlow,
+  page?: string,
+): DynamicFormConfig {
+  const steps = flow.steps
+    .filter((step) => !page || step.page === page)
+    .map((step, index) => buildStepConfig(step, index));
+
   return {
     id: `flow-${flow.id}`,
-    steps: flow.steps.map((step, index) => buildStepConfig(step, index)),
+    steps,
     navigation: {
       showProgress: true,
       progressType: "bar",

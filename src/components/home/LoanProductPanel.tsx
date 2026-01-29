@@ -78,7 +78,7 @@ export function LoanProductPanel() {
             borderColor: "rgba(1, 120, 72, 0.1)",
           }}
         >
-          <DynamicLoanForm />
+          <DynamicLoanForm page="/index" />
         </div>
       </div>
 
