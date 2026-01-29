@@ -56,7 +56,7 @@ export const useConsentLogs = ({
         },
       });
 
-      return result.data;
+      return result.data ?? {};
     },
     enabled: enabled && !!leadId,
     staleTime: 60000,

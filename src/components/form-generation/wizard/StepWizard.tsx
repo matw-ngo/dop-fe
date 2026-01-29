@@ -46,7 +46,7 @@ export function StepWizard({
       resetWizard();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [config.id, config.steps, initWizard, resetWizard, initialData]); // Exclude initialData to avoid loop
+  }, [config.id, JSON.stringify(config.steps), initWizard, resetWizard]); // Exclude initialData to avoid loop
 
   // Call step change callback
   useEffect(() => {

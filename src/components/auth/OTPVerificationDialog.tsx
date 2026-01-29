@@ -152,6 +152,12 @@ export const OTPVerificationDialog: React.FC<OTPVerificationDialogProps> = ({
     }
   }, [lockoutEndTime]);
 
+  // Handle session timeout
+  const handleSessionTimeout = useCallback(() => {
+    setCurrentStep("error");
+    setError(TELCO_ERROR_MESSAGES.OTP_EXPIRED);
+  }, []);
+
   // Check session timeout
   useEffect(() => {
     if (sessionEndTime && currentStep === "otp") {
@@ -283,12 +289,6 @@ export const OTPVerificationDialog: React.FC<OTPVerificationDialogProps> = ({
       onError?.(error);
     }
   }, [phoneNumber, onOTPResend, otpSettings?.otpExpiry, onError]);
-
-  // Handle session timeout
-  const handleSessionTimeout = useCallback(() => {
-    setCurrentStep("error");
-    setError(TELCO_ERROR_MESSAGES.OTP_EXPIRED);
-  }, []);
 
   // Handle dialog close
   const handleDialogClose = useCallback(() => {

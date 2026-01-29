@@ -40,7 +40,7 @@ export const useDataCategories = ({
         },
       });
 
-      return result.data;
+      return result.data ?? [];
     },
     enabled,
     staleTime: 60000,
