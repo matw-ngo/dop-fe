@@ -17,19 +17,23 @@ async function submitOTP({ leadId, token, otp }: SubmitOTPParams) {
         id: leadId,
       },
     },
-    body: {
-      token: token,
-      otp: otp,
+    // FIXME: Temporary fix - BE spec is incorrect, token should be in header
+    headers: {
+      authorization: `Bearer ${token}`,
     },
+    body: {
+      // token: token,
+      otp: otp,
+    } as any,
   });
 
   if (error) {
     throw new Error((error as any).message || "Failed to submit OTP");
   }
 
-  if (!data) {
-    throw new Error("No data returned from submit OTP API");
-  }
+  // if (!data) {
+  //   throw new Error("No data returned from submit OTP API");
+  // }
 
   return data;
 }

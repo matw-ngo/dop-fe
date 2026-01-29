@@ -18,12 +18,13 @@ export const createAuthMiddleware = (): Middleware => {
         const refreshed = await refreshTokens();
         token = getAccessToken();
 
-        if (!refreshed || !token) {
-          if (typeof window !== "undefined") {
-            window.location.href = "/login";
-          }
-          throw new Error("Authentication failed");
-        }
+        // FIXME: Temporary disabled redirect to login page
+        // if (!refreshed || !token) {
+        //   if (typeof window !== "undefined") {
+        //     window.location.href = "/login";
+        //   }
+        //   throw new Error("Authentication failed");
+        // }
       }
 
       if (token) {
@@ -66,10 +67,11 @@ export const createAuthResponseMiddleware = (): Middleware => {
           console.error("Token refresh failed, logging out.", error);
           clearTokens();
 
-          if (typeof window !== "undefined") {
-            window.location.href = "/login";
-          }
-          throw new Error("Authentication failed");
+          // FIXME: Temporary disabled redirect to login page
+          // if (typeof window !== "undefined") {
+          //   window.location.href = "/login";
+          // }
+          // throw new Error("Authentication failed");
         }
       }
 
