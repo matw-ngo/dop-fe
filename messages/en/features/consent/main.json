@@ -9,6 +9,7 @@
   },
   "form": {
     "title": "Grant Consent",
+    "description": "Your information is protected under Vietnamese law",
     "consentVersion": {
       "label": "Consent Version"
     },

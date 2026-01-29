@@ -9,6 +9,7 @@
   },
   "form": {
     "title": "Cấp Đồng thuận",
+    "description": "Thông tin của bạn được bảo vệ theo pháp luật Việt Nam",
     "consentVersion": {
       "label": "Phiên bản đồng thuận"
     },
