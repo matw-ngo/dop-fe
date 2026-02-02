@@ -1,4 +1,7 @@
 {
+  "common": {
+    "loading": "Đang tải..."
+  },
   "modal": {
     "title": "Quản lý Đồng thuận",
     "close": "Đóng"
@@ -10,6 +13,7 @@
   "form": {
     "title": "Cấp Đồng thuận",
     "description": "Thông tin của bạn được bảo vệ theo pháp luật Việt Nam",
+    "dataCategories": "Danh mục dữ liệu",
     "consentVersion": {
       "label": "Phiên bản đồng thuận"
     },
@@ -23,13 +27,20 @@
   },
   "history": {
     "title": "Lịch sử Đồng thuận",
-    "empty": "Không có lịch sử đồng thuận",
-    "loadMore": "Tải thêm"
+    "description": "Xem lại các lần cấp đồng thuận trước đây của bạn.",
+    "empty": "Chưa có lịch sử đồng thuận",
+    "emptyDesc": "Bạn chưa cấp đồng thuận nào cho các dịch vụ của chúng tôi.",
+    "loadMore": "Tải thêm",
+    "granted": "Đã cấp",
+    "revoked": "Đã thu hồi",
+    "logs": "Nhật ký chi tiết"
   },
   "errors": {
     "network": "Lỗi mạng xảy ra. Vui lòng kiểm tra kết nối và thử lại.",
     "authentication": "Xác thực thất bại. Vui lòng đăng nhập và thử lại.",
     "consentFailed": "Không thể cấp đồng thuận. Vui lòng thử lại.",
-    "general": "Đã xảy ra lỗi. Vui lòng thử lại sau."
+    "general": "Đã xảy ra lỗi. Vui lòng thử lại sau.",
+    "existingConsent": "Đồng thuận đã tồn tại",
+    "existingConsentDesc": "Bạn đã cấp đồng thuận cho phiên bản này."
   }
 }

@@ -1,4 +1,7 @@
 {
+  "common": {
+    "loading": "Loading..."
+  },
   "modal": {
     "title": "Consent Management",
     "close": "Close"
@@ -10,6 +13,7 @@
   "form": {
     "title": "Grant Consent",
     "description": "Your information is protected under Vietnamese law",
+    "dataCategories": "Data Categories",
     "consentVersion": {
       "label": "Consent Version"
     },
@@ -23,13 +27,20 @@
   },
   "history": {
     "title": "Consent History",
+    "description": "Review your previous consent grants.",
     "empty": "No consent history available",
-    "loadMore": "Load More"
+    "emptyDesc": "You haven't granted any consents for our services yet.",
+    "loadMore": "Load More",
+    "granted": "Granted",
+    "revoked": "Revoked",
+    "logs": "Detailed Logs"
   },
   "errors": {
     "network": "Network error occurred. Please check your connection and try again.",
     "authentication": "Authentication failed. Please log in and try again.",
     "consentFailed": "Failed to grant consent. Please try again.",
-    "general": "An error occurred. Please try again later."
+    "general": "An error occurred. Please try again later.",
+    "existingConsent": "Consent Already Exists",
+    "existingConsentDesc": "You have already granted consent for this version."
   }
 }
