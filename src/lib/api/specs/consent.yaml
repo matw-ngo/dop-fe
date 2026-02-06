@@ -83,7 +83,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/DataProcessorCreateRequest'
+              $ref: '#/components/schemas/CreateDataProcessorRequest'
       responses:
         '201':
           description: Data processor created successfully
@@ -148,10 +148,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/DataProcessorUpdateRequest'
+              $ref: '#/components/schemas/UpdateDataProcessorRequest'
       responses:
         '200':
-          $ref: '#/components/responses/200'
+          description: Data processor updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataProcessor'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -232,7 +236,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/DataControllerCreateRequest'
+              $ref: '#/components/schemas/CreateDataControllerRequest'
       responses:
         '201':
           description: Data controller created successfully
@@ -297,10 +301,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/DataControllerUpdateRequest'
+              $ref: '#/components/schemas/UpdateDataControllerRequest'
       responses:
         '200':
-          $ref: '#/components/responses/200'
+          description: Data controller updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataController'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -349,6 +357,9 @@ paths:
         - cookie_auth: []
       parameters:
         - $ref: '#/components/parameters/search'
+        - $ref: '#/components/parameters/name'
+        - $ref: '#/components/parameters/controller_id'
+        - $ref: '#/components/parameters/tenant_id'
         - $ref: '#/components/parameters/page'
         - $ref: '#/components/parameters/page_size'
       responses:
@@ -381,7 +392,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ConsentPurposeCreateRequest'
+              $ref: '#/components/schemas/CreateConsentPurposeRequest'
       responses:
         '201':
           description: Consent purpose created successfully
@@ -446,10 +457,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ConsentPurposeUpdateRequest'
+              $ref: '#/components/schemas/UpdateConsentPurposeRequest'
       responses:
         '200':
-          $ref: '#/components/responses/200'
+          description: Consent purpose updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsentPurpose'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -530,7 +545,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/DataCategoryCreateRequest'
+              $ref: '#/components/schemas/CreateDataCategoryRequest'
       responses:
         '201':
           description: Data category created successfully
@@ -595,10 +610,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/DataCategoryUpdateRequest'
+              $ref: '#/components/schemas/UpdateDataCategoryRequest'
       responses:
         '200':
-          $ref: '#/components/responses/200'
+          description: Data category updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataCategory'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -647,6 +666,7 @@ paths:
         - cookie_auth: []
       parameters:
         - $ref: '#/components/parameters/search'
+        - $ref: '#/components/parameters/session_id'
         - $ref: '#/components/parameters/ConsentAction'
         - $ref: '#/components/parameters/page'
         - $ref: '#/components/parameters/page_size'
@@ -680,7 +700,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ConsentCreateRequest'
+              $ref: '#/components/schemas/CreateConsentRequest'
       responses:
         '201':
           description: Consent created successfully
@@ -745,10 +765,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ConsentUpdateRequest'
+              $ref: '#/components/schemas/UpdateConsentRequest'
       responses:
         '200':
-          $ref: '#/components/responses/200'
+          description: Consent updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Consent'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -829,7 +853,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ConsentVersionCreateRequest'
+              $ref: '#/components/schemas/CreateConsentVersionRequest'
       responses:
         '201':
           description: Consent version created successfully
@@ -894,10 +918,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ConsentVersionUpdateRequest'
+              $ref: '#/components/schemas/UpdateConsentVersionRequest'
       responses:
         '200':
-          $ref: '#/components/responses/200'
+          description: Consent version updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsentVersion'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -978,7 +1006,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ConsentDataCategoryCreateRequest'
+              $ref: '#/components/schemas/CreateConsentDataCategoryRequest'
       responses:
         '201':
           description: Consent data category created successfully
@@ -1041,10 +1069,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ConsentDataCategoryUpdateRequest'
+              $ref: '#/components/schemas/UpdateConsentDataCategoryRequest'
       responses:
         '200':
-          $ref: '#/components/responses/200'
+          description: Consent data category updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsentDataCategory'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -1127,7 +1159,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ConsentLogCreateRequest'
+              $ref: '#/components/schemas/CreateConsentLogRequest'
       responses:
         '201':
           description: Consent log created successfully
@@ -1190,10 +1222,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ConsentLogUpdateRequest'
+              $ref: '#/components/schemas/UpdateConsentLogRequest'
       responses:
         '200':
-          $ref: '#/components/responses/200'
+          description: Consent log updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsentLog'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -1376,6 +1412,39 @@ components:
         type: string
         format: uuid
       example: 550e8400-e29b-41d4-a716-446655440000
+    name:
+      name: name
+      in: query
+      description: Filter by consent purpose name
+      required: false
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 255
+    controller_id:
+      name: controller_id
+      in: query
+      description: Filter by controller ID
+      required: false
+      schema:
+        type: string
+        format: uuid
+    tenant_id:
+      name: tenant_id
+      in: query
+      description: Filter by tenant ID
+      required: false
+      schema:
+        type: string
+        format: uuid
+    session_id:
+      name: session_id
+      in: query
+      description: Filter by session ID
+      required: false
+      schema:
+        type: string
+        maxLength: 512
     ConsentAction:
       name: action
       in: query
@@ -1438,6 +1507,9 @@ components:
         id:
           $ref: '#/components/schemas/UUID'
           description: ID of the data processor
+        tenant_id:
+          $ref: '#/components/schemas/UUID'
+          description: Tenant ID of the data processor
         name:
           $ref: '#/components/schemas/ShortString'
           description: Data processor name
@@ -1451,6 +1523,15 @@ components:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
           $ref: '#/components/schemas/UpdatedAt'
+        controller_name:
+          $ref: '#/components/schemas/ShortString'
+          description: Controller name
+        controller_contact_info:
+          $ref: '#/components/schemas/MediumString'
+          description: Controller contact information
+        controller_address:
+          $ref: '#/components/schemas/MediumString'
+          description: Controller address
     Pagination:
       type: object
       properties:
@@ -1499,13 +1580,16 @@ components:
         - unavailable
         - data_loss
         - unauthenticated
-    DataProcessorCreateRequest:
+    CreateDataProcessorRequest:
       type: object
       properties:
         name:
           $ref: '#/components/schemas/ShortString'
           description: Data processor name
           example: DataNest, telco, FI
+        tenant_id:
+          $ref: '#/components/schemas/UUID'
+          description: Tenant ID of the data processor
         controller_id:
           $ref: '#/components/schemas/UUID'
           description: Controller ID of the data processor
@@ -1515,6 +1599,7 @@ components:
           example: company@gmail.com, +84-123-45678
       required:
         - name
+        - tenant_id
         - controller_id
         - contact_info
     SuccessResponse:
@@ -1530,12 +1615,15 @@ components:
       required:
         - success
         - message
-    DataProcessorUpdateRequest:
+    UpdateDataProcessorRequest:
       type: object
       properties:
         name:
           $ref: '#/components/schemas/ShortString'
           description: Data processor name
+        tenant_id:
+          $ref: '#/components/schemas/UUID'
+          description: Tenant ID of the data processor
         controller_id:
           $ref: '#/components/schemas/UUID'
           description: Controller ID of the data processor
@@ -1549,6 +1637,9 @@ components:
         id:
           $ref: '#/components/schemas/UUID'
           description: ID of the data controller
+        tenant_id:
+          $ref: '#/components/schemas/UUID'
+          description: Tenant ID of the data controller
         name:
           $ref: '#/components/schemas/ShortString'
           description: Data controller name
@@ -1572,9 +1663,12 @@ components:
           description: List of data controllers
         pagination:
           $ref: '#/components/schemas/Pagination'
-    DataControllerCreateRequest:
+    CreateDataControllerRequest:
       type: object
       properties:
+        tenant_id:
+          $ref: '#/components/schemas/UUID'
+          description: Tenant ID of the data controller
         name:
           $ref: '#/components/schemas/ShortString'
           description: Data controller name
@@ -1588,12 +1682,16 @@ components:
           description: Data controller address
           example: Hanoi, Vietnam
       required:
+        - tenant_id
         - name
         - contact_info
         - address
-    DataControllerUpdateRequest:
+    UpdateDataControllerRequest:
       type: object
       properties:
+        tenant_id:
+          $ref: '#/components/schemas/UUID'
+          description: Tenant ID of the data controller
         name:
           $ref: '#/components/schemas/ShortString'
           description: Data controller name
@@ -1606,18 +1704,60 @@ components:
           $ref: '#/components/schemas/MediumString'
           description: Data controller address
           example: Hanoi, Vietnam
+    PurposeName:
+      type: string
+      enum:
+        - tracking
+        - data_collection_and_storage
+        - analytics_and_profiling
+        - third_party_sharing
+        - marketing_communication
+        - service_improvement
+        - risk_and_fraud_detection
+        - legal_and_compliance
+      example: tracking
+      x-go-type: types.PurposeName
+      x-go-type-import:
+        path: github.com/cicdata-io/smartdop/pkg/types
+    LongString:
+      type: string
+      maxLength: 65535
+      description: Long string for content, terms, and large text blocks (max 65,535 characters)
+      example: Terms and conditions for data processing...
+    VersionField:
+      type: integer
+      minimum: 1
+      description: Version number
+      example: 1
+    EffectiveDateField:
+      type: string
+      format: date-time
+      description: Effective date of the entity
+      example: '2024-01-01T00:00:00Z'
     ConsentPurpose:
       type: object
       properties:
         id:
           $ref: '#/components/schemas/UUID'
           description: ID of the consent purpose
+        tenant_id:
+          $ref: '#/components/schemas/UUID'
+          description: Tenant ID of the consent purpose
         name:
-          $ref: '#/components/schemas/ShortString'
+          $ref: '#/components/schemas/PurposeName'
           description: Name of the consent purpose
         controller_id:
           $ref: '#/components/schemas/UUID'
           description: ID of the data controller
+        controller_name:
+          $ref: '#/components/schemas/ShortString'
+          description: Name of the data controller
+        controller_contact_info:
+          $ref: '#/components/schemas/MediumString'
+          description: Contact information of the data controller
+        controller_address:
+          $ref: '#/components/schemas/LongString'
+          description: Address of the data controller
         purpose:
           $ref: '#/components/schemas/MediumString'
           description: Description of the consent purpose
@@ -1626,6 +1766,21 @@ components:
           minimum: 1
           maximum: 730
           description: Retention period in days
+        latest_version_id:
+          $ref: '#/components/schemas/UUID'
+          description: ID of the latest consent version
+        latest_version:
+          $ref: '#/components/schemas/VersionField'
+          description: Version number of the latest consent version
+        latest_content:
+          $ref: '#/components/schemas/LongString'
+          description: Content of the latest consent version
+        latest_document_url:
+          $ref: '#/components/schemas/MediumString'
+          description: Document URL of the latest consent version
+        latest_effective_date:
+          $ref: '#/components/schemas/EffectiveDateField'
+          description: Effective date of the latest consent version
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
@@ -1640,11 +1795,14 @@ components:
           description: List of consent purposes
         pagination:
           $ref: '#/components/schemas/Pagination'
-    ConsentPurposeCreateRequest:
+    CreateConsentPurposeRequest:
       type: object
       properties:
+        tenant_id:
+          $ref: '#/components/schemas/UUID'
+          description: Tenant ID of the consent
         name:
-          $ref: '#/components/schemas/ShortString'
+          $ref: '#/components/schemas/PurposeName'
           description: Name of the consent purpose
         controller_id:
           $ref: '#/components/schemas/UUID'
@@ -1659,15 +1817,19 @@ components:
           maximum: 730
           description: Retention period in days
       required:
+        - tenant_id
         - name
         - controller_id
         - purpose
         - retention_days
-    ConsentPurposeUpdateRequest:
+    UpdateConsentPurposeRequest:
       type: object
       properties:
+        tenant_id:
+          $ref: '#/components/schemas/UUID'
+          description: Tenant ID of the consent
         name:
-          $ref: '#/components/schemas/ShortString'
+          $ref: '#/components/schemas/PurposeName'
           description: Name of the consent purpose
         controller_id:
           $ref: '#/components/schemas/UUID'
@@ -1687,6 +1849,9 @@ components:
         id:
           $ref: '#/components/schemas/UUID'
           description: ID of the data category
+        tenant_id:
+          $ref: '#/components/schemas/UUID'
+          description: Tenant ID of the data category
         name:
           $ref: '#/components/schemas/ShortString'
           description: Name of the data category
@@ -1707,9 +1872,12 @@ components:
           description: List of data categories
         pagination:
           $ref: '#/components/schemas/Pagination'
-    DataCategoryCreateRequest:
+    CreateDataCategoryRequest:
       type: object
       properties:
+        tenant_id:
+          $ref: '#/components/schemas/UUID'
+          description: Tenant ID of the data category
         name:
           $ref: '#/components/schemas/ShortString'
           description: Name of the data category
@@ -1719,11 +1887,15 @@ components:
           description: Description of the data category
           example: Personal information collected from users
       required:
+        - tenant_id
         - name
         - description
-    DataCategoryUpdateRequest:
+    UpdateDataCategoryRequest:
       type: object
       properties:
+        tenant_id:
+          $ref: '#/components/schemas/UUID'
+          description: Tenant ID of the data category
         name:
           $ref: '#/components/schemas/ShortString'
           description: Name of the data category
@@ -1749,24 +1921,69 @@ components:
         id:
           $ref: '#/components/schemas/UUID'
           description: ID of the consent
-        controller_id:
+        tenant_id:
           $ref: '#/components/schemas/UUID'
-          description: ID of the data controller
-        processor_id:
-          $ref: '#/components/schemas/UUID'
-          description: ID of the data processor
+          description: Tenant ID of the consent
         lead_id:
           $ref: '#/components/schemas/UUID'
           description: ID of the lead
         consent_version_id:
           $ref: '#/components/schemas/UUID'
           description: ID of the consent version
+        session_id:
+          $ref: '#/components/schemas/MediumString'
+          description: Session ID of the consent
         source:
           $ref: '#/components/schemas/MediumString'
           description: Source of the consent (web, app, sms,...)
         action:
           $ref: '#/components/schemas/ConsentAction'
           description: Action performed on the consent
+        consent_version:
+          $ref: '#/components/schemas/VersionField'
+          description: Version number of the consent version
+        consent_content:
+          $ref: '#/components/schemas/LongString'
+          description: Content of the consent version
+        consent_document_url:
+          $ref: '#/components/schemas/MediumString'
+          description: URL to the consent document
+        consent_effective_date:
+          $ref: '#/components/schemas/EffectiveDateField'
+          description: Effective date of the consent version
+        consent_purpose_id:
+          $ref: '#/components/schemas/UUID'
+          description: ID of the consent purpose
+        purpose_name:
+          $ref: '#/components/schemas/PurposeName'
+          description: Name of the consent purpose
+        purpose_description:
+          $ref: '#/components/schemas/LongString'
+          description: Description of the consent purpose
+        purpose_retention_days:
+          type: integer
+          description: Retention days for the consent purpose
+        processor_id:
+          $ref: '#/components/schemas/UUID'
+          description: ID of the data processor
+        processor_name:
+          $ref: '#/components/schemas/MediumString'
+          description: Name of the data processor
+        processor_contact_info:
+          $ref: '#/components/schemas/MediumString'
+          description: Contact information of the data processor
+        controller_id:
+          $ref: '#/components/schemas/UUID'
+          description: ID of the data controller
+        controller_name:
+          $ref: '#/components/schemas/MediumString'
+          description: Name of the processor's data controller
+        controller_contact_info:
+          $ref: '#/components/schemas/MediumString'
+          description: Contact information of the processor's data controller
+        controller_address:
+          $ref: '#/components/schemas/LongString'
+          description: Address of the processor's data controller
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
@@ -1781,79 +1998,65 @@ components:
           description: List of consents
         pagination:
           $ref: '#/components/schemas/Pagination'
-    ConsentCreateRequest:
+    CreateConsentRequest:
       type: object
       properties:
-        controller_id:
+        tenant_id:
           $ref: '#/components/schemas/UUID'
-          description: ID of the data controller
-        processor_id:
-          $ref: '#/components/schemas/UUID'
-          description: ID of the data processor
+          description: Tenant ID of the consent
         lead_id:
           $ref: '#/components/schemas/UUID'
           description: ID of the lead
         consent_version_id:
           $ref: '#/components/schemas/UUID'
           description: ID of the consent version
+        session_id:
+          $ref: '#/components/schemas/MediumString'
+          description: Session ID of the consent
         source:
           $ref: '#/components/schemas/MediumString'
           description: Source of the consent (web, app, sms,...)
-        action:
-          $ref: '#/components/schemas/ConsentAction'
-          description: Action performed on the consent
       required:
-        - controller_id
-        - processor_id
-        - lead_id
+        - tenant_id
         - consent_version_id
+        - session_id
         - source
-        - action
-    ConsentUpdateRequest:
+    UpdateConsentRequest:
       type: object
       properties:
-        controller_id:
+        tenant_id:
           $ref: '#/components/schemas/UUID'
-          description: ID of the data controller
-        processor_id:
-          $ref: '#/components/schemas/UUID'
-          description: ID of the data processor
+          description: Tenant ID of the consent
         lead_id:
           $ref: '#/components/schemas/UUID'
           description: ID of the lead
         consent_version_id:
           $ref: '#/components/schemas/UUID'
           description: ID of the consent version
+        session_id:
+          $ref: '#/components/schemas/MediumString'
+          description: Session ID of the consent
         source:
           $ref: '#/components/schemas/MediumString'
           description: Source of the consent (web, app, sms,...)
         action:
           $ref: '#/components/schemas/ConsentAction'
           description: Action performed on the consent
-    VersionField:
-      type: integer
-      minimum: 1
-      description: Version number
-      example: 1
-    LongString:
-      type: string
-      maxLength: 65535
-      description: Long string for content, terms, and large text blocks (max 65,535 characters)
-      example: Terms and conditions for data processing...
-    EffectiveDateField:
-      type: string
-      format: date-time
-      description: Effective date of the entity
-      example: '2024-01-01T00:00:00Z'
     ConsentVersion:
       type: object
       properties:
         id:
           $ref: '#/components/schemas/UUID'
           description: ID of the consent version
+        tenant_id:
+          $ref: '#/components/schemas/UUID'
+          description: Tenant ID of the consent
         consent_purpose_id:
           $ref: '#/components/schemas/UUID'
           description: ID of the consent purpose
+        processor_id:
+          $ref: '#/components/schemas/UUID'
+          description: ID of the data processor
         version:
           $ref: '#/components/schemas/VersionField'
         content:
@@ -1865,6 +2068,30 @@ components:
         effective_date:
           $ref: '#/components/schemas/EffectiveDateField'
           description: Effective date of the consent version
+        purpose_name:
+          $ref: '#/components/schemas/PurposeName'
+          description: Name of the consent purpose
+        purpose_description:
+          $ref: '#/components/schemas/LongString'
+          description: Description of the consent purpose
+        purpose_retention_days:
+          type: integer
+          description: Retention days for the consent purpose
+        processor_name:
+          $ref: '#/components/schemas/MediumString'
+          description: Name of the data processor
+        processor_contact_info:
+          $ref: '#/components/schemas/MediumString'
+          description: Contact information of the data processor
+        controller_name:
+          $ref: '#/components/schemas/MediumString'
+          description: Name of the processor's data controller
+        controller_contact_info:
+          $ref: '#/components/schemas/MediumString'
+          description: Contact information of the processor's data controller
+        controller_address:
+          $ref: '#/components/schemas/LongString'
+          description: Address of the processor's data controller
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
@@ -1879,12 +2106,18 @@ components:
           description: List of consent versions
         pagination:
           $ref: '#/components/schemas/Pagination'
-    ConsentVersionCreateRequest:
+    CreateConsentVersionRequest:
       type: object
       properties:
+        tenant_id:
+          $ref: '#/components/schemas/UUID'
+          description: Tenant ID of the consent
         consent_purpose_id:
           $ref: '#/components/schemas/UUID'
           description: ID of the consent purpose
+        processor_id:
+          $ref: '#/components/schemas/UUID'
+          description: ID of the data processor
         version:
           $ref: '#/components/schemas/VersionField'
         content:
@@ -1900,17 +2133,25 @@ components:
           description: Effective date of the consent version
           example: '2024-01-01T00:00:00Z'
       required:
+        - tenant_id
         - consent_purpose_id
+        - processor_id
         - version
         - content
         - document_url
         - effective_date
-    ConsentVersionUpdateRequest:
+    UpdateConsentVersionRequest:
       type: object
       properties:
+        tenant_id:
+          $ref: '#/components/schemas/UUID'
+          description: Tenant ID of the consent
         consent_purpose_id:
           $ref: '#/components/schemas/UUID'
           description: ID of the consent purpose
+        processor_id:
+          $ref: '#/components/schemas/UUID'
+          description: ID of the data processor
         version:
           $ref: '#/components/schemas/VersionField'
         content:
@@ -1931,6 +2172,9 @@ components:
         id:
           $ref: '#/components/schemas/UUID'
           description: ID of the consent data category
+        tenant_id:
+          $ref: '#/components/schemas/UUID'
+          description: Tenant ID of the consent data category
         consent_id:
           $ref: '#/components/schemas/UUID'
           description: ID of the consent
@@ -1941,6 +2185,21 @@ components:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
           $ref: '#/components/schemas/UpdatedAt'
+        consent_action:
+          $ref: '#/components/schemas/ConsentAction'
+          description: Action of the consent
+        consent_source:
+          type: string
+          description: Source of the consent
+        consent_lead_id:
+          $ref: '#/components/schemas/UUID'
+          description: Lead ID of the consent
+        data_category_name:
+          type: string
+          description: Name of the data category
+        data_category_description:
+          type: string
+          description: Description of the data category
     ConsentDataCategoryListResponse:
       type: object
       properties:
@@ -1951,9 +2210,12 @@ components:
           description: List of consent data categories
         pagination:
           $ref: '#/components/schemas/Pagination'
-    ConsentDataCategoryCreateRequest:
+    CreateConsentDataCategoryRequest:
       type: object
       properties:
+        tenant_id:
+          $ref: '#/components/schemas/UUID'
+          description: Tenant ID of the consent
         consent_id:
           $ref: '#/components/schemas/UUID'
           description: ID of the consent
@@ -1961,11 +2223,15 @@ components:
           $ref: '#/components/schemas/UUID'
           description: ID of the data category
       required:
+        - tenant_id
         - consent_id
         - data_category_id
-    ConsentDataCategoryUpdateRequest:
+    UpdateConsentDataCategoryRequest:
       type: object
       properties:
+        tenant_id:
+          $ref: '#/components/schemas/UUID'
+          description: Tenant ID of the consent
         consent_id:
           $ref: '#/components/schemas/UUID'
           description: ID of the consent
@@ -1978,6 +2244,9 @@ components:
         id:
           $ref: '#/components/schemas/UUID'
           description: ID of the consent log
+        tenant_id:
+          $ref: '#/components/schemas/UUID'
+          description: Tenant ID of the consent log
         consent_id:
           $ref: '#/components/schemas/UUID'
           description: ID of the consent being logged
@@ -1990,6 +2259,18 @@ components:
         source:
           $ref: '#/components/schemas/ShortString'
           description: Source of consent action (e.g., web, app, sms,...)
+        lead_id:
+          $ref: '#/components/schemas/UUID'
+          description: ID of the lead associated with the consent
+        consent_version_id:
+          $ref: '#/components/schemas/UUID'
+          description: ID of the consent version
+        consent_source:
+          $ref: '#/components/schemas/ShortString'
+          description: Source of the original consent (e.g., web, app, sms,...)
+        consent_action:
+          $ref: '#/components/schemas/ConsentAction'
+          description: Original action performed on the consent
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
@@ -2004,9 +2285,12 @@ components:
           description: List of consent logs
         pagination:
           $ref: '#/components/schemas/Pagination'
-    ConsentLogCreateRequest:
+    CreateConsentLogRequest:
       type: object
       properties:
+        tenant_id:
+          $ref: '#/components/schemas/UUID'
+          description: Tenant ID of the consent
         consent_id:
           $ref: '#/components/schemas/UUID'
           description: ID of the consent being logged
@@ -2021,13 +2305,17 @@ components:
           $ref: '#/components/schemas/ShortString'
           description: Source of consent action (e.g., web, app, sms,...)
       required:
+        - tenant_id
         - consent_id
         - action
         - action_by
         - source
-    ConsentLogUpdateRequest:
+    UpdateConsentLogRequest:
       type: object
       properties:
+        tenant_id:
+          $ref: '#/components/schemas/UUID'
+          description: Tenant ID of the consent
         consent_id:
           $ref: '#/components/schemas/UUID'
           description: ID of the consent being logged

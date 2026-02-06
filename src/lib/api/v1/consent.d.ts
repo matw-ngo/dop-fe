@@ -454,6 +454,8 @@ export interface components {
     DataProcessor: {
       /** @description ID of the data processor */
       id?: components["schemas"]["UUID"];
+      /** @description Tenant ID of the data processor */
+      tenant_id?: components["schemas"]["UUID"];
       /** @description Data processor name */
       name?: components["schemas"]["ShortString"];
       /** @description Controller ID of the data processor */
@@ -462,6 +464,12 @@ export interface components {
       contact_info?: components["schemas"]["MediumString"];
       created_at?: components["schemas"]["CreatedAt"];
       updated_at?: components["schemas"]["UpdatedAt"];
+      /** @description Controller name */
+      controller_name?: components["schemas"]["ShortString"];
+      /** @description Controller contact information */
+      controller_contact_info?: components["schemas"]["MediumString"];
+      /** @description Controller address */
+      controller_address?: components["schemas"]["MediumString"];
     };
     Pagination: {
       /** @example 1 */
@@ -495,12 +503,14 @@ export interface components {
       | "unavailable"
       | "data_loss"
       | "unauthenticated";
-    DataProcessorCreateRequest: {
+    CreateDataProcessorRequest: {
       /**
        * @description Data processor name
        * @example DataNest, telco, FI
        */
       name: components["schemas"]["ShortString"];
+      /** @description Tenant ID of the data processor */
+      tenant_id: components["schemas"]["UUID"];
       /** @description Controller ID of the data processor */
       controller_id: components["schemas"]["UUID"];
       /**
@@ -515,9 +525,11 @@ export interface components {
       /** @example Operation completed successfully */
       message: string;
     };
-    DataProcessorUpdateRequest: {
+    UpdateDataProcessorRequest: {
       /** @description Data processor name */
       name?: components["schemas"]["ShortString"];
+      /** @description Tenant ID of the data processor */
+      tenant_id?: components["schemas"]["UUID"];
       /** @description Controller ID of the data processor */
       controller_id?: components["schemas"]["UUID"];
       /**
@@ -529,6 +541,8 @@ export interface components {
     DataController: {
       /** @description ID of the data controller */
       id?: components["schemas"]["UUID"];
+      /** @description Tenant ID of the data controller */
+      tenant_id?: components["schemas"]["UUID"];
       /** @description Data controller name */
       name?: components["schemas"]["ShortString"];
       /** @description Data controller contact */
@@ -543,7 +557,9 @@ export interface components {
       data_controllers?: components["schemas"]["DataController"][];
       pagination?: components["schemas"]["Pagination"];
     };
-    DataControllerCreateRequest: {
+    CreateDataControllerRequest: {
+      /** @description Tenant ID of the data controller */
+      tenant_id: components["schemas"]["UUID"];
       /**
        * @description Data controller name
        * @example DataNest, FI
@@ -560,7 +576,9 @@ export interface components {
        */
       address: components["schemas"]["MediumString"];
     };
-    DataControllerUpdateRequest: {
+    UpdateDataControllerRequest: {
+      /** @description Tenant ID of the data controller */
+      tenant_id?: components["schemas"]["UUID"];
       /**
        * @description Data controller name
        * @example DataNest, FI
@@ -577,17 +595,64 @@ export interface components {
        */
       address?: components["schemas"]["MediumString"];
     };
+    /**
+     * @example tracking
+     * @enum {string}
+     */
+    PurposeName:
+      | "tracking"
+      | "data_collection_and_storage"
+      | "analytics_and_profiling"
+      | "third_party_sharing"
+      | "marketing_communication"
+      | "service_improvement"
+      | "risk_and_fraud_detection"
+      | "legal_and_compliance";
+    /**
+     * @description Long string for content, terms, and large text blocks (max 65,535 characters)
+     * @example Terms and conditions for data processing...
+     */
+    LongString: string;
+    /**
+     * @description Version number
+     * @example 1
+     */
+    VersionField: number;
+    /**
+     * Format: date-time
+     * @description Effective date of the entity
+     * @example 2024-01-01T00:00:00Z
+     */
+    EffectiveDateField: string;
     ConsentPurpose: {
       /** @description ID of the consent purpose */
       id?: components["schemas"]["UUID"];
+      /** @description Tenant ID of the consent purpose */
+      tenant_id?: components["schemas"]["UUID"];
       /** @description Name of the consent purpose */
-      name?: components["schemas"]["ShortString"];
+      name?: components["schemas"]["PurposeName"];
       /** @description ID of the data controller */
       controller_id?: components["schemas"]["UUID"];
+      /** @description Name of the data controller */
+      controller_name?: components["schemas"]["ShortString"];
+      /** @description Contact information of the data controller */
+      controller_contact_info?: components["schemas"]["MediumString"];
+      /** @description Address of the data controller */
+      controller_address?: components["schemas"]["LongString"];
       /** @description Description of the consent purpose */
       purpose?: components["schemas"]["MediumString"];
       /** @description Retention period in days */
       retention_days?: number;
+      /** @description ID of the latest consent version */
+      latest_version_id?: components["schemas"]["UUID"];
+      /** @description Version number of the latest consent version */
+      latest_version?: components["schemas"]["VersionField"];
+      /** @description Content of the latest consent version */
+      latest_content?: components["schemas"]["LongString"];
+      /** @description Document URL of the latest consent version */
+      latest_document_url?: components["schemas"]["MediumString"];
+      /** @description Effective date of the latest consent version */
+      latest_effective_date?: components["schemas"]["EffectiveDateField"];
       created_at?: components["schemas"]["CreatedAt"];
       updated_at?: components["schemas"]["UpdatedAt"];
     };
@@ -596,9 +661,11 @@ export interface components {
       purposes?: components["schemas"]["ConsentPurpose"][];
       pagination?: components["schemas"]["Pagination"];
     };
-    ConsentPurposeCreateRequest: {
+    CreateConsentPurposeRequest: {
+      /** @description Tenant ID of the consent */
+      tenant_id: components["schemas"]["UUID"];
       /** @description Name of the consent purpose */
-      name: components["schemas"]["ShortString"];
+      name: components["schemas"]["PurposeName"];
       /** @description ID of the data controller */
       controller_id: components["schemas"]["UUID"];
       /**
@@ -609,9 +676,11 @@ export interface components {
       /** @description Retention period in days */
       retention_days: number;
     };
-    ConsentPurposeUpdateRequest: {
+    UpdateConsentPurposeRequest: {
+      /** @description Tenant ID of the consent */
+      tenant_id?: components["schemas"]["UUID"];
       /** @description Name of the consent purpose */
-      name?: components["schemas"]["ShortString"];
+      name?: components["schemas"]["PurposeName"];
       /** @description ID of the data controller */
       controller_id?: components["schemas"]["UUID"];
       /**
@@ -625,6 +694,8 @@ export interface components {
     DataCategory: {
       /** @description ID of the data category */
       id?: components["schemas"]["UUID"];
+      /** @description Tenant ID of the data category */
+      tenant_id?: components["schemas"]["UUID"];
       /** @description Name of the data category */
       name?: components["schemas"]["ShortString"];
       /** @description Description of the data category */
@@ -637,7 +708,9 @@ export interface components {
       categories?: components["schemas"]["DataCategory"][];
       pagination?: components["schemas"]["Pagination"];
     };
-    DataCategoryCreateRequest: {
+    CreateDataCategoryRequest: {
+      /** @description Tenant ID of the data category */
+      tenant_id: components["schemas"]["UUID"];
       /**
        * @description Name of the data category
        * @example personal_data
@@ -649,7 +722,9 @@ export interface components {
        */
       description: components["schemas"]["MediumString"];
     };
-    DataCategoryUpdateRequest: {
+    UpdateDataCategoryRequest: {
+      /** @description Tenant ID of the data category */
+      tenant_id?: components["schemas"]["UUID"];
       /**
        * @description Name of the data category
        * @example personal_data
@@ -669,18 +744,48 @@ export interface components {
     Consent: {
       /** @description ID of the consent */
       id?: components["schemas"]["UUID"];
-      /** @description ID of the data controller */
-      controller_id?: components["schemas"]["UUID"];
-      /** @description ID of the data processor */
-      processor_id?: components["schemas"]["UUID"];
+      /** @description Tenant ID of the consent */
+      tenant_id?: components["schemas"]["UUID"];
       /** @description ID of the lead */
       lead_id?: components["schemas"]["UUID"];
       /** @description ID of the consent version */
       consent_version_id?: components["schemas"]["UUID"];
+      /** @description Session ID of the consent */
+      session_id?: components["schemas"]["MediumString"];
       /** @description Source of the consent (web, app, sms,...) */
       source?: components["schemas"]["MediumString"];
       /** @description Action performed on the consent */
       action?: components["schemas"]["ConsentAction"];
+      /** @description Version number of the consent version */
+      consent_version?: components["schemas"]["VersionField"];
+      /** @description Content of the consent version */
+      consent_content?: components["schemas"]["LongString"];
+      /** @description URL to the consent document */
+      consent_document_url?: components["schemas"]["MediumString"];
+      /** @description Effective date of the consent version */
+      consent_effective_date?: components["schemas"]["EffectiveDateField"];
+      /** @description ID of the consent purpose */
+      consent_purpose_id?: components["schemas"]["UUID"];
+      /** @description Name of the consent purpose */
+      purpose_name?: components["schemas"]["PurposeName"];
+      /** @description Description of the consent purpose */
+      purpose_description?: components["schemas"]["LongString"];
+      /** @description Retention days for the consent purpose */
+      purpose_retention_days?: number;
+      /** @description ID of the data processor */
+      processor_id?: components["schemas"]["UUID"];
+      /** @description Name of the data processor */
+      processor_name?: components["schemas"]["MediumString"];
+      /** @description Contact information of the data processor */
+      processor_contact_info?: components["schemas"]["MediumString"];
+      /** @description ID of the data controller */
+      controller_id?: components["schemas"]["UUID"];
+      /** @description Name of the processor's data controller */
+      controller_name?: components["schemas"]["MediumString"];
+      /** @description Contact information of the processor's data controller */
+      controller_contact_info?: components["schemas"]["MediumString"];
+      /** @description Address of the processor's data controller */
+      controller_address?: components["schemas"]["LongString"];
       created_at?: components["schemas"]["CreatedAt"];
       updated_at?: components["schemas"]["UpdatedAt"];
     };
@@ -689,55 +794,41 @@ export interface components {
       consents?: components["schemas"]["Consent"][];
       pagination?: components["schemas"]["Pagination"];
     };
-    ConsentCreateRequest: {
-      /** @description ID of the data controller */
-      controller_id: components["schemas"]["UUID"];
-      /** @description ID of the data processor */
-      processor_id: components["schemas"]["UUID"];
+    CreateConsentRequest: {
+      /** @description Tenant ID of the consent */
+      tenant_id: components["schemas"]["UUID"];
       /** @description ID of the lead */
-      lead_id: components["schemas"]["UUID"];
+      lead_id?: components["schemas"]["UUID"];
       /** @description ID of the consent version */
       consent_version_id: components["schemas"]["UUID"];
+      /** @description Session ID of the consent */
+      session_id: components["schemas"]["MediumString"];
       /** @description Source of the consent (web, app, sms,...) */
       source: components["schemas"]["MediumString"];
-      /** @description Action performed on the consent */
-      action: components["schemas"]["ConsentAction"];
     };
-    ConsentUpdateRequest: {
-      /** @description ID of the data controller */
-      controller_id?: components["schemas"]["UUID"];
-      /** @description ID of the data processor */
-      processor_id?: components["schemas"]["UUID"];
+    UpdateConsentRequest: {
+      /** @description Tenant ID of the consent */
+      tenant_id?: components["schemas"]["UUID"];
       /** @description ID of the lead */
       lead_id?: components["schemas"]["UUID"];
       /** @description ID of the consent version */
       consent_version_id?: components["schemas"]["UUID"];
+      /** @description Session ID of the consent */
+      session_id?: components["schemas"]["MediumString"];
       /** @description Source of the consent (web, app, sms,...) */
       source?: components["schemas"]["MediumString"];
       /** @description Action performed on the consent */
       action?: components["schemas"]["ConsentAction"];
     };
-    /**
-     * @description Version number
-     * @example 1
-     */
-    VersionField: number;
-    /**
-     * @description Long string for content, terms, and large text blocks (max 65,535 characters)
-     * @example Terms and conditions for data processing...
-     */
-    LongString: string;
-    /**
-     * Format: date-time
-     * @description Effective date of the entity
-     * @example 2024-01-01T00:00:00Z
-     */
-    EffectiveDateField: string;
     ConsentVersion: {
       /** @description ID of the consent version */
       id?: components["schemas"]["UUID"];
+      /** @description Tenant ID of the consent */
+      tenant_id?: components["schemas"]["UUID"];
       /** @description ID of the consent purpose */
       consent_purpose_id?: components["schemas"]["UUID"];
+      /** @description ID of the data processor */
+      processor_id?: components["schemas"]["UUID"];
       version?: components["schemas"]["VersionField"];
       /** @description Content of the consent version */
       content?: components["schemas"]["LongString"];
@@ -745,6 +836,22 @@ export interface components {
       document_url?: components["schemas"]["MediumString"];
       /** @description Effective date of the consent version */
       effective_date?: components["schemas"]["EffectiveDateField"];
+      /** @description Name of the consent purpose */
+      purpose_name?: components["schemas"]["PurposeName"];
+      /** @description Description of the consent purpose */
+      purpose_description?: components["schemas"]["LongString"];
+      /** @description Retention days for the consent purpose */
+      purpose_retention_days?: number;
+      /** @description Name of the data processor */
+      processor_name?: components["schemas"]["MediumString"];
+      /** @description Contact information of the data processor */
+      processor_contact_info?: components["schemas"]["MediumString"];
+      /** @description Name of the processor's data controller */
+      controller_name?: components["schemas"]["MediumString"];
+      /** @description Contact information of the processor's data controller */
+      controller_contact_info?: components["schemas"]["MediumString"];
+      /** @description Address of the processor's data controller */
+      controller_address?: components["schemas"]["LongString"];
       created_at?: components["schemas"]["CreatedAt"];
       updated_at?: components["schemas"]["UpdatedAt"];
     };
@@ -753,9 +860,13 @@ export interface components {
       consent_versions?: components["schemas"]["ConsentVersion"][];
       pagination?: components["schemas"]["Pagination"];
     };
-    ConsentVersionCreateRequest: {
+    CreateConsentVersionRequest: {
+      /** @description Tenant ID of the consent */
+      tenant_id: components["schemas"]["UUID"];
       /** @description ID of the consent purpose */
       consent_purpose_id: components["schemas"]["UUID"];
+      /** @description ID of the data processor */
+      processor_id: components["schemas"]["UUID"];
       version: components["schemas"]["VersionField"];
       /**
        * @description Content of the consent version
@@ -773,9 +884,13 @@ export interface components {
        */
       effective_date: components["schemas"]["EffectiveDateField"];
     };
-    ConsentVersionUpdateRequest: {
+    UpdateConsentVersionRequest: {
+      /** @description Tenant ID of the consent */
+      tenant_id?: components["schemas"]["UUID"];
       /** @description ID of the consent purpose */
       consent_purpose_id?: components["schemas"]["UUID"];
+      /** @description ID of the data processor */
+      processor_id?: components["schemas"]["UUID"];
       version?: components["schemas"]["VersionField"];
       /**
        * @description Content of the consent version
@@ -796,25 +911,41 @@ export interface components {
     ConsentDataCategory: {
       /** @description ID of the consent data category */
       id?: components["schemas"]["UUID"];
+      /** @description Tenant ID of the consent data category */
+      tenant_id?: components["schemas"]["UUID"];
       /** @description ID of the consent */
       consent_id?: components["schemas"]["UUID"];
       /** @description ID of the data category */
       data_category_id?: components["schemas"]["UUID"];
       created_at?: components["schemas"]["CreatedAt"];
       updated_at?: components["schemas"]["UpdatedAt"];
+      /** @description Action of the consent */
+      consent_action?: components["schemas"]["ConsentAction"];
+      /** @description Source of the consent */
+      consent_source?: string;
+      /** @description Lead ID of the consent */
+      consent_lead_id?: components["schemas"]["UUID"];
+      /** @description Name of the data category */
+      data_category_name?: string;
+      /** @description Description of the data category */
+      data_category_description?: string;
     };
     ConsentDataCategoryListResponse: {
       /** @description List of consent data categories */
       consent_data_categories?: components["schemas"]["ConsentDataCategory"][];
       pagination?: components["schemas"]["Pagination"];
     };
-    ConsentDataCategoryCreateRequest: {
+    CreateConsentDataCategoryRequest: {
+      /** @description Tenant ID of the consent */
+      tenant_id: components["schemas"]["UUID"];
       /** @description ID of the consent */
       consent_id: components["schemas"]["UUID"];
       /** @description ID of the data category */
       data_category_id: components["schemas"]["UUID"];
     };
-    ConsentDataCategoryUpdateRequest: {
+    UpdateConsentDataCategoryRequest: {
+      /** @description Tenant ID of the consent */
+      tenant_id?: components["schemas"]["UUID"];
       /** @description ID of the consent */
       consent_id?: components["schemas"]["UUID"];
       /** @description ID of the data category */
@@ -823,6 +954,8 @@ export interface components {
     ConsentLog: {
       /** @description ID of the consent log */
       id?: components["schemas"]["UUID"];
+      /** @description Tenant ID of the consent log */
+      tenant_id?: components["schemas"]["UUID"];
       /** @description ID of the consent being logged */
       consent_id?: components["schemas"]["UUID"];
       /** @description Action performed on the consent */
@@ -831,6 +964,14 @@ export interface components {
       action_by?: components["schemas"]["ShortString"];
       /** @description Source of consent action (e.g., web, app, sms,...) */
       source?: components["schemas"]["ShortString"];
+      /** @description ID of the lead associated with the consent */
+      lead_id?: components["schemas"]["UUID"];
+      /** @description ID of the consent version */
+      consent_version_id?: components["schemas"]["UUID"];
+      /** @description Source of the original consent (e.g., web, app, sms,...) */
+      consent_source?: components["schemas"]["ShortString"];
+      /** @description Original action performed on the consent */
+      consent_action?: components["schemas"]["ConsentAction"];
       created_at?: components["schemas"]["CreatedAt"];
       updated_at?: components["schemas"]["UpdatedAt"];
     };
@@ -839,7 +980,9 @@ export interface components {
       consent_logs?: components["schemas"]["ConsentLog"][];
       pagination?: components["schemas"]["Pagination"];
     };
-    ConsentLogCreateRequest: {
+    CreateConsentLogRequest: {
+      /** @description Tenant ID of the consent */
+      tenant_id: components["schemas"]["UUID"];
       /** @description ID of the consent being logged */
       consent_id: components["schemas"]["UUID"];
       /** @description Action performed on the consent */
@@ -852,7 +995,9 @@ export interface components {
       /** @description Source of consent action (e.g., web, app, sms,...) */
       source: components["schemas"]["ShortString"];
     };
-    ConsentLogUpdateRequest: {
+    UpdateConsentLogRequest: {
+      /** @description Tenant ID of the consent */
+      tenant_id?: components["schemas"]["UUID"];
       /** @description ID of the consent being logged */
       consent_id?: components["schemas"]["UUID"];
       /** @description Action performed on the consent */
@@ -1013,6 +1158,14 @@ export interface components {
      * @example 550e8400-e29b-41d4-a716-446655440000
      */
     id: string;
+    /** @description Filter by consent purpose name */
+    name: string;
+    /** @description Filter by controller ID */
+    controller_id: string;
+    /** @description Filter by tenant ID */
+    tenant_id: string;
+    /** @description Filter by session ID */
+    session_id: string;
     /** @description Filter by consent action */
     ConsentAction: "grant" | "revoke" | "update" | "delete";
     /** @description Filter by consent id */
@@ -1065,7 +1218,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["DataProcessorCreateRequest"];
+        "application/json": components["schemas"]["CreateDataProcessorRequest"];
       };
     };
     responses: {
@@ -1157,11 +1310,19 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["DataProcessorUpdateRequest"];
+        "application/json": components["schemas"]["UpdateDataProcessorRequest"];
       };
     };
     responses: {
-      200: components["responses"]["200"];
+      /** @description Data processor updated successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["DataProcessor"];
+        };
+      };
       400: components["responses"]["400"];
       401: components["responses"]["401"];
       403: components["responses"]["403"];
@@ -1211,7 +1372,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["DataControllerCreateRequest"];
+        "application/json": components["schemas"]["CreateDataControllerRequest"];
       };
     };
     responses: {
@@ -1303,11 +1464,19 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["DataControllerUpdateRequest"];
+        "application/json": components["schemas"]["UpdateDataControllerRequest"];
       };
     };
     responses: {
-      200: components["responses"]["200"];
+      /** @description Data controller updated successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["DataController"];
+        };
+      };
       400: components["responses"]["400"];
       401: components["responses"]["401"];
       403: components["responses"]["403"];
@@ -1321,6 +1490,12 @@ export interface operations {
       query?: {
         /** @description Search term to filter results */
         search?: components["parameters"]["search"];
+        /** @description Filter by consent purpose name */
+        name?: components["parameters"]["name"];
+        /** @description Filter by controller ID */
+        controller_id?: components["parameters"]["controller_id"];
+        /** @description Filter by tenant ID */
+        tenant_id?: components["parameters"]["tenant_id"];
         /** @description Page number for pagination */
         page?: components["parameters"]["page"];
         /** @description Number of items per page */
@@ -1357,7 +1532,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["ConsentPurposeCreateRequest"];
+        "application/json": components["schemas"]["CreateConsentPurposeRequest"];
       };
     };
     responses: {
@@ -1449,11 +1624,19 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["ConsentPurposeUpdateRequest"];
+        "application/json": components["schemas"]["UpdateConsentPurposeRequest"];
       };
     };
     responses: {
-      200: components["responses"]["200"];
+      /** @description Consent purpose updated successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ConsentPurpose"];
+        };
+      };
       400: components["responses"]["400"];
       401: components["responses"]["401"];
       403: components["responses"]["403"];
@@ -1503,7 +1686,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["DataCategoryCreateRequest"];
+        "application/json": components["schemas"]["CreateDataCategoryRequest"];
       };
     };
     responses: {
@@ -1595,11 +1778,19 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["DataCategoryUpdateRequest"];
+        "application/json": components["schemas"]["UpdateDataCategoryRequest"];
       };
     };
     responses: {
-      200: components["responses"]["200"];
+      /** @description Data category updated successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["DataCategory"];
+        };
+      };
       400: components["responses"]["400"];
       401: components["responses"]["401"];
       403: components["responses"]["403"];
@@ -1613,6 +1804,8 @@ export interface operations {
       query?: {
         /** @description Search term to filter results */
         search?: components["parameters"]["search"];
+        /** @description Filter by session ID */
+        session_id?: components["parameters"]["session_id"];
         /** @description Filter by consent action */
         action?: components["parameters"]["ConsentAction"];
         /** @description Page number for pagination */
@@ -1651,7 +1844,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["ConsentCreateRequest"];
+        "application/json": components["schemas"]["CreateConsentRequest"];
       };
     };
     responses: {
@@ -1743,11 +1936,19 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["ConsentUpdateRequest"];
+        "application/json": components["schemas"]["UpdateConsentRequest"];
       };
     };
     responses: {
-      200: components["responses"]["200"];
+      /** @description Consent updated successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["Consent"];
+        };
+      };
       400: components["responses"]["400"];
       401: components["responses"]["401"];
       403: components["responses"]["403"];
@@ -1797,7 +1998,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["ConsentVersionCreateRequest"];
+        "application/json": components["schemas"]["CreateConsentVersionRequest"];
       };
     };
     responses: {
@@ -1889,11 +2090,19 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["ConsentVersionUpdateRequest"];
+        "application/json": components["schemas"]["UpdateConsentVersionRequest"];
       };
     };
     responses: {
-      200: components["responses"]["200"];
+      /** @description Consent version updated successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ConsentVersion"];
+        };
+      };
       400: components["responses"]["400"];
       401: components["responses"]["401"];
       403: components["responses"]["403"];
@@ -1943,7 +2152,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["ConsentDataCategoryCreateRequest"];
+        "application/json": components["schemas"]["CreateConsentDataCategoryRequest"];
       };
     };
     responses: {
@@ -2034,11 +2243,19 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["ConsentDataCategoryUpdateRequest"];
+        "application/json": components["schemas"]["UpdateConsentDataCategoryRequest"];
       };
     };
     responses: {
-      200: components["responses"]["200"];
+      /** @description Consent data category updated successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ConsentDataCategory"];
+        };
+      };
       400: components["responses"]["400"];
       401: components["responses"]["401"];
       403: components["responses"]["403"];
@@ -2092,7 +2309,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["ConsentLogCreateRequest"];
+        "application/json": components["schemas"]["CreateConsentLogRequest"];
       };
     };
     responses: {
@@ -2183,11 +2400,19 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["ConsentLogUpdateRequest"];
+        "application/json": components["schemas"]["UpdateConsentLogRequest"];
       };
     };
     responses: {
-      200: components["responses"]["200"];
+      /** @description Consent log updated successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ConsentLog"];
+        };
+      };
       400: components["responses"]["400"];
       401: components["responses"]["401"];
       403: components["responses"]["403"];
