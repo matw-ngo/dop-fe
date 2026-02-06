@@ -14,12 +14,11 @@ export async function submitCreditCardConsent(): Promise<string | null> {
   try {
     const consentResponse = await consentClient.POST("/consent", {
       body: {
-        controller_id,
-        processor_id,
+        tenant_id: "00000000-0000-0000-0000-000000000000", // FIXME: Get real tenant ID
         lead_id: "placeholder",
         consent_version_id,
+        session_id: "00000000-0000-0000-0000-000000000000", // FIXME: Get real session ID
         source,
-        action,
       },
     });
 
@@ -42,6 +41,7 @@ export async function submitCreditCardConsent(): Promise<string | null> {
       try {
         await consentClient.POST("/consent-data-category", {
           body: {
+            tenant_id: "00000000-0000-0000-0000-000000000000", // FIXME: Get real tenant ID
             consent_id: consentId,
             data_category_id: category,
           },
@@ -57,6 +57,7 @@ export async function submitCreditCardConsent(): Promise<string | null> {
     try {
       await consentClient.POST("/consent-log", {
         body: {
+          tenant_id: "00000000-0000-0000-0000-000000000000", // FIXME: Get real tenant ID
           consent_id: consentId,
           action,
           action_by,

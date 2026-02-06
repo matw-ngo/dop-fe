@@ -94,8 +94,9 @@ export function useSubmitEkycResult() {
       return isRetryable;
     },
     retryDelay: exponentialBackoff,
-    onMutate: ({ leadId, sessionId }) => {
+    onMutate: ({ leadId, sessionId }): SubmitEkycContext => {
       logSubmitStart(leadId, sessionId || "unknown");
+      return { failureCount: 0 };
     },
     onError: (_error, { leadId, sessionId }, context) => {
       const failureCount =

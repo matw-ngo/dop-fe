@@ -259,70 +259,136 @@ components:
           $ref: '#/components/schemas/uuid'
         use_ekyc:
           type: boolean
+          default: false
         send_otp:
           type: boolean
+          default: false
+        consent_purpose_id:
+          $ref: '#/components/schemas/uuid'
+          x-omitempty: true
         page:
           type: string
+          default: ''
         have_purpose:
           type: boolean
+          default: false
+          x-omitempty: true
         required_purpose:
           type: boolean
+          default: false
+          x-omitempty: true
         have_phone_number:
           type: boolean
+          default: false
+          x-omitempty: true
         required_phone_number:
           type: boolean
+          default: false
+          x-omitempty: true
         have_email:
           type: boolean
+          default: false
+          x-omitempty: true
         required_email:
           type: boolean
+          default: false
+          x-omitempty: true
         have_full_name:
           type: boolean
+          default: false
+          x-omitempty: true
         required_full_name:
           type: boolean
+          default: false
+          x-omitempty: true
         have_national_id:
           type: boolean
+          default: false
+          x-omitempty: true
         required_national_id:
           type: boolean
+          default: false
+          x-omitempty: true
         have_second_national_id:
           type: boolean
+          default: false
+          x-omitempty: true
         required_second_national_id:
           type: boolean
+          default: false
+          x-omitempty: true
         have_gender:
           type: boolean
+          default: false
+          x-omitempty: true
         required_gender:
           type: boolean
+          default: false
+          x-omitempty: true
         have_location:
           type: boolean
+          default: false
+          x-omitempty: true
         required_location:
           type: boolean
+          default: false
+          x-omitempty: true
         have_birthday:
           type: boolean
+          default: false
+          x-omitempty: true
         required_birthday:
           type: boolean
+          default: false
+          x-omitempty: true
         have_income_type:
           type: boolean
+          default: false
+          x-omitempty: true
         required_income_type:
           type: boolean
+          default: false
+          x-omitempty: true
         have_income:
           type: boolean
+          default: false
+          x-omitempty: true
         required_income:
           type: boolean
+          default: false
+          x-omitempty: true
         have_having_loan:
           type: boolean
+          default: false
+          x-omitempty: true
         required_having_loan:
           type: boolean
+          default: false
+          x-omitempty: true
         have_career_status:
           type: boolean
+          default: false
+          x-omitempty: true
         required_career_status:
           type: boolean
+          default: false
+          x-omitempty: true
         have_career_type:
           type: boolean
+          default: false
+          x-omitempty: true
         required_career_type:
           type: boolean
+          default: false
+          x-omitempty: true
         have_credit_status:
           type: boolean
+          default: false
+          x-omitempty: true
         required_credit_status:
           type: boolean
+          default: false
+          x-omitempty: true
         created_at:
           type: string
           format: date-time
@@ -499,6 +565,8 @@ components:
       properties:
         flow_id:
           $ref: '#/components/schemas/uuid'
+        consent_id:
+          $ref: '#/components/schemas/uuid'
         tenant:
           $ref: '#/components/schemas/uuid'
         deviece_info:
@@ -507,10 +575,9 @@ components:
           type: object
         info:
           $ref: '#/components/schemas/SubmitLeadInfoRequestBody'
-        consent_id:
-          type: string
       required:
         - flow_id
+        - consent_id
         - tenant
         - info
         - deviece_info

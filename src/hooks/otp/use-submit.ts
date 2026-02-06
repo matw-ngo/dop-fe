@@ -22,9 +22,9 @@ async function submitOTP({ leadId, token, otp }: SubmitOTPParams) {
       authorization: `Bearer ${token}`,
     },
     body: {
-      // token: token,
+      token: token,
       otp: otp,
-    } as any,
+    },
   });
 
   if (error) {

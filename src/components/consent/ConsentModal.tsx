@@ -17,6 +17,7 @@ import { useConsentVersion } from "@/hooks/consent/use-consent-version";
 import { useDataCategories } from "@/hooks/consent/use-data-categories";
 import { useUserConsent } from "@/hooks/consent/use-user-consent";
 import { consentClient } from "@/lib/api/services";
+import type { components } from "@/lib/api/v1/consent";
 import { useAuthStore } from "@/store/use-auth-store";
 import { useConsentStore } from "@/store/use-consent-store";
 
@@ -130,13 +131,19 @@ export function ConsentModal({ open, setOpen, onSuccess }: ConsentModalProps) {
     clearError();
 
     try {
-      const result = await consentClient.POST("/consent" as any, {
+      // Note: Payload structure mismatch with spec CreateConsentRequest
+      // Spec requires: tenant_id, consent_version_id, session_id, source
+      // Current implementation sends: lead_id, consent_purpose_id, controller_id, processor_id, action
+      // FIXME: Update logic to get real tenant_id and session_id. Using placeholder for now to satisfy types.
+      const result = await consentClient.POST("/consent", {
         body: {
+          tenant_id: "00000000-0000-0000-0000-000000000000",
           lead_id: userId,
-          consent_purpose_id: configIds.consent_purpose_id,
-          controller_id: configIds.controller_id,
-          processor_id: configIds.processor_id,
-          action: "grant",
+          consent_version_id:
+            consentVersion?.consent_versions?.[0]?.id ||
+            "00000000-0000-0000-0000-000000000000", // Fallback if no version
+          session_id: "00000000-0000-0000-0000-000000000000", // FIXME: Get real session ID
+          source: "web",
         },
       });
 

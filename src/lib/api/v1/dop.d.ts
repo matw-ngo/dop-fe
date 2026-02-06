@@ -136,38 +136,72 @@ export interface components {
     FlowStatus: "active" | "inactive" | "archived";
     Step: {
       id: components["schemas"]["uuid"];
+      /** @default false */
       use_ekyc: boolean;
+      /** @default false */
       send_otp: boolean;
+      consent_purpose_id?: components["schemas"]["uuid"];
+      /** @default  */
       page: string;
+      /** @default false */
       have_purpose: boolean;
+      /** @default false */
       required_purpose: boolean;
+      /** @default false */
       have_phone_number: boolean;
+      /** @default false */
       required_phone_number: boolean;
+      /** @default false */
       have_email: boolean;
+      /** @default false */
       required_email: boolean;
+      /** @default false */
       have_full_name: boolean;
+      /** @default false */
       required_full_name: boolean;
+      /** @default false */
       have_national_id: boolean;
+      /** @default false */
       required_national_id: boolean;
+      /** @default false */
       have_second_national_id: boolean;
+      /** @default false */
       required_second_national_id: boolean;
+      /** @default false */
       have_gender: boolean;
+      /** @default false */
       required_gender: boolean;
+      /** @default false */
       have_location: boolean;
+      /** @default false */
       required_location: boolean;
+      /** @default false */
       have_birthday: boolean;
+      /** @default false */
       required_birthday: boolean;
+      /** @default false */
       have_income_type: boolean;
+      /** @default false */
       required_income_type: boolean;
+      /** @default false */
       have_income: boolean;
+      /** @default false */
       required_income: boolean;
+      /** @default false */
       have_having_loan: boolean;
+      /** @default false */
       required_having_loan: boolean;
+      /** @default false */
       have_career_status: boolean;
+      /** @default false */
       required_career_status: boolean;
+      /** @default false */
       have_career_type: boolean;
+      /** @default false */
       required_career_type: boolean;
+      /** @default false */
       have_credit_status: boolean;
+      /** @default false */
       required_credit_status: boolean;
       /** Format: date-time */
       created_at: string;
@@ -234,11 +268,11 @@ export interface components {
     };
     CreateLeadRequestBody: {
       flow_id: components["schemas"]["uuid"];
+      consent_id: components["schemas"]["uuid"];
       tenant: components["schemas"]["uuid"];
       deviece_info: Record<string, never>;
       tracking_params: Record<string, never>;
       info: components["schemas"]["SubmitLeadInfoRequestBody"];
-      consent_id?: string;
     };
     CreateLeadResponseBody: {
       id: components["schemas"]["uuid"];
