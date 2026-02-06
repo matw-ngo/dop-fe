@@ -1,6 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
+import { Checkbox } from "@/components/ui/checkbox";
 
 interface ConsentFormProps {
   consentVersion?: any;
@@ -43,14 +44,13 @@ export function ConsentForm({
             {dataCategories.map((category) => (
               <div
                 key={category.id}
-                className="flex items-start gap-2 p-3 border rounded-lg"
+                className="flex items-start gap-3 p-3 border rounded-lg hover:bg-muted/50 transition-colors"
               >
-                <input
-                  type="checkbox"
+                <Checkbox
                   id={category.id}
                   checked={true}
                   disabled
-                  className="mt-0.5"
+                  className="mt-1"
                 />
                 <div className="flex-1">
                   <label
@@ -71,14 +71,8 @@ export function ConsentForm({
         </div>
       )}
 
-      <div className="flex items-center gap-2 p-3 border rounded-lg">
-        <input
-          type="checkbox"
-          id="agree-all"
-          checked={true}
-          disabled
-          className="mt-0.5"
-        />
+      <div className="flex items-center gap-3 p-3 border rounded-lg hover:bg-muted/50 transition-colors">
+        <Checkbox id="agree-all" checked={true} disabled className="mt-0.5" />
         <label
           htmlFor="agree-all"
           className="text-sm font-medium cursor-pointer"

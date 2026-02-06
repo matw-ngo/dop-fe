@@ -29,13 +29,7 @@ export function RadioField({
   }
 
   // Base radio button styles for error state
-  const radioStyles = cn(
-    "text-[#017848]",
-    "focus-visible:ring-[#017848]/20",
-    error && "text-red-500",
-    error && "border-red-500",
-    error && "focus-visible:ring-red-500/20",
-  );
+  const radioStyles = cn(error && "border-red-500");
 
   // Base label styles
   const labelStyles = cn(

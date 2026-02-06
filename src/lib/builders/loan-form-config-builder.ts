@@ -190,11 +190,14 @@ export function buildLoanFormConfigFromStep(
       type: FieldType.SELECT,
       options: {
         choices: [
-          { label: "Hà Nội", value: "hanoi" },
-          { label: "TP. Hồ Chí Minh", value: "hcm" },
-          { label: "Đà Nẵng", value: "danang" },
-          { label: "Hải Phòng", value: "haiphong" },
-          { label: "Cần Thơ", value: "cantho" },
+          { label: "Hà Nội", value: "00000000-0000-0000-0000-000000000001" },
+          {
+            label: "TP. Hồ Chí Minh",
+            value: "00000000-0000-0000-0000-000000000002",
+          },
+          { label: "Đà Nẵng", value: "00000000-0000-0000-0000-000000000003" },
+          { label: "Hải Phòng", value: "00000000-0000-0000-0000-000000000004" },
+          { label: "Cần Thơ", value: "00000000-0000-0000-0000-000000000005" },
         ],
       },
       validation: step.fields.location.required
@@ -282,7 +285,129 @@ export function buildLoanFormConfigFromStep(
     });
   }
 
-  // 11. Terms Agreement field (always required)
+  // 11. Career Status field
+  if (step.fields.careerStatus.visible) {
+    fields.push({
+      id: "careerStatus",
+      name: "careerStatus",
+      type: FieldType.SELECT,
+      options: {
+        choices: [
+          { label: "Nhân viên văn phòng", value: "officer" },
+          { label: "Kinh doanh tự do", value: "freelancer" },
+          { label: "Công nhân", value: "worker" },
+          { label: "Khác", value: "other" },
+        ],
+      },
+      validation: step.fields.careerStatus.required
+        ? [
+            {
+              type: ValidationRuleType.REQUIRED,
+            },
+          ]
+        : [],
+      i18n: {
+        enabled: true,
+      },
+    });
+  }
+
+  // 12. Career Type field
+  if (step.fields.careerType.visible) {
+    fields.push({
+      id: "careerType",
+      name: "careerType",
+      type: FieldType.TEXT,
+      validation: step.fields.careerType.required
+        ? [
+            {
+              type: ValidationRuleType.REQUIRED,
+            },
+          ]
+        : [],
+      i18n: {
+        enabled: true,
+      },
+    });
+  }
+
+  // 13. Income Type field
+  if (step.fields.incomeType.visible) {
+    fields.push({
+      id: "incomeType",
+      name: "incomeType",
+      type: FieldType.SELECT,
+      options: {
+        choices: [
+          { label: "Chuyển khoản", value: "transfer" },
+          { label: "Tiền mặt", value: "cash" },
+        ],
+      },
+      validation: step.fields.incomeType.required
+        ? [
+            {
+              type: ValidationRuleType.REQUIRED,
+            },
+          ]
+        : [],
+      i18n: {
+        enabled: true,
+      },
+    });
+  }
+
+  // 14. Having Loan field
+  if (step.fields.havingLoan.visible) {
+    fields.push({
+      id: "havingLoan",
+      name: "havingLoan",
+      type: FieldType.RADIO,
+      options: {
+        choices: [
+          { label: "Có", value: "yes" },
+          { label: "Không", value: "no" },
+        ],
+      },
+      validation: step.fields.havingLoan.required
+        ? [
+            {
+              type: ValidationRuleType.REQUIRED,
+            },
+          ]
+        : [],
+      i18n: {
+        enabled: true,
+      },
+    });
+  }
+
+  // 15. Credit Status field
+  if (step.fields.creditStatus.visible) {
+    fields.push({
+      id: "creditStatus",
+      name: "creditStatus",
+      type: FieldType.SELECT,
+      options: {
+        choices: [
+          { label: "Tốt", value: "good" },
+          { label: "Bình thường", value: "normal" },
+          { label: "Nợ xấu", value: "bad" },
+        ],
+      },
+      validation: step.fields.creditStatus.required
+        ? [
+            {
+              type: ValidationRuleType.REQUIRED,
+            },
+          ]
+        : [],
+      i18n: {
+        enabled: true,
+      },
+    });
+  }
+
+  // 16. Terms Agreement field (always required)
   fields.push({
     id: "agreeStatus",
     name: "agreeStatus",

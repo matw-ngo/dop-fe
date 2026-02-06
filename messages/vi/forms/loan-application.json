@@ -73,6 +73,46 @@
       "required": "Vui lòng chọn mức thu nhập"
     }
   },
+  "careerStatus": {
+    "label": "Tình trạng công việc",
+    "placeholder": "Chọn tình trạng công việc",
+    "help": "",
+    "errors": {
+      "required": "Vui lòng chọn tình trạng công việc"
+    }
+  },
+  "careerType": {
+    "label": "Lĩnh vực/Công việc cụ thể",
+    "placeholder": "Nhập công việc cụ thể",
+    "help": "",
+    "errors": {
+      "required": "Vui lòng nhập công việc cụ thể"
+    }
+  },
+  "incomeType": {
+    "label": "Hình thức nhận lương",
+    "placeholder": "Chọn hình thức nhận lương",
+    "help": "",
+    "errors": {
+      "required": "Vui lòng chọn hình thức nhận lương"
+    }
+  },
+  "havingLoan": {
+    "label": "Đang có khoản vay khác",
+    "placeholder": "Chọn...",
+    "help": "",
+    "errors": {
+      "required": "Vui lòng xác nhận thông tin này"
+    }
+  },
+  "creditStatus": {
+    "label": "Tình trạng tín dụng",
+    "placeholder": "Chọn tình trạng tín dụng",
+    "help": "",
+    "errors": {
+      "required": "Vui lòng chọn tình trạng tín dụng"
+    }
+  },
   "agreeStatus": {
     "label": "",
     "placeholder": "",

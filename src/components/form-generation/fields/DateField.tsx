@@ -1,7 +1,17 @@
 "use client";
 
 import { CalendarIcon } from "lucide-react";
-import { Input } from "@/components/ui/input";
+import * as React from "react";
+import { format } from "date-fns";
+import { vi } from "date-fns/locale";
+
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { useFormTheme } from "../themes/ThemeProvider";
 import {
   type DateFieldConfig,
@@ -12,9 +22,8 @@ import { cn } from "../utils/helpers";
 
 /**
  * DateField component that handles date, datetime, and time inputs
- * Uses simplified inline styling with calendar icon
+ * Uses a professional DatePicker with Popover and Calendar
  */
-// TODO: Improve UI consistency and theme integration to match TextField/SelectField implementation
 export function DateField({
   field,
   value,
@@ -36,96 +45,42 @@ export function DateField({
   );
 
   // Determine input type based on field type
-  const inputTypeMapping = {
-    date: "date",
-    datetime: "datetime-local",
-    time: "time",
-  };
+  const inputType = (field.type as "date" | "datetime" | "time") || "date";
 
-  const inputType =
-    inputTypeMapping[field.type as keyof typeof inputTypeMapping] || "date";
+  // Parse value to Date object
+  const dateValue = React.useMemo(() => {
+    if (!value) return undefined;
+    if (value instanceof Date) return value;
+    const date = new Date(value);
+    return Number.isNaN(date.getTime()) ? undefined : date;
+  }, [value]);
 
-  // Format value for input
-  const formatValue = (val: Date | string | undefined | null): string => {
-    if (!val) return "";
-
-    try {
-      const date = val instanceof Date ? val : new Date(val);
-
-      if (Number.isNaN(date.getTime())) return "";
-
-      if (inputType === "datetime-local") {
-        // Format: YYYY-MM-DDTHH:mm
-        return date.toISOString().slice(0, 16);
-      } else if (inputType === "time") {
-        // Format: HH:mm
-        return date.toTimeString().slice(0, 5);
-      } else {
-        // Format: YYYY-MM-DD
-        return date.toISOString().slice(0, 10);
-      }
-    } catch {
-      return "";
-    }
-  };
-
-  // Format min/max dates
-  const formatDateForInput = (
-    date: Date | string | undefined,
-    type: string,
-  ): string | undefined => {
-    if (!date) return undefined;
-
-    try {
-      const d = date instanceof Date ? date : new Date(date);
-      if (Number.isNaN(d.getTime())) return undefined;
-
-      if (type === "date") {
-        return d.toISOString().slice(0, 10);
-      } else if (type === "datetime") {
-        return d.toISOString().slice(0, 16);
-      }
-      return undefined;
-    } catch {
-      return undefined;
-    }
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = e.target.value;
-
-    if (!newValue) {
-      onChange(undefined);
-      return;
-    }
-
-    // Convert to Date object or keep as string based on preference
-    try {
-      const date = new Date(newValue);
-      onChange(date);
-    } catch {
-      onChange(newValue);
+  const handleSelect = (date: Date | undefined) => {
+    onChange(date);
+    // Explicitly call onBlur to trigger validation if needed
+    if (onBlur) {
+      onBlur();
     }
   };
 
   // Base input styles that are consistent across themes
-  const baseInputStyles = [
+  const baseButtonStyles = [
     "w-full",
+    "flex",
+    "items-center",
+    "justify-between",
     "border",
     "transition-all",
     "duration-200",
     "text-sm",
+    "font-normal",
+    "text-left",
     // Base focus styles
     "focus:outline-none",
-    // Placeholder styles
-    "placeholder:text-gray-400",
-    "placeholder:font-medium",
     // Disabled and readonly states
     "disabled:cursor-not-allowed",
     "disabled:opacity-60",
-    "read-only:cursor-default",
-    // Add padding for icon
-    "pr-12",
+    "aria-readonly:cursor-default",
   ];
 
   // Theme-specific styles
@@ -151,10 +106,38 @@ export function DateField({
     isReadOnly && "!bg-gray-50",
   ].filter(Boolean);
 
-  // If internal label is enabled, use wrapper with label
-  if (internalLabel && field.label) {
+  const renderTrigger = () => {
+    const displayValue = dateValue
+      ? format(dateValue, "dd/MM/yyyy", { locale: vi })
+      : field.placeholder || "Chọn ngày";
+
     return (
-      <div className={cn("relative w-full", className)}>
+      <Button
+        variant="outline"
+        className={cn(
+          ...baseButtonStyles,
+          ...themeStyles,
+          !dateValue && "text-gray-400",
+          internalLabel && field.label && "pt-8",
+          className,
+        )}
+        disabled={isDisabled}
+        aria-readonly={isReadOnly}
+        aria-invalid={!!error}
+        aria-describedby={error ? `${field.id}-error` : undefined}
+      >
+        <span className="truncate">{displayValue}</span>
+        <CalendarIcon
+          className="h-4 w-4 text-gray-400 shrink-0 ml-2"
+          aria-hidden="true"
+        />
+      </Button>
+    );
+  };
+
+  const content = (
+    <div className={cn("relative w-full", className)}>
+      {internalLabel && field.label && (
         <label
           htmlFor={field.id}
           className="absolute top-2 left-4 text-xs font-medium text-[#017848] pointer-events-none z-10"
@@ -162,60 +145,39 @@ export function DateField({
           {field.label}
           {isRequired && <span className="text-red-500 ml-0.5">*</span>}
         </label>
-        <Input
-          id={field.id}
-          name={field.name}
-          type="text" // Use text type to avoid browser date picker
-          value={formatValue(value)}
-          onChange={handleChange}
-          onBlur={onBlur}
-          placeholder={field.placeholder}
-          disabled={isDisabled}
-          readOnly={isReadOnly}
-          min={formatDateForInput(options.minDate, field.type)}
-          max={formatDateForInput(options.maxDate, field.type)}
-          aria-invalid={!!error}
-          aria-describedby={error ? `${field.id}-error` : undefined}
-          inputMode={inputType === "time" ? "numeric" : "text"}
-          className={cn(
-            ...baseInputStyles,
-            ...themeStyles,
-            "pt-8", // Extra padding for internal label
-          )}
-        />
-        <CalendarIcon
-          className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none"
-          aria-hidden="true"
-        />
-      </div>
-    );
-  }
+      )}
 
-  return (
-    <div className={cn("relative w-full", className)}>
-      <Input
-        id={field.id}
-        name={field.name}
-        type="text" // Use text type to avoid browser date picker
-        value={formatValue(value)}
-        onChange={handleChange}
-        onBlur={onBlur}
-        placeholder={field.placeholder}
-        disabled={isDisabled}
-        readOnly={isReadOnly}
-        min={formatDateForInput(options.minDate, field.type)}
-        max={formatDateForInput(options.maxDate, field.type)}
-        aria-invalid={!!error}
-        aria-describedby={error ? `${field.id}-error` : undefined}
-        inputMode={inputType === "time" ? "numeric" : "text"}
-        className={cn(...baseInputStyles, ...themeStyles)}
-      />
-      <CalendarIcon
-        className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none"
-        aria-hidden="true"
-      />
+      {isReadOnly || isDisabled ? (
+        renderTrigger()
+      ) : (
+        <Popover>
+          <PopoverTrigger asChild>{renderTrigger()}</PopoverTrigger>
+          <PopoverContent className="w-auto p-0" align="start">
+            <Calendar
+              mode="single"
+              selected={dateValue}
+              onSelect={handleSelect}
+              initialFocus
+              locale={vi}
+              disabled={(date) => {
+                if (options.minDate) {
+                  const min = new Date(options.minDate);
+                  if (date < min) return true;
+                }
+                if (options.maxDate) {
+                  const max = new Date(options.maxDate);
+                  if (date > max) return true;
+                }
+                return false;
+              }}
+            />
+          </PopoverContent>
+        </Popover>
+      )}
     </div>
   );
+
+  return content;
 }
 
 DateField.displayName = "DateField";

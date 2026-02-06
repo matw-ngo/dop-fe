@@ -133,6 +133,10 @@ export function isEmpty(value: any): boolean {
     return true;
   }
 
+  if (value instanceof Date) {
+    return Number.isNaN(value.getTime());
+  }
+
   if (typeof value === "string") {
     return value.trim().length === 0;
   }

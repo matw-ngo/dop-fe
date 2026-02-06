@@ -32,15 +32,7 @@ export function CheckboxField({
   );
 
   // Base checkbox styles for error state
-  const checkboxStyles = cn(
-    "data-[state=checked]:bg-[#017848]",
-    "data-[state=checked]:border-[#017848]",
-    "focus-visible:ring-[#017848]/20",
-    error && "border-red-500",
-    error && "data-[state=checked]:bg-red-500",
-    error && "data-[state=checked]:border-red-500",
-    error && "focus-visible:ring-red-500/20",
-  );
+  const checkboxStyles = cn(error && "border-red-500");
 
   // Base label styles
   const labelStyles = cn(
