@@ -1,6 +1,7 @@
 "use client";
 
 import { QueryClientProvider } from "@tanstack/react-query";
+import { ConsentGlobalProvider } from "@/components/consent/ConsentGlobalProvider";
 import { ThemeProvider } from "@/components/renderer/theme";
 import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider } from "@/lib/auth/auth-context";
@@ -24,6 +25,7 @@ export default function Providers({
           disableTransitionOnChange
         >
           {children}
+          <ConsentGlobalProvider />
           <Toaster />
         </ThemeProvider>
       </AuthProvider>

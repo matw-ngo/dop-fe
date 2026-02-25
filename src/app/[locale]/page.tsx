@@ -1,9 +1,7 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { useEffect, useState } from "react";
-import { ConsentModal } from "@/components/consent/ConsentModal";
+import { useEffect } from "react";
 import { HeroBanner } from "@/components/home/HeroBanner";
 import { IntroductionSection } from "@/components/home/IntroductionSection";
 import { LoanProductPanel } from "@/components/home/LoanProductPanel";
@@ -15,9 +13,8 @@ import { TenantThemeProvider } from "@/components/layout/TenantThemeProvider";
 import { useConsentSession } from "@/hooks/consent/use-consent-session";
 import { useConsentPurpose } from "@/hooks/consent/use-consent-purpose";
 import { useUserConsent } from "@/hooks/consent/use-user-consent";
-import { useTenantFlow } from "@/hooks/tenant/use-flow";
-import { useTenant } from "@/hooks/tenant/use-tenant";
-import { useAuthStore } from "@/store/use-auth-store";
+import { useFlowStep } from "@/hooks/tenant/use-flow-step";
+import { useConsentStore } from "@/store/use-consent-store";
 
 /**
  * Home Page
@@ -28,34 +25,11 @@ import { useAuthStore } from "@/store/use-auth-store";
 export default function Home() {
   const t = useTranslations("components.layout.header.nav.products");
   const t_common = useTranslations("common");
-  const router = useRouter();
-  const { user } = useAuthStore();
-  const userId = user?.id;
   const sessionId = useConsentSession();
-  const [showConsentModal, setShowConsentModal] = useState(false);
-  const tenant = useTenant();
+  const openConsentModal = useConsentStore((s) => s.openConsentModal);
 
-  // Fetch tenant flow to get consent purpose for index page
-  const { data: flowConfig } = useTenantFlow(tenant.uuid, {
-    enabled: !!tenant.uuid,
-  });
-
-  // Find the step corresponding to index page
-  // Note: Assuming '/index' or '/' is the page identifier in the flow steps
-  // Need to verify the exact page identifier from backend data or agreement.
-  // Using '/index' as per user instruction.
-  const indexStep = flowConfig?.steps?.find((step) => step.page === "/index");
+  const indexStep = useFlowStep("/index");
   const consentPurposeId = indexStep?.consent_purpose_id;
-
-  console.log("[Home Page] Step Data:", {
-    flowConfig,
-    indexStep,
-    consentPurposeId,
-    allSteps: flowConfig?.steps?.map((s) => ({
-      page: s.page,
-      consent_purpose_id: s.consent_purpose_id,
-    })),
-  });
 
   // Fetch the active consent purpose for the website based on purpose ID from flow
   const { data: consentPurposeData } = useConsentPurpose({
@@ -75,7 +49,6 @@ export default function Home() {
       consentPurposeId,
       consentPurposeData,
       userConsent,
-      showConsentModal,
     });
 
     // If no session ID yet (initializing), wait
@@ -127,48 +100,22 @@ export default function Home() {
             : "Already consented",
     });
 
-    // Only update state if it changes to avoid loops
-    if (showConsentModal !== shouldShowModal) {
-      console.log("[Home Page] Updating modal state:", shouldShowModal);
-      setShowConsentModal(shouldShowModal);
+    if (shouldShowModal && consentPurposeId) {
+      console.log("[Home Page] Opening consent modal");
+      openConsentModal({ consentPurposeId });
     }
-  }, [sessionId, consentPurposeData, userConsent, consentPurposeId]);
-
-  useEffect(() => {
-    const handleDataUpdated = (event: Event) => {
-      const customEvent = event as CustomEvent<{ consentData: any }>;
-      if (customEvent.detail?.consentData?.id) {
-        setShowConsentModal(false);
-      }
-    };
-
-    window.addEventListener("consent:data-updated", handleDataUpdated);
-
-    return () => {
-      window.removeEventListener("consent:data-updated", handleDataUpdated);
-    };
-  }, []);
-
-  const handleConsentSuccess = (_consentId: string) => {
-    // Just close modal, don't redirect on homepage consent usually
-    // Unless specifically required.
-    // router.push("/user-onboarding");
-    setShowConsentModal(false);
-  };
+  }, [
+    sessionId,
+    consentPurposeData,
+    userConsent,
+    consentPurposeId,
+    openConsentModal,
+  ]);
 
   return (
     <TenantThemeProvider>
       <Header />
       <main className="min-h-screen pt-[60px] md:pt-[72px]">
-        {showConsentModal && (
-          <ConsentModal
-            open={showConsentModal}
-            setOpen={setShowConsentModal}
-            onSuccess={handleConsentSuccess}
-            stepData={indexStep} // Pass the step data which contains consent_purpose_id
-          />
-        )}
-
         {/* Hero Banner */}
         <HeroBanner />
 

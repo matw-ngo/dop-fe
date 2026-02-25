@@ -2,7 +2,7 @@
 
 import { Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import {
   Dialog,
@@ -31,7 +31,7 @@ interface ConsentModalProps {
   stepData?: any;
 }
 
-export function ConsentModal({
+export const ConsentModal = memo(function ConsentModal({
   open,
   setOpen,
   onSuccess,
@@ -333,6 +333,6 @@ export function ConsentModal({
       </DialogContent>
     </Dialog>
   );
-}
+});
 
 export default ConsentModal;

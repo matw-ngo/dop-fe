@@ -23,6 +23,11 @@ export interface ConsentRecord {
   updated_at: string;
 }
 
+export interface ConsentModalConfig {
+  consentPurposeId: string;
+  onSuccess?: (consentId: string) => void;
+}
+
 export interface ConsentState {
   // Consent identifiers
   consentId: string | null;
@@ -36,12 +41,18 @@ export interface ConsentState {
   // Timestamp tracking
   lastConsentDate: string | null;
 
+  // Modal slice — separate lifecycle from consent data, not persisted
+  modalIsOpen: boolean;
+  modalConfig: ConsentModalConfig | null;
+
   // Actions
   setConsentId: (id: string) => void;
   setConsentStatus: (status: "pending" | "agreed" | "declined") => void;
   setConsentData: (data: ConsentRecord) => void;
   setError: (error: string) => void;
   clearError: () => void;
+  openConsentModal: (config: ConsentModalConfig) => void;
+  closeConsentModal: () => void;
 
   // Getters
   hasConsent: () => boolean;
@@ -60,6 +71,8 @@ export const useConsentStore = create<ConsentState>()(
         isLoading: false,
         error: null,
         lastConsentDate: null,
+        modalIsOpen: false,
+        modalConfig: null,
 
         // Actions
         setConsentId: (id: string) => {
@@ -132,6 +145,14 @@ export const useConsentStore = create<ConsentState>()(
 
         clearError: () => {
           set({ error: null });
+        },
+
+        openConsentModal: (config) => {
+          set({ modalIsOpen: true, modalConfig: config });
+        },
+
+        closeConsentModal: () => {
+          set({ modalIsOpen: false, modalConfig: null });
         },
 
         // Getters
@@ -234,3 +255,7 @@ export const useHasConsent = () =>
   useConsentStore((state) => state.hasConsent());
 export const useIsConsentValid = () =>
   useConsentStore((state) => state.isConsentValid());
+export const useConsentModalIsOpen = () =>
+  useConsentStore((state) => state.modalIsOpen);
+export const useConsentModalConfig = () =>
+  useConsentStore((state) => state.modalConfig);

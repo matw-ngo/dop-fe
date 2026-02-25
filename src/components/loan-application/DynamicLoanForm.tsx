@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import React, { useMemo } from "react";
 import { toast } from "sonner";
-import { ConsentModal } from "@/components/consent/ConsentModal";
 import { StepWizard } from "@/components/form-generation";
 import {
   FormThemeProvider,
@@ -17,7 +16,7 @@ import { useFlow } from "@/hooks/flow/use-flow";
 import { useLoanPurposes } from "@/hooks/i18n/use-loan-purposes";
 import { usePhoneValidationMessages } from "@/hooks/phone/use-validation-messages";
 import { useTenant } from "@/hooks/tenant/use-tenant";
-import { useTenantFlow } from "@/hooks/tenant/use-flow";
+import { useFlowStep } from "@/hooks/tenant/use-flow-step";
 import { buildLoanFormConfigFromStep } from "@/lib/builders/loan-form-config-builder";
 import "@/lib/builders/register-flow-components";
 import { ALLOWED_TELCOS, phoneValidation } from "@/lib/utils/phone-validation";
@@ -42,11 +41,10 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
   const { getTelcoList } = usePhoneValidationMessages();
   const tenant = useTenant();
   const router = useRouter();
-  const { getConsentId } = useConsentStore();
+  const { getConsentId, hasConsent, openConsentModal } = useConsentStore();
 
   const [showPhoneModal, setShowPhoneModal] = React.useState(false);
   const [showOTPModal, setShowOTPModal] = React.useState(false);
-  const [showConsentModal, setShowConsentModal] = React.useState(false);
   const [formData, setFormData] = React.useState<Record<string, unknown>>(
     initialData || {},
   );
@@ -62,27 +60,10 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
   const tenantId = tenant.uuid;
   const { data: flowData, isLoading: isLoadingFlow } = useFlow(tenantId);
 
-  // Fetch tenant flow to get consent purpose for index page
-  const { data: tenantFlowConfig } = useTenantFlow(tenant.uuid, {
-    enabled: !!tenant.uuid,
-  });
-
   const loanPurposes = useLoanPurposes();
 
-  // Find the step corresponding to index page for consent
-  const indexStepForConsent = tenantFlowConfig?.steps?.find(
-    (step) => step.page === "/index",
-  );
-
-  console.log("[DynamicLoanForm] Step Data for Consent:", {
-    tenantFlowConfig,
-    indexStepForConsent,
-    consentPurposeId: indexStepForConsent?.consent_purpose_id,
-    allSteps: tenantFlowConfig?.steps?.map((s) => ({
-      page: s.page,
-      consent_purpose_id: s.consent_purpose_id,
-    })),
-  });
+  // Step config for the current page — used to resolve consent_purpose_id
+  const consentStep = useFlowStep(page);
 
   const indexStep = useMemo(() => {
     if (!flowData?.steps) return null;
@@ -165,11 +146,6 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
     );
   };
 
-  const handleConsentSuccess = () => {
-    setShowConsentModal(false);
-    setShowPhoneModal(true);
-  };
-
   const handleOtpSuccess = (otp: string) => {
     console.log("OTP verified successfully:", otp);
     toast.info(t("messages.otpSuccess"));
@@ -206,13 +182,14 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
     setFormData(data);
 
     if (indexStep?.sendOtp) {
-      // FIXME
-      // if (!hasConsent()) {
-      //   setShowConsentModal(true);
-      // } else {
-      //   setShowPhoneModal(true);
-      // }
-      setShowPhoneModal(true);
+      if (!hasConsent() && consentStep?.consent_purpose_id) {
+        openConsentModal({
+          consentPurposeId: consentStep.consent_purpose_id,
+          onSuccess: () => setShowPhoneModal(true),
+        });
+      } else {
+        setShowPhoneModal(true);
+      }
     } else {
       if (flowData && indexStep) {
         onSubmitSuccess?.(data, { flowId: flowData.id, stepId: indexStep.id });
@@ -250,13 +227,6 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
           config={formConfig}
           initialData={formData}
           onComplete={handleFormComplete}
-        />
-
-        <ConsentModal
-          open={showConsentModal}
-          setOpen={setShowConsentModal}
-          onSuccess={handleConsentSuccess}
-          stepData={indexStepForConsent}
         />
 
         <PhoneVerificationModal
