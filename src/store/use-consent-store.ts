@@ -15,8 +15,6 @@ type ConsentAction = components["schemas"]["ConsentAction"];
 
 export interface ConsentRecord {
   id: string;
-  controller_id: string;
-  processor_id: string;
   lead_id: string;
   consent_version_id: string;
   source: string;

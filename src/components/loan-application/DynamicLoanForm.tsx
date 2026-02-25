@@ -17,6 +17,7 @@ import { useFlow } from "@/hooks/flow/use-flow";
 import { useLoanPurposes } from "@/hooks/i18n/use-loan-purposes";
 import { usePhoneValidationMessages } from "@/hooks/phone/use-validation-messages";
 import { useTenant } from "@/hooks/tenant/use-tenant";
+import { useTenantFlow } from "@/hooks/tenant/use-flow";
 import { buildLoanFormConfigFromStep } from "@/lib/builders/loan-form-config-builder";
 import "@/lib/builders/register-flow-components";
 import { ALLOWED_TELCOS, phoneValidation } from "@/lib/utils/phone-validation";
@@ -60,7 +61,28 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
 
   const tenantId = tenant.uuid;
   const { data: flowData, isLoading: isLoadingFlow } = useFlow(tenantId);
+
+  // Fetch tenant flow to get consent purpose for index page
+  const { data: tenantFlowConfig } = useTenantFlow(tenant.uuid, {
+    enabled: !!tenant.uuid,
+  });
+
   const loanPurposes = useLoanPurposes();
+
+  // Find the step corresponding to index page for consent
+  const indexStepForConsent = tenantFlowConfig?.steps?.find(
+    (step) => step.page === "/index",
+  );
+
+  console.log("[DynamicLoanForm] Step Data for Consent:", {
+    tenantFlowConfig,
+    indexStepForConsent,
+    consentPurposeId: indexStepForConsent?.consent_purpose_id,
+    allSteps: tenantFlowConfig?.steps?.map((s) => ({
+      page: s.page,
+      consent_purpose_id: s.consent_purpose_id,
+    })),
+  });
 
   const indexStep = useMemo(() => {
     if (!flowData?.steps) return null;
@@ -234,6 +256,7 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
           open={showConsentModal}
           setOpen={setShowConsentModal}
           onSuccess={handleConsentSuccess}
+          stepData={indexStepForConsent}
         />
 
         <PhoneVerificationModal

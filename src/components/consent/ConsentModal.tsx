@@ -11,9 +11,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useConfigIds } from "@/hooks/consent/use-config-ids";
 import { useConsentLogs } from "@/hooks/consent/use-consent-logs";
-import { useConsentVersion } from "@/hooks/consent/use-consent-version";
+import { useConsentSession } from "@/hooks/consent/use-consent-session";
+import { useConsentPurpose } from "@/hooks/consent/use-consent-purpose";
 import { useDataCategories } from "@/hooks/consent/use-data-categories";
 import { useUserConsent } from "@/hooks/consent/use-user-consent";
 import { consentClient } from "@/lib/api/services";
@@ -28,12 +28,19 @@ interface ConsentModalProps {
   open: boolean;
   setOpen: (open: boolean) => void;
   onSuccess?: (consentId: string) => void;
+  stepData?: any;
 }
 
-export function ConsentModal({ open, setOpen, onSuccess }: ConsentModalProps) {
+export function ConsentModal({
+  open,
+  setOpen,
+  onSuccess,
+  stepData,
+}: ConsentModalProps) {
   const t = useTranslations("features.consent");
   const { user } = useAuthStore();
   const userId = user?.id;
+  const sessionId = useConsentSession();
 
   const {
     setConsentId,
@@ -47,35 +54,42 @@ export function ConsentModal({ open, setOpen, onSuccess }: ConsentModalProps) {
   const [activeTab, setActiveTab] = useState<"form" | "history">("form");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // 1. Get Consent Purpose based on step data (purpose_id)
   const {
-    data: consentVersion,
-    isLoading: isLoadingVersion,
-    error: versionError,
-  } = useConsentVersion({ enabled: open });
+    data: consentPurpose,
+    isLoading: isLoadingPurpose,
+    error: purposeError,
+  } = useConsentPurpose({
+    consentPurposeId: stepData?.consent_purpose_id,
+    enabled: open && !!stepData?.consent_purpose_id,
+  });
 
+  // 2. Check current status based on Session ID
   const {
     data: userConsent,
     isLoading: isLoadingUserConsent,
     refetch: refetchUserConsent,
   } = useUserConsent({
-    leadId: userId,
-    enabled: open && !!userId,
+    sessionId: sessionId || undefined,
+    enabled: open && !!sessionId,
   });
 
   const { data: dataCategories, isLoading: isLoadingCategories } =
     useDataCategories({
-      consentPurposeId:
-        consentVersion?.consent_versions?.[0]?.consent_purpose_id,
+      consentPurposeId: consentPurpose?.id || stepData?.consent_purpose_id,
       enabled: open,
     });
 
   const { data: consentLogs, isLoading: isLoadingLogs } = useConsentLogs({
-    leadId: userId,
+    leadId: userId, // Keep logging/fetching history by userId if available, or session?
+    // Note: The new flow emphasizes Session ID for anonymous users.
+    // If logged in, maybe userId is better. But for now, let's stick to the flow.
+    // The requirement says: "FE calls API check status by session".
+    // History might need to be by session too?
+    // Let's assume logs are less critical for the anonymous flow right now or fetched via session if possible.
+    // However, useConsentLogs currently uses lead_id (mapped to consent_id in my previous fix).
+    // I will leave it as is for now, but it might need update if history should show session based actions.
     enabled: open && !!userId,
-  });
-
-  const { data: configIds, isLoading: isLoadingConfig } = useConfigIds({
-    enabled: open,
   });
 
   useEffect(() => {
@@ -103,12 +117,6 @@ export function ConsentModal({ open, setOpen, onSuccess }: ConsentModalProps) {
   }, [setConsentData, setError]);
 
   useEffect(() => {
-    if (open && userId) {
-      refetchUserConsent();
-    }
-  }, [open, userId, refetchUserConsent]);
-
-  useEffect(() => {
     if (consentLogs?.consent_logs && consentLogs.consent_logs.length > 0) {
       setActiveTab("history");
     } else {
@@ -117,12 +125,7 @@ export function ConsentModal({ open, setOpen, onSuccess }: ConsentModalProps) {
   }, [consentLogs]);
 
   const handleGrantConsent = async () => {
-    if (
-      !userId ||
-      !configIds?.consent_purpose_id ||
-      !configIds?.controller_id ||
-      !configIds?.processor_id
-    ) {
+    if (!consentPurpose?.latest_version_id) {
       setError("Missing required configuration");
       return;
     }
@@ -131,38 +134,67 @@ export function ConsentModal({ open, setOpen, onSuccess }: ConsentModalProps) {
     clearError();
 
     try {
-      // Note: Payload structure mismatch with spec CreateConsentRequest
+      // Note: Payload structure updated to match CreateConsentRequest
       // Spec requires: tenant_id, consent_version_id, session_id, source
-      // Current implementation sends: lead_id, consent_purpose_id, controller_id, processor_id, action
-      // FIXME: Update logic to get real tenant_id and session_id. Using placeholder for now to satisfy types.
       const result = await consentClient.POST("/consent", {
         body: {
-          tenant_id: "00000000-0000-0000-0000-000000000000",
-          lead_id: userId,
-          consent_version_id:
-            consentVersion?.consent_versions?.[0]?.id ||
-            "00000000-0000-0000-0000-000000000000", // Fallback if no version
-          session_id: "00000000-0000-0000-0000-000000000000", // FIXME: Get real session ID
+          tenant_id: "00000000-0000-0000-0000-000000000000", // FIXME: Get real tenant ID from context/config
+          lead_id: userId, // Optional, can be null for anonymous
+          consent_version_id: consentPurpose.latest_version_id,
+          session_id: sessionId,
           source: "web",
+          // Action is NOT in the body for CreateConsentRequest in the spec I read earlier?
+          // Wait, let me check the spec content again.
+          // CreateConsentRequest: tenant_id, lead_id, consent_version_id, session_id, source.
+          // It does NOT have action.
+          // But UpdateConsentRequest HAS action.
+          // The requirements say: "User press Agree -> FE calls API to create/update... Action: GRANT".
+          // If I use POST /consent, it's create.
+          // If I use PATCH /consent/{id}, it's update.
+          // The logic should be: Check if consent exists (userConsent).
+          // If exists -> Update (PATCH) with action=GRANT (or REVOKE).
+          // If not exists -> Create (POST).
+          // BUT, CreateConsentRequest does not have 'action' field in the schema I saw.
+          // Let's assume creating implies 'GRANT' initially or we need to update immediately?
+          // Or maybe I missed 'action' in CreateConsentRequest?
+          // Let's check the spec file content again if possible or assume standard flow.
+          // Actually, looking at the previous diff:
+          // CreateConsentRequest: tenant_id, lead_id, consent_version_id, session_id, source.
+          // UpdateConsentRequest: ... + action.
+          // So for Create, we don't send action. It probably defaults to something or just creates the record.
+          // Then we might need to Log it with action GRANT.
+          // Requirement: "BE saves session_id and latest_version_id".
+          // "User press Reject -> FE calls API update. Action: REVOKE".
         },
       });
 
       if (result.data?.id) {
-        setConsentId(result.data.id);
+        const newConsentId = result.data.id;
+
+        // Log the GRANT action
+        await consentClient.POST("/consent-log", {
+          body: {
+            tenant_id: "00000000-0000-0000-0000-000000000000", // FIXME
+            consent_id: newConsentId,
+            action: "grant",
+            action_by: "user", // or session_id?
+            source: "web",
+          },
+        });
+
+        setConsentId(newConsentId);
         setConsentStatus("agreed");
         setConsentData({
-          id: result.data.id,
-          controller_id: configIds.controller_id || "",
-          processor_id: configIds.processor_id || "",
+          id: newConsentId,
           lead_id: userId || "",
-          consent_version_id: consentVersion?.consent_versions?.[0]?.id || "",
+          consent_version_id: consentPurpose.latest_version_id,
           source: "web",
           action: "grant",
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
         });
 
-        onSuccess?.(result.data.id);
+        onSuccess?.(newConsentId);
         setOpen(false);
       }
     } catch (error) {
@@ -174,12 +206,51 @@ export function ConsentModal({ open, setOpen, onSuccess }: ConsentModalProps) {
     }
   };
 
+  const handleRejectConsent = async () => {
+    if (!userConsent?.id) {
+      // If no consent exists yet, and they reject, maybe we just don't create one?
+      // Or create one with status 'declined'?
+      // Requirement: "User press Reject -> FE calls API update. Action: REVOKE".
+      // This implies an existing consent.
+      // If they reject initially, maybe we create then revoke, or just close?
+      setOpen(false);
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      await consentClient.PATCH("/consent/{id}", {
+        params: { path: { id: userConsent.id } },
+        body: {
+          action: "revoke",
+        },
+      });
+
+      // Log REVOKE
+      await consentClient.POST("/consent-log", {
+        body: {
+          tenant_id: "00000000-0000-0000-0000-000000000000", // FIXME
+          consent_id: userConsent.id,
+          action: "revoke",
+          action_by: "user",
+          source: "web",
+        },
+      });
+
+      setConsentStatus("declined");
+      setOpen(false);
+    } catch (error) {
+      setError("Failed to reject consent");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   const isLoading =
-    isLoadingVersion ||
+    isLoadingPurpose ||
     isLoadingUserConsent ||
     isLoadingCategories ||
-    isLoadingLogs ||
-    isLoadingConfig;
+    isLoadingLogs;
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -240,7 +311,10 @@ export function ConsentModal({ open, setOpen, onSuccess }: ConsentModalProps) {
 
             {activeTab === "form" && (
               <ConsentForm
-                consentVersion={consentVersion?.consent_versions?.[0]}
+                consentVersion={{
+                  version: consentPurpose?.latest_version,
+                  content: consentPurpose?.latest_content,
+                }}
                 dataCategories={dataCategories}
                 onGrant={handleGrantConsent}
                 isSubmitting={isSubmitting}

@@ -6,8 +6,21 @@
  */
 
 import { http } from "msw";
+import { mswStore } from "@/mocks/store";
 
-const BASE_URL = "/consent/v1";
+const BASE_URL = "*/consent";
+
+const mswJson = (body: unknown, init?: ResponseInit): Response => {
+  const headers = new Headers(init?.headers);
+  headers.set("x-msw-mocked", "true");
+
+  const payload =
+    body && typeof body === "object" && !Array.isArray(body)
+      ? { __mocked: true, ...(body as Record<string, unknown>) }
+      : body;
+
+  return Response.json(payload, { ...init, headers });
+};
 
 /**
  * Generate a mock consent object
@@ -66,13 +79,13 @@ export const consentHandlers = [
 
     switch (scenario) {
       case "empty":
-        return Response.json({
+        return mswJson({
           consents: [],
           pagination: { page: 1, page_size: 10, total_count: 0 },
         });
 
       case "not_found":
-        return Response.json(
+        return mswJson(
           createErrorResponse(
             "not_found",
             "No consents found matching criteria",
@@ -81,7 +94,35 @@ export const consentHandlers = [
         );
       default: {
         const count = parseInt(pageSize || "10", 10);
-        return Response.json(createMockConsentList(count));
+        const storeData = mswStore.getMockData();
+        let consents = storeData.consents;
+
+        // Apply filtering based on query params
+        if (_search) {
+          consents = consents.filter((c) =>
+            JSON.stringify(c).toLowerCase().includes(_search.toLowerCase()),
+          );
+        }
+
+        const sessionId = url.searchParams.get("session_id");
+        if (sessionId) {
+          consents = consents.filter((c) => c.session_id === sessionId);
+        }
+
+        if (_action) {
+          consents = consents.filter((c) => c.action === _action);
+        }
+
+        // We DO NOT seed default data that trips up session-based checks.
+        // If they want to test the consent flow, they should start clean and create a real consent.
+        return mswJson({
+          consents: consents.slice(0, count),
+          pagination: {
+            page: 1,
+            page_size: count,
+            total_count: consents.length,
+          },
+        });
       }
     }
   }),
@@ -95,25 +136,32 @@ export const consentHandlers = [
 
     switch (scenario) {
       case "validation_error":
-        return Response.json(
+        return mswJson(
           createErrorResponse("invalid_argument", "Missing required fields"),
           { status: 400 },
         );
 
       case "unauthorized":
-        return Response.json(
+        return mswJson(
           createErrorResponse("unauthenticated", "Authentication required"),
           { status: 401 },
         );
 
       case "forbidden":
-        return Response.json(
+        return mswJson(
           createErrorResponse("permission_denied", "Access denied"),
           { status: 403 },
         );
       default: {
         const body = await request.json();
-        return Response.json(createMockConsent(body), { status: 201 });
+        const newConsent = createMockConsent(
+          body && typeof body === "object" ? body : {},
+        );
+        mswStore.updateMockData((data) => ({
+          ...data,
+          consents: [newConsent, ...data.consents],
+        }));
+        return mswJson(newConsent, { status: 201 });
       }
     }
   }),
@@ -128,24 +176,27 @@ export const consentHandlers = [
 
     switch (scenario) {
       case "not_found":
-        return Response.json(
+        return mswJson(
           createErrorResponse("not_found", `Consent ${id} not found`),
           { status: 404 },
         );
 
       case "unauthorized":
-        return Response.json(
+        return mswJson(
           createErrorResponse("unauthenticated", "Authentication required"),
           { status: 401 },
         );
 
       case "forbidden":
-        return Response.json(
+        return mswJson(
           createErrorResponse("permission_denied", "Access denied"),
           { status: 403 },
         );
-      default:
-        return Response.json(createMockConsent({ id: id as string }));
+      default: {
+        const storeData = mswStore.getMockData();
+        const consent = storeData.consents.find((c) => c.id === id);
+        return mswJson(consent || createMockConsent({ id: id as string }));
+      }
     }
   }),
 
@@ -159,18 +210,28 @@ export const consentHandlers = [
 
     switch (scenario) {
       case "validation_error":
-        return Response.json(
+        return mswJson(
           createErrorResponse("invalid_argument", "Missing consent_id"),
           { status: 400 },
         );
 
       case "not_found":
-        return Response.json(
-          createErrorResponse("not_found", "Consent not found"),
-          { status: 404 },
-        );
-      default:
-        return Response.json(createMockConsent({ id: id as string }));
+        return mswJson(createErrorResponse("not_found", "Consent not found"), {
+          status: 404,
+        });
+      default: {
+        let deletedConsent;
+        mswStore.updateMockData((data) => {
+          deletedConsent =
+            data.consents.find((c) => c.id === id) ||
+            createMockConsent({ id: id as string });
+          return {
+            ...data,
+            consents: data.consents.filter((c) => c.id !== id),
+          };
+        });
+        return mswJson(deletedConsent);
+      }
     }
   }),
 
@@ -178,29 +239,54 @@ export const consentHandlers = [
    * PATCH /consent/{id} - Update consent
    * Update an existing consent by id
    */
-  http.patch(`$BASE_URL/consent/:id`, async (params, request) => {
+  http.patch(`${BASE_URL}/consent/:id`, async ({ params, request }) => {
     const { id } = params;
     const scenario = request.headers.get("x-test-scenario") || "success";
 
     switch (scenario) {
       case "validation_error":
-        return Response.json(
+        return mswJson(
           createErrorResponse("invalid_argument", "Invalid update data"),
           { status: 400 },
         );
 
       case "not_found":
-        return Response.json(
+        return mswJson(
           createErrorResponse("not_found", `Consent ${id} not found`),
           { status: 404 },
         );
       default: {
         const body = await request.json();
-        return Response.json({
-          ...createMockConsent({ id: id as string }),
-          ...body,
-          updated_at: new Date().toISOString(),
+        let updatedConsent;
+        mswStore.updateMockData((data) => {
+          const existing =
+            data.consents.find((c) => c.id === id) ||
+            createMockConsent({ id: id as string });
+          updatedConsent = {
+            ...existing,
+            ...(body && typeof body === "object" ? body : {}),
+            updated_at: new Date().toISOString(),
+          };
+
+          let exists = false;
+          const nextConsents = data.consents.map((c) => {
+            if (c.id === id) {
+              exists = true;
+              return updatedConsent;
+            }
+            return c;
+          });
+
+          if (!exists) {
+            nextConsents.push(updatedConsent);
+          }
+
+          return {
+            ...data,
+            consents: nextConsents,
+          };
         });
+        return mswJson(updatedConsent);
       }
     }
   }),
@@ -208,30 +294,36 @@ export const consentHandlers = [
   /**
    * GET /consent-version - Search consent versions
    */
-  http.get(`$BASE_URL/consent-version`, ({ request }) => {
+  http.get(`${BASE_URL}/consent-version`, ({ request }) => {
+    const url = new URL(request.url);
+    const consentPurposeId = url.searchParams.get("consent_purpose_id");
     const scenario = request.headers.get("x-test-scenario") || "success";
 
+    console.log("[MSW] Consent Version Request:", {
+      consentPurposeId,
+      scenario,
+    });
+
     if (scenario === "empty") {
-      return Response.json({
+      return mswJson({
         consent_versions: [],
         pagination: { page: 1, page_size: 10, total_count: 0 },
       });
     }
 
-    return Response.json({
-      consent_versions: [
-        {
-          id: "110e8400-e29b-41d4-a716-446655440001",
-          consent_purpose_id: "220e8400-e29b-41d4-a716-446655440002",
-          version: 1,
-          content: "Consent terms and conditions...",
-          document_url: "https://example.com/consent/v1.pdf",
-          effective_date: "2024-01-01T00:00:00Z",
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-        },
-      ],
-      pagination: { page: 1, page_size: 10, total_count: 1 },
+    const storeData = mswStore.getMockData();
+
+    // Filter versions by purpose id if provided
+    let versions = storeData.consentVersions;
+    if (consentPurposeId) {
+      versions = versions.filter(
+        (v) => v.consent_purpose_id === consentPurposeId,
+      );
+    }
+
+    return mswJson({
+      consent_versions: versions,
+      pagination: { page: 1, page_size: 10, total_count: versions.length },
     });
   }),
 
@@ -242,22 +334,26 @@ export const consentHandlers = [
     const scenario = request.headers.get("x-test-scenario") || "success";
 
     if (scenario === "unauthorized") {
-      return Response.json(
+      return mswJson(
         createErrorResponse("unauthenticated", "Authentication required"),
         { status: 401 },
       );
     }
 
     const body = await request.json();
-    return Response.json(
-      {
-        id: "330e8400-e29b-41d4-a716-446655440003",
-        ...body,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      },
-      { status: 201 },
-    );
+    const newVersion = {
+      id: `version-${Date.now()}`,
+      ...(typeof body === "object" && body !== null ? body : {}),
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    };
+
+    mswStore.updateMockData((data) => ({
+      ...data,
+      consentVersions: [newVersion, ...data.consentVersions],
+    }));
+
+    return mswJson(newVersion, { status: 201 });
   }),
 
   /**
@@ -267,25 +363,18 @@ export const consentHandlers = [
     const scenario = request.headers.get("x-test-scenario") || "success";
 
     if (scenario === "empty") {
-      return Response.json({
+      return mswJson({
         consent_logs: [],
         pagination: { page: 1, page_size: 10, total_count: 0 },
       });
     }
 
-    return Response.json({
-      consent_logs: [
-        {
-          id: "440e8400-e29b-41d4-a716-446655440004",
-          consent_id: "550e8400-e29b-41d4-a716-446655440000",
-          action: "grant",
-          action_by: "user1",
-          source: "web",
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-        },
-      ],
-      pagination: { page: 1, page_size: 10, total_count: 1 },
+    const storeData = mswStore.getMockData();
+    const logs = storeData.consentLogs;
+
+    return mswJson({
+      consent_logs: logs,
+      pagination: { page: 1, page_size: 10, total_count: logs.length },
     });
   }),
 
@@ -295,23 +384,29 @@ export const consentHandlers = [
   http.post(`${BASE_URL}/consent-log`, async ({ request }) => {
     const scenario = request.headers.get("x-test-scenario") || "success";
 
-    if (scenario === "validation_error") {
-      return Response.json(
-        createErrorResponse("invalid_argument", "Missing required fields"),
-        { status: 400 },
-      );
-    }
+    switch (scenario) {
+      case "validation_error":
+        return mswJson(
+          createErrorResponse("invalid_argument", "Missing required fields"),
+          { status: 400 },
+        );
+      default: {
+        const body = await request.json();
+        const newLog = {
+          id: `log-${Date.now()}`,
+          ...(body && typeof body === "object" ? body : {}),
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        };
 
-    const body = await request.json();
-    return Response.json(
-      {
-        id: "550e8400-e29b-41d4-a716-446655440005",
-        ...body,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      },
-      { status: 201 },
-    );
+        mswStore.updateMockData((data) => ({
+          ...data,
+          consentLogs: [newLog, ...data.consentLogs],
+        }));
+
+        return mswJson(newLog, { status: 201 });
+      }
+    }
   }),
 
   /**
@@ -321,52 +416,135 @@ export const consentHandlers = [
     const scenario = request.headers.get("x-test-scenario") || "success";
 
     if (scenario === "empty") {
-      return Response.json({
+      return mswJson({
         purposes: [],
         pagination: { page: 1, page_size: 10, total_count: 0 },
       });
     }
 
-    return Response.json({
-      purposes: [
-        {
-          id: "660e8400-e29b-41d4-a716-446655440006",
-          name: "Analytics",
-          controller_id: "770e8400-e29b-41d4-a716-446655440007",
-          purpose: "Tracking and analytics",
-          retention_days: 365,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-        },
-      ],
-      pagination: { page: 1, page_size: 10, total_count: 1 },
+    const storeData = mswStore.getMockData();
+    const purposes = storeData.consentPurposes;
+
+    return mswJson({
+      purposes: purposes,
+      pagination: { page: 1, page_size: 10, total_count: purposes.length },
     });
   }),
 
   /**
-   * GET /consent-data-category - Search consent data categories
+   * GET /consent-purpose/{id} - Get consent purpose by ID
    */
-  http.get(`${BASE_URL}/consent-data-category`, ({ request }) => {
+  http.get(`${BASE_URL}/consent-purpose/:id`, ({ params, request }) => {
+    const { id } = params;
     const scenario = request.headers.get("x-test-scenario") || "success";
 
+    switch (scenario) {
+      case "not_found":
+        return mswJson(
+          createErrorResponse("not_found", `Consent Purpose ${id} not found`),
+          { status: 404 },
+        );
+      default: {
+        const storeData = mswStore.getMockData();
+        const purpose = storeData.consentPurposes.find((p) => p.id === id);
+
+        return mswJson(
+          purpose || {
+            id: id as string,
+            tenant_id: "00000000-0000-0000-0000-000000000000",
+            name: "Default Purpose",
+            controller_id: "770e8400-e29b-41d4-a716-446655440007",
+            purpose: "Default Purpose Description",
+            retention_days: 365,
+            latest_version_id: `version-${Date.now()}`,
+            latest_version: 1,
+            latest_content: "This is a fallback mock consent purpose content.",
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+          },
+        );
+      }
+    }
+  }),
+
+  /**
+   * GET /data-category - Search all available data categories
+   */
+  http.get(`${BASE_URL}/data-category`, ({ request }) => {
+    const url = new URL(request.url);
+    const scenario = request.headers.get("x-test-scenario") || "success";
+    const page = parseInt(url.searchParams.get("page") || "1", 10);
+    const pageSize = parseInt(url.searchParams.get("page_size") || "10", 10);
+
     if (scenario === "empty") {
-      return Response.json({
-        consent_data_categories: [],
-        pagination: { page: 1, page_size: 10, total_count: 0 },
+      return mswJson({
+        categories: [],
+        pagination: { page, page_size: pageSize, total_count: 0 },
       });
     }
 
-    return Response.json({
-      consent_data_categories: [
-        {
-          id: "770e8400-e29b-41d4-a716-446655440008",
-          consent_id: "880e8400-e29b-41d4-a716-446655440009",
-          data_category_id: "990e8400-e29b-41d4-a716-446655440010",
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-        },
-      ],
-      pagination: { page: 1, page_size: 10, total_count: 1 },
+    const storeData = mswStore.getMockData();
+    let categories = storeData.dataCategories;
+
+    // Apply pagination
+    const startIndex = (page - 1) * pageSize;
+    const paginatedCategories = categories.slice(
+      startIndex,
+      startIndex + pageSize,
+    );
+
+    return mswJson({
+      categories: paginatedCategories,
+      pagination: {
+        page,
+        page_size: pageSize,
+        total_count: categories.length,
+      },
+    });
+  }),
+
+  /**
+   * GET /consent-data-category - Search consent data categories (linked to a consent)
+   */
+  http.get(`${BASE_URL}/consent-data-category`, ({ request }) => {
+    const url = new URL(request.url);
+    const scenario = request.headers.get("x-test-scenario") || "success";
+    const page = parseInt(url.searchParams.get("page") || "1", 10);
+    const pageSize = parseInt(url.searchParams.get("page_size") || "10", 10);
+    const consentPurposeId = url.searchParams.get("consent_purpose_id");
+
+    if (scenario === "empty") {
+      return mswJson({
+        consent_data_categories: [],
+        pagination: { page, page_size: pageSize, total_count: 0 },
+      });
+    }
+
+    const storeData = mswStore.getMockData();
+    let categories = storeData.consentDataCategories;
+
+    // Filter by consent_purpose_id if provided
+    if (consentPurposeId) {
+      // Mock implementation: return mock data categories for this purpose
+      categories = categories.filter(
+        (cat) => cat.consent_purpose_id === consentPurposeId,
+      );
+    }
+
+    // Apply pagination
+    const startIndex = (page - 1) * pageSize;
+    const paginatedCategories = categories.slice(
+      startIndex,
+      startIndex + pageSize,
+    );
+
+    return mswJson({
+      consent_data_categories: paginatedCategories,
+      pagination: {
+        page,
+        page_size: pageSize,
+        total_count: categories.length,
+      },
     });
   }),
 
@@ -385,7 +563,7 @@ export const consentHandlers = [
 
     switch (scenario) {
       case "validation_error":
-        return Response.json(
+        return mswJson(
           createErrorResponse(
             "invalid_argument",
             "Missing consent_id or data_category_id",
@@ -394,21 +572,31 @@ export const consentHandlers = [
         );
 
       case "not_found":
-        return Response.json(
-          createErrorResponse("not_found", "Consent not found"),
-          { status: 404 },
-        );
-      default:
-        return Response.json(
-          {
-            id: "770e8400-e29b-41d4-a716-446655440008",
-            consent_id: body.consent_id,
-            data_category_id: body.data_category_id,
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
-          },
-          { status: 201 },
-        );
+        return mswJson(createErrorResponse("not_found", "Consent not found"), {
+          status: 404,
+        });
+      default: {
+        const newCategory = {
+          id: `cat-${Date.now()}`,
+          consent_id:
+            body && typeof body === "object" && body.consent_id
+              ? body.consent_id
+              : "consent_id",
+          data_category_id:
+            body && typeof body === "object" && body.data_category_id
+              ? body.data_category_id
+              : "data_category_id",
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        };
+
+        mswStore.updateMockData((data) => ({
+          ...data,
+          consentDataCategories: [newCategory, ...data.consentDataCategories],
+        }));
+
+        return mswJson(newCategory, { status: 201 });
+      }
     }
   }),
 ];

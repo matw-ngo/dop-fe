@@ -47,6 +47,7 @@ storybook-static
 docs/migration/old-project/code/**
 
 .claude
+.windsurf
 test-results/
 playwright-report/
 

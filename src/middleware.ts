@@ -207,9 +207,9 @@ export const config = {
      * - api (API routes handled separately)
      * - _next/static (static files)
      * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - public folder
+     * - metadata files (favicon, robots, sitemap)
+     * - all files with an extension (e.g. .js, .css, .png, ...)
      */
-    "/((?!ekyc|api|_next/static|_next/image|favicon.ico|public|images).*)",
+    "/((?!ekyc|api|_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|.*\\..*).*)",
   ],
 };

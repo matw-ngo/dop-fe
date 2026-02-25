@@ -26,32 +26,18 @@ export const useDataCategories = ({
   const { data, isLoading, error, refetch, isRefetching } = useQuery({
     queryKey,
     queryFn: async () => {
-      // Note: Spec for searchConsentDataCategories uses /consent-data-category
-      // Params: search, page, page_size. NO consent_purpose_id.
-      // But previous code used consent_purpose_id.
-      // Assuming legacy param or missing spec support.
-      const result = await consentClient.GET("/consent-data-category", {
+      // Call /data-category endpoint to get all available data categories
+      // Spec: searchDataCategories returns DataCategoryListResponse { categories: DataCategory[] }
+      const result = await consentClient.GET("/data-category", {
         params: {
           query: {
-            // consent_purpose_id: consentPurposeId, // Not in spec
-            page: 1, // Defaulting as required by some implementations or just good practice
+            page: 1,
             page_size: 100,
           } as any,
         },
       });
 
-      // The response structure is ConsentDataCategoryListResponse { consent_data_categories: ... }
-      // But previous code expected DataCategory[] from result.data ?? []
-      // Let's check ConsentDataCategoryListResponse schema:
-      // { consent_data_categories?: ConsentDataCategory[]; pagination?: ... }
-      // Wait, is it DataCategory or ConsentDataCategory?
-      // Spec: searchConsentDataCategories returns ConsentDataCategoryListResponse
-      // which has consent_data_categories: ConsentDataCategory[]
-      // ConsentDataCategory schema: id, name, description, ...
-      // The previous code defined DataCategory manually.
-      // I should map the response correctly.
-
-      return result.data?.consent_data_categories ?? [];
+      return result.data?.categories ?? [];
     },
     enabled,
     staleTime: 60000,

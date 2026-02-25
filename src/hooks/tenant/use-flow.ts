@@ -36,7 +36,7 @@ export function useTenantFlow(
   options?: { enabled?: boolean },
 ) {
   return useQuery({
-    queryKey: ["tenant-flow", tenantUuid],
+    queryKey: ["flow", tenantUuid],
     queryFn: async (): Promise<FlowDetail> => {
       const { data, error } = await dopClient.GET("/flows/{tenant}", {
         params: {

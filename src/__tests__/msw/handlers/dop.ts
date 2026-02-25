@@ -6,8 +6,21 @@
  */
 
 import { http } from "msw";
+import { mswStore } from "@/mocks/store";
 
-const BASE_URL = "/v1";
+const BASE_URL = "*";
+
+const mswJson = (body: unknown, init?: ResponseInit): Response => {
+  const headers = new Headers(init?.headers);
+  headers.set("x-msw-mocked", "true");
+
+  const payload =
+    body && typeof body === "object" && !Array.isArray(body)
+      ? { __mocked: true, ...(body as Record<string, unknown>) }
+      : body;
+
+  return Response.json(payload, { ...init, headers });
+};
 
 /**
  * Generate a mock flow detail object
@@ -20,6 +33,45 @@ const createMockFlowDetail = (overrides?: Record<string, unknown>) => ({
   steps: [
     {
       id: "220e8400-e29b-41d4-a716-446655440002",
+      use_ekyc: true,
+      send_otp: true,
+      page: "/index",
+      consent_purpose_id: "660e8400-e29b-41d4-a716-446655440006", // Match consent purpose ID from consent mocks
+      have_purpose: true,
+      required_purpose: true,
+      have_phone_number: true,
+      required_phone_number: true,
+      have_email: true,
+      required_email: true,
+      have_full_name: true,
+      required_full_name: true,
+      have_national_id: true,
+      required_national_id: true,
+      have_second_national_id: false,
+      required_second_national_id: false,
+      have_gender: true,
+      required_gender: true,
+      have_location: true,
+      required_location: false,
+      have_birthday: true,
+      required_birthday: true,
+      have_income_type: false,
+      required_income_type: false,
+      have_income: false,
+      required_income: false,
+      have_having_loan: false,
+      required_having_loan: false,
+      have_career_status: false,
+      required_career_status: false,
+      have_career_type: false,
+      required_career_type: false,
+      have_credit_status: false,
+      required_credit_status: false,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    },
+    {
+      id: "330e8400-e29b-41d4-a716-446655440003",
       use_ekyc: true,
       send_otp: true,
       page: "personal-info",
@@ -113,7 +165,7 @@ export const dopHandlers = [
 
     switch (scenario) {
       case "not_found":
-        return Response.json(
+        return mswJson(
           createErrorResponse(
             "not_found",
             `Flow for tenant ${tenant} not found`,
@@ -122,12 +174,12 @@ export const dopHandlers = [
         );
 
       case "inactive":
-        return Response.json(
+        return mswJson(
           createErrorResponse("failed_precondition", "Flow is not active"),
           { status: 400 },
         );
       default:
-        return Response.json(createMockFlowDetail({ id: tenant as string }));
+        return mswJson(createMockFlowDetail({ id: tenant as string }));
     }
   }),
 
@@ -139,7 +191,7 @@ export const dopHandlers = [
 
     switch (scenario) {
       case "validation_error":
-        return Response.json(
+        return mswJson(
           createErrorResponse(
             "invalid_argument",
             "Missing required fields: flow_id, tenant",
@@ -148,25 +200,34 @@ export const dopHandlers = [
         );
 
       case "unauthorized":
-        return Response.json(
+        return mswJson(
           createErrorResponse("unauthenticated", "Authentication required"),
           { status: 401 },
         );
 
       case "forbidden":
-        return Response.json(
+        return mswJson(
           createErrorResponse("permission_denied", "Access denied"),
           { status: 403 },
         );
 
       case "server_error":
-        return Response.json(
+        return mswJson(
           createErrorResponse("internal_error", "Internal server error"),
           { status: 500 },
         );
       default: {
         const body = await request.json();
-        return Response.json(createMockLeadResponse(body), { status: 200 });
+        const newLead = createMockLeadResponse(
+          body && typeof body === "object" ? body : {},
+        );
+
+        mswStore.updateMockData((data) => ({
+          ...data,
+          leads: [newLead, ...data.leads],
+        }));
+
+        return mswJson(newLead, { status: 200 });
       }
     }
   }),
@@ -182,19 +243,19 @@ export const dopHandlers = [
 
       switch (scenario) {
         case "validation_error":
-          return Response.json(
+          return mswJson(
             createErrorResponse("invalid_argument", "Invalid lead info format"),
             { status: 400 },
           );
 
         case "not_found":
-          return Response.json(
+          return mswJson(
             createErrorResponse("not_found", `Lead ${id} not found`),
             { status: 404 },
           );
 
         case "otp_required":
-          return Response.json(
+          return mswJson(
             createErrorResponse(
               "failed_precondition",
               "OTP verification required",
@@ -203,12 +264,38 @@ export const dopHandlers = [
           );
         default: {
           const body = await request.json();
-          return Response.json({
+          let currentLead;
+
+          mswStore.updateMockData((data) => {
+            const existing = data.leads.find((l) => l.id === id) || { id };
+            const updated = {
+              ...existing,
+              ...(body && typeof body === "object" ? body : {}),
+            };
+            currentLead = updated;
+
+            let exists = false;
+            const nextLeads = data.leads.map((l) => {
+              if (l.id === id) {
+                exists = true;
+                return updated;
+              }
+              return l;
+            });
+
+            if (!exists) {
+              nextLeads.push(updated);
+            }
+
+            return { ...data, leads: nextLeads };
+          });
+
+          return mswJson({
             success: true,
             message: "Lead info submitted successfully",
             data: {
               lead_id: id,
-              ...body,
+              ...(body && typeof body === "object" ? body : {}),
             },
           });
         }
@@ -225,36 +312,61 @@ export const dopHandlers = [
 
     switch (scenario) {
       case "validation_error":
-        return Response.json(
+        return mswJson(
           createErrorResponse("invalid_argument", "Invalid OTP format"),
           { status: 400 },
         );
 
       case "invalid_otp":
-        return Response.json(
+        return mswJson(
           createErrorResponse("invalid_argument", "Invalid OTP code"),
           { status: 400 },
         );
 
       case "expired":
-        return Response.json(
+        return mswJson(
           createErrorResponse("deadline_exceeded", "OTP has expired"),
           { status: 400 },
         );
 
       case "too_many_attempts":
-        return Response.json(
+        return mswJson(
           createErrorResponse("resource_exhausted", "Too many OTP attempts"),
           { status: 400 },
         );
       default: {
         const body = await request.json();
-        return Response.json({
+
+        // Update lead verified status
+        mswStore.updateMockData((data) => {
+          const existing = data.leads.find((l) => l.id === id) || { id };
+          const updated = {
+            ...existing,
+            verified: true,
+          };
+
+          let exists = false;
+          const nextLeads = data.leads.map((l) => {
+            if (l.id === id) {
+              exists = true;
+              return updated;
+            }
+            return l;
+          });
+
+          if (!exists) {
+            nextLeads.push(updated);
+          }
+
+          return { ...data, leads: nextLeads };
+        });
+
+        return mswJson({
           success: true,
           message: "OTP verified successfully",
           data: {
             lead_id: id,
-            token: body.token,
+            token: body && typeof body === "object" ? body.token : null,
             verified: true,
           },
         });
@@ -271,13 +383,13 @@ export const dopHandlers = [
 
     switch (scenario) {
       case "validation_error":
-        return Response.json(
+        return mswJson(
           createErrorResponse("invalid_argument", "Invalid target format"),
           { status: 400 },
         );
 
       case "too_many_requests":
-        return Response.json(
+        return mswJson(
           createErrorResponse(
             "resource_exhausted",
             "OTP resend limit exceeded",
@@ -286,12 +398,13 @@ export const dopHandlers = [
         );
       default: {
         const body = await request.json();
-        return Response.json({
+        return mswJson({
           success: true,
           message: "OTP resent successfully",
           data: {
             lead_id: id,
-            target: body.target,
+            target:
+              body && typeof body === "object" ? (body as any).target : null,
             next_resend_available: new Date(Date.now() + 60000).toISOString(),
           },
         });
@@ -308,13 +421,13 @@ export const dopHandlers = [
 
     switch (scenario) {
       case "not_found":
-        return Response.json(
+        return mswJson(
           createErrorResponse("not_found", `Lead ${id} not found`),
           { status: 404 },
         );
 
       case "ekyc_disabled":
-        return Response.json(
+        return mswJson(
           createErrorResponse(
             "failed_precondition",
             "eKYC is not enabled for this lead",
@@ -322,7 +435,7 @@ export const dopHandlers = [
           { status: 400 },
         );
       default:
-        return Response.json(createMockEkycConfig());
+        return mswJson(createMockEkycConfig());
     }
   }),
 
@@ -335,19 +448,44 @@ export const dopHandlers = [
 
     switch (scenario) {
       case "validation_error":
-        return Response.json(
+        return mswJson(
           createErrorResponse("invalid_argument", "Invalid eKYC data format"),
           { status: 400 },
         );
 
       case "processing_error":
-        return Response.json(
+        return mswJson(
           createErrorResponse("internal_error", "Error processing eKYC result"),
           { status: 500 },
         );
       default: {
         const _body = await request.json();
-        return Response.json({
+
+        // Update lead ekyc status
+        mswStore.updateMockData((data) => {
+          const existing = data.leads.find((l) => l.id === id) || { id };
+          const updated = {
+            ...existing,
+            ekyc_status: "processing",
+          };
+
+          let exists = false;
+          const nextLeads = data.leads.map((l) => {
+            if (l.id === id) {
+              exists = true;
+              return updated;
+            }
+            return l;
+          });
+
+          if (!exists) {
+            nextLeads.push(updated);
+          }
+
+          return { ...data, leads: nextLeads };
+        });
+
+        return mswJson({
           success: true,
           message: "eKYC result submitted successfully",
           data: {

@@ -1,11 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { consentClient } from "@/lib/api/services";
 
-interface UseUserConsentOptions {
-  leadId?: string;
-  enabled?: boolean;
-}
-
 interface ConsentRecord {
   id?: string;
   controller_id?: string;
@@ -19,7 +14,7 @@ interface ConsentRecord {
 }
 
 interface UseUserConsentReturn {
-  data?: ConsentRecord;
+  data?: ConsentRecord | null;
   isLoading: boolean;
   error: Error | null;
   refetch: () => void;
@@ -27,25 +22,35 @@ interface UseUserConsentReturn {
 }
 
 export const useUserConsent = ({
-  leadId,
+  sessionId,
   enabled = true,
-}: UseUserConsentOptions = {}): UseUserConsentReturn => {
-  const queryKey = ["user-consent", leadId] as const;
+}: {
+  sessionId?: string;
+  enabled?: boolean;
+} = {}): UseUserConsentReturn => {
+  const queryKey = ["user-consent", sessionId] as const;
 
   const { data, isLoading, error, refetch, isRefetching } = useQuery({
     queryKey,
     queryFn: async () => {
+      // Step 1: Check current status with action=GRANT
       const result = await consentClient.GET("/consent" as any, {
         params: {
           query: {
-            lead_id: leadId,
+            session_id: sessionId,
+            action: "grant",
           },
         },
       });
 
-      return result.data;
+      // Return the first consent record if available
+      // The API returns { consents: [...], pagination: ... }
+      const consents = (result.data as any)?.consents;
+      return Array.isArray(consents) && consents.length > 0
+        ? consents[0]
+        : null;
     },
-    enabled: enabled && !!leadId,
+    enabled: enabled && !!sessionId,
     staleTime: 60000,
   });
 

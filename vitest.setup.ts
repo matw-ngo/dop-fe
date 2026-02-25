@@ -1,6 +1,41 @@
 import "@testing-library/jest-dom";
 import { cleanup } from "@testing-library/react";
-import { afterEach, vi } from "vitest";
+import { afterAll, afterEach, beforeAll, vi } from "vitest";
+
+// Setup MSW for testing
+async function setupMSW() {
+  if (typeof window !== "undefined") {
+    const { setupWorker } = await import("msw/browser");
+    const { default: consentHandlers } = await import(
+      "./src/__tests__/msw/handlers/consent"
+    );
+    const { default: dopHandlers } = await import(
+      "./src/__tests__/msw/handlers/dop"
+    );
+
+    const worker = setupWorker(...consentHandlers, ...dopHandlers);
+    await worker.start({
+      onUnhandledRequest: "bypass",
+      quiet: true,
+    });
+
+    // Store worker for cleanup
+    (globalThis as any).__MSW_WORKER__ = worker;
+  }
+}
+
+// Initialize MSW before tests
+beforeAll(async () => {
+  await setupMSW();
+});
+
+// Cleanup MSW after all tests
+afterAll(async () => {
+  const worker = (globalThis as any).__MSW_WORKER__;
+  if (worker) {
+    await worker.stop();
+  }
+});
 
 // Mock ResizeObserver - must be on global object for Node.js environment
 const mockResizeObserver = vi.fn().mockImplementation(() => ({
