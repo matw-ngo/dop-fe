@@ -29,7 +29,8 @@ export const generateDeviceFingerprint = (): string => {
     new Date().getTimezoneOffset(),
     canvas.toDataURL(),
     navigator.hardwareConcurrency,
-    navigator.deviceMemory || "unknown",
+    (navigator as Navigator & { deviceMemory?: number }).deviceMemory ||
+      "unknown",
   ].join("|");
 
   // Simple hash (in production, use a proper crypto hash)

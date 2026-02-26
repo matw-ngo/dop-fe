@@ -45,6 +45,8 @@ export interface OTPVerificationState {
   resendCooldownRemaining: number;
   sessionTimeRemaining: number;
   lockoutTimeRemaining: number;
+  isLocked: boolean;
+  lockoutEnd: Date | null;
 }
 
 export interface AuthState {
@@ -122,6 +124,8 @@ export const useAuthStore = create<AuthState>()(
         resendCooldownRemaining: 0,
         sessionTimeRemaining: 0,
         lockoutTimeRemaining: 0,
+        isLocked: false,
+        lockoutEnd: null,
       },
 
       // Core auth actions
@@ -418,9 +422,9 @@ export const useAuthStore = create<AuthState>()(
               set((prev) => ({
                 otp: {
                   ...prev.otp,
-                  otpSession: prev.otpSession
+                  otpSession: prev.otp.otpSession
                     ? {
-                        ...prev.otpSession,
+                        ...prev.otp.otpSession,
                         isExpired: true,
                       }
                     : null,
@@ -559,10 +563,11 @@ export const useAuthStore = create<AuthState>()(
             lockoutTimeRemaining: Math.ceil(
               (lockoutEnd.getTime() - Date.now()) / 1000,
             ),
+            lockoutEnd,
             currentStep: "locked",
-            otpSession: prev.otpSession
+            otpSession: prev.otp.otpSession
               ? {
-                  ...prev.otpSession,
+                  ...prev.otp.otpSession,
                   isLocked: true,
                   lockoutEnd,
                 }
@@ -575,9 +580,9 @@ export const useAuthStore = create<AuthState>()(
         set((prev) => ({
           otp: {
             ...prev.otp,
-            otpSession: prev.otpSession
+            otpSession: prev.otp.otpSession
               ? {
-                  ...prev.otpSession,
+                  ...prev.otp.otpSession,
                   lastActivity: new Date(),
                 }
               : null,
@@ -648,6 +653,8 @@ export const useAuthStore = create<AuthState>()(
             resendCooldownRemaining: 0,
             sessionTimeRemaining: 0,
             lockoutTimeRemaining: 0,
+            isLocked: false,
+            lockoutEnd: null,
           };
 
           // Set authentication status based on rehydrated user

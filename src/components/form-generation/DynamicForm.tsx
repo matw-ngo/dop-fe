@@ -124,7 +124,7 @@ export function DynamicForm({
     if (Object.keys(defaultValues).length > 0) {
       setFormData((prev) => ({ ...prev, ...defaultValues }));
     }
-  }, [config.fields, config.sections, formData[field.name]]);
+  }, [config.fields, config.sections, formData]);
 
   // Cleanup abort controllers on unmount
   useEffect(() => {
@@ -151,47 +151,6 @@ export function DynamicForm({
 
     return rules;
   }, [config.fields, config.sections]);
-
-  // Handle field change
-  const handleFieldChange = useCallback(
-    (fieldName: string, value: any) => {
-      const newFormData = { ...formData, [fieldName]: value };
-      setFormData(newFormData);
-
-      // Call custom onChange if provided
-      if (customOnChange) {
-        customOnChange(fieldName, value, newFormData);
-      } else if (config.onChange) {
-        config.onChange(fieldName, value);
-      }
-
-      // Clear error when field changes
-      if (errors[fieldName]) {
-        const newErrors = { ...errors };
-        delete newErrors[fieldName];
-        setErrors(newErrors);
-      }
-
-      // Validate on change if enabled
-      if (config.validationMode === "onChange") {
-        validateField(fieldName, value);
-      }
-    },
-    [formData, customOnChange, config, errors, validateField],
-  );
-
-  // Handle field blur
-  const handleFieldBlur = useCallback(
-    (fieldName: string) => {
-      setTouched((prev) => ({ ...prev, [fieldName]: true }));
-
-      // Validate on blur if enabled
-      if (config.validationMode === "onBlur") {
-        validateField(fieldName, formData[fieldName]);
-      }
-    },
-    [config.validationMode, formData, validateField],
-  );
 
   // Validate single field with race condition prevention
   const validateField = useCallback(
@@ -233,6 +192,47 @@ export function DynamicForm({
       }
     },
     [fieldValidationRules],
+  );
+
+  // Handle field change
+  const handleFieldChange = useCallback(
+    (fieldName: string, value: any) => {
+      const newFormData = { ...formData, [fieldName]: value };
+      setFormData(newFormData);
+
+      // Call custom onChange if provided
+      if (customOnChange) {
+        customOnChange(fieldName, value, newFormData);
+      } else if (config.onChange) {
+        config.onChange(fieldName, value);
+      }
+
+      // Clear error when field changes
+      if (errors[fieldName]) {
+        const newErrors = { ...errors };
+        delete newErrors[fieldName];
+        setErrors(newErrors);
+      }
+
+      // Validate on change if enabled
+      if (config.validationMode === "onChange") {
+        validateField(fieldName, value);
+      }
+    },
+    [formData, customOnChange, config, errors, validateField],
+  );
+
+  // Handle field blur
+  const handleFieldBlur = useCallback(
+    (fieldName: string) => {
+      setTouched((prev) => ({ ...prev, [fieldName]: true }));
+
+      // Validate on blur if enabled
+      if (config.validationMode === "onBlur") {
+        validateField(fieldName, formData[fieldName]);
+      }
+    },
+    [config.validationMode, formData, validateField],
   );
 
   // Handle form submission

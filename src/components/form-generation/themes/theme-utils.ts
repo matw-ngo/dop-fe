@@ -6,7 +6,11 @@
 
 import { defaultTheme } from "./default";
 import type { FormTheme } from "./types";
-import type { FormTheme as SimplifiedFormTheme } from "./types-simplified";
+import type { FormTheme as SimplifiedFormTheme } from "./types";
+
+type DeepPartial<T> = {
+  [K in keyof T]?: T[K] extends object ? DeepPartial<T[K]> : T[K];
+};
 
 /**
  * Converts a simplified theme to a full theme structure
@@ -48,6 +52,12 @@ export function expandTheme(simplifiedTheme: SimplifiedFormTheme): FormTheme {
 
   return {
     name: simplifiedTheme.name,
+    colors,
+    borderRadius,
+    spacing,
+    typography,
+    sizes,
+    focusRing,
     control: {
       base: [
         "w-full",
@@ -109,10 +119,9 @@ export function expandTheme(simplifiedTheme: SimplifiedFormTheme): FormTheme {
  * This allows for partial customization
  */
 export function createTheme(
-  partialSimplifiedTheme: Partial<SimplifiedFormTheme>,
+  partialSimplifiedTheme: DeepPartial<SimplifiedFormTheme>,
 ): FormTheme {
   // Create a complete simplified theme by merging with defaults
-  const _simplifiedDefaults = expandTheme(defaultTheme);
   const mergedSimplifiedTheme: SimplifiedFormTheme = {
     name: partialSimplifiedTheme.name || "custom",
     colors: {

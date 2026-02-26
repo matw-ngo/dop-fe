@@ -28,6 +28,8 @@ vi.mock("@/lib/ekyc/audit-logger", () => ({
   logConfigFetchStart: vi.fn(),
   logConfigFetchSuccess: vi.fn(),
   logConfigFetchError: vi.fn(),
+  logConfigCacheHit: vi.fn(),
+  logConfigCacheMiss: vi.fn(),
 }));
 
 describe("useEkycConfig", () => {

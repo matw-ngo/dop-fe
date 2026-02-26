@@ -161,6 +161,7 @@ export interface EkycState {
   // Timing
   createdAt: string;
   updatedAt: string;
+  completedAt: string | null;
 
   // Actions
   // Session management
@@ -321,6 +322,7 @@ export const useEkycStore = create<EkycState>()(
         warnings: [],
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
+        completedAt: null,
 
         // Secure biometric data management
         encryptedData: new Map(),
@@ -634,6 +636,7 @@ export const useEkycStore = create<EkycState>()(
             formData: mapped,
             error: undefined,
             updatedAt: new Date().toISOString(),
+            completedAt: new Date().toISOString(),
           });
 
           // Dispatch custom event
@@ -767,6 +770,7 @@ export const useEkycStore = create<EkycState>()(
           set({
             status: "success",
             updatedAt: new Date().toISOString(),
+            completedAt: new Date().toISOString(),
           });
         },
 
@@ -788,6 +792,7 @@ export const useEkycStore = create<EkycState>()(
             },
             progress: 100,
             updatedAt: new Date().toISOString(),
+            completedAt: endTime,
           });
 
           // Dispatch completion event
@@ -816,6 +821,7 @@ export const useEkycStore = create<EkycState>()(
             session: undefined,
             rawResult: undefined,
             formData: undefined,
+            completedAt: null,
             error: undefined,
             errors: [],
             warnings: [],

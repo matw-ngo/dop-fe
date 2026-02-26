@@ -16,30 +16,53 @@ export function getResponsiveClasses<T>(
   classMap: (val: T) => string,
 ): string {
   const classes: string[] = [];
+  const responsiveValue: {
+    initial?: T;
+    sm?: T;
+    md?: T;
+    lg?: T;
+    xl?: T;
+    "2xl"?: T;
+  } | null =
+    typeof value === "object" && value !== null && !Array.isArray(value)
+      ? (value as {
+          initial?: T;
+          sm?: T;
+          md?: T;
+          lg?: T;
+          xl?: T;
+          "2xl"?: T;
+        })
+      : null;
+
+  if (!responsiveValue) {
+    classes.push(classMap(value as T));
+    return classes.join(" ");
+  }
 
   // Initial (mobile first)
-  if (value.initial !== undefined) {
-    classes.push(classMap(value.initial));
+  if (responsiveValue.initial !== undefined) {
+    classes.push(classMap(responsiveValue.initial));
   }
 
   // Tablet breakpoint
-  if (value.md !== undefined) {
-    classes.push(`md:${classMap(value.md)}`);
+  if (responsiveValue.md !== undefined) {
+    classes.push(`md:${classMap(responsiveValue.md)}`);
   }
 
   // Desktop breakpoint
-  if (value.lg !== undefined) {
-    classes.push(`lg:${classMap(value.lg)}`);
+  if (responsiveValue.lg !== undefined) {
+    classes.push(`lg:${classMap(responsiveValue.lg)}`);
   }
 
   // Large desktop breakpoint
-  if (value.xl !== undefined) {
-    classes.push(`xl:${classMap(value.xl)}`);
+  if (responsiveValue.xl !== undefined) {
+    classes.push(`xl:${classMap(responsiveValue.xl)}`);
   }
 
   // Extra large desktop breakpoint
-  if (value["2xl"] !== undefined) {
-    classes.push(`2xl:${classMap(value["2xl"])}`);
+  if (responsiveValue["2xl"] !== undefined) {
+    classes.push(`2xl:${classMap(responsiveValue["2xl"])}`);
   }
 
   return classes.join(" ");

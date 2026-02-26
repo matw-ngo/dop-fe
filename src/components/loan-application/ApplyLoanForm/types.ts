@@ -5,6 +5,8 @@ import type {
 } from "react-hook-form";
 import type { LoanApplicationFormData } from "./schema";
 
+export type { LoanApplicationFormData } from "./schema";
+
 // Form types
 export interface LoanApplicationFormProps {
   onSubmit?: (data: LoanApplicationFormData) => void;
@@ -14,14 +16,14 @@ export interface LoanApplicationFormProps {
 
 export interface UseLoanApplicationFormReturn {
   // Form state
-  form: Control<LoanApplicationFormData>;
+  form: Control<LoanApplicationFormData, any, any>;
   errors: FieldErrors<LoanApplicationFormData>;
   isSubmitting: boolean;
   isValid: boolean;
   isDirty: boolean;
 
   // Form actions
-  handleSubmit: UseFormHandleSubmit<LoanApplicationFormData>;
+  handleSubmit: UseFormHandleSubmit<LoanApplicationFormData, any>;
   onSubmit: (data: LoanApplicationFormData) => void;
 
   // Modal state
@@ -35,6 +37,10 @@ export interface UseLoanApplicationFormReturn {
   hidePhoneModal: () => void;
   showOtpModal: () => void;
   hideOtpModal: () => void;
+  handlePhoneSubmit: (phoneNumber: string) => Promise<boolean>;
+  handleOtpSuccess: (otp: string) => void;
+  handleOtpFailure: (error: string) => void;
+  handleOtpExpired: () => void;
 
   // Field value getters
   values: LoanApplicationFormData;
@@ -124,13 +130,14 @@ export interface PhoneValidationResult {
 // Tracking types
 export interface LoanApplicationTrackingEvents {
   inputExpectedAmount: (amount: number) => void;
-  inputPeriod: (period: number) => void;
+  inputPeriod?: (period: number) => void;
   inputPurpose: (purpose: string) => void;
   inputPhoneNumber: (phone: string) => void;
   phoneNumberValid: (phone: string, telco: string) => void;
-  submitApplication: (data: LoanApplicationFormData) => void;
-  otpVerified: () => void;
-  otpFailed: (error: string) => void;
+  formSubmit: (data: LoanApplicationFormData) => void;
+  submitApplication?: (data: LoanApplicationFormData) => void;
+  otpVerified?: () => void;
+  otpFailed?: (error: string) => void;
 }
 
 // Form flow types

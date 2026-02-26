@@ -58,7 +58,11 @@ export default function CreditCardsPage() {
   useCreditCardsUrlInit({
     setFilters,
     setSortBy,
-    setCurrentPage,
+    setPagination: ({ page }) => {
+      if (typeof page === "number") {
+        setCurrentPage(page);
+      }
+    },
     setSearchQuery,
   });
 

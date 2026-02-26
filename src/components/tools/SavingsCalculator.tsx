@@ -320,7 +320,6 @@ const SavingsCalculatorInner: React.FC<SavingsCalculatorProps> = ({
                 </div>
                 <div className="px-2">
                   <Slider
-                    id="amount"
                     min={SAVINGS_DEFAULTS.MIN_AMOUNT}
                     max={SAVINGS_DEFAULTS.MAX_AMOUNT}
                     step={SAVINGS_DEFAULTS.AMOUNT_STEP}

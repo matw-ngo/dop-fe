@@ -170,6 +170,16 @@ export interface FormTheme {
   };
 
   /**
+   * Backward compatibility properties for form control styling
+   */
+  control?: {
+    base: string;
+    variants?: Record<string, string>;
+    sizes?: Record<string, string>;
+    states?: Record<string, string>;
+  };
+
+  /**
    * Backward compatibility properties for components that expect the old structure
    */
   label?: {

@@ -441,7 +441,7 @@ function calculateLoanScore(loan: LoanCalculationResult): number {
   score += Math.max(0, (1 - paymentRatio * 100) * 10);
 
   // Flexible terms are better
-  if (loan.loanParams.loanType === "reducing_balance") score += 10;
+  if (loan.loanParams.rateType === "reducing_balance") score += 10;
   if (loan.loanParams.promotionalPeriod) score += 5;
 
   return Math.max(0, Math.min(100, score));

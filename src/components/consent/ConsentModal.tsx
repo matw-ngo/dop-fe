@@ -2,7 +2,7 @@
 
 import { Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { memo, useEffect, useState } from "react";
+import { type CSSProperties, memo, useEffect, useState } from "react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import {
   Dialog,
@@ -11,6 +11,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { finzoneTheme } from "@/configs/themes/finzone-theme";
 import { useConsentLogs } from "@/hooks/consent/use-consent-logs";
 import { useConsentPurpose } from "@/hooks/consent/use-consent-purpose";
 import { useConsentSession } from "@/hooks/consent/use-consent-session";
@@ -18,7 +19,7 @@ import { useDataCategories } from "@/hooks/consent/use-data-categories";
 import { useUserConsent } from "@/hooks/consent/use-user-consent";
 import { consentClient } from "@/lib/api/services";
 import { useAuthStore } from "@/store/use-auth-store";
-import { useConsentStore } from "@/store/use-consent-store";
+import { type ConsentRecord, useConsentStore } from "@/store/use-consent-store";
 
 import { ConsentForm } from "./ConsentForm";
 import { ConsentHistory } from "./ConsentHistory";
@@ -27,7 +28,9 @@ interface ConsentModalProps {
   open: boolean;
   setOpen: (open: boolean) => void;
   onSuccess?: (consentId: string) => void;
-  stepData?: any;
+  stepData?: {
+    consent_purpose_id?: string;
+  };
 }
 
 export const ConsentModal = memo(function ConsentModal({
@@ -52,26 +55,33 @@ export const ConsentModal = memo(function ConsentModal({
 
   const [activeTab, setActiveTab] = useState<"form" | "history">("form");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const consentThemeStyles = {
+    "--consent-bg": finzoneTheme.colors.background,
+    "--consent-fg": finzoneTheme.colors.textPrimary,
+    "--consent-muted": finzoneTheme.colors.textSecondary,
+    "--consent-border": finzoneTheme.colors.border,
+    "--consent-surface": finzoneTheme.colors.readOnly,
+    "--consent-primary": finzoneTheme.colors.primary,
+    "--consent-error": finzoneTheme.colors.error,
+    "--consent-checkbox-border":
+      finzoneTheme.components?.checkable?.uncheckedBorder ??
+      finzoneTheme.colors.border,
+  } as CSSProperties;
 
   // 1. Get Consent Purpose based on step data (purpose_id)
-  const {
-    data: consentPurpose,
-    isLoading: isLoadingPurpose,
-    error: purposeError,
-  } = useConsentPurpose({
-    consentPurposeId: stepData?.consent_purpose_id,
-    enabled: open && !!stepData?.consent_purpose_id,
-  });
+  const { data: consentPurpose, isLoading: isLoadingPurpose } =
+    useConsentPurpose({
+      consentPurposeId: stepData?.consent_purpose_id,
+      enabled: open && !!stepData?.consent_purpose_id,
+    });
 
   // 2. Check current status based on Session ID
-  const {
-    data: userConsent,
-    isLoading: isLoadingUserConsent,
-    refetch: refetchUserConsent,
-  } = useUserConsent({
-    sessionId: sessionId || undefined,
-    enabled: open && !!sessionId,
-  });
+  const { data: userConsent, isLoading: isLoadingUserConsent } = useUserConsent(
+    {
+      sessionId: sessionId || undefined,
+      enabled: open && !!sessionId,
+    },
+  );
 
   const { data: dataCategories, isLoading: isLoadingCategories } =
     useDataCategories({
@@ -86,7 +96,7 @@ export const ConsentModal = memo(function ConsentModal({
 
   useEffect(() => {
     const handleDataUpdated = (event: Event) => {
-      const customEvent = event as CustomEvent<{ consentData: any }>;
+      const customEvent = event as CustomEvent<{ consentData?: ConsentRecord }>;
       if (customEvent.detail?.consentData) {
         setConsentData(customEvent.detail.consentData);
       }
@@ -200,16 +210,14 @@ export const ConsentModal = memo(function ConsentModal({
 
   const handleRejectConsent = async () => {
     if (!userConsent?.id) {
-      // If no consent exists yet, and they reject, maybe we just don't create one?
-      // Or create one with status 'declined'?
-      // Requirement: "User press Reject -> FE calls API update. Action: REVOKE".
-      // This implies an existing consent.
-      // If they reject initially, maybe we create then revoke, or just close?
+      setConsentStatus("declined");
       setOpen(false);
       return;
     }
 
     setIsSubmitting(true);
+    clearError();
+
     try {
       await consentClient.PATCH("/consent/{id}", {
         params: { path: { id: userConsent.id } },
@@ -218,7 +226,6 @@ export const ConsentModal = memo(function ConsentModal({
         },
       });
 
-      // Log REVOKE
       await consentClient.POST("/consent-log", {
         body: {
           tenant_id: "00000000-0000-0000-0000-000000000000", // FIXME
@@ -232,7 +239,9 @@ export const ConsentModal = memo(function ConsentModal({
       setConsentStatus("declined");
       setOpen(false);
     } catch (error) {
-      setError("Failed to reject consent");
+      setError(
+        error instanceof Error ? error.message : "Failed to reject consent",
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -246,10 +255,15 @@ export const ConsentModal = memo(function ConsentModal({
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent
+        style={consentThemeStyles}
+        className="max-h-[90vh] max-w-2xl overflow-y-auto border-[var(--consent-border)] bg-[var(--consent-bg)] text-[var(--consent-fg)] shadow-xl [&_[data-slot=dialog-close]]:text-[var(--consent-muted)] [&_[data-slot=dialog-close][data-state=open]]:bg-[var(--consent-surface)] [&_[data-slot=dialog-close]:hover]:text-[var(--consent-fg)]"
+      >
         <DialogHeader>
-          <DialogTitle>{t("modal.title")}</DialogTitle>
-          <DialogDescription>
+          <DialogTitle className="text-[var(--consent-fg)]">
+            {t("modal.title")}
+          </DialogTitle>
+          <DialogDescription className="text-[var(--consent-muted)]">
             {activeTab === "form"
               ? t("form.description")
               : t("history.description")}
@@ -258,31 +272,35 @@ export const ConsentModal = memo(function ConsentModal({
 
         {isLoading && (
           <div className="flex items-center justify-center py-8">
-            <Loader2 className="mr-2 h-6 w-6 animate-spin" />
-            <span>{t("common.loading")}</span>
+            <Loader2 className="mr-2 h-6 w-6 animate-spin text-[var(--consent-primary)]" />
+            <span className="text-[var(--consent-muted)]">
+              {t("common.loading")}
+            </span>
           </div>
         )}
 
         {!isLoading && (
           <div className="space-y-4">
             {consentData && (
-              <Alert>
-                <AlertTitle>{t("errors.existingConsent")}</AlertTitle>
-                <AlertDescription>
+              <Alert className="border-[var(--consent-border)] bg-[var(--consent-surface)]">
+                <AlertTitle className="text-[var(--consent-fg)]">
+                  {t("errors.existingConsent")}
+                </AlertTitle>
+                <AlertDescription className="text-[var(--consent-muted)]">
                   {t("errors.existingConsentDesc")}
                 </AlertDescription>
               </Alert>
             )}
 
-            <div className="border-b">
+            <div className="border-b border-[var(--consent-border)]">
               <div className="flex gap-4">
                 <button
                   type="button"
                   onClick={() => setActiveTab("form")}
                   className={`flex-1 border-b-2 pb-2 font-medium transition-colors ${
                     activeTab === "form"
-                      ? "border-primary text-primary"
-                      : "border-transparent text-muted-foreground hover:text-foreground"
+                      ? "border-[var(--consent-primary)] text-[var(--consent-primary)]"
+                      : "border-transparent text-[var(--consent-muted)] hover:text-[var(--consent-fg)]"
                   }`}
                 >
                   {t("tabs.form")}
@@ -292,8 +310,8 @@ export const ConsentModal = memo(function ConsentModal({
                   onClick={() => setActiveTab("history")}
                   className={`flex-1 border-b-2 pb-2 font-medium transition-colors ${
                     activeTab === "history"
-                      ? "border-primary text-primary"
-                      : "border-transparent text-muted-foreground hover:text-foreground"
+                      ? "border-[var(--consent-primary)] text-[var(--consent-primary)]"
+                      : "border-transparent text-[var(--consent-muted)] hover:text-[var(--consent-fg)]"
                   }`}
                 >
                   {t("tabs.history")}
@@ -309,6 +327,7 @@ export const ConsentModal = memo(function ConsentModal({
                 }}
                 dataCategories={dataCategories}
                 onGrant={handleGrantConsent}
+                onReject={handleRejectConsent}
                 isSubmitting={isSubmitting}
               />
             )}

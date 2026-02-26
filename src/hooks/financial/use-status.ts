@@ -11,6 +11,7 @@ import type {
 } from "@/lib/loan-status/vietnamese-status-config";
 import type {
   NotificationChannel,
+  NotificationPreferences as LoanNotificationPreferences,
   NotificationPriority,
 } from "@/lib/notifications/loan-notifications";
 import { loanNotificationManager } from "@/lib/notifications/loan-notifications";
@@ -21,7 +22,7 @@ import { useLoanStatusRateLimiting } from "@/lib/security/status-rate-limiting";
 import type {
   CommunicationEntry,
   DocumentStatus,
-  NotificationPreferences,
+  NotificationPreferences as StoreNotificationPreferences,
   TimelineMilestone,
 } from "@/store/use-loan-status-store";
 import { useLoanStatusTrackingStore } from "@/store/use-loan-status-store";
@@ -196,17 +197,15 @@ export function useLoanStatus(
     checkStatusRefresh,
     createSecureWebSocket,
     disconnectRealTime,
-    handleSecureStatusUpdate,
     logSecurityEvent,
     refreshApplicationStatus,
-    secureAutoRefresh,
     setError,
     storeAutoRefresh,
     storeRefreshInterval,
   ]);
 
   // Secure auto-refresh function
-  const secureAutoRefresh = useCallback(async () => {
+  async function secureAutoRefresh() {
     if (!securityContextRef.current || !securityEnabled) {
       refreshApplicationStatus(applicationId);
       return;
@@ -255,57 +254,37 @@ export function useLoanStatus(
         applicationId,
       });
     }
-  }, [
-    applicationId,
-    securityEnabled,
-    checkStatusRefresh,
-    getCurrentVersion,
-    secureStatusUpdate,
-    logApplicationEvent,
-    logSecurityEvent,
-    refreshApplicationStatus,
-  ]);
+  }
 
   // Handle secure status updates from WebSocket
-  const handleSecureStatusUpdate = useCallback(
-    (message: any) => {
-      if (!securityContextRef.current || !securityEnabled) {
-        // Fallback to non-secure handling
-        setApplicationStatus(message.payload);
-        return;
-      }
+  function handleSecureStatusUpdate(message: any) {
+    if (!securityContextRef.current || !securityEnabled) {
+      // Fallback to non-secure handling
+      setApplicationStatus(message.payload);
+      return;
+    }
 
-      // Validate message integrity and security
-      try {
-        // Log real-time update
-        logApplicationEvent(
-          "WEBSOCKET_MESSAGE_RECEIVED" as any,
-          applicationId,
-          securityContextRef.current.userId || "system",
-          "success",
-          { messageType: "status_update" },
-        );
+    // Validate message integrity and security
+    try {
+      // Log real-time update
+      logApplicationEvent(
+        "WEBSOCKET_MESSAGE_RECEIVED" as any,
+        applicationId,
+        securityContextRef.current.userId || "system",
+        "success",
+        { messageType: "status_update" },
+      );
 
-        // Apply update with security validation
-        setApplicationStatus(message.payload);
-      } catch (error) {
-        logSecurityEvent("SECURITY_VIOLATION" as any, "MEDIUM" as any, {
-          error:
-            error instanceof Error
-              ? error.message
-              : "Invalid WebSocket message",
-          applicationId,
-        });
-      }
-    },
-    [
-      applicationId,
-      securityEnabled, // Log real-time update
-      logApplicationEvent,
-      logSecurityEvent, // Apply update with security validation
-      setApplicationStatus,
-    ],
-  );
+      // Apply update with security validation
+      setApplicationStatus(message.payload);
+    } catch (error) {
+      logSecurityEvent("SECURITY_VIOLATION" as any, "MEDIUM" as any, {
+        error:
+          error instanceof Error ? error.message : "Invalid WebSocket message",
+        applicationId,
+      });
+    }
+  }
 
   // Manual refresh function
   const refresh = useCallback(() => {
@@ -726,9 +705,14 @@ export function useLoanNotifications(applicationId?: string) {
 
       // Check preferences if available
       if (notificationPreferences) {
+        const normalizedPreferences: LoanNotificationPreferences = {
+          ...notificationPreferences,
+          language: "vi",
+          format: "text",
+        };
         const shouldSend = loanNotificationManager.shouldSendNotification(
           message,
-          notificationPreferences,
+          normalizedPreferences,
         );
         if (!shouldSend) {
           return {
@@ -753,7 +737,7 @@ export function useLoanNotifications(applicationId?: string) {
 
   // Update notification preferences
   const updatePreferences = useCallback(
-    async (updates: Partial<NotificationPreferences>) => {
+    async (updates: Partial<StoreNotificationPreferences>) => {
       if (applicationId) {
         updates.applicationId = applicationId;
       }
@@ -954,7 +938,10 @@ export function useLoanStatusTracking(
     autoLoad: options?.autoLoadCommunications,
   });
   const notifications = useLoanNotifications(applicationId);
-  const realTime = useRealTimeConnection(applicationId, options);
+  const realTime = useRealTimeConnection(applicationId, {
+    autoConnect: options?.realTime,
+    reconnectInterval: options?.refreshInterval,
+  });
   const offline = useOfflineMode();
 
   // Refresh all data

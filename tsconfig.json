@@ -33,8 +33,11 @@
     "**/test/**",
     "**/__test__/**",
     "**/__tests__/**",
+    "**/examples/**",
     "**/*.test.ts",
     "**/*.test.tsx",
+    "**/*.stories.ts",
+    "**/*.stories.tsx",
     "**/*.spec.ts",
     "**/*.spec.tsx"
   ]

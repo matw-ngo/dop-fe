@@ -16,7 +16,12 @@ import { useTenant } from "@/hooks/tenant/use-tenant";
  *
  * Refactored for multi-tenancy and i18n.
  */
-export function Footer() {
+interface FooterProps {
+  company?: string;
+  configOverride?: unknown;
+}
+
+export function Footer({ company: _company }: FooterProps) {
   const t = useTranslations("components.layout.footer");
   const tenant = useTenant();
   const t_company = useTranslations(`tenants.${tenant.id}.company`);
@@ -258,3 +263,5 @@ export function Footer() {
     </footer>
   );
 }
+
+export default Footer;

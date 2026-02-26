@@ -149,6 +149,24 @@ export function useTimeoutError(
   }, [onDismiss]);
 
   /**
+   * Checks if error is retryable based on retry count
+   */
+  const canRetryWithCount = useCallback(
+    (count: number, max: number): boolean => {
+      if (!error) {
+        return false;
+      }
+
+      if (!isRetryableTimeoutError(error)) {
+        return false;
+      }
+
+      return count < max;
+    },
+    [error],
+  );
+
+  /**
    * Retries the failed operation
    */
   const retry = useCallback(async () => {
@@ -171,32 +189,7 @@ export function useTimeoutError(
       // Update error with new retry count
       setError(err);
     }
-  }, [
-    error,
-    retryCount,
-    maxRetries,
-    onRetry,
-    canRetryWithCount, // Update error with new retry count
-    setError,
-  ]);
-
-  /**
-   * Checks if error is retryable based on retry count
-   */
-  const canRetryWithCount = useCallback(
-    (count: number, max: number): boolean => {
-      if (!error) {
-        return false;
-      }
-
-      if (!isRetryableTimeoutError(error)) {
-        return false;
-      }
-
-      return count < max;
-    },
-    [error],
-  );
+  }, [error, retryCount, maxRetries, onRetry, canRetryWithCount, setError]);
 
   const canRetry = error ? canRetryWithCount(retryCount, maxRetries) : false;
   const hasError = error !== null;

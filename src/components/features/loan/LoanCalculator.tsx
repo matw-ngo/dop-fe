@@ -110,11 +110,6 @@ export function LoanCalculator({
     { value: 360, label: "30 năm" },
   ];
 
-  // Calculate loan when parameters change
-  useEffect(() => {
-    calculateLoan();
-  }, [calculateLoan]);
-
   const calculateLoan = () => {
     try {
       const calculation = VietnameseLoanCalculator.calculateLoan(params);
@@ -124,6 +119,11 @@ export function LoanCalculator({
       console.error("Error calculating loan:", error);
     }
   };
+
+  // Calculate loan when parameters change
+  useEffect(() => {
+    calculateLoan();
+  }, [calculateLoan]);
 
   const updateParam = (key: keyof LoanCalculationParams, value: any) => {
     setParams((prev) => ({ ...prev, [key]: value }));

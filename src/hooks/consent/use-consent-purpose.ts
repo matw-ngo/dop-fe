@@ -1,5 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { consentClient } from "@/lib/api/services";
+import type { components } from "@/lib/api/v1/consent";
+
+type ConsentPurpose = components["schemas"]["ConsentPurpose"];
 
 export const useConsentPurpose = ({
   consentPurposeId,
@@ -12,8 +15,12 @@ export const useConsentPurpose = ({
 
   const { data, isLoading, error, refetch, isRefetching } = useQuery({
     queryKey,
-    queryFn: async () => {
-      const result = await consentClient.GET("/consent-purpose/{id}" as any, {
+    queryFn: async (): Promise<ConsentPurpose | undefined> => {
+      if (!consentPurposeId) {
+        return undefined;
+      }
+
+      const result = await consentClient.GET("/consent-purpose/{id}", {
         params: {
           path: {
             id: consentPurposeId,
@@ -21,7 +28,7 @@ export const useConsentPurpose = ({
         },
       });
 
-      return result.data as any; // Type generic any for now
+      return result.data;
     },
     enabled: enabled && !!consentPurposeId,
     staleTime: 60000,

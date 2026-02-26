@@ -21,7 +21,7 @@ export function useLoanApplicationForm(): UseLoanApplicationFormReturn {
 
   // Initialize form with React Hook Form
   const form = useForm<LoanApplicationFormData>({
-    resolver: zodResolver(loanApplicationSchema),
+    resolver: zodResolver(loanApplicationSchema) as any,
     defaultValues: {
       expected_amount: LOAN_AMOUNT.DEFAULT,
       loan_period: LOAN_PERIOD.DEFAULT,
@@ -67,7 +67,12 @@ export function useLoanApplicationForm(): UseLoanApplicationFormReturn {
   const validatePhone = useCallback(
     (
       phoneNumber: string,
-    ): { valid: boolean; normalizedNumber?: string; error?: string } => {
+    ): {
+      valid: boolean;
+      normalizedNumber?: string;
+      telco?: string;
+      error?: string;
+    } => {
       if (!phoneNumber || !phoneNumber.trim()) {
         return { valid: false, error: t("errors.phoneRequired") };
       }
@@ -128,7 +133,11 @@ export function useLoanApplicationForm(): UseLoanApplicationFormReturn {
         }
 
         // Track form submission
-        trackLoanApplication.submitApplication({ ...data, formId });
+        trackLoanApplication.formSubmit({
+          amount: data.expected_amount,
+          purpose: data.loan_purpose,
+          phoneNumber: data.phone_number ?? "",
+        });
 
         // Show phone verification modal
         showPhoneModal();
@@ -172,9 +181,6 @@ export function useLoanApplicationForm(): UseLoanApplicationFormReturn {
       toast.info(t("messages.otpSuccess"));
       hideOtpModal();
 
-      // Track OTP verification
-      trackLoanApplication.otpVerified?.();
-
       // Here you would proceed to the next step
       // For now, we'll just show a success message
       toast.success("Application submitted successfully!");
@@ -186,9 +192,6 @@ export function useLoanApplicationForm(): UseLoanApplicationFormReturn {
   const handleOtpFailure = useCallback((error: string) => {
     console.error("OTP verification failed:", error);
     toast.error(error);
-
-    // Track OTP failure
-    trackLoanApplication.otpFailed?.(error);
   }, []);
 
   // OTP expired handler

@@ -114,12 +114,13 @@ export function mapApiStepToStep(apiStep: ApiStep): MappedStep {
 
 // Mapper for the entire Flow
 export function mapApiFlowToFlow(apiFlow: ApiFlowDetail): MappedFlow {
+  const isActive = apiFlow.flow_status === "active";
+
   return {
     id: apiFlow.id,
     name: apiFlow.name,
     description: apiFlow.description,
-    status:
-      apiFlow.flow_status === "FLOW_STATUS_ACTIVE" ? "Active" : "Inactive",
+    status: isActive ? "Active" : "Inactive",
     steps: apiFlow.steps.map(mapApiStepToStep),
     createdAt: new Date(apiFlow.created_at),
     updatedAt: new Date(apiFlow.updated_at),

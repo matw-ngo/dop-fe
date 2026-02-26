@@ -1,4 +1,5 @@
 // Main component
+export { default } from "./ApplyLoanForm";
 export { default as ApplyLoanForm } from "./ApplyLoanForm";
 // Components
 export { AmountField } from "./components/AmountField";
@@ -16,7 +17,17 @@ export { useLoanApplicationForm } from "./hooks/useLoanApplicationForm";
 export { useModal } from "./hooks/useModal";
 export { useTracking } from "./hooks/useTracking";
 // Schema and types
-export * from "./schema";
+export {
+  createLoanApplicationSchema,
+  createOtpVerificationSchema,
+  createPhoneValidationSchema,
+  loanApplicationSchema,
+  otpVerificationSchema,
+  phoneValidationSchema,
+  type LoanApplicationFormData,
+  type OtpVerificationData,
+  type PhoneValidationData,
+} from "./schema";
 export * from "./types";
 
 // Utils

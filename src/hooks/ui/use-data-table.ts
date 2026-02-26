@@ -97,19 +97,15 @@ export function useDataTable<TData>({
       setRowSelection(newSelection);
 
       if (onSelectionChange) {
-        // We'll handle this in a useEffect to avoid circular dependency
-        setTimeout(() => {
-          const currentTable = table as any; // Type assertion to avoid circular dependency
-          if (currentTable?.getFilteredRowModel) {
-            const selectedRows = currentTable
-              .getFilteredRowModel()
-              .rows.filter((row: any) => newSelection[row.id]);
-            onSelectionChange(selectedRows.map((row: any) => row.original));
-          }
-        }, 0);
+        const selectedRows = Object.entries(newSelection)
+          .filter(([, isSelected]) => isSelected)
+          .map(([rowId]) => memoizedData[Number(rowId)])
+          .filter((row): row is TData => row !== undefined);
+
+        onSelectionChange(selectedRows);
       }
     },
-    [rowSelection, onSelectionChange, table],
+    [rowSelection, onSelectionChange, memoizedData],
   );
 
   // Handle row clicks

@@ -11,10 +11,14 @@ import type { EventType } from "./types";
  */
 export const isDNTEnabled = (): boolean => {
   if (typeof window === "undefined") return false;
+  const windowWithDnt = window as Window & { doNotTrack?: string };
+  const navigatorWithMsDnt = navigator as Navigator & {
+    msDoNotTrack?: string;
+  };
   return (
     navigator.doNotTrack === "1" ||
-    window.doNotTrack === "1" ||
-    navigator.msDoNotTrack === "1"
+    windowWithDnt.doNotTrack === "1" ||
+    navigatorWithMsDnt.msDoNotTrack === "1"
   );
 };
 

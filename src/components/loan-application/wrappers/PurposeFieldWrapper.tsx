@@ -12,9 +12,14 @@ type PurposeFieldValue = string;
 export const PurposeFieldWrapper: React.FC<
   FieldComponentProps<PurposeFieldValue>
 > = ({ field, value, onChange, error, disabled }) => {
+  const fieldOptions = (field.options ?? {}) as {
+    options?: ISelectBoxOption[];
+    placeholder?: string;
+  };
+
   // Get options from field config or use empty array
-  const options = (field.options?.options as ISelectBoxOption[]) ?? [];
-  const placeholder = (field.options?.placeholder as string) ?? "Chọn mục đích";
+  const options = fieldOptions.options ?? [];
+  const placeholder = fieldOptions.placeholder ?? "Chọn mục đích";
 
   return (
     <PurposeField

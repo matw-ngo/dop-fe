@@ -286,7 +286,18 @@ export const getPhoneMetadata = (phoneNumber: string) => {
 /**
  * Phone validation presets for different use cases
  */
-export const PHONE_VALIDATION_PRESETS = {
+type PhoneValidationPreset = {
+  allowPartial: boolean;
+  minLength: number;
+  maxLength: number;
+  requireVietnamese: boolean;
+  requireKnownTelco?: boolean;
+};
+
+export const PHONE_VALIDATION_PRESETS: Record<
+  "LOOSE" | "STANDARD" | "STRICT",
+  PhoneValidationPreset
+> = {
   LOOSE: {
     allowPartial: true,
     minLength: 3,

@@ -210,7 +210,7 @@ export const filtersToSearchParams = (
 export const useCreditCardsUrlInit = (
   store: Pick<
     CreditCardsStore,
-    "setFilters" | "setSortBy" | "setCurrentPage" | "setSearchQuery"
+    "setFilters" | "setSortBy" | "setPagination" | "setSearchQuery"
   >,
 ) => {
   const searchParams = useSearchParams();
@@ -233,7 +233,7 @@ export const useCreditCardsUrlInit = (
     // Initialize page from URL
     const urlPage = searchParams.get("page");
     if (urlPage) {
-      store.setCurrentPage(parseInt(urlPage, 10));
+      store.setPagination({ page: parseInt(urlPage, 10) });
     }
 
     // Initialize search query from URL
@@ -243,8 +243,8 @@ export const useCreditCardsUrlInit = (
     }
   }, [
     searchParams,
-    store.setCurrentPage,
     store.setFilters,
+    store.setPagination,
     store.setSearchQuery,
     store.setSortBy,
   ]); // Removed 'store' from dependencies - Zustand store methods are stable

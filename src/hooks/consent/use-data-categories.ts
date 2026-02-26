@@ -23,17 +23,17 @@ export const useDataCategories = ({
 }: UseDataCategoriesOptions = {}): UseDataCategoriesReturn => {
   const queryKey = ["data-categories", consentPurposeId] as const;
 
-  const { data, isLoading, error, refetch, isRefetching } = useQuery({
+  const { data, isLoading, error, refetch, isRefetching } = useQuery<
+    DataCategory[]
+  >({
     queryKey,
     queryFn: async () => {
-      // Call /data-category endpoint to get all available data categories
-      // Spec: searchDataCategories returns DataCategoryListResponse { categories: DataCategory[] }
       const result = await consentClient.GET("/data-category", {
         params: {
           query: {
             page: 1,
             page_size: 100,
-          } as any,
+          },
         },
       });
 
@@ -44,7 +44,7 @@ export const useDataCategories = ({
   });
 
   return {
-    data: data as unknown as DataCategory[],
+    data,
     isLoading,
     error: error || null,
     refetch,

@@ -135,6 +135,14 @@ const SavingsCalculator: React.FC = () => {
   const [banks, setBanks] = useState<VietnameseBank[]>([]);
   const [bestRates, setBestRates] = useState<any[]>([]);
 
+  // Calculate effective rate
+  const calculateEffectiveRate = (
+    nominalRate: number,
+    frequency: number = 12,
+  ): number => {
+    return ((1 + nominalRate / 100 / frequency) ** frequency - 1) * 100;
+  };
+
   // Input change handler
   const handleInputChange = useCallback(
     (field: keyof SavingsFormData, value: any) => {
@@ -209,14 +217,6 @@ const SavingsCalculator: React.FC = () => {
       .sort((a, b) => b.effectiveRate - a.effectiveRate);
     setBestRates(rates);
   }, [formData.termInMonths, calculateEffectiveRate]);
-
-  // Calculate effective rate
-  const calculateEffectiveRate = (
-    nominalRate: number,
-    frequency: number = 12,
-  ): number => {
-    return ((1 + nominalRate / 100 / frequency) ** frequency - 1) * 100;
-  };
 
   // Calculate savings
   const calculateSavings = useCallback(async () => {

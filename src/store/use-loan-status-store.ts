@@ -311,6 +311,9 @@ interface LoanStatusTrackingStoreActions {
   /** Connect to real-time updates */
   connectRealTime: (applicationId: string) => void;
 
+  /** Connect to SSE updates */
+  connectSSE: (applicationId: string) => void;
+
   /** Disconnect from real-time updates */
   disconnectRealTime: () => void;
 
@@ -633,12 +636,17 @@ export const useLoanStatusTrackingStore = create<LoanStatusTrackingStore>()(
               sentAt: new Date().toISOString(),
               sender: {
                 id: "current-user",
-                name: "Bạn",
+                initials: "B",
                 role: "customer",
               },
               hasAttachments: false,
               priority: message.priority || "normal",
               status: "sent",
+              securityMetadata: {
+                dataClassification: "restricted",
+                lastAudit: new Date().toISOString(),
+                complianceFlags: [],
+              },
             };
 
             get().addCommunication(newCommunication);

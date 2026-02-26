@@ -147,7 +147,7 @@ export function useStepValidation(flowData: MappedFlow | undefined): boolean {
     return flowData.steps.every((step) => {
       return (
         step.id &&
-        step.title &&
+        step.page &&
         step.fields &&
         Object.keys(step.fields).length > 0
       );

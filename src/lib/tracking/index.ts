@@ -3,6 +3,21 @@
  * Provides privacy-compliant user tracking capabilities
  */
 
+import {
+  trackEvent,
+  trackGeneric,
+  trackLoanCalculator,
+  trackSalaryCalculator,
+  trackSavingsCalculator,
+} from "./events";
+import { hasUserConsent, isDNTEnabled, setUserConsent } from "./privacy";
+import {
+  endSession,
+  initializeSession,
+  isSessionValid,
+  updateLastActivity,
+} from "./session";
+
 // Export configuration
 export {
   DEFAULT_TRACKING_CONFIG,

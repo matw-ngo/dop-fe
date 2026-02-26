@@ -19,7 +19,6 @@ export function generateFieldsForStep(
         // Build the field with proper configuration
         const fieldConfig = builder({
           required: config.required,
-          disabled: config.disabled || false,
         });
 
         fields.push(fieldConfig);

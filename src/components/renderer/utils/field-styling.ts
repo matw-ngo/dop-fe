@@ -119,9 +119,9 @@ export function combineFieldClasses(
  * Generates animation CSS classes from animation configuration
  */
 export function generateAnimationClasses(animation?: {
-  type?: "fade" | "slide" | "scale" | "bounce";
-  delay?: number;
-  duration?: number;
+  type?: string;
+  delay?: number | string;
+  duration?: number | string;
 }): string {
   if (!animation?.type) return "";
 
@@ -132,12 +132,12 @@ export function generateAnimationClasses(animation?: {
 
   // Animation delay if specified
   if (animation.delay) {
-    classes.push(`animation-delay-${animation.delay}ms`);
+    classes.push(`animation-delay-${Number(animation.delay)}ms`);
   }
 
   // Animation duration if specified
   if (animation.duration) {
-    classes.push(`animation-duration-${animation.duration}ms`);
+    classes.push(`animation-duration-${Number(animation.duration)}ms`);
   }
 
   return classes.join(" ");

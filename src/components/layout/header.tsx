@@ -26,6 +26,7 @@ interface NavItem {
 }
 
 interface HeaderProps {
+  company?: string;
   configOverride?: NavbarConfig;
 }
 
@@ -278,3 +279,5 @@ export function Header({ configOverride }: HeaderProps) {
     </header>
   );
 }
+
+export default Header;

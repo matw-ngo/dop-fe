@@ -6,7 +6,7 @@
  */
 
 import { http } from "msw";
-import { mswStore } from "@/mocks/store";
+import { mswStore } from "../../../mocks/store";
 
 const BASE_URL = "*/consent";
 
@@ -36,23 +36,6 @@ const createMockConsent = (overrides?: Record<string, unknown>) => ({
   created_at: new Date().toISOString(),
   updated_at: new Date().toISOString(),
   ...overrides,
-});
-
-/**
- * Generate a mock consent list response
- */
-const createMockConsentList = (count: number = 5) => ({
-  consents: Array.from({ length: count }, (_, i) =>
-    createMockConsent({
-      id: `550e8400-e29b-41d4-a716-44665544000${i}`,
-      action: ["grant", "revoke", "update"][i % 3],
-    }),
-  ),
-  pagination: {
-    page: 1,
-    page_size: 10,
-    total_count: count,
-  },
 });
 
 /**
@@ -220,7 +203,7 @@ export const consentHandlers = [
           status: 404,
         });
       default: {
-        let deletedConsent;
+        let deletedConsent: Record<string, unknown> | undefined;
         mswStore.updateMockData((data) => {
           deletedConsent =
             data.consents.find((c) => c.id === id) ||
@@ -257,7 +240,7 @@ export const consentHandlers = [
         );
       default: {
         const body = await request.json();
-        let updatedConsent;
+        let updatedConsent: Record<string, unknown> | undefined;
         mswStore.updateMockData((data) => {
           const existing =
             data.consents.find((c) => c.id === id) ||

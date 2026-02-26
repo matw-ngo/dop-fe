@@ -611,6 +611,3 @@ export function parseCacheKey(cacheKey: string): {
     key: parts.slice(2).join(":") || "unknown",
   };
 }
-
-// Export types for external use
-export type { CacheEntry, CacheOptions, CacheStats, CacheConfig };

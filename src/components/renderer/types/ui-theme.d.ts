@@ -229,31 +229,57 @@ export interface ThemeContextValue {
 
 // Component variant types
 export interface ComponentVariant {
-  size?: "xs" | "sm" | "md" | "lg" | "xl";
-  color?: "primary" | "secondary" | "success" | "warning" | "error" | "info";
-  variant?: "solid" | "outline" | "ghost" | "link";
-  state?: "default" | "hover" | "active" | "disabled" | "focus";
+  size?: "xs" | "sm" | "md" | "lg" | "xl" | string;
+  color?:
+    | "primary"
+    | "secondary"
+    | "success"
+    | "warning"
+    | "error"
+    | "info"
+    | string;
+  variant?: "solid" | "outline" | "ghost" | "link" | string;
+  state?: "default" | "hover" | "active" | "disabled" | "focus" | string;
+  animation?: AnimationVariant;
+  responsive?: {
+    width?: ResponsiveValue<string | number>;
+    height?: ResponsiveValue<string | number>;
+    display?: ResponsiveValue<string>;
+    order?: ResponsiveValue<string | number>;
+  };
+  layout?: LayoutProps;
+  style?: React.CSSProperties;
+  [key: string]: any;
 }
 
 // Animation variant types
 export interface AnimationVariant {
-  type?: "fade" | "slide" | "scale" | "bounce" | "flip";
-  direction?: "up" | "down" | "left" | "right";
-  duration?: keyof ThemeAnimations["duration"];
-  delay?: keyof ThemeAnimations["duration"];
-  easing?: keyof ThemeAnimations["easing"];
+  type?: "fade" | "slide" | "scale" | "bounce" | "flip" | string;
+  direction?: "up" | "down" | "left" | "right" | "center" | string;
+  duration?: keyof ThemeAnimations["duration"] | string | number;
+  delay?: keyof ThemeAnimations["duration"] | string | number;
+  easing?: keyof ThemeAnimations["easing"] | string;
+  [key: string]: any;
 }
 
 // Layout types
 export interface LayoutProps {
-  display?: "block" | "flex" | "grid" | "hidden";
-  direction?: "row" | "col" | "row-reverse" | "col-reverse";
-  align?: "start" | "center" | "end" | "stretch" | "baseline";
-  justify?: "start" | "center" | "end" | "between" | "around" | "evenly";
-  wrap?: "wrap" | "nowrap" | "wrap-reverse";
-  gap?: keyof ThemeSpacing;
-  padding?: keyof ThemeSpacing;
-  margin?: keyof ThemeSpacing;
+  display?: "block" | "flex" | "grid" | "hidden" | string;
+  direction?: "row" | "col" | "row-reverse" | "col-reverse" | string;
+  align?: "start" | "center" | "end" | "stretch" | "baseline" | string;
+  justify?:
+    | "start"
+    | "center"
+    | "end"
+    | "between"
+    | "around"
+    | "evenly"
+    | string;
+  wrap?: "wrap" | "nowrap" | "wrap-reverse" | string;
+  gap?: keyof ThemeSpacing | string | number;
+  padding?: keyof ThemeSpacing | string | number;
+  margin?: keyof ThemeSpacing | string | number;
+  [key: string]: any;
 }
 
 // Responsive value type

@@ -34,15 +34,19 @@ async function getEkycConfig(leadId: string): Promise<EkycConfigResponseBody> {
 
   if (error) {
     const errorMessage =
-      typeof error === "object" && error !== null && "message" in error
-        ? (error as { message?: string }).message || "Unknown error"
-        : "Unknown error";
+      typeof error === "string"
+        ? error
+        : typeof error === "object" && error !== null && "message" in error
+          ? ((error as { message?: string }).message ?? "Unknown error")
+          : "Unknown error";
     logConfigFetchError(leadId, errorMessage);
     throw new Error(errorMessage);
   }
   if (!data) {
-    logConfigFetchError(leadId, "No eKYC config returned");
-    throw new Error("No eKYC config returned");
+    const errorMessage =
+      error === null ? "Unknown error" : "No eKYC config returned";
+    logConfigFetchError(leadId, errorMessage);
+    throw new Error(errorMessage);
   }
 
   logConfigFetchSuccess(leadId, duration);

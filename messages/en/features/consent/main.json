@@ -20,6 +20,9 @@
     "agreeAll": {
       "label": "Agree to all terms"
     },
+    "reject": {
+      "button": "Reject"
+    },
     "grant": {
       "button": "Grant Consent",
       "loading": "Granting consent..."

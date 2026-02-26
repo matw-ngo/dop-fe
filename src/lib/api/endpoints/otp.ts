@@ -56,6 +56,9 @@ export interface VietnameseOTPResponse {
   data?: {
     requestId: string;
     sessionId?: string;
+    status?: "active" | "inactive" | "expired" | "verified";
+    verified?: boolean;
+    isLocked?: boolean;
     telco: {
       code: string;
       name: string;
@@ -449,9 +452,9 @@ export const otpApi = {
     sessionId?: string,
   ): Promise<VietnameseOTPResponse> => {
     try {
-      const response = await dopClient.GET("/flows/{domain}", {
+      const response = await dopClient.GET("/flows/{tenant}", {
         params: {
-          path: { domain: requestId },
+          path: { tenant: requestId },
         },
         headers: {
           "X-Session-ID": sessionId || "",
@@ -466,9 +469,7 @@ export const otpApi = {
               requestId,
               sessionId,
               status:
-                response.data.flow_status === "FLOW_STATUS_ACTIVE"
-                  ? "active"
-                  : "inactive",
+                response.data.flow_status === "active" ? "active" : "inactive",
               telco: {
                 code: "SYSTEM",
                 name: "System Check",

@@ -1,4 +1,4 @@
-import type { ThemeConfig } from "../types";
+import type { ThemeConfig } from "./types";
 
 // Theme cache to store loaded themes
 interface ThemeCache {

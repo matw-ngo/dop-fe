@@ -6,7 +6,7 @@
  */
 
 import { http } from "msw";
-import { mswStore } from "@/mocks/store";
+import { mswStore } from "../../../mocks/store";
 
 const BASE_URL = "*";
 
@@ -264,7 +264,6 @@ export const dopHandlers = [
           );
         default: {
           const body = await request.json();
-          let currentLead;
 
           mswStore.updateMockData((data) => {
             const existing = data.leads.find((l) => l.id === id) || { id };
@@ -272,7 +271,6 @@ export const dopHandlers = [
               ...existing,
               ...(body && typeof body === "object" ? body : {}),
             };
-            currentLead = updated;
 
             let exists = false;
             const nextLeads = data.leads.map((l) => {
@@ -398,13 +396,16 @@ export const dopHandlers = [
         );
       default: {
         const body = await request.json();
+        const target =
+          body && typeof body === "object" && "target" in body
+            ? ((body as { target?: string }).target ?? null)
+            : null;
         return mswJson({
           success: true,
           message: "OTP resent successfully",
           data: {
             lead_id: id,
-            target:
-              body && typeof body === "object" ? (body as any).target : null,
+            target,
             next_resend_available: new Date(Date.now() + 60000).toISOString(),
           },
         });

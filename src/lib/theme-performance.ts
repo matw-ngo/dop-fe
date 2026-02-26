@@ -90,9 +90,9 @@ const DEFAULT_CONFIG: PerformanceConfig = {
 
 // Performance monitoring state
 class PerformanceMonitor {
-  private config: PerformanceConfig;
+  public config: PerformanceConfig;
   private metrics: PerformanceMetrics;
-  private performanceMarks: Map<string, number> = new Map();
+  public performanceMarks: Map<string, number> = new Map();
   private cacheStats = {
     hits: 0,
     misses: 0,

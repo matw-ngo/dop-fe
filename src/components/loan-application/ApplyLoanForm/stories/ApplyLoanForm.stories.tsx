@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { fn } from "@storybook/test";
+import React from "react";
 import { AmountField } from "../components/AmountField";
 import { OtpVerificationModal } from "../components/OtpVerificationModal";
 import { PeriodField } from "../components/PeriodField";
@@ -205,6 +206,7 @@ export const CompleteForm: StoryObj = {
     const [amount, setAmount] = React.useState(20);
     const [period, setPeriod] = React.useState(12);
     const [purpose, setPurpose] = React.useState("debt-consolidation");
+    const [phone] = React.useState("0912345678");
     const [agreeStatus, setAgreeStatus] = React.useState("");
     const [showPhoneModal, setShowPhoneModal] = React.useState(false);
     const [showOtpModal, setShowOtpModal] = React.useState(false);

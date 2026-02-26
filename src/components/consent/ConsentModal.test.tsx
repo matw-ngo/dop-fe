@@ -1,34 +1,95 @@
 /**
  * Consent Flow Test Suite
  *
- * Example tests showing how to test consent flow with MSW
+ * Unit tests for consent modal interactions
  * Run with: pnpm test
  */
 
-import { describe, it, expect, beforeAll, afterAll, afterEach, vi } from 'vitest';
-import { server } from '../../__tests__/setup/global-setup';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import '@testing-library/jest-dom'; // For toBeInTheDocument
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ConsentModal } from './ConsentModal';
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import "@testing-library/jest-dom";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { ConsentModal } from "./ConsentModal";
 
-// Mock session context
-const mockSessionId = 'session-test-123';
+const { mockPost, mockPatch } = vi.hoisted(() => ({
+  mockPost: vi.fn(),
+  mockPatch: vi.fn(),
+}));
 
-describe('Consent Flow', () => {
-  // MSW server setup
-  beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
-  afterAll(() => server.close());
-  afterEach(() => server.resetHandlers());
+vi.mock("@/lib/api/services", () => ({
+  consentClient: {
+    POST: mockPost,
+    PATCH: mockPatch,
+    GET: vi.fn(),
+  },
+}));
 
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: { retry: false },
-      mutations: { retry: false },
+vi.mock("@/hooks/consent/use-consent-purpose", () => ({
+  useConsentPurpose: () => ({
+    data: {
+      id: "660e8400-e29b-41d4-a716-446655440006",
+      latest_version_id: "version-1",
+      latest_version: 1,
+      latest_content: "Mock consent content",
     },
+    isLoading: false,
+  }),
+}));
+
+vi.mock("@/hooks/consent/use-user-consent", () => ({
+  useUserConsent: () => ({
+    data: null,
+    isLoading: false,
+  }),
+}));
+
+vi.mock("@/hooks/consent/use-data-categories", () => ({
+  useDataCategories: () => ({
+    data: [],
+    isLoading: false,
+  }),
+}));
+
+vi.mock("@/hooks/consent/use-consent-logs", () => ({
+  useConsentLogs: () => ({
+    data: { consent_logs: [] },
+    isLoading: false,
+  }),
+}));
+
+vi.mock("@/hooks/consent/use-consent-session", () => ({
+  useConsentSession: () => "session-test-123",
+}));
+
+vi.mock("@/store/use-auth-store", () => ({
+  useAuthStore: () => ({
+    user: { id: "lead-1" },
+  }),
+}));
+
+describe("Consent Flow", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+
+    mockPost.mockImplementation((path: string) => {
+      if (path === "/consent") {
+        return Promise.resolve({ data: { id: "consent-1" } });
+      }
+
+      return Promise.resolve({ data: { id: "log-1" } });
+    });
+
+    mockPatch.mockResolvedValue({ data: {} });
   });
 
   const renderWithProviders = (component: React.ReactElement) => {
+    const queryClient = new QueryClient({
+      defaultOptions: {
+        queries: { retry: false },
+        mutations: { retry: false },
+      },
+    });
+
     return render(
       <QueryClientProvider client={queryClient}>
         {component}
@@ -36,27 +97,26 @@ describe('Consent Flow', () => {
     );
   };
 
-  it('shows consent modal when no consent exists', async () => {
+  it("shows consent modal when no consent exists", async () => {
     renderWithProviders(
       <ConsentModal
         open={true}
         setOpen={() => {}}
         onSuccess={() => {}}
         stepData={{
-          consent_purpose_id: '660e8400-e29b-41d4-a716-446655440006',
-          page: '/index',
+          consent_purpose_id: "660e8400-e29b-41d4-a716-446655440006",
+          page: "/index",
         }}
       />
     );
 
-    // MSW mocks will return consent version data
-    // Modal should be visible with consent content
     await waitFor(() => {
-      expect(screen.getByText(/consent.*terms/i)).toBeInTheDocument();
+      expect(screen.getByText("modal.title")).toBeInTheDocument();
+      expect(screen.getByText("form.title")).toBeInTheDocument();
     });
   });
 
-  it('handles consent grant successfully', async () => {
+  it("handles consent grant successfully", async () => {
     const onSuccess = vi.fn();
 
     renderWithProviders(
@@ -65,23 +125,23 @@ describe('Consent Flow', () => {
         setOpen={() => {}}
         onSuccess={onSuccess}
         stepData={{
-          consent_purpose_id: '660e8400-e29b-41d4-a716-446655440006',
-          page: '/index',
+          consent_purpose_id: "660e8400-e29b-41d4-a716-446655440006",
+          page: "/index",
         }}
       />
     );
 
-    // Click agree button
-    const agreeButton = screen.getByRole('button', { name: /agree/i });
+    const agreeButton = await screen.findByRole("button", {
+      name: "form.grant.button",
+    });
     fireEvent.click(agreeButton);
 
-    // MSW mocks will handle the consent creation
     await waitFor(() => {
-      expect(onSuccess).toHaveBeenCalled();
+      expect(onSuccess).toHaveBeenCalledWith("consent-1");
     });
   });
 
-  it('handles consent rejection', async () => {
+  it("handles consent rejection", async () => {
     const setOpen = vi.fn();
 
     renderWithProviders(
@@ -90,17 +150,17 @@ describe('Consent Flow', () => {
         setOpen={setOpen}
         onSuccess={() => {}}
         stepData={{
-          consent_purpose_id: '660e8400-e29b-41d4-a716-446655440006',
-          page: '/index',
+          consent_purpose_id: "660e8400-e29b-41d4-a716-446655440006",
+          page: "/index",
         }}
       />
     );
 
-    // Click reject button
-    const rejectButton = screen.getByRole('button', { name: /reject/i });
+    const rejectButton = await screen.findByRole("button", {
+      name: "form.reject.button",
+    });
     fireEvent.click(rejectButton);
 
-    // Modal should close
     expect(setOpen).toHaveBeenCalledWith(false);
   });
 });

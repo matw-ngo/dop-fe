@@ -15,21 +15,15 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { renderHook, waitFor } from "@testing-library/react";
 import React from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import apiClient from "@/lib/api/client";
+import { consentClient } from "@/lib/api/services";
 import { useConsentLogs } from "../use-consent-logs";
-
-// Mock API client at module level
-vi.mock("@/lib/api/client", () => ({
-  default: {
-    GET: vi.fn(),
-  },
-}));
 
 // Mock TanStack Query to use actual implementation in tests
 vi.unmock("@tanstack/react-query");
 
 describe("useConsentLogs", () => {
   let queryClient: QueryClient;
+  let mockGet: ReturnType<typeof vi.spyOn>;
 
   const createWrapper = () => {
     queryClient = new QueryClient({
@@ -50,10 +44,11 @@ describe("useConsentLogs", () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+    mockGet = vi.spyOn(consentClient, "GET");
   });
 
   /**
-   * Test: Fetches consent logs with leadId and pagination
+   * Test: Fetches consent logs with consentId and pagination
    */
   it("should fetch consent logs successfully", async () => {
     const mockResponse = {
@@ -84,25 +79,24 @@ describe("useConsentLogs", () => {
       },
     };
 
-    (apiClient.GET as any).mockResolvedValue({
+    mockGet.mockResolvedValue({
       data: mockResponse,
       error: undefined,
     });
 
     const wrapper = createWrapper();
-    const { result } = renderHook(
-      () => useConsentLogs({ leadId: "lead-123" }),
-      { wrapper },
-    );
+    const { result } = renderHook(() => useConsentLogs({ consentId: "c-1" }), {
+      wrapper,
+    });
 
     await waitFor(() => expect(result.current.isLoading).toBe(false));
 
     expect(result.current.data).toEqual(mockResponse);
     expect(result.current.error).toBeNull();
-    expect(apiClient.GET).toHaveBeenCalledWith("/consent-logs" as any, {
+    expect(mockGet).toHaveBeenCalledWith("/consent-log", {
       params: {
         query: {
-          lead_id: "lead-123",
+          consent_id: "c-1",
           page: 1,
           page_size: 10,
         },
@@ -151,7 +145,7 @@ describe("useConsentLogs", () => {
       },
     };
 
-    (apiClient.GET as any).mockResolvedValue({
+    mockGet.mockResolvedValue({
       data: mockResponse,
       error: undefined,
     });
@@ -160,7 +154,7 @@ describe("useConsentLogs", () => {
     const { result } = renderHook(
       () =>
         useConsentLogs({
-          leadId: "lead-456",
+          consentId: "c-2",
           page: 1,
           pageSize: 10,
         }),
@@ -202,7 +196,7 @@ describe("useConsentLogs", () => {
       },
     };
 
-    (apiClient.GET as any).mockResolvedValue({
+    mockGet.mockResolvedValue({
       data: mockResponse,
       error: undefined,
     });
@@ -211,7 +205,7 @@ describe("useConsentLogs", () => {
     const { result } = renderHook(
       () =>
         useConsentLogs({
-          leadId: "lead-789",
+          consentId: "c-3",
           page: 2,
           pageSize: 20,
         }),
@@ -227,10 +221,10 @@ describe("useConsentLogs", () => {
       total_count: 45,
     });
     expect(result.current.error).toBeNull();
-    expect(apiClient.GET).toHaveBeenCalledWith("/consent-logs" as any, {
+    expect(mockGet).toHaveBeenCalledWith("/consent-log", {
       params: {
         query: {
-          lead_id: "lead-789",
+          consent_id: "c-3",
           page: 2,
           page_size: 20,
         },
@@ -251,14 +245,14 @@ describe("useConsentLogs", () => {
       },
     };
 
-    (apiClient.GET as any).mockResolvedValue({
+    mockGet.mockResolvedValue({
       data: mockResponse,
       error: undefined,
     });
 
     const wrapper = createWrapper();
     const { result } = renderHook(
-      () => useConsentLogs({ leadId: "lead-empty" }),
+      () => useConsentLogs({ consentId: "c-empty" }),
       { wrapper },
     );
 
@@ -268,7 +262,7 @@ describe("useConsentLogs", () => {
     expect(result.current.data?.consent_logs).toEqual([]);
     expect(result.current.data?.consent_logs).not.toBeNull();
     expect(result.current.error).toBeNull();
-    expect(apiClient.GET).toHaveBeenCalled();
+    expect(mockGet).toHaveBeenCalled();
   });
 
   /**
@@ -294,18 +288,19 @@ describe("useConsentLogs", () => {
       },
     };
 
-    let resolveFetch: (value: any) => void;
-    (apiClient.GET as any).mockReturnValue(
+    let resolveFetch:
+      | ((value: { data: unknown; error: unknown }) => void)
+      | undefined;
+    mockGet.mockReturnValue(
       new Promise((resolve) => {
         resolveFetch = resolve;
       }),
     );
 
     const wrapper = createWrapper();
-    const { result } = renderHook(
-      () => useConsentLogs({ leadId: "lead-loading" }),
-      { wrapper },
-    );
+    const { result } = renderHook(() => useConsentLogs({ consentId: "c-4" }), {
+      wrapper,
+    });
 
     // Should be loading initially
     expect(result.current.isLoading).toBe(true);
@@ -325,11 +320,11 @@ describe("useConsentLogs", () => {
   it("should handle API error and set error state", async () => {
     const mockError = new Error("Failed to fetch consent logs");
 
-    (apiClient.GET as any).mockRejectedValue(mockError);
+    mockGet.mockRejectedValue(mockError);
 
     const wrapper = createWrapper();
     const { result } = renderHook(
-      () => useConsentLogs({ leadId: "lead-error" }),
+      () => useConsentLogs({ consentId: "c-error" }),
       { wrapper },
     );
 
@@ -337,7 +332,7 @@ describe("useConsentLogs", () => {
 
     expect(result.current.data).toBeUndefined();
     expect(result.current.error).toBe(mockError);
-    expect(apiClient.GET).toHaveBeenCalled();
+    expect(mockGet).toHaveBeenCalled();
   });
 
   /**
@@ -346,11 +341,11 @@ describe("useConsentLogs", () => {
   it("should handle network error (rejected promise)", async () => {
     const mockError = new Error("Network error");
 
-    (apiClient.GET as any).mockRejectedValue(mockError);
+    mockGet.mockRejectedValue(mockError);
 
     const wrapper = createWrapper();
     const { result } = renderHook(
-      () => useConsentLogs({ leadId: "lead-network" }),
+      () => useConsentLogs({ consentId: "c-network" }),
       { wrapper },
     );
 
@@ -358,7 +353,7 @@ describe("useConsentLogs", () => {
 
     expect(result.current.data).toBeUndefined();
     expect(result.current.error).toBe(mockError);
-    expect(apiClient.GET).toHaveBeenCalled();
+    expect(mockGet).toHaveBeenCalled();
   });
 
   /**
@@ -369,7 +364,7 @@ describe("useConsentLogs", () => {
     const { result } = renderHook(
       () =>
         useConsentLogs({
-          leadId: "lead-disabled",
+          consentId: "c-disabled",
           enabled: false,
         }),
       { wrapper },
@@ -377,18 +372,18 @@ describe("useConsentLogs", () => {
 
     // Should not be loading since enabled=false
     expect(result.current.isLoading).toBe(false);
-    expect(apiClient.GET).not.toHaveBeenCalled();
+    expect(mockGet).not.toHaveBeenCalled();
   });
 
   /**
-   * Test: Does not fetch when leadId is not provided
+   * Test: Does not fetch when consentId is not provided
    */
-  it("should not fetch when leadId is not provided", () => {
+  it("should not fetch when consentId is not provided", () => {
     const wrapper = createWrapper();
     const { result } = renderHook(() => useConsentLogs(), { wrapper });
 
-    // Should not be loading since leadId is required
+    // Should not be loading since consentId is required
     expect(result.current.isLoading).toBe(false);
-    expect(apiClient.GET).not.toHaveBeenCalled();
+    expect(mockGet).not.toHaveBeenCalled();
   });
 });

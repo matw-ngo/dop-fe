@@ -1,6 +1,7 @@
 // Vietnamese Banking Compliance Module
 // Comprehensive validation for State Bank of Vietnam (SBV) regulations
 
+import { VietnameseLoanCalculator } from "./interest-calculations";
 import type {
   LoanCalculationParams,
   LoanCalculationResult,
@@ -161,6 +162,7 @@ export interface ComplianceCheck {
   category:
     | "interest_rate"
     | "disclosure"
+    | "regulatory"
     | "consumer_protection"
     | "risk_management"
     | "eligibility";
@@ -899,11 +901,12 @@ export class VietnameseComplianceEngine {
     result: LoanCalculationResult,
   ): ComplianceCheck {
     const hasFees = result.totalFees > 0;
-    const feesAreCalculated =
+    const feesAreCalculated = Boolean(
       hasFees &&
-      (params.processingFee ||
-        params.processingFeeFixed ||
-        params.insuranceFee);
+        (params.processingFee ||
+          params.processingFeeFixed ||
+          params.insuranceFee),
+    );
 
     const isProperlyDisclosed = !hasFees || feesAreCalculated;
 

@@ -4,24 +4,34 @@ import { afterAll, afterEach, beforeAll, vi } from "vitest";
 
 // Setup MSW for testing
 async function setupMSW() {
-  if (typeof window !== "undefined") {
-    const { setupWorker } = await import("msw/browser");
-    const { default: consentHandlers } = await import(
-      "./src/__tests__/msw/handlers/consent"
-    );
-    const { default: dopHandlers } = await import(
-      "./src/__tests__/msw/handlers/dop"
-    );
+  const { default: consentHandlers } = await import(
+    "./src/__tests__/msw/handlers/consent"
+  );
+  const { default: dopHandlers } = await import(
+    "./src/__tests__/msw/handlers/dop"
+  );
+  const handlers = [...consentHandlers, ...dopHandlers];
 
-    const worker = setupWorker(...consentHandlers, ...dopHandlers);
+  const canUseBrowserWorker =
+    typeof window !== "undefined" &&
+    typeof navigator !== "undefined" &&
+    "serviceWorker" in navigator;
+
+  if (canUseBrowserWorker) {
+    const { setupWorker } = await import("msw/browser");
+    const worker = setupWorker(...handlers);
     await worker.start({
       onUnhandledRequest: "bypass",
       quiet: true,
     });
-
-    // Store worker for cleanup
     (globalThis as any).__MSW_WORKER__ = worker;
+    return;
   }
+
+  const { setupServer } = await import("msw/node");
+  const server = setupServer(...handlers);
+  server.listen({ onUnhandledRequest: "bypass" });
+  (globalThis as any).__MSW_SERVER__ = server;
 }
 
 // Initialize MSW before tests
@@ -34,6 +44,11 @@ afterAll(async () => {
   const worker = (globalThis as any).__MSW_WORKER__;
   if (worker) {
     await worker.stop();
+  }
+
+  const server = (globalThis as any).__MSW_SERVER__;
+  if (server) {
+    server.close();
   }
 });
 
@@ -124,28 +139,6 @@ vi.mock("next-themes", () => {
       resolvedTheme: "light",
     }),
     ThemeProvider: ({ children }: { children: React.ReactNode }) =>
-      React.createElement("div", null, children),
-  };
-});
-
-// Mock @tanstack/react-query
-vi.mock("@tanstack/react-query", () => {
-  const React = require("react");
-  return {
-    useQuery: () => ({
-      data: undefined,
-      isLoading: false,
-      error: null,
-      refetch: vi.fn(),
-    }),
-    useMutation: () => ({
-      mutate: vi.fn(),
-      mutateAsync: vi.fn(),
-      isLoading: false,
-      error: null,
-    }),
-    QueryClient: vi.fn(),
-    QueryClientProvider: ({ children }: { children: React.ReactNode }) =>
       React.createElement("div", null, children),
   };
 });

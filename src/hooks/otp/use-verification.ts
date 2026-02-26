@@ -157,6 +157,24 @@ export const useOTPVerification = (options: UseOTPVerificationOptions = {}) => {
     onSessionExpiry,
   ]);
 
+  // Start resend cooldown timer
+  const startResendCooldown = useCallback(() => {
+    const cooldownDuration = state.resendCooldown;
+    let remaining = cooldownDuration;
+
+    const cooldownTimer = setInterval(() => {
+      remaining--;
+      setState((prev) => ({ ...prev, resendCooldown: remaining }));
+
+      if (remaining <= 0) {
+        clearInterval(cooldownTimer);
+        setState((prev) => ({ ...prev, canResend: true }));
+      }
+    }, 1000);
+
+    return cooldownTimer;
+  }, [state.resendCooldown]);
+
   // Request OTP
   const requestOTP = useCallback(
     async (phoneNumber: string) => {
@@ -428,24 +446,6 @@ export const useOTPVerification = (options: UseOTPVerificationOptions = {}) => {
     onError, // Start resend cooldown timer
     startResendCooldown,
   ]);
-
-  // Start resend cooldown timer
-  const startResendCooldown = useCallback(() => {
-    const cooldownDuration = state.resendCooldown;
-    let remaining = cooldownDuration;
-
-    const cooldownTimer = setInterval(() => {
-      remaining--;
-      setState((prev) => ({ ...prev, resendCooldown: remaining }));
-
-      if (remaining <= 0) {
-        clearInterval(cooldownTimer);
-        setState((prev) => ({ ...prev, canResend: true }));
-      }
-    }, 1000);
-
-    return cooldownTimer;
-  }, [state.resendCooldown]);
 
   // Check OTP session status
   const checkOTPStatus = useCallback(async () => {

@@ -20,6 +20,9 @@
     "agreeAll": {
       "label": "Đồng ý tất cả các điều khoản"
     },
+    "reject": {
+      "button": "Từ chối"
+    },
     "grant": {
       "button": "Cấp Đồng thuận",
       "loading": "Đang cấp đồng thuận..."

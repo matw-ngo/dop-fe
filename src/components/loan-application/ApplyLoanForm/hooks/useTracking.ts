@@ -13,7 +13,7 @@ export function useTracking(): LoanApplicationTrackingEvents {
 
   // Track period change
   const inputPeriod = useCallback((period: number) => {
-    trackLoanApplication.inputPeriod?.(period);
+    void period;
   }, []);
 
   // Track purpose change
@@ -33,17 +33,21 @@ export function useTracking(): LoanApplicationTrackingEvents {
 
   // Track form submission
   const submitApplication = useCallback((data: LoanApplicationFormData) => {
-    trackLoanApplication.submitApplication?.(data);
+    trackLoanApplication.formSubmit?.({
+      amount: data.expected_amount,
+      purpose: data.loan_purpose,
+      phoneNumber: data.phone_number ?? "",
+    });
   }, []);
 
   // Track OTP verification success
   const otpVerified = useCallback(() => {
-    trackLoanApplication.otpVerified?.();
+    // Not currently emitted by tracking/events
   }, []);
 
   // Track OTP verification failure
   const otpFailed = useCallback((error: string) => {
-    trackLoanApplication.otpFailed?.(error);
+    void error;
   }, []);
 
   return {
@@ -52,6 +56,7 @@ export function useTracking(): LoanApplicationTrackingEvents {
     inputPurpose,
     inputPhoneNumber,
     phoneNumberValid,
+    formSubmit: submitApplication,
     submitApplication,
     otpVerified,
     otpFailed,

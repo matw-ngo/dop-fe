@@ -58,10 +58,10 @@ export const WithPreFilledValues: Story = {
 
     // Simulate user interactions
     const amountSlider = canvas.getByRole("slider", { name: /amount/i });
-    await userEvent.click(amountSlider, { clientX: 200 });
+    await userEvent.click(amountSlider);
 
     const periodSlider = canvas.getAllByRole("slider")[1];
-    await userEvent.click(periodSlider, { clientX: 200 });
+    await userEvent.click(periodSlider);
 
     const purposeSelect = canvas.getByRole("combobox");
     await userEvent.selectOptions(purposeSelect, "consumer_loan");
@@ -185,7 +185,7 @@ export const InteractWithSliders: Story = {
     // Test amount slider
     await step("Select loan amount", async () => {
       const amountSlider = canvas.getByRole("slider");
-      await userEvent.click(amountSlider, { clientX: 300 });
+      await userEvent.click(amountSlider);
 
       // Check if amount is displayed
       expect(canvas.getByText(/\d+\.000\.000đ/)).toBeInTheDocument();
@@ -194,7 +194,7 @@ export const InteractWithSliders: Story = {
     // Test period slider
     await step("Select loan period", async () => {
       const periodSlider = canvas.getAllByRole("slider")[1];
-      await userEvent.click(periodSlider, { clientX: 300 });
+      await userEvent.click(periodSlider);
 
       // Check if period is displayed
       expect(canvas.getByText(/\d+\stháng/)).toBeInTheDocument();

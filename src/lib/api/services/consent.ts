@@ -34,12 +34,15 @@ const getBaseUrl = (): string => {
   }
 };
 
+const ensureTrailingSlash = (url: string): string =>
+  url.endsWith("/") ? url : `${url}/`;
+
 /**
  * Consent API Client
  * Handles all Consent service endpoints with proper base URL configuration
  */
 export const consentClient = createClient<ConsentPaths>({
-  baseUrl: `${getBaseUrl()}consent/`,
+  baseUrl: `${ensureTrailingSlash(getBaseUrl())}consent/`,
 });
 
 // Apply middleware stack

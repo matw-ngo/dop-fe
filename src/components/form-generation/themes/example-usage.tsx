@@ -6,10 +6,10 @@
 
 "use client";
 
-import { legacyLoanThemeSimplified } from "./legacy-loan-simplified";
+import { legacyLoanTheme as legacyLoanThemeSimplified } from "./legacy-loan";
 import { FormThemeProvider } from "./ThemeProvider";
 import { createTheme, expandTheme } from "./theme-utils";
-import type { FormTheme as SimplifiedFormTheme } from "./types-simplified";
+import type { FormTheme as SimplifiedFormTheme } from "./types";
 
 // Example 1: Using the predefined simplified legacy loan theme
 export function ExampleWithLegacyTheme({
@@ -26,7 +26,7 @@ export function ExampleWithLegacyTheme({
 // Example 2: Creating a custom theme with only a few properties
 export function createCustomTheme() {
   // Only customize what you need
-  const partialTheme: Partial<SimplifiedFormTheme> = {
+  const partialTheme = {
     name: "my-custom",
     colors: {
       primary: "#3b82f6", // Blue

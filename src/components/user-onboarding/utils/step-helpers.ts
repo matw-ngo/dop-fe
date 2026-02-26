@@ -90,7 +90,7 @@ export function getStepMetadata(
     description: getStepDescription(step, t),
     icon: getStepIcon(step),
     category: category as any,
-    optional: step.optional || false,
+    optional: false,
     weight: calculateStepWeight(visibleFieldNames),
   };
 }
@@ -118,7 +118,7 @@ export function calculateStepWeight(fieldNames: string[]): number {
  */
 function hasMatchingFields(
   stepFields: string[],
-  patternFields: FieldType[],
+  patternFields: readonly FieldType[],
 ): boolean {
   // If step has no fields, don't match
   if (stepFields.length === 0) return false;
@@ -177,7 +177,7 @@ export function getStepNavigation(
   t: (key: string) => string,
 ) {
   return {
-    showSkip: step.optional || false,
+    showSkip: false,
     nextText: t("navigation.next"),
     previousText: t("navigation.previous"),
     skipText: t("navigation.skip"),
