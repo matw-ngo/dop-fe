@@ -14,11 +14,23 @@
     "title": "Grant Consent",
     "description": "Your information is protected under Vietnamese law",
     "dataCategories": "Data Categories",
+    "selection": {
+      "summary": "Selected {selected}/{total}",
+      "selectAll": "Select all",
+      "clearAll": "Clear all"
+    },
     "consentVersion": {
-      "label": "Consent Version"
+      "label": "Consent Version",
+      "short": "Version {version}",
+      "toggle": "View consent content"
     },
     "agreeAll": {
-      "label": "Agree to all terms"
+      "label": "I confirm and agree to process the selected data categories",
+      "helper": "You can review, search, and adjust categories before granting consent."
+    },
+    "validation": {
+      "selectCategory": "Please select at least one category.",
+      "confirmConsent": "Please confirm your consent before continuing."
     },
     "reject": {
       "button": "Reject"

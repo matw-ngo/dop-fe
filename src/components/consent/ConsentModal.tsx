@@ -3,7 +3,7 @@
 import { Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { type CSSProperties, memo, useEffect, useState } from "react";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
   Dialog,
   DialogContent,
@@ -12,7 +12,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { finzoneTheme } from "@/configs/themes/finzone-theme";
-import { useConsentLogs } from "@/hooks/consent/use-consent-logs";
 import { useConsentPurpose } from "@/hooks/consent/use-consent-purpose";
 import { useConsentSession } from "@/hooks/consent/use-consent-session";
 import { useDataCategories } from "@/hooks/consent/use-data-categories";
@@ -22,7 +21,6 @@ import { useAuthStore } from "@/store/use-auth-store";
 import { type ConsentRecord, useConsentStore } from "@/store/use-consent-store";
 
 import { ConsentForm } from "./ConsentForm";
-import { ConsentHistory } from "./ConsentHistory";
 
 interface ConsentModalProps {
   open: boolean;
@@ -53,7 +51,6 @@ export const ConsentModal = memo(function ConsentModal({
     consentData,
   } = useConsentStore();
 
-  const [activeTab, setActiveTab] = useState<"form" | "history">("form");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const consentThemeStyles = {
     "--consent-bg": finzoneTheme.colors.background,
@@ -89,11 +86,6 @@ export const ConsentModal = memo(function ConsentModal({
       enabled: open,
     });
 
-  const { data: consentLogs, isLoading: isLoadingLogs } = useConsentLogs({
-    consentId: userConsent?.id,
-    enabled: open && !!userConsent?.id,
-  });
-
   useEffect(() => {
     const handleDataUpdated = (event: Event) => {
       const customEvent = event as CustomEvent<{ consentData?: ConsentRecord }>;
@@ -117,14 +109,6 @@ export const ConsentModal = memo(function ConsentModal({
       window.removeEventListener("consent:error", handleError);
     };
   }, [setConsentData, setError]);
-
-  useEffect(() => {
-    if (consentLogs?.consent_logs && consentLogs.consent_logs.length > 0) {
-      setActiveTab("history");
-    } else {
-      setActiveTab("form");
-    }
-  }, [consentLogs]);
 
   const handleGrantConsent = async () => {
     if (!consentPurpose?.latest_version_id) {
@@ -248,25 +232,21 @@ export const ConsentModal = memo(function ConsentModal({
   };
 
   const isLoading =
-    isLoadingPurpose ||
-    isLoadingUserConsent ||
-    isLoadingCategories ||
-    isLoadingLogs;
+    isLoadingPurpose || isLoadingUserConsent || isLoadingCategories;
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent
+        size="xl"
         style={consentThemeStyles}
-        className="max-h-[90vh] max-w-2xl overflow-y-auto border-[var(--consent-border)] bg-[var(--consent-bg)] text-[var(--consent-fg)] shadow-xl [&_[data-slot=dialog-close]]:text-[var(--consent-muted)] [&_[data-slot=dialog-close][data-state=open]]:bg-[var(--consent-surface)] [&_[data-slot=dialog-close]:hover]:text-[var(--consent-fg)]"
+        className="w-[min(96vw,1100px)] max-h-[90vh] overflow-y-auto border-[var(--consent-border)] bg-[var(--consent-bg)] text-[var(--consent-fg)] shadow-xl [&_[data-slot=dialog-close]]:text-[var(--consent-muted)] [&_[data-slot=dialog-close][data-state=open]]:bg-[var(--consent-surface)] [&_[data-slot=dialog-close]:hover]:text-[var(--consent-fg)]"
       >
         <DialogHeader>
           <DialogTitle className="text-[var(--consent-fg)]">
             {t("modal.title")}
           </DialogTitle>
           <DialogDescription className="text-[var(--consent-muted)]">
-            {activeTab === "form"
-              ? t("form.description")
-              : t("history.description")}
+            {t("form.description")}
           </DialogDescription>
         </DialogHeader>
 
@@ -282,63 +262,25 @@ export const ConsentModal = memo(function ConsentModal({
         {!isLoading && (
           <div className="space-y-4">
             {consentData && (
-              <Alert className="border-[var(--consent-border)] bg-[var(--consent-surface)]">
-                <AlertTitle className="text-[var(--consent-fg)]">
-                  {t("errors.existingConsent")}
-                </AlertTitle>
-                <AlertDescription className="text-[var(--consent-muted)]">
+              <Alert className="mx-auto w-full max-w-3xl rounded-lg border-0 border-l-2 border-l-[var(--consent-primary)] bg-[var(--consent-surface)]/55 px-3 py-2">
+                <AlertDescription className="text-xs leading-relaxed text-[var(--consent-muted)]">
+                  <span className="font-semibold text-[var(--consent-fg)]">
+                    {t("errors.existingConsent")}:
+                  </span>{" "}
                   {t("errors.existingConsentDesc")}
                 </AlertDescription>
               </Alert>
             )}
-
-            <div className="border-b border-[var(--consent-border)]">
-              <div className="flex gap-4">
-                <button
-                  type="button"
-                  onClick={() => setActiveTab("form")}
-                  className={`flex-1 border-b-2 pb-2 font-medium transition-colors ${
-                    activeTab === "form"
-                      ? "border-[var(--consent-primary)] text-[var(--consent-primary)]"
-                      : "border-transparent text-[var(--consent-muted)] hover:text-[var(--consent-fg)]"
-                  }`}
-                >
-                  {t("tabs.form")}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setActiveTab("history")}
-                  className={`flex-1 border-b-2 pb-2 font-medium transition-colors ${
-                    activeTab === "history"
-                      ? "border-[var(--consent-primary)] text-[var(--consent-primary)]"
-                      : "border-transparent text-[var(--consent-muted)] hover:text-[var(--consent-fg)]"
-                  }`}
-                >
-                  {t("tabs.history")}
-                </button>
-              </div>
-            </div>
-
-            {activeTab === "form" && (
-              <ConsentForm
-                consentVersion={{
-                  version: consentPurpose?.latest_version,
-                  content: consentPurpose?.latest_content,
-                }}
-                dataCategories={dataCategories}
-                onGrant={handleGrantConsent}
-                onReject={handleRejectConsent}
-                isSubmitting={isSubmitting}
-              />
-            )}
-
-            {activeTab === "history" && (
-              <ConsentHistory
-                consentLogs={consentLogs?.consent_logs}
-                userConsent={userConsent}
-                isLoading={isLoadingLogs}
-              />
-            )}
+            <ConsentForm
+              consentVersion={{
+                version: consentPurpose?.latest_version,
+                content: consentPurpose?.latest_content,
+              }}
+              dataCategories={dataCategories}
+              onGrant={handleGrantConsent}
+              onReject={handleRejectConsent}
+              isSubmitting={isSubmitting}
+            />
           </div>
         )}
       </DialogContent>

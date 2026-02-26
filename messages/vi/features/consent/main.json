@@ -14,11 +14,23 @@
     "title": "Cấp Đồng thuận",
     "description": "Thông tin của bạn được bảo vệ theo pháp luật Việt Nam",
     "dataCategories": "Danh mục dữ liệu",
+    "selection": {
+      "summary": "Đã chọn {selected}/{total}",
+      "selectAll": "Chọn tất cả",
+      "clearAll": "Bỏ chọn tất cả"
+    },
     "consentVersion": {
-      "label": "Phiên bản đồng thuận"
+      "label": "Phiên bản đồng thuận",
+      "short": "Phiên bản {version}",
+      "toggle": "Xem nội dung đồng thuận"
     },
     "agreeAll": {
-      "label": "Đồng ý tất cả các điều khoản"
+      "label": "Tôi xác nhận và đồng ý xử lý các danh mục dữ liệu đã chọn",
+      "helper": "Bạn có thể xem, tìm kiếm và điều chỉnh danh mục trước khi cấp đồng thuận."
+    },
+    "validation": {
+      "selectCategory": "Vui lòng chọn ít nhất một danh mục.",
+      "confirmConsent": "Vui lòng xác nhận đồng thuận trước khi tiếp tục."
     },
     "reject": {
       "button": "Từ chối"
