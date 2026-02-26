@@ -34,8 +34,18 @@ export function NumberField({
   const isRequired = field.validation?.some(
     (rule) => rule.type === ValidationRuleType.REQUIRED,
   );
+  const textPrimary = theme.colors.textPrimary || "#073126";
+  const textSecondary = theme.colors.textSecondary || "#4d7e70";
   const fieldCssVars = {
     "--form-primary": theme.colors.primary,
+    "--form-border": theme.colors.border,
+    "--form-bg": theme.colors.background,
+    "--form-text": textPrimary,
+    "--form-placeholder": theme.colors.placeholder,
+    "--form-selection-bg": theme.colors.primary,
+    "--form-disabled-bg": theme.colors.disabled,
+    "--form-readonly-bg": theme.colors.readOnly,
+    "--form-text-secondary": textSecondary,
   } as React.CSSProperties;
 
   // Display value (formatted for currency)
@@ -66,8 +76,12 @@ export function NumberField({
     // Base focus styles
     "focus:outline-none",
     // Placeholder styles
-    "placeholder:text-gray-400",
+    "placeholder:text-[var(--form-placeholder)]",
     "placeholder:font-medium",
+    // Text and selection colors
+    "text-[var(--form-text)]",
+    "selection:bg-[var(--form-selection-bg)]",
+    "selection:text-white",
     // Disabled and readonly states
     "disabled:cursor-not-allowed",
     "disabled:opacity-60",
@@ -79,9 +93,9 @@ export function NumberField({
     // Border radius from theme
     "rounded-[8px]",
     // Border color
-    "border-[#bfd1cc]",
+    "border-[var(--form-border)]",
     // Default background
-    "bg-white",
+    "bg-[var(--form-bg)]",
     // Size
     "h-[60px]",
     "px-4",
@@ -93,8 +107,8 @@ export function NumberField({
     error && "border-red-500",
     error && "focus:ring-red-500/20",
     // Override background for special states
-    isDisabled && "!bg-gray-100",
-    isReadOnly && "!bg-gray-50",
+    isDisabled && "!bg-[var(--form-disabled-bg)]",
+    isReadOnly && "!bg-[var(--form-readonly-bg)]",
   ].filter(Boolean);
 
   // If internal label is enabled, use wrapper with label

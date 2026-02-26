@@ -23,11 +23,17 @@ export const PeriodField: React.FC<PeriodFieldProps> = ({
   const valueColor = theme.colors.textPrimary || "#073126";
   const errorColor = theme.colors.error || "#ff7474";
   const placeholderColor = theme.colors.placeholder || "#A3A3A3";
+  const fieldStyles = {
+    borderColor: error ? errorColor : borderColor,
+    "--form-primary": theme.colors.primary,
+    "--form-bg": theme.colors.background,
+    "--slider-track": theme.colors.readOnly || "#E6F1ED",
+  } as React.CSSProperties;
 
   return (
     <div
-      className="relative mb-[34px] rounded-lg border bg-white px-4 pt-2 pb-[9px]"
-      style={{ borderColor: error ? errorColor : borderColor }}
+      className="relative mb-[34px] rounded-lg border bg-[var(--form-bg)] px-4 pt-2 pb-[9px]"
+      style={fieldStyles}
     >
       <label
         className="text-xs font-normal leading-4"

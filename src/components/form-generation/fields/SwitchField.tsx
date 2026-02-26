@@ -28,6 +28,10 @@ export function SwitchField({
   );
   const fieldCssVars = {
     "--form-primary": theme.colors.primary,
+    "--form-border": theme.colors.border,
+    "--form-bg": theme.colors.background,
+    "--form-muted-bg": theme.colors.readOnly,
+    "--form-text": theme.colors.textPrimary || "#073126",
   } as React.CSSProperties;
 
   // Base switch container styles
@@ -46,7 +50,7 @@ export function SwitchField({
     // Colors based on state
     isChecked
       ? "bg-[var(--form-primary)] border-[var(--form-primary)]"
-      : "bg-gray-200 border-gray-300",
+      : "bg-[var(--form-muted-bg)] border-[var(--form-border)]",
     // Disabled state
     isDisabled && "opacity-50 cursor-not-allowed",
     // Focus ring for accessibility
@@ -68,12 +72,12 @@ export function SwitchField({
     "w-5",
     "rounded-full",
     // Colors and transitions
-    "bg-white",
+    "bg-[var(--form-bg)]",
     "shadow-md",
     "transition-transform",
     "duration-200",
     "border",
-    "border-gray-200",
+    "border-[var(--form-border)]",
     // Transform based on state
     isChecked ? "translate-x-5" : "translate-x-0",
     // Interactive states
@@ -92,7 +96,7 @@ export function SwitchField({
   const labelStyles = cn(
     "text-sm",
     "font-medium",
-    "text-gray-700",
+    "text-[var(--form-text)]",
     "select-none",
     // Remove cursor pointer since label shouldn't toggle
     isDisabled ? "opacity-60 cursor-not-allowed" : "cursor-default",

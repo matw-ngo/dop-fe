@@ -2,6 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { useEffect, useMemo, useState } from "react";
+import { ChevronDown } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import type { components } from "@/lib/api/v1/consent";
@@ -55,6 +56,8 @@ export function ConsentForm({
 
   const [selectedCategoryIds, setSelectedCategoryIds] = useState<string[]>([]);
   const [isConsentConfirmed, setIsConsentConfirmed] = useState(true);
+  const [isConsentVersionExpanded, setIsConsentVersionExpanded] =
+    useState(false);
 
   const selectedCategorySet = useMemo(() => {
     return new Set(selectedCategoryIds);
@@ -65,11 +68,20 @@ export function ConsentForm({
     setIsConsentConfirmed(true);
   }, [categoryIds]);
 
+  useEffect(() => {
+    setIsConsentVersionExpanded(false);
+  }, [consentVersion?.version, consentVersion?.content]);
+
   const hasCategories = categoryIds.length > 0;
   const isGrantDisabled =
     isSubmitting ||
     !isConsentConfirmed ||
     (hasCategories && selectedCategoryIds.length === 0);
+  const hasConsentVersionTag =
+    consentVersion?.version !== undefined && consentVersion.version !== null;
+  const hasConsentVersionContent = Boolean(consentVersion?.content?.trim());
+  const showConsentVersionSection =
+    hasConsentVersionTag || hasConsentVersionContent;
 
   const setSelectionWithDraft = (updater: (draft: Set<string>) => void) => {
     setSelectedCategoryIds((prev) => {
@@ -100,32 +112,48 @@ export function ConsentForm({
 
   return (
     <div className="space-y-3">
-      <div className="mx-auto w-full max-w-3xl rounded-xl bg-[var(--consent-surface)]/45 p-3 sm:p-4">
-        <div className="flex flex-wrap items-start justify-between gap-2 sm:items-center">
-          <h3 className="text-sm font-semibold text-[var(--consent-fg)]">
-            {t("form.title")}
-          </h3>
-          {consentVersion?.version !== undefined &&
-            consentVersion.version !== null && (
-              <span className="rounded-full bg-[var(--consent-bg)] px-2.5 py-1 text-xs font-medium text-[var(--consent-muted)]">
-                {t("form.consentVersion.short", {
-                  version: consentVersion.version,
-                })}
-              </span>
-            )}
-        </div>
+      {showConsentVersionSection && (
+        <div className="mx-auto w-full max-w-3xl rounded-xl border border-[var(--consent-border)] bg-[var(--consent-bg)] p-3">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <h3 className="text-sm font-semibold text-[var(--consent-fg)]">
+                {t("form.title")}
+              </h3>
+              {hasConsentVersionTag && (
+                <span className="rounded-full bg-[var(--consent-surface)] px-2 py-0.5 text-xs font-medium text-[var(--consent-muted)]">
+                  {t("form.consentVersion.short", {
+                    version: consentVersion?.version,
+                  })}
+                </span>
+              )}
+            </div>
 
-        {consentVersion?.content && (
-          <details className="mt-2">
-            <summary className="cursor-pointer text-xs font-medium text-[var(--consent-primary)] transition-opacity hover:opacity-80">
-              {t("form.consentVersion.toggle")}
-            </summary>
-            <p className="mt-2 rounded-md bg-[var(--consent-bg)] p-2 text-xs leading-relaxed text-[var(--consent-muted)]">
-              {consentVersion.content}
-            </p>
-          </details>
-        )}
-      </div>
+            {hasConsentVersionContent && (
+              <button
+                type="button"
+                onClick={() =>
+                  setIsConsentVersionExpanded((current) => !current)
+                }
+                className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium text-[var(--consent-primary)] transition-colors hover:bg-[var(--consent-surface)]"
+                aria-expanded={isConsentVersionExpanded}
+              >
+                {t("form.consentVersion.toggle")}
+                <ChevronDown
+                  className={`h-3.5 w-3.5 transition-transform ${
+                    isConsentVersionExpanded ? "rotate-180" : "rotate-0"
+                  }`}
+                />
+              </button>
+            )}
+          </div>
+
+          {hasConsentVersionContent && isConsentVersionExpanded && (
+            <div className="mt-2 max-h-36 overflow-y-auto rounded-md bg-[var(--consent-surface)] p-2 text-xs leading-relaxed text-[var(--consent-muted)] whitespace-pre-wrap">
+              {consentVersion?.content}
+            </div>
+          )}
+        </div>
+      )}
 
       {hasCategories && (
         <div className="space-y-2">

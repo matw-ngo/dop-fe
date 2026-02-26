@@ -35,6 +35,14 @@ export function TextAreaField({
   );
   const fieldCssVars = {
     "--form-primary": theme.colors.primary,
+    "--form-border": theme.colors.border,
+    "--form-bg": theme.colors.background,
+    "--form-text": theme.colors.textPrimary || "#073126",
+    "--form-placeholder": theme.colors.placeholder,
+    "--form-selection-bg": theme.colors.primary,
+    "--form-disabled-bg": theme.colors.disabled,
+    "--form-readonly-bg": theme.colors.readOnly,
+    "--form-text-secondary": theme.colors.textSecondary || "#4d7e70",
   } as React.CSSProperties;
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -56,8 +64,12 @@ export function TextAreaField({
     // Base focus styles
     "focus:outline-none",
     // Placeholder styles
-    "placeholder:text-gray-400",
+    "placeholder:text-[var(--form-placeholder)]",
     "placeholder:font-medium",
+    // Text and selection colors
+    "text-[var(--form-text)]",
+    "selection:bg-[var(--form-selection-bg)]",
+    "selection:text-white",
     // Disabled and readonly states
     "disabled:cursor-not-allowed",
     "disabled:opacity-60",
@@ -69,9 +81,9 @@ export function TextAreaField({
     // Border radius from theme
     "rounded-[8px]",
     // Border color
-    "border-[#bfd1cc]",
+    "border-[var(--form-border)]",
     // Default background
-    "bg-white",
+    "bg-[var(--form-bg)]",
     // Padding
     "px-4",
     "py-3",
@@ -83,8 +95,8 @@ export function TextAreaField({
     error && "border-red-500",
     error && "focus:ring-red-500/20",
     // Override background for special states
-    isDisabled && "!bg-gray-100",
-    isReadOnly && "!bg-gray-50",
+    isDisabled && "!bg-[var(--form-disabled-bg)]",
+    isReadOnly && "!bg-[var(--form-readonly-bg)]",
   ].filter(Boolean);
 
   // Minimum height based on rows option
@@ -123,7 +135,7 @@ export function TextAreaField({
           )}
         />
         {showCount && (
-          <div className="absolute bottom-3 right-3 text-xs text-gray-500 bg-white px-1">
+          <div className="absolute bottom-3 right-3 text-xs text-[var(--form-text-secondary)] bg-[var(--form-bg)] px-1">
             {currentLength}/{maxLength}
           </div>
         )}
@@ -154,7 +166,7 @@ export function TextAreaField({
         )}
       />
       {showCount && (
-        <div className="absolute bottom-3 right-3 text-xs text-gray-500 bg-white px-1">
+        <div className="absolute bottom-3 right-3 text-xs text-[var(--form-text-secondary)] bg-[var(--form-bg)] px-1">
           {currentLength}/{maxLength}
         </div>
       )}

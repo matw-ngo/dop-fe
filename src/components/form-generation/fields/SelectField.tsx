@@ -1,5 +1,6 @@
 "use client";
 
+import type { CSSProperties } from "react";
 import {
   Select,
   SelectContent,
@@ -40,6 +41,9 @@ export function SelectField({
   const isRequired = field.validation?.some(
     (rule) => rule.type === ValidationRuleType.REQUIRED,
   );
+  const textPrimary = theme.colors.textPrimary || "#3F4350";
+  const textSecondary = theme.colors.textSecondary || "#4d7e70";
+  const placeholderColor = theme.colors.placeholder || "#A3A3A3";
 
   // Base trigger styles that are consistent across themes
   const baseTriggerStyles = [
@@ -80,9 +84,27 @@ export function SelectField({
 
   // Group choices if they have a `group` property
   const hasGroups = choices.some((choice) => choice.group);
+  const selectContentStyles = {
+    backgroundColor: theme.colors.background,
+    color: textPrimary,
+    borderColor: theme.colors.border,
+    "--color-popover": theme.colors.background,
+    "--color-popover-foreground": textPrimary,
+    "--color-accent": theme.colors.readOnly,
+    "--color-accent-foreground": textPrimary,
+    "--color-primary": theme.colors.primary,
+    "--color-ring": theme.colors.borderFocus || theme.colors.primary,
+    "--select-item-hover": theme.colors.readOnly,
+    "--select-item-text": textPrimary,
+    "--select-item-muted": textSecondary,
+    "--select-item-placeholder": placeholderColor,
+  } as CSSProperties;
 
   const renderSelectContent = () => (
-    <SelectContent className={options.contentClassName}>
+    <SelectContent
+      className={cn("shadow-md", options.contentClassName)}
+      style={selectContentStyles}
+    >
       {hasGroups
         ? Object.entries(
             choices.reduce<Record<string, typeof choices>>((acc, choice) => {
@@ -96,12 +118,15 @@ export function SelectField({
           ).map(([groupName, groupChoices], idx) => (
             <SelectGroup key={groupName}>
               {idx > 0 && <SelectSeparator />}
-              <SelectLabel>{groupName}</SelectLabel>
+              <SelectLabel className="text-[var(--select-item-muted)]">
+                {groupName}
+              </SelectLabel>
               {groupChoices.map((choice) => (
                 <SelectItem
                   key={choice.value}
                   value={choice.value}
                   disabled={choice.disabled}
+                  className="text-[var(--select-item-text)] data-[highlighted]:bg-[var(--select-item-hover)] data-[highlighted]:text-[var(--select-item-text)] focus:bg-[var(--select-item-hover)] focus:text-[var(--select-item-text)]"
                 >
                   {choice.label}
                 </SelectItem>
@@ -113,6 +138,7 @@ export function SelectField({
               key={choice.value}
               value={choice.value}
               disabled={choice.disabled}
+              className="text-[var(--select-item-text)] data-[highlighted]:bg-[var(--select-item-hover)] data-[highlighted]:text-[var(--select-item-text)] focus:bg-[var(--select-item-hover)] focus:text-[var(--select-item-text)]"
             >
               {choice.label}
             </SelectItem>
@@ -136,6 +162,12 @@ export function SelectField({
         aria-invalid={!!error}
         aria-describedby={error ? `${field.id}-error` : undefined}
         onBlur={onBlur}
+        style={
+          {
+            "--form-text": textPrimary,
+            "--select-item-placeholder": placeholderColor,
+          } as CSSProperties
+        }
       >
         <div className="flex flex-col items-start justify-center flex-1 w-full text-left">
           {internalLabel && field.label && (
@@ -154,7 +186,7 @@ export function SelectField({
             className={cn(
               "text-sm",
               // Placeholder styling - simpler approach
-              "data-[placeholder]:text-gray-400",
+              "data-[placeholder]:text-[var(--select-item-placeholder)]",
               "data-[placeholder]:font-medium",
             )}
           />

@@ -45,6 +45,31 @@ export function DateField({
   );
   const fieldCssVars = {
     "--form-primary": theme.colors.primary,
+    "--form-border": theme.colors.border,
+    "--form-bg": theme.colors.background,
+    "--form-text": theme.colors.textPrimary || "#073126",
+    "--form-disabled-bg": theme.colors.disabled,
+    "--form-readonly-bg": theme.colors.readOnly,
+    "--form-placeholder": theme.colors.placeholder,
+    "--form-text-secondary": theme.colors.textSecondary || "#4d7e70",
+  } as React.CSSProperties;
+  const popoverThemeVars = {
+    backgroundColor: theme.colors.background,
+    color: theme.colors.textPrimary || "#0f172a",
+    borderColor: theme.colors.border,
+    "--color-popover": theme.colors.background,
+    "--color-popover-foreground": theme.colors.textPrimary || "#0f172a",
+    "--color-background": theme.colors.background,
+    "--color-foreground": theme.colors.textPrimary || "#0f172a",
+    "--color-accent": theme.colors.readOnly,
+    "--color-accent-foreground": theme.colors.textPrimary || "#0f172a",
+    "--color-primary": theme.colors.primary,
+    "--color-primary-foreground": "#ffffff",
+    "--color-ring": theme.colors.borderFocus || theme.colors.primary,
+    "--color-border": theme.colors.border,
+    "--color-input": theme.colors.border,
+    "--color-muted": theme.colors.readOnly,
+    "--color-muted-foreground": theme.colors.textSecondary || "#4d7e70",
   } as React.CSSProperties;
 
   // Determine input type based on field type
@@ -78,6 +103,7 @@ export function DateField({
     "text-sm",
     "font-normal",
     "text-left",
+    "text-[var(--form-text)]",
     // Base focus styles
     "focus:outline-none",
     // Disabled and readonly states
@@ -91,9 +117,9 @@ export function DateField({
     // Border radius from theme
     "rounded-[8px]",
     // Border color
-    "border-[#bfd1cc]",
+    "border-[var(--form-border)]",
     // Default background
-    "bg-white",
+    "bg-[var(--form-bg)]",
     // Size
     "h-[60px]",
     "px-4",
@@ -105,8 +131,8 @@ export function DateField({
     error && "border-red-500",
     error && "focus:ring-red-500/20",
     // Override background for special states
-    isDisabled && "!bg-gray-100",
-    isReadOnly && "!bg-gray-50",
+    isDisabled && "!bg-[var(--form-disabled-bg)]",
+    isReadOnly && "!bg-[var(--form-readonly-bg)]",
   ].filter(Boolean);
 
   const renderTrigger = () => {
@@ -120,7 +146,7 @@ export function DateField({
         className={cn(
           ...baseButtonStyles,
           ...themeStyles,
-          !dateValue && "text-gray-400",
+          !dateValue && "text-[var(--form-placeholder)]",
           internalLabel && field.label && "pt-8",
           className,
         )}
@@ -131,7 +157,7 @@ export function DateField({
       >
         <span className="truncate">{displayValue}</span>
         <CalendarIcon
-          className="h-4 w-4 text-gray-400 shrink-0 ml-2"
+          className="h-4 w-4 text-[var(--form-text-secondary)] shrink-0 ml-2"
           aria-hidden="true"
         />
       </Button>
@@ -155,7 +181,11 @@ export function DateField({
       ) : (
         <Popover>
           <PopoverTrigger asChild>{renderTrigger()}</PopoverTrigger>
-          <PopoverContent className="w-auto p-0" align="start">
+          <PopoverContent
+            className="w-auto p-0"
+            align="start"
+            style={popoverThemeVars}
+          >
             <Calendar
               mode="single"
               selected={dateValue}

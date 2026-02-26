@@ -30,6 +30,14 @@ export function TextField({
   const isRequired = field.validation?.some(
     (rule) => rule.type === ValidationRuleType.REQUIRED,
   );
+  const secondaryTextColor = theme.colors.textSecondary || "#4d7e70";
+  const placeholderColor = theme.colors.placeholder || "#A3A3A3";
+  const textPrimary = theme.colors.textPrimary || "#073126";
+  const fieldCssVars = {
+    "--form-placeholder": placeholderColor,
+    "--form-text": textPrimary,
+    "--form-selection-bg": theme.colors.primary,
+  } as React.CSSProperties;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange(e.target.value);
@@ -61,8 +69,12 @@ export function TextField({
       ? `focus:ring-[${theme.focusRing.color}]/${theme.focusRing.opacity}`
       : `focus:ring-[${theme.colors.primary}]/20`,
     // Placeholder styles
-    "placeholder:text-gray-400",
+    "placeholder:text-[var(--form-placeholder)]",
     "placeholder:font-medium",
+    // Text and selection colors
+    "text-[var(--form-text)]",
+    "selection:bg-[var(--form-selection-bg)]",
+    "selection:text-white",
     // Disabled and readonly states
     "disabled:cursor-not-allowed",
     "disabled:opacity-60",
@@ -115,6 +127,7 @@ export function TextField({
           sizeStyles.md,
           internalLabel && "pt-5 pb-1",
         )}
+        style={fieldCssVars}
       >
         {/* Internal Label */}
         {internalLabel && field.label && (
@@ -132,7 +145,10 @@ export function TextField({
 
         {/* Start Adornments */}
         {(options.prefix || options.startAdornment) && (
-          <div className="flex items-center shrink-0 text-gray-500 ml-1">
+          <div
+            className="flex items-center shrink-0 ml-1"
+            style={{ color: secondaryTextColor }}
+          >
             {options.prefix || options.startAdornment}
           </div>
         )}
@@ -165,15 +181,22 @@ export function TextField({
             "text-sm",
             // Adjust position for internal label
             internalLabel && "mt-1",
+            // Keep text/selection color in wrapped mode
+            "text-[var(--form-text)]",
+            "selection:bg-[var(--form-selection-bg)]",
+            "selection:text-white",
             // Keep placeholder styling
-            "placeholder:text-gray-400",
+            "placeholder:text-[var(--form-placeholder)]",
             "placeholder:font-medium",
           )}
         />
 
         {/* End Adornments */}
         {(options.suffix || options.endAdornment) && (
-          <div className="flex items-center shrink-0 text-gray-500 mr-1">
+          <div
+            className="flex items-center shrink-0 mr-1"
+            style={{ color: secondaryTextColor }}
+          >
             {options.suffix || options.endAdornment}
           </div>
         )}
@@ -202,6 +225,7 @@ export function TextField({
         sizeStyles.md,
         className,
       )}
+      style={fieldCssVars}
     />
   );
 }

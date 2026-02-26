@@ -56,6 +56,18 @@ export default function CustomSlider({
     : value !== undefined
       ? [value]
       : [];
+  const thumbStyle = {
+    ...(thumbImg
+      ? {
+          backgroundImage: `url(${thumbImg})`,
+          backgroundSize: "contain",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center",
+        }
+      : {}),
+    "--tw-ring-color": "var(--form-primary, var(--color-primary))",
+    "--tw-ring-offset-color": "transparent",
+  } as React.CSSProperties;
 
   return (
     <RadixSlider.Root
@@ -69,21 +81,12 @@ export default function CustomSlider({
       step={step}
       disabled={disabled}
     >
-      <RadixSlider.Track className="bg-[#E6F1ED] relative grow rounded-full h-[6px]">
-        <RadixSlider.Range className="absolute bg-primary rounded-full h-full" />
+      <RadixSlider.Track className="bg-[var(--slider-track,#E6F1ED)] relative grow rounded-full h-[6px]">
+        <RadixSlider.Range className="absolute bg-[var(--form-primary,var(--color-primary))] rounded-full h-full" />
       </RadixSlider.Track>
       <RadixSlider.Thumb
-        className="block w-[28px] h-[28px] bg-white rounded-[4px] shadow-sm border-[4px] border-white focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 cursor-pointer"
-        style={
-          thumbImg
-            ? {
-                backgroundImage: `url(${thumbImg})`,
-                backgroundSize: "contain",
-                backgroundRepeat: "no-repeat",
-                backgroundPosition: "center",
-              }
-            : {}
-        }
+        className="block w-[28px] h-[28px] bg-white rounded-[4px] shadow-sm border-[4px] border-white outline-none focus:outline-none focus-visible:outline-none focus:ring-2 focus-visible:ring-2 focus-visible:ring-offset-0 cursor-pointer"
+        style={thumbStyle}
       />
     </RadixSlider.Root>
   );

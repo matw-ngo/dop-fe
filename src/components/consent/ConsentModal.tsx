@@ -261,7 +261,7 @@ export const ConsentModal = memo(function ConsentModal({
 
         {!isLoading && (
           <div className="space-y-4">
-            {consentData && (
+            {/* {consentData && (
               <Alert className="mx-auto w-full max-w-3xl rounded-lg border-0 border-l-2 border-l-[var(--consent-primary)] bg-[var(--consent-surface)]/55 px-3 py-2">
                 <AlertDescription className="text-xs leading-relaxed text-[var(--consent-muted)]">
                   <span className="font-semibold text-[var(--consent-fg)]">
@@ -270,7 +270,7 @@ export const ConsentModal = memo(function ConsentModal({
                   {t("errors.existingConsentDesc")}
                 </AlertDescription>
               </Alert>
-            )}
+            )} */}
             <ConsentForm
               consentVersion={{
                 version: consentPurpose?.latest_version,

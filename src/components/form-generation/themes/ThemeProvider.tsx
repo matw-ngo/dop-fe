@@ -6,6 +6,7 @@
 
 "use client";
 
+import type { CSSProperties } from "react";
 import type { ReactNode } from "react";
 import { createContext, useContext, useMemo, useState } from "react";
 import { defaultTheme } from "./default";
@@ -51,13 +52,49 @@ export function FormThemeProvider({
 }: FormThemeProviderProps) {
   const [currentTheme, setCurrentTheme] = useState(theme);
 
+  const themeCssVars = useMemo(() => {
+    const textPrimary = currentTheme.colors.textPrimary || "#0f172a";
+    const textSecondary = currentTheme.colors.textSecondary || "#64748b";
+
+    return {
+      "--color-primary": currentTheme.colors.primary,
+      "--color-primary-foreground": "#ffffff",
+      "--color-ring":
+        currentTheme.colors.borderFocus || currentTheme.colors.primary,
+      "--color-border": currentTheme.colors.border,
+      "--color-input": currentTheme.colors.border,
+      "--color-background": currentTheme.colors.background,
+      "--color-foreground": textPrimary,
+      "--color-card": currentTheme.colors.background,
+      "--color-card-foreground": textPrimary,
+      "--color-popover": currentTheme.colors.background,
+      "--color-popover-foreground": textPrimary,
+      "--color-muted": currentTheme.colors.readOnly,
+      "--color-muted-foreground": textSecondary,
+      "--color-accent": currentTheme.colors.readOnly,
+      "--color-accent-foreground": textPrimary,
+      "--color-destructive": currentTheme.colors.error,
+      "--radius": currentTheme.borderRadius.control,
+      "--form-primary": currentTheme.colors.primary,
+      "--form-border": currentTheme.colors.border,
+      "--form-bg": currentTheme.colors.background,
+      "--form-text": textPrimary,
+      "--form-text-secondary": textSecondary,
+      "--form-radio-border":
+        currentTheme.colors.radioBorder || currentTheme.colors.border,
+      colorScheme: "light",
+    } as CSSProperties;
+  }, [currentTheme]);
+
   const value = useMemo(
     () => ({ theme: currentTheme, setTheme: setCurrentTheme }),
     [currentTheme],
   );
 
   return (
-    <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
+    <ThemeContext.Provider value={value}>
+      <div style={themeCssVars}>{children}</div>
+    </ThemeContext.Provider>
   );
 }
 

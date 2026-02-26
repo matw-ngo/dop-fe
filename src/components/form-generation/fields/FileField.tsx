@@ -76,6 +76,12 @@ export function FileField({
   );
   const fieldCssVars = {
     "--form-primary": theme.colors.primary,
+    "--form-border": theme.colors.border,
+    "--form-bg": theme.colors.background,
+    "--form-text": theme.colors.textPrimary || "#073126",
+    "--form-muted-bg": theme.colors.readOnly,
+    "--form-disabled-bg": theme.colors.disabled,
+    "--form-text-secondary": theme.colors.textSecondary || "#4d7e70",
   } as React.CSSProperties;
 
   // Base field wrapper styles
@@ -163,16 +169,17 @@ export function FileField({
               "rounded-lg cursor-pointer",
               "transition-all duration-200",
               // Use theme colors
-              "border-[#bfd1cc]",
-              "bg-white",
-              "hover:border-[var(--form-primary)] hover:bg-gray-50",
+              "border-[var(--form-border)]",
+              "bg-[var(--form-bg)]",
+              "hover:border-[var(--form-primary)] hover:bg-[var(--form-muted-bg)]",
               // Focus styles using theme
               "focus:outline-none focus:ring-2 focus:ring-[var(--form-primary)]/20 focus:border-[var(--form-primary)]",
               // Error state
               error &&
                 "border-red-500 focus:border-red-500 focus:ring-red-500/20",
               // Disabled state
-              isDisabled && "opacity-60 cursor-not-allowed bg-gray-100",
+              isDisabled &&
+                "opacity-60 cursor-not-allowed bg-[var(--form-disabled-bg)]",
               // Add padding for internal label
               internalLabel && "pt-8",
             )}
@@ -220,9 +227,9 @@ export function FileField({
                 className={cn(
                   "flex items-center gap-3 p-3 rounded-lg",
                   // File list item specific styles using theme colors
-                  "border bg-gray-50",
-                  "border-[#bfd1cc]",
-                  "bg-white",
+                  "border",
+                  "border-[var(--form-border)]",
+                  "bg-[var(--form-bg)]",
                   // Transition
                   "transition-all duration-200",
                 )}
@@ -245,7 +252,9 @@ export function FileField({
                   </div>
                 )}
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium truncate">{file.name}</p>
+                  <p className="text-sm font-medium text-[var(--form-text)] truncate">
+                    {file.name}
+                  </p>
                   <p className="text-xs text-muted-foreground">
                     {formatFileSize(file.size)}
                   </p>
@@ -275,14 +284,15 @@ export function FileField({
                 "flex items-center justify-center gap-2 p-3",
                 // Add more files specific styles using theme colors
                 "border-2 border-dashed rounded-lg cursor-pointer",
-                "border-[#bfd1cc]",
-                "bg-white",
-                "hover:border-[var(--form-primary)] hover:bg-gray-50",
+                "border-[var(--form-border)]",
+                "bg-[var(--form-bg)]",
+                "hover:border-[var(--form-primary)] hover:bg-[var(--form-muted-bg)]",
                 "transition-all duration-200",
-                "text-sm text-gray-600",
+                "text-sm text-[var(--form-text-secondary)]",
                 "focus:outline-none focus:ring-2 focus:ring-[var(--form-primary)]/20 focus:border-[var(--form-primary)]",
                 // Disabled state
-                isDisabled && "opacity-60 cursor-not-allowed bg-gray-100",
+                isDisabled &&
+                  "opacity-60 cursor-not-allowed bg-[var(--form-disabled-bg)]",
               )}
             >
               <Upload className="h-4 w-4" />
