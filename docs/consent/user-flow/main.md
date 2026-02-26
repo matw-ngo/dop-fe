@@ -131,3 +131,32 @@ sequenceDiagram
 **Scenario 3: User Rejects (No Consent Yet)**
 - User has no previous consent record
 - User clicks "Reject" → Modal simply closes, no API calls (no record to revoke)
+
+---
+
+## 4. Consent History Tab (Form đồng thuận > Lịch sử đồng thuận)
+
+The history tab can read data from `GET /consent-log`, but this endpoint currently requires `consent_id` as the filter key.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant Modal as ConsentModal
+    participant API as Backend API
+
+    Modal->>API: GET /consent?session_id=...&action=grant
+    API-->>Modal: consent record (contains id)
+
+    alt consent exists
+        Modal->>API: GET /consent-log?consent_id={consent_id}&page=1&page_size=10
+        API-->>Modal: consent_logs + pagination
+        Modal->>Modal: Render history list
+    else no consent
+        Modal->>Modal: Render empty history state
+    end
+```
+
+### Notes
+
+- In current `consent.yaml`, `GET /consent-log` supports query params: `search`, `consent_id`, `action`, `page`, `page_size`.
+- `session_id` and `lead_id` are not available as query filters for this endpoint in the current spec.

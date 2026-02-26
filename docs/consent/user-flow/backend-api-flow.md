@@ -78,3 +78,28 @@ sequenceDiagram
 If user clicks "Reject" when no consent record exists, the modal simply closes with no API calls.
 
 ---
+
+## 4. Consent History Tab (Read-only)
+
+The history tab can fetch audit logs via `GET /consent-log`, but this endpoint is currently filtered by `consent_id` (not `session_id` or `lead_id`).
+
+```mermaid
+sequenceDiagram
+    participant Client as Frontend
+    participant API as Backend Services
+
+    Client->>API: GET /consent?session_id={uuid}&action=grant
+    API-->>Client: 200 OK (consent record with consent_id)
+
+    alt consent record exists
+        Client->>API: GET /consent-log?consent_id={consent_id}&page=1&page_size=10
+        API-->>Client: 200 OK (consent_logs + pagination)
+    else no consent record
+        Client->>Client: Show empty history state
+    end
+```
+
+### Important constraint
+
+- `GET /consent-log` in `consent.yaml` supports: `search`, `consent_id`, `action`, `page`, `page_size`.
+- If the product later needs history lookup directly by `session_id` or `lead_id`, backend/spec must add those query params first.

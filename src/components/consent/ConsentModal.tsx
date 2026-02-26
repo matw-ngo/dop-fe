@@ -12,12 +12,11 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useConsentLogs } from "@/hooks/consent/use-consent-logs";
-import { useConsentSession } from "@/hooks/consent/use-consent-session";
 import { useConsentPurpose } from "@/hooks/consent/use-consent-purpose";
+import { useConsentSession } from "@/hooks/consent/use-consent-session";
 import { useDataCategories } from "@/hooks/consent/use-data-categories";
 import { useUserConsent } from "@/hooks/consent/use-user-consent";
 import { consentClient } from "@/lib/api/services";
-import type { components } from "@/lib/api/v1/consent";
 import { useAuthStore } from "@/store/use-auth-store";
 import { useConsentStore } from "@/store/use-consent-store";
 
@@ -81,15 +80,8 @@ export const ConsentModal = memo(function ConsentModal({
     });
 
   const { data: consentLogs, isLoading: isLoadingLogs } = useConsentLogs({
-    leadId: userId, // Keep logging/fetching history by userId if available, or session?
-    // Note: The new flow emphasizes Session ID for anonymous users.
-    // If logged in, maybe userId is better. But for now, let's stick to the flow.
-    // The requirement says: "FE calls API check status by session".
-    // History might need to be by session too?
-    // Let's assume logs are less critical for the anonymous flow right now or fetched via session if possible.
-    // However, useConsentLogs currently uses lead_id (mapped to consent_id in my previous fix).
-    // I will leave it as is for now, but it might need update if history should show session based actions.
-    enabled: open && !!userId,
+    consentId: userConsent?.id,
+    enabled: open && !!userConsent?.id,
   });
 
   useEffect(() => {
