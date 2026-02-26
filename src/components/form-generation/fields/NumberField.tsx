@@ -34,6 +34,9 @@ export function NumberField({
   const isRequired = field.validation?.some(
     (rule) => rule.type === ValidationRuleType.REQUIRED,
   );
+  const fieldCssVars = {
+    "--form-primary": theme.colors.primary,
+  } as React.CSSProperties;
 
   // Display value (formatted for currency)
   const displayValue =
@@ -83,9 +86,9 @@ export function NumberField({
     "h-[60px]",
     "px-4",
     // Focus state
-    "focus:border-[#017848]",
+    "focus:border-[var(--form-primary)]",
     "focus:ring-2",
-    "focus:ring-[#017848]/20",
+    "focus:ring-[var(--form-primary)]/20",
     // Error state
     error && "border-red-500",
     error && "focus:ring-red-500/20",
@@ -97,10 +100,10 @@ export function NumberField({
   // If internal label is enabled, use wrapper with label
   if (internalLabel && field.label) {
     return (
-      <div className="relative w-full">
+      <div className="relative w-full" style={fieldCssVars}>
         <label
           htmlFor={field.id}
-          className="absolute top-2 left-4 text-xs font-medium text-[#017848] pointer-events-none z-10"
+          className="absolute top-2 left-4 text-xs font-medium text-[var(--form-primary)] pointer-events-none z-10"
         >
           {field.label}
           {isRequired && <span className="text-red-500 ml-0.5">*</span>}
@@ -149,6 +152,7 @@ export function NumberField({
       inputMode={isCurrency ? "decimal" : "numeric"} // Better mobile keyboard
       aria-invalid={!!error}
       aria-describedby={error ? `${field.id}-error` : undefined}
+      style={fieldCssVars}
       className={cn(...baseInputStyles, ...themeStyles, className)}
     />
   );

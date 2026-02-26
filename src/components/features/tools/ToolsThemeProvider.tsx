@@ -21,7 +21,7 @@ export function ToolsThemeProvider({
   children,
   defaultTheme = "finance",
 }: ToolsThemeProviderProps) {
-  const { theme, setThemeById, resolvedTheme } = useTheme();
+  const { currentTheme, setThemeById } = useTheme();
   const isInitialized = useRef(false);
 
   useEffect(() => {
@@ -52,16 +52,18 @@ export function ToolsThemeProvider({
 
   // Save theme changes to localStorage for persistence
   useEffect(() => {
-    if (isInitialized.current && theme) {
-      // Save current theme configuration for tools
-      const themeConfig = {
-        themeId: theme.name || defaultTheme,
-        timestamp: Date.now(),
-      };
-
-      localStorage.setItem("dop-tools-theme", JSON.stringify(themeConfig));
+    if (!isInitialized.current || !currentTheme) {
+      return;
     }
-  }, [theme, defaultTheme]);
+
+    // Persist the actual selected theme id (finance/corporate/medical)
+    const themeConfig = {
+      themeId: currentTheme,
+      timestamp: Date.now(),
+    };
+
+    localStorage.setItem("dop-tools-theme", JSON.stringify(themeConfig));
+  }, [currentTheme]);
 
   return <>{children}</>;
 }

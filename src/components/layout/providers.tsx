@@ -20,7 +20,7 @@ export default function Providers({
         <ThemeProvider
           defaultUserGroup={defaultUserGroup}
           attribute="data-theme"
-          defaultTheme="system"
+          defaultTheme="light"
           enableSystem
           disableTransitionOnChange
         >

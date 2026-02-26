@@ -33,6 +33,9 @@ export function TextAreaField({
   const isRequired = field.validation?.some(
     (rule) => rule.type === ValidationRuleType.REQUIRED,
   );
+  const fieldCssVars = {
+    "--form-primary": theme.colors.primary,
+  } as React.CSSProperties;
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     onChange(e.target.value);
@@ -73,9 +76,9 @@ export function TextAreaField({
     "px-4",
     "py-3",
     // Focus state
-    "focus:border-[#017848]",
+    "focus:border-[var(--form-primary)]",
     "focus:ring-2",
-    "focus:ring-[#017848]/20",
+    "focus:ring-[var(--form-primary)]/20",
     // Error state
     error && "border-red-500",
     error && "focus:ring-red-500/20",
@@ -90,10 +93,10 @@ export function TextAreaField({
   // If internal label is enabled, use wrapper with label
   if (internalLabel && field.label) {
     return (
-      <div className="relative w-full">
+      <div className="relative w-full" style={fieldCssVars}>
         <label
           htmlFor={field.id}
-          className="absolute top-3 left-4 text-xs font-medium text-[#017848] pointer-events-none z-10"
+          className="absolute top-3 left-4 text-xs font-medium text-[var(--form-primary)] pointer-events-none z-10"
         >
           {field.label}
           {isRequired && <span className="text-red-500 ml-0.5">*</span>}
@@ -129,7 +132,7 @@ export function TextAreaField({
   }
 
   return (
-    <div className="relative w-full">
+    <div className="relative w-full" style={fieldCssVars}>
       <Textarea
         id={field.id}
         name={field.name}

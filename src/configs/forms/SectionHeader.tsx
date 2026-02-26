@@ -9,6 +9,7 @@
  */
 
 import type { FieldComponentProps } from "@/components/form-generation";
+import { finzoneTheme } from "@/configs/themes/finzone-theme";
 
 /**
  * SectionHeader Component
@@ -19,7 +20,10 @@ import type { FieldComponentProps } from "@/components/form-generation";
 export const SectionHeader = ({ field }: FieldComponentProps) => {
   return (
     <div className="flex items-center gap-2 mb-4">
-      <div className="h-6 w-1 bg-[#017848] rounded-full" />
+      <div
+        className="h-6 w-1 rounded-full"
+        style={{ backgroundColor: finzoneTheme.colors.primary }}
+      />
       <h3 className="text-xl font-bold text-[#003e2c]">{field.label}</h3>
     </div>
   );

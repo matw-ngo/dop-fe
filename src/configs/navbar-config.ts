@@ -1,3 +1,5 @@
+import { finzoneTheme } from "@/configs/themes/finzone-theme";
+
 export interface NavbarItem {
   id: string;
   label: string;
@@ -30,7 +32,7 @@ export const finZoneNavbarConfig: NavbarConfig = {
   logo: {
     text: "Fin Zone",
     href: "/",
-    iconColor: "#017848",
+    iconColor: finzoneTheme.colors.primary,
     iconLetter: "F",
   },
   navigation: [

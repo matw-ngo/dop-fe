@@ -6,6 +6,9 @@
  */
 
 import type React from "react";
+import { finzoneTheme } from "@/configs/themes/finzone-theme";
+
+const FINZONE_PRIMARY = finzoneTheme.colors.primary;
 
 interface IconProps {
   color?: string;
@@ -15,7 +18,7 @@ interface IconProps {
 }
 
 export const PercentageIcon: React.FC<IconProps> = ({
-  color = "#017848",
+  color = FINZONE_PRIMARY,
   width = 48,
   height = 48,
   className,
@@ -50,7 +53,7 @@ export const PercentageIcon: React.FC<IconProps> = ({
 };
 
 export const BankIcon: React.FC<IconProps> = ({
-  color = "#017848",
+  color = FINZONE_PRIMARY,
   width = 48,
   height = 48,
   className,
@@ -105,7 +108,7 @@ export const BankIcon: React.FC<IconProps> = ({
 };
 
 export const FlashIcon: React.FC<IconProps> = ({
-  color = "#017848",
+  color = FINZONE_PRIMARY,
   width = 48,
   height = 48,
   className,
@@ -140,7 +143,7 @@ export const FlashIcon: React.FC<IconProps> = ({
 };
 
 export const SearchMoneyIcon: React.FC<IconProps> = ({
-  color = "#017848",
+  color = FINZONE_PRIMARY,
   width = 24,
   height = 24,
   className,
@@ -187,7 +190,7 @@ export const SearchMoneyIcon: React.FC<IconProps> = ({
 };
 
 export const CardsIcon: React.FC<IconProps> = ({
-  color = "#017848",
+  color = FINZONE_PRIMARY,
   width = 24,
   height = 24,
   className,
@@ -237,7 +240,7 @@ export const CardsIcon: React.FC<IconProps> = ({
 };
 
 export const CarInsurIcon: React.FC<IconProps> = ({
-  color = "#017848",
+  color = FINZONE_PRIMARY,
   width = 24,
   height = 24,
   className,
@@ -263,12 +266,13 @@ export const CarInsurIcon: React.FC<IconProps> = ({
 };
 
 export const Logo: React.FC<IconProps & { currentColor?: string }> = ({
-  currentColor = "#017848",
+  currentColor = FINZONE_PRIMARY,
   width = 124,
   height = 40,
   className,
 }) => {
-  const secondaryColor = currentColor === "#017848" ? "white" : "#017848";
+  const secondaryColor =
+    currentColor === FINZONE_PRIMARY ? "white" : FINZONE_PRIMARY;
 
   return (
     <svg

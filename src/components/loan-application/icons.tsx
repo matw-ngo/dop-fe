@@ -1,4 +1,12 @@
-export const PercentageSvg = ({ color = "#017848" }: { color?: string }) => {
+import { finzoneTheme } from "@/configs/themes/finzone-theme";
+
+const FINZONE_PRIMARY = finzoneTheme.colors.primary;
+
+export const PercentageSvg = ({
+  color = FINZONE_PRIMARY,
+}: {
+  color?: string;
+}) => {
   return (
     <svg
       width="48"
@@ -27,7 +35,7 @@ export const PercentageSvg = ({ color = "#017848" }: { color?: string }) => {
   );
 };
 
-export const BankSvg = ({ color = "#017848" }: { color?: string }) => {
+export const BankSvg = ({ color = FINZONE_PRIMARY }: { color?: string }) => {
   return (
     <svg
       width="48"
@@ -76,7 +84,7 @@ export const BankSvg = ({ color = "#017848" }: { color?: string }) => {
   );
 };
 
-export const FlashSvg = ({ color = "#017848" }: { color?: string }) => {
+export const FlashSvg = ({ color = FINZONE_PRIMARY }: { color?: string }) => {
   return (
     <svg
       width="48"
@@ -105,7 +113,11 @@ export const FlashSvg = ({ color = "#017848" }: { color?: string }) => {
   );
 };
 
-export const SearchMoneySvg = ({ color = "#017848" }: { color?: string }) => (
+export const SearchMoneySvg = ({
+  color = FINZONE_PRIMARY,
+}: {
+  color?: string;
+}) => (
   <svg
     width="32"
     height="32"
@@ -132,7 +144,7 @@ export const SearchMoneySvg = ({ color = "#017848" }: { color?: string }) => (
   </svg>
 );
 
-export const CardsSvg = ({ color = "#017848" }: { color?: string }) => (
+export const CardsSvg = ({ color = FINZONE_PRIMARY }: { color?: string }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="32"
@@ -163,7 +175,11 @@ export const CardsSvg = ({ color = "#017848" }: { color?: string }) => (
   </svg>
 );
 
-export const CarInsurSvg = ({ color = "#017848" }: { color?: string }) => (
+export const CarInsurSvg = ({
+  color = FINZONE_PRIMARY,
+}: {
+  color?: string;
+}) => (
   <svg
     width="32"
     height="32"
@@ -185,7 +201,11 @@ export const CarInsurSvg = ({ color = "#017848" }: { color?: string }) => (
   </svg>
 );
 
-export const StudentLoanSvg = ({ color = "#017848" }: { color?: string }) => (
+export const StudentLoanSvg = ({
+  color = FINZONE_PRIMARY,
+}: {
+  color?: string;
+}) => (
   <svg
     width="32"
     height="32"

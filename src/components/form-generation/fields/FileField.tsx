@@ -74,6 +74,9 @@ export function FileField({
   const isRequired = field.validation?.some(
     (rule) => rule.type === ValidationRuleType.REQUIRED,
   );
+  const fieldCssVars = {
+    "--form-primary": theme.colors.primary,
+  } as React.CSSProperties;
 
   // Base field wrapper styles
   const baseFieldStyles = [
@@ -139,14 +142,14 @@ export function FileField({
   const isImage = (file: File) => file.type.startsWith("image/");
 
   return (
-    <div className={cn(...baseFieldStyles, className)}>
+    <div className={cn(...baseFieldStyles, className)} style={fieldCssVars}>
       {files.length === 0 ? (
         <div className={cn("relative w-full", className)}>
           {/* Internal Label */}
           {internalLabel && field.label && (
             <label
               htmlFor={field.id}
-              className="absolute top-2 left-4 text-xs font-medium text-[#017848] pointer-events-none z-10"
+              className="absolute top-2 left-4 text-xs font-medium text-[var(--form-primary)] pointer-events-none z-10"
             >
               {field.label}
               {isRequired && <span className="text-red-500 ml-0.5">*</span>}
@@ -162,9 +165,9 @@ export function FileField({
               // Use theme colors
               "border-[#bfd1cc]",
               "bg-white",
-              "hover:border-[#017848] hover:bg-gray-50",
+              "hover:border-[var(--form-primary)] hover:bg-gray-50",
               // Focus styles using theme
-              "focus:outline-none focus:ring-2 focus:ring-[#017848]/20 focus:border-[#017848]",
+              "focus:outline-none focus:ring-2 focus:ring-[var(--form-primary)]/20 focus:border-[var(--form-primary)]",
               // Error state
               error &&
                 "border-red-500 focus:border-red-500 focus:ring-red-500/20",
@@ -274,10 +277,10 @@ export function FileField({
                 "border-2 border-dashed rounded-lg cursor-pointer",
                 "border-[#bfd1cc]",
                 "bg-white",
-                "hover:border-[#017848] hover:bg-gray-50",
+                "hover:border-[var(--form-primary)] hover:bg-gray-50",
                 "transition-all duration-200",
                 "text-sm text-gray-600",
-                "focus:outline-none focus:ring-2 focus:ring-[#017848]/20 focus:border-[#017848]",
+                "focus:outline-none focus:ring-2 focus:ring-[var(--form-primary)]/20 focus:border-[var(--form-primary)]",
                 // Disabled state
                 isDisabled && "opacity-60 cursor-not-allowed bg-gray-100",
               )}

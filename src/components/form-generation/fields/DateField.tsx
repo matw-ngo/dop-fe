@@ -1,9 +1,9 @@
 "use client";
 
-import { CalendarIcon } from "lucide-react";
-import * as React from "react";
 import { format } from "date-fns";
 import { vi } from "date-fns/locale";
+import { CalendarIcon } from "lucide-react";
+import * as React from "react";
 
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -43,9 +43,12 @@ export function DateField({
   const isRequired = field.validation?.some(
     (rule) => rule.type === ValidationRuleType.REQUIRED,
   );
+  const fieldCssVars = {
+    "--form-primary": theme.colors.primary,
+  } as React.CSSProperties;
 
   // Determine input type based on field type
-  const inputType = (field.type as "date" | "datetime" | "time") || "date";
+  const _inputType = (field.type as "date" | "datetime" | "time") || "date";
 
   // Parse value to Date object
   const dateValue = React.useMemo(() => {
@@ -95,9 +98,9 @@ export function DateField({
     "h-[60px]",
     "px-4",
     // Focus state
-    "focus:border-[#017848]",
+    "focus:border-[var(--form-primary)]",
     "focus:ring-2",
-    "focus:ring-[#017848]/20",
+    "focus:ring-[var(--form-primary)]/20",
     // Error state
     error && "border-red-500",
     error && "focus:ring-red-500/20",
@@ -136,11 +139,11 @@ export function DateField({
   };
 
   const content = (
-    <div className={cn("relative w-full", className)}>
+    <div className={cn("relative w-full", className)} style={fieldCssVars}>
       {internalLabel && field.label && (
         <label
           htmlFor={field.id}
-          className="absolute top-2 left-4 text-xs font-medium text-[#017848] pointer-events-none z-10"
+          className="absolute top-2 left-4 text-xs font-medium text-[var(--form-primary)] pointer-events-none z-10"
         >
           {field.label}
           {isRequired && <span className="text-red-500 ml-0.5">*</span>}

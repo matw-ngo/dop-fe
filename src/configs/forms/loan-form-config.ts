@@ -44,7 +44,7 @@ try {
  *
  * @remarks
  * The form uses the legacyLoanTheme for styling which provides:
- * - Primary color: #017848 (green)
+ * - Primary color: finzoneTheme.colors.primary (green)
  * - Dark green accent: #003e2c
  *
  * @see legacyLoanTheme in @/components/form-generation/themes

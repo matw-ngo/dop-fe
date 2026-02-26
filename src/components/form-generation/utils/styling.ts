@@ -5,6 +5,8 @@
  * These are self-contained styles that don't depend on the theme system
  */
 
+import { finzoneTheme } from "@/configs/themes/finzone-theme";
+
 /**
  * Base input styles that are consistent across all input fields
  */
@@ -31,7 +33,7 @@ export const baseInputStyles = [
  */
 export const themeStyles = {
   // Colors
-  primary: "#017848",
+  primary: finzoneTheme.colors.primary,
   border: "#bfd1cc",
   error: "#ef4444",
   background: "white",
@@ -89,9 +91,9 @@ export function getInputClassName(
     // Background
     "bg-white",
     // Focus state
-    "focus:border-[#017848]",
+    "focus:border-primary",
     `focus:ring-2`,
-    `focus:ring-[#017848]/20`,
+    "focus:ring-primary/20",
     // Error state
     hasError && "border-red-500",
     hasError && "focus:ring-red-500/20",
@@ -175,9 +177,9 @@ export const fileDropZoneStyles = [
   "transition-colors",
   "border-[#bfd1cc]",
   "bg-white",
-  "focus:border-[#017848]",
+  "focus:border-primary",
   "focus:ring-2",
-  "focus:ring-[#017848]/20",
+  "focus:ring-primary/20",
 ].join(" ");
 
 /**
@@ -199,9 +201,9 @@ export const fileListItemStyles = [
  */
 export const checkboxStyles = (hasError: boolean = false) =>
   [
-    "data-[state=checked]:bg-[#017848]",
-    "data-[state=checked]:border-[#017848]",
-    `focus-visible:ring-[#017848]/20`,
+    "data-[state=checked]:bg-primary",
+    "data-[state=checked]:border-primary",
+    "focus-visible:ring-primary/20",
     hasError && "border-red-500",
     hasError && "data-[state=checked]:bg-red-500",
     hasError && "data-[state=checked]:border-red-500",
@@ -212,8 +214,8 @@ export const checkboxStyles = (hasError: boolean = false) =>
 
 export const radioStyles = (hasError: boolean = false) =>
   [
-    `text-[#017848]`,
-    `focus-visible:ring-[#017848]/20`,
+    "text-primary",
+    "focus-visible:ring-primary/20",
     hasError && "text-red-500",
     hasError && "border-red-500",
     hasError && "focus-visible:ring-red-500/20",
@@ -230,7 +232,7 @@ export const switchStyles = (hasError: boolean = false) =>
     "w-11",
     "focus-visible:outline-none",
     "focus-visible:ring-2",
-    `focus-visible:ring-[#017848]/20`,
+    "focus-visible:ring-primary/20",
     "focus-visible:ring-offset-2",
     hasError && "focus-visible:ring-red-500/20",
   ]

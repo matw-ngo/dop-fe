@@ -2,6 +2,7 @@
 
 import * as SwitchPrimitive from "@radix-ui/react-switch";
 import { Label } from "@/components/ui/label";
+import { useFormTheme } from "../themes/ThemeProvider";
 import { type FieldComponentProps, ValidationRuleType } from "../types";
 import { cn } from "../utils/helpers";
 
@@ -14,16 +15,20 @@ export function SwitchField({
   field,
   value,
   onChange,
-  onBlur,
+  onBlur: _onBlur,
   error,
   disabled,
   className,
 }: FieldComponentProps<boolean>) {
+  const { theme } = useFormTheme();
   const isChecked = !!value;
   const isDisabled = disabled || field.disabled;
   const isRequired = field.validation?.some(
     (rule) => rule.type === ValidationRuleType.REQUIRED,
   );
+  const fieldCssVars = {
+    "--form-primary": theme.colors.primary,
+  } as React.CSSProperties;
 
   // Base switch container styles
   const switchContainerStyles = cn(
@@ -39,13 +44,15 @@ export function SwitchField({
     "transition-colors",
     "duration-200",
     // Colors based on state
-    isChecked ? "bg-[#017848] border-[#017848]" : "bg-gray-200 border-gray-300",
+    isChecked
+      ? "bg-[var(--form-primary)] border-[var(--form-primary)]"
+      : "bg-gray-200 border-gray-300",
     // Disabled state
     isDisabled && "opacity-50 cursor-not-allowed",
     // Focus ring for accessibility
     "focus-within:outline-none",
     "focus-within:ring-2",
-    "focus-within:ring-[#017848]/20",
+    "focus-within:ring-[var(--form-primary)]/20",
     "focus-within:ring-offset-2",
     // Error state
     error && "focus-within:ring-red-500/20",
@@ -73,7 +80,7 @@ export function SwitchField({
     "hover:shadow-lg",
     "focus:outline-none",
     "focus:ring-2",
-    "focus:ring-[#017848]/20",
+    "focus:ring-[var(--form-primary)]/20",
     "focus:ring-offset-1",
     // Disabled state
     isDisabled && "cursor-not-allowed opacity-60",
@@ -111,7 +118,10 @@ export function SwitchField({
   };
 
   return (
-    <div className={cn("flex items-center gap-3", className)}>
+    <div
+      className={cn("flex items-center gap-3", className)}
+      style={fieldCssVars}
+    >
       {/* Hidden Radix Switch for screen reader accessibility */}
       <SwitchPrimitive.Root
         id={field.id}
