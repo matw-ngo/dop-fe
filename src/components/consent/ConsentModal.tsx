@@ -189,6 +189,11 @@ export const ConsentModal = memo(function ConsentModal({
             style={consentThemeStyles}
             className="!fixed !top-auto !bottom-8 !left-1/2 !z-50 !grid !w-[calc(100%-2rem)] !max-w-[800px] !-translate-x-1/2 !translate-y-0 !gap-0 rounded-lg border-[var(--consent-border)] bg-[var(--consent-bg)] p-0 text-[var(--consent-fg)] shadow-xl duration-200 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:slide-out-to-bottom-8 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:slide-in-from-bottom-8 sm:!w-[calc(100%-4rem)]"
           >
+            {/* Hidden title for accessibility */}
+            <div className="sr-only">
+              <DialogTitle>{t("form.title")}</DialogTitle>
+            </div>
+
             {isLoading ? (
               <div className="flex items-center justify-center py-8">
                 <Loader2 className="mr-2 h-6 w-6 animate-spin text-[var(--consent-primary)]" />

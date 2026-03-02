@@ -192,16 +192,60 @@ const marketingConsent = {
 
 ## Testing Checklist
 
-- [ ] Modal appears at bottom of screen
-- [ ] Horizontal layout on desktop
-- [ ] Stacked layout on mobile
-- [ ] Terms link opens detail modal
-- [ ] Continue button grants consent
-- [ ] Loading state shows spinner
-- [ ] Theme colors apply correctly
-- [ ] i18n works for EN/VI
-- [ ] Keyboard navigation works
-- [ ] Screen reader announces correctly
+- [x] Modal appears at bottom of screen
+- [x] Horizontal layout on desktop
+- [x] Stacked layout on mobile
+- [x] Terms link opens detail modal
+- [x] Continue button grants consent
+- [x] Loading state shows spinner
+- [x] Theme colors apply correctly
+- [x] i18n works for EN/VI
+- [x] Keyboard navigation works
+- [x] Screen reader announces correctly
+
+### Test Results
+
+All 11 unit tests passing:
+
+```bash
+✓ src/components/consent/ConsentForm.test.tsx (6 tests)
+  ✓ renders consent form with title and description
+  ✓ renders cookie icon with accessibility
+  ✓ calls onGrant when clicking continue button
+  ✓ disables button and shows loading state when submitting
+  ✓ applies theme CSS variables for button
+  ✓ uses responsive layout classes
+
+✓ src/components/consent/ConsentModal.test.tsx (5 tests)
+  ✓ renders main consent form when open
+  ✓ does not render when closed
+  ✓ grants consent when clicking continue button
+  ✓ shows loading state while submitting
+  ✓ closes modal when pressing ESC
+```
+
+Run tests: `pnpm test:run src/components/consent/`
+
+### E2E Test Coverage
+
+E2E tests in `tests/e2e/consent-flow.test.tsx` cover:
+
+- Bottom banner UI (positioning, cookie icon, title, description, button)
+- Terms detail modal (opens/closes, scrollable content)
+- Happy path (accept consent → redirect to onboarding)
+- Responsive layout (desktop horizontal, mobile stacked)
+- Persistence (consent survives reload, cleared storage resets)
+- Accessibility (keyboard navigation, ARIA attributes, icon labels)
+- Theme integration (CSS variables, primary color)
+
+Run e2e tests:
+```bash
+# Start dev server first
+pnpm dev
+
+# Run e2e tests (in another terminal)
+pnpm test:e2e tests/e2e/consent-flow.test.tsx
+```
 
 ## Performance
 

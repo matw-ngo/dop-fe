@@ -1,166 +1,211 @@
-/**
- * Consent Flow Test Suite
- *
- * Unit tests for consent modal interactions
- * Run with: pnpm test
- */
-
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import "@testing-library/jest-dom";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+/// <reference types="@testing-library/jest-dom" />
+import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 import { ConsentModal } from "./ConsentModal";
 
-const { mockPost, mockPatch } = vi.hoisted(() => ({
-  mockPost: vi.fn(),
-  mockPatch: vi.fn(),
+// Mock next-intl
+vi.mock("next-intl", () => ({
+  useTranslations: () => {
+    const t = (key: string) => {
+      const translations: Record<string, string> = {
+        "common.loading": "Loading...",
+        "form.title": "Data Privacy Terms",
+        "form.description": "We collect cookies and data...",
+        "form.agreement": "By continuing, you agree to our <link>Terms of Service</link>.",
+        "form.continueButton": "Continue",
+        "form.loading": "Processing...",
+        "form.termsModal.title": "Data Privacy Terms",
+        "form.termsModal.description": "Please review our terms carefully.",
+      };
+      return translations[key] || key;
+    };
+
+    // Add rich method for handling rich text with components
+    t.rich = (key: string, values?: Record<string, (chunks: React.ReactNode) => React.ReactNode>) => {
+      const text = t(key);
+      if (!values) return text;
+
+      // Simple implementation: replace <link>...</link> with the link component
+      const linkMatch = text.match(/<link>(.*?)<\/link>/);
+      if (linkMatch && values.link) {
+        const linkText = linkMatch[1];
+        return values.link(linkText);
+      }
+      return text;
+    };
+
+    return t;
+  },
+}));
+
+// Mock hooks
+vi.mock("@/hooks/consent/use-consent-purpose", () => ({
+  useConsentPurpose: vi.fn(() => ({
+    data: {
+      id: "test-purpose-id",
+      latest_version: "1.0",
+      latest_version_id: "version-id-123",
+      latest_content: "This is a mock consent version content.",
+    },
+    isLoading: false,
+  })),
+}));
+
+vi.mock("@/hooks/consent/use-consent-session", () => ({
+  useConsentSession: vi.fn(() => "test-session-id"),
+}));
+
+vi.mock("@/hooks/consent/use-user-consent", () => ({
+  useUserConsent: vi.fn(() => ({
+    data: null,
+    isLoading: false,
+  })),
+}));
+
+vi.mock("@/store/use-auth-store", () => ({
+  useAuthStore: vi.fn(() => ({
+    user: { id: "test-user-id" },
+  })),
+}));
+
+vi.mock("@/store/use-consent-store", () => ({
+  useConsentStore: vi.fn(() => ({
+    setConsentId: vi.fn(),
+    setConsentStatus: vi.fn(),
+    setConsentData: vi.fn(),
+    setError: vi.fn(),
+    clearError: vi.fn(),
+  })),
 }));
 
 vi.mock("@/lib/api/services", () => ({
   consentClient: {
-    POST: mockPost,
-    PATCH: mockPatch,
-    GET: vi.fn(),
+    POST: vi.fn(() =>
+      Promise.resolve({
+        data: { id: "new-consent-id" },
+      }),
+    ),
   },
 }));
 
-vi.mock("@/hooks/consent/use-consent-purpose", () => ({
-  useConsentPurpose: () => ({
-    data: {
-      id: "660e8400-e29b-41d4-a716-446655440006",
-      latest_version_id: "version-1",
-      latest_version: 1,
-      latest_content: "Mock consent content",
-    },
-    isLoading: false,
-  }),
-}));
+describe("ConsentModal", () => {
+  const mockSetOpen = vi.fn();
+  const mockOnSuccess = vi.fn();
 
-vi.mock("@/hooks/consent/use-user-consent", () => ({
-  useUserConsent: () => ({
-    data: null,
-    isLoading: false,
-  }),
-}));
-
-vi.mock("@/hooks/consent/use-data-categories", () => ({
-  useDataCategories: () => ({
-    data: [],
-    isLoading: false,
-  }),
-}));
-
-vi.mock("@/hooks/consent/use-consent-logs", () => ({
-  useConsentLogs: () => ({
-    data: { consent_logs: [] },
-    isLoading: false,
-  }),
-}));
-
-vi.mock("@/hooks/consent/use-consent-session", () => ({
-  useConsentSession: () => "session-test-123",
-}));
-
-vi.mock("@/store/use-auth-store", () => ({
-  useAuthStore: () => ({
-    user: { id: "lead-1" },
-  }),
-}));
-
-describe("Consent Flow", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-
-    mockPost.mockImplementation((path: string) => {
-      if (path === "/consent") {
-        return Promise.resolve({ data: { id: "consent-1" } });
-      }
-
-      return Promise.resolve({ data: { id: "log-1" } });
-    });
-
-    mockPatch.mockResolvedValue({ data: {} });
   });
 
-  const renderWithProviders = (component: React.ReactElement) => {
-    const queryClient = new QueryClient({
-      defaultOptions: {
-        queries: { retry: false },
-        mutations: { retry: false },
-      },
-    });
-
-    return render(
-      <QueryClientProvider client={queryClient}>
-        {component}
-      </QueryClientProvider>
-    );
-  };
-
-  it("shows consent modal when no consent exists", async () => {
-    renderWithProviders(
+  it("renders main consent form when open", () => {
+    render(
       <ConsentModal
         open={true}
-        setOpen={() => {}}
-        onSuccess={() => {}}
-        stepData={{
-          consent_purpose_id: "660e8400-e29b-41d4-a716-446655440006",
-          page: "/index",
-        }}
-      />
+        setOpen={mockSetOpen}
+        onSuccess={mockOnSuccess}
+        stepData={{ consent_purpose_id: "test-purpose" }}
+      />,
     );
+
+    expect(screen.getByRole("button", { name: /Continue/i })).toBeInTheDocument();
+  });
+
+  it("does not render when closed", () => {
+    render(
+      <ConsentModal
+        open={false}
+        setOpen={mockSetOpen}
+        onSuccess={mockOnSuccess}
+        stepData={{ consent_purpose_id: "test-purpose" }}
+      />,
+    );
+
+    expect(screen.queryByText("DATA PRIVACY TERMS")).not.toBeInTheDocument();
+  });
+
+  it("grants consent when clicking continue button", async () => {
+    const user = userEvent.setup();
+    // Get the mocked module - no need for dynamic import since it's mocked at the top
+    const { consentClient } = require("@/lib/api/services");
+
+    render(
+      <ConsentModal
+        open={true}
+        setOpen={mockSetOpen}
+        onSuccess={mockOnSuccess}
+        stepData={{ consent_purpose_id: "test-purpose" }}
+      />,
+    );
+
+    const continueButton = screen.getByRole("button", { name: /Continue/i });
+    await user.click(continueButton);
 
     await waitFor(() => {
-      expect(screen.getByText("modal.title")).toBeInTheDocument();
-      expect(screen.getByText("form.title")).toBeInTheDocument();
+      expect(consentClient.POST).toHaveBeenCalledWith("/consent", {
+        body: expect.objectContaining({
+          consent_version_id: "version-id-123",
+          session_id: "test-session-id",
+          source: "web",
+        }),
+      });
     });
+
+    expect(mockOnSuccess).toHaveBeenCalledWith("new-consent-id");
+    expect(mockSetOpen).toHaveBeenCalledWith(false);
   });
 
-  it("handles consent grant successfully", async () => {
-    const onSuccess = vi.fn();
+  it("shows loading state while submitting", async () => {
+    const user = userEvent.setup();
+    // Get the mocked module - no need for dynamic import since it's mocked at the top
+    const { consentClient } = require("@/lib/api/services");
 
-    renderWithProviders(
-      <ConsentModal
-        open={true}
-        setOpen={() => {}}
-        onSuccess={onSuccess}
-        stepData={{
-          consent_purpose_id: "660e8400-e29b-41d4-a716-446655440006",
-          page: "/index",
-        }}
-      />
+    vi.mocked(consentClient.POST).mockImplementation(
+      () =>
+        new Promise((resolve) =>
+          setTimeout(() => resolve({ data: { id: "new-id" } }), 100),
+        ),
     );
 
-    const agreeButton = await screen.findByRole("button", {
-      name: "form.grant.button",
+    render(
+      <ConsentModal
+        open={true}
+        setOpen={mockSetOpen}
+        onSuccess={mockOnSuccess}
+        stepData={{ consent_purpose_id: "test-purpose" }}
+      />,
+    );
+
+    const continueButton = screen.getByRole("button", { name: /Continue/i });
+    await user.click(continueButton);
+
+    // Button should be disabled while submitting
+    await waitFor(() => {
+      const buttons = screen.getAllByRole("button");
+      const submitButton = buttons.find(btn => btn.hasAttribute("disabled"));
+      expect(submitButton).toBeDefined();
     });
-    fireEvent.click(agreeButton);
 
     await waitFor(() => {
-      expect(onSuccess).toHaveBeenCalledWith("consent-1");
+      expect(mockSetOpen).toHaveBeenCalledWith(false);
     });
   });
 
-  it("handles consent rejection", async () => {
-    const setOpen = vi.fn();
+  it("closes modal when pressing ESC", async () => {
+    const user = userEvent.setup();
 
-    renderWithProviders(
+    render(
       <ConsentModal
         open={true}
-        setOpen={setOpen}
-        onSuccess={() => {}}
-        stepData={{
-          consent_purpose_id: "660e8400-e29b-41d4-a716-446655440006",
-          page: "/index",
-        }}
-      />
+        setOpen={mockSetOpen}
+        onSuccess={mockOnSuccess}
+        stepData={{ consent_purpose_id: "test-purpose" }}
+      />,
     );
 
-    const rejectButton = await screen.findByRole("button", {
-      name: "form.reject.button",
-    });
-    fireEvent.click(rejectButton);
+    await user.keyboard("{Escape}");
 
-    expect(setOpen).toHaveBeenCalledWith(false);
+    await waitFor(() => {
+      expect(mockSetOpen).toHaveBeenCalledWith(false);
+    });
   });
 });
