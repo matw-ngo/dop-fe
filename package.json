@@ -105,7 +105,8 @@
     "uuid": "^13.0.0",
     "vaul": "^1.1.2",
     "zod": "^4.1.11",
-    "zustand": "^5.0.8"
+    "zustand": "^5.0.8",
+    "zustand-cookie-storage": "^1.1.1"
   },
   "msw": {
     "workerDirectory": "public"
@@ -140,6 +141,7 @@
     "commander": "^14.0.3",
     "dompurify": "^3.3.1",
     "embla-carousel-autoplay": "^8.6.0",
+    "fast-check": "^4.5.3",
     "glob": "^13.0.0",
     "husky": "^9.1.7",
     "inquirer": "^13.2.2",
