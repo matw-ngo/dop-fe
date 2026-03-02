@@ -68,11 +68,19 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
   const indexStep = useMemo(() => {
     if (!flowData?.steps) return null;
 
+    const normalizePage = (value: string) =>
+      value.startsWith("/") ? value : `/${value}`;
+    const normalizedPage = normalizePage(page);
+
     const matchingStep = flowData.steps.find(
-      (step) => step.page === page || (page === "/index" && step.page === "/"),
+      (step) =>
+        normalizePage(step.page) === normalizedPage ||
+        (normalizedPage === "/index" && normalizePage(step.page) === "/"),
     );
 
-    return matchingStep || (page === "/index" ? flowData.steps[0] : null);
+    return (
+      matchingStep || (normalizedPage === "/index" ? flowData.steps[0] : null)
+    );
   }, [flowData, page]);
 
   const formConfig = useMemo(() => {

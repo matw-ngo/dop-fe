@@ -16,6 +16,12 @@ export const mockConsentData = {
         have_purpose: true,
         required_purpose: true,
       },
+      {
+        page: "/submit-info",
+        consent_purpose_id: "660e8400-e29b-41d4-a716-446655440006",
+        have_purpose: true,
+        required_purpose: true,
+      },
     ],
   },
 

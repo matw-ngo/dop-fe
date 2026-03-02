@@ -2,7 +2,8 @@
   "buttons": {
     "next": "Next",
     "previous": "Previous",
-    "submit": "Submit"
+    "submit": "Submit",
+    "submitting": "Submitting..."
   },
   "errors": {
     "required": "This field is required",

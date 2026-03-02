@@ -2,7 +2,8 @@
   "buttons": {
     "next": "Tiếp theo",
     "previous": "Trước",
-    "submit": "Hoàn tất"
+    "submit": "Hoàn tất",
+    "submitting": "Đang gửi..."
   },
   "errors": {
     "required": "Trường này là bắt buộc",

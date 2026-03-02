@@ -21,5 +21,15 @@ export function useFlowStep(page: string) {
     enabled: !!tenant.uuid,
   });
 
-  return tenantFlowConfig?.steps?.find((step) => step.page === page) ?? null;
+  const normalizePage = (value: string) =>
+    value.startsWith("/") ? value : `/${value}`;
+  const normalizedPage = normalizePage(page);
+
+  return (
+    tenantFlowConfig?.steps?.find(
+      (step) =>
+        normalizePage(step.page) === normalizedPage ||
+        (normalizedPage === "/index" && normalizePage(step.page) === "/"),
+    ) ?? null
+  );
 }

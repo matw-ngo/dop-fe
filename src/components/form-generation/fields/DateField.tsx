@@ -52,6 +52,39 @@ export function DateField({
     "--form-readonly-bg": theme.colors.readOnly,
     "--form-placeholder": theme.colors.placeholder,
     "--form-text-secondary": theme.colors.textSecondary || "#4d7e70",
+    "--form-error": theme.colors.error,
+    "--primary": theme.colors.primary,
+    "--primary-foreground": "#ffffff",
+    "--ring": theme.colors.borderFocus || theme.colors.primary,
+    "--border": theme.colors.border,
+    "--input": theme.colors.border,
+    "--background": theme.colors.background,
+    "--foreground": theme.colors.textPrimary || "#0f172a",
+    "--popover": theme.colors.background,
+    "--popover-foreground": theme.colors.textPrimary || "#0f172a",
+    "--accent": theme.colors.readOnly,
+    "--accent-foreground": theme.colors.textPrimary || "#0f172a",
+    "--muted": theme.colors.readOnly,
+    "--muted-foreground": theme.colors.textSecondary || "#4d7e70",
+    "--destructive": theme.colors.error,
+    "--card": theme.colors.background,
+    "--card-foreground": theme.colors.textPrimary || "#0f172a",
+    "--color-primary": theme.colors.primary,
+    "--color-primary-foreground": "#ffffff",
+    "--color-ring": theme.colors.borderFocus || theme.colors.primary,
+    "--color-border": theme.colors.border,
+    "--color-input": theme.colors.border,
+    "--color-background": theme.colors.background,
+    "--color-foreground": theme.colors.textPrimary || "#0f172a",
+    "--color-popover": theme.colors.background,
+    "--color-popover-foreground": theme.colors.textPrimary || "#0f172a",
+    "--color-accent": theme.colors.readOnly,
+    "--color-accent-foreground": theme.colors.textPrimary || "#0f172a",
+    "--color-muted": theme.colors.readOnly,
+    "--color-muted-foreground": theme.colors.textSecondary || "#4d7e70",
+    "--color-destructive": theme.colors.error,
+    "--color-card": theme.colors.background,
+    "--color-card-foreground": theme.colors.textPrimary || "#0f172a",
   } as React.CSSProperties;
   const popoverThemeVars = {
     backgroundColor: theme.colors.background,
@@ -70,6 +103,22 @@ export function DateField({
     "--color-input": theme.colors.border,
     "--color-muted": theme.colors.readOnly,
     "--color-muted-foreground": theme.colors.textSecondary || "#4d7e70",
+    "--primary": theme.colors.primary,
+    "--primary-foreground": "#ffffff",
+    "--ring": theme.colors.borderFocus || theme.colors.primary,
+    "--border": theme.colors.border,
+    "--input": theme.colors.border,
+    "--background": theme.colors.background,
+    "--foreground": theme.colors.textPrimary || "#0f172a",
+    "--popover": theme.colors.background,
+    "--popover-foreground": theme.colors.textPrimary || "#0f172a",
+    "--accent": theme.colors.readOnly,
+    "--accent-foreground": theme.colors.textPrimary || "#0f172a",
+    "--muted": theme.colors.readOnly,
+    "--muted-foreground": theme.colors.textSecondary || "#4d7e70",
+    "--destructive": theme.colors.error,
+    "--card": theme.colors.background,
+    "--card-foreground": theme.colors.textPrimary || "#0f172a",
   } as React.CSSProperties;
 
   // Determine input type based on field type
@@ -128,8 +177,8 @@ export function DateField({
     "focus:ring-2",
     "focus:ring-[var(--form-primary)]/20",
     // Error state
-    error && "border-red-500",
-    error && "focus:ring-red-500/20",
+    error && "border-[var(--form-error)]",
+    error && "focus:ring-[var(--form-error)]/20",
     // Override background for special states
     isDisabled && "!bg-[var(--form-disabled-bg)]",
     isReadOnly && "!bg-[var(--form-readonly-bg)]",
@@ -172,7 +221,9 @@ export function DateField({
           className="absolute top-2 left-4 text-xs font-medium text-[var(--form-primary)] pointer-events-none z-10"
         >
           {field.label}
-          {isRequired && <span className="text-red-500 ml-0.5">*</span>}
+          {isRequired && (
+            <span className="text-[var(--form-error)] ml-0.5">*</span>
+          )}
         </label>
       )}
 

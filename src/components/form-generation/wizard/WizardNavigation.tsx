@@ -1,6 +1,7 @@
 "use client";
 
 import { Check, ChevronLeft, ChevronRight } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { useFormWizardStore } from "../store/use-form-wizard-store";
 import { useFormTheme } from "../themes/ThemeProvider";
@@ -18,6 +19,7 @@ export function WizardNavigation({
   onComplete,
   className,
 }: WizardNavigationProps) {
+  const t = useTranslations("pages.form.buttons");
   const { theme } = useFormTheme();
   const {
     currentStep,
@@ -147,7 +149,7 @@ export function WizardNavigation({
             )}
           >
             {backButton.icon || <ChevronLeft className="h-4 w-4 mr-2" />}
-            {backButton.label || "Back"}
+            {backButton.label || t("previous")}
           </Button>
         </div>
       )}
@@ -175,8 +177,8 @@ export function WizardNavigation({
                 )}
               >
                 {isSubmitting
-                  ? submitButton.loadingLabel || "Submitting..."
-                  : submitButton.label || "Submit"}
+                  ? submitButton.loadingLabel || t("submitting")
+                  : submitButton.label || t("submit")}
                 {!isSubmitting &&
                   (submitButton.icon || <Check className="h-4 w-4 ml-2" />)}
               </Button>
@@ -192,7 +194,7 @@ export function WizardNavigation({
                   nextButton.fullWidth,
                 )}
               >
-                {nextButton.label || "Next"}
+                {nextButton.label || t("next")}
                 {nextButton.icon || <ChevronRight className="h-4 w-4 ml-2" />}
               </Button>
             )}

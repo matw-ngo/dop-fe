@@ -2,8 +2,9 @@
 
 import { AlertCircle } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useStepMeta } from "../store/use-form-wizard-store";
+import { useFormTheme } from "../themes/ThemeProvider";
+import { cn } from "../utils/helpers";
 
 interface StepErrorsProps {
   stepId: string;
@@ -13,6 +14,7 @@ interface StepErrorsProps {
 export function StepErrors({ stepId, className }: StepErrorsProps) {
   const stepMeta = useStepMeta(stepId);
   const t = useTranslations("pages.form.errors");
+  const { theme } = useFormTheme();
 
   if (
     !stepMeta ||
@@ -27,24 +29,38 @@ export function StepErrors({ stepId, className }: StepErrorsProps) {
     ([key]) => key !== "_step",
   );
 
+  const alertStyle = {
+    borderColor: theme.colors.error,
+    backgroundColor: theme.colors.background,
+    color: theme.colors.error,
+  };
+
   return (
-    <div className={`space-y-2 ${className}`}>
+    <div className={cn("space-y-2", className)}>
       {/* Step-level error */}
       {stepLevelError && (
-        <Alert variant="destructive">
-          <AlertCircle className="h-4 w-4" />
-          <AlertDescription>{stepLevelError}</AlertDescription>
-        </Alert>
+        <div
+          role="alert"
+          className="flex items-start gap-3 rounded-lg border px-4 py-3 text-sm"
+          style={alertStyle}
+        >
+          <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
+          <p className="leading-relaxed">{stepLevelError}</p>
+        </div>
       )}
 
       {/* Field errors summary (optional) */}
       {fieldErrors.length > 0 && !stepLevelError && (
-        <Alert variant="destructive">
-          <AlertCircle className="h-4 w-4" />
-          <AlertDescription>
+        <div
+          role="alert"
+          className="flex items-start gap-3 rounded-lg border px-4 py-3 text-sm"
+          style={alertStyle}
+        >
+          <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
+          <p className="leading-relaxed">
             {t("summary_error", { count: fieldErrors.length })}
-          </AlertDescription>
-        </Alert>
+          </p>
+        </div>
       )}
     </div>
   );
