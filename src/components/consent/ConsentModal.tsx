@@ -1,26 +1,25 @@
 "use client";
 
+import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { type CSSProperties, memo, useEffect, useState } from "react";
-import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
+  DialogOverlay,
+  DialogPortal,
   DialogTitle,
 } from "@/components/ui/dialog";
 import { finzoneTheme } from "@/configs/themes/finzone-theme";
 import { useConsentPurpose } from "@/hooks/consent/use-consent-purpose";
 import { useConsentSession } from "@/hooks/consent/use-consent-session";
-import { useDataCategories } from "@/hooks/consent/use-data-categories";
 import { useUserConsent } from "@/hooks/consent/use-user-consent";
 import { consentClient } from "@/lib/api/services";
 import { useAuthStore } from "@/store/use-auth-store";
 import { type ConsentRecord, useConsentStore } from "@/store/use-consent-store";
 
-import { ConsentForm } from "./ConsentForm";
+import { ConsentForm, ConsentTermsContent } from "./ConsentForm";
 
 interface ConsentModalProps {
   open: boolean;
@@ -48,10 +47,11 @@ export const ConsentModal = memo(function ConsentModal({
     setConsentData,
     setError,
     clearError,
-    consentData,
   } = useConsentStore();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showTermsModal, setShowTermsModal] = useState(false);
+
   const consentThemeStyles = {
     "--consent-bg": finzoneTheme.colors.background,
     "--consent-fg": finzoneTheme.colors.textPrimary,
@@ -59,32 +59,23 @@ export const ConsentModal = memo(function ConsentModal({
     "--consent-border": finzoneTheme.colors.border,
     "--consent-surface": finzoneTheme.colors.readOnly,
     "--consent-primary": finzoneTheme.colors.primary,
+    "--consent-primary-hover": `${finzoneTheme.colors.primary}e6`, // 90% opacity
     "--consent-error": finzoneTheme.colors.error,
-    "--consent-checkbox-border":
-      finzoneTheme.components?.checkable?.uncheckedBorder ??
-      finzoneTheme.colors.border,
+    "--consent-backdrop": finzoneTheme.colors.textPrimary,
   } as CSSProperties;
 
-  // 1. Get Consent Purpose based on step data (purpose_id)
+  // Get Consent Purpose based on step data
   const { data: consentPurpose, isLoading: isLoadingPurpose } =
     useConsentPurpose({
       consentPurposeId: stepData?.consent_purpose_id,
       enabled: open && !!stepData?.consent_purpose_id,
     });
 
-  // 2. Check current status based on Session ID
-  const { data: userConsent, isLoading: isLoadingUserConsent } = useUserConsent(
-    {
-      sessionId: sessionId || undefined,
-      enabled: open && !!sessionId,
-    },
-  );
-
-  const { data: dataCategories, isLoading: isLoadingCategories } =
-    useDataCategories({
-      consentPurposeId: consentPurpose?.id || stepData?.consent_purpose_id,
-      enabled: open,
-    });
+  // Check current status based on Session ID
+  const { isLoading: isLoadingUserConsent } = useUserConsent({
+    sessionId: sessionId || undefined,
+    enabled: open && !!sessionId,
+  });
 
   useEffect(() => {
     const handleDataUpdated = (event: Event) => {
@@ -110,6 +101,10 @@ export const ConsentModal = memo(function ConsentModal({
     };
   }, [setConsentData, setError]);
 
+  const handleViewTerms = () => {
+    setShowTermsModal(true);
+  };
+
   const handleGrantConsent = async () => {
     if (!consentPurpose?.latest_version_id) {
       setError("Missing required configuration");
@@ -120,37 +115,13 @@ export const ConsentModal = memo(function ConsentModal({
     clearError();
 
     try {
-      // Note: Payload structure updated to match CreateConsentRequest
-      // Spec requires: tenant_id, consent_version_id, session_id, source
       const result = await consentClient.POST("/consent", {
         body: {
-          tenant_id: "00000000-0000-0000-0000-000000000000", // FIXME: Get real tenant ID from context/config
-          lead_id: userId, // Optional, can be null for anonymous
+          tenant_id: "00000000-0000-0000-0000-000000000000", // FIXME: Get real tenant ID
+          lead_id: userId,
           consent_version_id: consentPurpose.latest_version_id,
           session_id: sessionId,
           source: "web",
-          // Action is NOT in the body for CreateConsentRequest in the spec I read earlier?
-          // Wait, let me check the spec content again.
-          // CreateConsentRequest: tenant_id, lead_id, consent_version_id, session_id, source.
-          // It does NOT have action.
-          // But UpdateConsentRequest HAS action.
-          // The requirements say: "User press Agree -> FE calls API to create/update... Action: GRANT".
-          // If I use POST /consent, it's create.
-          // If I use PATCH /consent/{id}, it's update.
-          // The logic should be: Check if consent exists (userConsent).
-          // If exists -> Update (PATCH) with action=GRANT (or REVOKE).
-          // If not exists -> Create (POST).
-          // BUT, CreateConsentRequest does not have 'action' field in the schema I saw.
-          // Let's assume creating implies 'GRANT' initially or we need to update immediately?
-          // Or maybe I missed 'action' in CreateConsentRequest?
-          // Let's check the spec file content again if possible or assume standard flow.
-          // Actually, looking at the previous diff:
-          // CreateConsentRequest: tenant_id, lead_id, consent_version_id, session_id, source.
-          // UpdateConsentRequest: ... + action.
-          // So for Create, we don't send action. It probably defaults to something or just creates the record.
-          // Then we might need to Log it with action GRANT.
-          // Requirement: "BE saves session_id and latest_version_id".
-          // "User press Reject -> FE calls API update. Action: REVOKE".
         },
       });
 
@@ -163,7 +134,7 @@ export const ConsentModal = memo(function ConsentModal({
             tenant_id: "00000000-0000-0000-0000-000000000000", // FIXME
             consent_id: newConsentId,
             action: "grant",
-            action_by: "user", // or session_id?
+            action_by: "user",
             source: "web",
           },
         });
@@ -180,8 +151,10 @@ export const ConsentModal = memo(function ConsentModal({
           updated_at: new Date().toISOString(),
         });
 
-        onSuccess?.(newConsentId);
+        // Close all modals
+        setShowTermsModal(false);
         setOpen(false);
+        onSuccess?.(newConsentId);
       }
     } catch (error) {
       setError(
@@ -192,98 +165,102 @@ export const ConsentModal = memo(function ConsentModal({
     }
   };
 
-  const handleRejectConsent = async () => {
-    if (!userConsent?.id) {
-      setConsentStatus("declined");
-      setOpen(false);
-      return;
-    }
-
-    setIsSubmitting(true);
-    clearError();
-
-    try {
-      await consentClient.PATCH("/consent/{id}", {
-        params: { path: { id: userConsent.id } },
-        body: {
-          action: "revoke",
-        },
-      });
-
-      await consentClient.POST("/consent-log", {
-        body: {
-          tenant_id: "00000000-0000-0000-0000-000000000000", // FIXME
-          consent_id: userConsent.id,
-          action: "revoke",
-          action_by: "user",
-          source: "web",
-        },
-      });
-
-      setConsentStatus("declined");
-      setOpen(false);
-    } catch (error) {
-      setError(
-        error instanceof Error ? error.message : "Failed to reject consent",
-      );
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const isLoading =
-    isLoadingPurpose || isLoadingUserConsent || isLoadingCategories;
+  const isLoading = isLoadingPurpose || isLoadingUserConsent;
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent
-        size="xl"
-        style={consentThemeStyles}
-        className="w-[min(96vw,1100px)] max-h-[90vh] overflow-y-auto border-[var(--consent-border)] bg-[var(--consent-bg)] text-[var(--consent-fg)] shadow-xl [&_[data-slot=dialog-close]]:text-[var(--consent-muted)] [&_[data-slot=dialog-close][data-state=open]]:bg-[var(--consent-surface)] [&_[data-slot=dialog-close]:hover]:text-[var(--consent-fg)]"
-      >
-        <DialogHeader>
-          <DialogTitle className="text-[var(--consent-fg)]">
-            {t("modal.title")}
-          </DialogTitle>
-          <DialogDescription className="text-[var(--consent-muted)]">
-            {t("form.description")}
-          </DialogDescription>
-        </DialogHeader>
+    <Dialog
+      open={open}
+      onOpenChange={(isOpen) => {
+        if (!isOpen) {
+          // When closing dialog, reset terms modal state
+          setShowTermsModal(false);
+        }
+        setOpen(isOpen);
+      }}
+    >
+      <DialogPortal>
+        <DialogOverlay
+          style={consentThemeStyles}
+          className="bg-[var(--consent-backdrop)]/86"
+        />
+        {!showTermsModal ? (
+          // Main Consent Form - Bottom positioned
+          <DialogPrimitive.Content
+            style={consentThemeStyles}
+            className="!fixed !top-auto !bottom-8 !left-1/2 !z-50 !grid !w-[calc(100%-2rem)] !max-w-[800px] !-translate-x-1/2 !translate-y-0 !gap-0 rounded-lg border-[var(--consent-border)] bg-[var(--consent-bg)] p-0 text-[var(--consent-fg)] shadow-xl duration-200 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:slide-out-to-bottom-8 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:slide-in-from-bottom-8 sm:!w-[calc(100%-4rem)]"
+          >
+            {isLoading ? (
+              <div className="flex items-center justify-center py-8">
+                <Loader2 className="mr-2 h-6 w-6 animate-spin text-[var(--consent-primary)]" />
+                <span className="text-[var(--consent-muted)]">
+                  {t("common.loading")}
+                </span>
+              </div>
+            ) : (
+              <ConsentForm
+                consentVersion={{
+                  version: consentPurpose?.latest_version,
+                  content: consentPurpose?.latest_content,
+                }}
+                onGrant={handleGrantConsent}
+                isSubmitting={isSubmitting}
+                onViewTerms={handleViewTerms}
+              />
+            )}
+          </DialogPrimitive.Content>
+        ) : (
+          // Terms Detail Modal - Centered
+          <DialogPrimitive.Content
+            style={consentThemeStyles}
+            className="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-[50%] left-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 rounded-lg border p-6 shadow-lg duration-200 sm:max-w-lg border-[var(--consent-border)] bg-[var(--consent-bg)] text-[var(--consent-fg)]"
+          >
+            <DialogPrimitive.Close
+              onClick={() => setShowTermsModal(false)}
+              className="ring-offset-background focus:ring-ring data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute top-4 right-4 rounded-xs opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none text-[var(--consent-muted)] hover:text-[var(--consent-fg)]"
+            >
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 15 15"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <title>Close</title>
+                <path
+                  d="M11.7816 4.03157C12.0062 3.80702 12.0062 3.44295 11.7816 3.2184C11.5571 2.99385 11.193 2.99385 10.9685 3.2184L7.50005 6.68682L4.03164 3.2184C3.80708 2.99385 3.44301 2.99385 3.21846 3.2184C2.99391 3.44295 2.99391 3.80702 3.21846 4.03157L6.68688 7.49999L3.21846 10.9684C2.99391 11.193 2.99391 11.557 3.21846 11.7816C3.44301 12.0061 3.80708 12.0061 4.03164 11.7816L7.50005 8.31316L10.9685 11.7816C11.193 12.0061 11.5571 12.0061 11.7816 11.7816C12.0062 11.557 12.0062 11.193 11.7816 10.9684L8.31322 7.49999L11.7816 4.03157Z"
+                  fill="currentColor"
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                />
+              </svg>
+              <span className="sr-only">Close</span>
+            </DialogPrimitive.Close>
 
-        {isLoading && (
-          <div className="flex items-center justify-center py-8">
-            <Loader2 className="mr-2 h-6 w-6 animate-spin text-[var(--consent-primary)]" />
-            <span className="text-[var(--consent-muted)]">
-              {t("common.loading")}
-            </span>
-          </div>
-        )}
+            <div className="sr-only">
+              <DialogTitle>{t("form.termsModal.title")}</DialogTitle>
+            </div>
 
-        {!isLoading && (
-          <div className="space-y-4">
-            {/* {consentData && (
-              <Alert className="mx-auto w-full max-w-3xl rounded-lg border-0 border-l-2 border-l-[var(--consent-primary)] bg-[var(--consent-surface)]/55 px-3 py-2">
-                <AlertDescription className="text-xs leading-relaxed text-[var(--consent-muted)]">
-                  <span className="font-semibold text-[var(--consent-fg)]">
-                    {t("errors.existingConsent")}:
-                  </span>{" "}
-                  {t("errors.existingConsentDesc")}
-                </AlertDescription>
-              </Alert>
-            )} */}
-            <ConsentForm
+            <ConsentTermsContent
               consentVersion={{
                 version: consentPurpose?.latest_version,
                 content: consentPurpose?.latest_content,
               }}
-              dataCategories={dataCategories}
-              onGrant={handleGrantConsent}
-              onReject={handleRejectConsent}
-              isSubmitting={isSubmitting}
             />
-          </div>
+
+            <div className="flex justify-center pt-5">
+              <Button
+                onClick={handleGrantConsent}
+                disabled={isSubmitting}
+                loading={isSubmitting}
+                size="lg"
+                className="h-14 w-[295px] rounded-lg bg-[var(--consent-primary)] text-base font-semibold leading-6 text-white transition-colors hover:bg-[var(--consent-primary-hover)]"
+              >
+                {isSubmitting ? t("form.loading") : t("form.continueButton")}
+              </Button>
+            </div>
+          </DialogPrimitive.Content>
         )}
-      </DialogContent>
+      </DialogPortal>
     </Dialog>
   );
 });

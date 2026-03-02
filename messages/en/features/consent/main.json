@@ -3,7 +3,7 @@
     "loading": "Loading..."
   },
   "modal": {
-    "title": "Consent Management",
+    "title": "Data Privacy Terms",
     "close": "Close"
   },
   "tabs": {
@@ -11,33 +11,16 @@
     "history": "Consent History"
   },
   "form": {
-    "title": "Grant Consent",
-    "description": "Your information is protected under Vietnamese law",
-    "dataCategories": "Data Categories",
-    "selection": {
-      "summary": "Selected {selected}/{total}",
-      "selectAll": "Select all",
-      "clearAll": "Clear all"
-    },
-    "consentVersion": {
-      "label": "Consent Version",
-      "short": "Version {version}",
-      "toggle": "View consent content"
-    },
-    "agreeAll": {
-      "label": "I confirm and agree to process the selected data categories",
-      "helper": "You can review, search, and adjust categories before granting consent."
-    },
-    "validation": {
-      "selectCategory": "Please select at least one category.",
-      "confirmConsent": "Please confirm your consent before continuing."
-    },
-    "reject": {
-      "button": "Reject"
-    },
-    "grant": {
-      "button": "Grant Consent",
-      "loading": "Granting consent..."
+    "title": "Data Privacy Terms",
+    "description": "We collect some cookies and access data so that the website can help you find products, services and offers that suit you. In addition, it also helps us measure operational efficiency, optimize user experience and advertising.",
+    "agreement": "By selecting \"Continue\", you agree to allow us to process data according to the <link>purposes and terms</link> of the website.",
+    "viewTerms": "View full terms",
+    "continueButton": "Continue",
+    "loading": "Processing...",
+    "termsModal": {
+      "title": "Data Privacy Terms",
+      "description": "By selecting \"Continue\", you agree to allow us to process data according to the purposes and terms of the website.",
+      "close": "Close"
     }
   },
   "history": {

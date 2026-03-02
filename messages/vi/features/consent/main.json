@@ -3,7 +3,7 @@
     "loading": "Đang tải..."
   },
   "modal": {
-    "title": "Quản lý Đồng thuận",
+    "title": "Điều khoản bảo mật dữ liệu",
     "close": "Đóng"
   },
   "tabs": {
@@ -11,33 +11,16 @@
     "history": "Lịch sử Đồng thuận"
   },
   "form": {
-    "title": "Cấp Đồng thuận",
-    "description": "Thông tin của bạn được bảo vệ theo pháp luật Việt Nam",
-    "dataCategories": "Danh mục dữ liệu",
-    "selection": {
-      "summary": "Đã chọn {selected}/{total}",
-      "selectAll": "Chọn tất cả",
-      "clearAll": "Bỏ chọn tất cả"
-    },
-    "consentVersion": {
-      "label": "Phiên bản đồng thuận",
-      "short": "Phiên bản {version}",
-      "toggle": "Xem nội dung đồng thuận"
-    },
-    "agreeAll": {
-      "label": "Tôi xác nhận và đồng ý xử lý các danh mục dữ liệu đã chọn",
-      "helper": "Bạn có thể xem, tìm kiếm và điều chỉnh danh mục trước khi cấp đồng thuận."
-    },
-    "validation": {
-      "selectCategory": "Vui lòng chọn ít nhất một danh mục.",
-      "confirmConsent": "Vui lòng xác nhận đồng thuận trước khi tiếp tục."
-    },
-    "reject": {
-      "button": "Từ chối"
-    },
-    "grant": {
-      "button": "Cấp Đồng thuận",
-      "loading": "Đang cấp đồng thuận..."
+    "title": "Điều khoản bảo mật dữ liệu",
+    "description": "Chúng tôi thu thập một số dữ liệu cookies và dữ liệu truy cập để trang web có thể giúp bạn tìm được sản phẩm, dịch vụ và ưu đãi phù hợp với bạn. Ngoài ra, nó cũng giúp chúng tôi đo lường hiệu quả vận hành, tối ưu trải nghiệm người dùng và quảng cáo.",
+    "agreement": "Bằng việc chọn \"Tiếp tục\", Quý khách đồng ý cho chúng tôi xử lý dữ liệu theo các <link>mục đích và điều khoản</link> của website.",
+    "viewTerms": "Xem điều khoản đầy đủ",
+    "continueButton": "Tiếp tục",
+    "loading": "Đang xử lý...",
+    "termsModal": {
+      "title": "Điều khoản bảo mật dữ liệu",
+      "description": "Bằng việc chọn \"Tiếp tục\", Quý khách đồng ý cho chúng tôi xử lý dữ liệu theo các mục đích và điều khoản của website.",
+      "close": "Đóng"
     }
   },
   "history": {
