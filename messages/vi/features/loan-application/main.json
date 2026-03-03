@@ -28,7 +28,8 @@
     "agree": "Tôi đồng ý và muốn sử dụng <terms>dịch vụ</terms>.",
     "disagree": "Tôi không đồng ý với toàn bộ hoặc một phần trong <terms>Điều khoản dịch vụ</terms>.",
     "termsDialogTitle": "Điều khoản sử dụng dịch vụ",
-    "privacyDialogTitle": "Chính sách bảo mật"
+    "privacyDialogTitle": "Chính sách bảo mật",
+    "closeButton": "Tiếp tục"
   },
   "errors": {
     "phoneRequired": "Số điện thoại không được để trống",

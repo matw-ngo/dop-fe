@@ -135,6 +135,7 @@ export const ConsentModal = memo(function ConsentModal({
         title={t("form.title")}
         variant="bottom"
         themeStyles={consentThemeStyles}
+        disableOutsideClose={true}
       >
         {isLoading ? (
           <div className="flex items-center justify-center py-8">
@@ -164,9 +165,8 @@ export const ConsentModal = memo(function ConsentModal({
         title={t("form.termsModal.title")}
         variant="center"
         themeStyles={consentThemeStyles}
+        disableOutsideClose={true}
       >
-        <ConsentDialogClose onClose={() => setShowTermsModal(false)} />
-
         <ConsentTermsContent
           consentVersion={{
             version: consentPurpose?.latest_version,

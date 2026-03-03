@@ -28,7 +28,8 @@
     "agree": "I agree and want to use the service.",
     "disagree": "I do not agree with all or part of the Terms of Service.",
     "termsDialogTitle": "Terms of Service",
-    "privacyDialogTitle": "Privacy Policy"
+    "privacyDialogTitle": "Privacy Policy",
+    "closeButton": "Continue"
   },
   "errors": {
     "phoneRequired": "Phone number is required",

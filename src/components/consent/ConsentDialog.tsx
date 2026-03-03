@@ -16,6 +16,11 @@ interface ConsentDialogProps {
   title: string;
   variant?: "bottom" | "center";
   themeStyles?: CSSProperties;
+  /**
+   * If true, prevents closing the dialog by clicking outside or pressing Escape
+   * @default false
+   */
+  disableOutsideClose?: boolean;
 }
 
 /**
@@ -28,14 +33,23 @@ export function ConsentDialog({
   title,
   variant = "bottom",
   themeStyles,
+  disableOutsideClose = false,
 }: ConsentDialogProps) {
   const contentClassName =
     variant === "bottom"
       ? "!fixed !top-auto !bottom-8 !left-1/2 !z-50 !grid !w-[calc(100%-2rem)] !max-w-[800px] !-translate-x-1/2 !translate-y-0 !gap-0 rounded-lg border-[var(--consent-border)] bg-[var(--consent-bg)] p-0 text-[var(--consent-fg)] shadow-xl duration-200 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:slide-out-to-bottom-8 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:slide-in-from-bottom-8 sm:!w-[calc(100%-4rem)]"
       : "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-[50%] left-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 rounded-lg border p-6 shadow-lg duration-200 sm:max-w-lg border-[var(--consent-border)] bg-[var(--consent-bg)] text-[var(--consent-fg)]";
 
+  const handleOpenChange = (newOpen: boolean) => {
+    // If disableOutsideClose is true, only allow closing via explicit actions
+    if (disableOutsideClose && !newOpen) {
+      return;
+    }
+    onOpenChange(newOpen);
+  };
+
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogPortal>
         <DialogOverlay
           style={themeStyles}
@@ -44,6 +58,21 @@ export function ConsentDialog({
         <DialogPrimitive.Content
           style={themeStyles}
           className={contentClassName}
+          onEscapeKeyDown={(e) => {
+            if (disableOutsideClose) {
+              e.preventDefault();
+            }
+          }}
+          onPointerDownOutside={(e) => {
+            if (disableOutsideClose) {
+              e.preventDefault();
+            }
+          }}
+          onInteractOutside={(e) => {
+            if (disableOutsideClose) {
+              e.preventDefault();
+            }
+          }}
         >
           <div className="sr-only">
             <DialogTitle>{title}</DialogTitle>

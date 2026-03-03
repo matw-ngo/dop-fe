@@ -6,6 +6,7 @@ import {
   ConsentDialog,
   ConsentDialogClose,
 } from "@/components/consent/ConsentDialog";
+import { Button } from "@/components/ui/button";
 import { useFormTheme } from "@/components/form-generation/themes";
 import { useTenant } from "@/hooks/tenant/use-tenant";
 import { URLS } from "../constants";
@@ -44,6 +45,10 @@ export const TermsAgreement: React.FC<TermsAgreementProps> = ({
         "--consent-muted": theme.colors.textSecondary || "#64748b",
         "--consent-border": theme.colors.border,
         "--consent-primary": theme.colors.primary,
+        "--consent-primary-hover": `${theme.colors.primary}e6`,
+        "--consent-surface": theme.colors.readOnly,
+        "--consent-error": theme.colors.error,
+        "--consent-backdrop": theme.colors.textPrimary || "#0f172a",
       }) as CSSProperties,
     [theme],
   );
@@ -180,13 +185,23 @@ export const TermsAgreement: React.FC<TermsAgreementProps> = ({
             title={t("terms.termsDialogTitle")}
             variant="center"
             themeStyles={consentThemeStyles}
+            disableOutsideClose={true}
           >
-            <ConsentDialogClose onClose={() => setShowTermsDialog(false)} />
             <ConsentTermsContent
               consentVersion={{
                 content: `Nội dung Điều khoản sử dụng dịch vụ sẽ được load từ API hoặc hiển thị ở đây.\n\nĐể xem chi tiết, vui lòng truy cập: ${URLS.TERMS_AND_CONDITIONS}`,
               }}
             />
+
+            <div className="flex justify-center pt-5">
+              <Button
+                onClick={() => setShowTermsDialog(false)}
+                size="lg"
+                className="h-14 w-[295px] rounded-lg bg-[var(--consent-primary)] text-base font-semibold leading-6 text-white transition-colors hover:bg-[var(--consent-primary-hover)]"
+              >
+                {t("terms.closeButton")}
+              </Button>
+            </div>
           </ConsentDialog>
 
           {/* Privacy Policy Dialog */}
@@ -196,13 +211,23 @@ export const TermsAgreement: React.FC<TermsAgreementProps> = ({
             title={t("terms.privacyDialogTitle")}
             variant="center"
             themeStyles={consentThemeStyles}
+            disableOutsideClose={true}
           >
-            <ConsentDialogClose onClose={() => setShowPrivacyDialog(false)} />
             <ConsentTermsContent
               consentVersion={{
                 content: `Nội dung Chính sách bảo mật sẽ được load từ API hoặc hiển thị ở đây.\n\nĐể xem chi tiết, vui lòng truy cập: ${URLS.PRIVACY_POLICY}`,
               }}
             />
+
+            <div className="flex justify-center pt-5">
+              <Button
+                onClick={() => setShowPrivacyDialog(false)}
+                size="lg"
+                className="h-14 w-[295px] rounded-lg bg-[var(--consent-primary)] text-base font-semibold leading-6 text-white transition-colors hover:bg-[var(--consent-primary-hover)]"
+              >
+                {t("terms.closeButton")}
+              </Button>
+            </div>
           </ConsentDialog>
         </>
       )}
