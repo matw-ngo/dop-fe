@@ -10,6 +10,7 @@ export interface MappedStep {
   page: string;
   useEkyc: boolean;
   sendOtp: boolean;
+  consentPurposeId?: string;
   fields: {
     purpose: { visible: boolean; required: boolean };
     phoneNumber: { visible: boolean; required: boolean };
@@ -48,6 +49,7 @@ export function mapApiStepToStep(apiStep: ApiStep): MappedStep {
     page: apiStep.page,
     useEkyc: apiStep.use_ekyc,
     sendOtp: apiStep.send_otp,
+    consentPurposeId: apiStep.consent_purpose_id,
     fields: {
       purpose: {
         visible: apiStep.have_purpose,

@@ -7,7 +7,8 @@
 
 "use client";
 
-import React, { useState, useEffect } from "react";
+import type React from "react";
+import { useEffect, useState } from "react";
 import { mswStore } from "@/mocks/store";
 
 // SVG Icons for professional appearance

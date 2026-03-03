@@ -3,11 +3,11 @@
 import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
-import { TenantThemeProvider } from "@/components/layout/TenantThemeProvider";
 import {
   FormThemeProvider,
   legacyLoanTheme,
 } from "@/components/form-generation/themes";
+import { TenantThemeProvider } from "@/components/layout/TenantThemeProvider";
 import { DynamicLoanForm } from "@/components/loan-application/DynamicLoanForm";
 import { useConsentPurpose } from "@/hooks/consent/use-consent-purpose";
 import { useConsentSession } from "@/hooks/consent/use-consent-session";

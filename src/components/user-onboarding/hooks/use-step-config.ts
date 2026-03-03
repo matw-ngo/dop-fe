@@ -34,13 +34,14 @@ export function useStepConfig(
     if (!flowData?.steps) return [];
 
     const steps: GeneratedStepConfig[] = [];
+    const totalSteps = flowData.steps.length;
 
     // Generate configuration for each step in the flow
-    flowData.steps.forEach((step, _index) => {
+    flowData.steps.forEach((step, index) => {
       const fields = generateFieldsForStep(step, fieldBuilderMap);
       const sortedFields = sortFields(fields);
       const metadata = getStepMetadata(step, t);
-      const navigation = getStepNavigation(step, t);
+      const navigation = getStepNavigation(step, t, totalSteps, index);
 
       // Only include step if it has fields OR if it's a special step (eKYC, OTP)
       const hasFields = sortedFields.length > 0;

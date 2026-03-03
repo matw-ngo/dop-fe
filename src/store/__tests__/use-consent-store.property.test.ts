@@ -1,7 +1,7 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import * as fc from "fast-check";
-import { useConsentStore, clearAllConsentCookies } from "../use-consent-store";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { ConsentRecord } from "../use-consent-store";
+import { clearAllConsentCookies, useConsentStore } from "../use-consent-store";
 
 /**
  * Property-Based Tests for Consent Store

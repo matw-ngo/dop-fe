@@ -6,8 +6,7 @@
 
 "use client";
 
-import type { CSSProperties } from "react";
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { createContext, useContext, useMemo, useState } from "react";
 import { defaultTheme } from "./default";
 import type { FormTheme } from "./types";

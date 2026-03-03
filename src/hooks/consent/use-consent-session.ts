@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { getCookie, setCookie, deleteCookie } from "@/lib/utils/cookie";
+import { deleteCookie, getCookie, setCookie } from "@/lib/utils/cookie";
 
 const COOKIE_NAME = "consent_session_id";
 const COOKIE_MAX_AGE = 2592000; // 30 days in seconds

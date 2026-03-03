@@ -175,10 +175,18 @@ export function classifyStep(step: MappedStep): {
 export function getStepNavigation(
   step: MappedStep,
   t: (key: string) => string,
+  totalSteps?: number,
+  currentStepIndex?: number,
 ) {
+  // Determine if this is the last step (excluding confirmation)
+  const isLastStep =
+    totalSteps && currentStepIndex !== undefined
+      ? currentStepIndex === totalSteps - 2 // -2 because confirmation is added separately
+      : false;
+
   return {
     showSkip: false,
-    nextText: t("navigation.next"),
+    nextText: isLastStep ? t("navigation.complete") : t("navigation.next"),
     previousText: t("navigation.previous"),
     skipText: t("navigation.skip"),
     submitText: t("navigation.submit"),

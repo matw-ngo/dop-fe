@@ -1,11 +1,11 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { renderHook, waitFor } from "@testing-library/react";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import * as cookieUtils from "@/lib/utils/cookie";
 import {
-  useConsentSession,
   clearConsentSessionCookie,
   isCookieSupported,
+  useConsentSession,
 } from "../use-consent-session";
-import * as cookieUtils from "@/lib/utils/cookie";
 
 describe("useConsentSession", () => {
   let cookieStore: Record<string, string> = {};

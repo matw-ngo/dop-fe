@@ -19,13 +19,13 @@
  * @module use-consent-store.test
  */
 
-import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { deleteCookie, getCookie } from "../../lib/utils/cookie";
 import {
-  useConsentStore,
-  clearAllConsentCookies,
   type ConsentRecord,
+  clearAllConsentCookies,
+  useConsentStore,
 } from "../use-consent-store";
-import { getCookie, deleteCookie } from "../../lib/utils/cookie";
 
 describe("Consent Store - Unit Tests", () => {
   let cookieStore: Record<string, string> = {};

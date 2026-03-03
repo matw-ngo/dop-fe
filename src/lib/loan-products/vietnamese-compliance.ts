@@ -1,11 +1,11 @@
 // Vietnamese Banking Compliance Module
 // Comprehensive validation for State Bank of Vietnam (SBV) regulations
 
-import { VietnameseLoanCalculator } from "./interest-calculations";
 import type {
   LoanCalculationParams,
   LoanCalculationResult,
 } from "./interest-calculations";
+import { VietnameseLoanCalculator } from "./interest-calculations";
 import type {
   VietnameseLoanProduct,
   VietnameseLoanType,

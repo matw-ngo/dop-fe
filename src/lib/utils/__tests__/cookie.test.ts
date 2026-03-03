@@ -1,9 +1,9 @@
-import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
-  setCookie,
-  getCookie,
-  deleteCookie,
   type CookieOptions,
+  deleteCookie,
+  getCookie,
+  setCookie,
 } from "../cookie";
 
 describe("Cookie Utilities", () => {

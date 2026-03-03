@@ -5,8 +5,7 @@
  */
 
 import { defaultTheme } from "./default";
-import type { FormTheme } from "./types";
-import type { FormTheme as SimplifiedFormTheme } from "./types";
+import type { FormTheme, FormTheme as SimplifiedFormTheme } from "./types";
 
 type DeepPartial<T> = {
   [K in keyof T]?: T[K] extends object ? DeepPartial<T[K]> : T[K];

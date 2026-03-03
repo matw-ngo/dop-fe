@@ -4,6 +4,7 @@
 // Renders forms in multiple steps with progress tracking and navigation
 
 import { CheckCircle2, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import type React from "react";
 import {
   getResponsiveMargin,
@@ -23,6 +24,7 @@ import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
 import { useMultiStepForm } from "@/hooks/form/use-multi-step-form";
 import { cn } from "@/lib/utils";
+import { useFormTheme } from "@/components/form-generation/themes/ThemeProvider";
 import { AnimatedStepContainer } from "./AnimatedStepContainer";
 import { FormRenderer } from "./FormRenderer";
 import type { MultiStepFormRendererProps } from "./types/multi-step-form";
@@ -34,6 +36,8 @@ export const MultiStepFormRenderer: React.FC<MultiStepFormRendererProps> = ({
   renderNavigation,
   renderProgress,
 }) => {
+  const t = useTranslations("pages.onboarding.navigation");
+  const { theme } = useFormTheme();
   const {
     state,
     actions,
@@ -234,6 +238,14 @@ export const MultiStepFormRenderer: React.FC<MultiStepFormRendererProps> = ({
       return null;
     }
 
+    // Determine button text based on number of steps
+    const nextButtonText =
+      steps.length === 1
+        ? t("complete") // "Hoàn tất" for single step
+        : isLastStep
+          ? t("complete") // "Hoàn tất" for last step
+          : t("next"); // "Tiếp tục" for other steps
+
     return (
       <div className="flex items-center justify-between gap-4">
         <Button
@@ -243,17 +255,27 @@ export const MultiStepFormRenderer: React.FC<MultiStepFormRendererProps> = ({
           disabled={isFirstStep || config.allowBackNavigation === false}
         >
           <ChevronLeft className="mr-2 h-4 w-4" />
-          Previous
+          {t("previous")}
         </Button>
 
         <div className="flex-1" />
 
-        <Button type="submit" disabled={state.isSubmitting}>
+        <Button
+          type="submit"
+          variant="default"
+          disabled={state.isSubmitting}
+          className="h-14 px-6 text-white font-semibold rounded-lg"
+          style={{
+            backgroundColor: theme.colors.primary,
+          }}
+        >
           {state.isSubmitting && (
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
           )}
-          {isLastStep ? "Submit" : "Next"}
-          {!isLastStep && <ChevronRight className="ml-2 h-4 w-4" />}
+          {nextButtonText}
+          {!isLastStep && steps.length > 1 && (
+            <ChevronRight className="ml-2 h-4 w-4" />
+          )}
         </Button>
       </div>
     );

@@ -1,6 +1,5 @@
 // Main component
-export { default } from "./ApplyLoanForm";
-export { default as ApplyLoanForm } from "./ApplyLoanForm";
+export { default, default as ApplyLoanForm } from "./ApplyLoanForm";
 // Components
 export { AmountField } from "./components/AmountField";
 export { FormLayout } from "./components/FormLayout";
@@ -21,12 +20,12 @@ export {
   createLoanApplicationSchema,
   createOtpVerificationSchema,
   createPhoneValidationSchema,
-  loanApplicationSchema,
-  otpVerificationSchema,
-  phoneValidationSchema,
   type LoanApplicationFormData,
+  loanApplicationSchema,
   type OtpVerificationData,
+  otpVerificationSchema,
   type PhoneValidationData,
+  phoneValidationSchema,
 } from "./schema";
 export * from "./types";
 

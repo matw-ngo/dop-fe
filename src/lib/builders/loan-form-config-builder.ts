@@ -407,23 +407,26 @@ export function buildLoanFormConfigFromStep(
     });
   }
 
-  // 16. Terms Agreement field (always required)
-  fields.push({
-    id: "agreeStatus",
-    name: "agreeStatus",
-    type: FieldType.CUSTOM,
-    options: {
-      componentName: "TermsAgreement",
-    },
-    validation: [
-      {
-        type: ValidationRuleType.REQUIRED,
+  // 16. Terms Agreement field (only if step has consent_purpose_id)
+  if (step.consentPurposeId) {
+    fields.push({
+      id: "agreeStatus",
+      name: "agreeStatus",
+      type: FieldType.CUSTOM,
+      options: {
+        componentName: "TermsAgreement",
+        consentPurposeId: step.consentPurposeId,
       },
-    ],
-    i18n: {
-      enabled: true,
-    },
-  });
+      validation: [
+        {
+          type: ValidationRuleType.REQUIRED,
+        },
+      ],
+      i18n: {
+        enabled: true,
+      },
+    });
+  }
 
   return {
     id: "loan-application",

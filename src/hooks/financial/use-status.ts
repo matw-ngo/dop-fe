@@ -10,8 +10,8 @@ import type {
   LoanApplicationStatus,
 } from "@/lib/loan-status/vietnamese-status-config";
 import type {
-  NotificationChannel,
   NotificationPreferences as LoanNotificationPreferences,
+  NotificationChannel,
   NotificationPriority,
 } from "@/lib/notifications/loan-notifications";
 import { loanNotificationManager } from "@/lib/notifications/loan-notifications";

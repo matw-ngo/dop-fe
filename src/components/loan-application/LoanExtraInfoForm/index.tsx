@@ -1,4 +1,7 @@
 "use client";
+import { DollarSign, User } from "lucide-react";
+import { useTranslations } from "next-intl";
+import React, { useMemo } from "react";
 import {
   CREDIT_HISTORY,
   CREDIT_STATUSES,
@@ -8,17 +11,14 @@ import {
   GENDER_OPTIONS,
   INCOME_AMOUNT,
   MARITAL_STATUS,
-  VN_PROVINCES,
   ValidationConfig,
+  VN_PROVINCES,
 } from "@/app/[locale]/loan-wizard/constants";
 import { validProvinceCodeNID12 } from "@/app/[locale]/loan-wizard/utils";
-import { trackEvent, EventType } from "@/lib/tracking";
-import { useLoanApplicationStore } from "@/store/use-loan-store";
-import { DollarSign, User } from "lucide-react";
-import { useTranslations } from "next-intl";
-import React, { useMemo } from "react";
 import { Button, SelectGroup, TextInput } from "@/components/ui";
+import { EventType, trackEvent } from "@/lib/tracking";
 import { cn } from "@/lib/utils";
+import { useLoanApplicationStore } from "@/store/use-loan-store";
 import s from "./style.module.scss";
 
 const provinceList = VN_PROVINCES.map((x) => ({

@@ -32,10 +32,19 @@ export function WizardNavigation({
 
   const isFirstStep = currentStep === 0;
   const isLastStep = currentStep === steps.length - 1;
+  const isSingleStep = steps.length === 1;
 
   const backButton = config?.backButton || {};
   const nextButton = config?.nextButton || {};
   const submitButton = config?.submitButton || {};
+
+  // Determine button text based on step position
+  // Single step OR last step: "Hoàn tất" (submit)
+  // Other steps: "Tiếp tục" (next)
+  const nextButtonText =
+    isSingleStep || isLastStep
+      ? t("submit") // "Hoàn tất"
+      : t("next"); // "Tiếp tục"
 
   const handleNext = async () => {
     const success = await nextStep();
@@ -170,16 +179,23 @@ export function WizardNavigation({
                 disabled={
                   isSubmitting || submitButton.className?.includes("disabled")
                 }
-                className={getButtonClass(
-                  submitButton.variant || "default",
-                  submitButton.className,
-                  submitButton.fullWidth,
+                className={cn(
+                  "h-14 px-6 text-white font-semibold rounded-lg",
+                  getButtonClass(
+                    submitButton.variant || "default",
+                    submitButton.className,
+                    submitButton.fullWidth,
+                  ),
                 )}
+                style={{
+                  backgroundColor: theme.colors.primary,
+                }}
               >
                 {isSubmitting
                   ? submitButton.loadingLabel || t("submitting")
-                  : submitButton.label || t("submit")}
+                  : submitButton.label || nextButtonText}
                 {!isSubmitting &&
+                  !isSingleStep &&
                   (submitButton.icon || <Check className="h-4 w-4 ml-2" />)}
               </Button>
             )
@@ -188,13 +204,19 @@ export function WizardNavigation({
                 type="button"
                 variant={nextButton.variant || "default"}
                 onClick={handleNext}
-                className={getButtonClass(
-                  nextButton.variant || "default",
-                  nextButton.className,
-                  nextButton.fullWidth,
+                className={cn(
+                  "h-14 px-6 text-white font-semibold rounded-lg",
+                  getButtonClass(
+                    nextButton.variant || "default",
+                    nextButton.className,
+                    nextButton.fullWidth,
+                  ),
                 )}
+                style={{
+                  backgroundColor: theme.colors.primary,
+                }}
               >
-                {nextButton.label || t("next")}
+                {nextButton.label || nextButtonText}
                 {nextButton.icon || <ChevronRight className="h-4 w-4 ml-2" />}
               </Button>
             )}

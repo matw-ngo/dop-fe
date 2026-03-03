@@ -1,5 +1,5 @@
-import { useTenant } from "./use-tenant";
 import { useTenantFlow } from "./use-flow";
+import { useTenant } from "./use-tenant";
 
 /**
  * Returns the flow step configuration for a given page identifier.

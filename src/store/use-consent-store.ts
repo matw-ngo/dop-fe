@@ -48,8 +48,8 @@ import {
   persist,
   subscribeWithSelector,
 } from "zustand/middleware";
-import { setCookie, getCookie, deleteCookie } from "../lib/utils/cookie";
 import type { components } from "../lib/api/v1/consent";
+import { deleteCookie, getCookie, setCookie } from "../lib/utils/cookie";
 
 type ConsentAction = components["schemas"]["ConsentAction"];
 

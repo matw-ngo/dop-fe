@@ -1,11 +1,11 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { renderHook, waitFor } from "@testing-library/react";
 import * as fc from "fast-check";
-import {
-  useConsentSession,
-  clearConsentSessionCookie,
-} from "../use-consent-session";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import * as cookieUtils from "@/lib/utils/cookie";
+import {
+  clearConsentSessionCookie,
+  useConsentSession,
+} from "../use-consent-session";
 
 /**
  * Property-Based Tests for Session Manager

@@ -6,6 +6,13 @@
   "loadError": "Tải cấu hình đăng ký thất bại: {message}",
   "loadErrorTitle": "Không thể tải được Form",
   "successAlert": "Đăng ký thành công!",
+  "navigation": {
+    "next": "Tiếp tục",
+    "previous": "Quay lại",
+    "skip": "Bỏ qua",
+    "submit": "Gửi",
+    "complete": "Hoàn tất"
+  },
   "steps": {
     "default": {
       "title": "Bước",
@@ -148,7 +155,8 @@
       "minLength": "Độ dài tối thiểu không đủ",
       "maxLength": "Độ dài vượt quá giới hạn",
       "pattern": "Định dạng không hợp lệ",
-      "positiveNumber": "Vui lòng nhập số dương"
+      "positiveNumber": "Vui lòng nhập số dương",
+      "consentRequired": "Bạn phải đồng ý với điều khoản để tiếp tục"
     }
   }
 }

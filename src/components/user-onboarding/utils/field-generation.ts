@@ -28,6 +28,27 @@ export function generateFieldsForStep(
     }
   }
 
+  // Add consent field at the end if step has consent_purpose_id
+  if (step.consentPurposeId) {
+    const consentField: RawFieldConfig = {
+      fieldName: "agreeStatus",
+      component: "ConsentAgreement",
+      props: {
+        label: "",
+        required: true,
+        consentPurposeId: step.consentPurposeId,
+        validations: [
+          {
+            type: "custom",
+            messageKey: "form.errors.consentRequired",
+            validator: (value: string) => value === "1",
+          },
+        ],
+      },
+    };
+    fields.push(consentField);
+  }
+
   return fields;
 }
 

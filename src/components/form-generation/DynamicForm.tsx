@@ -7,11 +7,13 @@
 "use client";
 
 import { Loader2 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { FieldFactory } from "./factory/FieldFactory";
 import { FormSection } from "./layouts/FormSection";
 import { DynamicLayout } from "./layouts/LayoutEngine";
 import { submitButtonVariants } from "./styles/variants";
+import { useFormTheme } from "./themes/ThemeProvider";
 import type { DynamicFormConfig, FormField } from "./types";
 import { cn, evaluateConditions } from "./utils/helpers";
 import { ValidationEngine } from "./validation/ValidationEngine";
@@ -74,6 +76,9 @@ export function DynamicForm({
   disabled = false,
   readOnly = false,
 }: DynamicFormProps) {
+  const t = useTranslations("pages.onboarding.navigation");
+  const { theme } = useFormTheme();
+
   // Check if this is a multi-step wizard
   const isMultiStep = config.steps && config.steps.length > 0;
 
@@ -370,7 +375,7 @@ export function DynamicForm({
 
   // Render submit button
   const submitButton = config.submitButton || {};
-  const submitLabel = submitButton.label || "Submit";
+  const submitLabel = submitButton.label || t("complete");
   const submitPosition = submitButton.position || "right";
 
   const positionClasses = {
@@ -417,10 +422,17 @@ export function DynamicForm({
         <button
           type="submit"
           disabled={isSubmitting || submitButton.disabled || disabled}
-          className={cn(submitButtonVariants(), submitButton.className)}
+          className={cn(
+            "h-14 px-6 text-white font-semibold rounded-lg transition-colors",
+            "disabled:opacity-50 disabled:cursor-not-allowed",
+            submitButton.className,
+          )}
+          style={{
+            backgroundColor: theme.colors.primary,
+          }}
         >
           {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          {isSubmitting ? "Submitting..." : submitLabel}
+          {isSubmitting ? t("submitting") || "Submitting..." : submitLabel}
         </button>
       </div>
     </form>
