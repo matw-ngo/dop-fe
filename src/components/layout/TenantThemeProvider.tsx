@@ -10,5 +10,13 @@ export function TenantThemeProvider({
 }) {
   const tenant = useTenant();
 
-  return <FormThemeProvider theme={tenant.theme}>{children}</FormThemeProvider>;
+  return (
+    <FormThemeProvider
+      theme={tenant.theme}
+      enableTransitions={true}
+      transitionDuration={200}
+    >
+      {children}
+    </FormThemeProvider>
+  );
 }

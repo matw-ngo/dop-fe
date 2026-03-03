@@ -34,19 +34,8 @@ export function NumberField({
   const isRequired = field.validation?.some(
     (rule) => rule.type === ValidationRuleType.REQUIRED,
   );
-  const textPrimary = theme.colors.textPrimary || "#073126";
-  const textSecondary = theme.colors.textSecondary || "#4d7e70";
-  const fieldCssVars = {
-    "--form-primary": theme.colors.primary,
-    "--form-border": theme.colors.border,
-    "--form-bg": theme.colors.background,
-    "--form-text": textPrimary,
-    "--form-placeholder": theme.colors.placeholder,
-    "--form-selection-bg": theme.colors.primary,
-    "--form-disabled-bg": theme.colors.disabled,
-    "--form-readonly-bg": theme.colors.readOnly,
-    "--form-text-secondary": textSecondary,
-  } as React.CSSProperties;
+
+  // CSS variables are already injected by FormThemeProvider parent
 
   // Display value (formatted for currency)
   const displayValue =
@@ -95,7 +84,7 @@ export function NumberField({
     // Border color
     "border-[var(--form-border)]",
     // Default background
-    "bg-[var(--form-bg)]",
+    "!bg-[var(--form-bg)]",
     // Size
     "h-[60px]",
     "px-4",
@@ -114,7 +103,7 @@ export function NumberField({
   // If internal label is enabled, use wrapper with label
   if (internalLabel && field.label) {
     return (
-      <div className="relative w-full" style={fieldCssVars}>
+      <div className="relative w-full">
         <label
           htmlFor={field.id}
           className="absolute top-2 left-4 text-xs font-medium text-[var(--form-primary)] pointer-events-none z-10"
@@ -166,7 +155,6 @@ export function NumberField({
       inputMode={isCurrency ? "decimal" : "numeric"} // Better mobile keyboard
       aria-invalid={!!error}
       aria-describedby={error ? `${field.id}-error` : undefined}
-      style={fieldCssVars}
       className={cn(...baseInputStyles, ...themeStyles, className)}
     />
   );

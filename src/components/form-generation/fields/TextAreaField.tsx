@@ -33,17 +33,8 @@ export function TextAreaField({
   const isRequired = field.validation?.some(
     (rule) => rule.type === ValidationRuleType.REQUIRED,
   );
-  const fieldCssVars = {
-    "--form-primary": theme.colors.primary,
-    "--form-border": theme.colors.border,
-    "--form-bg": theme.colors.background,
-    "--form-text": theme.colors.textPrimary || "#073126",
-    "--form-placeholder": theme.colors.placeholder,
-    "--form-selection-bg": theme.colors.primary,
-    "--form-disabled-bg": theme.colors.disabled,
-    "--form-readonly-bg": theme.colors.readOnly,
-    "--form-text-secondary": theme.colors.textSecondary || "#4d7e70",
-  } as React.CSSProperties;
+
+  // CSS variables are already injected by FormThemeProvider parent
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     onChange(e.target.value);
@@ -83,7 +74,7 @@ export function TextAreaField({
     // Border color
     "border-[var(--form-border)]",
     // Default background
-    "bg-[var(--form-bg)]",
+    "!bg-[var(--form-bg)]",
     // Padding
     "px-4",
     "py-3",
@@ -105,7 +96,7 @@ export function TextAreaField({
   // If internal label is enabled, use wrapper with label
   if (internalLabel && field.label) {
     return (
-      <div className="relative w-full" style={fieldCssVars}>
+      <div className="relative w-full">
         <label
           htmlFor={field.id}
           className="absolute top-3 left-4 text-xs font-medium text-[var(--form-primary)] pointer-events-none z-10"
@@ -144,7 +135,7 @@ export function TextAreaField({
   }
 
   return (
-    <div className="relative w-full" style={fieldCssVars}>
+    <div className="relative w-full">
       <Textarea
         id={field.id}
         name={field.name}

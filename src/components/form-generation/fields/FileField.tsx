@@ -74,15 +74,8 @@ export function FileField({
   const isRequired = field.validation?.some(
     (rule) => rule.type === ValidationRuleType.REQUIRED,
   );
-  const fieldCssVars = {
-    "--form-primary": theme.colors.primary,
-    "--form-border": theme.colors.border,
-    "--form-bg": theme.colors.background,
-    "--form-text": theme.colors.textPrimary || "#073126",
-    "--form-muted-bg": theme.colors.readOnly,
-    "--form-disabled-bg": theme.colors.disabled,
-    "--form-text-secondary": theme.colors.textSecondary || "#4d7e70",
-  } as React.CSSProperties;
+
+  // CSS variables are already injected by FormThemeProvider parent
 
   // Base field wrapper styles
   const baseFieldStyles = [
@@ -148,7 +141,7 @@ export function FileField({
   const isImage = (file: File) => file.type.startsWith("image/");
 
   return (
-    <div className={cn(...baseFieldStyles, className)} style={fieldCssVars}>
+    <div className={cn(...baseFieldStyles, className)}>
       {files.length === 0 ? (
         <div className={cn("relative w-full", className)}>
           {/* Internal Label */}

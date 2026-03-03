@@ -7,15 +7,11 @@
 @custom-variant dark (&:is([data-color-scheme="dark"] *));
 
 @theme inline {
-  /* Theme colors with proper fallbacks */
-  --color-background: var(--background, #ffffff);
-  --color-foreground: var(--foreground, #000000);
-
   /* Font definitions */
   --font-sans: var(--font-geist-sans, ui-sans-serif, system-ui), "Lexend Deca";
   --font-mono: var(--font-geist-mono, ui-monospace);
 
-  /* Define complete color palette for primary */
+  /* Tailwind color palette - static values */
   --color-primary-50: #eff6ff;
   --color-primary-100: #dbeafe;
   --color-primary-200: #bfdbfe;
@@ -27,9 +23,7 @@
   --color-primary-800: #1e40af;
   --color-primary-900: #1e3a8a;
   --color-primary-950: #172554;
-  --color-primary: var(--color-primary-500);
 
-  /* Define complete color palette for gray */
   --color-gray-50: #f9fafb;
   --color-gray-100: #f3f4f6;
   --color-gray-200: #e5e7eb;
@@ -43,39 +37,62 @@
   --color-gray-950: #030712;
   --color-gray: var(--color-gray-500);
 
-  /* Sidebar colors */
-  --color-sidebar-ring: var(--sidebar-ring, #cbd5e1);
-  --color-sidebar-border: var(--sidebar-border, #e2e8f0);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground, #0f172a);
-  --color-sidebar-accent: var(--sidebar-accent, #f1f5f9);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground, #f8fafc);
-  --color-sidebar-primary: var(--sidebar-primary, #0f172a);
-  --color-sidebar-foreground: var(--sidebar-foreground, #f8fafc);
-  --color-sidebar: var(--sidebar, #f8fafc);
+  /* Sidebar colors - static */
+  --color-sidebar-ring: #cbd5e1;
+  --color-sidebar-border: #e2e8f0;
+  --color-sidebar-accent-foreground: #0f172a;
+  --color-sidebar-accent: #f1f5f9;
+  --color-sidebar-primary-foreground: #f8fafc;
+  --color-sidebar-primary: #0f172a;
+  --color-sidebar-foreground: #f8fafc;
+  --color-sidebar: #f8fafc;
 
-  /* Chart colors */
-  --color-chart-5: var(--chart-5, #f97316);
-  --color-chart-4: var(--chart-4, #eab308);
-  --color-chart-3: var(--chart-3, #84cc16);
-  --color-chart-2: var(--chart-2, #22c55e);
-  --color-chart-1: var(--chart-1, #06b6d4);
+  /* Chart colors - static */
+  --color-chart-5: #f97316;
+  --color-chart-4: #eab308;
+  --color-chart-3: #84cc16;
+  --color-chart-2: #22c55e;
+  --color-chart-1: #06b6d4;
 
-  /* UI colors */
-  --color-ring: var(--ring, #3b82f6);
-  --color-input: var(--input, #e5e7eb);
-  --color-border: var(--border, #e5e7eb);
-  --color-destructive: var(--destructive, #ef4444);
-  --color-accent-foreground: var(--accent-foreground, #0f172a);
-  --color-accent: var(--accent, #f1f5f9);
-  --color-muted-foreground: var(--muted-foreground, #6b7280);
-  --color-muted: var(--muted, #f1f5f9);
-  --color-secondary-foreground: var(--secondary-foreground, #0f172a);
-  --color-secondary: var(--secondary, #f1f5f9);
-  --color-primary-foreground: var(--primary-foreground, #f8fafc);
-  --color-popover-foreground: var(--popover-foreground, #0f172a);
-  --color-popover: var(--popover, #ffffff);
-  --color-card-foreground: var(--card-foreground, #0f172a);
-  --color-card: var(--card, #ffffff);
+  /* Shadcn/UI theme colors - reference form theme variables */
+  --color-primary: var(--form-primary, #3b82f6);
+  --color-primary-foreground: #ffffff;
+  --color-ring: var(--form-border-focus, #3b82f6);
+  --color-border: var(--form-border, #e5e7eb);
+  --color-input: var(--form-border, #e5e7eb);
+  --color-background: var(--form-bg, #ffffff);
+  --color-foreground: var(--form-text, #0f172a);
+  --color-card: var(--form-bg, #ffffff);
+  --color-card-foreground: var(--form-text, #0f172a);
+  --color-popover: var(--form-bg, #ffffff);
+  --color-popover-foreground: var(--form-text, #0f172a);
+  --color-muted: #f9fafb;
+  --color-muted-foreground: var(--form-text-secondary, #6b7280);
+  --color-accent: #f9fafb;
+  --color-accent-foreground: var(--form-text, #0f172a);
+  --color-secondary: #f9fafb;
+  --color-secondary-foreground: var(--form-text, #0f172a);
+  --color-destructive: var(--form-error, #ef4444);
+
+  /* Unprefixed versions for Tailwind */
+  --primary: var(--form-primary, #3b82f6);
+  --primary-foreground: #ffffff;
+  --ring: var(--form-border-focus, #3b82f6);
+  --border: var(--form-border, #e5e7eb);
+  --input: var(--form-border, #e5e7eb);
+  --background: var(--form-bg, #ffffff);
+  --foreground: var(--form-text, #0f172a);
+  --card: var(--form-bg, #ffffff);
+  --card-foreground: var(--form-text, #0f172a);
+  --popover: var(--form-bg, #ffffff);
+  --popover-foreground: var(--form-text, #0f172a);
+  --muted: #f9fafb;
+  --muted-foreground: var(--form-text-secondary, #6b7280);
+  --accent: #f9fafb;
+  --accent-foreground: var(--form-text, #0f172a);
+  --secondary: #f9fafb;
+  --secondary-foreground: var(--form-text, #0f172a);
+  --destructive: var(--form-error, #ef4444);
 
   /* Border radius */
   --radius-sm: calc(var(--radius, 0.5rem) - 4px);

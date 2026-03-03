@@ -2,7 +2,6 @@
 
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { useFormTheme } from "../themes/ThemeProvider";
 import type { FieldComponentProps, RadioFieldConfig } from "../types";
 import { cn } from "../utils/helpers";
 
@@ -20,19 +19,12 @@ export function RadioField({
   disabled,
   className,
 }: FieldComponentProps<string>) {
-  const { theme } = useFormTheme();
   const radioField = field as RadioFieldConfig;
   const options = radioField.options || {};
   const isDisabled = disabled || field.disabled;
   const layout = options.layout || "vertical";
-  const textPrimary = theme.colors.textPrimary || "#073126";
-  const radioBorder = error
-    ? theme.colors.error || "#ff7474"
-    : theme.colors.radioBorder || theme.colors.border;
-  const radioStylesVars = {
-    "--form-primary": theme.colors.primary,
-    "--form-radio-border": radioBorder,
-  } as React.CSSProperties;
+
+  // CSS variables are already injected by FormThemeProvider parent
 
   if (!options.choices || options.choices.length === 0) {
     return null;
@@ -47,6 +39,7 @@ export function RadioField({
     "font-medium",
     "select-none",
     "cursor-pointer",
+    "text-[var(--form-text)]",
     isDisabled && "opacity-60",
     isDisabled && "cursor-not-allowed",
   );
@@ -61,7 +54,6 @@ export function RadioField({
         layout === "horizontal" ? "flex flex-wrap gap-4" : "space-y-3",
         className,
       )}
-      style={radioStylesVars}
       aria-invalid={!!error}
       aria-describedby={error ? `${field.id}-error` : undefined}
     >
@@ -82,7 +74,6 @@ export function RadioField({
                 labelStyles,
                 (isDisabled || choice.disabled) && "!cursor-not-allowed",
               )}
-              style={{ color: textPrimary }}
             >
               {choice.label}
             </Label>

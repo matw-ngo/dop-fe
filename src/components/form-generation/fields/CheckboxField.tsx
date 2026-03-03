@@ -2,7 +2,6 @@
 
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import { useFormTheme } from "../themes/ThemeProvider";
 import {
   type CheckboxFieldConfig,
   type FieldComponentProps,
@@ -24,7 +23,6 @@ export function CheckboxField({
   disabled,
   className,
 }: FieldComponentProps<boolean | string[]>) {
-  const { theme } = useFormTheme();
   const checkboxField = field as CheckboxFieldConfig;
   const options = checkboxField.options || {};
   const isGroup = field.type === "checkbox-group";
@@ -32,14 +30,8 @@ export function CheckboxField({
   const isRequired = field.validation?.some(
     (rule) => rule.type === ValidationRuleType.REQUIRED,
   );
-  const textPrimary = theme.colors.textPrimary || "#073126";
-  const controlBorder = error
-    ? theme.colors.error || "#ff7474"
-    : theme.colors.radioBorder || theme.colors.border;
-  const fieldStyles = {
-    "--form-primary": theme.colors.primary,
-    "--form-radio-border": controlBorder,
-  } as React.CSSProperties;
+
+  // CSS variables are already injected by FormThemeProvider parent
 
   // Base checkbox styles
   const checkboxStyles = "";
@@ -50,6 +42,7 @@ export function CheckboxField({
     "font-medium",
     "select-none",
     "cursor-pointer",
+    "text-[var(--form-text)]",
     isDisabled && "opacity-60",
     isDisabled && "cursor-not-allowed",
   );
@@ -69,7 +62,6 @@ export function CheckboxField({
     return (
       <div
         className={cn("space-y-3", className)}
-        style={fieldStyles}
         role="group"
         aria-label={field.label}
       >
@@ -96,7 +88,6 @@ export function CheckboxField({
                   labelStyles,
                   (isDisabled || choice.disabled) && "!cursor-not-allowed",
                 )}
-                style={{ color: textPrimary }}
               >
                 {choice.label}
               </Label>
@@ -111,10 +102,7 @@ export function CheckboxField({
   const isChecked = !!value;
 
   return (
-    <div
-      className={cn("flex items-center gap-2", className)}
-      style={fieldStyles}
-    >
+    <div className={cn("flex items-center gap-2", className)}>
       <Checkbox
         id={field.id}
         name={field.name}
@@ -130,7 +118,6 @@ export function CheckboxField({
         <Label
           htmlFor={field.id}
           className={cn(labelStyles, isDisabled && "!cursor-not-allowed")}
-          style={{ color: textPrimary }}
         >
           {options.checkboxLabel || field.label}
           {isRequired && <span className="text-red-500 ml-0.5">*</span>}

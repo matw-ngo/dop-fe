@@ -43,83 +43,9 @@ export function DateField({
   const isRequired = field.validation?.some(
     (rule) => rule.type === ValidationRuleType.REQUIRED,
   );
-  const fieldCssVars = {
-    "--form-primary": theme.colors.primary,
-    "--form-border": theme.colors.border,
-    "--form-bg": theme.colors.background,
-    "--form-text": theme.colors.textPrimary || "#073126",
-    "--form-disabled-bg": theme.colors.disabled,
-    "--form-readonly-bg": theme.colors.readOnly,
-    "--form-placeholder": theme.colors.placeholder,
-    "--form-text-secondary": theme.colors.textSecondary || "#4d7e70",
-    "--form-error": theme.colors.error,
-    "--primary": theme.colors.primary,
-    "--primary-foreground": "#ffffff",
-    "--ring": theme.colors.borderFocus || theme.colors.primary,
-    "--border": theme.colors.border,
-    "--input": theme.colors.border,
-    "--background": theme.colors.background,
-    "--foreground": theme.colors.textPrimary || "#0f172a",
-    "--popover": theme.colors.background,
-    "--popover-foreground": theme.colors.textPrimary || "#0f172a",
-    "--accent": theme.colors.readOnly,
-    "--accent-foreground": theme.colors.textPrimary || "#0f172a",
-    "--muted": theme.colors.readOnly,
-    "--muted-foreground": theme.colors.textSecondary || "#4d7e70",
-    "--destructive": theme.colors.error,
-    "--card": theme.colors.background,
-    "--card-foreground": theme.colors.textPrimary || "#0f172a",
-    "--color-primary": theme.colors.primary,
-    "--color-primary-foreground": "#ffffff",
-    "--color-ring": theme.colors.borderFocus || theme.colors.primary,
-    "--color-border": theme.colors.border,
-    "--color-input": theme.colors.border,
-    "--color-background": theme.colors.background,
-    "--color-foreground": theme.colors.textPrimary || "#0f172a",
-    "--color-popover": theme.colors.background,
-    "--color-popover-foreground": theme.colors.textPrimary || "#0f172a",
-    "--color-accent": theme.colors.readOnly,
-    "--color-accent-foreground": theme.colors.textPrimary || "#0f172a",
-    "--color-muted": theme.colors.readOnly,
-    "--color-muted-foreground": theme.colors.textSecondary || "#4d7e70",
-    "--color-destructive": theme.colors.error,
-    "--color-card": theme.colors.background,
-    "--color-card-foreground": theme.colors.textPrimary || "#0f172a",
-  } as React.CSSProperties;
-  const popoverThemeVars = {
-    backgroundColor: theme.colors.background,
-    color: theme.colors.textPrimary || "#0f172a",
-    borderColor: theme.colors.border,
-    "--color-popover": theme.colors.background,
-    "--color-popover-foreground": theme.colors.textPrimary || "#0f172a",
-    "--color-background": theme.colors.background,
-    "--color-foreground": theme.colors.textPrimary || "#0f172a",
-    "--color-accent": theme.colors.readOnly,
-    "--color-accent-foreground": theme.colors.textPrimary || "#0f172a",
-    "--color-primary": theme.colors.primary,
-    "--color-primary-foreground": "#ffffff",
-    "--color-ring": theme.colors.borderFocus || theme.colors.primary,
-    "--color-border": theme.colors.border,
-    "--color-input": theme.colors.border,
-    "--color-muted": theme.colors.readOnly,
-    "--color-muted-foreground": theme.colors.textSecondary || "#4d7e70",
-    "--primary": theme.colors.primary,
-    "--primary-foreground": "#ffffff",
-    "--ring": theme.colors.borderFocus || theme.colors.primary,
-    "--border": theme.colors.border,
-    "--input": theme.colors.border,
-    "--background": theme.colors.background,
-    "--foreground": theme.colors.textPrimary || "#0f172a",
-    "--popover": theme.colors.background,
-    "--popover-foreground": theme.colors.textPrimary || "#0f172a",
-    "--accent": theme.colors.readOnly,
-    "--accent-foreground": theme.colors.textPrimary || "#0f172a",
-    "--muted": theme.colors.readOnly,
-    "--muted-foreground": theme.colors.textSecondary || "#4d7e70",
-    "--destructive": theme.colors.error,
-    "--card": theme.colors.background,
-    "--card-foreground": theme.colors.textPrimary || "#0f172a",
-  } as React.CSSProperties;
+
+  // CSS variables are already injected by FormThemeProvider parent
+  // No need to create fieldCssVars object here!
 
   // Determine input type based on field type
   const _inputType = (field.type as "date" | "datetime" | "time") || "date";
@@ -168,7 +94,7 @@ export function DateField({
     // Border color
     "border-[var(--form-border)]",
     // Default background
-    "bg-[var(--form-bg)]",
+    "!bg-[var(--form-bg)]",
     // Size
     "h-[60px]",
     "px-4",
@@ -214,7 +140,7 @@ export function DateField({
   };
 
   const content = (
-    <div className={cn("relative w-full", className)} style={fieldCssVars}>
+    <div className={cn("relative w-full", className)}>
       {internalLabel && field.label && (
         <label
           htmlFor={field.id}
@@ -232,11 +158,7 @@ export function DateField({
       ) : (
         <Popover>
           <PopoverTrigger asChild>{renderTrigger()}</PopoverTrigger>
-          <PopoverContent
-            className="w-auto p-0"
-            align="start"
-            style={popoverThemeVars}
-          >
+          <PopoverContent className="w-auto p-0" align="start">
             <Calendar
               mode="single"
               selected={dateValue}

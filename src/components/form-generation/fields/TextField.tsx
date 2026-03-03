@@ -31,13 +31,8 @@ export function TextField({
     (rule) => rule.type === ValidationRuleType.REQUIRED,
   );
   const secondaryTextColor = theme.colors.textSecondary || "#4d7e70";
-  const placeholderColor = theme.colors.placeholder || "#A3A3A3";
-  const textPrimary = theme.colors.textPrimary || "#073126";
-  const fieldCssVars = {
-    "--form-placeholder": placeholderColor,
-    "--form-text": textPrimary,
-    "--form-selection-bg": theme.colors.primary,
-  } as React.CSSProperties;
+
+  // CSS variables are already injected by FormThemeProvider parent
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange(e.target.value);
@@ -84,25 +79,25 @@ export function TextField({
   // Theme-specific styles
   const themeStyles = [
     // Border radius from theme
-    "rounded-[8px]", // This could be extracted from theme if needed
+    "rounded-[8px]",
     // Border color
-    `border-[${theme.colors.border}]`,
-    // Default background (important!)
-    `bg-[${theme.colors.background}]`,
+    "border-[var(--form-border)]",
+    // Default background - use CSS variable!
+    "!bg-[var(--form-bg)]",
     // Focus state
-    `focus:border-[${theme.colors.borderFocus}]`,
+    "focus:border-[var(--form-border-focus)]",
     "focus:ring-2",
-    `focus:ring-[${theme.colors.primary}]/20`,
+    "focus:ring-[var(--form-primary)]/20",
     // Focus within (for wrapper)
-    `focus-within:border-[${theme.colors.borderFocus}]`,
+    "focus-within:border-[var(--form-border-focus)]",
     "focus-within:ring-2",
-    `focus-within:ring-[${theme.colors.primary}]/20`,
+    "focus-within:ring-[var(--form-primary)]/20",
     // Error state
-    error && `border-[${theme.colors.error}]`,
-    error && `focus:ring-[${theme.colors.error}]/20`,
+    error && "border-[var(--form-error)]",
+    error && "focus:ring-[var(--form-error)]/20",
     // Override background for special states
-    (disabled || field.disabled) && `!bg-[${theme.colors.disabled}]`,
-    (readOnly || field.readOnly) && `!bg-[${theme.colors.readOnly}]`,
+    (disabled || field.disabled) && "!bg-[var(--form-disabled-bg)]",
+    (readOnly || field.readOnly) && "!bg-[var(--form-readonly-bg)]",
   ].filter(Boolean);
 
   // Size styles
@@ -127,16 +122,12 @@ export function TextField({
           sizeStyles.md,
           internalLabel && "pt-5 pb-1",
         )}
-        style={fieldCssVars}
       >
         {/* Internal Label */}
         {internalLabel && field.label && (
           <label
             htmlFor={field.id}
-            className={cn(
-              "absolute top-2 left-4 text-xs font-medium pointer-events-none",
-              `text-[${theme.colors.primary}]`,
-            )}
+            className="absolute top-2 left-4 text-xs font-medium pointer-events-none text-[var(--form-primary)]"
           >
             {field.label}
             {isRequired && <span className="text-red-500 ml-0.5">*</span>}
@@ -225,7 +216,6 @@ export function TextField({
         sizeStyles.md,
         className,
       )}
-      style={fieldCssVars}
     />
   );
 }

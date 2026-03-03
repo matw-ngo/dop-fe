@@ -26,13 +26,8 @@ export function SwitchField({
   const isRequired = field.validation?.some(
     (rule) => rule.type === ValidationRuleType.REQUIRED,
   );
-  const fieldCssVars = {
-    "--form-primary": theme.colors.primary,
-    "--form-border": theme.colors.border,
-    "--form-bg": theme.colors.background,
-    "--form-muted-bg": theme.colors.readOnly,
-    "--form-text": theme.colors.textPrimary || "#073126",
-  } as React.CSSProperties;
+
+  // CSS variables are already injected by FormThemeProvider parent
 
   // Base switch container styles
   const switchContainerStyles = cn(
@@ -122,10 +117,7 @@ export function SwitchField({
   };
 
   return (
-    <div
-      className={cn("flex items-center gap-3", className)}
-      style={fieldCssVars}
-    >
+    <div className={cn("flex items-center gap-3", className)}>
       {/* Hidden Radix Switch for screen reader accessibility */}
       <SwitchPrimitive.Root
         id={field.id}

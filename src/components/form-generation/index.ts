@@ -265,4 +265,5 @@ export {
    */
   legacyLoanTheme,
   useFormTheme,
+  useThemeCssVars,
 } from "./themes";

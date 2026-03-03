@@ -59,23 +59,21 @@ export function SelectField({
     // Focus styles with customizable ring
     "focus-visible:outline-none",
     "focus-visible:ring-2",
-    theme.focusRing
-      ? `focus-visible:ring-[${theme.focusRing.color}]/${theme.focusRing.opacity}`
-      : `focus-visible:ring-[${theme.colors.primary}]/20`,
-    `focus-visible:border-[${theme.colors.borderFocus}]`,
+    "focus-visible:ring-[var(--form-primary)]/20",
+    "focus-visible:border-[var(--form-border-focus)]",
     // Disabled state
     "disabled:cursor-not-allowed",
     "disabled:opacity-60",
     // Error state
-    error && `border-[${theme.colors.error}]`,
-    error && `focus:ring-[${theme.colors.error}]/20`,
+    error && "border-[var(--form-error)]",
+    error && "focus:ring-[var(--form-error)]/20",
   ];
 
   // Theme-specific styles
   const themeStyles = [
     // Border and background
-    `bg-[${theme.colors.background}]`,
-    `border-[${theme.colors.border}]`,
+    "!bg-[var(--form-bg)]",
+    "border-[var(--form-border)]",
     "rounded-[8px]",
     // Size - adjust for internal label
     internalLabel ? "min-h-[60px] py-3" : "h-[60px]",
@@ -171,12 +169,7 @@ export function SelectField({
       >
         <div className="flex flex-col items-start justify-center flex-1 w-full text-left">
           {internalLabel && field.label && (
-            <span
-              className={cn(
-                "text-xs font-medium mb-0.5",
-                `text-[${theme.colors.primary}]`,
-              )}
-            >
+            <span className="text-xs font-medium mb-0.5 text-[var(--form-primary)]">
               {field.label}
               {isRequired && <span className="text-red-500 ml-0.5">*</span>}
             </span>

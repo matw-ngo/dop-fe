@@ -16,5 +16,21 @@ export { defaultTheme } from "./default";
  * @deprecated Use TenantThemeProvider for automatic tenant-aware theming
  */
 export { legacyLoanTheme } from "./legacy-loan";
-export { FormThemeProvider, useFormTheme } from "./ThemeProvider";
+export {
+  FormThemeProvider,
+  useFormTheme,
+  useThemeCssVars,
+} from "./ThemeProvider";
 export type { FormTheme } from "./types";
+
+// Field utilities
+export {
+  baseFieldStyles,
+  disabledFieldStyles,
+  errorFieldStyles,
+  getFieldCssVars,
+  getFieldStyles,
+  getPopoverCssVars,
+  readOnlyFieldStyles,
+  themeFieldStyles,
+} from "./field-theme-utils";
