@@ -4,11 +4,10 @@ import React, { useState } from "react";
 import {
   type DynamicFormConfig,
   FieldType,
-  FormThemeProvider,
-  legacyLoanTheme,
   ValidationRuleType,
 } from "@/components/form-generation";
 import { StepWizard } from "@/components/form-generation/wizard";
+import { TenantThemeProvider } from "@/components/layout/TenantThemeProvider";
 import { DynamicLoanForm } from "@/components/loan-application/DynamicLoanForm";
 
 // ============================================================================
@@ -623,12 +622,12 @@ export const MinimalFlow: Story = {
   render: () => {
     const config = buildFormConfig(minimalFlow);
     return (
-      <FormThemeProvider theme={legacyLoanTheme}>
+      <TenantThemeProvider>
         <StepWizard
           config={config}
           onComplete={(data) => console.log("Form completed:", data)}
         />
-      </FormThemeProvider>
+      </TenantThemeProvider>
     );
   },
   play: async ({ canvasElement }) => {
@@ -651,12 +650,12 @@ export const StandardFlow: Story = {
   render: () => {
     const config = buildFormConfig(standardFlow);
     return (
-      <FormThemeProvider theme={legacyLoanTheme}>
+      <TenantThemeProvider>
         <StepWizard
           config={config}
           onComplete={(data) => console.log("Form completed:", data)}
         />
-      </FormThemeProvider>
+      </TenantThemeProvider>
     );
   },
   play: async ({ canvasElement }) => {
@@ -679,12 +678,12 @@ export const FullFlowAllFields: Story = {
   render: () => {
     const config = buildFormConfig(fullFlow);
     return (
-      <FormThemeProvider theme={legacyLoanTheme}>
+      <TenantThemeProvider>
         <StepWizard
           config={config}
           onComplete={(data) => console.log("Form completed:", data)}
         />
-      </FormThemeProvider>
+      </TenantThemeProvider>
     );
   },
   play: async ({ canvasElement }) => {
@@ -714,12 +713,12 @@ export const PhoneModalDefault: Story = {
     const config = buildFormConfig(standardFlow);
     return (
       <PhoneModalWrapper>
-        <FormThemeProvider theme={legacyLoanTheme}>
+        <TenantThemeProvider>
           <StepWizard
             config={config}
             onComplete={(data) => console.log("Form completed:", data)}
           />
-        </FormThemeProvider>
+        </TenantThemeProvider>
       </PhoneModalWrapper>
     );
   },
@@ -744,12 +743,12 @@ export const ValidationRequiredFields: Story = {
   render: () => {
     const config = buildFormConfig(minimalFlow);
     return (
-      <FormThemeProvider theme={legacyLoanTheme}>
+      <TenantThemeProvider>
         <StepWizard
           config={config}
           onComplete={(data) => console.log("Form completed:", data)}
         />
-      </FormThemeProvider>
+      </TenantThemeProvider>
     );
   },
   play: async ({ canvasElement }) => {
@@ -772,12 +771,12 @@ export const ValidationInvalidEmail: Story = {
   render: () => {
     const config = buildFormConfig(standardFlow);
     return (
-      <FormThemeProvider theme={legacyLoanTheme}>
+      <TenantThemeProvider>
         <StepWizard
           config={config}
           onComplete={(data) => console.log("Form completed:", data)}
         />
-      </FormThemeProvider>
+      </TenantThemeProvider>
     );
   },
   play: async ({ canvasElement }) => {
@@ -800,12 +799,12 @@ export const ValidationInvalidNationalId: Story = {
   render: () => {
     const config = buildFormConfig(standardFlow);
     return (
-      <FormThemeProvider theme={legacyLoanTheme}>
+      <TenantThemeProvider>
         <StepWizard
           config={config}
           onComplete={(data) => console.log("Form completed:", data)}
         />
-      </FormThemeProvider>
+      </TenantThemeProvider>
     );
   },
   play: async ({ canvasElement }) => {
@@ -832,12 +831,12 @@ export const MobileView: Story = {
     const config = buildFormConfig(standardFlow);
     return (
       <div className="max-w-sm mx-auto">
-        <FormThemeProvider theme={legacyLoanTheme}>
+        <TenantThemeProvider>
           <StepWizard
             config={config}
             onComplete={(data) => console.log("Form completed:", data)}
           />
-        </FormThemeProvider>
+        </TenantThemeProvider>
       </div>
     );
   },
@@ -861,12 +860,12 @@ export const TabletView: Story = {
     const config = buildFormConfig(standardFlow);
     return (
       <div className="max-w-md mx-auto">
-        <FormThemeProvider theme={legacyLoanTheme}>
+        <TenantThemeProvider>
           <StepWizard
             config={config}
             onComplete={(data) => console.log("Form completed:", data)}
           />
-        </FormThemeProvider>
+        </TenantThemeProvider>
       </div>
     );
   },
@@ -888,12 +887,12 @@ export const DesktopView: Story = {
   render: () => {
     const config = buildFormConfig(standardFlow);
     return (
-      <FormThemeProvider theme={legacyLoanTheme}>
+      <TenantThemeProvider>
         <StepWizard
           config={config}
           onComplete={(data) => console.log("Form completed:", data)}
         />
-      </FormThemeProvider>
+      </TenantThemeProvider>
     );
   },
   play: async ({ canvasElement }) => {
@@ -910,12 +909,12 @@ export const AccessibilityKeyboardNav: Story = {
   render: () => {
     const config = buildFormConfig(minimalFlow);
     return (
-      <FormThemeProvider theme={legacyLoanTheme}>
+      <TenantThemeProvider>
         <StepWizard
           config={config}
           onComplete={(data) => console.log("Form completed:", data)}
         />
-      </FormThemeProvider>
+      </TenantThemeProvider>
     );
   },
   play: async ({ canvasElement }) => {
@@ -950,12 +949,12 @@ export const FormInteractionPurposeSelect: Story = {
   render: () => {
     const config = buildFormConfig(standardFlow);
     return (
-      <FormThemeProvider theme={legacyLoanTheme}>
+      <TenantThemeProvider>
         <StepWizard
           config={config}
           onComplete={(data) => console.log("Form completed:", data)}
         />
-      </FormThemeProvider>
+      </TenantThemeProvider>
     );
   },
   play: async ({ canvasElement }) => {
@@ -979,12 +978,12 @@ export const FormInteractionGenderRadio: Story = {
   render: () => {
     const config = buildFormConfig(fullFlow);
     return (
-      <FormThemeProvider theme={legacyLoanTheme}>
+      <TenantThemeProvider>
         <StepWizard
           config={config}
           onComplete={(data) => console.log("Form completed:", data)}
         />
-      </FormThemeProvider>
+      </TenantThemeProvider>
     );
   },
   play: async ({ canvasElement }) => {
@@ -1015,12 +1014,12 @@ export const WithSubmitSuccessCallback: Story = {
   render: () => {
     const config = buildFormConfig(minimalFlow);
     return (
-      <FormThemeProvider theme={legacyLoanTheme}>
+      <TenantThemeProvider>
         <StepWizard
           config={config}
           onComplete={(data) => console.log("Form completed:", data)}
         />
-      </FormThemeProvider>
+      </TenantThemeProvider>
     );
   },
 };
@@ -1034,12 +1033,12 @@ export const EdgeCaseLongName: Story = {
   render: () => {
     const config = buildFormConfig(standardFlow);
     return (
-      <FormThemeProvider theme={legacyLoanTheme}>
+      <TenantThemeProvider>
         <StepWizard
           config={config}
           onComplete={(data) => console.log("Form completed:", data)}
         />
-      </FormThemeProvider>
+      </TenantThemeProvider>
     );
   },
   play: async ({ canvasElement }) => {
@@ -1090,12 +1089,12 @@ export const EdgeCaseAllOptionalFields: Story = {
   render: () => {
     const config = buildFormConfig(optionalFlow);
     return (
-      <FormThemeProvider theme={legacyLoanTheme}>
+      <TenantThemeProvider>
         <StepWizard
           config={config}
           onComplete={(data) => console.log("Form completed:", data)}
         />
-      </FormThemeProvider>
+      </TenantThemeProvider>
     );
   },
   play: async ({ canvasElement }) => {

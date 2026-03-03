@@ -4,10 +4,6 @@ import { X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { StepWizard } from "@/components/form-generation";
-import {
-  FormThemeProvider,
-  legacyLoanTheme,
-} from "@/components/form-generation/themes";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -120,12 +116,10 @@ export function FlowFormDialog({ open, onOpenChange }: FlowFormDialogProps) {
               </p>
             )}
 
-            <FormThemeProvider theme={legacyLoanTheme}>
-              <StepWizard
-                config={dynamicFormConfig}
-                onComplete={handleComplete}
-              />
-            </FormThemeProvider>
+            <StepWizard
+              config={dynamicFormConfig}
+              onComplete={handleComplete}
+            />
           </div>
         )}
 

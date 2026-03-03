@@ -5,10 +5,6 @@ import { useTranslations } from "next-intl";
 import React, { useMemo } from "react";
 import { toast } from "sonner";
 import { StepWizard } from "@/components/form-generation";
-import {
-  FormThemeProvider,
-  legacyLoanTheme,
-} from "@/components/form-generation/themes";
 import { OtpVerificationModal } from "@/components/loan-application/ApplyLoanForm/components/OtpVerificationModal";
 import { PhoneVerificationModal } from "@/components/loan-application/ApplyLoanForm/components/PhoneVerificationModal";
 import { useCreateLead } from "@/hooks/features/lead/use-create-lead";
@@ -230,35 +226,33 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
 
   return (
     <div data-testid="dynamic-loan-form">
-      <FormThemeProvider theme={legacyLoanTheme}>
-        <StepWizard
-          config={formConfig}
-          initialData={formData}
-          onComplete={handleFormComplete}
-        />
+      <StepWizard
+        config={formConfig}
+        initialData={formData}
+        onComplete={handleFormComplete}
+      />
 
-        <PhoneVerificationModal
-          open={showPhoneModal}
-          onClose={() => setShowPhoneModal(false)}
-          onVerify={handlePhoneSubmit}
-          title={t("otp.title")}
-          description={t("otp.description")}
-          isSubmitting={isCreatingLead}
-        />
+      <PhoneVerificationModal
+        open={showPhoneModal}
+        onClose={() => setShowPhoneModal(false)}
+        onVerify={handlePhoneSubmit}
+        title={t("otp.title")}
+        description={t("otp.description")}
+        isSubmitting={isCreatingLead}
+      />
 
-        <OtpVerificationModal
-          open={showOTPModal}
-          onClose={() => setShowOTPModal(false)}
-          phoneNumber={(formData.phone_number as string) || ""}
-          leadId={createdLeadId}
-          token={createdLeadToken}
-          otpType={2 as 1 | 2 | undefined}
-          onSuccess={handleOtpSuccess}
-          onFailure={handleOtpFailure}
-          onExpired={handleOtpExpired}
-          size={6}
-        />
-      </FormThemeProvider>
+      <OtpVerificationModal
+        open={showOTPModal}
+        onClose={() => setShowOTPModal(false)}
+        phoneNumber={(formData.phone_number as string) || ""}
+        leadId={createdLeadId}
+        token={createdLeadToken}
+        otpType={2 as 1 | 2 | undefined}
+        onSuccess={handleOtpSuccess}
+        onFailure={handleOtpFailure}
+        onExpired={handleOtpExpired}
+        size={6}
+      />
     </div>
   );
 };

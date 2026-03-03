@@ -38,9 +38,9 @@ export interface FormThemeProviderProps {
  * @example
  * ```tsx
  * import { FormThemeProvider } from '@/components/form-generation/themes/ThemeProvider';
- * import { legacyLoanTheme } from '@/components/form-generation/themes/legacy-loan';
+ * import { finzoneTheme } from '@/configs/themes/finzone-theme';
  *
- * <FormThemeProvider theme={legacyLoanTheme}>
+ * <FormThemeProvider theme={finzoneTheme}>
  *   <StepWizard config={wizardConfig} />
  * </FormThemeProvider>
  * ```

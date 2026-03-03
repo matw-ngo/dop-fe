@@ -3,10 +3,6 @@
 import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
-import {
-  FormThemeProvider,
-  legacyLoanTheme,
-} from "@/components/form-generation/themes";
 import { TenantThemeProvider } from "@/components/layout/TenantThemeProvider";
 import { DynamicLoanForm } from "@/components/loan-application/DynamicLoanForm";
 import { useConsentPurpose } from "@/hooks/consent/use-consent-purpose";
@@ -167,9 +163,7 @@ export default function LoanInfoPage() {
             boxShadow: "0 10px 40px rgba(1, 120, 72, 0.08)",
           }}
         >
-          <FormThemeProvider theme={legacyLoanTheme}>
-            <FindingLoanScreen onFinish={handleFindingFinish} />
-          </FormThemeProvider>
+          <FindingLoanScreen onFinish={handleFindingFinish} />
         </div>
       );
     }

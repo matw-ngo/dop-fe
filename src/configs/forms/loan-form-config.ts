@@ -12,12 +12,10 @@
  * Usage:
  * ```typescript
  * import { loanFormWizardConfig } from "@/configs/forms/loan-form-config";
- * import { FormThemeProvider, legacyLoanTheme } from "@/components/form-generation/themes";
  * import { StepWizard } from "@/components/form-generation";
  *
- * <FormThemeProvider theme={legacyLoanTheme}>
- *   <StepWizard config={loanFormWizardConfig} onComplete={handleComplete} />
- * </FormThemeProvider>
+ * // Theme is automatically applied via TenantThemeProvider in global providers
+ * <StepWizard config={loanFormWizardConfig} onComplete={handleComplete} />
  * ```
  */
 
@@ -43,11 +41,14 @@ try {
  * Loan Application Form Wizard Configuration
  *
  * @remarks
- * The form uses the legacyLoanTheme for styling which provides:
- * - Primary color: finzoneTheme.colors.primary (green)
- * - Dark green accent: #003e2c
+ * The form uses tenant-aware theming which automatically applies the current tenant's theme.
+ * For Finzone tenant, this provides:
+ * - Primary color: #017848 (green)
+ * - Border color: #bfd1cc
+ * - Internal label mode enabled
  *
- * @see legacyLoanTheme in @/components/form-generation/themes
+ * @see TenantThemeProvider in @/components/layout/TenantThemeProvider
+ * @see finzoneTheme in @/configs/themes/finzone-theme
  */
 export const loanFormWizardConfig: DynamicFormConfig = {
   id: "loan-wizard",
