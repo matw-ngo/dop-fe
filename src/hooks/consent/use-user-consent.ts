@@ -1,10 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import { consentClient } from "@/lib/api/services";
-import type { components } from "@/lib/api/v1/consent";
+import type { ConsentRecord } from "./types";
 
-type ConsentRecord = components["schemas"]["Consent"];
+export interface UseUserConsentParams {
+  sessionId?: string;
+  enabled?: boolean;
+}
 
-interface UseUserConsentReturn {
+export interface UseUserConsentReturn {
   data?: ConsentRecord | null;
   isLoading: boolean;
   error: Error | null;
@@ -15,10 +18,7 @@ interface UseUserConsentReturn {
 export const useUserConsent = ({
   sessionId,
   enabled = true,
-}: {
-  sessionId?: string;
-  enabled?: boolean;
-} = {}): UseUserConsentReturn => {
+}: UseUserConsentParams = {}): UseUserConsentReturn => {
   const queryKey = ["user-consent", sessionId] as const;
 
   const { data, isLoading, error, refetch, isRefetching } = useQuery({

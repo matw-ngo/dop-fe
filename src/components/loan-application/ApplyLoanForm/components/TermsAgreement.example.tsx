@@ -1,12 +1,15 @@
+// EXAMPLE: How to use with real API data
+
 import { useTranslations } from "next-intl";
 import type React from "react";
-import { type CSSProperties, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { ConsentTermsContent } from "@/components/consent/ConsentForm";
 import {
   ConsentDialog,
   ConsentDialogClose,
 } from "@/components/consent/ConsentDialog";
 import { useFormTheme } from "@/components/form-generation/themes";
+import { useTermsContent } from "@/hooks/consent/use-terms-content";
 import { useTenant } from "@/hooks/tenant/use-tenant";
 import { URLS } from "../constants";
 
@@ -14,12 +17,10 @@ export interface TermsAgreementProps {
   value: string;
   onChange: (value: string) => void;
   error?: string;
-  /**
-   * Configuration for links behavior
-   * - "dialog": Open content in dialog (default)
-   * - "newTab": Open in new browser tab
-   */
   linkBehavior?: "dialog" | "newTab";
+  // Optional: Pass consent purpose IDs to load real content
+  termsConsentPurposeId?: string;
+  privacyConsentPurposeId?: string;
 }
 
 export const TermsAgreement: React.FC<TermsAgreementProps> = ({
@@ -27,6 +28,8 @@ export const TermsAgreement: React.FC<TermsAgreementProps> = ({
   onChange,
   error,
   linkBehavior = "dialog",
+  termsConsentPurposeId,
+  privacyConsentPurposeId,
 }) => {
   const t = useTranslations("features.loan-application");
   const { theme } = useFormTheme();
@@ -35,20 +38,30 @@ export const TermsAgreement: React.FC<TermsAgreementProps> = ({
   const [showTermsDialog, setShowTermsDialog] = useState(false);
   const [showPrivacyDialog, setShowPrivacyDialog] = useState(false);
 
-  // Theme styles for ConsentDialog
+  // Fetch real content from API
+  const { data: termsContent, isLoading: isLoadingTerms } = useTermsContent({
+    consentPurposeId: termsConsentPurposeId,
+    enabled: showTermsDialog && !!termsConsentPurposeId,
+  });
+
+  const { data: privacyContent, isLoading: isLoadingPrivacy } = useTermsContent(
+    {
+      consentPurposeId: privacyConsentPurposeId,
+      enabled: showPrivacyDialog && !!privacyConsentPurposeId,
+    },
+  );
+
   const consentThemeStyles = useMemo(
-    () =>
-      ({
-        "--consent-bg": theme.colors.background,
-        "--consent-fg": theme.colors.textPrimary || "#0f172a",
-        "--consent-muted": theme.colors.textSecondary || "#64748b",
-        "--consent-border": theme.colors.border,
-        "--consent-primary": theme.colors.primary,
-      }) as CSSProperties,
+    () => ({
+      "--consent-bg": theme.colors.background,
+      "--consent-fg": theme.colors.textPrimary || "#0f172a",
+      "--consent-muted": theme.colors.textSecondary || "#64748b",
+      "--consent-border": theme.colors.border,
+      "--consent-primary": theme.colors.primary,
+    }),
     [theme],
   );
 
-  // Use theme colors via CSS variables
   const textColor = "text-[var(--form-text)]";
   const primaryColor = "text-[var(--form-primary)]";
   const errorColor = "text-[var(--form-error)]";
@@ -171,7 +184,7 @@ export const TermsAgreement: React.FC<TermsAgreementProps> = ({
         </div>
       </div>
 
-      {/* Terms and Conditions Dialog */}
+      {/* Terms and Conditions Dialog with real API data */}
       {linkBehavior === "dialog" && (
         <>
           <ConsentDialog
@@ -182,14 +195,22 @@ export const TermsAgreement: React.FC<TermsAgreementProps> = ({
             themeStyles={consentThemeStyles}
           >
             <ConsentDialogClose onClose={() => setShowTermsDialog(false)} />
-            <ConsentTermsContent
-              consentVersion={{
-                content: `Nội dung Điều khoản sử dụng dịch vụ sẽ được load từ API hoặc hiển thị ở đây.\n\nĐể xem chi tiết, vui lòng truy cập: ${URLS.TERMS_AND_CONDITIONS}`,
-              }}
-            />
+            {isLoadingTerms ? (
+              <div className="flex items-center justify-center py-8">
+                <span className="text-[var(--consent-muted)]">Loading...</span>
+              </div>
+            ) : (
+              <ConsentTermsContent
+                consentVersion={
+                  termsContent || {
+                    content: `Nội dung Điều khoản sử dụng dịch vụ.\n\nĐể xem chi tiết, vui lòng truy cập: ${URLS.TERMS_AND_CONDITIONS}`,
+                  }
+                }
+              />
+            )}
           </ConsentDialog>
 
-          {/* Privacy Policy Dialog */}
+          {/* Privacy Policy Dialog with real API data */}
           <ConsentDialog
             open={showPrivacyDialog}
             onOpenChange={setShowPrivacyDialog}
@@ -198,11 +219,19 @@ export const TermsAgreement: React.FC<TermsAgreementProps> = ({
             themeStyles={consentThemeStyles}
           >
             <ConsentDialogClose onClose={() => setShowPrivacyDialog(false)} />
-            <ConsentTermsContent
-              consentVersion={{
-                content: `Nội dung Chính sách bảo mật sẽ được load từ API hoặc hiển thị ở đây.\n\nĐể xem chi tiết, vui lòng truy cập: ${URLS.PRIVACY_POLICY}`,
-              }}
-            />
+            {isLoadingPrivacy ? (
+              <div className="flex items-center justify-center py-8">
+                <span className="text-[var(--consent-muted)]">Loading...</span>
+              </div>
+            ) : (
+              <ConsentTermsContent
+                consentVersion={
+                  privacyContent || {
+                    content: `Nội dung Chính sách bảo mật.\n\nĐể xem chi tiết, vui lòng truy cập: ${URLS.PRIVACY_POLICY}`,
+                  }
+                }
+              />
+            )}
           </ConsentDialog>
         </>
       )}

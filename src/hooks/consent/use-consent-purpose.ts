@@ -1,16 +1,24 @@
-import { useQuery } from "@tanstack/react-query";
+import { type UseQueryResult, useQuery } from "@tanstack/react-query";
 import { consentClient } from "@/lib/api/services";
-import type { components } from "@/lib/api/v1/consent";
+import type { ConsentPurpose } from "./types";
 
-type ConsentPurpose = components["schemas"]["ConsentPurpose"];
+export interface UseConsentPurposeParams {
+  consentPurposeId?: string;
+  enabled?: boolean;
+}
+
+export interface UseConsentPurposeReturn {
+  data?: ConsentPurpose;
+  isLoading: boolean;
+  error: Error | null;
+  refetch: () => void;
+  isRefetching: boolean;
+}
 
 export const useConsentPurpose = ({
   consentPurposeId,
   enabled = true,
-}: {
-  consentPurposeId?: string;
-  enabled?: boolean;
-} = {}) => {
+}: UseConsentPurposeParams = {}): UseConsentPurposeReturn => {
   const queryKey = ["consent-purpose", consentPurposeId] as const;
 
   const { data, isLoading, error, refetch, isRefetching } = useQuery({

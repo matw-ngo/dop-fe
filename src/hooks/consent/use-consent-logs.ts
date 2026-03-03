@@ -1,17 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
 import { consentClient } from "@/lib/api/services";
-import type { components } from "@/lib/api/v1/consent";
+import type { ConsentLogListResponse } from "./types";
 
-interface UseConsentLogsOptions {
+export interface UseConsentLogsOptions {
   consentId?: string;
   page?: number;
   pageSize?: number;
   enabled?: boolean;
 }
 
-type ConsentLogListResponse = components["schemas"]["ConsentLogListResponse"];
-
-interface UseConsentLogsReturn {
+export interface UseConsentLogsReturn {
   data?: ConsentLogListResponse;
   isLoading: boolean;
   error: Error | null;

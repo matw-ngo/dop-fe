@@ -12,8 +12,9 @@ interface ConsentVersion {
 interface ConsentFormProps {
   consentVersion?: ConsentVersion;
   onGrant: () => void;
-  isSubmitting: boolean;
+  isSubmitting?: boolean;
   onViewTerms?: () => void;
+  className?: string;
 }
 
 const CookieIcon = () => (
@@ -35,11 +36,15 @@ const CookieIcon = () => (
   </svg>
 );
 
+/**
+ * Reusable consent form component - can be used standalone or within modals
+ */
 export function ConsentForm({
-  consentVersion: _consentVersion, // Reserved for future use
+  consentVersion: _consentVersion,
   onGrant,
-  isSubmitting,
+  isSubmitting = false,
   onViewTerms,
+  className = "",
 }: ConsentFormProps) {
   const t = useTranslations("features.consent.form");
 
@@ -49,7 +54,9 @@ export function ConsentForm({
   };
 
   return (
-    <div className="flex flex-col gap-6 p-6 md:flex-row md:items-end md:gap-8 md:p-8">
+    <div
+      className={`flex flex-col gap-6 md:flex-row md:items-end md:gap-8 ${className}`}
+    >
       {/* Content Section */}
       <div className="flex-1 space-y-3">
         <div className="flex items-start gap-3">
@@ -95,18 +102,22 @@ export function ConsentForm({
   );
 }
 
-// Terms Detail Modal Content
+/**
+ * Reusable consent terms content - can be used in any modal or page
+ */
 interface ConsentTermsContentProps {
   consentVersion?: ConsentVersion;
+  className?: string;
 }
 
 export function ConsentTermsContent({
   consentVersion,
+  className = "",
 }: ConsentTermsContentProps) {
   const t = useTranslations("features.consent.form");
 
   return (
-    <div className="space-y-4">
+    <div className={`space-y-4 ${className}`}>
       <div className="flex items-center justify-center gap-4">
         <div className="text-[var(--consent-primary)]">
           <CookieIcon />

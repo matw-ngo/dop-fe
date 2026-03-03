@@ -1,15 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import { consentClient } from "@/lib/api/services";
-import type { components } from "@/lib/api/v1/consent";
+import type { DataCategory } from "./types";
 
-interface UseDataCategoriesOptions {
+export interface UseDataCategoriesOptions {
   consentPurposeId?: string;
   enabled?: boolean;
 }
 
-type DataCategory = components["schemas"]["DataCategory"];
-
-interface UseDataCategoriesReturn {
+export interface UseDataCategoriesReturn {
   data?: DataCategory[];
   isLoading: boolean;
   error: Error | null;
