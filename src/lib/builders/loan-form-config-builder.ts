@@ -48,6 +48,10 @@ try {
 export function buildLoanFormConfigFromStep(
   step: MappedStep,
   loanPurposes: ISelectBoxOption[],
+  stepContext?: {
+    currentStepIndex: number;
+    totalSteps: number;
+  },
 ): DynamicFormConfig {
   const fields: FormField[] = [];
 
@@ -428,6 +432,21 @@ export function buildLoanFormConfigFromStep(
     });
   }
 
+  // Determine if this is the last step in the overall flow
+  const isLastStepInFlow = stepContext
+    ? stepContext.currentStepIndex === stepContext.totalSteps - 1
+    : true;
+
+  // Debug log
+  if (stepContext) {
+    console.log("[buildLoanFormConfigFromStep] Step context:", {
+      currentStepIndex: stepContext.currentStepIndex,
+      totalSteps: stepContext.totalSteps,
+      isLastStepInFlow,
+      stepId: step.id,
+    });
+  }
+
   return {
     id: "loan-application",
     i18n: {
@@ -448,6 +467,13 @@ export function buildLoanFormConfigFromStep(
       showStepHeader: true,
       showBackButtonOnFirstStep: false,
       fullWidthButtons: true,
+      // Since each page is a single-step form, WizardNavigation will show submit button
+      // We customize the label based on whether this is the last step in the overall flow
+      submitButton: {
+        // For non-last steps in flow, show "Tiếp tục" (Continue)
+        // For last step in flow, show "Hoàn tất" (Complete)
+        label: isLastStepInFlow ? "Hoàn tất" : "Tiếp tục",
+      },
     },
   };
 }

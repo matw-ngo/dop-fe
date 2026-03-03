@@ -39,12 +39,16 @@ export function WizardNavigation({
   const submitButton = config?.submitButton || {};
 
   // Determine button text based on step position
-  // Single step OR last step: "Hoàn tất" (submit)
-  // Other steps: "Tiếp tục" (next)
-  const nextButtonText =
-    isSingleStep || isLastStep
-      ? t("submit") // "Hoàn tất"
-      : t("next"); // "Tiếp tục"
+  // Single step OR last step: use submit button config
+  // Other steps: use next button config
+  const buttonText = (() => {
+    if (isSingleStep || isLastStep) {
+      // Submit button
+      return submitButton.label || t("submit"); // "Hoàn tất"
+    }
+    // Next button
+    return nextButton.label || t("next"); // "Tiếp tục"
+  })();
 
   const handleNext = async () => {
     const success = await nextStep();
@@ -193,7 +197,7 @@ export function WizardNavigation({
               >
                 {isSubmitting
                   ? submitButton.loadingLabel || t("submitting")
-                  : submitButton.label || nextButtonText}
+                  : buttonText}
                 {!isSubmitting &&
                   !isSingleStep &&
                   (submitButton.icon || <Check className="h-4 w-4 ml-2" />)}
@@ -216,7 +220,7 @@ export function WizardNavigation({
                   backgroundColor: theme.colors.primary,
                 }}
               >
-                {nextButton.label || nextButtonText}
+                {buttonText}
                 {nextButton.icon || <ChevronRight className="h-4 w-4 ml-2" />}
               </Button>
             )}

@@ -79,10 +79,36 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
     );
   }, [flowData, page]);
 
+  const stepContext = useMemo(() => {
+    if (!flowData?.steps || !indexStep) return null;
+
+    const currentStepIndex = flowData.steps.findIndex(
+      (s) => s.id === indexStep.id,
+    );
+
+    const context = {
+      currentStepIndex: currentStepIndex >= 0 ? currentStepIndex : 0,
+      totalSteps: flowData.steps.length,
+    };
+
+    console.log("[DynamicLoanForm] Step context:", {
+      page,
+      indexStepId: indexStep.id,
+      flowSteps: flowData.steps.map((s) => ({ id: s.id, page: s.page })),
+      ...context,
+    });
+
+    return context;
+  }, [flowData, indexStep, page]);
+
   const formConfig = useMemo(() => {
     if (!indexStep) return null;
-    return buildLoanFormConfigFromStep(indexStep, loanPurposes);
-  }, [indexStep, loanPurposes]);
+    return buildLoanFormConfigFromStep(
+      indexStep,
+      loanPurposes,
+      stepContext || undefined,
+    );
+  }, [indexStep, loanPurposes, stepContext]);
 
   const validatePhoneNum = (phoneValue: string): boolean => {
     const value = String(phoneValue || "");
