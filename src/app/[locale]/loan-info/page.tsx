@@ -56,7 +56,17 @@ export default function LoanInfoPage() {
     enabled: !!sessionId,
   });
 
+  const { hasConsent, isConsentValid } = useConsentStore();
+
   useEffect(() => {
+    // Skip consent check if user already has valid consent in store
+    if (hasConsent() && isConsentValid()) {
+      console.log(
+        "[LoanInfoPage] User already has valid consent, skipping modal",
+      );
+      return;
+    }
+
     if (!sessionId || !consentPurposeId) {
       return;
     }
@@ -72,6 +82,13 @@ export default function LoanInfoPage() {
       !userVersionId || userVersionId !== latestVersionId || !hasConsented;
 
     if (shouldShowModal) {
+      console.log("[LoanInfoPage] Opening consent modal", {
+        reason: !userVersionId
+          ? "no_consent"
+          : userVersionId !== latestVersionId
+            ? "outdated_version"
+            : "not_granted",
+      });
       openConsentModal({ consentPurposeId });
     }
   }, [
@@ -80,6 +97,8 @@ export default function LoanInfoPage() {
     consentPurposeData,
     userConsent,
     openConsentModal,
+    hasConsent,
+    isConsentValid,
   ]);
 
   /**

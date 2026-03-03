@@ -221,8 +221,28 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
         setShowPhoneModal(true);
       }
     } else {
+      // No OTP required, navigate to next step
       if (flowData && indexStep) {
         onSubmitSuccess?.(data, { flowId: flowData.id, stepId: indexStep.id });
+
+        // Find next step and navigate
+        const currentStepIndex = flowData.steps.findIndex(
+          (s) => s.id === indexStep.id,
+        );
+        const nextStep = flowData.steps[currentStepIndex + 1];
+
+        if (nextStep) {
+          console.log("[DynamicLoanForm] Navigating to next step:", {
+            currentPage: page,
+            nextPage: nextStep.page,
+            nextStepId: nextStep.id,
+          });
+          router.push(nextStep.page);
+        } else {
+          console.log(
+            "[DynamicLoanForm] No next step found, staying on current page",
+          );
+        }
       } else {
         onSubmitSuccess?.(data);
       }

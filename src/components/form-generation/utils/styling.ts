@@ -2,10 +2,12 @@
  * Form Generation Library - Styling Utilities
  *
  * Common styling patterns used across form field components
- * These are self-contained styles that don't depend on the theme system
+ * These utilities now integrate with the theme system for dynamic theming
  */
 
-import { finzoneTheme } from "@/configs/themes/finzone-theme";
+"use client";
+
+import { useFormTheme } from "@/components/form-generation/themes";
 
 /**
  * Base input styles that are consistent across all input fields
@@ -28,44 +30,34 @@ export const baseInputStyles = [
 ] as const;
 
 /**
- * Theme-specific colors and styles
- * These are the design tokens that would normally come from a theme
+ * Hook to get theme-aware styles
+ * Use this instead of hardcoded themeStyles
  */
-export const themeStyles = {
-  // Colors
-  primary: finzoneTheme.colors.primary,
-  border: "#bfd1cc",
-  error: "#ef4444",
-  background: "white",
-  disabled: "#f3f4f6",
-  readOnly: "#f9fafb",
+export function useThemeStyles() {
+  const { theme } = useFormTheme();
 
-  // Border radius
-  borderRadius: "8px",
+  return {
+    // Colors
+    primary: theme.colors.primary,
+    border: theme.colors.border,
+    error: theme.colors.error,
+    background: theme.colors.background,
+    disabled: theme.colors.disabled,
+    readOnly: theme.colors.readOnly,
 
-  // Focus ring
-  focusRing: {
-    width: "2px",
-    opacity: "0.2",
-  },
+    // Border radius
+    borderRadius: theme.borderRadius.control,
 
-  // Sizes
-  sizes: {
-    sm: {
-      height: "48px",
-      paddingX: "12px",
+    // Focus ring
+    focusRing: {
+      width: theme.focusRing.width,
+      opacity: theme.focusRing.opacity,
     },
-    md: {
-      height: "60px",
-      paddingX: "16px",
-    },
-    lg: {
-      height: "64px",
-      paddingX: "16px",
-      fontSize: "18px",
-    },
-  },
-} as const;
+
+    // Sizes
+    sizes: theme.sizes,
+  };
+}
 
 /**
  * Generate input className based on size and state

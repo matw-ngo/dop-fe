@@ -1,9 +1,9 @@
 "use client";
 
 import { useMemo } from "react";
+import { useFormTheme } from "@/components/form-generation/themes";
 import { useTheme } from "@/components/renderer/theme";
 import type { NavbarConfig } from "@/configs/navbar-config";
-import { finzoneTheme } from "@/configs/themes/finzone-theme";
 
 /**
  * Hook to get theme-aware credit cards navbar configuration
@@ -11,9 +11,11 @@ import { finzoneTheme } from "@/configs/themes/finzone-theme";
  */
 export function useCreditCardsNavbarTheme(): NavbarConfig {
   const { themeConfig, resolvedTheme } = useTheme();
+  const { theme } = useFormTheme();
 
   return useMemo(() => {
-    let iconColor = finzoneTheme.colors.primary;
+    // Try to get color from theme config first, fallback to form theme
+    let iconColor = theme.colors.primary;
     const configColor = themeConfig?.colors?.[resolvedTheme]?.primary;
 
     if (configColor) {

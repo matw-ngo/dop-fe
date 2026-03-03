@@ -5,10 +5,10 @@
  * and theme-aware color support
  */
 
-import type React from "react";
-import { finzoneTheme } from "@/configs/themes/finzone-theme";
+"use client";
 
-const FINZONE_PRIMARY = finzoneTheme.colors.primary;
+import type React from "react";
+import { useFormTheme } from "@/components/form-generation/themes";
 
 interface IconProps {
   color?: string;
@@ -18,11 +18,14 @@ interface IconProps {
 }
 
 export const PercentageIcon: React.FC<IconProps> = ({
-  color = FINZONE_PRIMARY,
+  color,
   width = 48,
   height = 48,
   className,
 }) => {
+  const { theme } = useFormTheme();
+  const iconColor = color || theme.colors.primary;
+
   return (
     <svg
       width={width}
@@ -34,30 +37,33 @@ export const PercentageIcon: React.FC<IconProps> = ({
     >
       <path
         d="M30 45.5H18C7.14 45.5 2.5 40.86 2.5 30V18C2.5 7.14 7.14 2.5 18 2.5H30C40.86 2.5 45.5 7.14 45.5 18V30C45.5 40.86 40.86 45.5 30 45.5ZM18 5.5C8.78 5.5 5.5 8.78 5.5 18V30C5.5 39.22 8.78 42.5 18 42.5H30C39.22 42.5 42.5 39.22 42.5 30V18C42.5 8.78 39.22 5.5 30 5.5H18Z"
-        fill={color}
+        fill={iconColor}
       />
       <path
         d="M17.1395 32.04C16.7595 32.04 16.3795 31.9 16.0795 31.6C15.4995 31.02 15.4995 30.06 16.0795 29.48L29.1795 16.3801C29.7595 15.8001 30.7195 15.8001 31.2995 16.3801C31.8795 16.9601 31.8795 17.9201 31.2995 18.5001L18.1995 31.6C17.8995 31.9 17.5195 32.04 17.1395 32.04Z"
-        fill={color}
+        fill={iconColor}
       />
       <path
         d="M17.96 22.22C15.78 22.22 14 20.4401 14 18.2601C14 16.0801 15.78 14.3 17.96 14.3C20.14 14.3 21.92 16.0801 21.92 18.2601C21.92 20.4401 20.14 22.22 17.96 22.22ZM17.96 17.3201C17.44 17.3201 17 17.7401 17 18.2801C17 18.8201 17.42 19.2401 17.96 19.2401C18.5 19.2401 18.92 18.8201 18.92 18.2801C18.92 17.7401 18.48 17.3201 17.96 17.3201Z"
-        fill={color}
+        fill={iconColor}
       />
       <path
         d="M31.0381 33.68C28.8581 33.68 27.0781 31.9 27.0781 29.72C27.0781 27.54 28.8581 25.76 31.0381 25.76C33.2181 25.76 34.9981 27.54 34.9981 29.72C34.9981 31.9 33.2181 33.68 31.0381 33.68ZM31.0381 28.78C30.5181 28.78 30.0781 29.2 30.0781 29.74C30.0781 30.28 30.4981 30.7 31.0381 30.7C31.5781 30.7 31.9981 30.28 31.9981 29.74C31.9981 29.2 31.5781 28.78 31.0381 28.78Z"
-        fill={color}
+        fill={iconColor}
       />
     </svg>
   );
 };
 
 export const BankIcon: React.FC<IconProps> = ({
-  color = FINZONE_PRIMARY,
+  color,
   width = 48,
   height = 48,
   className,
 }) => {
+  const { theme } = useFormTheme();
+  const iconColor = color || theme.colors.primary;
+
   return (
     <svg
       width={width}
@@ -69,7 +75,7 @@ export const BankIcon: React.FC<IconProps> = ({
     >
       <path
         d="M42 23.5H6C4.08 23.5 2.5 21.92 2.5 20V13.36C2.5 12 3.43995 10.62 4.69995 10.12L22.7 2.92007C23.46 2.62007 24.54 2.62007 25.3 2.92007L43.3 10.12C44.56 10.62 45.5 12.02 45.5 13.36V20C45.5 21.92 43.92 23.5 42 23.5ZM24 5.68008C23.92 5.68008 23.84 5.67998 23.8 5.69998L5.81995 12.9C5.69995 12.96 5.5 13.22 5.5 13.36V20C5.5 20.28 5.72 20.5 6 20.5H42C42.28 20.5 42.5 20.28 42.5 20V13.36C42.5 13.22 42.3201 12.96 42.1801 12.9L24.1801 5.69998C24.1401 5.67998 24.08 5.68008 24 5.68008Z"
-        fill={color}
+        fill={iconColor}
       />
       <path
         d="M44 45.5H4C3.18 45.5 2.5 44.82 2.5 44V38C2.5 36.08 4.08 34.5 6 34.5H42C43.92 34.5 45.5 36.08 45.5 38V44C45.5 44.82 44.82 45.5 44 45.5ZM5.5 42.5H42.5V38C42.5 37.72 42.28 37.5 42 37.5H6C5.72 37.5 5.5 37.72 5.5 38V42.5Z"
@@ -108,11 +114,14 @@ export const BankIcon: React.FC<IconProps> = ({
 };
 
 export const FlashIcon: React.FC<IconProps> = ({
-  color = FINZONE_PRIMARY,
+  color,
   width = 48,
   height = 48,
   className,
 }) => {
+  const { theme } = useFormTheme();
+  const iconColor = color || theme.colors.primary;
+
   return (
     <svg
       width={width}
@@ -143,11 +152,14 @@ export const FlashIcon: React.FC<IconProps> = ({
 };
 
 export const SearchMoneyIcon: React.FC<IconProps> = ({
-  color = FINZONE_PRIMARY,
+  color,
   width = 24,
   height = 24,
   className,
 }) => {
+  const { theme } = useFormTheme();
+  const iconColor = color || theme.colors.primary;
+
   return (
     <svg
       width={width}
@@ -190,11 +202,14 @@ export const SearchMoneyIcon: React.FC<IconProps> = ({
 };
 
 export const CardsIcon: React.FC<IconProps> = ({
-  color = FINZONE_PRIMARY,
+  color,
   width = 24,
   height = 24,
   className,
 }) => {
+  const { theme } = useFormTheme();
+  const iconColor = color || theme.colors.primary;
+
   return (
     <svg
       width={width}
@@ -240,11 +255,14 @@ export const CardsIcon: React.FC<IconProps> = ({
 };
 
 export const CarInsurIcon: React.FC<IconProps> = ({
-  color = FINZONE_PRIMARY,
+  color,
   width = 24,
   height = 24,
   className,
 }) => {
+  const { theme } = useFormTheme();
+  const iconColor = color || theme.colors.primary;
+
   return (
     <svg
       width={width}
@@ -266,13 +284,14 @@ export const CarInsurIcon: React.FC<IconProps> = ({
 };
 
 export const Logo: React.FC<IconProps & { currentColor?: string }> = ({
-  currentColor = FINZONE_PRIMARY,
+  currentColor,
   width = 124,
   height = 40,
   className,
 }) => {
-  const secondaryColor =
-    currentColor === FINZONE_PRIMARY ? "white" : FINZONE_PRIMARY;
+  const { theme } = useFormTheme();
+  const primaryColor = currentColor || theme.colors.primary;
+  const secondaryColor = "white";
 
   return (
     <svg
@@ -286,7 +305,7 @@ export const Logo: React.FC<IconProps & { currentColor?: string }> = ({
       <g clipPath="url(#clip0_4117_444)">
         <path
           d="M13.7386 33.4771C21.3261 33.4771 27.4771 27.3261 27.4771 19.7386C27.4771 12.151 21.3261 6 13.7386 6C6.15096 6 0 12.151 0 19.7386C0 27.3261 6.15096 33.4771 13.7386 33.4771Z"
-          fill={currentColor}
+          fill={primaryColor}
         />
         <path
           d="M11.4947 19.3517H6.625L8.22082 15.3138C8.58025 14.3918 9.20974 13.5997 10.0269 13.0415C10.844 12.4832 11.8107 12.1847 12.8003 12.1851H20.0105L18.3228 16.5034H13.8884C13.5109 16.5032 13.1422 16.6172 12.8306 16.8304C12.519 17.0435 12.2792 17.346 12.1427 17.6979L11.4947 19.3517Z"
@@ -298,7 +317,7 @@ export const Logo: React.FC<IconProps & { currentColor?: string }> = ({
         />
         <path
           d="M33.2803 28.2448V10.8794H44.0061V13.2973H35.9642V18.3266H43.3581V20.7445H35.9642V28.2448H33.2803Z"
-          fill={currentColor}
+          fill={primaryColor}
         />
         <path
           d="M47.3524 14.3564C46.8873 14.3675 46.4368 14.1936 46.0999 13.8728C45.9362 13.7094 45.8086 13.5136 45.7253 13.2978C45.642 13.0821 45.6049 12.8513 45.6163 12.6203C45.6048 12.3886 45.6419 12.157 45.7251 11.9405C45.8084 11.724 45.9361 11.5273 46.0999 11.363C46.4455 11.0514 46.8943 10.8789 47.3596 10.8789C47.825 10.8789 48.2738 11.0514 48.6194 11.363C48.7817 11.5283 48.9084 11.7252 48.9916 11.9415C49.0748 12.1577 49.1127 12.3888 49.1029 12.6203C49.1129 12.8511 49.0751 13.0815 48.9919 13.297C48.9087 13.5125 48.7818 13.7085 48.6194 13.8728C48.4506 14.0332 48.2518 14.1585 48.0343 14.2415C47.8168 14.3245 47.585 14.3635 47.3524 14.3564ZM46.0612 28.2448V16.0199H48.6194V28.2448H46.0612Z"

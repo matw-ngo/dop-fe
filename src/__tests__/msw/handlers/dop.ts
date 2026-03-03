@@ -34,9 +34,9 @@ const createMockFlowDetail = (overrides?: Record<string, unknown>) => ({
     {
       id: "220e8400-e29b-41d4-a716-446655440002",
       use_ekyc: false,
-      send_otp: false,
+      send_otp: true,
       page: "/index",
-      // No consent_purpose_id for step 1
+      consent_purpose_id: "660e8400-e29b-41d4-a716-446655440006", // Added for testing
       have_purpose: false,
       required_purpose: false,
       have_phone_number: false,

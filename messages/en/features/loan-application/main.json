@@ -26,7 +26,9 @@
     "privacyPolicyText": "Privacy Policy",
     "fullText": "To register and use services from {companyName}, please read and agree to our <terms>Terms of Service</terms> & <privacy>Privacy Policy</privacy>.",
     "agree": "I agree and want to use the service.",
-    "disagree": "I do not agree with all or part of the Terms of Service."
+    "disagree": "I do not agree with all or part of the Terms of Service.",
+    "termsDialogTitle": "Terms of Service",
+    "privacyDialogTitle": "Privacy Policy"
   },
   "errors": {
     "phoneRequired": "Phone number is required",

@@ -3,7 +3,7 @@
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { type CSSProperties, memo, useEffect, useState } from "react";
+import { type CSSProperties, memo, useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -11,7 +11,7 @@ import {
   DialogPortal,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { finzoneTheme } from "@/configs/themes/finzone-theme";
+import { useFormTheme } from "@/components/form-generation/themes";
 import { useConsentPurpose } from "@/hooks/consent/use-consent-purpose";
 import { useConsentSession } from "@/hooks/consent/use-consent-session";
 import { useUserConsent } from "@/hooks/consent/use-user-consent";
@@ -52,17 +52,24 @@ export const ConsentModal = memo(function ConsentModal({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showTermsModal, setShowTermsModal] = useState(false);
 
-  const consentThemeStyles = {
-    "--consent-bg": finzoneTheme.colors.background,
-    "--consent-fg": finzoneTheme.colors.textPrimary,
-    "--consent-muted": finzoneTheme.colors.textSecondary,
-    "--consent-border": finzoneTheme.colors.border,
-    "--consent-surface": finzoneTheme.colors.readOnly,
-    "--consent-primary": finzoneTheme.colors.primary,
-    "--consent-primary-hover": `${finzoneTheme.colors.primary}e6`, // 90% opacity
-    "--consent-error": finzoneTheme.colors.error,
-    "--consent-backdrop": finzoneTheme.colors.textPrimary,
-  } as CSSProperties;
+  // Use theme system instead of hardcoded finzoneTheme
+  const { theme } = useFormTheme();
+
+  const consentThemeStyles = useMemo(
+    () =>
+      ({
+        "--consent-bg": theme.colors.background,
+        "--consent-fg": theme.colors.textPrimary || "#0f172a",
+        "--consent-muted": theme.colors.textSecondary || "#64748b",
+        "--consent-border": theme.colors.border,
+        "--consent-surface": theme.colors.readOnly,
+        "--consent-primary": theme.colors.primary,
+        "--consent-primary-hover": `${theme.colors.primary}e6`, // 90% opacity
+        "--consent-error": theme.colors.error,
+        "--consent-backdrop": theme.colors.textPrimary || "#0f172a",
+      }) as CSSProperties,
+    [theme],
+  );
 
   // Get Consent Purpose based on step data
   const { data: consentPurpose, isLoading: isLoadingPurpose } =

@@ -1,5 +1,3 @@
-import { finzoneTheme } from "@/configs/themes/finzone-theme";
-
 export interface NavbarItem {
   id: string;
   label: string;
@@ -17,7 +15,7 @@ export interface NavbarConfig {
   logo: {
     text: string;
     href: string;
-    iconColor: string;
+    iconColor?: string; // Optional, will use theme primary if not provided
     iconLetter: string;
   };
   navigation: NavbarItem[];
@@ -27,12 +25,12 @@ export interface NavbarConfig {
 }
 
 // Default Fin Zone configuration
+// Note: iconColor is omitted to use theme primary color dynamically
 export const finZoneNavbarConfig: NavbarConfig = {
   company: "finzone",
   logo: {
     text: "Fin Zone",
     href: "/",
-    iconColor: finzoneTheme.colors.primary,
     iconLetter: "F",
   },
   navigation: [

@@ -1,12 +1,15 @@
-import { finzoneTheme } from "@/configs/themes/finzone-theme";
+"use client";
 
-const FINZONE_PRIMARY = finzoneTheme.colors.primary;
+import { useFormTheme } from "@/components/form-generation/themes";
 
 export const PercentageSvg = ({
-  color = FINZONE_PRIMARY,
+  color,
 }: {
   color?: string;
 }) => {
+  const { theme } = useFormTheme();
+  const iconColor = color || theme.colors.primary;
+
   return (
     <svg
       width="48"
@@ -17,7 +20,7 @@ export const PercentageSvg = ({
     >
       <path
         d="M30 45.5H18C7.14 45.5 2.5 40.86 2.5 30V18C2.5 7.14 7.14 2.5 18 2.5H30C40.86 2.5 45.5 7.14 45.5 18V30C45.5 40.86 40.86 45.5 30 45.5ZM18 5.5C8.78 5.5 5.5 8.78 5.5 18V30C5.5 39.22 8.78 42.5 18 42.5H30C39.22 42.5 42.5 39.22 42.5 30V18C42.5 8.78 39.22 5.5 30 5.5H18Z"
-        fill={color}
+        fill={iconColor}
       />
       <path
         d="M17.1395 32.04C16.7595 32.04 16.3795 31.9 16.0795 31.6C15.4995 31.02 15.4995 30.06 16.0795 29.48L29.1795 16.3801C29.7595 15.8001 30.7195 15.8001 31.2995 16.3801C31.8795 16.9601 31.8795 17.9201 31.2995 18.5001L18.1995 31.6C17.8995 31.9 17.5195 32.04 17.1395 32.04Z"
@@ -35,7 +38,10 @@ export const PercentageSvg = ({
   );
 };
 
-export const BankSvg = ({ color = FINZONE_PRIMARY }: { color?: string }) => {
+export const BankSvg = ({ color }: { color?: string }) => {
+  const { theme } = useFormTheme();
+  const iconColor = color || theme.colors.primary;
+
   return (
     <svg
       width="48"
@@ -46,7 +52,7 @@ export const BankSvg = ({ color = FINZONE_PRIMARY }: { color?: string }) => {
     >
       <path
         d="M42 23.5H6C4.08 23.5 2.5 21.92 2.5 20V13.36C2.5 12 3.43995 10.62 4.69995 10.12L22.7 2.92007C23.46 2.62007 24.54 2.62007 25.3 2.92007L43.3 10.12C44.56 10.62 45.5 12.02 45.5 13.36V20C45.5 21.92 43.92 23.5 42 23.5ZM24 5.68008C23.92 5.68008 23.84 5.67998 23.8 5.69998L5.81995 12.9C5.69995 12.96 5.5 13.22 5.5 13.36V20C5.5 20.28 5.72 20.5 6 20.5H42C42.28 20.5 42.5 20.28 42.5 20V13.36C42.5 13.22 42.3201 12.96 42.1801 12.9L24.1801 5.69998C24.1401 5.67998 24.08 5.68008 24 5.68008Z"
-        fill={color}
+        fill={iconColor}
       />
       <path
         d="M44 45.5H4C3.18 45.5 2.5 44.82 2.5 44V38C2.5 36.08 4.08 34.5 6 34.5H42C43.92 34.5 45.5 36.08 45.5 38V44C45.5 44.82 44.82 45.5 44 45.5ZM5.5 42.5H42.5V38C42.5 37.72 42.28 37.5 42 37.5H6C5.72 37.5 5.5 37.72 5.5 38V42.5Z"
@@ -84,7 +90,10 @@ export const BankSvg = ({ color = FINZONE_PRIMARY }: { color?: string }) => {
   );
 };
 
-export const FlashSvg = ({ color = FINZONE_PRIMARY }: { color?: string }) => {
+export const FlashSvg = ({ color }: { color?: string }) => {
+  const { theme } = useFormTheme();
+  const iconColor = color || theme.colors.primary;
+
   return (
     <svg
       width="48"
@@ -114,10 +123,14 @@ export const FlashSvg = ({ color = FINZONE_PRIMARY }: { color?: string }) => {
 };
 
 export const SearchMoneySvg = ({
-  color = FINZONE_PRIMARY,
+  color,
 }: {
   color?: string;
-}) => (
+}) => {
+  const { theme } = useFormTheme();
+  const iconColor = color || theme.colors.primary;
+
+  return (
   <svg
     width="32"
     height="32"
@@ -144,7 +157,11 @@ export const SearchMoneySvg = ({
   </svg>
 );
 
-export const CardsSvg = ({ color = FINZONE_PRIMARY }: { color?: string }) => (
+export const CardsSvg = ({ color }: { color?: string }) => {
+  const { theme } = useFormTheme();
+  const iconColor = color || theme.colors.primary;
+
+  return (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="32"
@@ -176,10 +193,14 @@ export const CardsSvg = ({ color = FINZONE_PRIMARY }: { color?: string }) => (
 );
 
 export const CarInsurSvg = ({
-  color = FINZONE_PRIMARY,
+  color,
 }: {
   color?: string;
-}) => (
+}) => {
+  const { theme } = useFormTheme();
+  const iconColor = color || theme.colors.primary;
+
+  return (
   <svg
     width="32"
     height="32"
@@ -202,10 +223,14 @@ export const CarInsurSvg = ({
 );
 
 export const StudentLoanSvg = ({
-  color = FINZONE_PRIMARY,
+  color,
 }: {
   color?: string;
-}) => (
+}) => {
+  const { theme } = useFormTheme();
+  const iconColor = color || theme.colors.primary;
+
+  return (
   <svg
     width="32"
     height="32"
