@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: DOP
-  version: '1.0'
+  version: "1.0"
   description: DOP - OpenAPI Specification
   termsOfService: https://datanest.io/terms
   license:
@@ -32,22 +32,22 @@ paths:
       security:
         - cookie_auth: []
       parameters:
-        - $ref: '#/components/parameters/tenant'
+        - $ref: "#/components/parameters/tenant"
       responses:
-        '200':
+        "200":
           description: success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/FlowDetail'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '500':
-          $ref: '#/components/responses/500'
-        '503':
-          $ref: '#/components/responses/503'
+                $ref: "#/components/schemas/FlowDetail"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
   /leads:
     post:
       tags:
@@ -61,22 +61,22 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateLeadRequestBody'
+              $ref: "#/components/schemas/CreateLeadRequestBody"
       responses:
-        '200':
+        "200":
           description: success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CreateLeadResponseBody'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '500':
-          $ref: '#/components/responses/500'
-        '503':
-          $ref: '#/components/responses/503'
+                $ref: "#/components/schemas/CreateLeadResponseBody"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
   /leads/{id}/submit-info:
     post:
       tags:
@@ -90,20 +90,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SubmitLeadInfoRequestBody'
+              $ref: "#/components/schemas/SubmitLeadInfoRequestBody"
       parameters:
-        - $ref: '#/components/parameters/id'
+        - $ref: "#/components/parameters/id"
       responses:
-        '200':
-          $ref: '#/components/responses/200'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '500':
-          $ref: '#/components/responses/500'
-        '503':
-          $ref: '#/components/responses/503'
+        "200":
+          $ref: "#/components/responses/200"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
   /leads/{id}/submit-otp:
     post:
       tags:
@@ -117,20 +117,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SubmitOTPRequestBody'
+              $ref: "#/components/schemas/SubmitOTPRequestBody"
       parameters:
-        - $ref: '#/components/parameters/id'
+        - $ref: "#/components/parameters/id"
       responses:
-        '200':
-          $ref: '#/components/responses/200'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '500':
-          $ref: '#/components/responses/500'
-        '503':
-          $ref: '#/components/responses/503'
+        "200":
+          $ref: "#/components/responses/200"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
   /leads/{id}/resend-otp:
     post:
       tags:
@@ -144,20 +144,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ResendOTPRequestBody'
+              $ref: "#/components/schemas/ResendOTPRequestBody"
       parameters:
-        - $ref: '#/components/parameters/id'
+        - $ref: "#/components/parameters/id"
       responses:
-        '200':
-          $ref: '#/components/responses/200'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '500':
-          $ref: '#/components/responses/500'
-        '503':
-          $ref: '#/components/responses/503'
+        "200":
+          $ref: "#/components/responses/200"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
   /leads/{id}/ekyc/config:
     get:
       tags:
@@ -167,22 +167,22 @@ paths:
       security:
         - cookie_auth: []
       parameters:
-        - $ref: '#/components/parameters/id'
+        - $ref: "#/components/parameters/id"
       responses:
-        '200':
+        "200":
           description: get ekyc access key successful
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EkycConfigResponseBody'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '500':
-          $ref: '#/components/responses/500'
-        '503':
-          $ref: '#/components/responses/503'
+                $ref: "#/components/schemas/EkycConfigResponseBody"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
   /leads/{id}/ekyc/vnpt:
     post:
       tags:
@@ -196,20 +196,80 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/VnptEkycRequestBody'
+              $ref: "#/components/schemas/VnptEkycRequestBody"
       parameters:
-        - $ref: '#/components/parameters/id'
+        - $ref: "#/components/parameters/id"
       responses:
-        '200':
-          $ref: '#/components/responses/200'
-        '401':
-          $ref: '#/components/responses/401'
-        '403':
-          $ref: '#/components/responses/403'
-        '500':
-          $ref: '#/components/responses/500'
-        '503':
-          $ref: '#/components/responses/503'
+        "200":
+          $ref: "#/components/responses/200"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
+  /locations/provinces:
+    get:
+      summary: Get all provinces
+      description: Retrieve a list of all provinces in Vietnam
+      operationId: getProvinces
+      tags:
+        - Locations
+      security: []
+      responses:
+        "200":
+          description: Successfully retrieved provinces
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Province"
+                required:
+                  - data
+        "500":
+          $ref: "#/components/responses/500"
+  /locations/provinces/{id}/wards:
+    get:
+      summary: Get wards by province ID
+      description: Retrieve all wards/communes for a specific province
+      operationId: getWardsByProvinceId
+      tags:
+        - Locations
+      security: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Province ID (UUID)
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Successfully retrieved wards
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Ward"
+                required:
+                  - data
+        "400":
+          $ref: "#/components/responses/400"
+        "404":
+          $ref: "#/components/responses/404"
+        "500":
+          $ref: "#/components/responses/500"
 components:
   securitySchemes:
     cookie_auth:
@@ -256,7 +316,7 @@ components:
       type: object
       properties:
         id:
-          $ref: '#/components/schemas/uuid'
+          $ref: "#/components/schemas/uuid"
         use_ekyc:
           type: boolean
           default: false
@@ -264,11 +324,11 @@ components:
           type: boolean
           default: false
         consent_purpose_id:
-          $ref: '#/components/schemas/uuid'
+          $ref: "#/components/schemas/uuid"
           x-omitempty: true
         page:
           type: string
-          default: ''
+          default: ""
         have_purpose:
           type: boolean
           default: false
@@ -437,17 +497,17 @@ components:
       description: Get Flow by tenant response
       properties:
         id:
-          $ref: '#/components/schemas/uuid'
+          $ref: "#/components/schemas/uuid"
         name:
           type: string
         description:
           type: string
         flow_status:
-          $ref: '#/components/schemas/FlowStatus'
+          $ref: "#/components/schemas/FlowStatus"
         steps:
           type: array
           items:
-            $ref: '#/components/schemas/Step'
+            $ref: "#/components/schemas/Step"
         created_at:
           type: string
           format: date-time
@@ -515,9 +575,9 @@ components:
       type: object
       properties:
         flow_id:
-          $ref: '#/components/schemas/uuid'
+          $ref: "#/components/schemas/uuid"
         step_id:
-          $ref: '#/components/schemas/uuid'
+          $ref: "#/components/schemas/uuid"
         phone_number:
           type: string
         email:
@@ -532,15 +592,15 @@ components:
           type: integer
           format: int32
         otp_type:
-          $ref: '#/components/schemas/OTPType'
+          $ref: "#/components/schemas/OTPType"
         full_name:
           type: string
         national_id:
           type: string
         gender:
-          $ref: '#/components/schemas/Gender'
+          $ref: "#/components/schemas/Gender"
         location:
-          $ref: '#/components/schemas/uuid'
+          $ref: "#/components/schemas/uuid"
         birthday:
           type: string
           format: date
@@ -550,13 +610,13 @@ components:
           type: integer
           format: int32
         having_loan:
-          $ref: '#/components/schemas/HavingLoan'
+          $ref: "#/components/schemas/HavingLoan"
         career_status:
-          $ref: '#/components/schemas/CareerStatus'
+          $ref: "#/components/schemas/CareerStatus"
         career_type:
           type: string
         credit_status:
-          $ref: '#/components/schemas/CreditStatus'
+          $ref: "#/components/schemas/CreditStatus"
       required:
         - flow_id
         - step_id
@@ -564,17 +624,17 @@ components:
       type: object
       properties:
         flow_id:
-          $ref: '#/components/schemas/uuid'
+          $ref: "#/components/schemas/uuid"
         consent_id:
-          $ref: '#/components/schemas/uuid'
+          $ref: "#/components/schemas/uuid"
         tenant:
-          $ref: '#/components/schemas/uuid'
+          $ref: "#/components/schemas/uuid"
         deviece_info:
           type: object
         tracking_params:
           type: object
         info:
-          $ref: '#/components/schemas/SubmitLeadInfoRequestBody'
+          $ref: "#/components/schemas/SubmitLeadInfoRequestBody"
       required:
         - flow_id
         - consent_id
@@ -586,7 +646,7 @@ components:
       type: object
       properties:
         id:
-          $ref: '#/components/schemas/uuid'
+          $ref: "#/components/schemas/uuid"
         token:
           type: string
       required:
@@ -645,7 +705,7 @@ components:
         enable_api_compare_face:
           type: boolean
         sdk_flow:
-          $ref: '#/components/schemas/SdkFlow'
+          $ref: "#/components/schemas/SdkFlow"
         list_type_document:
           type: array
           items:
@@ -661,7 +721,7 @@ components:
         double_liveness:
           type: boolean
         use_method:
-          $ref: '#/components/schemas/PictureMethod'
+          $ref: "#/components/schemas/PictureMethod"
         show_tab_result_information:
           type: boolean
         show_tab_result_validation:
@@ -898,9 +958,9 @@ components:
             card_type:
               type: string
             checking_result_back:
-              $ref: '#/components/schemas/VnptEkycCheckingOcrResult'
+              $ref: "#/components/schemas/VnptEkycCheckingOcrResult"
             checking_result_front:
-              $ref: '#/components/schemas/VnptEkycCheckingOcrResult'
+              $ref: "#/components/schemas/VnptEkycCheckingOcrResult"
             citizen_id:
               type: string
             citizen_id_prob:
@@ -1015,7 +1075,7 @@ components:
             new_post_code:
               type: array
               items:
-                $ref: '#/components/schemas/VnptEkycOcrPostCode'
+                $ref: "#/components/schemas/VnptEkycOcrPostCode"
             origin_location:
               type: string
             origin_location_prob:
@@ -1024,11 +1084,11 @@ components:
             post_code:
               type: array
               items:
-                $ref: '#/components/schemas/VnptEkycOcrPostCode'
+                $ref: "#/components/schemas/VnptEkycOcrPostCode"
             quality_back:
-              $ref: '#/components/schemas/VnptEkycOrcQuality'
+              $ref: "#/components/schemas/VnptEkycOrcQuality"
             quality_front:
-              $ref: '#/components/schemas/VnptEkycOrcQuality'
+              $ref: "#/components/schemas/VnptEkycOrcQuality"
             recent_location:
               type: string
             recent_location_prob:
@@ -1289,35 +1349,167 @@ components:
         type_document:
           type: integer
         liveness_card_front:
-          $ref: '#/components/schemas/VNPTLivenessCard'
+          $ref: "#/components/schemas/VNPTLivenessCard"
         liveness_card_back:
-          $ref: '#/components/schemas/VNPTLivenessCard'
+          $ref: "#/components/schemas/VNPTLivenessCard"
         ocr:
-          $ref: '#/components/schemas/VNPTOCR'
+          $ref: "#/components/schemas/VNPTOCR"
         liveness_face:
-          $ref: '#/components/schemas/VNPTLivenessFace'
+          $ref: "#/components/schemas/VNPTLivenessFace"
         masked:
-          $ref: '#/components/schemas/VNPTMasked'
+          $ref: "#/components/schemas/VNPTMasked"
         hash_img:
           type: string
         compare:
-          $ref: '#/components/schemas/VNPTCompare'
+          $ref: "#/components/schemas/VNPTCompare"
         base64_doc_img:
-          $ref: '#/components/schemas/VNPTBase64DocImg'
+          $ref: "#/components/schemas/VNPTBase64DocImg"
         base64_face_img:
-          $ref: '#/components/schemas/VNPTBase64FaceImg'
+          $ref: "#/components/schemas/VNPTBase64FaceImg"
         data_hash_document:
-          $ref: '#/components/schemas/VNPTHashDocument'
+          $ref: "#/components/schemas/VNPTHashDocument"
         qr_code:
           type: string
+    Province:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the province
+          example: 550e8400-e29b-41d4-a716-446655440000
+        code:
+          type: string
+          description: Province code
+          example: "01"
+        name:
+          type: string
+          description: Province name in Vietnamese
+          example: Hà Nội
+        name_en:
+          type: string
+          description: Province name in English
+          example: Ha Noi
+        full_name:
+          type: string
+          description: Full province name in Vietnamese
+          example: Thành phố Hà Nội
+        full_name_en:
+          type: string
+          description: Full province name in English
+          example: Ha Noi City
+        code_name:
+          type: string
+          description: Province code name (slug)
+          example: ha_noi
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp when the province was created
+        updated_at:
+          type: string
+          format: date-time
+          description: Timestamp when the province was last updated
+      required:
+        - id
+        - code
+        - name
+    Ward:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the ward
+          example: 660e8400-e29b-41d4-a716-446655440001
+        code:
+          type: string
+          description: Ward code
+          example: "00004"
+        name:
+          type: string
+          description: Ward name in Vietnamese
+          example: Ba Đình
+        name_en:
+          type: string
+          description: Ward name in English
+          example: Ba Dinh
+        full_name:
+          type: string
+          description: Full ward name in Vietnamese
+          example: Phường Ba Đình
+        full_name_en:
+          type: string
+          description: Full ward name in English
+          example: Ba Dinh Ward
+        code_name:
+          type: string
+          description: Ward code name (slug)
+          example: ba_dinh
+        province_code:
+          type: string
+          description: Code of the province this ward belongs to
+          example: "01"
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp when the ward was created
+        updated_at:
+          type: string
+          format: date-time
+          description: Timestamp when the ward was last updated
+      required:
+        - id
+        - code
+        - name
+        - province_code
+    ErrorCode:
+      type: string
+      enum:
+        - success
+        - canceled
+        - unknown
+        - invalid_argument
+        - deadline_exceeded
+        - not_found
+        - already_exists
+        - permission_denied
+        - resource_exhausted
+        - failed_precondition
+        - aborted
+        - out_of_range
+        - unimplemented
+        - internal_error
+        - unavailable
+        - data_loss
+        - unauthenticated
+      x-go-type-import:
+        path: github.com/cicdata-io/smartdop/pkg/types
   responses:
-    '200':
+    "200":
       description: OK
-    '401':
+    "400":
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: string
+                $ref: "#/components/schemas/ErrorCode"
+              message:
+                type: string
+            required:
+              - code
+              - message
+    "401":
       description: Unauthorized
-    '403':
+    "403":
       description: Forbidden
-    '500':
+    "404":
+      description: Not Found
+    "500":
       description: Internal Server Error
-    '503':
+    "503":
       description: Service Unavailable

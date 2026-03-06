@@ -3,8 +3,10 @@
 import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import { TenantThemeProvider } from "@/components/layout/TenantThemeProvider";
 import { DynamicLoanForm } from "@/components/loan-application/DynamicLoanForm";
+import { FLOW_PAGES } from "@/constants/flow-pages";
 import { useConsentPurpose } from "@/hooks/consent/use-consent-purpose";
 import { useConsentSession } from "@/hooks/consent/use-consent-session";
 import { useUserConsent } from "@/hooks/consent/use-user-consent";
@@ -12,15 +14,20 @@ import { useCreateLead } from "@/hooks/features/lead/use-create-lead";
 import { useSubmitLeadInfo } from "@/hooks/features/lead/use-lead-submission";
 import { useFlowStep } from "@/hooks/tenant/use-flow-step";
 import { useTenant } from "@/hooks/tenant/use-tenant";
+import {
+  type NavigationEventDetail,
+  NavigationEvents,
+} from "@/lib/events/navigation-events";
 import { mapFormDataToLeadInfo } from "@/mappers/leadMapper";
 import { useConsentStore } from "@/store/use-consent-store";
 import { FindingLoanScreen } from "./FindingLoanScreen";
 
 export default function LoanInfoPage() {
   const t = useTranslations("pages.form");
+  const tNav = useTranslations("features.loan-application.navigation");
   const searchParams = useSearchParams();
   const tenant = useTenant();
-  const sessionId = useConsentSession();
+  const { sessionId } = useConsentSession();
   const openConsentModal = useConsentStore((s) => s.openConsentModal);
 
   // Lead state from V1 API or URL params
@@ -45,7 +52,7 @@ export default function LoanInfoPage() {
 
   const [isFinding, setIsFinding] = useState(false);
 
-  const submitInfoStep = useFlowStep("/submit-info");
+  const submitInfoStep = useFlowStep(FLOW_PAGES.SUBMIT_INFO);
   const consentPurposeId = submitInfoStep?.consent_purpose_id;
   const { data: consentPurposeData } = useConsentPurpose({
     consentPurposeId,
@@ -57,6 +64,42 @@ export default function LoanInfoPage() {
   });
 
   const { hasConsent, isConsentValid } = useConsentStore();
+
+  // Listen to navigation events for verification errors
+  useEffect(() => {
+    const handleSessionInvalid = (event: Event) => {
+      const customEvent = event as CustomEvent<NavigationEventDetail>;
+      toast.error(tNav("error.sessionInvalid.title"), {
+        description:
+          customEvent.detail.message || tNav("error.sessionInvalid.message"),
+      });
+    };
+
+    const handleOTPRequired = (event: Event) => {
+      const customEvent = event as CustomEvent<NavigationEventDetail>;
+      toast.error(tNav("error.otpRequired.title"), {
+        description:
+          customEvent.detail.message || tNav("error.otpRequired.message"),
+      });
+    };
+
+    window.addEventListener(
+      NavigationEvents.SESSION_INVALID,
+      handleSessionInvalid,
+    );
+    window.addEventListener(NavigationEvents.OTP_REQUIRED, handleOTPRequired);
+
+    return () => {
+      window.removeEventListener(
+        NavigationEvents.SESSION_INVALID,
+        handleSessionInvalid,
+      );
+      window.removeEventListener(
+        NavigationEvents.OTP_REQUIRED,
+        handleOTPRequired,
+      );
+    };
+  }, [tNav]);
 
   useEffect(() => {
     // Skip consent check if user already has valid consent in store
@@ -248,7 +291,7 @@ export default function LoanInfoPage() {
         }}
       >
         <DynamicLoanForm
-          page="/submit-info"
+          page={FLOW_PAGES.SUBMIT_INFO}
           initialData={demoData || undefined}
           onSubmitSuccess={handleComplete}
         />

@@ -20,7 +20,10 @@
     "integer": "Phải là số nguyên",
     "positive": "Phải là số dương",
     "negative": "Phải là số âm",
-    "summary_error": "Vui lòng sửa {count} lỗi ở trên"
+    "summary_error": "Vui lòng sửa {count} lỗi ở trên",
+    "validationFailed": "{count, plural, =1 {Vui lòng sửa 1 lỗi} other {Vui lòng sửa # lỗi}}",
+    "andMoreErrors": "và {count} lỗi khác",
+    "scrollToError": "Nhấn để xem lỗi"
   },
   "finding_loan": {
     "message": "Vui lòng đợi trong giây lát, chúng tôi đang tìm kiếm các khoản vay phù hợp với bạn",

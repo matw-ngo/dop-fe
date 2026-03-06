@@ -62,6 +62,15 @@ interface FormWizardState {
   /** Loading states */
   isValidating: boolean;
   isSubmitting: boolean;
+
+  /** OTP step index (detected from sendOtp flag) */
+  otpStepIndex: number | null;
+
+  /** Navigation history (step indices) */
+  navigationHistory: number[];
+
+  /** Before step change callback for navigation guards */
+  beforeStepChangeCallback: ((from: number, to: number) => boolean) | null;
 }
 
 /**
@@ -93,6 +102,7 @@ interface FormWizardActions {
   validateAllSteps: () => Promise<boolean>;
   setStepErrors: (stepId: string, errors: Record<string, string>) => void;
   clearStepErrors: (stepId: string) => void;
+  clearFieldError: (stepId: string, fieldName: string) => void;
 
   // Step status
   markStepComplete: (stepIndex: number) => void;
@@ -115,6 +125,22 @@ interface FormWizardActions {
   // Conditional steps
   getVisibleSteps: () => FormStep[];
   isStepVisible: (stepId: string) => boolean;
+
+  // OTP step detection
+  detectOTPStep: () => number | null;
+  getOTPStepIndex: () => number | null;
+
+  // Navigation guards
+  registerBeforeStepChange: (
+    callback: (from: number, to: number) => boolean,
+  ) => void;
+  unregisterBeforeStepChange: () => void;
+  canNavigateToStep: (targetIndex: number) => boolean;
+
+  // Navigation history
+  addToNavigationHistory: (stepIndex: number) => void;
+  getNavigationHistory: () => number[];
+  clearNavigationHistory: () => void;
 }
 
 type FormWizardStore = FormWizardState & FormWizardActions;
@@ -138,6 +164,9 @@ export const useFormWizardStore = create<FormWizardStore>()(
         wizardId: "",
         isValidating: false,
         isSubmitting: false,
+        otpStepIndex: null,
+        navigationHistory: [],
+        beforeStepChangeCallback: null,
 
         // Initialize wizard
         initWizard: (wizardId, steps, initialData = {}) => {
@@ -190,12 +219,15 @@ export const useFormWizardStore = create<FormWizardStore>()(
             wizardId: "",
             isValidating: false,
             isSubmitting: false,
+            otpStepIndex: null,
+            navigationHistory: [],
+            beforeStepChangeCallback: null,
           });
         },
 
         // Navigate to step by index
         goToStep: (stepIndex) => {
-          const { steps, canGoToStep } = get();
+          const { steps, canGoToStep, addToNavigationHistory } = get();
           if (
             stepIndex >= 0 &&
             stepIndex < steps.length &&
@@ -224,6 +256,9 @@ export const useFormWizardStore = create<FormWizardStore>()(
                 state.visitedSteps.push(stepIndex);
               }
             });
+
+            // Add to navigation history
+            addToNavigationHistory(stepIndex);
           }
         },
 
@@ -448,6 +483,20 @@ export const useFormWizardStore = create<FormWizardStore>()(
           });
         },
 
+        // Clear single field error
+        clearFieldError: (stepId, fieldName) => {
+          set((state) => {
+            if (state.stepMeta[stepId]?.errors) {
+              delete state.stepMeta[stepId].errors[fieldName];
+
+              // If no more errors, update validation status
+              if (Object.keys(state.stepMeta[stepId].errors).length === 0) {
+                state.stepMeta[stepId].validationStatus = "valid";
+              }
+            }
+          });
+        },
+
         // Mark step as complete
         markStepComplete: (stepIndex) => {
           const { steps } = get();
@@ -494,26 +543,8 @@ export const useFormWizardStore = create<FormWizardStore>()(
 
         // Can go to step
         canGoToStep: (stepIndex) => {
-          const { steps, completedSteps, visitedSteps } = get();
-          const step = steps[stepIndex];
-
-          if (!step) return false;
-
-          // Always allow going to visited steps
-          if (visitedSteps.includes(stepIndex)) {
-            return true;
-          }
-
-          // If step is locked, previous steps must be complete
-          if (step.locked) {
-            for (let i = 0; i < stepIndex; i++) {
-              if (!completedSteps.includes(i)) {
-                return false;
-              }
-            }
-          }
-
-          return true;
+          // Delegate to canNavigateToStep for enhanced logic
+          return get().canNavigateToStep(stepIndex);
         },
 
         // Is step complete
@@ -562,6 +593,105 @@ export const useFormWizardStore = create<FormWizardStore>()(
           return step.condition.every((cond) => {
             const _fieldValue = formData[cond.field];
             return evaluateConditions([cond], formData);
+          });
+        },
+
+        // OTP step detection
+        detectOTPStep: () => {
+          const { steps } = get();
+
+          // Find first step with sendOtp: true
+          const otpStepIndex = steps.findIndex((step) => {
+            return (step as any).sendOtp === true;
+          });
+
+          set((state) => {
+            state.otpStepIndex = otpStepIndex !== -1 ? otpStepIndex : null;
+          });
+
+          return otpStepIndex !== -1 ? otpStepIndex : null;
+        },
+
+        // Get OTP step index
+        getOTPStepIndex: () => {
+          return get().otpStepIndex;
+        },
+
+        // Register before step change callback
+        registerBeforeStepChange: (callback) => {
+          set((state) => {
+            state.beforeStepChangeCallback = callback;
+          });
+        },
+
+        // Unregister before step change callback
+        unregisterBeforeStepChange: () => {
+          set((state) => {
+            state.beforeStepChangeCallback = null;
+          });
+        },
+
+        // Enhanced can navigate to step
+        canNavigateToStep: (targetIndex) => {
+          const {
+            steps,
+            completedSteps,
+            visitedSteps,
+            otpStepIndex,
+            beforeStepChangeCallback,
+            currentStep,
+          } = get();
+
+          const step = steps[targetIndex];
+          if (!step) return false;
+
+          // Call beforeStepChange callback if registered
+          if (beforeStepChangeCallback) {
+            const allowed = beforeStepChangeCallback(currentStep, targetIndex);
+            if (!allowed) return false;
+          }
+
+          // Check verification session lock from auth store
+          // Import dynamically to avoid circular dependency
+          const { useAuthStore } = require("@/store/use-auth-store");
+          const authStore = useAuthStore.getState();
+          if (!authStore.canNavigateBack(targetIndex)) {
+            return false;
+          }
+
+          // Allow navigation to visited steps
+          if (visitedSteps.includes(targetIndex)) {
+            return true;
+          }
+
+          // If step is locked, previous steps must be complete
+          if (step.locked) {
+            for (let i = 0; i < targetIndex; i++) {
+              if (!completedSteps.includes(i)) {
+                return false;
+              }
+            }
+          }
+
+          return true;
+        },
+
+        // Add to navigation history
+        addToNavigationHistory: (stepIndex) => {
+          set((state) => {
+            state.navigationHistory.push(stepIndex);
+          });
+        },
+
+        // Get navigation history
+        getNavigationHistory: () => {
+          return get().navigationHistory;
+        },
+
+        // Clear navigation history
+        clearNavigationHistory: () => {
+          set((state) => {
+            state.navigationHistory = [];
           });
         },
       })),

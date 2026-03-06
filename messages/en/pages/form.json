@@ -20,7 +20,10 @@
     "integer": "Must be an integer",
     "positive": "Must be a positive number",
     "negative": "Must be a negative number",
-    "summary_error": "Please fix {count} error(s) above"
+    "summary_error": "Please fix {count} error(s) above",
+    "validationFailed": "{count, plural, =1 {Please fix 1 error} other {Please fix # errors}}",
+    "andMoreErrors": "and {count} more error(s)",
+    "scrollToError": "Click to view error"
   },
   "finding_loan": {
     "message": "Please wait a moment, we are finding suitable loans for you",

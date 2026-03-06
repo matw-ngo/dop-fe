@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { BankIcon, FlashIcon, PercentageIcon } from "@/components/icons/home";
 import { DynamicLoanForm } from "@/components/loan-application/DynamicLoanForm";
+import { FLOW_PAGES } from "@/constants/flow-pages";
 import { FlowFormDialog } from "@/components/loan-application/FlowFormDialog";
 import { useTenant } from "@/hooks/tenant/use-tenant";
 
@@ -78,7 +79,7 @@ export function LoanProductPanel() {
             borderColor: "rgba(1, 120, 72, 0.1)",
           }}
         >
-          <DynamicLoanForm page="/index" />
+          <DynamicLoanForm page={FLOW_PAGES.INDEX} />
         </div>
       </div>
 

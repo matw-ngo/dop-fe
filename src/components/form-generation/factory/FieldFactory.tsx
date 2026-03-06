@@ -292,7 +292,7 @@ export function FieldFactory({
     onChange: fieldOnChange,
     onBlur: handleBlur,
     onFocus: handleFocus,
-    error: translatedError,
+    error: field.hideError ? undefined : translatedError, // Don't pass error if hideError is true
     disabled: disabled || field.disabled,
     readOnly: readOnly || field.readOnly,
     className: controlClassName, // Only control className
@@ -310,13 +310,16 @@ export function FieldFactory({
 
   const { theme } = useFormTheme();
 
+  // Determine if error should be displayed
+  const shouldShowError = !field.hideError && translatedError;
+
   // Render with or without wrapper
   const fieldContent = showWrapper ? (
     <FieldWrapper
       id={field.id}
       label={label}
       required={isRequired}
-      error={translatedError}
+      error={shouldShowError}
       help={help}
       disabled={disabled || field.disabled}
       // Granular styling - separate classNames
@@ -344,7 +347,7 @@ function useValidationErrorTranslation() {
     (error?: string) => {
       if (!error) return undefined;
 
-      // Check if error is a translation key (contains | or starts with pages.form.errors)
+      // Check if error is a translation key (contains | or starts with pages. or features.)
       // Simple check: if it has a pipe, parse it.
       // If not but looks like a key, translate it.
       // If regular string, return as is (fallback).
@@ -359,7 +362,8 @@ function useValidationErrorTranslation() {
         }
       }
 
-      if (error.startsWith("pages.form.errors.")) {
+      // Check if it's a translation key (starts with pages. or features.)
+      if (error.startsWith("pages.") || error.startsWith("features.")) {
         return t(error);
       }
 

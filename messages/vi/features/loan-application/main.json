@@ -38,7 +38,9 @@
     "amountRequired": "Vui lòng chọn khoản vay",
     "periodRequired": "Vui lòng chọn thời gian vay",
     "purposeRequired": "Vui lòng chọn mục đích vay",
-    "submissionFailed": "Thất bại. Vui lòng thử lại."
+    "submissionFailed": "Thất bại. Vui lòng thử lại.",
+    "configurationError": "Lỗi cấu hình. Vui lòng liên hệ hỗ trợ.",
+    "termsRequired": "Bạn phải đồng ý với điều khoản và điều kiện để tiếp tục."
   },
   "submit": {
     "button": "Bắt đầu tìm kiếm khoản vay",
@@ -81,6 +83,35 @@
     "otp": {
       "required": "OTP phải có 4 chữ số",
       "invalid": "OTP không hợp lệ"
+    }
+  },
+  "navigation": {
+    "blocked": {
+      "afterVerification": "Bạn không thể quay lại sau khi xác thực vì lý do bảo mật.",
+      "title": "Điều hướng bị chặn"
+    },
+    "sessionExpired": {
+      "message": "Phiên của bạn đã hết hạn. Vui lòng bắt đầu lại.",
+      "title": "Phiên hết hạn"
+    },
+    "sessionTimeout": {
+      "warning": "Phiên của bạn sẽ hết hạn trong {seconds} giây.",
+      "title": "Phiên sắp hết hạn"
+    },
+    "error": {
+      "sessionCorrupt": {
+        "title": "Lỗi phiên",
+        "message": "Dữ liệu phiên của bạn bị lỗi. Quay về bước đầu."
+      },
+      "sessionInvalid": {
+        "title": "Phiên không hợp lệ",
+        "message": "Phiên xác thực của bạn không hợp lệ. Vui lòng bắt đầu lại."
+      },
+      "otpRequired": {
+        "title": "Yêu cầu xác thực",
+        "message": "Cần xác thực OTP trước khi truy cập bước này."
+      },
+      "resetButton": "Bắt đầu lại"
     }
   }
 }

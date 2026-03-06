@@ -37,7 +37,7 @@ export const ConsentModal = memo(function ConsentModal({
   const t = useTranslations("features.consent");
   const { user } = useAuthStore();
   const userId = user?.id;
-  const sessionId = useConsentSession();
+  const { sessionId, createSession } = useConsentSession();
 
   const { setConsentData, setError } = useConsentStore();
   const { grantConsent, isSubmitting } = useConsentGrant();
@@ -107,10 +107,13 @@ export const ConsentModal = memo(function ConsentModal({
       return;
     }
 
+    // Create session ID when user grants consent (lazy initialization)
+    const consentSessionId = sessionId || createSession();
+
     const result = await grantConsent({
       userId,
       consentVersionId: consentPurpose.latest_version_id,
-      sessionId,
+      sessionId: consentSessionId,
     });
 
     if (result) {

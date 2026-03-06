@@ -10,6 +10,7 @@ import { StatsSection } from "@/components/home/StatsSection";
 import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
 import { TenantThemeProvider } from "@/components/layout/TenantThemeProvider";
+import { FLOW_PAGES } from "@/constants/flow-pages";
 import { useConsentPurpose } from "@/hooks/consent/use-consent-purpose";
 import { useConsentSession } from "@/hooks/consent/use-consent-session";
 import { useUserConsent } from "@/hooks/consent/use-user-consent";
@@ -25,10 +26,10 @@ import { useConsentStore } from "@/store/use-consent-store";
 export default function Home() {
   const t = useTranslations("components.layout.header.nav.products");
   const t_common = useTranslations("common");
-  const sessionId = useConsentSession();
+  const { sessionId } = useConsentSession();
   const openConsentModal = useConsentStore((s) => s.openConsentModal);
 
-  const indexStep = useFlowStep("/index");
+  const indexStep = useFlowStep(FLOW_PAGES.INDEX);
   const consentPurposeId = indexStep?.consent_purpose_id;
 
   // Fetch the active consent purpose for the website based on purpose ID from flow
@@ -37,7 +38,7 @@ export default function Home() {
     enabled: !!consentPurposeId,
   });
 
-  // Check consent status for the current session
+  // Check consent status for the current session (only if session exists)
   const { data: userConsent } = useUserConsent({
     sessionId: sessionId || undefined,
     enabled: !!sessionId,
@@ -50,12 +51,6 @@ export default function Home() {
       consentPurposeData,
       userConsent,
     });
-
-    // If no session ID yet (initializing), wait
-    if (!sessionId) {
-      console.log("[Home Page] No session ID yet, waiting...");
-      return;
-    }
 
     // Wait for flow and consent purpose to be resolved
     if (!consentPurposeId) {
@@ -70,38 +65,42 @@ export default function Home() {
       return;
     }
 
-    // Check if user has already consented to this version in this session
-    const userVersionId = userConsent?.consent_version_id;
-    const hasConsented = userConsent?.action === "grant"; // Explicitly check for grant action
+    // If session exists, check if user has already consented
+    if (sessionId) {
+      const userVersionId = userConsent?.consent_version_id;
+      const hasConsented = userConsent?.action === "grant";
 
-    console.log("[Home Page] Consent check:", {
-      latestVersionId,
-      userVersionId,
-      hasConsented,
-      userConsentAction: userConsent?.action,
-    });
+      console.log("[Home Page] Consent check (existing session):", {
+        latestVersionId,
+        userVersionId,
+        hasConsented,
+        userConsentAction: userConsent?.action,
+      });
 
-    // Show modal if:
-    // 1. No consent record found for this session
-    // 2. OR Consent record exists but version is outdated
-    // 3. OR Consent record exists but action is not 'grant' (e.g. revoked?)
+      // Show modal if version is outdated or not granted
+      const shouldShowModal =
+        !userVersionId || userVersionId !== latestVersionId || !hasConsented;
 
-    const shouldShowModal =
-      !userVersionId || userVersionId !== latestVersionId || !hasConsented;
+      console.log("[Home Page] Modal decision:", {
+        shouldShowModal,
+        reason: !userVersionId
+          ? "No consent record"
+          : userVersionId !== latestVersionId
+            ? "Version outdated"
+            : !hasConsented
+              ? "Not granted"
+              : "Already consented",
+      });
 
-    console.log("[Home Page] Modal decision:", {
-      shouldShowModal,
-      reason: !userVersionId
-        ? "No consent record"
-        : userVersionId !== latestVersionId
-          ? "Version outdated"
-          : !hasConsented
-            ? "Not granted"
-            : "Already consented",
-    });
-
-    if (shouldShowModal && consentPurposeId) {
-      console.log("[Home Page] Opening consent modal");
+      if (shouldShowModal && consentPurposeId) {
+        console.log("[Home Page] Opening consent modal");
+        openConsentModal({ consentPurposeId });
+      }
+    } else {
+      // No session exists - this is a new visitor, show consent modal
+      console.log(
+        "[Home Page] No session found, showing consent modal for new visitor",
+      );
       openConsentModal({ consentPurposeId });
     }
   }, [

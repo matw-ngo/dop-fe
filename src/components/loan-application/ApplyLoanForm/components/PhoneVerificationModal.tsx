@@ -16,12 +16,43 @@ export const PhoneVerificationModal: React.FC<PhoneVerificationModalProps> = ({
   const t = useTranslations("features.loan-application");
   const { theme } = useFormTheme();
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (open) {
       setPhoneNumber("");
+      setError(null);
     }
   }, [open]);
+
+  const handleSubmit = () => {
+    // Clear previous error
+    setError(null);
+
+    // Validate phone number is not empty
+    const trimmedPhone = phoneNumber.trim();
+    if (!trimmedPhone) {
+      setError(t("errors.phoneRequired"));
+      return;
+    }
+
+    // Basic format validation (numbers only, reasonable length)
+    if (!/^\d{9,11}$/.test(trimmedPhone)) {
+      setError(t("errors.phoneInvalid"));
+      return;
+    }
+
+    // Call parent handler
+    onVerify(trimmedPhone);
+  };
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPhoneNumber(e.target.value);
+    // Clear error when user starts typing
+    if (error) {
+      setError(null);
+    }
+  };
 
   return (
     <Modal
@@ -50,18 +81,20 @@ export const PhoneVerificationModal: React.FC<PhoneVerificationModalProps> = ({
           <TextInput
             placeholder={t("otp.placeholder")}
             value={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
+            onChange={handlePhoneChange}
             className="text-lg"
             disabled={isSubmitting}
+            error={!!error}
+            errorMessage={error || undefined}
           />
         </div>
         <div>
           <Button
             className="mx-auto block rounded-lg font-semibold w-full h-14 text-white"
             style={{ backgroundColor: theme.colors.primary }}
-            onClick={() => onVerify(phoneNumber)}
+            onClick={handleSubmit}
             loading={isSubmitting}
-            disabled={isSubmitting}
+            disabled={isSubmitting || !phoneNumber.trim()}
           >
             {t("otp.continue")}
           </Button>

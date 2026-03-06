@@ -2,11 +2,14 @@
 
 import { Check, ChevronLeft, ChevronRight } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { useFormWizardStore } from "../store/use-form-wizard-store";
 import { useFormTheme } from "../themes/ThemeProvider";
 import type { WizardNavigationConfig } from "../types";
 import { cn } from "../utils/helpers";
+import { useNavigationGuard } from "@/hooks/navigation/use-navigation-guard";
+import { useCallback } from "react";
 
 interface WizardNavigationProps {
   config?: WizardNavigationConfig;
@@ -20,6 +23,7 @@ export function WizardNavigation({
   className,
 }: WizardNavigationProps) {
   const t = useTranslations("pages.form.buttons");
+  const tAll = useTranslations(); // For error translation
   const { theme } = useFormTheme();
   const {
     currentStep,
@@ -28,7 +32,37 @@ export function WizardNavigation({
     nextStep,
     getAllData,
     isSubmitting,
+    stepMeta,
   } = useFormWizardStore();
+
+  // Initialize navigation guard
+  const navigationGuard = useNavigationGuard();
+
+  // Helper to translate validation errors (same logic as FieldFactory)
+  const translateError = useCallback(
+    (error?: string) => {
+      if (!error) return undefined;
+
+      // Check if error is a translation key (contains | or starts with pages.form.errors or features.)
+      if (error.includes("|")) {
+        const [key, paramsStr] = error.split("|");
+        try {
+          const params = JSON.parse(paramsStr);
+          return tAll(key, params);
+        } catch (_e) {
+          return error;
+        }
+      }
+
+      // Check if it's a translation key (starts with pages. or features.)
+      if (error.startsWith("pages.") || error.startsWith("features.")) {
+        return tAll(error);
+      }
+
+      return error;
+    },
+    [tAll],
+  );
 
   const isFirstStep = currentStep === 0;
   const isLastStep = currentStep === steps.length - 1;
@@ -53,7 +87,8 @@ export function WizardNavigation({
   const handleNext = async () => {
     const success = await nextStep();
     if (!success) {
-      // Validation failed, stay on current step
+      // Validation failed, scroll to first error field
+      scrollToFirstError();
       return;
     }
   };
@@ -62,12 +97,86 @@ export function WizardNavigation({
     // Validate current step first
     const success = await nextStep();
     if (!success) {
+      // Validation failed, scroll to first error field
+      scrollToFirstError();
+
+      // Show toast for fields with showToastOnError flag
+      const currentStepId = steps[currentStep]?.id;
+      const currentStepConfig = steps[currentStep];
+
+      if (
+        currentStepId &&
+        stepMeta[currentStepId]?.errors &&
+        currentStepConfig
+      ) {
+        const errors = stepMeta[currentStepId].errors;
+
+        // Collect fields with errors and showToastOnError flag
+        const fieldsWithToastErrors = currentStepConfig.fields
+          .filter((field) => field.showToastOnError && errors[field.name])
+          .map((field) => ({
+            field,
+            error: errors[field.name],
+            priority: field.errorPriority ?? 0, // Default priority is 0
+          }))
+          // Sort by priority (lower number = higher priority = shown first)
+          .sort((a, b) => a.priority - b.priority);
+
+        // Check if there are any errors from fields WITHOUT showToastOnError
+        // (i.e., regular inline errors that user can see)
+        const hasOtherErrors = currentStepConfig.fields.some(
+          (field) => !field.showToastOnError && errors[field.name],
+        );
+
+        // Only show toast if:
+        // 1. There are fields with toast errors
+        // 2. Either no other errors exist, OR the toast field has priority 0 (high priority)
+        if (fieldsWithToastErrors.length > 0) {
+          const highestPriorityError = fieldsWithToastErrors[0];
+
+          // If this field has high priority (0), always show
+          // If this field has low priority (>0), only show if no other errors
+          const shouldShowToast =
+            highestPriorityError.priority === 0 || !hasOtherErrors;
+
+          if (shouldShowToast) {
+            const translatedError = translateError(highestPriorityError.error);
+            toast.error(translatedError);
+          }
+        }
+      }
+
       return;
     }
 
     // Submit form
     const allData = getAllData();
     await onComplete?.(allData);
+  };
+
+  /**
+   * Scroll to the first field with an error
+   * Provides better UX by automatically showing the user where to fix issues
+   */
+  const scrollToFirstError = () => {
+    // Wait for DOM to update with error states
+    setTimeout(() => {
+      // Find first field with error (has aria-invalid="true")
+      const firstErrorField = document.querySelector('[aria-invalid="true"]');
+
+      if (firstErrorField) {
+        // Scroll to field with smooth behavior
+        firstErrorField.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+
+        // Focus the field for keyboard users
+        if (firstErrorField instanceof HTMLElement) {
+          firstErrorField.focus();
+        }
+      }
+    }, 100);
   };
 
   // Determine visibility
@@ -131,6 +240,7 @@ export function WizardNavigation({
   ) => {
     return cn(
       getThemeButtonClass(variant),
+      "cursor-pointer", // Ensure pointer cursor
       (fullWidthButtons || isFullWidth) && "w-full flex-1",
       customClass,
     );
@@ -154,7 +264,10 @@ export function WizardNavigation({
             type="button"
             variant={backButton.variant || "outline"}
             onClick={previousStep}
-            disabled={isFirstStep && !config?.showBackButtonOnFirstStep}
+            disabled={
+              !navigationGuard.canGoBack ||
+              (isFirstStep && !config?.showBackButtonOnFirstStep)
+            }
             className={getButtonClass(
               backButton.variant || "outline",
               backButton.className,

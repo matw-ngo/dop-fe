@@ -3,10 +3,24 @@
  *
  * Mock handlers for DOP backend API endpoints based on src/lib/api/v1/dop.d.ts
  * These handlers support testing scenarios including success, error, and edge cases.
+ *
+ * Profile Support:
+ * - Use 'x-test-profile' header to select a specific test profile
+ * - Use 'x-test-scenario' header to trigger error scenarios
+ *
+ * Available Profiles:
+ * - default: OTP at step 3 (middle position)
+ * - otp-at-step-1: OTP at first step
+ * - otp-at-step-3: OTP at step 3 (explicit)
+ * - otp-at-last-step: OTP at final step
+ * - no-otp-flow: No OTP verification
+ * - multi-otp-flow: Multiple OTP steps
+ * - with-ekyc: Flow with eKYC verification
  */
 
 import { http } from "msw";
 import { mswStore } from "../../../mocks/store";
+import { getProfileFromRequest } from "../profiles";
 
 const BASE_URL = "*";
 
@@ -21,99 +35,6 @@ const mswJson = (body: unknown, init?: ResponseInit): Response => {
 
   return Response.json(payload, { ...init, headers });
 };
-
-/**
- * Generate a mock flow detail object
- */
-const createMockFlowDetail = (overrides?: Record<string, unknown>) => ({
-  id: "110e8400-e29b-41d4-a716-446655440001",
-  name: "Default Onboarding Flow",
-  description: "Standard user onboarding flow",
-  flow_status: "active" as const,
-  steps: [
-    {
-      id: "220e8400-e29b-41d4-a716-446655440002",
-      use_ekyc: false,
-      send_otp: true,
-      page: "/index",
-      consent_purpose_id: "660e8400-e29b-41d4-a716-446655440006", // Added for testing
-      have_purpose: false,
-      required_purpose: false,
-      have_phone_number: false,
-      required_phone_number: false,
-      have_email: false,
-      required_email: false,
-      have_full_name: false,
-      required_full_name: false,
-      have_national_id: false,
-      required_national_id: false,
-      have_second_national_id: false,
-      required_second_national_id: false,
-      have_gender: false,
-      required_gender: false,
-      have_location: false,
-      required_location: false,
-      have_birthday: false,
-      required_birthday: false,
-      have_income_type: false,
-      required_income_type: false,
-      have_income: false,
-      required_income: false,
-      have_having_loan: false,
-      required_having_loan: false,
-      have_career_status: false,
-      required_career_status: false,
-      have_career_type: false,
-      required_career_type: false,
-      have_credit_status: true,
-      required_credit_status: true,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-    },
-    {
-      id: "330e8400-e29b-41d4-a716-446655440003",
-      use_ekyc: false,
-      send_otp: false,
-      page: "/submit-info",
-      consent_purpose_id: "660e8400-e29b-41d4-a716-446655440006", // Step 2 has consent
-      have_purpose: false,
-      required_purpose: false,
-      have_phone_number: false,
-      required_phone_number: false,
-      have_email: true,
-      required_email: true,
-      have_full_name: true,
-      required_full_name: true,
-      have_national_id: false,
-      required_national_id: false,
-      have_second_national_id: false,
-      required_second_national_id: false,
-      have_gender: false,
-      required_gender: false,
-      have_location: false,
-      required_location: false,
-      have_birthday: false,
-      required_birthday: false,
-      have_income_type: false,
-      required_income_type: false,
-      have_income: false,
-      required_income: false,
-      have_having_loan: false,
-      required_having_loan: false,
-      have_career_status: false,
-      required_career_status: false,
-      have_career_type: false,
-      required_career_type: false,
-      have_credit_status: false,
-      required_credit_status: false,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-    },
-  ],
-  created_at: new Date().toISOString(),
-  updated_at: new Date().toISOString(),
-  ...overrides,
-});
 
 /**
  * Generate a mock lead response
@@ -159,6 +80,8 @@ const createErrorResponse = (code: string, message: string) => ({
 export const dopHandlers = [
   /**
    * GET /flows/{tenant} - Get tenant onboarding flow
+   *
+   * Supports profile selection via 'x-test-profile' header
    */
   http.get(`${BASE_URL}/flows/:tenant`, ({ params, request }) => {
     const { tenant } = params;
@@ -179,8 +102,15 @@ export const dopHandlers = [
           createErrorResponse("failed_precondition", "Flow is not active"),
           { status: 400 },
         );
-      default:
-        return mswJson(createMockFlowDetail({ id: tenant as string }));
+      default: {
+        // Get profile from request header
+        const profile = getProfileFromRequest(request);
+        const flowConfig = {
+          ...profile.flowConfig,
+          id: tenant as string,
+        };
+        return mswJson(flowConfig);
+      }
     }
   }),
 

@@ -49,7 +49,10 @@ vi.mock("@/hooks/consent/use-consent-purpose", () => ({
 }));
 
 vi.mock("@/hooks/consent/use-consent-session", () => ({
-  useConsentSession: () => "test-session-id",
+  useConsentSession: () => ({ 
+    sessionId: "test-session-id",
+    createSession: () => "test-session-id"
+  }),
 }));
 
 vi.mock("@/hooks/consent/use-user-consent", () => ({

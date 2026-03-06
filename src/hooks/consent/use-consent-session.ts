@@ -14,10 +14,12 @@ let cachedSessionId: string | null = null;
 /**
  * Hook for managing consent session IDs with cookie-based storage
  *
- * Provides automatic session ID generation and persistence using browser cookies.
- * Session IDs are UUID v4 format and persist for 30 days with automatic expiry.
+ * **LAZY INITIALIZATION**: Session ID is only created when explicitly requested
+ * via `createSession()`. This ensures GDPR compliance by not setting cookies
+ * before user consent.
  *
  * **Features:**
+ * - Lazy session creation (only when needed)
  * - Automatic 30-day expiry via cookie max-age (no manual timestamp checking)
  * - Secure flag for HTTPS-only transmission
  * - SameSite=Lax for CSRF protection while allowing external navigation
@@ -39,21 +41,25 @@ let cachedSessionId: string | null = null;
  *
  * **Error Handling:**
  * - Cookie write failures → falls back to in-memory storage
- * - Cookie read failures → generates new session ID
- * - Migration failures → logs error and creates new session
+ * - Cookie read failures → returns null
+ * - Migration failures → logs error and returns null
  *
- * @returns {string | null} Current session ID (UUID v4 format) or null if not yet initialized
+ * @returns {Object} Session management object
+ * @returns {string | null} sessionId - Current session ID (UUID v4 format) or null if not yet created
+ * @returns {function} createSession - Function to explicitly create a new session
  *
  * @example
  * ```typescript
  * function ConsentFlow() {
- *   const sessionId = useConsentSession();
+ *   const { sessionId, createSession } = useConsentSession();
  *
- *   if (!sessionId) {
- *     return <div>Initializing session...</div>;
- *   }
+ *   const handleGrantConsent = async () => {
+ *     // Create session only when user grants consent
+ *     const newSessionId = createSession();
+ *     await grantConsent({ sessionId: newSessionId });
+ *   };
  *
- *   return <div>Session ID: {sessionId}</div>;
+ *   return <Button onClick={handleGrantConsent}>Accept</Button>;
  * }
  * ```
  *
@@ -72,7 +78,7 @@ export const useConsentSession = () => {
       return;
     }
 
-    // Check for existing session in cookie
+    // Check for existing session in cookie (from previous visit)
     const cookieSession = getCookie(COOKIE_NAME);
 
     if (cookieSession) {
@@ -93,7 +99,30 @@ export const useConsentSession = () => {
       return;
     }
 
-    // Create new session if none exists
+    // DO NOT create session automatically - wait for explicit createSession() call
+    console.info(
+      "[Consent Session] No existing session found, waiting for explicit creation",
+      {
+        timestamp: new Date().toISOString(),
+      },
+    );
+  }, [sessionId]);
+
+  /**
+   * Explicitly create a new session ID
+   * Should be called only when user grants consent
+   */
+  const createSession = (): string => {
+    // If session already exists, return it
+    if (cachedSessionId) {
+      console.info("[Consent Session] Reusing existing session ID", {
+        sessionId: cachedSessionId,
+        timestamp: new Date().toISOString(),
+      });
+      return cachedSessionId;
+    }
+
+    // Create new session
     const newSessionId = uuidv4();
     const success = setCookie(COOKIE_NAME, newSessionId, {
       maxAge: COOKIE_MAX_AGE,
@@ -121,9 +150,11 @@ export const useConsentSession = () => {
       cachedSessionId = newSessionId;
       setSessionId(newSessionId);
     }
-  }, [sessionId]);
 
-  return sessionId;
+    return newSessionId;
+  };
+
+  return { sessionId, createSession };
 };
 
 /**

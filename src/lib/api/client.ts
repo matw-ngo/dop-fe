@@ -1,10 +1,13 @@
 import createClient from "openapi-fetch";
 import { toast } from "sonner";
+import { getNavigationConfig } from "@/contexts/NavigationConfigContext";
 import { securityUtils, useTokenStore } from "@/lib/auth/secure-tokens";
 import { shouldSkipAuth } from "./config";
-import { createTimeoutController } from "./timeouts/abort-timeout";
-
+// Verification middleware imports
+import { createVerificationInterceptor } from "./middleware/verification";
+import { createVerificationErrorMiddleware } from "./middleware/verification-error";
 // Timeout configuration imports
+import { createTimeoutController } from "./timeouts/abort-timeout";
 import { parseTimeoutConfig } from "./timeouts/config-parser";
 import { DEFAULT_RETRY } from "./timeouts/constants";
 import { resolveTimeout } from "./timeouts/resolver";
@@ -259,8 +262,14 @@ apiClient.use({
 
       throw timeoutError;
     }
+
+    return res.response;
   },
 });
+
+// Register verification middleware separately
+apiClient.use(createVerificationInterceptor(() => getNavigationConfig()));
+apiClient.use(createVerificationErrorMiddleware());
 
 // Retry utility for API calls with exponential backoff
 // Uses correct defaults from DEFAULT_RETRY constants
@@ -306,7 +315,7 @@ export const withRetry = async <T>(
     }
   }
 
-  throw lastError!;
+  throw new Error("All retry attempts failed");
 };
 
 export default apiClient;

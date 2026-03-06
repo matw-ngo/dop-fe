@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { useFormWizardStore } from "../store/use-form-wizard-store";
 import type { DynamicFormConfig } from "../types";
+import { ErrorSummary } from "./ErrorSummary";
 import { StepContent } from "./StepContent";
 import { WizardNavigation } from "./WizardNavigation";
 import { WizardProgress } from "./WizardProgress";
@@ -73,6 +74,11 @@ export function StepWizard({
   }
 
   const currentStepConfig = steps[currentStep];
+
+  // Error display configuration
+  const errorDisplay = config.errorDisplay || { mode: "inline" }; // Default to inline only
+  const showErrorSummary =
+    errorDisplay.mode !== "inline" && errorDisplay.summary?.enabled !== false;
   // const progress = getProgress(); // This line is no longer needed
 
   return (
@@ -87,12 +93,32 @@ export function StepWizard({
         />
       )}
 
+      {/* Error Summary (Top) */}
+      {showErrorSummary && errorDisplay.summary?.position !== "bottom" && (
+        <ErrorSummary
+          position={errorDisplay.summary?.position || "sticky-top"}
+          clickable={errorDisplay.summary?.clickable !== false}
+          maxErrors={errorDisplay.summary?.maxErrors || 5}
+          showFieldLabels={errorDisplay.summary?.showFieldLabels !== false}
+        />
+      )}
+
       {/* Current Step Content */}
       <StepContent
         step={currentStepConfig}
         showTitle={config.navigation?.showStepHeader}
         namespace={config.i18n?.namespace}
       />
+
+      {/* Error Summary (Bottom) */}
+      {showErrorSummary && errorDisplay.summary?.position === "bottom" && (
+        <ErrorSummary
+          position="bottom"
+          clickable={errorDisplay.summary?.clickable !== false}
+          maxErrors={errorDisplay.summary?.maxErrors || 5}
+          showFieldLabels={errorDisplay.summary?.showFieldLabels !== false}
+        />
+      )}
 
       {/* Navigation Buttons */}
       <WizardNavigation config={config.navigation} onComplete={onComplete} />

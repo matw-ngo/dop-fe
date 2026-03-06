@@ -5,15 +5,28 @@ import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { useFormTheme } from "@/components/form-generation/themes";
+import { ManualResetButton } from "@/components/form-generation/wizard/ManualResetButton";
+import { SessionTimeoutWarning } from "@/components/form-generation/wizard/SessionTimeoutWarning";
+import { useFormWizardStore } from "@/components/form-generation/store/use-form-wizard-store";
+import { getNavigationConfig } from "@/contexts/NavigationConfigContext";
 import { Button, Modal, OtpContainer, TextInput } from "@/components/ui";
 import { useCreateLead } from "@/hooks/features/lead/use-create-lead";
 import { useLoanPurposes } from "@/hooks/i18n/use-loan-purposes";
+import { useErrorRecovery } from "@/hooks/navigation/use-error-recovery";
+import { useNavigationGuard } from "@/hooks/navigation/use-navigation-guard";
+import { useSessionReset } from "@/hooks/navigation/use-session-reset";
+import { useSessionTimeout } from "@/hooks/navigation/use-session-timeout";
 import { usePhoneValidationMessages } from "@/hooks/phone/use-validation-messages";
 import { useTenantFlow } from "@/hooks/tenant/use-flow";
 import { useTenant } from "@/hooks/tenant/use-tenant";
+import {
+  NavigationEvents,
+  isNavigationEvent,
+} from "@/lib/events/navigation-events";
 import { trackLoanApplication } from "@/lib/tracking/events";
 import { ALLOWED_TELCOS, phoneValidation } from "@/lib/utils/phone-validation";
 import { mapFormDataToLeadInfo } from "@/mappers/leadMapper";
+import { useAuthStore } from "@/store/use-auth-store";
 import { AmountField } from "./components/AmountField";
 import { PeriodField } from "./components/PeriodField";
 import { PurposeField } from "./components/PurposeField";
@@ -73,6 +86,107 @@ const ApplyLoanForm: React.FC<ApplyLoanFormProps> = ({
   const [createdLeadToken, setCreatedLeadToken] = React.useState<
     string | undefined
   >(leadToken);
+
+  // ============================================================================
+  // Navigation Security Hooks
+  // ============================================================================
+
+  // Navigation guard - blocks back navigation to pre-OTP steps
+  const navigationGuard = useNavigationGuard({
+    onNavigationBlocked: (reason) => {
+      console.log("Navigation blocked:", reason);
+    },
+  });
+
+  // Session timeout - tracks session expiration with activity
+  const { timeRemaining, resetTimeout } = useSessionTimeout({
+    checkInterval: 10000, // Check every 10 seconds
+    activityDebounce: 1000, // Debounce activity updates to 1 second
+  });
+
+  // Session reset - clears session on navigation away or logout
+  const { resetSession } = useSessionReset({
+    onReset: () => {
+      console.log("Verification session reset");
+    },
+  });
+
+  // Error recovery - handles corrupted sessions
+  const errorRecovery = useErrorRecovery({
+    onError: (error) => {
+      console.error("Navigation error detected:", error);
+    },
+  });
+
+  // Access auth store for verification session management
+  const createVerificationSession = useAuthStore(
+    (state) => state.createVerificationSession,
+  );
+
+  // Access wizard store for OTP step detection
+  const detectOTPStep = useFormWizardStore((state) => state.detectOTPStep);
+
+  // ============================================================================
+  // Navigation Event Listeners
+  // ============================================================================
+
+  React.useEffect(() => {
+    // Listen for session invalid events from API interceptors
+    const handleSessionInvalid = (event: Event) => {
+      if (isNavigationEvent(event)) {
+        const message = event.detail.message || t("navigation.sessionInvalid");
+        toast.error(message);
+
+        // Reset session and redirect to first step
+        resetSession();
+      }
+    };
+
+    // Listen for OTP required events from API interceptors
+    const handleOTPRequired = (event: Event) => {
+      if (isNavigationEvent(event)) {
+        const message = event.detail.message || t("navigation.otpRequired");
+        toast.warning(message);
+
+        // Show OTP modal
+        setShowOTPModal(true);
+      }
+    };
+
+    window.addEventListener(
+      NavigationEvents.SESSION_INVALID,
+      handleSessionInvalid,
+    );
+    window.addEventListener(NavigationEvents.OTP_REQUIRED, handleOTPRequired);
+
+    return () => {
+      window.removeEventListener(
+        NavigationEvents.SESSION_INVALID,
+        handleSessionInvalid,
+      );
+      window.removeEventListener(
+        NavigationEvents.OTP_REQUIRED,
+        handleOTPRequired,
+      );
+    };
+  }, [t, resetSession]);
+
+  // ============================================================================
+  // OTP Step Detection
+  // ============================================================================
+
+  React.useEffect(() => {
+    // Detect OTP step when flow config loads
+    if (flowConfig) {
+      // Note: detectOTPStep is called in DynamicLoanForm after wizard initialization
+      // This is a fallback for ApplyLoanForm which doesn't use the wizard
+      console.log("Flow config loaded, OTP detection handled by wizard");
+    }
+  }, [flowConfig]);
+
+  // ============================================================================
+  // Form Setup
+  // ============================================================================
 
   const form = useForm<LoanApplicationFormData>({
     resolver: zodResolver(createLoanApplicationSchema(t)) as any,
@@ -213,6 +327,21 @@ const ApplyLoanForm: React.FC<ApplyLoanFormProps> = ({
     toast.info(t("messages.otpSuccess"));
     setShowOTPModal(false);
 
+    // ============================================================================
+    // Create Verification Session After OTP Success
+    // ============================================================================
+
+    // Create verification session to lock navigation
+    // Note: OTP step index should be detected by wizard store
+    // For ApplyLoanForm (non-wizard), we assume OTP is at index 0
+    const otpStepIndex = 0; // This form doesn't use wizard, so OTP is conceptually step 0
+
+    // Get navigation config without using React hook
+    const config = getNavigationConfig();
+    createVerificationSession(otpStepIndex, config);
+
+    console.log("Verification session created after OTP success");
+
     // Navigate to loan info wizard with lead data
     if (createdLeadId && createdLeadToken) {
       router.push(
@@ -249,6 +378,14 @@ const ApplyLoanForm: React.FC<ApplyLoanFormProps> = ({
   return (
     <FormProvider {...form}>
       <div className="max-w-2xl mx-auto p-4">
+        {/* Session Timeout Warning - shows when < 60s remaining */}
+        {timeRemaining !== null && timeRemaining < 60 && (
+          <SessionTimeoutWarning timeRemaining={timeRemaining} />
+        )}
+
+        {/* Manual Reset Button - shows on errors */}
+        <ManualResetButton />
+
         {/* Số tiền vay field */}
         <AmountField
           value={userData.expected_amount}

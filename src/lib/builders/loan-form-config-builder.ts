@@ -424,11 +424,20 @@ export function buildLoanFormConfigFromStep(
       validation: [
         {
           type: ValidationRuleType.REQUIRED,
+          message: "features.loan-application.errors.termsRequired",
+        },
+        {
+          type: ValidationRuleType.CUSTOM,
+          validator: (value: any) => value === "1", // Must be "1" (agree)
+          message: "features.loan-application.errors.termsRequired",
         },
       ],
       i18n: {
         enabled: true,
       },
+      hideError: true, // Use toast notification instead of inline error
+      showToastOnError: true, // Show toast when validation fails
+      errorPriority: 100, // Show last (only if no other errors)
     });
   }
 

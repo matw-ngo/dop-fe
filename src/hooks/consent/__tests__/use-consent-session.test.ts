@@ -1,4 +1,4 @@
-import { renderHook, waitFor } from "@testing-library/react";
+import { renderHook, waitFor, act } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import * as cookieUtils from "@/lib/utils/cookie";
 import {
@@ -68,27 +68,52 @@ describe("useConsentSession", () => {
   });
 
   describe("Session ID Generation", () => {
-    it("should generate new session ID when no cookie exists", async () => {
+    it("should NOT generate session ID automatically when no cookie exists", async () => {
       const { result } = renderHook(() => useConsentSession());
 
       await waitFor(() => {
-        expect(result.current).not.toBeNull();
+        expect(result.current.sessionId).toBeNull();
+      });
+
+      // Cookie should not be set automatically
+      expect(document.cookie).not.toContain("consent_session_id=");
+    });
+
+    it("should generate UUID v4 when createSession is called", async () => {
+      const { result } = renderHook(() => useConsentSession());
+
+      await waitFor(() => {
+        expect(result.current.sessionId).toBeNull();
+      });
+
+      // Explicitly create session
+      act(() => {
+        result.current.createSession();
+      });
+
+      await waitFor(() => {
+        expect(result.current.sessionId).not.toBeNull();
       });
 
       // Verify UUID v4 format (8-4-4-4-12 hexadecimal pattern)
       const uuidRegex =
         /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-      expect(result.current).toMatch(uuidRegex);
+      expect(result.current.sessionId).toMatch(uuidRegex);
     });
 
     it("should generate UUID v4 with correct version bits", async () => {
       const { result } = renderHook(() => useConsentSession());
 
-      await waitFor(() => {
-        expect(result.current).not.toBeNull();
+      // Explicitly create session
+      act(() => {
+        result.current.createSession();
       });
 
-      const sessionId = result.current!;
+      await waitFor(() => {
+        expect(result.current.sessionId).not.toBeNull();
+      });
+
+      const sessionId = result.current.sessionId!;
       const parts = sessionId.split("-");
 
       // Check version field (3rd group, first character should be '4')
@@ -98,15 +123,20 @@ describe("useConsentSession", () => {
       expect(["8", "9", "a", "b"]).toContain(parts[3][0].toLowerCase());
     });
 
-    it("should store generated session ID in cookie", async () => {
+    it("should store generated session ID in cookie when createSession is called", async () => {
       const { result } = renderHook(() => useConsentSession());
 
+      // Explicitly create session
+      act(() => {
+        result.current.createSession();
+      });
+
       await waitFor(() => {
-        expect(result.current).not.toBeNull();
+        expect(result.current.sessionId).not.toBeNull();
       });
 
       expect(document.cookie).toContain("consent_session_id=");
-      expect(document.cookie).toContain(result.current!);
+      expect(document.cookie).toContain(result.current.sessionId!);
     });
   });
 
@@ -118,7 +148,7 @@ describe("useConsentSession", () => {
       const { result } = renderHook(() => useConsentSession());
 
       await waitFor(() => {
-        expect(result.current).toBe(existingId);
+        expect(result.current.sessionId).toBe(existingId);
       });
     });
 
@@ -131,7 +161,7 @@ describe("useConsentSession", () => {
       // First render
       const { result: result1 } = renderHook(() => useConsentSession());
       await waitFor(() => {
-        expect(result1.current).toBe(existingId);
+        expect(result1.current.sessionId).toBe(existingId);
       });
 
       const firstCallCount = getCookieSpy.mock.calls.length;
@@ -139,7 +169,7 @@ describe("useConsentSession", () => {
       // Second render
       const { result: result2 } = renderHook(() => useConsentSession());
       await waitFor(() => {
-        expect(result2.current).toBe(existingId);
+        expect(result2.current.sessionId).toBe(existingId);
       });
 
       // Should use cache, not call getCookie again
@@ -153,7 +183,7 @@ describe("useConsentSession", () => {
       const { result } = renderHook(() => useConsentSession());
 
       await waitFor(() => {
-        expect(result.current).toBe(sessionId);
+        expect(result.current.sessionId).toBe(sessionId);
       });
     });
   });

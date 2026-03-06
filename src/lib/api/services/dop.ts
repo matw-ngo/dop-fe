@@ -1,4 +1,5 @@
 import createClient from "openapi-fetch";
+import { getNavigationConfig } from "@/contexts/NavigationConfigContext";
 import {
   createAuthMiddleware,
   createAuthResponseMiddleware,
@@ -8,6 +9,8 @@ import {
   createTimeoutMiddleware,
   createTimeoutResponseMiddleware,
 } from "../middleware/timeout";
+import { createVerificationInterceptor } from "../middleware/verification";
+import { createVerificationErrorMiddleware } from "../middleware/verification-error";
 import type { paths as DopPaths } from "../v1/dop";
 
 /**
@@ -46,5 +49,9 @@ dopClient.use(createAuthResponseMiddleware());
 dopClient.use(createTimeoutMiddleware());
 dopClient.use(createTimeoutResponseMiddleware());
 dopClient.use(createErrorMiddleware());
+
+// Apply verification middleware for post-OTP navigation security
+dopClient.use(createVerificationInterceptor(() => getNavigationConfig()));
+dopClient.use(createVerificationErrorMiddleware());
 
 export type { DopPaths };

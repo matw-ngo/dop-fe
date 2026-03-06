@@ -2,11 +2,12 @@
 
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import { toast } from "sonner";
 import { StepWizard } from "@/components/form-generation";
 import { OtpVerificationModal } from "@/components/loan-application/ApplyLoanForm/components/OtpVerificationModal";
 import { PhoneVerificationModal } from "@/components/loan-application/ApplyLoanForm/components/PhoneVerificationModal";
+import { FLOW_PAGES, type FlowPage } from "@/constants/flow-pages";
 import { useCreateLead } from "@/hooks/features/lead/use-create-lead";
 import { useFlow } from "@/hooks/flow/use-flow";
 import { useLoanPurposes } from "@/hooks/i18n/use-loan-purposes";
@@ -15,8 +16,11 @@ import { useFlowStep } from "@/hooks/tenant/use-flow-step";
 import { useTenant } from "@/hooks/tenant/use-tenant";
 import { buildLoanFormConfigFromStep } from "@/lib/builders/loan-form-config-builder";
 import "@/lib/builders/register-flow-components";
+import { useFormWizardStore } from "@/components/form-generation/store/use-form-wizard-store";
+import { getNavigationConfig } from "@/contexts/NavigationConfigContext";
 import { ALLOWED_TELCOS, phoneValidation } from "@/lib/utils/phone-validation";
 import { mapFormDataToLeadInfo } from "@/mappers/leadMapper";
+import { useAuthStore } from "@/store/use-auth-store";
 import { useConsentStore } from "@/store/use-consent-store";
 
 interface DynamicLoanFormProps {
@@ -24,13 +28,18 @@ interface DynamicLoanFormProps {
     data: Record<string, unknown>,
     context?: { flowId: string; stepId: string },
   ) => void;
-  page?: string;
+  /**
+   * Logical page identifier (not physical route)
+   * Should match step.page from API response
+   * @example "/index", "/submit-info", "/personal-info"
+   */
+  page?: FlowPage | string;
   initialData?: Record<string, unknown>;
 }
 
 export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
   onSubmitSuccess,
-  page = "/index",
+  page = FLOW_PAGES.INDEX,
   initialData,
 }) => {
   const t = useTranslations("features.loan-application");
@@ -38,6 +47,10 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
   const tenant = useTenant();
   const router = useRouter();
   const { getConsentId, hasConsent, openConsentModal } = useConsentStore();
+
+  // Navigation security stores
+  const authStore = useAuthStore();
+  const wizardStore = useFormWizardStore();
 
   const [showPhoneModal, setShowPhoneModal] = React.useState(false);
   const [showOTPModal, setShowOTPModal] = React.useState(false);
@@ -61,6 +74,13 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
   // Step config for the current page — used to resolve consent_purpose_id
   const consentStep = useFlowStep(page);
 
+  // Detect OTP step when flow data loads
+  useEffect(() => {
+    if (flowData?.steps) {
+      wizardStore.detectOTPStep();
+    }
+  }, [flowData, wizardStore]);
+
   const indexStep = useMemo(() => {
     if (!flowData?.steps) return null;
 
@@ -74,9 +94,27 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
         (normalizedPage === "/index" && normalizePage(step.page) === "/"),
     );
 
-    return (
-      matchingStep || (normalizedPage === "/index" ? flowData.steps[0] : null)
-    );
+    // Validation: Log warning if no matching step found
+    if (!matchingStep && normalizedPage !== "/index") {
+      console.warn(
+        `[DynamicLoanForm] No step found for page: "${page}"`,
+        "\nAvailable pages:",
+        flowData.steps.map((s) => s.page),
+        "\nThis may indicate a mismatch between component prop and API response.",
+      );
+    }
+
+    const result =
+      matchingStep || (normalizedPage === "/index" ? flowData.steps[0] : null);
+
+    if (result) {
+      console.log(`[DynamicLoanForm] Matched step for page "${page}":`, {
+        stepId: result.id,
+        stepPage: result.page,
+      });
+    }
+
+    return result;
   }, [flowData, page]);
 
   const stepContext = useMemo(() => {
@@ -178,6 +216,23 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
 
   const handleOtpSuccess = (otp: string) => {
     console.log("OTP verified successfully:", otp);
+
+    // Create verification session after OTP success
+    const otpStepIndex = useFormWizardStore.getState().otpStepIndex;
+    if (otpStepIndex !== null) {
+      // Get navigation config without using React hook
+      const config = getNavigationConfig();
+      authStore.createVerificationSession(otpStepIndex, config);
+      console.log(
+        "[DynamicLoanForm] Verification session created for OTP step:",
+        otpStepIndex,
+      );
+    } else {
+      console.warn(
+        "[DynamicLoanForm] OTP step index not detected. Cannot create verification session.",
+      );
+    }
+
     toast.info(t("messages.otpSuccess"));
     setShowOTPModal(false);
 
@@ -209,16 +264,41 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
 
   const handleFormComplete = (data: Record<string, unknown>) => {
     console.log("Form completed with data:", data);
+
     setFormData(data);
 
     if (indexStep?.sendOtp) {
-      if (!hasConsent() && consentStep?.consent_purpose_id) {
-        openConsentModal({
-          consentPurposeId: consentStep.consent_purpose_id,
-          onSuccess: () => setShowPhoneModal(true),
-        });
+      // Check if phone number is required and already collected
+      const phoneInData = data.phone_number as string | undefined;
+      const needsPhoneCollection =
+        indexStep.fields.phoneNumber.required && !phoneInData;
+
+      if (needsPhoneCollection) {
+        // Phone is required but not collected - show phone modal
+        console.log("[DynamicLoanForm] Phone required, opening phone modal");
+
+        if (!hasConsent() && consentStep?.consent_purpose_id) {
+          openConsentModal({
+            consentPurposeId: consentStep.consent_purpose_id,
+            onSuccess: () => setShowPhoneModal(true),
+          });
+        } else {
+          setShowPhoneModal(true);
+        }
+      } else if (phoneInData) {
+        // Phone already collected in form - proceed directly to OTP
+        console.log(
+          "[DynamicLoanForm] Phone already collected, proceeding to create lead",
+        );
+        handlePhoneSubmit(phoneInData);
       } else {
-        setShowPhoneModal(true);
+        // sendOtp: true but phone not required - configuration warning
+        // NOTE: This is a potential configuration issue that should be caught in profile validation
+        console.warn(
+          "[DynamicLoanForm] Configuration warning: sendOtp is true but phone is not required.",
+          "This may indicate a profile configuration issue.",
+        );
+        toast.error(t("errors.configurationError"));
       }
     } else {
       // No OTP required, navigate to next step
