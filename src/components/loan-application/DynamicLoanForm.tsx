@@ -10,6 +10,7 @@ import { PhoneVerificationModal } from "@/components/loan-application/ApplyLoanF
 import { FLOW_PAGES, type FlowPage } from "@/constants/flow-pages";
 import { useCreateLead } from "@/hooks/features/lead/use-create-lead";
 import { useFlow } from "@/hooks/flow/use-flow";
+import { useFormOptions } from "@/hooks/form-options";
 import { useLoanPurposes } from "@/hooks/i18n/use-loan-purposes";
 import { usePhoneValidationMessages } from "@/hooks/phone/use-validation-messages";
 import { useFlowStep } from "@/hooks/tenant/use-flow-step";
@@ -70,6 +71,7 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
   const { data: flowData, isLoading: isLoadingFlow } = useFlow(tenantId);
 
   const loanPurposes = useLoanPurposes();
+  const formOptions = useFormOptions();
 
   // Step config for the current page — used to resolve consent_purpose_id
   const consentStep = useFlowStep(page);
@@ -144,9 +146,10 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
     return buildLoanFormConfigFromStep(
       indexStep,
       loanPurposes,
+      formOptions,
       stepContext || undefined,
     );
-  }, [indexStep, loanPurposes, stepContext]);
+  }, [indexStep, loanPurposes, formOptions, stepContext]);
 
   const validatePhoneNum = (phoneValue: string): boolean => {
     const value = String(phoneValue || "");
@@ -329,7 +332,7 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
     }
   };
 
-  if (isLoadingFlow) {
+  if (isLoadingFlow || formOptions.isLoading) {
     return (
       <div className="max-w-2xl mx-auto p-4">
         <div className="flex flex-col items-center justify-center py-12">

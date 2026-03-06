@@ -41,6 +41,16 @@ try {
   // Ignore registration errors (e.g., in strict mode or hot reload)
 }
 
+export interface FormOptionsConfig {
+  locationOptions: ISelectBoxOption[];
+  genderOptions: ISelectBoxOption[];
+  incomeOptions: ISelectBoxOption[];
+  careerStatusOptions: ISelectBoxOption[];
+  incomeTypeOptions: ISelectBoxOption[];
+  havingLoanOptions: ISelectBoxOption[];
+  creditStatusOptions: ISelectBoxOption[];
+}
+
 /**
  * Builds a DynamicFormConfig for the loan application form
  * based on the API step configuration (step with page === "/" or "/index")
@@ -48,6 +58,7 @@ try {
 export function buildLoanFormConfigFromStep(
   step: MappedStep,
   loanPurposes: ISelectBoxOption[],
+  formOptions: FormOptionsConfig,
   stepContext?: {
     currentStepIndex: number;
     totalSteps: number;
@@ -193,16 +204,7 @@ export function buildLoanFormConfigFromStep(
       name: "location",
       type: FieldType.SELECT,
       options: {
-        choices: [
-          { label: "Hà Nội", value: "00000000-0000-0000-0000-000000000001" },
-          {
-            label: "TP. Hồ Chí Minh",
-            value: "00000000-0000-0000-0000-000000000002",
-          },
-          { label: "Đà Nẵng", value: "00000000-0000-0000-0000-000000000003" },
-          { label: "Hải Phòng", value: "00000000-0000-0000-0000-000000000004" },
-          { label: "Cần Thơ", value: "00000000-0000-0000-0000-000000000005" },
-        ],
+        choices: formOptions.locationOptions,
       },
       validation: step.fields.location.required
         ? [
@@ -243,11 +245,7 @@ export function buildLoanFormConfigFromStep(
       name: "gender",
       type: FieldType.RADIO,
       options: {
-        choices: [
-          { label: "Nam", value: "male" },
-          { label: "Nữ", value: "female" },
-          { label: "Khác", value: "other" },
-        ],
+        choices: formOptions.genderOptions,
       },
       validation: step.fields.gender.required
         ? [
@@ -269,12 +267,7 @@ export function buildLoanFormConfigFromStep(
       name: "income",
       type: FieldType.SELECT,
       options: {
-        choices: [
-          { label: "Dưới 5 triệu", value: "<5m" },
-          { label: "5 - 10 triệu", value: "5-10m" },
-          { label: "10 - 20 triệu", value: "10-20m" },
-          { label: "Trên 20 triệu", value: ">20m" },
-        ],
+        choices: formOptions.incomeOptions,
       },
       validation: step.fields.income.required
         ? [
@@ -296,12 +289,7 @@ export function buildLoanFormConfigFromStep(
       name: "careerStatus",
       type: FieldType.SELECT,
       options: {
-        choices: [
-          { label: "Nhân viên văn phòng", value: "officer" },
-          { label: "Kinh doanh tự do", value: "freelancer" },
-          { label: "Công nhân", value: "worker" },
-          { label: "Khác", value: "other" },
-        ],
+        choices: formOptions.careerStatusOptions,
       },
       validation: step.fields.careerStatus.required
         ? [
@@ -342,10 +330,7 @@ export function buildLoanFormConfigFromStep(
       name: "incomeType",
       type: FieldType.SELECT,
       options: {
-        choices: [
-          { label: "Chuyển khoản", value: "transfer" },
-          { label: "Tiền mặt", value: "cash" },
-        ],
+        choices: formOptions.incomeTypeOptions,
       },
       validation: step.fields.incomeType.required
         ? [
@@ -367,10 +352,7 @@ export function buildLoanFormConfigFromStep(
       name: "havingLoan",
       type: FieldType.RADIO,
       options: {
-        choices: [
-          { label: "Có", value: "yes" },
-          { label: "Không", value: "no" },
-        ],
+        choices: formOptions.havingLoanOptions,
       },
       validation: step.fields.havingLoan.required
         ? [
@@ -392,11 +374,7 @@ export function buildLoanFormConfigFromStep(
       name: "creditStatus",
       type: FieldType.SELECT,
       options: {
-        choices: [
-          { label: "Tốt", value: "good" },
-          { label: "Bình thường", value: "normal" },
-          { label: "Nợ xấu", value: "bad" },
-        ],
+        choices: formOptions.creditStatusOptions,
       },
       validation: step.fields.creditStatus.required
         ? [

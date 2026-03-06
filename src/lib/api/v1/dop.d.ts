@@ -123,6 +123,46 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/locations/provinces": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Get all provinces
+     * @description Retrieve a list of all provinces in Vietnam
+     */
+    get: operations["getProvinces"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/locations/provinces/{id}/wards": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Get wards by province ID
+     * @description Retrieve all wards/communes for a specific province
+     */
+    get: operations["getWardsByProvinceId"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -579,6 +619,126 @@ export interface components {
       data_hash_document?: components["schemas"]["VNPTHashDocument"];
       qr_code?: string;
     };
+    Province: {
+      /**
+       * Format: uuid
+       * @description Unique identifier for the province
+       * @example 550e8400-e29b-41d4-a716-446655440000
+       */
+      id: string;
+      /**
+       * @description Province code
+       * @example 01
+       */
+      code: string;
+      /**
+       * @description Province name in Vietnamese
+       * @example Hà Nội
+       */
+      name: string;
+      /**
+       * @description Province name in English
+       * @example Ha Noi
+       */
+      name_en?: string;
+      /**
+       * @description Full province name in Vietnamese
+       * @example Thành phố Hà Nội
+       */
+      full_name?: string;
+      /**
+       * @description Full province name in English
+       * @example Ha Noi City
+       */
+      full_name_en?: string;
+      /**
+       * @description Province code name (slug)
+       * @example ha_noi
+       */
+      code_name?: string;
+      /**
+       * Format: date-time
+       * @description Timestamp when the province was created
+       */
+      created_at?: string;
+      /**
+       * Format: date-time
+       * @description Timestamp when the province was last updated
+       */
+      updated_at?: string;
+    };
+    Ward: {
+      /**
+       * Format: uuid
+       * @description Unique identifier for the ward
+       * @example 660e8400-e29b-41d4-a716-446655440001
+       */
+      id: string;
+      /**
+       * @description Ward code
+       * @example 00004
+       */
+      code: string;
+      /**
+       * @description Ward name in Vietnamese
+       * @example Ba Đình
+       */
+      name: string;
+      /**
+       * @description Ward name in English
+       * @example Ba Dinh
+       */
+      name_en?: string;
+      /**
+       * @description Full ward name in Vietnamese
+       * @example Phường Ba Đình
+       */
+      full_name?: string;
+      /**
+       * @description Full ward name in English
+       * @example Ba Dinh Ward
+       */
+      full_name_en?: string;
+      /**
+       * @description Ward code name (slug)
+       * @example ba_dinh
+       */
+      code_name?: string;
+      /**
+       * @description Code of the province this ward belongs to
+       * @example 01
+       */
+      province_code: string;
+      /**
+       * Format: date-time
+       * @description Timestamp when the ward was created
+       */
+      created_at?: string;
+      /**
+       * Format: date-time
+       * @description Timestamp when the ward was last updated
+       */
+      updated_at?: string;
+    };
+    /** @enum {string} */
+    ErrorCode:
+      | "success"
+      | "canceled"
+      | "unknown"
+      | "invalid_argument"
+      | "deadline_exceeded"
+      | "not_found"
+      | "already_exists"
+      | "permission_denied"
+      | "resource_exhausted"
+      | "failed_precondition"
+      | "aborted"
+      | "out_of_range"
+      | "unimplemented"
+      | "internal_error"
+      | "unavailable"
+      | "data_loss"
+      | "unauthenticated";
   };
   responses: {
     /** @description OK */
@@ -587,6 +747,18 @@ export interface components {
         [name: string]: unknown;
       };
       content?: never;
+    };
+    /** @description Bad request */
+    400: {
+      headers: {
+        [name: string]: unknown;
+      };
+      content: {
+        "application/json": {
+          code: components["schemas"]["ErrorCode"];
+          message: string;
+        };
+      };
     };
     /** @description Unauthorized */
     401: {
@@ -597,6 +769,13 @@ export interface components {
     };
     /** @description Forbidden */
     403: {
+      headers: {
+        [name: string]: unknown;
+      };
+      content?: never;
+    };
+    /** @description Not Found */
+    404: {
       headers: {
         [name: string]: unknown;
       };
@@ -801,6 +980,57 @@ export interface operations {
       403: components["responses"]["403"];
       500: components["responses"]["500"];
       503: components["responses"]["503"];
+    };
+  };
+  getProvinces: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successfully retrieved provinces */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            data: components["schemas"]["Province"][];
+          };
+        };
+      };
+      500: components["responses"]["500"];
+    };
+  };
+  getWardsByProvinceId: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description Province ID (UUID) */
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successfully retrieved wards */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            data: components["schemas"]["Ward"][];
+          };
+        };
+      };
+      400: components["responses"]["400"];
+      404: components["responses"]["404"];
+      500: components["responses"]["500"];
     };
   };
 }
