@@ -11,7 +11,7 @@ import { useFormWizardStore } from "@/components/form-generation/store/use-form-
 import { getNavigationConfig } from "@/contexts/NavigationConfigContext";
 import { Button, Modal, OtpContainer, TextInput } from "@/components/ui";
 import { useCreateLead } from "@/hooks/features/lead/use-create-lead";
-import { useLoanPurposes } from "@/hooks/i18n/use-loan-purposes";
+import { useLoanPurposes } from "@/hooks/config";
 import { useErrorRecovery } from "@/hooks/navigation/use-error-recovery";
 import { useNavigationGuard } from "@/hooks/navigation/use-navigation-guard";
 import { useSessionReset } from "@/hooks/navigation/use-session-reset";
@@ -63,7 +63,7 @@ const ApplyLoanForm: React.FC<ApplyLoanFormProps> = ({
 }) => {
   const { theme } = useFormTheme();
   const t = useTranslations("features.loan-application");
-  const loanPurposes = useLoanPurposes();
+  const { data: loanPurposes = [] } = useLoanPurposes();
   const { getTelcoList } = usePhoneValidationMessages();
   const tenant = useTenant();
 

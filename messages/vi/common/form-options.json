@@ -1,0 +1,44 @@
+{
+  "gender": {
+    "male": "Nam",
+    "female": "Nữ",
+    "other": "Khác"
+  },
+  "incomeRanges": {
+    "<5m": "Dưới 5 triệu",
+    "5-10m": "5 - 10 triệu",
+    "10-20m": "10 - 20 triệu",
+    ">20m": "Trên 20 triệu"
+  },
+  "careerStatus": {
+    "officer": "Nhân viên văn phòng",
+    "freelancer": "Kinh doanh tự do",
+    "worker": "Công nhân",
+    "other": "Khác"
+  },
+  "incomeType": {
+    "transfer": "Chuyển khoản",
+    "cash": "Tiền mặt"
+  },
+  "havingLoan": {
+    "yes": "Có",
+    "no": "Không"
+  },
+  "creditStatus": {
+    "good": "Tốt",
+    "normal": "Bình thường",
+    "bad": "Nợ xấu"
+  },
+  "employmentTypes": {
+    "full_time": "Toàn thời gian",
+    "part_time": "Bán thời gian",
+    "contract": "Hợp đồng",
+    "freelance": "Tự do"
+  },
+  "incomeSources": {
+    "salary": "Lương",
+    "business": "Kinh doanh",
+    "investment": "Đầu tư",
+    "other": "Khác"
+  }
+}

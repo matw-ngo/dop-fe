@@ -11,7 +11,6 @@ import { FLOW_PAGES, type FlowPage } from "@/constants/flow-pages";
 import { useCreateLead } from "@/hooks/features/lead/use-create-lead";
 import { useFlow } from "@/hooks/flow/use-flow";
 import { useFormOptions } from "@/hooks/form-options";
-import { useLoanPurposes } from "@/hooks/i18n/use-loan-purposes";
 import { usePhoneValidationMessages } from "@/hooks/phone/use-validation-messages";
 import { useFlowStep } from "@/hooks/tenant/use-flow-step";
 import { useTenant } from "@/hooks/tenant/use-tenant";
@@ -70,7 +69,6 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
   const tenantId = tenant.uuid;
   const { data: flowData, isLoading: isLoadingFlow } = useFlow(tenantId);
 
-  const loanPurposes = useLoanPurposes();
   const formOptions = useFormOptions();
 
   // Step config for the current page — used to resolve consent_purpose_id
@@ -145,11 +143,10 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
     if (!indexStep) return null;
     return buildLoanFormConfigFromStep(
       indexStep,
-      loanPurposes,
       formOptions,
       stepContext || undefined,
     );
-  }, [indexStep, loanPurposes, formOptions, stepContext]);
+  }, [indexStep, formOptions, stepContext]);
 
   const validatePhoneNum = (phoneValue: string): boolean => {
     const value = String(phoneValue || "");
@@ -332,16 +329,17 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
     }
   };
 
-  if (isLoadingFlow || formOptions.isLoading) {
-    return (
-      <div className="max-w-2xl mx-auto p-4">
-        <div className="flex flex-col items-center justify-center py-12">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mb-4" />
-          <p className="text-muted-foreground">Đang tải cấu hình...</p>
-        </div>
-      </div>
-    );
-  }
+  // FIXME TODO
+  // if (isLoadingFlow || formOptions.isLoading) {
+  //   return (
+  //     <div className="max-w-2xl mx-auto p-4">
+  //       <div className="flex flex-col items-center justify-center py-12">
+  //         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mb-4" />
+  //         <p className="text-muted-foreground">Đang tải cấu hình...</p>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   if (!formConfig) {
     return (

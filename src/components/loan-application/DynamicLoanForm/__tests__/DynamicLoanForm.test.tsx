@@ -33,14 +33,14 @@ vi.mock("sonner", () => ({
 // Mock hooks
 vi.mock("@/hooks/flow/use-flow");
 vi.mock("@/hooks/tenant/use-tenant");
-vi.mock("@/hooks/i18n/use-loan-purposes");
+vi.mock("@/hooks/config");
 vi.mock("@/hooks/features/lead/use-create-lead");
 
 // Now import the component after mocking
 import { DynamicLoanForm } from "@/components/loan-application/DynamicLoanForm";
 import * as useCreateLeadModule from "@/hooks/features/lead/use-create-lead";
 import * as useFlowModule from "@/hooks/flow/use-flow";
-import * as useLoanPurposesModule from "@/hooks/i18n/use-loan-purposes";
+import * as useConfigModule from "@/hooks/config";
 import * as useTenantModule from "@/hooks/tenant/use-tenant";
 
 // ============================================================================

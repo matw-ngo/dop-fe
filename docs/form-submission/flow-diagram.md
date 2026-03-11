@@ -1,4 +1,4 @@
-# Form Submission Flow - Comprehensive Documentation
+# Form Submission Flow
 
 ## Overview
 

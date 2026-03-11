@@ -43,6 +43,7 @@ try {
 
 export interface FormOptionsConfig {
   locationOptions: ISelectBoxOption[];
+  loanPurposes: ISelectBoxOption[];
   genderOptions: ISelectBoxOption[];
   incomeOptions: ISelectBoxOption[];
   careerStatusOptions: ISelectBoxOption[];
@@ -57,7 +58,6 @@ export interface FormOptionsConfig {
  */
 export function buildLoanFormConfigFromStep(
   step: MappedStep,
-  loanPurposes: ISelectBoxOption[],
   formOptions: FormOptionsConfig,
   stepContext?: {
     currentStepIndex: number;
@@ -116,7 +116,7 @@ export function buildLoanFormConfigFromStep(
       type: FieldType.CUSTOM,
       options: {
         componentName: "PurposeField",
-        options: loanPurposes,
+        options: formOptions.loanPurposes,
       },
       validation: step.fields.purpose.required
         ? [

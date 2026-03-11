@@ -26,7 +26,7 @@ export const defaultProfile: TestProfile = {
         consent_purpose_id: "660e8400-e29b-41d4-a716-446655440006", // Add consent to first step
       }),
       createConsentStep(2, {
-        page: "/consent",
+        page: "/loan-info",
       }),
       createOTPStep(3, {
         page: "/verify-otp",

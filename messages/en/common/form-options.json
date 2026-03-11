@@ -1,0 +1,44 @@
+{
+  "gender": {
+    "male": "Male",
+    "female": "Female",
+    "other": "Other"
+  },
+  "incomeRanges": {
+    "<5m": "Under 5 million",
+    "5-10m": "5 - 10 million",
+    "10-20m": "10 - 20 million",
+    ">20m": "Over 20 million"
+  },
+  "careerStatus": {
+    "officer": "Office Worker",
+    "freelancer": "Freelancer",
+    "worker": "Worker",
+    "other": "Other"
+  },
+  "incomeType": {
+    "transfer": "Bank Transfer",
+    "cash": "Cash"
+  },
+  "havingLoan": {
+    "yes": "Yes",
+    "no": "No"
+  },
+  "creditStatus": {
+    "good": "Good",
+    "normal": "Normal",
+    "bad": "Bad Debt"
+  },
+  "employmentTypes": {
+    "full_time": "Full Time",
+    "part_time": "Part Time",
+    "contract": "Contract",
+    "freelance": "Freelance"
+  },
+  "incomeSources": {
+    "salary": "Salary",
+    "business": "Business",
+    "investment": "Investment",
+    "other": "Other"
+  }
+}
