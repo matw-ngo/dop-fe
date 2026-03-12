@@ -83,7 +83,7 @@ export function checkAuthGuard(authStore: AuthState): {
     const hasValidTimestamp =
       session.verifiedAt &&
       typeof new Date(session.verifiedAt).getTime() === "number" &&
-      !isNaN(new Date(session.verifiedAt).getTime());
+      !Number.isNaN(new Date(session.verifiedAt).getTime());
 
     if (!hasRequiredFields || !hasValidTimestamp) {
       console.warn("[Auth Guard] Session corruption detected", session);
@@ -106,16 +106,19 @@ export function checkAuthGuard(authStore: AuthState): {
  * 2. User has active form data (for non-first steps)
  * 3. User has completed all previous steps
  *
+ * NOTE: Returns translation keys instead of translated messages
+ * The caller is responsible for translating using next-intl
+ *
  * @param page - The page identifier to validate
  * @param flowData - The flow configuration data
  * @param wizardStore - The form wizard store state
- * @returns Validation result with redirect information
+ * @returns Validation result with translation key
  *
  * @example
  * const result = validateStep("/consent", flowData, wizardStore);
  * if (!result.isValid) {
  *   router.push(result.redirectTo);
- *   toast.error(result.message);
+ *   toast.error(t(result.messageKey));
  * }
  */
 export function validateStep(
@@ -125,7 +128,7 @@ export function validateStep(
 ): {
   isValid: boolean;
   redirectTo?: string;
-  message?: string;
+  messageKey?: string;
 } {
   const normalizedPage = normalizePageIdentifier(page);
 
@@ -139,7 +142,7 @@ export function validateStep(
     return {
       isValid: false,
       redirectTo: "/",
-      message: "Invalid step. Redirecting to start.",
+      messageKey: "errors.invalidStep",
     };
   }
 
@@ -150,7 +153,7 @@ export function validateStep(
     return {
       isValid: false,
       redirectTo: "/",
-      message: "Please start from the beginning.",
+      messageKey: "sharedLink.noSession",
     };
   }
 
@@ -164,7 +167,7 @@ export function validateStep(
     return {
       isValid: false,
       redirectTo: nextStep?.page || "/",
-      message: "Please complete previous steps first.",
+      messageKey: "sharedLink.prerequisitesNotMet",
     };
   }
 

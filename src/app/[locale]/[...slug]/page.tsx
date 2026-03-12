@@ -57,6 +57,13 @@ export default function DynamicStepPage() {
   const [validationResult, setValidationResult] =
     useState<ValidationResult | null>(null);
 
+  // Detect OTP step when flow data loads (Req 7.2)
+  useEffect(() => {
+    if (flowData?.steps) {
+      wizardStore.detectOTPStep();
+    }
+  }, [flowData, wizardStore]);
+
   // Run validation pipeline when flow data loads
   useEffect(() => {
     if (!flowData || isLoading || !page) return;
@@ -91,7 +98,7 @@ export default function DynamicStepPage() {
       setValidationResult({
         isValid: false,
         redirectTo: stepCheck.redirectTo || "/",
-        message: stepCheck.message,
+        message: stepCheck.messageKey ? t(stepCheck.messageKey) : undefined,
       });
       return;
     }

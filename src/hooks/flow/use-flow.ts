@@ -34,7 +34,8 @@ export function useFlow(tenant: string) {
       const timeoutSignal = AbortSignal.timeout(10000);
 
       // Combine signals: abort on either timeout or manual cancellation
-      const combinedSignal = signal.aborted ? signal : timeoutSignal;
+      // Use AbortSignal.any() to properly merge both signals
+      const combinedSignal = AbortSignal.any([signal, timeoutSignal]);
 
       try {
         return await getFlowByTenant(tenant, combinedSignal);
