@@ -8,7 +8,12 @@ import { DynamicLoanForm } from "@/components/loan-application/DynamicLoanForm";
 import { useFlow } from "@/hooks/flow/use-flow";
 import { useTenant } from "@/hooks/tenant/use-tenant";
 import { useAuthStore } from "@/store/use-auth-store";
+import {
+  useLoanSearchStore,
+  useLoanSearchVisible,
+} from "@/store/use-loan-search-store";
 import { useFormWizardStore } from "@/components/form-generation/store/use-form-wizard-store";
+import { LoanSearchingScreen } from "@/components/loan-application/LoanSearching";
 import { LoadingSkeleton } from "./LoadingSkeleton";
 import {
   checkAuthGuard,
@@ -52,6 +57,8 @@ export default function DynamicStepPage() {
   // Stores
   const authStore = useAuthStore();
   const wizardStore = useFormWizardStore();
+  const loanSearchStore = useLoanSearchStore();
+  const isLoanSearching = useLoanSearchVisible();
 
   // Validation state
   const [validationResult, setValidationResult] =
@@ -126,7 +133,40 @@ export default function DynamicStepPage() {
     sessionStorage.removeItem("dop_redirect_counter");
   }, [flowData, isLoading, page, authStore, wizardStore, t]);
 
-  // Handle validation result
+  // Handle loan search completion
+  useEffect(() => {
+    if (!loanSearchStore.isVisible) return;
+
+    // When forward status is successful, execute callback or redirect
+    if (loanSearchStore.forwardStatus === "forwarded") {
+      const config = loanSearchStore.config;
+
+      if (config?.onComplete) {
+        config.onComplete();
+      } else if (config?.redirectTo) {
+        router.push(config.redirectTo);
+      }
+
+      // Hide the searching screen after navigation
+      loanSearchStore.hideLoanSearching();
+    }
+
+    // Handle error (rejected or exhausted)
+    if (
+      (loanSearchStore.forwardStatus === "rejected" ||
+        loanSearchStore.forwardStatus === "exhausted") &&
+      loanSearchStore.error
+    ) {
+      toast.error(loanSearchStore.error);
+
+      const config = loanSearchStore.config;
+      if (config?.onError) {
+        config.onError(new Error(loanSearchStore.error));
+      }
+
+      loanSearchStore.hideLoanSearching();
+    }
+  }, [loanSearchStore, router]);
   useEffect(() => {
     if (!validationResult) return;
 
@@ -162,6 +202,15 @@ export default function DynamicStepPage() {
   // Return 404 for empty/invalid slugs (after all hooks)
   if (!page) {
     notFound();
+  }
+
+  // Render loan searching screen if visible
+  if (isLoanSearching) {
+    return (
+      <div data-testid="loan-searching-screen">
+        <LoanSearchingScreen message={loanSearchStore.config?.message} />
+      </div>
+    );
   }
 
   // Error state (check before loading state)

@@ -4,6 +4,13 @@ import { useTranslations } from "next-intl";
 import { Spinner } from "@/components/ui/spinner";
 import { useFormTheme } from "@/components/form-generation/themes";
 import { cn } from "@/lib/utils";
+import {
+  useLoanSearchResult,
+  useForwardStatus,
+} from "@/store/use-loan-search-store";
+import type { components } from "@/lib/api/v1/dop";
+
+type ForwardResult = components["schemas"]["ForwardResult"];
 
 interface LoanSearchingScreenProps {
   /**
@@ -36,7 +43,17 @@ export function LoanSearchingScreen({
   const t = useTranslations("pages.form.finding_loan");
   const { theme } = useFormTheme();
 
+  // Get forward status and result from store
+  const forwardStatus = useForwardStatus();
+  const result = useLoanSearchResult<ForwardResult>();
+
   const displayMessage = message || t("message");
+
+  // Determine display state
+  const isLoading = !forwardStatus;
+  const isSuccess = forwardStatus === "forwarded";
+  const isError = forwardStatus === "rejected" || forwardStatus === "exhausted";
+  const partnerName = result?.partner_name;
 
   return (
     <div
@@ -48,20 +65,22 @@ export function LoanSearchingScreen({
       <div className="w-full max-w-md mx-auto">
         {/* Content Container */}
         <div className="flex flex-col items-center gap-8 text-center">
-          {/* Spinner */}
-          <div
-            className="relative"
-            style={{
-              color: theme.colors.primary,
-            }}
-          >
-            <Spinner
-              className="h-24 w-24"
+          {/* Spinner - hide when success */}
+          {!isSuccess && (
+            <div
+              className="relative"
               style={{
                 color: theme.colors.primary,
               }}
-            />
-          </div>
+            >
+              <Spinner
+                className="h-24 w-24"
+                style={{
+                  color: theme.colors.primary,
+                }}
+              />
+            </div>
+          )}
 
           {/* Message */}
           <div className="space-y-2">
@@ -73,6 +92,23 @@ export function LoanSearchingScreen({
             >
               {displayMessage}
             </p>
+
+            {/* Partner Info - shown when forwarded */}
+            {isSuccess && partnerName && (
+              <p
+                className="text-sm font-medium mt-2"
+                style={{
+                  color: theme.colors.primary,
+                }}
+              >
+                {t("partnerMatch", { partner: partnerName })}
+              </p>
+            )}
+
+            {/* Error State */}
+            {isError && (
+              <p className="text-sm text-destructive mt-2">{t("noMatch")}</p>
+            )}
           </div>
         </div>
       </div>

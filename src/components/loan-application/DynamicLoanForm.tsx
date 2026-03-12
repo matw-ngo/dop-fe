@@ -22,6 +22,13 @@ import { ALLOWED_TELCOS, phoneValidation } from "@/lib/utils/phone-validation";
 import { mapFormDataToLeadInfo } from "@/mappers/leadMapper";
 import { useAuthStore } from "@/store/use-auth-store";
 import { useConsentStore } from "@/store/use-consent-store";
+import { useLoanSearchStore } from "@/store/use-loan-search-store";
+import type { components } from "@/lib/api/v1/dop";
+
+// Type aliases from API schema
+type LeadId = components["schemas"]["uuid"];
+type LeadToken = string;
+type CreateLeadResponse = components["schemas"]["CreateLeadResponseBody"];
 
 interface DynamicLoanFormProps {
   onSubmitSuccess?: (
@@ -47,6 +54,7 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
   const tenant = useTenant();
   const router = useRouter();
   const { getConsentId, hasConsent, openConsentModal } = useConsentStore();
+  const loanSearchStore = useLoanSearchStore();
 
   // Navigation security stores
   const authStore = useAuthStore();
@@ -58,10 +66,10 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
     initialData || {},
   );
   const [createdLeadId, setCreatedLeadId] = React.useState<
-    string | undefined
+    LeadId | undefined
   >();
   const [createdLeadToken, setCreatedLeadToken] = React.useState<
-    string | undefined
+    LeadToken | undefined
   >();
 
   const { mutate: createLead, isPending: isCreatingLead } = useCreateLead();
@@ -246,9 +254,12 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
     }
 
     if (createdLeadId && createdLeadToken) {
-      router.push(
-        `/loan-info?leadId=${createdLeadId}&token=${createdLeadToken}`,
-      );
+      // Integration Point 2: Show loan searching screen after OTP success
+      loanSearchStore.showLoanSearching({
+        leadId: createdLeadId,
+        token: createdLeadToken,
+        redirectTo: `/loan-info?leadId=${createdLeadId}&token=${createdLeadToken}`,
+      });
     }
   };
 
@@ -319,9 +330,83 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
           });
           router.push(nextStep.page);
         } else {
+          // Integration Point 1 & 3: Last step without OTP - create/update lead then show searching screen
           console.log(
-            "[DynamicLoanForm] No next step found, staying on current page",
+            "[DynamicLoanForm] Final step without OTP - processing lead and showing search screen",
           );
+
+          // Check for existing lead from URL params or previous steps
+          const existingLeadId =
+            (data.leadId as LeadId | undefined) ?? createdLeadId;
+          const existingToken =
+            (data.token as LeadToken | undefined) ?? createdLeadToken;
+
+          if (existingLeadId && existingToken) {
+            // Integration Point 3a: Update existing lead
+            console.log(
+              "[DynamicLoanForm] Updating existing lead:",
+              existingLeadId,
+            );
+
+            const flowId = flowData.id;
+            const stepId = indexStep.id;
+            const apiPayload = mapFormDataToLeadInfo(data, flowId, stepId);
+
+            // TODO: Implement useUpdateLead hook or use useCreateLead with update logic
+            // For now, show searching screen with existing lead data
+            loanSearchStore.showLoanSearching({
+              leadId: existingLeadId,
+              token: existingToken,
+              redirectTo: "/", // Or a success page
+              message: t("messages.searchingLoan"),
+            });
+          } else {
+            // Integration Point 3b: Create new lead at final step
+            console.log("[DynamicLoanForm] Creating new lead at final step");
+
+            const flowId = flowData.id;
+            const stepId = indexStep.id;
+            const apiPayload = mapFormDataToLeadInfo(data, flowId, stepId);
+
+            createLead(
+              {
+                flowId,
+                tenant: tenant.uuid,
+                deviceInfo: {},
+                trackingParams: {},
+                info: apiPayload,
+                consent_id: getConsentId() || undefined,
+              },
+              {
+                onSuccess: (leadData) => {
+                  console.log(
+                    "[DynamicLoanForm] Lead created at final step:",
+                    leadData,
+                  );
+
+                  // Store lead data for potential future use
+                  setCreatedLeadId(leadData.id);
+                  setCreatedLeadToken(leadData.token);
+
+                  // Show loan searching screen
+                  loanSearchStore.showLoanSearching({
+                    leadId: leadData.id,
+                    token: leadData.token,
+                    redirectTo: "/", // Or a success page
+                    message: t("messages.searchingLoan"),
+                  });
+                },
+                onError: (error) => {
+                  console.error(
+                    "[DynamicLoanForm] Lead creation failed at final step:",
+                    error,
+                  );
+                  toast.error(t("errors.submissionFailed"));
+                  loanSearchStore.setError(t("errors.submissionFailed"));
+                },
+              },
+            );
+          }
         }
       } else {
         onSubmitSuccess?.(data);
