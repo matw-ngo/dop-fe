@@ -98,6 +98,21 @@
       "warning": "Phiên của bạn sẽ hết hạn trong {seconds} giây.",
       "title": "Phiên sắp hết hạn"
     },
+    "errors": {
+      "loadFailed": "Không thể tải cấu hình biểu mẫu",
+      "redirectLoop": "Phát hiện lỗi điều hướng. Phiên đã được đặt lại.",
+      "sessionCorrupted": "Phiên bị lỗi. Vui lòng bắt đầu lại.",
+      "invalidStep": "Bước không hợp lệ. Đang chuyển về bước đầu.",
+      "prerequisitesNotMet": "Vui lòng hoàn thành các bước trước đó trước.",
+      "verificationRequired": "Không thể quay lại sau khi xác thực."
+    },
+    "sharedLink": {
+      "noSession": "Liên kết này yêu cầu bắt đầu đơn đăng ký từ đầu.",
+      "prerequisitesNotMet": "Bạn phải hoàn thành các bước trước đó trước khi truy cập trang này."
+    },
+    "actions": {
+      "retry": "Thử lại"
+    },
     "error": {
       "sessionCorrupt": {
         "title": "Lỗi phiên",

@@ -98,6 +98,21 @@
       "warning": "Your session will expire in {seconds} seconds.",
       "title": "Session Expiring Soon"
     },
+    "errors": {
+      "loadFailed": "Failed to load form configuration",
+      "redirectLoop": "Navigation error detected. Session has been reset.",
+      "sessionCorrupted": "Session corrupted. Please start over.",
+      "invalidStep": "Invalid step. Redirecting to start.",
+      "prerequisitesNotMet": "Please complete previous steps first.",
+      "verificationRequired": "Cannot navigate back after verification."
+    },
+    "sharedLink": {
+      "noSession": "This link requires starting the application from the beginning.",
+      "prerequisitesNotMet": "You must complete previous steps before accessing this page."
+    },
+    "actions": {
+      "retry": "Retry"
+    },
     "error": {
       "sessionCorrupt": {
         "title": "Session Error",
