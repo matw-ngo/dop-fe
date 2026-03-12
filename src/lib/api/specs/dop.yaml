@@ -80,7 +80,7 @@ paths:
   /leads/{id}/submit-info:
     post:
       tags:
-        - leads
+        - lead
       operationId: submit-info
       summary: Submit lead info
       security:
@@ -95,7 +95,11 @@ paths:
         - $ref: "#/components/parameters/id"
       responses:
         "200":
-          $ref: "#/components/responses/200"
+          description: Lead info submitted successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubmitLeadInfoResponseBody"
         "401":
           $ref: "#/components/responses/401"
         "403":
@@ -122,7 +126,11 @@ paths:
         - $ref: "#/components/parameters/id"
       responses:
         "200":
-          $ref: "#/components/responses/200"
+          description: OTP verified successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubmitOTPResponseBody"
         "401":
           $ref: "#/components/responses/401"
         "403":
@@ -163,7 +171,7 @@ paths:
       tags:
         - ekyc
       operationId: get-ekyc-config
-      summary: end point to get ekyc config
+      summary: Get eKYC config
       security:
         - cookie_auth: []
       parameters:
@@ -188,7 +196,7 @@ paths:
       tags:
         - ekyc
       operationId: submit-vnpt-ekyc-result
-      summary: end point to submit ekyc data from vnpt
+      summary: Submit kyc data to VNPT eKYC service
       security:
         - cookie_auth: []
       requestBody:
@@ -642,6 +650,35 @@ components:
         - info
         - deviece_info
         - tracking_params
+    matched_product:
+      type: object
+      description: A product matched by the distribution engine for the current lead.
+      properties:
+        product_id:
+          $ref: "#/components/schemas/uuid"
+          description: Unique identifier of the matched product
+        product_name:
+          type: string
+          description: Display name of the matched product
+        product_type:
+          type: string
+          description: Type or category of the product (e.g. personal_loan, credit_card)
+        partner_id:
+          $ref: "#/components/schemas/uuid"
+          description: Unique identifier of the partner offering this product
+        partner_name:
+          type: string
+          description: Display name of the partner
+        partner_code:
+          type: string
+          description: Short code of the partner
+      required:
+        - product_id
+        - product_name
+        - product_type
+        - partner_id
+        - partner_name
+        - partner_code
     CreateLeadResponseBody:
       type: object
       properties:
@@ -649,9 +686,42 @@ components:
           $ref: "#/components/schemas/uuid"
         token:
           type: string
+        matched_products:
+          type: array
+          description: Products matched by the distribution engine for this step. Empty when distribution is disabled for the step.
+          items:
+            $ref: "#/components/schemas/matched_product"
       required:
         - id
         - token
+    ForwardResult:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+            - forwarded
+            - rejected
+            - exhausted
+        partner_id:
+          $ref: "#/components/schemas/uuid"
+        partner_name:
+          type: string
+        partner_lead_id:
+          type: string
+    SubmitLeadInfoResponseBody:
+      type: object
+      properties:
+        next_step_id:
+          $ref: "#/components/schemas/uuid"
+        matched_products:
+          type: array
+          description: Products matched by the distribution engine for this step. Empty when distribution is disabled for the step.
+          items:
+            $ref: "#/components/schemas/matched_product"
+        forward_result:
+          $ref: "#/components/schemas/ForwardResult"
+          description: Result of the auto-forwarding attempt for this step. Empty when forwarding is disabled or no products were matched.
     SubmitOTPRequestBody:
       type: object
       properties:
@@ -661,9 +731,25 @@ components:
         otp:
           type: string
           description: The OTP code received
+        step_id:
+          $ref: "#/components/schemas/uuid"
+          description: The current step ID, used to determine whether distribution should run after OTP verification, only set when the step has run_distribution equal true
       required:
         - token
         - otp
+    SubmitOTPResponseBody:
+      type: object
+      properties:
+        token:
+          type: string
+          description: The authentication token generated upon successful OTP verification
+        matched_products:
+          type: array
+          description: List of products matched by the distribution engine for this step, if distribution is enabled, only set when the step has run_distribution equal true
+          items:
+            $ref: "#/components/schemas/matched_product"
+      required:
+        - token
     ResendOTPRequestBody:
       type: object
       properties:

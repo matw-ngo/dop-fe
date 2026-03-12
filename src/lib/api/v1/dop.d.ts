@@ -96,7 +96,7 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** end point to get ekyc config */
+    /** Get eKYC config */
     get: operations["get-ekyc-config"];
     put?: never;
     post?: never;
@@ -115,7 +115,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** end point to submit ekyc data from vnpt */
+    /** Submit kyc data to VNPT eKYC service */
     post: operations["submit-vnpt-ekyc-result"];
     delete?: never;
     options?: never;
@@ -314,15 +314,54 @@ export interface components {
       tracking_params: Record<string, never>;
       info: components["schemas"]["SubmitLeadInfoRequestBody"];
     };
+    /** @description A product matched by the distribution engine for the current lead. */
+    matched_product: {
+      /** @description Unique identifier of the matched product */
+      product_id: components["schemas"]["uuid"];
+      /** @description Display name of the matched product */
+      product_name: string;
+      /** @description Type or category of the product (e.g. personal_loan, credit_card) */
+      product_type: string;
+      /** @description Unique identifier of the partner offering this product */
+      partner_id: components["schemas"]["uuid"];
+      /** @description Display name of the partner */
+      partner_name: string;
+      /** @description Short code of the partner */
+      partner_code: string;
+    };
     CreateLeadResponseBody: {
       id: components["schemas"]["uuid"];
       token: string;
+      /** @description Products matched by the distribution engine for this step. Empty when distribution is disabled for the step. */
+      matched_products?: components["schemas"]["matched_product"][];
+    };
+    ForwardResult: {
+      /** @enum {string} */
+      status?: "forwarded" | "rejected" | "exhausted";
+      partner_id?: components["schemas"]["uuid"];
+      partner_name?: string;
+      partner_lead_id?: string;
+    };
+    SubmitLeadInfoResponseBody: {
+      next_step_id?: components["schemas"]["uuid"];
+      /** @description Products matched by the distribution engine for this step. Empty when distribution is disabled for the step. */
+      matched_products?: components["schemas"]["matched_product"][];
+      /** @description Result of the auto-forwarding attempt for this step. Empty when forwarding is disabled or no products were matched. */
+      forward_result?: components["schemas"]["ForwardResult"];
     };
     SubmitOTPRequestBody: {
       /** @description The token to submit OTP */
       token: string;
       /** @description The OTP code received */
       otp: string;
+      /** @description The current step ID, used to determine whether distribution should run after OTP verification, only set when the step has run_distribution equal true */
+      step_id?: components["schemas"]["uuid"];
+    };
+    SubmitOTPResponseBody: {
+      /** @description The authentication token generated upon successful OTP verification */
+      token: string;
+      /** @description List of products matched by the distribution engine for this step, if distribution is enabled, only set when the step has run_distribution equal true */
+      matched_products?: components["schemas"]["matched_product"][];
     };
     ResendOTPRequestBody: {
       /** @description The phone number or email to resend OTP */
@@ -879,7 +918,15 @@ export interface operations {
       };
     };
     responses: {
-      200: components["responses"]["200"];
+      /** @description Lead info submitted successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["SubmitLeadInfoResponseBody"];
+        };
+      };
       401: components["responses"]["401"];
       403: components["responses"]["403"];
       500: components["responses"]["500"];
@@ -902,7 +949,15 @@ export interface operations {
       };
     };
     responses: {
-      200: components["responses"]["200"];
+      /** @description OTP verified successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["SubmitOTPResponseBody"];
+        };
+      };
       401: components["responses"]["401"];
       403: components["responses"]["403"];
       500: components["responses"]["500"];
