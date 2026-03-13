@@ -154,6 +154,12 @@ async function loadCommon(locale: string): Promise<any> {
       }
     } else if (fileName === "phone-validation" && content.phoneValidation) {
       common.phoneValidation = content.phoneValidation;
+    } else if (fileName === "form-options") {
+      // Map form-options.json → common.formOptions
+      common.formOptions = content;
+    } else if (fileName === "common") {
+      // Flatten common.json directly into the common namespace
+      Object.assign(common, content);
     } else {
       // Default behavior for other files
       common[fileName] = content;
@@ -303,7 +309,8 @@ const loadAllTranslations = cache(async (locale: string) => {
   ) {
     // Create a merged structure for next-intl
     const merged: any = {
-      ...common,
+      ...common, // root-level access: home, loading, formOptions, loanPurposes, etc.
+      common, // also accessible via common.formOptions, common.loanPurposes, etc.
       pages,
       components,
       forms,

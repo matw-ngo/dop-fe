@@ -55,7 +55,8 @@
   "messages": {
     "agreeRequired": "Please agree to the terms to continue",
     "otpSuccess": "OTP verification successful!",
-    "otpExpired": "OTP has expired. Please request a new code."
+    "otpExpired": "OTP has expired. Please request a new code.",
+    "searchingLoan": "Searching for the best loan options for you..."
   },
   "validation": {
     "amount": {

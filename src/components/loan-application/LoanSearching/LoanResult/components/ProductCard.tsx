@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 import { useFormTheme } from "@/components/form-generation/themes";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, Banknote, ArrowRight, Building2 } from "lucide-react";
 import type { components } from "@/lib/api/v1/dop";
@@ -60,7 +60,7 @@ export function ProductCard({
   return (
     <Card
       className={cn(
-        "overflow-hidden transition-all duration-300 hover:shadow-lg",
+        "relative overflow-visible transition-all duration-300 hover:shadow-lg",
         isSpecial && "ring-2 ring-primary/20",
       )}
       style={{
@@ -68,53 +68,41 @@ export function ProductCard({
         animationDelay: `${index * 100}ms`,
       }}
     >
-      <CardHeader className="pb-3">
-        <div className="flex items-start justify-between">
-          <div className="flex items-center gap-3">
-            {/* Partner Logo */}
-            <div
-              className="w-12 h-12 rounded-lg flex items-center justify-center bg-white shadow-sm"
-              style={{ border: `1px solid ${theme.colors.border}` }}
-            >
-              <ProductLogo partnerCode={product.partner_code} />
-            </div>
+      {/* Loan type tag - centered at top, overlapping card border */}
+      <div className="absolute left-1/2 -translate-x-1/2 -top-[17.5px]">
+        <Badge
+          variant="secondary"
+          className="text-xs rounded-full px-3 py-1 whitespace-nowrap"
+          style={{
+            backgroundColor: `${theme.colors.primary}15`,
+            color: theme.colors.primary,
+            border: `1px solid ${theme.colors.border}`,
+          }}
+        >
+          {isSpecial ? t(badgeKey) : t(loanTypeKey)}
+        </Badge>
+      </div>
 
-            <div>
-              <h3
-                className="font-semibold text-lg"
-                style={{ color: theme.colors.textPrimary }}
-              >
-                {product.partner_name}
-              </h3>
-              <Badge
-                variant="secondary"
-                className="text-xs mt-1"
-                style={{
-                  backgroundColor: `${theme.colors.primary}15`,
-                  color: theme.colors.primary,
-                }}
-              >
-                {t(loanTypeKey)}
-              </Badge>
-            </div>
+      <CardContent className="pt-8 pb-6 px-6">
+        {/* Logo + Name section with border-bottom */}
+        <div
+          className="flex items-center gap-4 pb-5 mb-5"
+          style={{ borderBottom: `1px solid ${theme.colors.border}` }}
+        >
+          <div
+            className="w-20 h-12 rounded flex items-center justify-center bg-white flex-shrink-0"
+            style={{ border: `1px solid ${theme.colors.border}` }}
+          >
+            <ProductLogo partnerCode={product.partner_code} />
           </div>
-
-          {/* Special Partner Badge */}
-          {isSpecial && (
-            <Badge
-              className="text-xs"
-              style={{
-                backgroundColor: theme.colors.primary,
-                color: "#fff",
-              }}
-            >
-              {t(badgeKey)}
-            </Badge>
-          )}
+          <h3
+            className="font-semibold text-lg leading-tight"
+            style={{ color: theme.colors.textPrimary }}
+          >
+            {product.partner_name}
+          </h3>
         </div>
-      </CardHeader>
 
-      <CardContent className="pt-0">
         {/* Special Partner Custom Message */}
         {isSpecial && specialConfig?.customMessageKey && (
           <p
@@ -130,24 +118,44 @@ export function ProductCard({
 
         {/* Product Details - hidden for special partners if configured */}
         {(!isSpecial || !specialConfig?.hideDetails) && (
-          <div className="grid grid-cols-2 gap-3 mb-4">
-            <ProductDetail
-              icon={<Calendar className="w-4 h-4" />}
-              label={t("details.loanPeriod")}
-              value={formatLoanPeriod(12, locale)}
-            />
-            <ProductDetail
-              icon={<Banknote className="w-4 h-4" />}
-              label={t("details.loanAmount")}
-              value={formatAmount(50000000, locale)}
-            />
+          <div className="space-y-4 mb-5">
+            <div className="flex items-center justify-between">
+              <span
+                className="flex items-center gap-1.5 text-sm"
+                style={{ color: theme.colors.primary }}
+              >
+                <Calendar className="w-4 h-4" />
+                {t("details.loanPeriod")}
+              </span>
+              <span
+                className="text-sm font-medium whitespace-nowrap"
+                style={{ color: theme.colors.textPrimary }}
+              >
+                {formatLoanPeriod(12, locale)}
+              </span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span
+                className="flex items-center gap-1.5 text-sm"
+                style={{ color: theme.colors.primary }}
+              >
+                <Banknote className="w-4 h-4" />
+                {t("details.loanAmount")}
+              </span>
+              <span
+                className="text-sm font-medium whitespace-nowrap"
+                style={{ color: theme.colors.textPrimary }}
+              >
+                {formatAmount(50000000, locale)}
+              </span>
+            </div>
           </div>
         )}
 
         {/* CTA Button */}
         <Button
           onClick={() => onSelect?.(product)}
-          className="w-full transition-all"
+          className="w-full transition-all h-14 text-sm font-semibold rounded-lg"
           style={{
             backgroundColor: theme.colors.primary,
             color: "#fff",

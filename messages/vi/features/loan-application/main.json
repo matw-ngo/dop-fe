@@ -55,7 +55,8 @@
   "messages": {
     "agreeRequired": "Vui lòng đồng ý với điều khoản để tiếp tục",
     "otpSuccess": "Xác thực OTP thành công!",
-    "otpExpired": "OTP đã hết hạn. Vui lòng yêu cầu mã mới."
+    "otpExpired": "OTP đã hết hạn. Vui lòng yêu cầu mã mới.",
+    "searchingLoan": "Đang tìm kiếm khoản vay phù hợp với bạn..."
   },
   "validation": {
     "amount": {

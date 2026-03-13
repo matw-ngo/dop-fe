@@ -111,12 +111,11 @@ flowchart TD
 
     %% Last Step - No OTP
     CheckLastStepOTP -->|No| CheckHasLead{Has leadId<br/>from previous step?}
-    CheckHasLead -->|Yes| SubmitLeadInfo[API: PUT /leads/:id/info]
+    CheckHasLead -->|Yes| SubmitLeadInfo[API: POST /leads/:id/submit-info]
     CheckHasLead -->|No| CreateLeadFinal[API: POST /leads]
 
-    SubmitLeadInfo --> ShowFindingScreen[Show Finding Loan Screen]
-    CreateLeadFinal --> ShowFindingScreen
-    ShowFindingScreen --> ShowSuccess[Show Success Message]
+    SubmitLeadInfo --> ShowLoanSearching
+    CreateLeadFinal --> ShowLoanSearching
 
     %% Last Step - With OTP
     CheckLastStepOTP -->|Yes| CheckPhoneInLastStep{phone_number<br/>in data?}
@@ -173,20 +172,57 @@ flowchart TD
     ShowLoanInfoErrors --> FillLoanInfoForm
 
     ValidateLoanInfo -->|Passed| CheckLeadIdExists{Has leadId?}
-    CheckLeadIdExists -->|Yes| UpdateLeadInfo[API: PUT /leads/:id/info]
+    CheckLeadIdExists -->|Yes| UpdateLeadInfo[API: POST /leads/:id/submit-info]
     CheckLeadIdExists -->|No| CreateNewLead[API: POST /leads]
 
-    UpdateLeadInfo --> ShowFindingLoan[Show Finding Loan Screen]
-    CreateNewLead --> ShowFindingLoan
-    ShowFindingLoan --> CheckHasProducts{Has<br/>matched_products?}
-    CheckHasProducts -->|Yes| ShowLoanResult[Show LoanResultScreen<br/>Product List View]
-    CheckHasProducts -->|No| CheckForwardStatus{Forward<br/>status?}
-    ShowLoanResult --> UserSelectProduct[User selects product]
-    UserSelectProduct --> ForwardLead[API: Forward to partner]
-    ForwardLead --> ShowSuccessLoan[Show Success View<br/>with partner info]
-    CheckForwardStatus -->|forwarded| ShowSuccessLoan
-    CheckForwardStatus -->|rejected| ShowErrorRejected[Show Error View<br/>Lead rejected]
-    CheckForwardStatus -->|exhausted| ShowErrorExhausted[Show Error View<br/>No partners available]
+    UpdateLeadInfo --> ShowLoanSearching
+    CreateNewLead --> ShowLoanSearching
+
+    %% ============================================================================
+    %% LOAN SEARCHING SCREEN
+    %% NOTE: The submit-info API call is SYNCHRONOUS — the server runs distribution
+    %% and returns matched_products in the same response. There is NO polling needed.
+    %% The 3s animation is purely cosmetic (fake loading UX), not waiting for data.
+    %% TODO: Replace the 3s hardcoded timeout with a proper transition after API resolves.
+    %% ============================================================================
+
+    ShowLoanSearching[Show LoanSearchingScreen<br/>Animation ~3s]
+    ShowLoanSearching --> AnimationDone{Animation done +<br/>API response received?}
+    AnimationDone -->|Products returned| StoreProducts[Store matchedProducts<br/>in Zustand]
+    AnimationDone -->|No products + forward_result| StoreForwardResult[Store forwardResult<br/>in Zustand]
+    AnimationDone -->|No products + no result| ShowEmptyState
+
+    StoreProducts --> NavToLoanResult[Navigate to /loan-result]
+    StoreForwardResult --> NavToLoanResult
+
+    NavToLoanResult --> LoanResultPage
+
+    %% ============================================================================
+    %% LOAN RESULT PAGE (/loan-result)
+    %% ============================================================================
+
+    LoanResultPage[/loan-result page] --> CheckProductsInStore{matchedProducts<br/>in store?}
+    CheckProductsInStore -->|No — page refresh or direct access| RedirectHome[Redirect to /]
+    CheckProductsInStore -->|Yes| CheckForwardStatusResult{forwardStatus<br/>in store?}
+
+    CheckForwardStatusResult -->|forwarded| ShowAutoForwardSuccess[Show SuccessView<br/>partner info + leadId]
+    CheckForwardStatusResult -->|rejected| ShowErrorRejected[Show ErrorState<br/>Lead rejected by all partners]
+    CheckForwardStatusResult -->|exhausted| ShowErrorExhausted[Show ErrorState<br/>No partners available]
+    CheckForwardStatusResult -->|undefined / products available| ShowProductList[Show ProductListView<br/>sorted by priority]
+
+    ShowProductList --> UserSelectProduct[User clicks Đăng ký vay<br/>on a ProductCard]
+    UserSelectProduct --> ShowRegistrationSuccess[Show RegistrationSuccessView<br/>partner box + note]
+
+    %% FIXME: No API call is made when user selects a product.
+    %% TODO: Implement POST /leads/:id/forward with {product_id, partner_id}
+    %% to actually forward the lead to the selected partner.
+    %% Old-code equivalent: POST /upl/forward {id: productId, lead_id, client_code}
+    %% Expected response: ForwardResult {status, partner_id, partner_name, partner_lead_id}
+
+    ShowRegistrationSuccess --> UserClickBack[User clicks Quay lại]
+    UserClickBack --> ShowProductList
+
+    ShowEmptyState[Show EmptyState<br/>No matching products]
 
     %% ============================================================================
     %% SPECIAL CASES
@@ -204,13 +240,15 @@ flowchart TD
     style LeadErrorLast fill:#ff8787,stroke:#fa5252
     style OTPError1 fill:#ff8787,stroke:#fa5252
     style OTPErrorLast fill:#ff8787,stroke:#fa5252
-    style ShowFindingLoan fill:#74c0fc,stroke:#339af0
-    style ShowLoanResult fill:#74c0fc,stroke:#339af0
-    style ShowSuccessLoan fill:#51cf66,stroke:#37b24d,color:#fff
+    style ShowLoanSearching fill:#74c0fc,stroke:#339af0
+    style ShowProductList fill:#74c0fc,stroke:#339af0
+    style ShowAutoForwardSuccess fill:#51cf66,stroke:#37b24d,color:#fff
+    style ShowRegistrationSuccess fill:#51cf66,stroke:#37b24d,color:#fff
     style ShowErrorRejected fill:#ff8787,stroke:#fa5252
     style ShowErrorExhausted fill:#ff8787,stroke:#fa5252
     style CreateVerifSession1 fill:#74c0fc,stroke:#339af0
     style CreateVerifSessionLast fill:#74c0fc,stroke:#339af0
+    style RedirectHome fill:#ff8787,stroke:#fa5252
 ```
 
 ## Flow Scenarios
@@ -271,9 +309,9 @@ flowchart TD
 8. Fill fields → Click "Submit"
 9. Validate Step 3 → Pass
 10. Check: Last step has `sendOtp: false`
-11. Submit all data to API
-12. Show Finding Loan Screen
-13. Show Success
+11. Submit all data to API → API runs distribution synchronously
+12. Show LoanSearchingScreen (3s cosmetic animation)
+13. Navigate to `/loan-result`
 
 **Use Case**: Detailed loan application without phone verification
 
@@ -299,9 +337,8 @@ flowchart TD
 12. Move to Step 3 (Financial Info)
 13. **Navigation Security Active**: Cannot go back to Step 1-2
 14. Fill Step 3 → Click "Next" → Move to Step 4
-15. Fill Step 4 → Click "Submit"
-16. Submit all data to API
-17. Show Success
+15. Fill Step 4 → Click "Submit" → API runs distribution
+16. Show LoanSearchingScreen → Navigate to `/loan-result`
 
 **Use Case**: Secure loan application with mid-flow verification
 
@@ -372,38 +409,43 @@ flowchart TD
   - Submit: Validate → Call `onComplete`
 - **Error Handling**: Scroll to error, show toast for special fields
 
+### 4. LoanSearchingScreen
+
+- **Location**: `src/components/loan-application/LoanSearching/LoanSearchingScreen.tsx`
+- **Purpose**: Cosmetic animation screen shown while transitioning to results
+- **Duration**: ~3s hardcoded timeout (see `use-loan-search-store.ts`)
+- **Note**: The submit-info API is **synchronous** — distribution results come back
+  in the same response. The animation is purely UX, not waiting for data.
+  > **TODO**: Replace hardcoded `setTimeout(3000)` with proper transition that fires
+  > as soon as both the API response _and_ a minimum display time have elapsed.
+
 ### 5. LoanResultScreen
 
 **Purpose**: Display loan search results and matched products from distribution engine
 
 **Location**: `src/components/loan-application/LoanSearching/LoanResultScreen.tsx`
 
-**Responsibility**: 
+**Responsibility**:
 - State-based view router (orchestrator pattern)
 - Delegates rendering to appropriate view components
 - No UI logic - only state determination
 
 **State Flow**:
 ```
-forwarded → SuccessView
-has products → ProductListView  
-no products → EmptyState
-error → ErrorState
+forwardStatus === "forwarded"  → SuccessView   (auto-forwarded by backend)
+matchedProducts.length > 0     → ProductListView
+forwardStatus === "rejected"   → ErrorState
+forwardStatus === "exhausted"  → ErrorState
+no products & no status        → EmptyState
 ```
-
-**Props**:
-- `onSelectProduct`: Callback when user selects a product
-- `onViewMore`: Callback for "view more" action
-- `onRetry`: Retry action for error/empty states
-- `onBack`: Back navigation action
-- `onContinue`: Continue after successful forward
 
 **Views** (modular, in `LoanResult/views/`):
 
 | View | File | Purpose |
 |------|------|---------|
 | `ProductListView` | `ProductListView.tsx` | Display list of matched products |
-| `SuccessView` | `SuccessView.tsx` | Show forwarded success state |
+| `SuccessView` | `SuccessView.tsx` | Show auto-forwarded success state |
+| `RegistrationSuccessView` | `RegistrationSuccessView.tsx` | Show manual registration success |
 | `EmptyState` | `EmptyState.tsx` | No matching products found |
 | `ErrorState` | `ErrorState.tsx` | Error or rejected state |
 
@@ -438,7 +480,7 @@ interface LoanSearchState {
 ```
 
 **Actions**:
-- `showLoanSearching(config)`: Show searching screen, reset state
+- `showLoanSearching(config)`: Show searching screen, reset state, start 3s timer
 - `hideLoanSearching()`: Hide and reset all state
 - `setForwardStatus(status)`: Update forward status from API
 - `setResult(result)`: Set generic API result
@@ -452,13 +494,6 @@ interface LoanSearchState {
 - `useMatchedProducts()`: Get matched products array
 - `useLoanSearchError()`: Get error message
 
-**Flow Integration**:
-1. `DynamicLoanForm` calls `showLoanSearching()` on lead creation
-2. Stores `matched_products` from API response
-3. Page renders `LoanResultScreen` when products available
-4. User selects product → API forward → `setForwardStatus("forwarded")`
-5. `SuccessView` displayed with partner info
-
 ---
 
 ## API Endpoints
@@ -466,52 +501,37 @@ interface LoanSearchState {
 ### POST /leads
 
 **Purpose**: Create new lead
-**Payload**:
+**Response**: `{ id, token, matched_products?, forward_result? }`
 
+### POST /leads/:id/submit-info
+
+**Purpose**: Submit lead info and trigger distribution engine
+**Note**: This call is **synchronous** — the server blocks until distribution completes
+and returns `matched_products` + `forward_result` in the same response.
+There is **no need for polling** from the frontend.
+**Response**: `{ next_step_id?, matched_products?, forward_result? }`
+
+### POST /leads/:id/forward ⚠️ NOT YET IN API SPEC
+
+**Purpose**: Manually forward a lead to a specific partner when user clicks "Đăng ký vay"
+**Status**: **FIXME / TODO** — Endpoint does not exist in current `dop.yaml`
+**Old-code equivalent**: `POST /upl/forward { id: productId, lead_id, client_code }`
+**Proposed payload**:
 ```typescript
 {
-  flowId: string,
-  tenant: string,
-  deviceInfo: {},
-  trackingParams: {},
-  info: LeadInfo,
-  consent_id?: string
+  product_id: string;   // matched_product.product_id
+  partner_id: string;   // matched_product.partner_id
 }
 ```
+**Expected response**: `ForwardResult { status, partner_id, partner_name, partner_lead_id }`
 
-**Response**:
-
-```typescript
-{
-  id: string,      // leadId
-  token: string    // auth token
-}
-```
-
-### PUT /leads/:id/info
-
-**Purpose**: Update existing lead with additional info
-**Payload**:
-
-```typescript
-{
-  ...LeadInfo
-}
-```
-
-### POST /otp/verify
+### POST /leads/:id/verify-otp
 
 **Purpose**: Verify OTP code
-**Payload**:
 
-```typescript
-{
-  leadId: string,
-  token: string,
-  otp: string,
-  otpType: 1 | 2
-}
-```
+### POST /leads/:id/resend-otp
+
+**Purpose**: Resend OTP
 
 ---
 
@@ -573,12 +593,25 @@ interface LoanSearchState {
 - **Lead Creation Failed**: Toast error → Stay on form
 - **OTP Verification Failed**: Toast error → Allow retry
 - **Network Error**: Toast error → Allow retry
+- **No matched products**: Show EmptyState on `/loan-result`
+- **Forward rejected/exhausted**: Show ErrorState on `/loan-result`
 
 ### Configuration Errors
 
 - **sendOtp: true but phone not required**: Toast config error
 - **Missing consent_purpose_id**: Skip consent check
 - **Invalid flow config**: Show error message
+
+---
+
+## About Distribution & Polling
+
+The old-code (`POST /upl/submit-info`) was also a single synchronous call — no polling was used. The server runs the distribution engine inline and returns the result immediately. This pattern is preserved in the new API (`POST /leads/:id/submit-info`).
+
+**Current implementation note**: `use-loan-search-store.ts` uses a `setTimeout(3000)` purely for cosmetic UX (to show the searching animation for at least 3 seconds). This is NOT polling — the data is already in the store before the timer fires.
+
+> **TODO**: Consider implementing a minimum display time + "data ready" flag approach
+> instead of a flat 3s timeout, so the UI transitions as soon as both conditions are met.
 
 ---
 
@@ -618,191 +651,21 @@ Located in `src/__tests__/msw/profiles/`:
 **Problem**: Consent session not persisted
 **Solution**: Check `hasConsent()` before showing modal
 
+### Issue 5: User clicks "Đăng ký vay" but no API call is made
+
+**Problem**: `onSelectProduct` in `/loan-result` page only shows local `RegistrationSuccessView` without forwarding the lead
+**Solution**: Implement `POST /leads/:id/forward` in backend, then call it from `loan-result/page.tsx` when product is selected
+
 ---
 
 ## Future Enhancements
 
-1. **Resume Flow**: Save progress and resume later
-2. **Multi-language OTP**: Support SMS in multiple languages
-3. **Biometric Verification**: Alternative to OTP
-4. **Step Skipping**: Conditional step visibility
-5. **Parallel Steps**: Multiple steps at once (tabs)
-
----
-
-## LoanResultScreen & Matched Products Display
-
-### Architecture
-
-The loan result display follows a **modular, SoC-based architecture** with clear separation between state, views, and configuration.
-
-### 1. LoanResultScreen (Orchestrator)
-
-**Location**: `src/components/loan-application/LoanSearching/LoanResultScreen.tsx`
-
-**Purpose**: State-based view router that delegates rendering to appropriate view components based on store state.
-
-**State Flow**:
-```
-forwardStatus === "forwarded"    → SuccessView
-matchedProducts.length > 0       → ProductListView  
-forwardStatus === "rejected"     → ErrorState
-forwardStatus === "exhausted"    → ErrorState
-No products & no error           → EmptyState
-```
-
-**Props**:
-- `onSelectProduct`: Callback when user selects a product
-- `onViewMore`: Callback for "view more" action  
-- `onRetry`: Retry action for error/empty states
-- `onBack`: Back navigation action
-- `onContinue`: Continue after successful forward
-
-### 2. Modular Views (SoC)
-
-Located in `src/components/loan-application/LoanSearching/LoanResult/views/`:
-
-| View | Purpose | Props |
-|------|---------|-------|
-| `ProductListView` | Display list of matched products | `products`, `onSelectProduct`, `onViewMore` |
-| `SuccessView` | Show forwarded success state | `forwardResult`, `onContinue` |
-| `EmptyState` | No matching products found | `onRetry`, `onBack` |
-| `ErrorState` | Error or rejected state | `error`, `status`, `onRetry`, `onBack` |
-
-### 3. ProductCard Component
-
-**Location**: `LoanResult/components/ProductCard.tsx`
-
-**Features**:
-- Partner logo display with fallback
-- Loan type badge
-- Loan details (period, amount)
-- Special partner styling support
-- Theme integration
-
-**Special Partners Support**:
-- Configurable via `LoanResult/config/special-partners.ts`
-- Partners like CathayBank get custom styling and messages
-- Priority-based sorting in product list
-
-### 4. LoanSearchStore (Zustand)
-
-**Location**: `src/store/use-loan-search-store.ts`
-
-**State**:
-```typescript
-interface LoanSearchState {
-  isVisible: boolean;
-  config: LoanSearchConfig | null;
-  forwardStatus: ForwardStatus;  // undefined | "forwarded" | "rejected" | "exhausted"
-  result: unknown;               // Generic result from API
-  matchedProducts: matched_product[];  // Products from distribution engine
-  error: string | null;
-  isLoading: boolean;
-}
-```
-
-**Key Actions**:
-- `showLoanSearching(config)`: Show searching screen, reset state
-- `setMatchedProducts(products)`: Store matched products from API
-- `setForwardStatus(status)`: Update status from submit-info response
-- `hideLoanSearching()`: Hide and reset all state
-
-**Selectors**:
-- `useMatchedProducts()`: Get matched products array
-- `useForwardStatus()`: Get current forward status
-- `useLoanSearchResult<T>()`: Type-safe result access
-- `useLoanSearchError()`: Get error message
-
-### 5. Integration Flow
-
-```
-1. User submits form
-   ↓
-2. DynamicLoanForm calls createLead or submitLeadInfo
-   ↓
-3. API returns matched_products + forward_result
-   ↓
-4. Store: setMatchedProducts(products)
-   ↓
-5. Page detects matchedProducts.length > 0
-   ↓
-6. Render LoanResultScreen with ProductListView
-   ↓
-7. User selects product → call forward API
-   ↓
-8. Store: setForwardStatus("forwarded")
-   ↓
-9. LoanResultScreen renders SuccessView
-```
-
-### 6. API Response Handling
-
-**CreateLead Response**:
-```typescript
-{
-  id: string;
-  token: string;
-  matched_products?: matched_product[];
-  forward_result?: ForwardResult;
-}
-```
-
-**SubmitLeadInfo Response**:
-```typescript
-{
-  matched_products?: matched_product[];
-  forward_result?: ForwardResult;
-}
-```
-
-### 7. Special Partner Configuration
-
-**Location**: `LoanResult/config/special-partners.ts`
-
-```typescript
-export const SPECIAL_PARTNER_CONFIGS: Record<string, SpecialPartnerConfig> = {
-  CATHAYBANK: {
-    theme: "blue",
-    customMessageKey: "specialPartner.cathaybank.message",
-    hideDetails: false,
-    priority: 1,
-  },
-  // Add more partners as needed
-};
-```
-
-**Features**:
-- Custom theme colors
-- Special badge display
-- Custom CTA text
-- Priority-based ordering
-- Configurable detail hiding
-
-### 8. i18n Support
-
-**Translation Keys** (in `messages/[locale]/pages/loan-result.json`):
-- `title`: Page title
-- `subtitle`: Subtitle with product count
-- `loanType.personal`: Personal loan label
-- `loanType.creditCard`: Credit card label
-- `actions.register`: Register button
-- `actions.viewMore`: View more button
-- `success.title`: Success state title
-- `success.message`: Success message with partner name
-- `specialPartner.cathaybank.message`: Custom partner message
-
-### 9. Utilities
-
-**Location**: `LoanResult/utils/formatters.ts`
-
-Pure functions for data formatting:
-- `formatLoanPeriod(months)`: "6 tháng" | "1 năm 6 tháng"
-- `formatAmount(amount)`: "50 triệu" | "1.5 tỷ"
-- `formatCurrency(amount, currency)`: "50.000.000 VND"
-- `getPartnerLogoUrl(code)`: Logo path generation
-- `getLoanTypeKey(type)`: i18n key for loan type
-- `calculateEMI(principal, rate, months)`: Monthly payment estimation
+1. **Forward API**: Implement `POST /leads/:id/forward` to actually forward lead to selected partner
+2. **Resume Flow**: Save progress and resume later
+3. **Multi-language OTP**: Support SMS in multiple languages
+4. **Biometric Verification**: Alternative to OTP
+5. **Step Skipping**: Conditional step visibility
+6. **Parallel Steps**: Multiple steps at once (tabs)
 
 ---
 

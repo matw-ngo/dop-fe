@@ -31,8 +31,6 @@ export function ProductListView({
   products,
   onSelectProduct,
   onViewMore,
-  title,
-  subtitle,
   showCount = true,
   className,
 }: ProductListViewProps) {
@@ -42,26 +40,25 @@ export function ProductListView({
   // Sort products with special partners first
   const sortedProducts = sortProductsByPriority(products);
 
-  const displayTitle = title || t("title");
-  const displaySubtitle = subtitle || t("subtitle", { count: products.length });
-
   return (
-    <div className={cn("w-full max-w-2xl mx-auto", className)}>
-      {/* Header */}
-      <div className="text-center mb-8">
-        <h1
-          className="text-2xl font-bold mb-2"
-          style={{ color: theme.colors.textPrimary }}
-        >
-          {displayTitle}
-        </h1>
-        {showCount && (
-          <p style={{ color: theme.colors.textSecondary }}>{displaySubtitle}</p>
-        )}
-      </div>
+    <div className={cn("w-full", className)}>
+      {/* Header - count text matching old design */}
+      {showCount && (
+        <p className="text-2xl" style={{ color: theme.colors.textSecondary }}>
+          <strong style={{ color: theme.colors.textPrimary }}>
+            {products.length} {t("countLabel")}
+          </strong>{" "}
+          {t("countSuffix")}
+        </p>
+      )}
 
-      {/* Product Cards */}
-      <div className="space-y-4">
+      {/* Product Cards - responsive grid: 1 → 2 → 3 columns */}
+      <div
+        className="grid gap-[30px] mt-10"
+        style={{
+          gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
+        }}
+      >
         {sortedProducts.map((product, index) => (
           <ProductCard
             key={product.product_id}
@@ -78,7 +75,7 @@ export function ProductListView({
           <Button
             variant="outline"
             onClick={onViewMore}
-            className="w-full sm:w-auto"
+            className="max-w-[370px] w-full"
             style={{
               borderColor: theme.colors.border,
               color: theme.colors.textPrimary,

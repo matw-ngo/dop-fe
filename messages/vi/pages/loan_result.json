@@ -1,7 +1,13 @@
 {
   "title": "Kết quả tìm kiếm khoản vay",
   "subtitle": "{count} kết quả được tìm thấy dựa trên thông tin bạn cung cấp",
+  "countLabel": "kết quả",
+  "countSuffix": "được tìm thấy dựa trên thông tin bạn cung cấp",
   "noResults": "Hiện tại chưa có khoản vay phù hợp với thông tin của bạn. Vui lòng thử lại sau.",
+  "emptyState": {
+    "title": "Không tìm thấy khoản vay phù hợp",
+    "message": "Hiện tại chưa có khoản vay phù hợp với thông tin của bạn. Vui lòng thử lại sau."
+  },
   "loanType": {
     "personal": "Vay tiêu dùng",
     "creditCard": "Thẻ tín dụng",
@@ -24,7 +30,10 @@
   "success": {
     "title": "Đăng ký thành công!",
     "message": "Hồ sơ của bạn đã được chuyển đến {partner}",
-    "leadId": "Mã hồ sơ: {id}"
+    "leadId": "Mã hồ sơ: {id}",
+    "notificationTitle": "Thông báo",
+    "registrationSuccess": "Đăng ký khoản vay thành công.",
+    "partnerNote": "{partner} sẽ liên hệ với quý khách hàng trong thời gian sớm nhất để hoàn thiện hồ sơ vay."
   },
   "error": {
     "title": "Không thể đăng ký",

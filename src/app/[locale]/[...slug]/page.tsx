@@ -12,12 +12,11 @@ import { useAuthStore } from "@/store/use-auth-store";
 import {
   useLoanSearchStore,
   useLoanSearchVisible,
+  useLoanSearchLoading,
   useMatchedProducts,
-  useForwardStatus,
 } from "@/store/use-loan-search-store";
 import { useFormWizardStore } from "@/components/form-generation/store/use-form-wizard-store";
 import { LoanSearchingScreen } from "@/components/loan-application/LoanSearching";
-import { LoanResultScreen } from "@/components/loan-application/LoanSearching/LoanResultScreen";
 import { LoadingSkeleton } from "./LoadingSkeleton";
 import {
   checkAuthGuard,
@@ -63,6 +62,8 @@ export default function DynamicStepPage() {
   const wizardStore = useFormWizardStore();
   const loanSearchStore = useLoanSearchStore();
   const isLoanSearching = useLoanSearchVisible();
+  const isLoanSearchLoading = useLoanSearchLoading();
+  const matchedProducts = useMatchedProducts();
 
   // Validation state
   const [validationResult, setValidationResult] =
@@ -137,23 +138,16 @@ export default function DynamicStepPage() {
     sessionStorage.removeItem("dop_redirect_counter");
   }, [flowData, isLoading, page, authStore, wizardStore, t]);
 
-  // Handle loan search completion
+  // Navigate to loan-result page when search animation completes and products are available
+  useEffect(() => {
+    if (isLoanSearching && !isLoanSearchLoading && matchedProducts.length > 0) {
+      router.push("/loan-result");
+    }
+  }, [isLoanSearching, isLoanSearchLoading, matchedProducts, router]);
+
+  // Handle loan search errors
   useEffect(() => {
     if (!loanSearchStore.isVisible) return;
-
-    // When forward status is successful, execute callback or redirect
-    if (loanSearchStore.forwardStatus === "forwarded") {
-      const config = loanSearchStore.config;
-
-      if (config?.onComplete) {
-        config.onComplete();
-      } else if (config?.redirectTo) {
-        router.push(config.redirectTo);
-      }
-
-      // Hide the searching screen after navigation
-      loanSearchStore.hideLoanSearching();
-    }
 
     // Handle error (rejected or exhausted)
     if (
@@ -170,7 +164,8 @@ export default function DynamicStepPage() {
 
       loanSearchStore.hideLoanSearching();
     }
-  }, [loanSearchStore, router]);
+  }, [loanSearchStore]);
+
   useEffect(() => {
     if (!validationResult) return;
 
@@ -208,37 +203,10 @@ export default function DynamicStepPage() {
     notFound();
   }
 
-  // Render loan result screen if there are matched products and not forwarded yet
-  const matchedProducts = useMatchedProducts();
-  const forwardStatus = useForwardStatus();
-  const hasMatchedProducts = matchedProducts.length > 0;
-  const showResults = hasMatchedProducts && forwardStatus !== "forwarded";
-
   // Render content based on state
   const renderContent = () => {
-    // Loan result screen
-    if (showResults) {
-      return (
-        <div
-          data-testid="loan-result-screen"
-          className="rounded-lg border p-8"
-          style={{
-            backgroundColor: tenant.theme.colors.background,
-            borderColor: tenant.theme.colors.border,
-            boxShadow: "0 10px 40px rgba(1, 120, 72, 0.08)",
-          }}
-        >
-          <LoanResultScreen
-            onSelectProduct={(product) => {
-              console.log("Selected product:", product);
-            }}
-          />
-        </div>
-      );
-    }
-
     // Loan searching screen
-    if (isLoanSearching && !showResults) {
+    if (isLoanSearching) {
       return (
         <div
           data-testid="loan-searching-screen"
@@ -316,14 +284,16 @@ export default function DynamicStepPage() {
       >
         <div className="max-w-3xl mx-auto space-y-8">
           {/* TODO: fix in future - replace hardcoded title with dynamic step title from flow config */}
-          <div className="space-y-2">
-            <h1
-              className="text-4xl font-bold"
-              style={{ color: tenant.theme.colors.textPrimary }}
-            >
-              Thông tin vay
-            </h1>
-          </div>
+          {!isLoanSearching && (
+            <div className="space-y-2">
+              <h1
+                className="text-4xl font-bold"
+                style={{ color: tenant.theme.colors.textPrimary }}
+              >
+                Thông tin vay
+              </h1>
+            </div>
+          )}
           {renderContent()}
         </div>
       </div>

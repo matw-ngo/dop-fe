@@ -1,7 +1,13 @@
 {
   "title": "Loan Search Results",
   "subtitle": "{count} results found based on your information",
+  "countLabel": "results",
+  "countSuffix": "found based on your information",
   "noResults": "Currently no loans match your profile. Please try again later.",
+  "emptyState": {
+    "title": "No matching loans found",
+    "message": "Currently no loans match your profile. Please try again later."
+  },
   "loanType": {
     "personal": "Personal Loan",
     "creditCard": "Credit Card",
@@ -24,7 +30,10 @@
   "success": {
     "title": "Application Successful!",
     "message": "Your application has been submitted to {partner}",
-    "leadId": "Application ID: {id}"
+    "leadId": "Application ID: {id}",
+    "notificationTitle": "Notification",
+    "registrationSuccess": "Loan application submitted successfully.",
+    "partnerNote": "{partner} will contact you as soon as possible to complete your loan application."
   },
   "error": {
     "title": "Application Failed",
