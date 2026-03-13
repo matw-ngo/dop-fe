@@ -27,6 +27,8 @@ export function WizardNavigation({
   const { theme } = useFormTheme();
   const {
     currentStep,
+    flowStepIndex,
+    totalSteps,
     steps,
     previousStep,
     nextStep,
@@ -64,8 +66,12 @@ export function WizardNavigation({
     [tAll],
   );
 
-  const isFirstStep = currentStep === 0;
-  const isLastStep = currentStep === steps.length - 1;
+  const isFirstStep = flowStepIndex === 0;
+  // Use flowStepIndex for last step check in cross-page navigation
+  const isLastStep =
+    totalSteps > 0
+      ? flowStepIndex === totalSteps - 1
+      : currentStep === steps.length - 1;
   const isSingleStep = steps.length === 1;
 
   const backButton = config?.backButton || {};
@@ -287,7 +293,7 @@ export function WizardNavigation({
           !fullWidthButtons && position === "between" && !showBack && "ml-auto",
         )}
       >
-        {isLastStep
+        {isLastStep || isSingleStep
           ? showSubmit && (
               <Button
                 type="button"

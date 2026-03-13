@@ -181,3 +181,25 @@ export const createConsentStep = (
     ...overrides,
   });
 };
+
+/**
+ * Create a loan info step (step 1 - loan request details)
+ *
+ * Shows loan amount, period, and purpose fields.
+ * Typically the first step in the onboarding flow.
+ */
+export const createLoanInfoStep = (
+  stepNumber: number,
+  overrides: Partial<FlowStepConfig> = {},
+): FlowStepConfig => {
+  return createBaseStep({
+    id: `loan-info-step-${stepNumber}`,
+    page: `/loan-info-${stepNumber}`,
+    have_purpose: true,
+    required_purpose: true,
+    have_phone_number: true,
+    required_phone_number: true,
+    consent_purpose_id: "660e8400-e29b-41d4-a716-446655440006",
+    ...overrides,
+  });
+};

@@ -25,6 +25,8 @@ type AuthState = {
 type WizardStoreState = {
   formData: Record<string, any>;
   currentStep: number;
+  flowStepIndex?: number;
+  completedSteps?: number[];
 };
 
 /**
@@ -147,9 +149,23 @@ export function validateStep(
   }
 
   // Check if user has form data (active session)
-  const hasFormData = Object.keys(wizardStore.formData || {}).length > 0;
+  const formDataKeys = Object.keys(wizardStore.formData || {});
+  const hasFormData = formDataKeys.length > 0;
+
+  console.log("[Step Validator] Debug formData check:", {
+    page,
+    stepIndex,
+    formDataKeys,
+    hasFormData,
+    formDataContent: wizardStore.formData,
+    currentStepIndex: wizardStore.currentStep,
+  });
+
   if (!hasFormData && stepIndex > 0) {
-    console.warn("[Step Validator] No form data, redirecting to start");
+    console.warn("[Step Validator] No form data, redirecting to start", {
+      formDataKeys,
+      stepIndex,
+    });
     return {
       isValid: false,
       redirectTo: "/",
@@ -158,10 +174,44 @@ export function validateStep(
   }
 
   // Check if user has completed previous steps
-  const currentStepIndex = wizardStore.currentStep || 0;
-  if (stepIndex > currentStepIndex + 1) {
+  // Use flowStepIndex for flow-level position tracking (cross-page navigation)
+  // flowStepIndex is stable across page reloads, currentStep resets to 0 per-page
+  const currentStepIndex =
+    wizardStore.flowStepIndex ?? wizardStore.currentStep ?? 0;
+  const completedSteps = wizardStore.completedSteps || [];
+
+  // Allow navigation to next step if:
+  // 1. Has form data (session exists)
+  // 2. Going to immediate next step (not skipping)
+  // This handles the OTP success flow where completedSteps may not be updated yet
+  const isImmediateNextStep = stepIndex === currentStepIndex + 1;
+  const isCurrentOrPrevious = stepIndex <= currentStepIndex;
+  const hasCompletedPrevious = completedSteps.includes(stepIndex - 1);
+
+  console.log("[Step Validator] Step access check:", {
+    stepIndex,
+    currentStepIndex,
+    completedSteps,
+    isImmediateNextStep,
+    isCurrentOrPrevious,
+    hasCompletedPrevious,
+    hasFormData,
+  });
+
+  // Allow if:
+  // 1. Going to immediate next step AND has form data (OTP flow)
+  // 2. Going back to current or previous step
+  // 3. Previous step is explicitly marked as completed
+  const shouldAllow =
+    (isImmediateNextStep && hasFormData) ||
+    isCurrentOrPrevious ||
+    hasCompletedPrevious ||
+    stepIndex === 0; // Always allow step 0
+
+  if (!shouldAllow) {
     console.warn(
-      `[Step Validator] User at step ${currentStepIndex}, trying to access step ${stepIndex}`,
+      `[Step Validator] Blocked access to step ${stepIndex}. User at step ${currentStepIndex}, completed steps:`,
+      completedSteps,
     );
     const nextStep = flowData.steps[currentStepIndex + 1];
     return {
@@ -206,6 +256,14 @@ export function checkNavigationSecurity(
   message?: string;
 } {
   const session = authStore.verificationSession;
+
+  console.log("[Navigation Security] Debug:", {
+    page,
+    hasSession: !!session,
+    sessionDetails: session,
+    currentStep: wizardStore.currentStep,
+  });
+
   if (!session) {
     return { isValid: true }; // No restrictions without verification session
   }
@@ -220,8 +278,13 @@ export function checkNavigationSecurity(
   }
 
   // Use canNavigateBack() method per Req 6.2
-  // This respects NavigationConfig settings per Req 6.6
   const canNavigate = authStore.canNavigateBack(requestedStepIndex);
+
+  console.log("[Navigation Security] canNavigateBack result:", {
+    requestedStepIndex,
+    otpStepIndex: session.otpStepIndex,
+    canNavigate,
+  });
 
   if (!canNavigate) {
     console.warn(

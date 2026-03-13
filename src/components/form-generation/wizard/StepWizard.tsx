@@ -15,6 +15,12 @@ export interface StepWizardProps {
   /** Initial form data */
   initialData?: Record<string, any>;
 
+  /** Total steps in flow (for cross-page navigation) */
+  totalSteps?: number;
+
+  /** Current step index in flow (for cross-page navigation) */
+  currentStepIndex?: number;
+
   /** Completion handler */
   onComplete?: (data: Record<string, any>) => void | Promise<void>;
 
@@ -28,6 +34,8 @@ export interface StepWizardProps {
 export function StepWizard({
   config,
   initialData = {},
+  totalSteps,
+  currentStepIndex,
   onComplete,
   onStepChange,
   className,
@@ -38,16 +46,26 @@ export function StepWizard({
   // Initialize wizard on mount
   useEffect(() => {
     if (config.steps && config.steps.length > 0) {
-      // Only initialize if wizardId changes or it's a fresh start
-      initWizard(config.id || "wizard", config.steps, initialData);
+      // Pass totalSteps and currentStepIndex to initWizard for proper cross-page navigation
+      initWizard(
+        config.id || "wizard",
+        config.steps,
+        initialData,
+        totalSteps,
+        currentStepIndex,
+      );
     }
 
-    return () => {
-      // Cleanup on unmount
-      resetWizard();
-    };
+    // Note: We don't reset wizard on unmount to preserve form data across step navigation
+    // The wizard state should persist until explicitly reset (e.g., on flow completion)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [config.id, JSON.stringify(config.steps), initWizard, resetWizard]); // Exclude initialData to avoid loop
+  }, [
+    config.id,
+    JSON.stringify(config.steps),
+    initWizard,
+    totalSteps,
+    currentStepIndex,
+  ]); // Exclude initialData to avoid loop
 
   // Call step change callback
   useEffect(() => {

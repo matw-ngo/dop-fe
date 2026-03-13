@@ -1,0 +1,41 @@
+{
+  "title": "Loan Search Results",
+  "subtitle": "{count} results found based on your information",
+  "noResults": "Currently no loans match your profile. Please try again later.",
+  "loanType": {
+    "personal": "Personal Loan",
+    "creditCard": "Credit Card",
+    "mortgage": "Home Loan",
+    "auto": "Car Loan",
+    "other": "Other Products"
+  },
+  "specialPartner": {
+    "badge": "Special Partner",
+    "cathaybank": {
+      "message": "Special offer for CathayBank customers - 0% interest rate for first 3 months"
+    }
+  },
+  "actions": {
+    "register": "Apply Now",
+    "viewMore": "View More Loans",
+    "back": "Go Back",
+    "retry": "Try Again"
+  },
+  "success": {
+    "title": "Application Successful!",
+    "message": "Your application has been submitted to {partner}",
+    "leadId": "Application ID: {id}"
+  },
+  "error": {
+    "title": "Application Failed",
+    "message": "An error occurred while submitting your application. Please try again later.",
+    "rejected": "Your profile doesn't meet the partner's requirements. Please try another loan.",
+    "exhausted": "No matching loans available at the moment. Please try again later."
+  },
+  "details": {
+    "loanPeriod": "Loan Period",
+    "loanAmount": "Loan Amount",
+    "monthlyPayment": "Monthly Payment",
+    "tooltip": "Monthly payment may vary based on approved loan amount"
+  }
+}

@@ -76,6 +76,8 @@ export interface LoanSearchState {
   forwardStatus: ForwardStatus;
   /** Generic result data from API - can be ForwardResult or any other result type */
   result: unknown;
+  /** Matched products from distribution engine */
+  matchedProducts: components["schemas"]["matched_product"][];
   /** Error message if search failed */
   error: string | null;
 
@@ -92,6 +94,10 @@ export interface LoanSearchState {
   setForwardStatus: (status: ForwardStatus) => void;
   /** Set generic result data */
   setResult: (result: unknown) => void;
+  /** Set matched products from distribution */
+  setMatchedProducts: (
+    products: components["schemas"]["matched_product"][],
+  ) => void;
   /** Set error message */
   setError: (error: string) => void;
   /** Clear error message */
@@ -113,6 +119,7 @@ export const useLoanSearchStore = create<LoanSearchState>()(
     config: null,
     forwardStatus: undefined,
     result: null,
+    matchedProducts: [],
     error: null,
     isLoading: false,
 
@@ -146,6 +153,23 @@ export const useLoanSearchStore = create<LoanSearchState>()(
           }),
         );
       }
+
+      // FIXME: Temporary 3s timeout to transition from searching to result
+      // TODO: Replace with polling mechanism to check distribution status from backend
+      // The backend should provide an endpoint to poll for distribution completion
+      // Example: GET /leads/{id}/distribution-status
+      // This will continuously poll until distribution is complete or timeout
+      setTimeout(() => {
+        const state = get();
+        if (state.isVisible && state.isLoading) {
+          console.log(
+            "[Loan Search Store] Auto-transitioning to result after 3s timeout",
+          );
+          set({
+            isLoading: false,
+          });
+        }
+      }, 3000);
     },
 
     hideLoanSearching: () => {
@@ -158,6 +182,7 @@ export const useLoanSearchStore = create<LoanSearchState>()(
         config: null,
         forwardStatus: undefined,
         result: null,
+        matchedProducts: [],
         error: null,
         isLoading: false,
       });
@@ -194,6 +219,10 @@ export const useLoanSearchStore = create<LoanSearchState>()(
 
     setResult: (result: unknown) => {
       set({ result });
+    },
+
+    setMatchedProducts: (products) => {
+      set({ matchedProducts: products });
     },
 
     setError: (error: string) => {
@@ -320,6 +349,22 @@ export const useLoanSearchLoading = () =>
  */
 export const useLoanSearchError = () =>
   useLoanSearchStore((state) => state.error);
+
+/**
+ * Selector hook for matched products
+ *
+ * @returns {matched_product[]} Array of matched products from distribution
+ *
+ * @example
+ * ```typescript
+ * function ProductList() {
+ *   const products = useMatchedProducts();
+ *   return <div>{products.length} products found</div>;
+ * }
+ * ```
+ */
+export const useMatchedProducts = () =>
+  useLoanSearchStore((state) => state.matchedProducts);
 
 /**
  * Selector hook for search result

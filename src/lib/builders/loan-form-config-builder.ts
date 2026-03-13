@@ -131,7 +131,22 @@ export function buildLoanFormConfigFromStep(
     });
   }
 
-  // 4. Full Name field
+  // 4. Phone Number field
+  if (step.fields.phoneNumber.visible) {
+    fields.push({
+      id: "phone_number",
+      name: "phone_number",
+      type: FieldType.TEL,
+      validation: step.fields.phoneNumber.required
+        ? [{ type: ValidationRuleType.REQUIRED }]
+        : [],
+      i18n: {
+        enabled: true,
+      },
+    });
+  }
+
+  // 5. Full Name field
   if (step.fields.fullName.visible) {
     fields.push({
       id: "fullName",

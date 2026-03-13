@@ -1,0 +1,41 @@
+{
+  "title": "Kết quả tìm kiếm khoản vay",
+  "subtitle": "{count} kết quả được tìm thấy dựa trên thông tin bạn cung cấp",
+  "noResults": "Hiện tại chưa có khoản vay phù hợp với thông tin của bạn. Vui lòng thử lại sau.",
+  "loanType": {
+    "personal": "Vay tiêu dùng",
+    "creditCard": "Thẻ tín dụng",
+    "mortgage": "Vay mua nhà",
+    "auto": "Vay mua xe",
+    "other": "Sản phẩm khác"
+  },
+  "specialPartner": {
+    "badge": "Đối tác đặc biệt",
+    "cathaybank": {
+      "message": "Ưu đãi đặc biệt dành cho khách hàng CathayBank - Lãi suất ưu đãi 0% trong 3 tháng đầu"
+    }
+  },
+  "actions": {
+    "register": "Đăng ký vay",
+    "viewMore": "Xem thêm khoản vay khác",
+    "back": "Quay lại",
+    "retry": "Thử lại"
+  },
+  "success": {
+    "title": "Đăng ký thành công!",
+    "message": "Hồ sơ của bạn đã được chuyển đến {partner}",
+    "leadId": "Mã hồ sơ: {id}"
+  },
+  "error": {
+    "title": "Không thể đăng ký",
+    "message": "Đã xảy ra lỗi khi đăng ký khoản vay. Vui lòng thử lại sau.",
+    "rejected": "Hồ sơ chưa phù hợp với điều kiện của đối tác. Vui lòng chọn khoản vay khác.",
+    "exhausted": "Hiện tại không còn khoản vay phù hợp. Vui lòng thử lại sau."
+  },
+  "details": {
+    "loanPeriod": "Thời gian vay",
+    "loanAmount": "Số tiền vay",
+    "monthlyPayment": "Số tiền trả hàng tháng",
+    "tooltip": "Số tiền trả hàng tháng có thể thay đổi theo khoản vay được cấp"
+  }
+}

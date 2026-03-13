@@ -56,6 +56,12 @@ interface FormWizardState {
   /** Completed step indices */
   completedSteps: number[];
 
+  /** Total steps in flow (may differ from steps.length for partial configs) */
+  totalSteps: number;
+
+  /** Current step index in the flow (for cross-page navigation tracking) */
+  flowStepIndex: number;
+
   /** Wizard ID (for multi-wizard support) */
   wizardId: string;
 
@@ -82,11 +88,14 @@ interface FormWizardActions {
     wizardId: string,
     steps: FormStep[],
     initialData?: Record<string, any>,
+    totalSteps?: number,
+    currentStepIndex?: number,
   ) => void;
   resetWizard: () => void;
 
   // Navigation
   goToStep: (stepIndex: number) => void;
+  setCurrentStep: (stepIndex: number) => void;
   nextStep: () => Promise<boolean>;
   previousStep: () => void;
   goToStepById: (stepId: string) => void;
@@ -161,6 +170,8 @@ export const useFormWizardStore = create<FormWizardStore>()(
         stepMeta: {},
         visitedSteps: [],
         completedSteps: [],
+        totalSteps: 0,
+        flowStepIndex: 0,
         wizardId: "",
         isValidating: false,
         isSubmitting: false,
@@ -169,39 +180,110 @@ export const useFormWizardStore = create<FormWizardStore>()(
         beforeStepChangeCallback: null,
 
         // Initialize wizard
-        initWizard: (wizardId, steps, initialData = {}) => {
+        initWizard: (
+          wizardId,
+          steps,
+          initialData = {},
+          totalSteps = 0,
+          currentStepIndex,
+        ) => {
           set((state) => {
+            // Check if this is a re-initialization of the same wizard
+            const isSameWizard = state.wizardId === wizardId && wizardId !== "";
+
+            console.log("[initWizard] Called:", {
+              wizardId,
+              isSameWizard,
+              currentStepIndex,
+              existingCurrentStep: state.currentStep,
+              totalSteps,
+              stepsCount: steps.length,
+            });
+
+            // Merge with existing formData to preserve data across navigation
+            const mergedFormData = { ...state.formData, ...initialData };
+
             state.wizardId = wizardId;
             state.steps = steps;
-            state.formData = initialData;
-            state.currentStep = 0;
-            state.visitedSteps = [0];
-            state.completedSteps = [];
+            state.formData = mergedFormData;
+
+            // Set totalSteps from parameter if provided, otherwise use steps.length
+            state.totalSteps = totalSteps > 0 ? totalSteps : steps.length;
+
+            // Handle flowStepIndex for cross-page navigation tracking
+            if (currentStepIndex !== undefined) {
+              // Set flowStepIndex for global flow tracking
+              console.log(
+                "[initWizard] Setting flowStepIndex to:",
+                currentStepIndex,
+              );
+              state.flowStepIndex = currentStepIndex;
+            }
+
+            // Handle currentStep initialization (for local steps array indexing)
+            if (!isSameWizard && totalSteps === 0) {
+              // Fresh start - reset to step 0
+              console.log("[initWizard] Fresh start - resetting to step 0");
+              state.currentStep = 0;
+              state.flowStepIndex = 0;
+              state.visitedSteps = [0];
+              state.completedSteps = [];
+              state.totalSteps = 0;
+            } else if (state.currentStep >= steps.length) {
+              // currentStep is out of bounds for the new steps config (cross-page navigation)
+              // Each page has its own step config starting at index 0
+              state.currentStep = 0;
+            }
+            // For cross-page navigation: currentStep stays 0 (single step form), flowStepIndex tracks position
+
+            // Always ensure visitedSteps includes current step
+            if (!state.visitedSteps.includes(state.currentStep)) {
+              state.visitedSteps.push(state.currentStep);
+            }
+
+            // Initialize step data and meta
+            state.stepData = {};
+            state.stepMeta = {};
 
             steps.forEach((step) => {
-              state.stepMeta[step.id] = {
-                id: step.id,
-                validationStatus: "idle",
-                completionStatus: "pending",
-                visited: false,
-                errors: {},
-                touched: false,
-              };
+              // Build step data from initial data
+              const stepDataFromInitial: Record<string, unknown> = {};
 
-              const stepDataFromInitial: Record<string, any> = {};
               step.fields.forEach((field) => {
-                const value = initialData[field.name];
-                if (value !== undefined) {
-                  stepDataFromInitial[field.name] = value;
+                if (initialData[field.name] !== undefined) {
+                  stepDataFromInitial[field.name] = initialData[field.name];
                 }
               });
 
-              state.stepData[step.id] = stepDataFromInitial;
+              // Preserve existing step data if re-initializing same wizard
+              const existingStepData = isSameWizard
+                ? state.stepData[step.id]
+                : {};
+
+              state.stepData[step.id] = {
+                ...stepDataFromInitial,
+                ...existingStepData,
+              };
+
+              // Initialize step meta
+              const existingMeta = isSameWizard
+                ? state.stepMeta[step.id]
+                : null;
+              state.stepMeta[step.id] = existingMeta || {
+                id: step.id,
+                touched: false,
+                visited: false,
+                validationStatus: "idle",
+                completionStatus: "pending",
+                errors: {},
+              };
             });
 
-            if (steps[0]) {
-              state.stepMeta[steps[0].id].completionStatus = "current";
-              state.stepMeta[steps[0].id].visited = true;
+            // Mark current step as current in meta
+            const currentStepId = steps[state.currentStep]?.id;
+            if (currentStepId && state.stepMeta[currentStepId]) {
+              state.stepMeta[currentStepId].completionStatus = "current";
+              state.stepMeta[currentStepId].visited = true;
             }
           });
         },
@@ -227,7 +309,14 @@ export const useFormWizardStore = create<FormWizardStore>()(
 
         // Navigate to step by index
         goToStep: (stepIndex) => {
-          const { steps, canGoToStep, addToNavigationHistory } = get();
+          const { steps, canGoToStep, addToNavigationHistory, currentStep } =
+            get();
+          console.log("[goToStep] Called:", {
+            fromStep: currentStep,
+            toStep: stepIndex,
+            totalSteps: steps.length,
+          });
+
           if (
             stepIndex >= 0 &&
             stepIndex < steps.length &&
@@ -255,10 +344,21 @@ export const useFormWizardStore = create<FormWizardStore>()(
               if (!state.visitedSteps.includes(stepIndex)) {
                 state.visitedSteps.push(stepIndex);
               }
+
+              console.log("[goToStep] State updated:", {
+                currentStep: state.currentStep,
+                visitedSteps: state.visitedSteps,
+                completedSteps: state.completedSteps,
+              });
             });
 
             // Add to navigation history
             addToNavigationHistory(stepIndex);
+          } else {
+            console.warn("[goToStep] Blocked:", {
+              stepIndex,
+              canGo: canGoToStep(stepIndex),
+            });
           }
         },
 
@@ -272,10 +372,16 @@ export const useFormWizardStore = create<FormWizardStore>()(
             goToStep,
           } = get();
 
+          console.log("[nextStep] Called:", {
+            currentStep,
+            totalSteps: steps.length,
+          });
+
           // Validate current step
           const isValid = await validateStep(currentStep);
 
           if (!isValid) {
+            console.log("[nextStep] Validation failed:", { currentStep });
             return false;
           }
 
@@ -284,6 +390,7 @@ export const useFormWizardStore = create<FormWizardStore>()(
 
           // Move to next step
           if (currentStep < steps.length - 1) {
+            console.log("[nextStep] Moving to step:", currentStep + 1);
             goToStep(currentStep + 1);
           }
 
@@ -296,6 +403,16 @@ export const useFormWizardStore = create<FormWizardStore>()(
           if (currentStep > 0) {
             goToStep(currentStep - 1);
           }
+        },
+
+        // Set current step directly (for external navigation control)
+        setCurrentStep: (stepIndex) => {
+          set((state) => {
+            state.currentStep = stepIndex;
+            if (!state.visitedSteps.includes(stepIndex)) {
+              state.visitedSteps.push(stepIndex);
+            }
+          });
         },
 
         // Go to step by ID
@@ -343,7 +460,15 @@ export const useFormWizardStore = create<FormWizardStore>()(
           const { steps, formData, stepData } = get();
           const step = steps[stepIndex];
 
-          if (!step) return false;
+          // If step not found in store, skip validation (for cross-page navigation)
+          // This happens when StepWizard only has current step config, not all flow steps
+          if (!step) {
+            console.log(
+              "[validateStep] Step not found in store, skipping validation:",
+              { stepIndex, totalSteps: steps.length },
+            );
+            return true;
+          }
 
           set((state) => {
             state.isValidating = true;
@@ -704,6 +829,7 @@ export const useFormWizardStore = create<FormWizardStore>()(
           currentStep: state.currentStep,
           visitedSteps: state.visitedSteps,
           completedSteps: state.completedSteps,
+          totalSteps: state.totalSteps,
         }),
       },
     ),

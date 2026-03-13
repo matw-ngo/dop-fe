@@ -23,6 +23,7 @@ import { mapFormDataToLeadInfo } from "@/mappers/leadMapper";
 import { useAuthStore } from "@/store/use-auth-store";
 import { useConsentStore } from "@/store/use-consent-store";
 import { useLoanSearchStore } from "@/store/use-loan-search-store";
+import { useSubmitLeadInfo } from "@/hooks/features/lead/use-lead-submission";
 import type { components } from "@/lib/api/v1/dop";
 
 // Type aliases from API schema
@@ -73,6 +74,8 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
   >();
 
   const { mutate: createLead, isPending: isCreatingLead } = useCreateLead();
+  const { mutate: submitLeadInfo, isPending: isSubmittingInfo } =
+    useSubmitLeadInfo();
 
   const tenantId = tenant.uuid;
   const { data: flowData, isLoading: isLoadingFlow } = useFlow(tenantId);
@@ -249,17 +252,64 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
         flowId: flowData.id,
         stepId: indexStep.id,
       });
+
+      // Check if there's a next step after OTP
+      const currentStepIndex = flowData.steps.findIndex(
+        (s) => s.id === indexStep.id,
+      );
+      const nextStep = flowData.steps[currentStepIndex + 1];
+
+      if (nextStep) {
+        // There's a next step - navigate to it
+        console.log(
+          "[DynamicLoanForm] OTP success - navigating to next step:",
+          {
+            currentPage: page,
+            nextPage: nextStep.page,
+            nextStepId: nextStep.id,
+            currentFormData: formData,
+            wizardStoreData: wizardStore.formData,
+          },
+        );
+
+        // CRITICAL: Mark current step as complete and update wizard store
+        // This ensures form data is persisted before navigation
+        wizardStore.markStepComplete(currentStepIndex);
+
+        // Update wizard store's current step to next step
+        // This prevents validation from thinking we're skipping steps
+        wizardStore.goToStep(currentStepIndex + 1);
+
+        // Small delay to ensure state is persisted before navigation
+        setTimeout(() => {
+          router.push(nextStep.page);
+        }, 100);
+      } else {
+        // This is the last step - show loan searching screen
+        console.log(
+          "[DynamicLoanForm] OTP success at final step - showing loan searching screen",
+        );
+
+        if (createdLeadId && createdLeadToken) {
+          // Integration Point 2: Show loan searching screen after OTP success at final step
+          loanSearchStore.showLoanSearching({
+            leadId: createdLeadId,
+            token: createdLeadToken,
+            redirectTo: `/loan-info?leadId=${createdLeadId}&token=${createdLeadToken}`,
+          });
+        }
+      }
     } else {
       onSubmitSuccess?.(formData);
-    }
 
-    if (createdLeadId && createdLeadToken) {
-      // Integration Point 2: Show loan searching screen after OTP success
-      loanSearchStore.showLoanSearching({
-        leadId: createdLeadId,
-        token: createdLeadToken,
-        redirectTo: `/loan-info?leadId=${createdLeadId}&token=${createdLeadToken}`,
-      });
+      // Fallback: if no flow data, still try to show searching screen if we have lead info
+      if (createdLeadId && createdLeadToken) {
+        loanSearchStore.showLoanSearching({
+          leadId: createdLeadId,
+          token: createdLeadToken,
+          redirectTo: `/loan-info?leadId=${createdLeadId}&token=${createdLeadToken}`,
+        });
+      }
     }
   };
 
@@ -328,6 +378,15 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
             nextPage: nextStep.page,
             nextStepId: nextStep.id,
           });
+
+          // CRITICAL: Mark current step as complete and update wizard store
+          // This ensures form data is persisted and validation passes for next step
+          wizardStore.markStepComplete(currentStepIndex);
+
+          // Use setCurrentStep instead of goToStep because goToStep checks bounds
+          // against the store's steps array which only contains current step config
+          wizardStore.setCurrentStep(currentStepIndex + 1);
+
           router.push(nextStep.page);
         } else {
           // Integration Point 1 & 3: Last step without OTP - create/update lead then show searching screen
@@ -342,9 +401,9 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
             (data.token as LeadToken | undefined) ?? createdLeadToken;
 
           if (existingLeadId && existingToken) {
-            // Integration Point 3a: Update existing lead
+            // Integration Point 3a: Update existing lead with submit-info API
             console.log(
-              "[DynamicLoanForm] Updating existing lead:",
+              "[DynamicLoanForm] Submitting lead info at final step:",
               existingLeadId,
             );
 
@@ -352,14 +411,53 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
             const stepId = indexStep.id;
             const apiPayload = mapFormDataToLeadInfo(data, flowId, stepId);
 
-            // TODO: Implement useUpdateLead hook or use useCreateLead with update logic
-            // For now, show searching screen with existing lead data
-            loanSearchStore.showLoanSearching({
-              leadId: existingLeadId,
-              token: existingToken,
-              redirectTo: "/", // Or a success page
-              message: t("messages.searchingLoan"),
-            });
+            // Call submit-info API to update lead and get matched products
+            submitLeadInfo(
+              { leadId: existingLeadId, data: apiPayload },
+              {
+                onSuccess: (response) => {
+                  console.log(
+                    "[DynamicLoanForm] Lead info submitted successfully:",
+                    response,
+                  );
+
+                  // Store matched products if available
+                  if (
+                    "matched_products" in response &&
+                    response.matched_products &&
+                    response.matched_products.length > 0
+                  ) {
+                    loanSearchStore.setMatchedProducts(
+                      response.matched_products,
+                    );
+                  }
+
+                  // Store forward result if available
+                  if ("forward_result" in response && response.forward_result) {
+                    loanSearchStore.setForwardStatus(
+                      response.forward_result.status,
+                    );
+                    loanSearchStore.setResult(response.forward_result);
+                  }
+
+                  // Show loan searching screen
+                  loanSearchStore.showLoanSearching({
+                    leadId: existingLeadId,
+                    token: existingToken,
+                    redirectTo: "/", // Or a success page
+                    message: t("messages.searchingLoan"),
+                  });
+                },
+                onError: (error) => {
+                  console.error(
+                    "[DynamicLoanForm] Lead info submission failed:",
+                    error,
+                  );
+                  toast.error(t("errors.submissionFailed"));
+                  loanSearchStore.setError(t("errors.submissionFailed"));
+                },
+              },
+            );
           } else {
             // Integration Point 3b: Create new lead at final step
             console.log("[DynamicLoanForm] Creating new lead at final step");
@@ -387,6 +485,16 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
                   // Store lead data for potential future use
                   setCreatedLeadId(leadData.id);
                   setCreatedLeadToken(leadData.token);
+
+                  // Store matched products if available
+                  if (
+                    leadData.matched_products &&
+                    leadData.matched_products.length > 0
+                  ) {
+                    loanSearchStore.setMatchedProducts(
+                      leadData.matched_products,
+                    );
+                  }
 
                   // Show loan searching screen
                   loanSearchStore.showLoanSearching({
@@ -441,6 +549,8 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
       <StepWizard
         config={formConfig}
         initialData={formData}
+        totalSteps={stepContext?.totalSteps}
+        currentStepIndex={stepContext?.currentStepIndex}
         onComplete={handleFormComplete}
       />
 
@@ -450,7 +560,7 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
         onVerify={handlePhoneSubmit}
         title={t("otp.title")}
         description={t("otp.description")}
-        isSubmitting={isCreatingLead}
+        isSubmitting={isCreatingLead || isSubmittingInfo}
       />
 
       <OtpVerificationModal

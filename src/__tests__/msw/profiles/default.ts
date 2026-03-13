@@ -1,43 +1,39 @@
 /**
  * Default Test Profile
  *
- * Standard flow with OTP at step 3 (middle position)
- * This is the default profile used when no specific profile is requested
+ * Simple 2-step flow for testing loan searching + result:
+ * - Step 1 (/index):         Loan info (amount, period, purpose) + consent
+ * - Step 2 (/personal-info): Personal info → triggers loan searching + show results
  */
 
 import type { TestProfile } from "./types";
 import {
   createBaseFlow,
+  createLoanInfoStep,
   createPersonalInfoStep,
-  createOTPStep,
-  createFinancialInfoStep,
-  createConsentStep,
 } from "./factory";
 
 export const defaultProfile: TestProfile = {
   name: "default",
-  description: "Standard flow with OTP at step 3 (middle position)",
+  description: "2-step flow: loan info → personal info → searching → results",
   flowConfig: createBaseFlow({
     name: "Default Onboarding Flow",
-    description: "Standard user onboarding flow with OTP verification",
+    description: "Standard loan application flow",
     steps: [
-      createPersonalInfoStep(1, {
-        page: "/index", // Change to /index to match homepage lookup
-        consent_purpose_id: "660e8400-e29b-41d4-a716-446655440006", // Add consent to first step
+      // Step 1: Loan request - amount, period, purpose + consent
+      createLoanInfoStep(1, {
+        page: "/index",
+        have_phone_number: false,
+        required_phone_number: false,
       }),
-      createConsentStep(2, {
-        page: "/loan-info",
-      }),
-      createOTPStep(3, {
-        page: "/verify-otp",
-      }),
-      createFinancialInfoStep(4, {
-        page: "/financial-info",
-      }),
-      createPersonalInfoStep(5, {
-        page: "/submit",
-        have_location: true,
-        required_location: true,
+
+      // Step 2: Personal info (final step - triggers lead creation + searching)
+      createPersonalInfoStep(2, {
+        page: "/personal-info",
+        have_national_id: true,
+        required_national_id: true,
+        have_gender: true,
+        required_gender: true,
       }),
     ],
   }),

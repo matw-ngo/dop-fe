@@ -4,6 +4,7 @@ import { useParams, useRouter, notFound } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
+import { TenantThemeProvider } from "@/components/layout/TenantThemeProvider";
 import { DynamicLoanForm } from "@/components/loan-application/DynamicLoanForm";
 import { useFlow } from "@/hooks/flow/use-flow";
 import { useTenant } from "@/hooks/tenant/use-tenant";
@@ -11,9 +12,12 @@ import { useAuthStore } from "@/store/use-auth-store";
 import {
   useLoanSearchStore,
   useLoanSearchVisible,
+  useMatchedProducts,
+  useForwardStatus,
 } from "@/store/use-loan-search-store";
 import { useFormWizardStore } from "@/components/form-generation/store/use-form-wizard-store";
 import { LoanSearchingScreen } from "@/components/loan-application/LoanSearching";
+import { LoanResultScreen } from "@/components/loan-application/LoanSearching/LoanResultScreen";
 import { LoadingSkeleton } from "./LoadingSkeleton";
 import {
   checkAuthGuard,
@@ -204,47 +208,125 @@ export default function DynamicStepPage() {
     notFound();
   }
 
-  // Render loan searching screen if visible
-  if (isLoanSearching) {
-    return (
-      <div data-testid="loan-searching-screen">
-        <LoanSearchingScreen message={loanSearchStore.config?.message} />
-      </div>
-    );
-  }
+  // Render loan result screen if there are matched products and not forwarded yet
+  const matchedProducts = useMatchedProducts();
+  const forwardStatus = useForwardStatus();
+  const hasMatchedProducts = matchedProducts.length > 0;
+  const showResults = hasMatchedProducts && forwardStatus !== "forwarded";
 
-  // Error state (check before loading state)
-  if (error) {
-    return (
-      <div className="max-w-2xl mx-auto p-4">
-        <div className="flex flex-col items-center justify-center py-12">
-          <p className="text-destructive mb-4">{t("errors.loadFailed")}</p>
-          <button
-            onClick={() => window.location.reload()}
-            className="px-4 py-2 bg-primary text-white rounded"
-            type="button"
-          >
-            {t("actions.retry")}
-          </button>
+  // Render content based on state
+  const renderContent = () => {
+    // Loan result screen
+    if (showResults) {
+      return (
+        <div
+          data-testid="loan-result-screen"
+          className="rounded-lg border p-8"
+          style={{
+            backgroundColor: tenant.theme.colors.background,
+            borderColor: tenant.theme.colors.border,
+            boxShadow: "0 10px 40px rgba(1, 120, 72, 0.08)",
+          }}
+        >
+          <LoanResultScreen
+            onSelectProduct={(product) => {
+              console.log("Selected product:", product);
+            }}
+          />
+        </div>
+      );
+    }
+
+    // Loan searching screen
+    if (isLoanSearching && !showResults) {
+      return (
+        <div
+          data-testid="loan-searching-screen"
+          className="rounded-lg border p-8 min-h-[400px] flex items-center justify-center"
+          style={{
+            backgroundColor: tenant.theme.colors.background,
+            borderColor: tenant.theme.colors.border,
+            boxShadow: "0 10px 40px rgba(1, 120, 72, 0.08)",
+          }}
+        >
+          <LoanSearchingScreen message={loanSearchStore.config?.message} />
+        </div>
+      );
+    }
+
+    // Error state
+    if (error) {
+      return (
+        <div
+          className="rounded-lg border p-8"
+          style={{
+            backgroundColor: tenant.theme.colors.background,
+            borderColor: tenant.theme.colors.border,
+          }}
+        >
+          <div className="flex flex-col items-center justify-center py-12">
+            <p className="text-destructive mb-4">{t("errors.loadFailed")}</p>
+            <button
+              onClick={() => window.location.reload()}
+              className="px-4 py-2 rounded transition-opacity hover:opacity-90"
+              style={{
+                backgroundColor: tenant.theme.colors.primary,
+                color: "#ffffff",
+              }}
+              type="button"
+            >
+              {t("actions.retry")}
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    // Loading state
+    if (isLoading || !validationResult) {
+      return <LoadingSkeleton />;
+    }
+
+    // Form state
+    if (validationResult.isValid) {
+      return (
+        <div
+          data-testid="dynamic-step-page"
+          className="rounded-lg border p-8"
+          style={{
+            backgroundColor: tenant.theme.colors.background,
+            borderColor: tenant.theme.colors.border,
+            boxShadow: "0 10px 40px rgba(1, 120, 72, 0.08)",
+          }}
+        >
+          <DynamicLoanForm page={page} />
+        </div>
+      );
+    }
+
+    // Redirecting state
+    return <LoadingSkeleton />;
+  };
+
+  return (
+    <TenantThemeProvider>
+      <div
+        className="min-h-screen p-8"
+        style={{ backgroundColor: tenant.theme.colors.readOnly }}
+      >
+        <div className="max-w-3xl mx-auto space-y-8">
+          {/* TODO: fix in future - replace hardcoded title with dynamic step title from flow config */}
+          <div className="space-y-2">
+            <h1
+              className="text-4xl font-bold"
+              style={{ color: tenant.theme.colors.textPrimary }}
+            >
+              Thông tin vay
+            </h1>
+          </div>
+          {renderContent()}
         </div>
       </div>
-    );
-  }
-
-  // Loading state
-  if (isLoading || !validationResult) {
-    return <LoadingSkeleton />;
-  }
-
-  // Render form if validation passed
-  if (validationResult.isValid) {
-    return (
-      <div data-testid="dynamic-step-page">
-        <DynamicLoanForm page={page} />
-      </div>
-    );
-  }
-
-  // Redirecting state
-  return <LoadingSkeleton />;
+    </TenantThemeProvider>
+  );
 }

@@ -178,7 +178,15 @@ flowchart TD
 
     UpdateLeadInfo --> ShowFindingLoan[Show Finding Loan Screen]
     CreateNewLead --> ShowFindingLoan
-    ShowFindingLoan --> ShowSuccessLoan[Show Success Message<br/>with submitted data]
+    ShowFindingLoan --> CheckHasProducts{Has<br/>matched_products?}
+    CheckHasProducts -->|Yes| ShowLoanResult[Show LoanResultScreen<br/>Product List View]
+    CheckHasProducts -->|No| CheckForwardStatus{Forward<br/>status?}
+    ShowLoanResult --> UserSelectProduct[User selects product]
+    UserSelectProduct --> ForwardLead[API: Forward to partner]
+    ForwardLead --> ShowSuccessLoan[Show Success View<br/>with partner info]
+    CheckForwardStatus -->|forwarded| ShowSuccessLoan
+    CheckForwardStatus -->|rejected| ShowErrorRejected[Show Error View<br/>Lead rejected]
+    CheckForwardStatus -->|exhausted| ShowErrorExhausted[Show Error View<br/>No partners available]
 
     %% ============================================================================
     %% SPECIAL CASES
@@ -196,8 +204,11 @@ flowchart TD
     style LeadErrorLast fill:#ff8787,stroke:#fa5252
     style OTPError1 fill:#ff8787,stroke:#fa5252
     style OTPErrorLast fill:#ff8787,stroke:#fa5252
-    style ShowSuccess fill:#51cf66,stroke:#37b24d,color:#fff
+    style ShowFindingLoan fill:#74c0fc,stroke:#339af0
+    style ShowLoanResult fill:#74c0fc,stroke:#339af0
     style ShowSuccessLoan fill:#51cf66,stroke:#37b24d,color:#fff
+    style ShowErrorRejected fill:#ff8787,stroke:#fa5252
+    style ShowErrorExhausted fill:#ff8787,stroke:#fa5252
     style CreateVerifSession1 fill:#74c0fc,stroke:#339af0
     style CreateVerifSessionLast fill:#74c0fc,stroke:#339af0
 ```
@@ -361,11 +372,92 @@ flowchart TD
   - Submit: Validate → Call `onComplete`
 - **Error Handling**: Scroll to error, show toast for special fields
 
-### 4. FormWizardStore (Zustand)
+### 5. LoanResultScreen
 
-- **State**: `currentStep`, `steps`, `formData`, `stepMeta`
-- **Actions**: `nextStep()`, `validateStep()`, `goToStep()`
-- **Validation**: Field-level + step-level + custom validators
+**Purpose**: Display loan search results and matched products from distribution engine
+
+**Location**: `src/components/loan-application/LoanSearching/LoanResultScreen.tsx`
+
+**Responsibility**: 
+- State-based view router (orchestrator pattern)
+- Delegates rendering to appropriate view components
+- No UI logic - only state determination
+
+**State Flow**:
+```
+forwarded → SuccessView
+has products → ProductListView  
+no products → EmptyState
+error → ErrorState
+```
+
+**Props**:
+- `onSelectProduct`: Callback when user selects a product
+- `onViewMore`: Callback for "view more" action
+- `onRetry`: Retry action for error/empty states
+- `onBack`: Back navigation action
+- `onContinue`: Continue after successful forward
+
+**Views** (modular, in `LoanResult/views/`):
+
+| View | File | Purpose |
+|------|------|---------|
+| `ProductListView` | `ProductListView.tsx` | Display list of matched products |
+| `SuccessView` | `SuccessView.tsx` | Show forwarded success state |
+| `EmptyState` | `EmptyState.tsx` | No matching products found |
+| `ErrorState` | `ErrorState.tsx` | Error or rejected state |
+
+**Components** (in `LoanResult/components/`):
+- `ProductCard.tsx`: Individual product display with special partner support
+
+**Config** (in `LoanResult/config/`):
+- `special-partners.ts`: Partner-specific configurations (e.g., CathayBank)
+
+**Utils** (in `LoanResult/utils/`):
+- `formatters.ts`: Pure formatting functions (currency, period, etc.)
+
+---
+
+### 6. LoanSearchStore (Zustand)
+
+**Purpose**: Global state management for loan search and result display
+
+**Location**: `src/store/use-loan-search-store.ts`
+
+**State**:
+```typescript
+interface LoanSearchState {
+  isVisible: boolean;
+  config: LoanSearchConfig | null;
+  forwardStatus: ForwardStatus;  // undefined | "forwarded" | "rejected" | "exhausted"
+  result: unknown;               // Generic result from API
+  matchedProducts: matched_product[];  // Products from distribution
+  error: string | null;
+  isLoading: boolean;
+}
+```
+
+**Actions**:
+- `showLoanSearching(config)`: Show searching screen, reset state
+- `hideLoanSearching()`: Hide and reset all state
+- `setForwardStatus(status)`: Update forward status from API
+- `setResult(result)`: Set generic API result
+- `setMatchedProducts(products)`: Set matched products from distribution
+- `setError(error)`: Set error and update status to "rejected"
+
+**Selectors**:
+- `useLoanSearchVisible()`: Check if screen is visible
+- `useForwardStatus()`: Get current forward status
+- `useLoanSearchResult<T>()`: Type-safe result access
+- `useMatchedProducts()`: Get matched products array
+- `useLoanSearchError()`: Get error message
+
+**Flow Integration**:
+1. `DynamicLoanForm` calls `showLoanSearching()` on lead creation
+2. Stores `matched_products` from API response
+3. Page renders `LoanResultScreen` when products available
+4. User selects product → API forward → `setForwardStatus("forwarded")`
+5. `SuccessView` displayed with partner info
 
 ---
 
@@ -535,6 +627,182 @@ Located in `src/__tests__/msw/profiles/`:
 3. **Biometric Verification**: Alternative to OTP
 4. **Step Skipping**: Conditional step visibility
 5. **Parallel Steps**: Multiple steps at once (tabs)
+
+---
+
+## LoanResultScreen & Matched Products Display
+
+### Architecture
+
+The loan result display follows a **modular, SoC-based architecture** with clear separation between state, views, and configuration.
+
+### 1. LoanResultScreen (Orchestrator)
+
+**Location**: `src/components/loan-application/LoanSearching/LoanResultScreen.tsx`
+
+**Purpose**: State-based view router that delegates rendering to appropriate view components based on store state.
+
+**State Flow**:
+```
+forwardStatus === "forwarded"    → SuccessView
+matchedProducts.length > 0       → ProductListView  
+forwardStatus === "rejected"     → ErrorState
+forwardStatus === "exhausted"    → ErrorState
+No products & no error           → EmptyState
+```
+
+**Props**:
+- `onSelectProduct`: Callback when user selects a product
+- `onViewMore`: Callback for "view more" action  
+- `onRetry`: Retry action for error/empty states
+- `onBack`: Back navigation action
+- `onContinue`: Continue after successful forward
+
+### 2. Modular Views (SoC)
+
+Located in `src/components/loan-application/LoanSearching/LoanResult/views/`:
+
+| View | Purpose | Props |
+|------|---------|-------|
+| `ProductListView` | Display list of matched products | `products`, `onSelectProduct`, `onViewMore` |
+| `SuccessView` | Show forwarded success state | `forwardResult`, `onContinue` |
+| `EmptyState` | No matching products found | `onRetry`, `onBack` |
+| `ErrorState` | Error or rejected state | `error`, `status`, `onRetry`, `onBack` |
+
+### 3. ProductCard Component
+
+**Location**: `LoanResult/components/ProductCard.tsx`
+
+**Features**:
+- Partner logo display with fallback
+- Loan type badge
+- Loan details (period, amount)
+- Special partner styling support
+- Theme integration
+
+**Special Partners Support**:
+- Configurable via `LoanResult/config/special-partners.ts`
+- Partners like CathayBank get custom styling and messages
+- Priority-based sorting in product list
+
+### 4. LoanSearchStore (Zustand)
+
+**Location**: `src/store/use-loan-search-store.ts`
+
+**State**:
+```typescript
+interface LoanSearchState {
+  isVisible: boolean;
+  config: LoanSearchConfig | null;
+  forwardStatus: ForwardStatus;  // undefined | "forwarded" | "rejected" | "exhausted"
+  result: unknown;               // Generic result from API
+  matchedProducts: matched_product[];  // Products from distribution engine
+  error: string | null;
+  isLoading: boolean;
+}
+```
+
+**Key Actions**:
+- `showLoanSearching(config)`: Show searching screen, reset state
+- `setMatchedProducts(products)`: Store matched products from API
+- `setForwardStatus(status)`: Update status from submit-info response
+- `hideLoanSearching()`: Hide and reset all state
+
+**Selectors**:
+- `useMatchedProducts()`: Get matched products array
+- `useForwardStatus()`: Get current forward status
+- `useLoanSearchResult<T>()`: Type-safe result access
+- `useLoanSearchError()`: Get error message
+
+### 5. Integration Flow
+
+```
+1. User submits form
+   ↓
+2. DynamicLoanForm calls createLead or submitLeadInfo
+   ↓
+3. API returns matched_products + forward_result
+   ↓
+4. Store: setMatchedProducts(products)
+   ↓
+5. Page detects matchedProducts.length > 0
+   ↓
+6. Render LoanResultScreen with ProductListView
+   ↓
+7. User selects product → call forward API
+   ↓
+8. Store: setForwardStatus("forwarded")
+   ↓
+9. LoanResultScreen renders SuccessView
+```
+
+### 6. API Response Handling
+
+**CreateLead Response**:
+```typescript
+{
+  id: string;
+  token: string;
+  matched_products?: matched_product[];
+  forward_result?: ForwardResult;
+}
+```
+
+**SubmitLeadInfo Response**:
+```typescript
+{
+  matched_products?: matched_product[];
+  forward_result?: ForwardResult;
+}
+```
+
+### 7. Special Partner Configuration
+
+**Location**: `LoanResult/config/special-partners.ts`
+
+```typescript
+export const SPECIAL_PARTNER_CONFIGS: Record<string, SpecialPartnerConfig> = {
+  CATHAYBANK: {
+    theme: "blue",
+    customMessageKey: "specialPartner.cathaybank.message",
+    hideDetails: false,
+    priority: 1,
+  },
+  // Add more partners as needed
+};
+```
+
+**Features**:
+- Custom theme colors
+- Special badge display
+- Custom CTA text
+- Priority-based ordering
+- Configurable detail hiding
+
+### 8. i18n Support
+
+**Translation Keys** (in `messages/[locale]/pages/loan-result.json`):
+- `title`: Page title
+- `subtitle`: Subtitle with product count
+- `loanType.personal`: Personal loan label
+- `loanType.creditCard`: Credit card label
+- `actions.register`: Register button
+- `actions.viewMore`: View more button
+- `success.title`: Success state title
+- `success.message`: Success message with partner name
+- `specialPartner.cathaybank.message`: Custom partner message
+
+### 9. Utilities
+
+**Location**: `LoanResult/utils/formatters.ts`
+
+Pure functions for data formatting:
+- `formatLoanPeriod(months)`: "6 tháng" | "1 năm 6 tháng"
+- `formatAmount(amount)`: "50 triệu" | "1.5 tỷ"
+- `formatCurrency(amount, currency)`: "50.000.000 VND"
+- `getPartnerLogoUrl(code)`: Logo path generation
+- `getLoanTypeKey(type)`: i18n key for loan type
+- `calculateEMI(principal, rate, months)`: Monthly payment estimation
 
 ---
 

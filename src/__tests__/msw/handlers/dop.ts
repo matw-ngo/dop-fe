@@ -20,6 +20,7 @@
 
 import { http } from "msw";
 import { mswStore } from "../../../mocks/store";
+import { mockMatchedProducts } from "../../../../mocks/data/matched-products";
 import { getProfileFromRequest } from "../profiles";
 
 const BASE_URL = "*";
@@ -42,6 +43,7 @@ const mswJson = (body: unknown, init?: ResponseInit): Response => {
 const createMockLeadResponse = (overrides?: Record<string, unknown>) => ({
   id: "330e8400-e29b-41d4-a716-446655440003",
   token: `lead-token-${Date.now()}`,
+  matched_products: mockMatchedProducts.slice(0, 6),
   ...overrides,
 });
 
