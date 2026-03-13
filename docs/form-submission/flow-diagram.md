@@ -180,16 +180,21 @@ flowchart TD
 
     %% ============================================================================
     %% LOAN SEARCHING SCREEN
-    %% NOTE: The submit-info API call is SYNCHRONOUS — the server runs distribution
-    %% and returns matched_products in the same response. There is NO polling needed.
+    %% NOTE: The submit-info API call is SYNCHRONOUS — the server:
+    %%   1. Receives lead info
+    %%   2. Fetches enrichment data from 3rd parties (telco score, KYC, etc.)
+    %%   3. Runs distribution engine to evaluate eligible products
+    %%   4. Returns matched_products + forward_result in the same response
+    %% There is NO polling needed from the frontend.
     %% The 3s animation is purely cosmetic (fake loading UX), not waiting for data.
     %% TODO: Replace the 3s hardcoded timeout with a proper transition after API resolves.
     %% ============================================================================
 
     ShowLoanSearching[Show LoanSearchingScreen<br/>Animation ~3s]
     ShowLoanSearching --> AnimationDone{Animation done +<br/>API response received?}
-    AnimationDone -->|Products returned| StoreProducts[Store matchedProducts<br/>in Zustand]
-    AnimationDone -->|No products + forward_result| StoreForwardResult[Store forwardResult<br/>in Zustand]
+
+    AnimationDone -->|matched_products returned<br/>allow_customer_choose = true| StoreProducts[Store matchedProducts<br/>in Zustand]
+    AnimationDone -->|forward_result set<br/>allow_customer_choose = false| StoreForwardResult[Store forwardResult<br/>auto-forwarded by backend]
     AnimationDone -->|No products + no result| ShowEmptyState
 
     StoreProducts --> NavToLoanResult[Navigate to /loan-result]
@@ -608,7 +613,22 @@ There is **no need for polling** from the frontend.
 
 The old-code (`POST /upl/submit-info`) was also a single synchronous call — no polling was used. The server runs the distribution engine inline and returns the result immediately. This pattern is preserved in the new API (`POST /leads/:id/submit-info`).
 
+**Server-side flow inside submit-info (from sequence diagram)**:
+1. Receive lead data
+2. Fetch enrichment from 3rd parties: telco score, KYC, bureau data, etc.
+3. Run distribution engine → evaluate eligible products
+4. Either: return `matched_products` list (allow_customer_choose mode) OR auto-forward + return `forward_result`
+
 **Current implementation note**: `use-loan-search-store.ts` uses a `setTimeout(3000)` purely for cosmetic UX (to show the searching animation for at least 3 seconds). This is NOT polling — the data is already in the store before the timer fires.
+
+## Two Forwarding Modes
+
+| Mode | Trigger | API Flow |
+|------|---------|----------|
+| **allow_customer_choose** | Backend returns `matched_products`, no `forward_result` | Frontend shows product list → user selects → calls `POST /leads/:id/forward` (**TODO: not yet implemented**) |
+| **not allow customer choose** (auto-forward) | Backend sets `forward_result` in submit-info response | Frontend shows `SuccessView` directly with `forwardResult` data |
+
+> **Note**: `ForwardResult.status` (`forwarded | rejected | exhausted`) covers both modes correctly. The only missing piece is the `POST /leads/:id/forward` endpoint for manual selection.
 
 > **TODO**: Consider implementing a minimum display time + "data ready" flag approach
 > instead of a flat 3s timeout, so the UI transitions as soon as both conditions are met.
