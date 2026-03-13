@@ -201,7 +201,7 @@ flowchart TD
     %% LOAN RESULT PAGE (/loan-result)
     %% ============================================================================
 
-    LoanResultPage[/loan-result page] --> CheckProductsInStore{matchedProducts<br/>in store?}
+    LoanResultPage["/loan-result page"] --> CheckProductsInStore{matchedProducts<br/>in store?}
     CheckProductsInStore -->|No — page refresh or direct access| RedirectHome[Redirect to /]
     CheckProductsInStore -->|Yes| CheckForwardStatusResult{forwardStatus<br/>in store?}
 
