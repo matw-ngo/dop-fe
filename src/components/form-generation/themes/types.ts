@@ -72,6 +72,24 @@ export interface FormTheme {
      * Border color for checkboxes/radios
      */
     radioBorder?: string;
+
+    /**
+     * Secondary background color (light variant of primary)
+     * Use for: inactive states, subtle backgrounds, hover states
+     */
+    backgroundSecondary?: string;
+
+    /**
+     * Accent color for highlights and badges
+     * Use for: badges, tags, notifications, special highlights
+     */
+    accent?: string;
+
+    /**
+     * Text color for content on accent backgrounds
+     * Use for: text on badges, tags with accent background
+     */
+    accentText?: string;
   };
 
   /**

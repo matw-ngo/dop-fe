@@ -9,34 +9,33 @@ export function HeroBanner() {
   return (
     <section
       className="relative w-full h-auto overflow-hidden"
-      style={{ backgroundColor: "#f0f7f4" }} // Specific to legacy feel
+      style={{ backgroundColor: "#f2f8f6" }} // $bg-300 from old code
     >
-      <div className="max-w-full mx-auto px-0">
-        <div className="relative w-full h-[220px] md:h-[450px]">
-          {/* Desktop Banner */}
-          <div className="hidden md:block absolute inset-0">
+      <div className="w-full mx-auto">
+        <div className="relative w-full">
+          {/* Desktop Banner - 408px height */}
+          <div className="hidden md:block relative w-full h-[408px]">
             <Image
               src="/images/banner.png"
               alt={`${tenant.name} Banner`}
               fill
-              className="object-contain object-right"
+              className="object-contain"
+              style={{ margin: "auto" }}
               priority
             />
           </div>
 
-          {/* Mobile Banner */}
-          <div className="block md:hidden absolute inset-0">
+          {/* Mobile Banner - 332px height */}
+          <div className="block md:hidden relative w-full h-[332px]">
             <Image
               src="/images/banner-mobile.png"
               alt={`${tenant.name} Banner Mobile`}
               fill
-              className="object-contain object-bottom"
+              className="object-contain"
+              style={{ margin: "auto" }}
               priority
             />
           </div>
-
-          {/* Desktop Slogan/Text overlay if needed could go here, 
-              but in legacy it was part of the image */}
         </div>
       </div>
     </section>

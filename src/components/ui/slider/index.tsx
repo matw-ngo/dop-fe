@@ -71,7 +71,7 @@ export default function CustomSlider({
 
   return (
     <RadixSlider.Root
-      className={`relative flex items-center select-none touch-none w-full h-7 z-10 ${className} ${disabled ? "opacity-50 pointer-events-none" : ""}`}
+      className={`relative flex items-center select-none touch-none w-full h-6 z-10 ${className} ${disabled ? "opacity-50 pointer-events-none" : ""}`}
       value={sliderValue}
       onValueChange={handleValueChange}
       onValueCommit={handleValueCommit}
@@ -81,11 +81,12 @@ export default function CustomSlider({
       step={step}
       disabled={disabled}
     >
-      <RadixSlider.Track className="bg-[var(--slider-track,#ffffff)] relative grow rounded-full h-[6px] border border-[var(--form-border,#e5e7eb)]">
+      {/* <RadixSlider.Track className="bg-[var(--slider-track,#ffffff)] relative grow rounded-full h-[8px] border border-[var(--form-border,#e5e7eb)]"> */}
+      <RadixSlider.Track className="bg-[var(--slider-track,#ffffff)] relative grow rounded-full h-[8px] border border-[var(--form-border,#e0e7eb)]">
         <RadixSlider.Range className="absolute bg-[var(--form-primary,var(--color-primary))] rounded-full h-full" />
       </RadixSlider.Track>
       <RadixSlider.Thumb
-        className="block w-[28px] h-[28px] bg-white rounded-[4px] shadow-sm border-[4px] border-white outline-none focus:outline-none focus-visible:outline-none focus:ring-2 focus-visible:ring-2 focus-visible:ring-offset-0 cursor-pointer"
+        className="block w-[28px] h-[28px] bg-white rounded-[100px] shadow-sm border-[3px] border-white outline-none focus:outline-none focus-visible:outline-none focus:ring-1 focus-visible:ring-1 focus-visible:ring-offset-0 cursor-pointer"
         style={thumbStyle}
       />
     </RadixSlider.Root>

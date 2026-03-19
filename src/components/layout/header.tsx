@@ -39,6 +39,7 @@ export function Header({ configOverride }: HeaderProps) {
   const getLocalizedPath = useLocalizedPath();
 
   const primaryColor = tenant.theme.colors.primary;
+  const textColor = "#073126"; // $text-600 from old code
 
   // Hide header on loan flow pages
   const hideHeader = ["/loan-info", "/tim-kiem-vay", "/ket-qua-vay"].some(
@@ -107,12 +108,15 @@ export function Header({ configOverride }: HeaderProps) {
     <header
       className="fixed top-0 left-0 right-0 z-30 bg-white transition-colors"
       style={{
-        boxShadow: "0 4px 40px 0 rgba(0, 71, 51, 0.05)",
+        boxShadow: "0 4px 40px 0 #0047330d",
         backgroundColor: isMobileMenuOpen ? primaryColor : "white",
       }}
     >
-      <nav className="max-w-full px-4 mx-auto">
-        <div className="flex items-center justify-center relative h-[60px] md:h-[72px]">
+      <nav
+        className="max-w-full mx-auto"
+        style={{ fontSize: "16px", fontWeight: 400, lineHeight: "24px" }}
+      >
+        <div className="flex items-center justify-center relative h-[60px] md:h-[72px] px-4 md:px-4 md:py-0 py-3">
           {/* Logo */}
           <Link href="/" className="absolute left-4 md:left-12">
             <Logo
@@ -136,7 +140,7 @@ export function Header({ configOverride }: HeaderProps) {
           </button>
 
           {/* Desktop Navigation */}
-          <ul className="hidden md:flex md:space-x-8">
+          <ul className="hidden md:flex lg:md:space-x-8 md:space-x-2">
             {navItems.map((item, index) => (
               <li key={index} className="relative group">
                 {item.children ? (
@@ -146,13 +150,25 @@ export function Header({ configOverride }: HeaderProps) {
                     className="relative"
                   >
                     <button
-                      className="px-3 py-6 font-medium text-sm transition-colors flex items-center gap-1 group/btn"
-                      style={{ color: primaryColor }}
+                      className="lg:px-3 md:px-2 font-medium text-base transition-colors flex items-center gap-1 group/btn"
+                      style={{
+                        color: textColor,
+                        paddingTop: "26px",
+                        paddingBottom: "26px",
+                        fontWeight: 500,
+                        lineHeight: "24px",
+                      }}
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.color = primaryColor)
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.color = textColor)
+                      }
                     >
                       {item.label}
                       <ChevronDown
                         className={cn(
-                          "w-3.5 h-3.5 transition-transform duration-200",
+                          "w-3.5 h-3.5 transition-transform duration-200 ml-1",
                           openDropdown === item.label ? "rotate-180" : "",
                         )}
                       />
@@ -164,16 +180,30 @@ export function Header({ configOverride }: HeaderProps) {
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, y: 10 }}
                           transition={{ duration: 0.2, ease: "easeOut" }}
-                          className="absolute top-full left-0 bg-white rounded-lg border shadow-xl z-50 w-52 overflow-hidden"
-                          style={{ borderColor: "rgba(0, 71, 51, 0.08)" }}
+                          className="absolute top-full left-0 bg-white border overflow-hidden z-50"
+                          style={{
+                            width: "210px",
+                            borderRadius: "4px",
+                            borderColor: "#3F435029",
+                            boxShadow: "0px 8px 24px 0px #0000001F",
+                          }}
                         >
-                          <ul className="py-2">
+                          <ul className="py-1">
                             {item.children.map((child, childIndex) => (
                               <li key={childIndex}>
                                 <Link
                                   href={child.href}
-                                  className="block px-4 py-3 text-sm hover:bg-gray-50 transition-colors"
-                                  style={{ color: primaryColor }}
+                                  className="block text-base transition-colors"
+                                  style={{
+                                    color: textColor,
+                                    padding: "12px 16px",
+                                  }}
+                                  onMouseEnter={(e) =>
+                                    (e.currentTarget.style.color = primaryColor)
+                                  }
+                                  onMouseLeave={(e) =>
+                                    (e.currentTarget.style.color = textColor)
+                                  }
                                 >
                                   {child.label}
                                 </Link>
@@ -188,8 +218,20 @@ export function Header({ configOverride }: HeaderProps) {
                   <Link
                     href={item.href!}
                     target={item.external ? "_blank" : undefined}
-                    className="px-3 py-6 font-medium text-sm transition-colors inline-block"
-                    style={{ color: primaryColor }}
+                    className="lg:px-3 md:px-2 font-medium text-base transition-colors inline-block"
+                    style={{
+                      color: textColor,
+                      paddingTop: "26px",
+                      paddingBottom: "26px",
+                      fontWeight: 500,
+                      lineHeight: "24px",
+                    }}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.color = primaryColor)
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.color = textColor)
+                    }
                   >
                     {item.label}
                   </Link>
@@ -206,13 +248,15 @@ export function Header({ configOverride }: HeaderProps) {
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
-              className="md:hidden bg-white px-5 pb-8 overflow-hidden"
+              className="md:hidden bg-white overflow-hidden"
+              style={{ padding: "0 20px" }}
             >
               <ul>
                 {navItems.map((item, index) => (
                   <li
                     key={index}
-                    className="border-t border-gray-100 first:border-0"
+                    className="border-t border-b"
+                    style={{ borderColor: "#E6E8EE" }}
                   >
                     {item.children ? (
                       <div>
@@ -222,10 +266,17 @@ export function Header({ configOverride }: HeaderProps) {
                               openDropdown === item.label ? null : item.label,
                             )
                           }
-                          className="flex items-center justify-between w-full py-5 font-medium"
-                          style={{ color: primaryColor }}
+                          className="flex items-center justify-between w-full font-medium"
+                          style={{
+                            color: textColor,
+                            padding: "16px 0",
+                            fontWeight: openDropdown === item.label ? 700 : 400,
+                          }}
                         >
-                          <span>{item.label}</span>
+                          <div className="flex items-center gap-6">
+                            <div style={{ width: "24px", height: "24px" }} />
+                            <span>{item.label}</span>
+                          </div>
                           <ChevronDown
                             className={cn(
                               "w-4 h-4 transition-transform duration-200",
@@ -239,17 +290,33 @@ export function Header({ configOverride }: HeaderProps) {
                               initial={{ opacity: 0, height: 0 }}
                               animate={{ opacity: 1, height: "auto" }}
                               exit={{ opacity: 0, height: 0 }}
-                              className="pl-4 pb-4 space-y-4 overflow-hidden"
+                              className="overflow-hidden"
+                              style={{ marginLeft: "48px" }}
                             >
                               {item.children.map((child, childIndex) => (
-                                <li key={childIndex}>
+                                <li
+                                  key={childIndex}
+                                  style={{
+                                    marginTop: "16px",
+                                    marginBottom:
+                                      childIndex === item.children!.length - 1
+                                        ? "16px"
+                                        : "0",
+                                  }}
+                                >
                                   <Link
                                     href={child.href}
-                                    className="text-sm block py-1"
+                                    className="text-base block transition-colors"
                                     style={{
-                                      color: primaryColor,
-                                      opacity: 0.8,
+                                      color: textColor,
                                     }}
+                                    onMouseEnter={(e) =>
+                                      (e.currentTarget.style.color =
+                                        primaryColor)
+                                    }
+                                    onMouseLeave={(e) =>
+                                      (e.currentTarget.style.color = textColor)
+                                    }
                                   >
                                     {child.label}
                                   </Link>
@@ -263,9 +330,19 @@ export function Header({ configOverride }: HeaderProps) {
                       <Link
                         href={item.href!}
                         target={item.external ? "_blank" : undefined}
-                        className="block py-5 font-medium"
-                        style={{ color: primaryColor }}
+                        className="flex items-center font-medium"
+                        style={{
+                          color: textColor,
+                          padding: "16px 0",
+                        }}
                       >
+                        <div
+                          style={{
+                            width: "24px",
+                            height: "24px",
+                            marginRight: "24px",
+                          }}
+                        />
                         {item.label}
                       </Link>
                     )}

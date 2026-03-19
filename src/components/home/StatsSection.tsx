@@ -40,7 +40,7 @@ export function StatsSection() {
 
   return (
     <section className="py-12 md:py-16 bg-[#fafafa]">
-      <div className="max-w-[1200px] mx-auto px-4">
+      <div className="max-w-[1170px] mx-auto px-4">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
           {stats.map((stat, index) => (
             <div

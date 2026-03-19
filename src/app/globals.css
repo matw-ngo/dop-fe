@@ -8,8 +8,9 @@
 
 @theme inline {
   /* Font definitions */
-  --font-sans: var(--font-geist-sans, ui-sans-serif, system-ui), "Lexend Deca";
+  --font-sans: var(--font-lexend-deca, "Lexend Deca", ui-sans-serif, system-ui);
   --font-mono: var(--font-geist-mono, ui-monospace);
+  --font-lexend-deca: var(--font-lexend-deca, "Lexend Deca", ui-sans-serif, system-ui);
 
   /* Tailwind color palette - static values */
   --color-primary-50: #eff6ff;

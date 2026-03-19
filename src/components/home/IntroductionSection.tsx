@@ -27,12 +27,23 @@ export function IntroductionSection() {
   ];
 
   return (
-    <section className="py-12 md:py-20 bg-white">
-      <div className="max-w-[1200px] mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8">
+    <section className="py-12 md:py-20 bg-[#fffdf7]">
+      <div className="max-w-[1170px] mx-auto px-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-12 justify-items-center">
           {sections.map((section, index) => (
-            <div key={index} className="flex flex-col items-center text-center">
-              <div className="relative w-full aspect-[1.4] mb-8">
+            <div key={index} className="flex flex-col w-full md:w-[336px]">
+              {/* Title */}
+              <h3 className="text-xl md:text-2xl font-bold leading-8 mb-6 md:mb-8 text-[#004733]">
+                {section.title}
+              </h3>
+
+              {/* Description */}
+              <p className="text-sm md:text-base font-normal leading-5 md:leading-6 mb-6 md:mb-8 text-[#266352] min-h-[60px] md:min-h-[96px]">
+                {section.description}
+              </p>
+
+              {/* Image */}
+              <div className="relative w-full h-[336px] flex items-center justify-center">
                 <Image
                   src={section.image}
                   alt={section.title}
@@ -40,15 +51,6 @@ export function IntroductionSection() {
                   className="object-contain"
                 />
               </div>
-              <h3
-                className="text-lg md:text-xl font-bold mb-4 leading-tight"
-                style={{ color: "#333" }}
-              >
-                {section.title}
-              </h3>
-              <p className="text-sm md:text-base text-gray-500 leading-relaxed max-w-[320px]">
-                {section.description}
-              </p>
             </div>
           ))}
         </div>

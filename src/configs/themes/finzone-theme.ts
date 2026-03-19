@@ -12,7 +12,7 @@ export const finzoneTheme: FormTheme = {
 
   colors: {
     primary: "#017848",
-    border: "#bfd1cc",
+    border: "#eef2f1ff",
     borderFocus: "#017848",
     background: "#ffffff",
     placeholder: "#A3A3A3",
@@ -22,6 +22,11 @@ export const finzoneTheme: FormTheme = {
     textPrimary: "#073126",
     textSecondary: "#4d7e70",
     radioBorder: "#999999",
+
+    // Extended color palette for UI components
+    backgroundSecondary: "#eff7f0", // Light green background for inactive states
+    accent: "#ffd566", // Yellow accent for badges, highlights
+    accentText: "#073126", // Dark text on accent backgrounds
   },
 
   borderRadius: {

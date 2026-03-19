@@ -1,7 +1,6 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { Card, CardContent } from "@/components/ui/card";
 import { useTenant } from "@/hooks/tenant/use-tenant";
 import { ApplyLoanForm } from "./ApplyLoanForm";
 import { BankSvg, FlashSvg, PercentageSvg, SearchMoneySvg } from "./icons";
@@ -30,55 +29,42 @@ export const DigitalLendingProduct = () => {
   ];
 
   return (
-    <div className="container mx-auto max-w-7xl px-4 md:px-6">
-      {/* Main Layout: 2 Columns on Desktop, 1 on Mobile */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start py-8">
-        {/* Left Column: Intro & Benefits */}
-        <div className="space-y-8 pt-4">
-          <h2 className="text-3xl md:text-4xl font-bold text-[#073126]">
-            {t("title")}
-          </h2>
+    <div className="flex justify-between flex-wrap-reverse gap-8 md:gap-[30px] min-h-[300px] mt-12">
+      {/* Left Column: Intro & Benefits */}
+      <div className="flex-1 min-w-full md:min-w-0 px-4 md:px-0 pb-4 md:pb-0">
+        <h2 className="text-2xl md:text-[44px] font-bold leading-tight md:leading-normal text-[#004733] mb-6 md:mb-10 text-center md:text-left">
+          {t("title")}
+        </h2>
 
-          <div className="space-y-8">
-            {benefits.map((item, index) => (
-              <div key={index} className="flex gap-6 items-start group">
-                <div className="flex-shrink-0 transition-transform duration-300 group-hover:scale-105">
-                  {/* Icon wrapper could be styled if needed, currently direct SVG */}
-                  <item.Icon color={primaryColor} />
-                </div>
-                <div className="space-y-2">
-                  <h3 className="text-xl font-semibold text-[#073126]">
-                    {item.title}
-                  </h3>
-                  <p className="text-gray-600 leading-relaxed text-base">
-                    {item.description}
-                  </p>
-                </div>
+        <div className="space-y-6 md:space-y-8">
+          {benefits.map((item, index) => (
+            <div key={index} className="flex gap-4 md:gap-[25px] items-start">
+              <div className="flex-shrink-0 w-8 h-8 md:w-12 md:h-12">
+                <item.Icon color={primaryColor} />
               </div>
-            ))}
-          </div>
+              <div className="flex-1">
+                <h3 className="text-[15px] md:text-base font-semibold leading-5 md:leading-6 text-[#073126] mb-1.5">
+                  {item.title}
+                </h3>
+                <p className="text-sm md:text-base font-normal leading-4 md:leading-6 text-[#266352]">
+                  {item.description}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Right Column: Loan Form */}
+      <div className="flex-1 min-w-full md:min-w-0">
+        {/* Mobile Header for Form */}
+        <div className="flex md:hidden items-center justify-center gap-3 text-[#017848] text-xl font-semibold leading-[30px] mb-6 px-4">
+          <SearchMoneySvg color={primaryColor} />
+          <span>{t("title")}</span>
         </div>
 
-        {/* Right Column: Loan Form */}
-        <div className="w-full">
-          {/* Mobile Header for Form (Visible only on mobile/small screens) */}
-          <div className="flex lg:hidden items-center gap-2 mb-4">
-            <SearchMoneySvg color={primaryColor} />
-            <span className="text-lg font-bold text-[#073126]">
-              {t("title")}
-            </span>
-          </div>
-
-          <Card className="shadow-2xl border-0 overflow-hidden ring-1 ring-black/5">
-            <CardContent className="p-8 bg-white">
-              {/* 
-                 ApplyLoanForm already uses the theme from context, 
-                 so we don't need to wrap it again if this component 
-                 is used inside a FormThemeProvider. 
-               */}
-              <ApplyLoanForm />
-            </CardContent>
-          </Card>
+        <div className="md:p-8 md:shadow-[0_4px_40px_0_rgba(0,71,51,0.05)] md:rounded-lg px-4 pb-4">
+          <ApplyLoanForm />
         </div>
       </div>
     </div>

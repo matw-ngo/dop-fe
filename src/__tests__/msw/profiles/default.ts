@@ -21,6 +21,7 @@ export const defaultProfile: TestProfile = {
     description: "Standard loan application flow",
     steps: [
       // Step 1: Loan request - amount, period, purpose + consent
+      // Phone number is handled separately via PhoneVerificationModal
       createLoanInfoStep(1, {
         page: "/index",
         have_phone_number: false,
@@ -28,12 +29,15 @@ export const defaultProfile: TestProfile = {
       }),
 
       // Step 2: Personal info (final step - triggers lead creation + searching)
+      // Only personal fields, no overlap with step 1
       createPersonalInfoStep(2, {
         page: "/personal-info",
         have_national_id: true,
         required_national_id: true,
         have_gender: true,
         required_gender: true,
+        have_location: true,
+        required_location: true,
       }),
     ],
   }),
