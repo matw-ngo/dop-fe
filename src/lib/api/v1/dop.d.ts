@@ -38,6 +38,23 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/leads/{id}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Get lead forward status */
+    get: operations["get-lead-status"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/leads/{id}/submit-info": {
     parameters: {
       query?: never;
@@ -117,6 +134,40 @@ export interface paths {
     put?: never;
     /** Submit kyc data to VNPT eKYC service */
     post: operations["submit-vnpt-ekyc-result"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/products": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** List products for a tenant */
+    get: operations["list-products"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/products/{id}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Get a product by ID */
+    get: operations["get-product"];
+    put?: never;
+    post?: never;
     delete?: never;
     options?: never;
     head?: never;
@@ -334,6 +385,25 @@ export interface components {
       token: string;
       /** @description Products matched by the distribution engine for this step. Empty when distribution is disabled for the step. */
       matched_products?: components["schemas"]["matched_product"][];
+    };
+    /**
+     * @description Current distribution/forward status of the lead
+     * @enum {string}
+     */
+    DistributionStatus:
+      | "pending"
+      | "evaluating"
+      | "distributed"
+      | "failed"
+      | "no_match";
+    LeadStatusResponse: {
+      distribution_status: components["schemas"]["DistributionStatus"];
+      /** @description Whether the lead has been forwarded to a partner */
+      is_forwarded: boolean;
+      /** @description Partner UUID if the lead was forwarded */
+      partner_id?: components["schemas"]["uuid"];
+      /** @description Partner name if the lead was forwarded */
+      partner_name?: string;
     };
     ForwardResult: {
       /** @enum {string} */
@@ -658,6 +728,25 @@ export interface components {
       data_hash_document?: components["schemas"]["VNPTHashDocument"];
       qr_code?: string;
     };
+    /** @description Product detail fetched from portal service. */
+    ProductDetail: {
+      product_id: components["schemas"]["uuid"];
+      name: string;
+      summary?: string;
+      description?: string;
+      product_type: string;
+      partner_id: components["schemas"]["uuid"];
+      partner_name?: string;
+      status: string;
+      tenant_id: components["schemas"]["uuid"];
+      thumbnail?: string;
+      images?: string[];
+    };
+    ListProductsResponse: {
+      products: components["schemas"]["ProductDetail"][];
+      /** Format: int32 */
+      total: number;
+    };
     Province: {
       /**
        * Format: uuid
@@ -840,6 +929,12 @@ export interface components {
     tenant: string;
     /** @description uuid id */
     id: string;
+    /** @description Tenant UUID */
+    tenant_id: string;
+    /** @description page size */
+    page_size: number;
+    /** @description page index */
+    page_index: number;
   };
   requestBodies: never;
   headers: never;
@@ -898,6 +993,34 @@ export interface operations {
       };
       401: components["responses"]["401"];
       403: components["responses"]["403"];
+      500: components["responses"]["500"];
+      503: components["responses"]["503"];
+    };
+  };
+  "get-lead-status": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description uuid id */
+        id: components["parameters"]["id"];
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description success */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["LeadStatusResponse"];
+        };
+      };
+      401: components["responses"]["401"];
+      403: components["responses"]["403"];
+      404: components["responses"]["404"];
       500: components["responses"]["500"];
       503: components["responses"]["503"];
     };
@@ -1033,6 +1156,68 @@ export interface operations {
       200: components["responses"]["200"];
       401: components["responses"]["401"];
       403: components["responses"]["403"];
+      500: components["responses"]["500"];
+      503: components["responses"]["503"];
+    };
+  };
+  "list-products": {
+    parameters: {
+      query: {
+        /** @description Tenant UUID */
+        tenant_id: components["parameters"]["tenant_id"];
+        /** @description page size */
+        page_size?: components["parameters"]["page_size"];
+        /** @description page index */
+        page_index?: components["parameters"]["page_index"];
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description success */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ListProductsResponse"];
+        };
+      };
+      401: components["responses"]["401"];
+      403: components["responses"]["403"];
+      500: components["responses"]["500"];
+      503: components["responses"]["503"];
+    };
+  };
+  "get-product": {
+    parameters: {
+      query: {
+        /** @description Tenant UUID */
+        tenant_id: components["parameters"]["tenant_id"];
+      };
+      header?: never;
+      path: {
+        /** @description uuid id */
+        id: components["parameters"]["id"];
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description success */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ProductDetail"];
+        };
+      };
+      401: components["responses"]["401"];
+      403: components["responses"]["403"];
+      404: components["responses"]["404"];
       500: components["responses"]["500"];
       503: components["responses"]["503"];
     };

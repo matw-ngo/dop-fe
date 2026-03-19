@@ -77,6 +77,33 @@ paths:
           $ref: "#/components/responses/500"
         "503":
           $ref: "#/components/responses/503"
+  /leads/{id}:
+    get:
+      tags:
+        - lead
+      operationId: get-lead-status
+      summary: Get lead forward status
+      security:
+        - cookie_auth: []
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        "200":
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LeadStatusResponse"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
   /leads/{id}/submit-info:
     post:
       tags:
@@ -218,6 +245,61 @@ paths:
           $ref: "#/components/responses/500"
         "503":
           $ref: "#/components/responses/503"
+  /products:
+    get:
+      tags:
+        - product
+      operationId: list-products
+      summary: List products for a tenant
+      security:
+        - cookie_auth: []
+      parameters:
+        - $ref: "#/components/parameters/tenant_id"
+        - $ref: "#/components/parameters/page_size"
+        - $ref: "#/components/parameters/page_index"
+      responses:
+        "200":
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListProductsResponse"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
+  /products/{id}:
+    get:
+      tags:
+        - product
+      operationId: get-product
+      summary: Get a product by ID
+      security:
+        - cookie_auth: []
+      parameters:
+        - $ref: "#/components/parameters/id"
+        - $ref: "#/components/parameters/tenant_id"
+      responses:
+        "200":
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductDetail"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
   /locations/provinces:
     get:
       summary: Get all provinces
@@ -302,6 +384,33 @@ components:
       schema:
         type: string
         format: uuid
+      allowEmptyValue: false
+    tenant_id:
+      description: Tenant UUID
+      name: tenant_id
+      in: query
+      required: true
+      schema:
+        type: string
+        format: uuid
+      allowEmptyValue: false
+    page_size:
+      description: page size
+      name: page_size
+      in: query
+      required: false
+      schema:
+        type: integer
+        format: int32
+      allowEmptyValue: false
+    page_index:
+      description: page index
+      name: page_index
+      in: query
+      required: false
+      schema:
+        type: integer
+        format: int32
       allowEmptyValue: false
   schemas:
     uuid:
@@ -694,6 +803,37 @@ components:
       required:
         - id
         - token
+    DistributionStatus:
+      type: string
+      description: Current distribution/forward status of the lead
+      enum:
+        - pending
+        - evaluating
+        - distributed
+        - failed
+        - no_match
+      x-go-type: types.DistributionStatus
+      x-go-type-import:
+        path: github.com/cicdata-io/smartdop/pkg/types
+    LeadStatusResponse:
+      type: object
+      properties:
+        distribution_status:
+          $ref: "#/components/schemas/DistributionStatus"
+        is_forwarded:
+          type: boolean
+          description: Whether the lead has been forwarded to a partner
+        partner_id:
+          $ref: "#/components/schemas/uuid"
+          description: Partner UUID if the lead was forwarded
+          x-omitempty: true
+        partner_name:
+          type: string
+          description: Partner name if the lead was forwarded
+          x-omitempty: true
+      required:
+        - distribution_status
+        - is_forwarded
     ForwardResult:
       type: object
       properties:
@@ -1456,6 +1596,54 @@ components:
           $ref: "#/components/schemas/VNPTHashDocument"
         qr_code:
           type: string
+    ProductDetail:
+      type: object
+      description: Product detail fetched from portal service.
+      properties:
+        product_id:
+          $ref: "#/components/schemas/uuid"
+        name:
+          type: string
+        summary:
+          type: string
+        description:
+          type: string
+        product_type:
+          type: string
+        partner_id:
+          $ref: "#/components/schemas/uuid"
+        partner_name:
+          type: string
+        status:
+          type: string
+        tenant_id:
+          $ref: "#/components/schemas/uuid"
+        thumbnail:
+          type: string
+        images:
+          type: array
+          items:
+            type: string
+      required:
+        - product_id
+        - name
+        - product_type
+        - partner_id
+        - status
+        - tenant_id
+    ListProductsResponse:
+      type: object
+      properties:
+        products:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProductDetail"
+        total:
+          type: integer
+          format: int32
+      required:
+        - products
+        - total
     Province:
       type: object
       properties:
