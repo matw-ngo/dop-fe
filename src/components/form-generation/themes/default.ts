@@ -1,7 +1,7 @@
 /**
- * Form Generation Library - Default Theme
+ * Default Theme
  *
- * Shadcn-inspired default theme for form components (Simplified)
+ * Fallback theme with sensible defaults
  */
 
 import type { FormTheme } from "./types";
@@ -10,85 +10,133 @@ export const defaultTheme: FormTheme = {
   name: "default",
 
   colors: {
-    primary: "hsl(var(--ring))",
-    border: "hsl(var(--border))",
-    borderFocus: "hsl(var(--ring))",
-    background: "hsl(var(--background))",
-    placeholder: "hsl(var(--muted-foreground))",
-    error: "hsl(var(--destructive))",
-    disabled: "hsl(var(--muted))",
-    readOnly: "hsl(var(--muted))",
-    textPrimary: "hsl(var(--foreground))",
-    textSecondary: "hsl(var(--muted-foreground))",
-    radioBorder: "hsl(var(--border))",
-  },
+    primary: "#3b82f6",
+    border: "#d1d5db",
+    borderFocus: "#3b82f6",
+    background: "#ffffff",
+    placeholder: "#9ca3af",
+    error: "#ef4444",
+    disabled: "#f3f4f6",
+    readOnly: "#f9fafb",
+    textPrimary: "#111827",
+    textSecondary: "#6b7280",
+    radioBorder: "#d1d5db",
 
-  borderRadius: {
-    control: "6px",
+    backgroundSecondary: "#f3f4f6",
+    accent: "#fbbf24",
+    accentText: "#111827",
+    surface: "#ffffff",
+    overlay: "rgba(0, 0, 0, 0.5)",
+    muted: "#f3f4f6",
+    hover: "#f9fafb",
+    headingText: "#111827",
+    containerBorder: "#e5e7eb",
+    interactiveBorder: "#d1d5db",
+    infoBackground: "#f3f4f6",
+    warning: "#fbbf24",
+    iconSubtle: "#9ca3af",
+    neutralBackground: "#f9fafb",
   },
 
   spacing: {
-    paddingHorizontal: "12px",
-    paddingVertical: "16px",
+    xxs: "2px",
+    xs: "4px",
+    sm: "8px",
+    md: "12px",
+    base: "16px",
+    lg: "20px",
+    xl: "24px",
+    "2xl": "32px",
+    "3xl": "40px",
+    "4xl": "48px",
+    paddingHorizontal: "16px",
+    paddingVertical: "20px",
   },
 
   typography: {
+    fontSizes: {
+      xs: "12px",
+      sm: "14px",
+      base: "16px",
+      lg: "18px",
+      xl: "20px",
+      "2xl": "24px",
+      "3xl": "32px",
+    },
+    fontWeights: {
+      normal: 400,
+      medium: 500,
+      semibold: 600,
+      bold: 700,
+    },
+    lineHeights: {
+      tight: "16px",
+      snug: "20px",
+      normal: "24px",
+      relaxed: "28px",
+      loose: "32px",
+      xl: "40px",
+    },
     fontSize: "14px",
-    labelFontSize: "14px",
+    labelFontSize: "12px",
     labelFontWeight: "500",
   },
 
+  borderRadius: {
+    sm: "4px",
+    md: "8px",
+    lg: "12px",
+    xl: "16px",
+    control: "8px",
+  },
+
   sizes: {
-    sm: "36px",
-    md: "40px",
-    lg: "48px",
+    sm: "48px",
+    md: "60px",
+    lg: "64px",
   },
 
   focusRing: {
     width: "2px",
-    color: "hsl(var(--ring))",
-    opacity: "0.2",
+    color: "#3b82f6",
+    opacity: "20",
   },
 
   fieldOptions: {
     internalLabel: false,
   },
 
-  // Backward compatibility properties
   label: {
-    base: "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
-    required: 'after:content-["*"] after:ml-0.5 after:text-destructive',
-    disabled: "opacity-70 cursor-not-allowed",
+    base: "block text-sm font-medium text-gray-700 mb-1",
+    required: "text-red-500",
+    disabled: "text-gray-400",
   },
 
   error: {
-    base: "flex items-center gap-2 text-sm font-medium text-destructive mt-1.5",
-    icon: "h-4 w-4 shrink-0",
+    base: "flex items-start gap-1 text-xs text-red-500 mt-1 min-h-[16px]",
+    icon: "w-3 h-3 mt-0.5 flex-shrink-0",
   },
 
   help: {
-    base: "text-sm text-muted-foreground mt-1.5",
+    base: "text-sm text-gray-500 mt-1",
   },
 
-  // Optional specialized styling
   components: {
     file: {
-      borderDashed: "hsl(var(--border))",
-      backgroundDashed: "hsl(var(--background))",
-      hoverBackground: "hsl(var(--muted))",
-      hoverBorder: "hsl(var(--ring))",
+      borderDashed: "#d1d5db",
+      backgroundDashed: "#ffffff",
+      hoverBackground: "#f9fafb",
+      hoverBorder: "#3b82f6",
     },
-
     ekyc: {
-      success: "hsl(var(--ring))",
-      processing: "hsl(var(--ring))",
-      retryButton: "hsl(var(--ring))",
+      success: "#10b981",
+      processing: "#3b82f6",
+      retryButton: "#3b82f6",
     },
-
     checkable: {
-      checkedColor: "hsl(var(--ring))",
-      uncheckedBorder: "hsl(var(--border))",
-      focusRing: "hsl(var(--ring))",
+      checkedColor: "#3b82f6",
+      uncheckedBorder: "#d1d5db",
+      focusRing: "#3b82f6",
     },
   },
 };

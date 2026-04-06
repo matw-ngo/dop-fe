@@ -61,27 +61,7 @@ export const SelectGroup = React.forwardRef<
   } as React.CSSProperties;
 
   return (
-    <div className={cn("space-y-2", props.className)}>
-      {/* Label Group */}
-      {(props.label || props.helpComponent) && (
-        <div className="flex items-center justify-between">
-          {props.label && (
-            <label
-              className="block text-xs font-normal leading-4"
-              style={{ color: labelColor }}
-            >
-              {props.label}
-              {props.error && (
-                <span style={{ color: errorColor }} className="ml-1">
-                  ({props.error})
-                </span>
-              )}
-            </label>
-          )}
-          {props.helpComponent && <div>{props.helpComponent}</div>}
-        </div>
-      )}
-
+    <div className={cn(props.className)}>
       {/* Select Component */}
       <SelectPrimitive.Root
         value={currentValue}
@@ -91,22 +71,57 @@ export const SelectGroup = React.forwardRef<
         <SelectPrimitive.Trigger
           ref={ref}
           className={cn(
-            "w-full flex items-center justify-between gap-2 px-4 py-2.5 border rounded-lg",
-            "text-sm font-normal",
+            "w-full flex flex-col justify-between border transition-colors",
             "focus:outline-none focus:ring-2",
-            "transition-colors",
             "data-[placeholder]:text-[var(--select-item-placeholder)]",
             "data-[placeholder]:opacity-100",
             props.disabled && "opacity-50 cursor-not-allowed",
           )}
-          style={triggerStyles}
+          style={{
+            ...triggerStyles,
+            height: contextTheme.sizes.md,
+            padding: `${contextTheme.spacing.sm} ${contextTheme.spacing.base}`,
+            borderRadius: contextTheme.borderRadius.md,
+          }}
         >
-          <SelectPrimitive.Value
-            placeholder={props.placeholder || "Vui lòng chọn"}
-          />
-          <SelectPrimitive.Icon asChild>
-            <ChevronDown className="w-4 h-4" style={{ color: primaryColor }} />
-          </SelectPrimitive.Icon>
+          {/* Label Group */}
+          {(props.label || props.helpComponent) && (
+            <div className="flex items-center justify-between w-full">
+              {props.label && (
+                <label
+                  className="block"
+                  style={{
+                    fontSize: contextTheme.typography.fontSizes.xs,
+                    fontWeight: contextTheme.typography.fontWeights.normal,
+                    lineHeight: contextTheme.typography.lineHeights.tight,
+                    color: labelColor,
+                    marginBottom: 0,
+                  }}
+                >
+                  {props.label}
+                  {props.error && (
+                    <span style={{ color: errorColor }} className="ml-1">
+                      ({props.error})
+                    </span>
+                  )}
+                </label>
+              )}
+              {props.helpComponent && <div>{props.helpComponent}</div>}
+            </div>
+          )}
+
+          {/* Value and Icon */}
+          <div className="flex items-center justify-between w-full">
+            <SelectPrimitive.Value
+              placeholder={props.placeholder || "Vui lòng chọn"}
+            />
+            <SelectPrimitive.Icon asChild>
+              <ChevronDown
+                className="w-4 h-4"
+                style={{ color: primaryColor }}
+              />
+            </SelectPrimitive.Icon>
+          </div>
         </SelectPrimitive.Trigger>
 
         <SelectPrimitive.Portal>

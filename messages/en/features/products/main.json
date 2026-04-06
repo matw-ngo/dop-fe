@@ -1,0 +1,148 @@
+{
+  "title": "Financial Products",
+  "description": "Discover financial products that suit your needs. We provide detailed information about credit cards, insurance, and loans.",
+  "author": "Fin Zone",
+  "lastUpdated": "Updated: {date}",
+  "loading": "Loading...",
+  "listTitle": "Product List",
+  "noResults": "Sorry, no products match your selections. Please",
+  "partner": "Partner",
+  
+  "categories": {
+    "all": "All Products",
+    "creditCard": "Credit Cards",
+    "insurance": "Insurance",
+    "loan": "Loans"
+  },
+  
+  "filters": {
+    "province": "Region",
+    "sortBy": "Sort by",
+    "allProvinces": "All Regions",
+    "reset": "Clear filters",
+    "resetLink": "reset filters",
+    "age": "Age",
+    "agePlaceholder": "Enter number",
+    "ageTitle": "Age from {min} to {max}",
+    "income": "Monthly Income",
+    "incomePlaceholder": "Enter number",
+    "incomeTitle": "Income from {min} to {max} (million VND)",
+    "incomeSuffix": "million VND",
+    "creditLimit": "Desired Credit Limit",
+    "creditLimitPlaceholder": "Enter number",
+    "creditLimitTitle": "Credit limit from {min} to {max} (million VND)",
+    "creditLimitSuffix": "million VND",
+    "sort": {
+      "default": "Default",
+      "nameAsc": "Name A-Z",
+      "nameDesc": "Name Z-A"
+    }
+  },
+  
+  "tabs": {
+    "benefits": "Benefits",
+    "fees": "Fees & Interest",
+    "conditions": "Requirements",
+    "updating": "Updating"
+  },
+  
+  "actions": {
+    "applyNow": "Apply Now",
+    "viewDetail": "View Details",
+    "compare": "Compare"
+  },
+  
+  "guide": {
+    "title": "How to Choose the Right Financial Product",
+    "step1": {
+      "title": "1. Identify Your Financial Needs",
+      "content": "Before choosing a product, clearly define your purpose: daily spending, travel, shopping, asset protection, or borrowing."
+    },
+    "step2": {
+      "title": "2. Review Requirements and Conditions",
+      "content": "Carefully check the requirements for age, income, and necessary documents to ensure you qualify."
+    },
+    "step3": {
+      "title": "3. Compare Interest Rates and Fees",
+      "content": "Carefully consider fees, interest rates, and benefits to choose a product with costs that match your financial capacity."
+    },
+    "expand": "Show more",
+    "collapse": "Show less"
+  },
+  
+  "tutorial": {
+    "title": "Tutorials",
+    "comingSoon": "Tutorial content is being updated"
+  },
+  
+  "comparing": {
+    "title": "Compare Products",
+    "reset": "Reset",
+    "compare": "Compare ({count})",
+    "max": "You can only compare up to 3 products",
+    "removeTooltip": "Remove {name} from comparison list",
+    "addTooltip": "Add product to compare",
+    "closeTooltip": "Clear comparison list and hide",
+    "searchModal": {
+      "title": "Search Products",
+      "placeholder": "Search by product name...",
+      "suggestedTitle": "Suggested Products",
+      "searchResultsTitle": "Search Results",
+      "add": "Add",
+      "addTooltip": "Add to compare",
+      "complete": "Complete",
+      "closeTooltip": "Close",
+      "comingSoon": "Search feature is under development",
+      "close": "Close"
+    }
+  },
+  
+  "detail": {
+    "loading": "Loading...",
+    "notFound": "Product not found",
+    "backToList": "Back to list",
+    "partner": "Partner",
+    "compare": "Compare",
+    "applyNow": "Apply Now",
+    "lastUpdated": "Updated: {date}",
+    "breadcrumb": {
+      "home": "Home",
+      "products": "Products"
+    }
+  },
+  
+  "compare": {
+    "title": "Compare Products",
+    "loading": "Loading...",
+    "error": "An error occurred while loading data",
+    "noProducts": "No products to compare",
+    "backToList": "Back to list",
+    "remove": "Remove",
+    "applyNow": "Apply Now",
+    "addProducts": "Add products to compare",
+    "suggestedProducts": "Suggested Products",
+    "addTooltip": "Add product to compare",
+    "removeTooltip": "Remove product from comparison list",
+    "expandTooltip": "Expand",
+    "collapseTooltip": "Collapse",
+    "breadcrumb": {
+      "home": "Home",
+      "products": "Products"
+    },
+    "rows": {
+      "summary": "Summary",
+      "productType": "Product Type",
+      "partner": "Partner",
+      "status": "Status"
+    },
+    "types": {
+      "creditCard": "Credit Card",
+      "insurance": "Insurance",
+      "loan": "Loan"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive"
+    }
+  }
+}

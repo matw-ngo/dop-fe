@@ -423,7 +423,8 @@ export function DynamicForm({
           type="submit"
           disabled={isSubmitting || submitButton.disabled || disabled}
           className={cn(
-            "h-14 px-6 text-white font-semibold rounded-lg transition-colors",
+            // "h-14 px-6 text-white font-semibold rounded-lg transition-colors",
+            "px-6 text-white font-semibold rounded-lg transition-colors",
             "disabled:opacity-50 disabled:cursor-not-allowed",
             submitButton.className,
           )}

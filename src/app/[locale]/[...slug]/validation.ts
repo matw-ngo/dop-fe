@@ -101,7 +101,25 @@ export function checkAuthGuard(authStore: AuthState): {
 }
 
 /**
+ * Check if a page belongs to the loan application flow
+ * This helps distinguish between form routes and regular site routes
+ *
+ * @param page - The page identifier to check
+ * @param flowData - The flow configuration data
+ * @returns true if page is part of the flow, false otherwise
+ */
+export function isFlowPage(page: string, flowData: MappedFlow): boolean {
+  const normalizedPage = normalizePageIdentifier(page);
+  return flowData.steps.some(
+    (step) => normalizePageIdentifier(step.page) === normalizedPage,
+  );
+}
+
+/**
  * Validate step exists and user has completed prerequisites
+ *
+ * IMPORTANT: This should only be called for pages that belong to the flow.
+ * Use isFlowPage() first to check before calling this function.
  *
  * Checks:
  * 1. Step exists in flow configuration
@@ -117,10 +135,12 @@ export function checkAuthGuard(authStore: AuthState): {
  * @returns Validation result with translation key
  *
  * @example
- * const result = validateStep("/consent", flowData, wizardStore);
- * if (!result.isValid) {
- *   router.push(result.redirectTo);
- *   toast.error(t(result.messageKey));
+ * if (isFlowPage("/consent", flowData)) {
+ *   const result = validateStep("/consent", flowData, wizardStore);
+ *   if (!result.isValid) {
+ *     router.push(result.redirectTo);
+ *     toast.error(t(result.messageKey));
+ *   }
  * }
  */
 export function validateStep(
@@ -140,7 +160,10 @@ export function validateStep(
   );
 
   if (stepIndex === -1) {
-    console.warn(`[Step Validator] Step not found for page: ${page}`);
+    // This should not happen if isFlowPage() was called first
+    console.warn(
+      `[Step Validator] Step not found for page: ${page}. This indicates a logic error.`,
+    );
     return {
       isValid: false,
       redirectTo: "/",

@@ -82,7 +82,7 @@ export default function CustomSlider({
       disabled={disabled}
     >
       {/* <RadixSlider.Track className="bg-[var(--slider-track,#ffffff)] relative grow rounded-full h-[8px] border border-[var(--form-border,#e5e7eb)]"> */}
-      <RadixSlider.Track className="bg-[var(--slider-track,#ffffff)] relative grow rounded-full h-[8px] border border-[var(--form-border,#e0e7eb)]">
+      <RadixSlider.Track className="bg-[var(--slider-track,#ffffff)] relative grow rounded-full h-[8px] border-transparent mb-1">
         <RadixSlider.Range className="absolute bg-[var(--form-primary,var(--color-primary))] rounded-full h-full" />
       </RadixSlider.Track>
       <RadixSlider.Thumb

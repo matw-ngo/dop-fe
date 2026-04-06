@@ -3,6 +3,7 @@ import {
   mockMatchedProducts,
   mockForwardResults,
 } from "./data/matched-products";
+import { productsHandlers } from "../src/mocks/handlers/products";
 
 // Mock API handlers
 export const handlers = [
@@ -219,4 +220,9 @@ export const handlers = [
       updated_at: new Date().toISOString(),
     });
   }),
+
+  // ============================================
+  // Products API Mocks
+  // ============================================
+  ...productsHandlers,
 ];

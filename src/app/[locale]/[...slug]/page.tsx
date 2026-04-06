@@ -5,6 +5,9 @@ import { useEffect, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 import { TenantThemeProvider } from "@/components/layout/TenantThemeProvider";
+import { Header } from "@/components/layout/header";
+import { Footer } from "@/components/layout/footer";
+import { IntroductionSection } from "@/components/home/IntroductionSection";
 import { DynamicLoanForm } from "@/components/loan-application/DynamicLoanForm";
 import { useFlow } from "@/hooks/flow/use-flow";
 import { useTenant } from "@/hooks/tenant/use-tenant";
@@ -22,6 +25,7 @@ import {
   checkAuthGuard,
   checkNavigationSecurity,
   handleRedirectLoop,
+  isFlowPage,
   validateStep,
 } from "./validation";
 import type { ValidationResult } from "./types";
@@ -80,6 +84,21 @@ export default function DynamicStepPage() {
   useEffect(() => {
     if (!flowData || isLoading || !page) return;
 
+    // Check if this page belongs to the loan application flow
+    // If not, skip all validation and allow direct access (e.g., /products, /credit-cards)
+    const isFlow = isFlowPage(page, flowData);
+
+    if (!isFlow) {
+      // Not a flow page - allow access without validation
+      console.log(
+        "[DynamicStepPage] Non-flow page accessed, skipping validation:",
+        page,
+      );
+      setValidationResult({ isValid: true });
+      return;
+    }
+
+    // Flow page validation pipeline
     // 1. Check redirect loop
     const loopCheck = handleRedirectLoop(page);
     if (loopCheck.shouldBreak) {
@@ -279,23 +298,30 @@ export default function DynamicStepPage() {
   return (
     <TenantThemeProvider>
       <div
-        className="min-h-screen p-8"
+        className="min-h-screen"
         style={{ backgroundColor: tenant.theme.colors.readOnly }}
       >
-        <div className="max-w-3xl mx-auto space-y-8">
-          {/* TODO: fix in future - replace hardcoded title with dynamic step title from flow config */}
-          {!isLoanSearching && (
-            <div className="space-y-2">
-              <h1
-                className="text-4xl font-bold"
-                style={{ color: tenant.theme.colors.textPrimary }}
-              >
-                Thông tin vay
-              </h1>
+        <Header />
+        <main className="pt-[72px]">
+          <div className="p-8">
+            <div className="max-w-3xl mx-auto space-y-8">
+              {/* TODO: fix in future - replace hardcoded title with dynamic step title from flow config */}
+              {!isLoanSearching && (
+                <div className="space-y-2">
+                  <h1
+                    className="text-4xl font-bold"
+                    style={{ color: tenant.theme.colors.textPrimary }}
+                  >
+                    Thông tin vay
+                  </h1>
+                </div>
+              )}
+              {renderContent()}
             </div>
-          )}
-          {renderContent()}
-        </div>
+          </div>
+        </main>
+        <IntroductionSection />
+        <Footer />
       </div>
     </TenantThemeProvider>
   );

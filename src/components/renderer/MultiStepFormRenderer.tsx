@@ -264,7 +264,9 @@ export const MultiStepFormRenderer: React.FC<MultiStepFormRendererProps> = ({
           type="submit"
           variant="default"
           disabled={state.isSubmitting}
-          className="h-14 px-6 text-white font-semibold rounded-lg"
+          // className="h-14 px-6 text-white font-semibold rounded-lg"
+          // TODO: Remove h-14 when we have a better button component
+          className="px-6 text-white font-semibold rounded-lg"
           style={{
             backgroundColor: theme.colors.primary,
           }}

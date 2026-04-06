@@ -39,9 +39,25 @@ export function MSWProvider({ children }: MSWProviderProps) {
           const { default: dopHandlers } = await import(
             "../../__tests__/msw/handlers/dop"
           );
+          const { default: productsHandlers } = await import(
+            "../../__tests__/msw/handlers/products"
+          );
+
+          console.log("📦 Loading MSW handlers:", {
+            consent: consentHandlers?.length || 0,
+            dop: dopHandlers?.length || 0,
+            products: productsHandlers?.length || 0,
+          });
 
           // Create worker with all handlers
-          const worker = setupWorker(...consentHandlers, ...dopHandlers);
+          const allHandlers = [
+            ...consentHandlers,
+            ...dopHandlers,
+            ...productsHandlers,
+          ];
+          const worker = setupWorker(...allHandlers);
+
+          console.log(`✅ MSW loaded with ${allHandlers.length} handlers`);
 
           if (mswStore.isMswEnabled()) {
             // Start MSW with Next.js compatible configuration

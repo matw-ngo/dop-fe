@@ -303,7 +303,8 @@ export function WizardNavigation({
                   isSubmitting || submitButton.className?.includes("disabled")
                 }
                 className={cn(
-                  "h-14 px-6 text-white font-semibold rounded-lg",
+                  // "h-14 px-6 text-white font-semibold rounded-lg",
+                  "px-6 text-white font-semibold rounded-lg",
                   getButtonClass(
                     submitButton.variant || "default",
                     submitButton.className,
@@ -328,7 +329,8 @@ export function WizardNavigation({
                 variant={nextButton.variant || "default"}
                 onClick={handleNext}
                 className={cn(
-                  "h-14 px-6 text-white font-semibold rounded-lg",
+                  // "h-14 px-6 text-white font-semibold rounded-lg",
+                  "px-6 text-white font-semibold rounded-lg",
                   getButtonClass(
                     nextButton.variant || "default",
                     nextButton.className,
