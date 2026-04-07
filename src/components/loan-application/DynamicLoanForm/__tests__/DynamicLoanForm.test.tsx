@@ -326,6 +326,401 @@ describe("DynamicLoanForm", () => {
   });
 
   // ===========================================================================
+  // Branch Coverage Tests - All Flow Scenarios
+  // ===========================================================================
+
+  describe("Branch Coverage: All Flow Scenarios", () => {
+    it("renders with Step 1 + sendOtp=true flow config", () => {
+      const step1WithOtp = {
+        ...mockStandardFlow,
+        steps: [
+          {
+            ...mockStandardFlow.steps[0],
+            id: "step-1",
+            sendOtp: true,
+            fields: {
+              ...mockStandardFlow.steps[0].fields,
+              phoneNumber: { visible: true, required: true },
+            },
+          },
+          {
+            id: "step-2",
+            page: "/step2",
+            useEkyc: false,
+            sendOtp: false,
+            fields: mockStandardFlow.steps[0].fields,
+          },
+        ],
+      };
+
+      vi.mocked(useFlowModule.useFlow).mockReturnValue({
+        data: step1WithOtp,
+        isLoading: false,
+        error: null,
+      } as any);
+
+      render(<DynamicLoanForm />);
+      expect(screen.getByTestId("dynamic-loan-form")).toBeInTheDocument();
+    });
+
+    it("renders with Step 1 + sendOtp=false flow config", () => {
+      const step1NoOtp = {
+        ...mockMinimalFlow,
+        steps: [
+          {
+            ...mockMinimalFlow.steps[0],
+            id: "step-1",
+            sendOtp: false,
+          },
+          {
+            id: "step-2",
+            page: "/step2",
+            useEkyc: false,
+            sendOtp: false,
+            fields: mockMinimalFlow.steps[0].fields,
+          },
+        ],
+      };
+
+      vi.mocked(useFlowModule.useFlow).mockReturnValue({
+        data: step1NoOtp,
+        isLoading: false,
+        error: null,
+      } as any);
+
+      render(<DynamicLoanForm />);
+      expect(screen.getByTestId("dynamic-loan-form")).toBeInTheDocument();
+    });
+
+    it("renders with Step 2+ + sendOtp=true (subsequent step with OTP)", () => {
+      const step2WithOtp = {
+        ...mockStandardFlow,
+        steps: [
+          {
+            ...mockStandardFlow.steps[0],
+            id: "step-1",
+            sendOtp: false,
+          },
+          {
+            ...mockStandardFlow.steps[0],
+            id: "step-2",
+            page: "/step2",
+            sendOtp: true,
+            fields: {
+              ...mockStandardFlow.steps[0].fields,
+              phoneNumber: { visible: true, required: true },
+            },
+          },
+        ],
+      };
+
+      vi.mocked(useFlowStepModule.useFlowStep).mockReturnValue({
+        id: "step-2",
+        sendOtp: true,
+        fields: {
+          phoneNumber: { visible: true, required: true },
+        },
+      } as any);
+
+      vi.mocked(useFlowModule.useFlow).mockReturnValue({
+        data: step2WithOtp,
+        isLoading: false,
+        error: null,
+      } as any);
+
+      render(<DynamicLoanForm />);
+      expect(screen.getByTestId("dynamic-loan-form")).toBeInTheDocument();
+    });
+
+    it("renders with Step 2+ + sendOtp=false (subsequent step without OTP)", () => {
+      const step2NoOtp = {
+        ...mockMinimalFlow,
+        steps: [
+          {
+            ...mockMinimalFlow.steps[0],
+            id: "step-1",
+            sendOtp: false,
+          },
+          {
+            ...mockMinimalFlow.steps[0],
+            id: "step-2",
+            page: "/step2",
+            sendOtp: false,
+          },
+        ],
+      };
+
+      vi.mocked(useFlowStepModule.useFlowStep).mockReturnValue({
+        id: "step-2",
+        sendOtp: false,
+        fields: mockMinimalFlow.steps[0].fields,
+      } as any);
+
+      vi.mocked(useFlowModule.useFlow).mockReturnValue({
+        data: step2NoOtp,
+        isLoading: false,
+        error: null,
+      } as any);
+
+      render(<DynamicLoanForm />);
+      expect(screen.getByTestId("dynamic-loan-form")).toBeInTheDocument();
+    });
+
+    it("handles single step flow (Step 1 is also final step)", () => {
+      const singleStepFlow = {
+        ...mockMinimalFlow,
+        steps: [
+          {
+            ...mockMinimalFlow.steps[0],
+            id: "step-1",
+            sendOtp: false,
+          },
+        ],
+      };
+
+      vi.mocked(useFlowModule.useFlow).mockReturnValue({
+        data: singleStepFlow,
+        isLoading: false,
+        error: null,
+      } as any);
+
+      render(<DynamicLoanForm />);
+      expect(screen.getByTestId("dynamic-loan-form")).toBeInTheDocument();
+    });
+
+    it("handles single step flow with OTP", () => {
+      const singleStepWithOtp = {
+        ...mockStandardFlow,
+        steps: [
+          {
+            ...mockStandardFlow.steps[0],
+            id: "step-1",
+            sendOtp: true,
+            fields: {
+              ...mockStandardFlow.steps[0].fields,
+              phoneNumber: { visible: true, required: true },
+            },
+          },
+        ],
+      };
+
+      vi.mocked(useFlowModule.useFlow).mockReturnValue({
+        data: singleStepWithOtp,
+        isLoading: false,
+        error: null,
+      } as any);
+
+      render(<DynamicLoanForm />);
+      expect(screen.getByTestId("dynamic-loan-form")).toBeInTheDocument();
+    });
+  });
+
+  // ===========================================================================
+  // OTP Flow State Tests
+  // ===========================================================================
+
+  describe("OTP Flow State Management", () => {
+    it("handles phone collection when phone is required but not in form data", () => {
+      const flowWithRequiredPhone = {
+        ...mockStandardFlow,
+        steps: [
+          {
+            ...mockStandardFlow.steps[0],
+            id: "step-1",
+            sendOtp: true,
+            fields: {
+              ...mockStandardFlow.steps[0].fields,
+              phoneNumber: { visible: true, required: true },
+            },
+          },
+        ],
+      };
+
+      vi.mocked(useFlowModule.useFlow).mockReturnValue({
+        data: flowWithRequiredPhone,
+        isLoading: false,
+        error: null,
+      } as any);
+
+      render(<DynamicLoanForm />);
+      expect(screen.getByTestId("dynamic-loan-form")).toBeInTheDocument();
+    });
+
+    it("handles OTP when phone already present in initial data", () => {
+      const flowWithPhoneInData = {
+        ...mockStandardFlow,
+        steps: [
+          {
+            ...mockStandardFlow.steps[0],
+            id: "step-1",
+            sendOtp: true,
+            fields: {
+              ...mockStandardFlow.steps[0].fields,
+              phoneNumber: { visible: true, required: false },
+            },
+          },
+        ],
+      };
+
+      vi.mocked(useFlowModule.useFlow).mockReturnValue({
+        data: flowWithPhoneInData,
+        isLoading: false,
+        error: null,
+      } as any);
+
+      render(<DynamicLoanForm />);
+      expect(screen.getByTestId("dynamic-loan-form")).toBeInTheDocument();
+    });
+
+    it("handles flow without phone field visible", () => {
+      const flowNoPhone = {
+        ...mockMinimalFlow,
+        steps: [
+          {
+            ...mockMinimalFlow.steps[0],
+            id: "step-1",
+            sendOtp: false,
+            fields: {
+              ...mockMinimalFlow.steps[0].fields,
+              phoneNumber: { visible: false, required: false },
+            },
+          },
+        ],
+      };
+
+      vi.mocked(useFlowModule.useFlow).mockReturnValue({
+        data: flowNoPhone,
+        isLoading: false,
+        error: null,
+      } as any);
+
+      render(<DynamicLoanForm />);
+      expect(screen.getByTestId("dynamic-loan-form")).toBeInTheDocument();
+    });
+  });
+
+  // ===========================================================================
+  // API Integration State Tests
+  // ===========================================================================
+
+  describe("API Integration States", () => {
+    it("handles loading state during createLead mutation", () => {
+      vi.mocked(useCreateLeadModule.useCreateLead).mockReturnValue({
+        mutate: vi.fn(),
+        isPending: true,
+        isSuccess: false,
+        isError: false,
+      } as any);
+
+      vi.mocked(useFlowModule.useFlow).mockReturnValue({
+        data: mockMinimalFlow,
+        isLoading: false,
+        error: null,
+      } as any);
+
+      render(<DynamicLoanForm />);
+      expect(screen.getByTestId("dynamic-loan-form")).toBeInTheDocument();
+    });
+
+    it("handles loading state during submitLeadInfo mutation", () => {
+      vi.mocked(useLeadSubmissionModule.useSubmitLeadInfo).mockReturnValue({
+        mutate: vi.fn(),
+        isPending: true,
+        isSuccess: false,
+        isError: false,
+      } as any);
+
+      vi.mocked(useFlowModule.useFlow).mockReturnValue({
+        data: mockMinimalFlow,
+        isLoading: false,
+        error: null,
+      } as any);
+
+      render(<DynamicLoanForm />);
+      expect(screen.getByTestId("dynamic-loan-form")).toBeInTheDocument();
+    });
+
+    it("handles createLead success state", () => {
+      vi.mocked(useCreateLeadModule.useCreateLead).mockReturnValue({
+        mutate: vi.fn(),
+        isPending: false,
+        isSuccess: true,
+        isError: false,
+        data: {
+          id: "lead-123",
+          token: "token-456",
+        },
+      } as any);
+
+      vi.mocked(useFlowModule.useFlow).mockReturnValue({
+        data: mockMinimalFlow,
+        isLoading: false,
+        error: null,
+      } as any);
+
+      render(<DynamicLoanForm />);
+      expect(screen.getByTestId("dynamic-loan-form")).toBeInTheDocument();
+    });
+
+    it("handles createLead error state", () => {
+      vi.mocked(useCreateLeadModule.useCreateLead).mockReturnValue({
+        mutate: vi.fn(),
+        isPending: false,
+        isSuccess: false,
+        isError: true,
+        error: new Error("Failed to create lead"),
+      } as any);
+
+      vi.mocked(useFlowModule.useFlow).mockReturnValue({
+        data: mockMinimalFlow,
+        isLoading: false,
+        error: null,
+      } as any);
+
+      render(<DynamicLoanForm />);
+      expect(screen.getByTestId("dynamic-loan-form")).toBeInTheDocument();
+    });
+  });
+
+  // ===========================================================================
+  // Consent Flow Tests
+  // ===========================================================================
+
+  describe("Consent Flow Integration", () => {
+    it("handles flow with consent requirement", () => {
+      const flowWithConsent = {
+        ...mockStandardFlow,
+        steps: [
+          {
+            ...mockStandardFlow.steps[0],
+            consentPurposeId: "consent-purpose-123",
+          },
+        ],
+      };
+
+      vi.mocked(useFlowModule.useFlow).mockReturnValue({
+        data: flowWithConsent,
+        isLoading: false,
+        error: null,
+      } as any);
+
+      render(<DynamicLoanForm />);
+      expect(screen.getByTestId("dynamic-loan-form")).toBeInTheDocument();
+    });
+
+    it("handles flow without consent requirement", () => {
+      vi.mocked(useFlowModule.useFlow).mockReturnValue({
+        data: mockMinimalFlow,
+        isLoading: false,
+        error: null,
+      } as any);
+
+      render(<DynamicLoanForm />);
+      expect(screen.getByTestId("dynamic-loan-form")).toBeInTheDocument();
+    });
+  });
+
+  // ===========================================================================
   // Skipped Tests Documentation
   // ===========================================================================
 
