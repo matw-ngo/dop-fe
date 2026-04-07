@@ -154,22 +154,8 @@ export const useLoanSearchStore = create<LoanSearchState>()(
         );
       }
 
-      // FIXME: Temporary 3s timeout to transition from searching to result
-      // TODO: Replace with polling mechanism to check distribution status from backend
-      // The backend should provide an endpoint to poll for distribution completion
-      // Example: GET /leads/{id}/distribution-status
-      // This will continuously poll until distribution is complete or timeout
-      setTimeout(() => {
-        const state = get();
-        if (state.isVisible && state.isLoading) {
-          console.log(
-            "[Loan Search Store] Auto-transitioning to result after 3s timeout",
-          );
-          set({
-            isLoading: false,
-          });
-        }
-      }, 3000);
+      // isLoading is now managed by the polling lifecycle:
+      // setForwardStatus() will set isLoading: false when terminal status arrives
     },
 
     hideLoanSearching: () => {

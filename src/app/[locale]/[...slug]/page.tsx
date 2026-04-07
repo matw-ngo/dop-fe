@@ -19,7 +19,7 @@ import {
   useMatchedProducts,
 } from "@/store/use-loan-search-store";
 import { useFormWizardStore } from "@/components/form-generation/store/use-form-wizard-store";
-import { LoanSearchingScreen } from "@/components/loan-application/LoanSearching";
+import { LoanSearchingScreenWithPolling } from "@/components/loan-application/LoanSearching";
 import { LoadingSkeleton } from "./LoadingSkeleton";
 import {
   checkAuthGuard,
@@ -217,6 +217,14 @@ export default function DynamicStepPage() {
     }
   }, [validationResult, router, authStore, wizardStore]);
 
+  // // Reset loan search store when entering form state (user starting new flow)
+  // useEffect(() => {
+  //   if (validationResult?.isValid && isLoanSearching) {
+  //     console.log("[DynamicStepPage] Resetting loan search store for new flow");
+  //     loanSearchStore.hideLoanSearching();
+  //   }
+  // }, [validationResult?.isValid, isLoanSearching, loanSearchStore]);
+
   // Return 404 for empty/invalid slugs (after all hooks)
   if (!page) {
     notFound();
@@ -236,7 +244,9 @@ export default function DynamicStepPage() {
             boxShadow: "0 10px 40px rgba(1, 120, 72, 0.08)",
           }}
         >
-          <LoanSearchingScreen message={loanSearchStore.config?.message} />
+          <LoanSearchingScreenWithPolling
+            message={loanSearchStore.config?.message}
+          />
         </div>
       );
     }
