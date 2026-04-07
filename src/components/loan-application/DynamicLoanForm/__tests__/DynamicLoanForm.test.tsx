@@ -30,18 +30,41 @@ vi.mock("sonner", () => ({
   },
 }));
 
+// Mock StepWizard to avoid heavy Radix/UI rendering in Node test environment
+// Keep other exports used by register-flow-components side effects.
+vi.mock("@/components/form-generation", async (importOriginal) => {
+  const React = await import("react");
+  const actual = await importOriginal<typeof import("@/components/form-generation")>();
+  return {
+    ...actual,
+    StepWizard: ({ onComplete }: { onComplete?: (data: any) => void }) =>
+      React.createElement("div", {
+        "data-testid": "step-wizard-mock",
+        onClick: () => onComplete?.({}),
+      }),
+  };
+});
+
 // Mock hooks
 vi.mock("@/hooks/flow/use-flow");
 vi.mock("@/hooks/tenant/use-tenant");
 vi.mock("@/hooks/config");
+vi.mock("@/hooks/form-options");
+vi.mock("@/hooks/config/use-loan-purposes");
+vi.mock("@/hooks/tenant/use-flow-step");
 vi.mock("@/hooks/features/lead/use-create-lead");
+vi.mock("@/hooks/features/lead/use-lead-submission");
 
 // Now import the component after mocking
 import { DynamicLoanForm } from "@/components/loan-application/DynamicLoanForm";
 import * as useCreateLeadModule from "@/hooks/features/lead/use-create-lead";
+import * as useLeadSubmissionModule from "@/hooks/features/lead/use-lead-submission";
 import * as useFlowModule from "@/hooks/flow/use-flow";
 import * as useConfigModule from "@/hooks/config";
+import * as useFormOptionsModule from "@/hooks/form-options";
+import * as useFlowStepModule from "@/hooks/tenant/use-flow-step";
 import * as useTenantModule from "@/hooks/tenant/use-tenant";
+import * as useLoanPurposesModule from "@/hooks/config/use-loan-purposes";
 
 // ============================================================================
 // Mock Data
@@ -163,11 +186,31 @@ describe("DynamicLoanForm", () => {
     // Default mock implementations
     vi.mocked(useTenantModule.useTenant).mockReturnValue(mockTenant);
 
-    vi.mocked(useLoanPurposesModule.useLoanPurposes).mockReturnValue(
-      mockLoanPurposes,
-    );
+    vi.mocked(useLoanPurposesModule.useLoanPurposes).mockReturnValue({
+      data: mockLoanPurposes,
+      error: null,
+      isError: false,
+      isPending: false,
+      isLoading: false,
+      isSuccess: true,
+    } as any);
+
+    vi.mocked(useFormOptionsModule.useFormOptions).mockReturnValue({
+      isLoading: false,
+      isError: false,
+      options: {},
+    } as any);
+
+    vi.mocked(useFlowStepModule.useFlowStep).mockReturnValue(null as any);
 
     vi.mocked(useCreateLeadModule.useCreateLead).mockReturnValue({
+      mutate: vi.fn(),
+      isPending: false,
+      isSuccess: false,
+      isError: false,
+    } as any);
+
+    vi.mocked(useLeadSubmissionModule.useSubmitLeadInfo).mockReturnValue({
       mutate: vi.fn(),
       isPending: false,
       isSuccess: false,
