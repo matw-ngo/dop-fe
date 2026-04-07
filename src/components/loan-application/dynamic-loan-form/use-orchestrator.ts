@@ -274,12 +274,76 @@ export function useDynamicLoanFormOrchestrator(input: {
       return;
     }
 
-    // sendOtp=false: keep existing behavior (navigate; final step triggers create/submit)
+    // sendOtp=false: Step 1 always creates lead first; Step 2+ submits if lead exists
     const currentStepIndex = input.flowData.steps.findIndex(
       (s) => s.id === input.indexStep?.id,
     );
     const nextStep = input.flowData.steps[currentStepIndex + 1];
 
+    // Step 1: Must createLead FIRST before navigating (to get token for subsequent steps)
+    if (input.isFirstStep) {
+      // Extract values before async callback to avoid TS narrowing issues
+      const { flowData, indexStep } = input;
+      if (!flowData || !indexStep) return;
+
+      const apiPayload = mapFormDataToLeadInfo(data, flowData.id, indexStep.id);
+
+      createLead(
+        {
+          flowId: flowData.id,
+          tenant: input.tenantId,
+          deviceInfo: {},
+          trackingParams: {},
+          info: apiPayload,
+          consent_id: input.getConsentId() || undefined,
+        },
+        {
+          onSuccess: (leadData) => {
+            setCreatedLeadId(leadData.id);
+            setCreatedLeadToken(leadData.token);
+
+            wizardStore.updateStepData(indexStep.id, {
+              leadId: leadData.id,
+              token: leadData.token,
+            });
+
+            input.onSubmitSuccess?.(data, {
+              flowId: flowData.id,
+              stepId: indexStep.id,
+            });
+
+            if (nextStep) {
+              wizardStore.markStepComplete(currentStepIndex);
+              wizardStore.setCurrentStep(currentStepIndex + 1);
+              router.push(nextStep.page);
+            } else {
+              // Step 1 is also final step (edge case)
+              if (
+                leadData.matched_products &&
+                leadData.matched_products.length > 0
+              ) {
+                loanSearchStore.setMatchedProducts(leadData.matched_products);
+              }
+
+              loanSearchStore.showLoanSearching({
+                leadId: leadData.id,
+                token: leadData.token,
+                redirectTo: "/",
+                message: t("messages.searchingLoan"),
+              });
+            }
+          },
+          onError: () => {
+            toast.error(t("errors.submissionFailed"));
+            // Note: Don't set loanSearchStore error here - we're still in Step 1
+            // loanSearchStore should only be used when actually searching for loans
+          },
+        },
+      );
+      return;
+    }
+
+    // Step 2+: Navigate if there's next step, or submit if final
     input.onSubmitSuccess?.(data, {
       flowId: input.flowData.id,
       stepId: input.indexStep.id,
@@ -379,7 +443,7 @@ export function useDynamicLoanFormOrchestrator(input: {
         },
         onError: () => {
           toast.error(t("errors.submissionFailed"));
-          loanSearchStore.setError(t("errors.submissionFailed"));
+          // Note: loanSearchStore error should be set by the component that initiated the search
         },
       },
     );
@@ -403,15 +467,19 @@ export function useDynamicLoanFormOrchestrator(input: {
 
     // Step 1: Must createLead FIRST to get token for OTP
     if (input.isFirstStep) {
+      // Extract values before async callback to avoid TS narrowing issues
+      const { flowData, indexStep } = input;
+      if (!flowData || !indexStep) return;
+
       const apiPayload = mapFormDataToLeadInfo(
         updatedData,
-        input.flowData.id,
-        input.indexStep.id,
+        flowData.id,
+        indexStep.id,
       );
 
       createLead(
         {
-          flowId: input.flowData.id,
+          flowId: flowData.id,
           tenant: input.tenantId,
           deviceInfo: {},
           trackingParams: {},
@@ -423,7 +491,7 @@ export function useDynamicLoanFormOrchestrator(input: {
             setCreatedLeadId(leadData.id);
             setCreatedLeadToken(leadData.token);
 
-            wizardStore.updateStepData(input.indexStep?.id, {
+            wizardStore.updateStepData(indexStep.id, {
               leadId: leadData.id,
               token: leadData.token,
             });
@@ -491,7 +559,9 @@ export function useDynamicLoanFormOrchestrator(input: {
           onError: () => {
             toast.error(t("errors.submissionFailed"));
             setPendingSubmitInfo(null);
-            dispatch({ type: "OTP_FAILURE" });
+            // Close OTP modal - OTP was verified, but submit-info failed
+            // User needs to retry the step from beginning
+            dispatch({ type: "CLOSE_OTP" });
           },
         },
       );

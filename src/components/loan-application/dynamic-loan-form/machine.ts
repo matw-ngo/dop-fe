@@ -53,8 +53,22 @@ export function dynamicLoanFormReducer(
       return { status: "submitting", afterOtpAction: state.afterOtpAction };
 
     case "OTP_SUCCESS":
+      return initialMachineState;
+
     case "OTP_FAILURE":
+      // Stay in awaiting_otp to allow retry (modal stays open)
+      if (state.status === "awaiting_otp" || state.status === "submitting") {
+        return { status: "awaiting_otp", afterOtpAction: state.afterOtpAction };
+      }
+      return state;
+
     case "OTP_EXPIRED":
+      // Stay in awaiting_otp to allow retry (modal stays open)
+      if (state.status === "awaiting_otp" || state.status === "submitting") {
+        return { status: "awaiting_otp", afterOtpAction: state.afterOtpAction };
+      }
+      return state;
+
     case "CLOSE_OTP":
       return initialMachineState;
 
