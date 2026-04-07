@@ -113,6 +113,15 @@
       "required": "Vui lòng chọn tình trạng tín dụng"
     }
   },
+  "phone_number": {
+    "label": "Số điện thoại",
+    "placeholder": "Nhập số điện thoại",
+    "help": "Vui lòng nhập số điện thoại chính chủ để nhận mã OTP",
+    "errors": {
+      "required": "Vui lòng nhập số điện thoại",
+      "pattern": "Số điện thoại không hợp lệ"
+    }
+  },
   "agreeStatus": {
     "label": "",
     "placeholder": "",

@@ -18,13 +18,17 @@ import { buildLoanFormConfigFromStep } from "@/lib/builders/loan-form-config-bui
 import "@/lib/builders/register-flow-components";
 import { useFormWizardStore } from "@/components/form-generation/store/use-form-wizard-store";
 import { getNavigationConfig } from "@/contexts/NavigationConfigContext";
+import { useSubmitLeadInfo } from "@/hooks/features/lead/use-lead-submission";
+import type { components } from "@/lib/api/v1/dop";
 import { ALLOWED_TELCOS, phoneValidation } from "@/lib/utils/phone-validation";
-import { mapFormDataToLeadInfo } from "@/mappers/leadMapper";
+import {
+  getLeadPurpose,
+  mapFormDataToCreateLeadInfo,
+  mapFormDataToLeadInfo,
+} from "@/mappers/leadMapper";
 import { useAuthStore } from "@/store/use-auth-store";
 import { useConsentStore } from "@/store/use-consent-store";
 import { useLoanSearchStore } from "@/store/use-loan-search-store";
-import { useSubmitLeadInfo } from "@/hooks/features/lead/use-lead-submission";
-import type { components } from "@/lib/api/v1/dop";
 
 // Type aliases from API schema
 type LeadId = components["schemas"]["uuid"];
@@ -72,6 +76,12 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
   const [createdLeadToken, setCreatedLeadToken] = React.useState<
     LeadToken | undefined
   >();
+
+  // Pending submit-info data for Step 2+ with OTP (API called AFTER OTP success)
+  const [pendingSubmitInfo, setPendingSubmitInfo] = React.useState<{
+    leadId: LeadId;
+    data: components["schemas"]["SubmitLeadInfoRequestBody"];
+  } | null>(null);
 
   const { mutate: createLead, isPending: isCreatingLead } = useCreateLead();
   const { mutate: submitLeadInfo, isPending: isSubmittingInfo } =
@@ -181,7 +191,10 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
     return true;
   };
 
-  const handlePhoneSubmit = (phoneValue: string) => {
+  const handlePhoneSubmit = (
+    phoneValue: string,
+    currentData?: Record<string, unknown>,
+  ) => {
     if (!validatePhoneNum(phoneValue)) {
       return;
     }
@@ -192,13 +205,65 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
       return;
     }
 
-    const updatedData = { ...formData, phone_number: phoneValue };
-    setFormData(updatedData); // Persist phone number for OtpVerificationModal
+    const dataToUse = currentData || formData;
+
+    // Step 1 (/index): Always create new lead, never check for existing leadId
+    const currentStepIndex = flowData.steps.findIndex(
+      (s) => s.id === indexStep.id,
+    );
+    const isFirstStep = currentStepIndex === 0;
+
+    if (!isFirstStep) {
+      // Subsequent steps: check for existing lead and use submit-info
+      const existingLeadId =
+        (dataToUse.leadId as LeadId | undefined) ?? createdLeadId;
+      const existingToken =
+        (dataToUse.token as LeadToken | undefined) ?? createdLeadToken;
+
+      if (existingLeadId && existingToken) {
+        console.log(
+          "[DynamicLoanForm] Lead exists, saving pending submit-info:",
+          existingLeadId,
+        );
+
+        const flowId = flowData.id;
+        const stepId = indexStep.id;
+        const apiPayload = mapFormDataToLeadInfo(dataToUse, flowId, stepId);
+
+        setPendingSubmitInfo({ leadId: existingLeadId, data: apiPayload });
+        setShowPhoneModal(false);
+        setShowOTPModal(true);
+        return;
+      }
+    }
+
+    // Create new lead (Step 1 or no existing lead found)
+    console.log(
+      isFirstStep
+        ? "[DynamicLoanForm] Step 1: Creating new lead"
+        : "[DynamicLoanForm] No existing lead, creating new lead",
+    );
+
+    const updatedData: Record<string, unknown> = {
+      ...dataToUse,
+      phone_number: phoneValue,
+    };
+    setFormData(updatedData);
 
     const flowId = flowData.id;
     const stepId = indexStep.id;
+    const purpose = getLeadPurpose(updatedData);
 
-    const apiPayload = mapFormDataToLeadInfo(updatedData, flowId, stepId);
+    if (!purpose) {
+      toast.error(t("errors.configurationError"));
+      return;
+    }
+    const apiPayload = mapFormDataToCreateLeadInfo(
+      updatedData,
+      flowId,
+      stepId,
+      phoneValue,
+    );
 
     createLead(
       {
@@ -214,6 +279,13 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
           console.log("Lead created:", data);
           setCreatedLeadId(data.id);
           setCreatedLeadToken(data.token);
+
+          // Persist lead info to wizard store for subsequent steps
+          wizardStore.updateStepData(indexStep.id, {
+            leadId: data.id,
+            token: data.token,
+          });
+
           setShowPhoneModal(false);
           setShowOTPModal(true);
         },
@@ -225,8 +297,95 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
     );
   };
 
+  // Extracted flow completion logic for reuse
+  const completeOtpSuccessFlow = (leadId?: LeadId, leadToken?: LeadToken) => {
+    if (flowData && indexStep) {
+      onSubmitSuccess?.(formData, {
+        flowId: flowData.id,
+        stepId: indexStep.id,
+      });
+
+      const currentStepIndex = flowData.steps.findIndex(
+        (s) => s.id === indexStep.id,
+      );
+      const nextStep = flowData.steps[currentStepIndex + 1];
+
+      if (nextStep) {
+        console.log(
+          "[DynamicLoanForm] OTP success - navigating to next step:",
+          {
+            currentPage: page,
+            nextPage: nextStep.page,
+            nextStepId: nextStep.id,
+            currentFormData: formData,
+            wizardStoreData: wizardStore.formData,
+          },
+        );
+
+        wizardStore.markStepComplete(currentStepIndex);
+        wizardStore.goToStep(currentStepIndex + 1);
+
+        setTimeout(() => {
+          router.push(nextStep.page);
+        }, 100);
+      } else if (leadId && leadToken) {
+        console.log(
+          "[DynamicLoanForm] OTP success at final step - showing loan searching screen",
+        );
+
+        loanSearchStore.showLoanSearching({
+          leadId,
+          token: leadToken,
+          redirectTo: `/loan-info?leadId=${leadId}&token=${leadToken}`,
+        });
+      }
+    } else {
+      onSubmitSuccess?.(formData);
+
+      if (leadId && leadToken) {
+        loanSearchStore.showLoanSearching({
+          leadId,
+          token: leadToken,
+          redirectTo: `/loan-info?leadId=${leadId}&token=${leadToken}`,
+        });
+      }
+    }
+  };
+
   const handleOtpSuccess = (otp: string) => {
     console.log("OTP verified successfully:", otp);
+
+    // Handle pending submit-info for Step 2+ with OTP (per diagram: API called AFTER OTP)
+    if (pendingSubmitInfo) {
+      console.log(
+        "[DynamicLoanForm] OTP success - calling pending submit-info API:",
+        pendingSubmitInfo.leadId,
+      );
+
+      submitLeadInfo(
+        { leadId: pendingSubmitInfo.leadId, data: pendingSubmitInfo.data },
+        {
+          onSuccess: (response) => {
+            console.log(
+              "[DynamicLoanForm] Lead info submitted successfully after OTP:",
+              response,
+            );
+            setPendingSubmitInfo(null);
+            // Continue to next step after successful submit-info
+            completeOtpSuccessFlow(pendingSubmitInfo.leadId);
+          },
+          onError: (error) => {
+            console.error(
+              "[DynamicLoanForm] Lead info submission failed after OTP:",
+              error,
+            );
+            toast.error(t("errors.submissionFailed"));
+            setPendingSubmitInfo(null);
+          },
+        },
+      );
+      return;
+    }
 
     // Create verification session after OTP success
     const otpStepIndex = useFormWizardStore.getState().otpStepIndex;
@@ -247,69 +406,11 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
     toast.info(t("messages.otpSuccess"));
     setShowOTPModal(false);
 
-    if (flowData && indexStep) {
-      onSubmitSuccess?.(formData, {
-        flowId: flowData.id,
-        stepId: indexStep.id,
-      });
-
-      // Check if there's a next step after OTP
-      const currentStepIndex = flowData.steps.findIndex(
-        (s) => s.id === indexStep.id,
-      );
-      const nextStep = flowData.steps[currentStepIndex + 1];
-
-      if (nextStep) {
-        // There's a next step - navigate to it
-        console.log(
-          "[DynamicLoanForm] OTP success - navigating to next step:",
-          {
-            currentPage: page,
-            nextPage: nextStep.page,
-            nextStepId: nextStep.id,
-            currentFormData: formData,
-            wizardStoreData: wizardStore.formData,
-          },
-        );
-
-        // CRITICAL: Mark current step as complete and update wizard store
-        // This ensures form data is persisted before navigation
-        wizardStore.markStepComplete(currentStepIndex);
-
-        // Update wizard store's current step to next step
-        // This prevents validation from thinking we're skipping steps
-        wizardStore.goToStep(currentStepIndex + 1);
-
-        // Small delay to ensure state is persisted before navigation
-        setTimeout(() => {
-          router.push(nextStep.page);
-        }, 100);
-      } else {
-        // This is the last step - show loan searching screen
-        console.log(
-          "[DynamicLoanForm] OTP success at final step - showing loan searching screen",
-        );
-
-        if (createdLeadId && createdLeadToken) {
-          // Integration Point 2: Show loan searching screen after OTP success at final step
-          loanSearchStore.showLoanSearching({
-            leadId: createdLeadId,
-            token: createdLeadToken,
-            redirectTo: `/loan-info?leadId=${createdLeadId}&token=${createdLeadToken}`,
-          });
-        }
-      }
+    // Continue with normal flow (Step 1 createLead or Step 2+ without pending submit-info)
+    if (createdLeadId && createdLeadToken) {
+      completeOtpSuccessFlow(createdLeadId, createdLeadToken);
     } else {
-      onSubmitSuccess?.(formData);
-
-      // Fallback: if no flow data, still try to show searching screen if we have lead info
-      if (createdLeadId && createdLeadToken) {
-        loanSearchStore.showLoanSearching({
-          leadId: createdLeadId,
-          token: createdLeadToken,
-          redirectTo: `/loan-info?leadId=${createdLeadId}&token=${createdLeadToken}`,
-        });
-      }
+      toast.error(t("errors.submissionFailed"));
     }
   };
 
@@ -347,11 +448,45 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
           setShowPhoneModal(true);
         }
       } else if (phoneInData) {
-        // Phone already collected in form - proceed directly to OTP
-        console.log(
-          "[DynamicLoanForm] Phone already collected, proceeding to create lead",
+        // Phone already collected in form - determine which API to call
+        const currentStepIndex = flowData.steps.findIndex(
+          (s) => s.id === indexStep.id,
         );
-        handlePhoneSubmit(phoneInData);
+        const isFirstStep = currentStepIndex === 0;
+
+        if (isFirstStep) {
+          // Step 1: Always create new lead
+          console.log("[DynamicLoanForm] Step 1 with phone - creating lead");
+          handlePhoneSubmit(phoneInData, data);
+        } else {
+          // Subsequent steps: check for existing lead
+          const existingLeadId =
+            (data.leadId as LeadId | undefined) ?? createdLeadId;
+          const existingToken =
+            (data.token as LeadToken | undefined) ?? createdLeadToken;
+
+          if (existingLeadId && existingToken) {
+            // Lead exists - save pending submit-info and show OTP first
+            // API will be called AFTER OTP success (per diagram: Phone Verify Layer)
+            console.log(
+              "[DynamicLoanForm] Step 2+ with phone+OTP: Saving pending submit-info, showing OTP first:",
+              existingLeadId,
+            );
+
+            const flowId = flowData.id;
+            const stepId = indexStep.id;
+            const apiPayload = mapFormDataToLeadInfo(data, flowId, stepId);
+
+            setPendingSubmitInfo({ leadId: existingLeadId, data: apiPayload });
+            setShowOTPModal(true);
+          } else {
+            // No lead exists - create new lead
+            console.log(
+              "[DynamicLoanForm] Subsequent step, no lead - creating lead",
+            );
+            handlePhoneSubmit(phoneInData, data);
+          }
+        }
       } else {
         // sendOtp: true but phone not required - configuration warning
         // NOTE: This is a potential configuration issue that should be caught in profile validation
@@ -485,6 +620,12 @@ export const DynamicLoanForm: React.FC<DynamicLoanFormProps> = ({
                   // Store lead data for potential future use
                   setCreatedLeadId(leadData.id);
                   setCreatedLeadToken(leadData.token);
+
+                  // Persist lead info to wizard store for subsequent steps
+                  wizardStore.updateStepData(indexStep.id, {
+                    leadId: leadData.id,
+                    token: leadData.token,
+                  });
 
                   // Store matched products if available
                   if (

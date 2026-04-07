@@ -97,11 +97,14 @@ const _normalizeVietnamese = (input: string): string => {
  * Sanitize Vietnamese phone number
  */
 export const sanitizeVietnamesePhone = (phone: string): string => {
-  const sanitized = phone.replace(/[^0-9+]/g, "");
+  const digitsOnly = phone.replace(/\D/g, "");
+  const normalized = digitsOnly.startsWith("84")
+    ? `0${digitsOnly.slice(2)}`
+    : digitsOnly;
 
   // Validate Vietnamese phone format
-  if (securityUtils.validateVietnamesePhone(sanitized)) {
-    return sanitized;
+  if (securityUtils.validateVietnamesePhone(normalized)) {
+    return normalized;
   }
 
   throw new Error("Invalid Vietnamese phone number format");

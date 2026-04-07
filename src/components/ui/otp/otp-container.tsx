@@ -114,7 +114,6 @@ export const OtpContainer: React.FC<OtpContainerProps> = ({
   const handleSubmit = async (otp: string) => {
     setOtpStatus("submitting");
 
-    // If leadId and token are provided, use V1 API
     if (leadId && token) {
       submitOTP(
         { leadId, token, otp },
@@ -142,14 +141,12 @@ export const OtpContainer: React.FC<OtpContainerProps> = ({
         },
       );
     } else {
-      // No leadId/token provided - cannot submit OTP without API
       setOtpStatus("failed");
       onFailure?.(`${t("errorMessage")}. Vui lòng thử lại.`);
     }
   };
 
   const handleResend = () => {
-    // If leadId is provided, use V1 API
     if (leadId) {
       resendOTP(
         { leadId, target: phoneNumber },
@@ -166,7 +163,6 @@ export const OtpContainer: React.FC<OtpContainerProps> = ({
         },
       );
     } else {
-      // No leadId provided - cannot resend OTP without API
       onFailure?.("Không thể gửi lại mã OTP. Vui lòng thử lại.");
     }
   };
@@ -199,7 +195,9 @@ export const OtpContainer: React.FC<OtpContainerProps> = ({
       otpAttempts={otpAttempts}
       maxRefresh={maxRefresh}
       maxAttempts={maxAttempts}
-      isSubmitting={otpStatus === "submitting"}
+      isSubmitting={
+        otpStatus === "submitting" || isSubmittingOTP || isResendingOTP
+      }
       onSubmit={handleSubmit}
       onResend={handleResend}
       onInput={handleInput}

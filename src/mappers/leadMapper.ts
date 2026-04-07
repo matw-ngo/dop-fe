@@ -7,6 +7,81 @@ type HavingLoan = components["schemas"]["HavingLoan"];
 type Gender = components["schemas"]["Gender"];
 type CreditStatus = components["schemas"]["CreditStatus"];
 
+// Simple validators - form now uses API values directly
+const normalizeCareerStatus = (value: unknown): CareerStatus | undefined => {
+  const normalized = String(value ?? "").toLowerCase();
+  const validValues: CareerStatus[] = [
+    "employed",
+    "self_employed",
+    "unemployed",
+    "housewife",
+    "retired",
+  ];
+  return validValues.includes(normalized as CareerStatus)
+    ? (normalized as CareerStatus)
+    : undefined;
+};
+
+const normalizeHavingLoan = (value: unknown): HavingLoan | undefined => {
+  const normalized = String(value ?? "").toLowerCase();
+  const validValues: HavingLoan[] = [
+    "no_loan",
+    "one_loan",
+    "two_loans",
+    "three_loans",
+    "more_than_three_loans",
+  ];
+  return validValues.includes(normalized as HavingLoan)
+    ? (normalized as HavingLoan)
+    : undefined;
+};
+
+const normalizeCreditStatus = (value: unknown): CreditStatus | undefined => {
+  const normalized = String(value ?? "").toLowerCase();
+  const validValues: CreditStatus[] = [
+    "no_bad_debt",
+    "bad_debt",
+    "bad_debt_last3_year",
+  ];
+  return validValues.includes(normalized as CreditStatus)
+    ? (normalized as CreditStatus)
+    : undefined;
+};
+
+const toOptionalNumber = (value: unknown): number | undefined => {
+  if (typeof value === "number" && Number.isFinite(value)) return value;
+  if (typeof value === "string" && value.trim().length > 0) {
+    const parsed = Number(value);
+    return Number.isFinite(parsed) ? parsed : undefined;
+  }
+  return undefined;
+};
+
+export const getLeadPurpose = (formData: Record<string, any>): string => {
+  return String(
+    formData.loan_purpose || formData.loanPurpose || formData.purpose || "",
+  ).trim();
+};
+
+export function mapFormDataToCreateLeadInfo(
+  formData: Record<string, any>,
+  flowId: string,
+  stepId: string,
+  phoneNumber: string,
+): SubmitLeadInfoRequestBody {
+  return {
+    flow_id: flowId,
+    step_id: stepId,
+    phone_number: phoneNumber,
+    purpose: getLeadPurpose(formData) || undefined,
+    loan_amount: toOptionalNumber(
+      formData.expected_amount || formData.loanAmount,
+    ),
+    loan_period: toOptionalNumber(formData.loan_period || formData.loanPeriod),
+    location: formData.location || formData.city || undefined,
+  };
+}
+
 /**
  * Maps the dynamic form data to the SubmitLeadInfoRequestBody structure.
  *
@@ -41,10 +116,27 @@ export function mapFormDataToLeadInfo(
       : undefined;
   };
 
+  const careerStatus = normalizeCareerStatus(
+    formData.jobStatus || formData.careerStatus || formData.career_status,
+  );
+  const havingLoan = normalizeHavingLoan(
+    formData.havingLoan || formData.having_loan,
+  );
+  let creditStatus = normalizeCreditStatus(
+    formData.creditStatus || formData.credit_status,
+  );
+
+  // Default to 'no_bad_debt' if credit_status is not provided
+  // This handles the case where the form doesn't have a credit_status field
+  // but the server requires it (mismatch between API spec and server implementation)
+  if (!creditStatus) {
+    creditStatus = "no_bad_debt";
+  }
+
   return {
     flow_id: flowId,
     step_id: stepId,
-    purpose: formData.loan_purpose,
+    purpose: formData.loan_purpose || formData.loanPurpose || formData.purpose,
 
     // Personal Info
     full_name: formData.fullName,
@@ -63,8 +155,7 @@ export function mapFormDataToLeadInfo(
     location: formData.location || formData.city,
 
     // Income Info
-    career_status: (formData.jobStatus ||
-      formData.careerStatus) as CareerStatus,
+    career_status: careerStatus,
     career_type:
       formData.businessType || formData.companyName || formData.careerType,
     income_type: formData.incomeType,
@@ -73,8 +164,7 @@ export function mapFormDataToLeadInfo(
     income: parseIncome(formData.monthlyIncome || formData.income),
 
     // Financial Info
-    having_loan: (formData.havingLoan || formData.having_loan) as HavingLoan,
-    credit_status: (formData.creditStatus ||
-      formData.credit_status) as CreditStatus,
+    having_loan: havingLoan,
+    credit_status: creditStatus,
   };
 }

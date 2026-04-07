@@ -11,34 +11,28 @@ interface SubmitInfoParams {
 }
 
 async function submitLeadInfo({ leadId, data }: SubmitInfoParams) {
-  try {
-    const { data: responseData, error } = await dopClient.POST(
-      "/leads/{id}/submit-info",
-      {
-        params: {
-          path: { id: leadId },
-        },
-        body: data,
+  const { data: responseData, error } = await dopClient.POST(
+    "/leads/{id}/submit-info",
+    {
+      params: {
+        path: { id: leadId },
       },
-    );
+      body: data,
+    },
+  );
 
-    if (error) {
-      throw new Error((error as any).message || "Failed to submit lead info");
-    }
-
-    if (!responseData) {
-      throw new Error("No data returned from submit lead info API");
-    }
-
-    return responseData;
-  } catch (error) {
-    console.error("Submit lead info API failed, using mock data:", error);
-    // Mock success response
-    return {
-      success: true,
-      message: "Lead info submitted successfully (Mock)",
-    };
+  if (error) {
+    console.error("Submit lead info API failed:", error);
+    throw new Error((error as any).message || "Failed to submit lead info");
   }
+
+  if (!responseData) {
+    const errorMessage = "No data returned from submit lead info API";
+    console.error(errorMessage);
+    throw new Error(errorMessage);
+  }
+
+  return responseData;
 }
 
 export function useSubmitLeadInfo() {

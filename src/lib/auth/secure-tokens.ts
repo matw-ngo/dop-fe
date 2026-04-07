@@ -285,7 +285,7 @@ export const securityUtils = {
    * Validate Vietnamese phone number
    */
   validateVietnamesePhone: (phone: string): boolean => {
-    const phoneRegex = /^(03[2-9]|05[6-9]|07[0-9]|08[1-9]|09[0-9])[0-9]{8}$/;
+    const phoneRegex = /^(03[2-9]|05[6-9]|07[0-9]|08[1-9]|09[0-9])[0-9]{7}$/;
     return phoneRegex.test(phone);
   },
 };

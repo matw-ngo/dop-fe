@@ -37,21 +37,29 @@ test.describe("eKYC Error Scenarios", () => {
     // Should show error message
     await expect(page.getByText("Connection timeout")).toBeVisible();
   });
+
+  test("handles request timeout", async ({ page }) => {
+    // Mock slow response
+    await page.route("**/api/ekyc/verify", async (route) => {
+      await new Promise((resolve) => setTimeout(resolve, 35000));
+      route.fulfill({ status: 408 });
+    });
+
+    await page.getByRole("button", { name: "Verify Identity" }).click();
+
+    // Should show timeout message after 30 seconds
+    await expect(page.getByText("Request timed out")).toBeVisible({
+      timeout: 35000,
+    });
+    await expect(
+      page.getByText("Please check your connection and try again"),
+    ).toBeVisible();
+
+    // Should provide retry option
+    await expect(page.getByRole("button", { name: "Try Again" })).toBeVisible();
+    await expect(page.getByRole("button", { name: "Cancel" })).toBeVisible();
+  });
 });
-
-await page.getByRole("button", { name: "Verify Identity" }).click();
-
-// Should show timeout message after 30 seconds
-await expect(page.getByText("Request timed out")).toBeVisible({
-  timeout: 35000,
-});
-await expect(
-  page.getByText("Please check your connection and try again"),
-).toBeVisible();
-
-// Should provide retry option
-await expect(page.getByRole("button", { name: "Try Again" })).toBeVisible();
-await expect(page.getByRole("button", { name: "Cancel" })).toBeVisible();
 
 test("handles network connection loss", async ({ page }) => {
   // Start verification normally

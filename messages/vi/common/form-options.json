@@ -11,23 +11,27 @@
     ">20m": "Trên 20 triệu"
   },
   "careerStatus": {
-    "officer": "Nhân viên văn phòng",
-    "freelancer": "Kinh doanh tự do",
-    "worker": "Công nhân",
-    "other": "Khác"
+    "employed": "Nhân viên văn phòng",
+    "self_employed": "Kinh doanh tự do",
+    "unemployed": "Thất nghiệp",
+    "housewife": "Nội trợ",
+    "retired": "Đã nghỉ hưu"
   },
   "incomeType": {
     "transfer": "Chuyển khoản",
     "cash": "Tiền mặt"
   },
   "havingLoan": {
-    "yes": "Có",
-    "no": "Không"
+    "no_loan": "Không có khoản vay nào",
+    "one_loan": "1 khoản vay",
+    "two_loans": "2 khoản vay",
+    "three_loans": "3 khoản vay",
+    "more_than_three_loans": "Hơn 3 khoản vay"
   },
   "creditStatus": {
-    "good": "Tốt",
-    "normal": "Bình thường",
-    "bad": "Nợ xấu"
+    "no_bad_debt": "Tốt (không nợ xấu)",
+    "bad_debt_last3_year": "Bình thường (có nợ xấu trong 3 năm)",
+    "bad_debt": "Có nợ xấu"
   },
   "employmentTypes": {
     "full_time": "Toàn thời gian",

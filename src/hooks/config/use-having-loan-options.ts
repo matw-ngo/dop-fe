@@ -2,11 +2,16 @@ import { useQuery } from "@tanstack/react-query";
 import { useTranslatedOptions } from "./utils/with-i18n";
 
 /**
- * Having loan keys for translation
- * TODO: Replace with API call when backend endpoint is available
- * Expected endpoint: GET /config/having-loan
+ * Having loan keys - using API values directly
+ * API Schema: no_loan | one_loan | two_loans | three_loans | more_than_three_loans
  */
-const HAVING_LOAN_KEYS = ["yes", "no"] as const;
+const HAVING_LOAN_KEYS = [
+  "no_loan",
+  "one_loan",
+  "two_loans",
+  "three_loans",
+  "more_than_three_loans",
+] as const;
 
 async function getHavingLoanKeys() {
   return Promise.resolve(HAVING_LOAN_KEYS);
@@ -26,7 +31,7 @@ export function useHavingLoanOptions() {
 
   const translatedData = useTranslatedOptions(
     query.data,
-    "common.formOptions.havingLoan",
+    "common.formOptions.havingLoan", // Keys: no_loan, one_loan, two_loans, three_loans, more_than_three_loans
   );
 
   return {

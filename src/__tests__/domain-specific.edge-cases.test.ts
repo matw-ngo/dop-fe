@@ -88,7 +88,9 @@ describe("Domain-Specific Edge Cases", () => {
 
       const result = await middleware.onResponse?.(mockRequest);
       expect(result).toBeDefined();
-      expect(result?.ok).toBe(true);
+      if (result) {
+        expect(result.ok).toBe(true);
+      }
     });
 
     it("should handle very large consent data payload", async () => {
@@ -260,7 +262,9 @@ describe("Domain-Specific Edge Cases", () => {
       } as any;
 
       const result = await middleware.onResponse?.(mockRequest);
-      expect(result?.status).toBe(410);
+      if (result) {
+        expect(result.status).toBe(410);
+      }
     });
   });
 
@@ -310,7 +314,9 @@ describe("Domain-Specific Edge Cases", () => {
 
       const result = await middleware.onResponse?.(mockRequest);
       expect(result).toBeDefined();
-      expect(result?.ok).toBe(true);
+      if (result) {
+        expect(result.ok).toBe(true);
+      }
     });
 
     it("should handle concurrent step submissions", async () => {
@@ -344,8 +350,10 @@ describe("Domain-Specific Edge Cases", () => {
       );
 
       expect(results).toHaveLength(5);
-      results.forEach((result, _i) => {
-        expect(result?.status).toBe(200);
+      results.forEach((result) => {
+        if (result) {
+          expect(result.status).toBe(200);
+        }
       });
     });
 
@@ -387,7 +395,9 @@ describe("Domain-Specific Edge Cases", () => {
       } as any;
 
       const result = await middleware.onResponse?.(mockRequest);
-      expect(result?.status).toBe(400);
+      if (result) {
+        expect(result.status).toBe(400);
+      }
     });
   });
 
@@ -420,7 +430,9 @@ describe("Domain-Specific Edge Cases", () => {
       } as any;
 
       const result = await middleware.onResponse?.(mockRequest);
-      expect(result?.status).toBe(200);
+      if (result) {
+        expect(result.status).toBe(200);
+      }
     });
 
     it("should handle special characters in form data", async () => {
@@ -451,7 +463,9 @@ describe("Domain-Specific Edge Cases", () => {
       } as any;
 
       const result = await middleware.onResponse?.(mockRequest);
-      expect(result?.status).toBe(200);
+      if (result) {
+        expect(result.status).toBe(200);
+      }
     });
 
     it("should handle empty values and nulls in form data", async () => {
@@ -482,7 +496,9 @@ describe("Domain-Specific Edge Cases", () => {
       } as any;
 
       const result = await middleware.onResponse?.(mockRequest);
-      expect(result?.status).toBe(200);
+      if (result) {
+        expect(result.status).toBe(200);
+      }
     });
   });
 
@@ -543,7 +559,9 @@ describe("Domain-Specific Edge Cases", () => {
       } as any;
 
       const result = await middleware.onResponse?.(mockRequest);
-      expect(result?.status).toBe(200);
+      if (result) {
+        expect(result.status).toBe(200);
+      }
     });
 
     it("should handle service degradation gracefully", async () => {
@@ -606,7 +624,9 @@ describe("Domain-Specific Edge Cases", () => {
       } as any;
 
       const result = await middleware.onResponse?.(mockRequest);
-      expect(result?.status).toBe(409);
+      if (result) {
+        expect(result.status).toBe(409);
+      }
     });
 
     it("should handle deep nested objects in JSON", async () => {
@@ -641,7 +661,9 @@ describe("Domain-Specific Edge Cases", () => {
       } as any;
 
       const result = await middleware.onResponse?.(mockRequest);
-      expect(result?.status).toBe(200);
+      if (result) {
+        expect(result.status).toBe(200);
+      }
     });
   });
 });

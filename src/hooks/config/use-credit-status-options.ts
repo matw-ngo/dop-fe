@@ -2,11 +2,14 @@ import { useQuery } from "@tanstack/react-query";
 import { useTranslatedOptions } from "./utils/with-i18n";
 
 /**
- * Credit status keys for translation
- * TODO: Replace with API call when backend endpoint is available
- * Expected endpoint: GET /config/credit-status
+ * Credit status keys - using API values directly
+ * API Schema: no_bad_debt | bad_debt | bad_debt_last3_year
  */
-const CREDIT_STATUS_KEYS = ["good", "normal", "bad"] as const;
+const CREDIT_STATUS_KEYS = [
+  "no_bad_debt",
+  "bad_debt_last3_year",
+  "bad_debt",
+] as const;
 
 async function getCreditStatusKeys() {
   return Promise.resolve(CREDIT_STATUS_KEYS);
@@ -26,7 +29,7 @@ export function useCreditStatusOptions() {
 
   const translatedData = useTranslatedOptions(
     query.data,
-    "common.formOptions.creditStatus",
+    "common.formOptions.creditStatus", // Keys: no_bad_debt, bad_debt_last3_year, bad_debt
   );
 
   return {

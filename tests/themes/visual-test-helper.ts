@@ -6,11 +6,14 @@
  *
  * @fileoverview Helper utilities for visual testing
  * @version 1.0.0
+ *
+ * NOTE: This file requires the 'pngjs' package to be installed.
+ * Run: npm install --save-dev pngjs @types/pngjs
  */
 
 import fs from "node:fs";
 import path from "node:path";
-import { PNG } from "pngjs";
+// import { PNG } from "pngjs"; // Commented out - install pngjs package to use
 
 /**
  * Configuration for visual regression testing
@@ -49,12 +52,23 @@ export const DEFAULT_CONFIG: VisualTestConfig = {
 
 /**
  * Compare two screenshots
+ *
+ * @deprecated This function requires pngjs package. Install it first or use Playwright's built-in screenshot comparison.
  */
 export async function compareScreenshots(
   baselinePath: string,
   currentPath: string,
   config: Partial<VisualTestConfig> = {},
 ): Promise<ComparisonResult> {
+  return {
+    passed: false,
+    numDiffPixels: -1,
+    diffRatio: 1,
+    error:
+      "pngjs package not installed. Run: npm install --save-dev pngjs @types/pngjs",
+  };
+
+  /* Uncomment when pngjs is installed:
   const finalConfig = { ...DEFAULT_CONFIG, ...config };
 
   try {
@@ -130,6 +144,7 @@ export async function compareScreenshots(
       error: error instanceof Error ? error.message : "Unknown error",
     };
   }
+  */
 }
 
 /**
@@ -145,8 +160,11 @@ export async function updateBaseline(
 
 /**
  * Read PNG file
+ * @deprecated Requires pngjs package
  */
-async function readPNG(filePath: string): Promise<PNG> {
+async function readPNG(filePath: string): Promise<any> {
+  throw new Error("pngjs package not installed");
+  /* Uncomment when pngjs is installed:
   return new Promise((resolve, reject) => {
     const data = fs.readFileSync(filePath);
     const png = new PNG();
@@ -155,12 +173,16 @@ async function readPNG(filePath: string): Promise<PNG> {
       else resolve(data);
     });
   });
+  */
 }
 
 /**
  * Write PNG file
+ * @deprecated Requires pngjs package
  */
-async function writePNG(png: PNG, filePath: string): Promise<void> {
+async function writePNG(png: any, filePath: string): Promise<void> {
+  throw new Error("pngjs package not installed");
+  /* Uncomment when pngjs is installed:
   return new Promise((resolve, reject) => {
     const buffer = PNG.sync.write(png);
     fs.writeFile(filePath, buffer, (err) => {
@@ -168,6 +190,7 @@ async function writePNG(png: PNG, filePath: string): Promise<void> {
       else resolve();
     });
   });
+  */
 }
 
 /**

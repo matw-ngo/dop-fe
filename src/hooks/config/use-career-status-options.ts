@@ -2,15 +2,15 @@ import { useQuery } from "@tanstack/react-query";
 import { useTranslatedOptions } from "./utils/with-i18n";
 
 /**
- * Career status keys for translation
- * TODO: Replace with API call when backend endpoint is available
- * Expected endpoint: GET /config/career-status
+ * Career status keys - using API values directly
+ * API Schema: employed | self_employed | unemployed | housewife | retired
  */
 const CAREER_STATUS_KEYS = [
-  "officer",
-  "freelancer",
-  "worker",
-  "other",
+  "employed",
+  "self_employed",
+  "unemployed",
+  "housewife",
+  "retired",
 ] as const;
 
 async function getCareerStatusKeys() {
@@ -31,7 +31,7 @@ export function useCareerStatusOptions() {
 
   const translatedData = useTranslatedOptions(
     query.data,
-    "common.formOptions.careerStatus",
+    "common.formOptions.careerStatus", // Keys: employed, self_employed, unemployed, housewife, retired
   );
 
   return {

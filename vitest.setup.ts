@@ -2,23 +2,36 @@ import "@testing-library/jest-dom";
 import { cleanup } from "@testing-library/react";
 import { afterAll, afterEach, beforeAll, vi } from "vitest";
 
-// Skip MSW setup for now - can be added back when needed for specific tests
-// MSW setup was causing test hangs, so we're using a minimal setup
+// MSW is NOT enabled globally to avoid test hangs and unnecessary overhead.
+// For tests that need API mocking, import setupServer from 'msw/node' directly:
+//
+// Example:
+//   import { setupServer } from 'msw/node'
+//   import { consentHandlers } from './src/__tests__/msw/handlers/consent'
+//
+//   const server = setupServer(...consentHandlers)
+//   beforeAll(() => server.listen({ onUnhandledRequest: 'warn' }))
+//   afterEach(() => server.resetHandlers())
+//   afterAll(() => server.close())
+//
+// See src/__tests__/setup/global-setup.ts for a working example.
+// See docs/testing/test-infrastructure.md for full documentation.
 
 // Mock ResizeObserver - must be on global object for Node.js environment
-const mockResizeObserver = vi.fn().mockImplementation(() => ({
-  observe: vi.fn(),
-  unobserve: vi.fn(),
-  disconnect: vi.fn(),
-}));
+class MockResizeObserver {
+  observe = vi.fn();
+  unobserve = vi.fn();
+  disconnect = vi.fn();
+}
 
 Object.defineProperty(global, "ResizeObserver", {
   writable: true,
-  value: mockResizeObserver,
+  configurable: true,
+  value: MockResizeObserver,
 });
 
 // Also set it directly in case it's accessed differently
-global.ResizeObserver = mockResizeObserver;
+(global as any).ResizeObserver = MockResizeObserver;
 
 // Mock @radix-ui/react-use-size which uses ResizeObserver internally
 vi.mock("@radix-ui/react-use-size", () => ({
