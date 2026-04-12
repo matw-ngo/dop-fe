@@ -9,13 +9,19 @@
  * - Use 'x-test-scenario' header to trigger error scenarios
  *
  * Available Profiles:
- * - default: OTP at step 3 (middle position)
+ * - default: Finzone flow - OTP at step 1 (/index), submit info at step 2 (/submit-info)
  * - otp-at-step-1: OTP at first step
  * - otp-at-step-3: OTP at step 3 (explicit)
  * - otp-at-last-step: OTP at final step
  * - no-otp-flow: No OTP verification
  * - multi-otp-flow: Multiple OTP steps
  * - with-ekyc: Flow with eKYC verification
+ *
+ * Real API Data Sources:
+ * - Flow config: GET /flows/11111111-1111-1111-1111-111111111111
+ * - Lead creation: POST /leads
+ * - Lead status: GET /leads/{id}
+ * - Submit info: POST /leads/{id}/submit-info
  */
 
 import { http } from "msw";
@@ -38,11 +44,21 @@ const mswJson = (body: unknown, init?: ResponseInit): Response => {
 };
 
 /**
- * Generate a mock lead response
+ * Generate a mock lead response based on real API:
+ * {"id":"019d672f-48e1-7408-9b2f-330e5fcd2bd5","token":"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9..."}
  */
 const createMockLeadResponse = (overrides?: Record<string, unknown>) => ({
-  id: "330e8400-e29b-41d4-a716-446655440003",
-  token: `lead-token-${Date.now()}`,
+  id: `019d67${Math.random().toString(36).substring(2, 6)}-${Date.now().toString(36).substring(2, 6)}-${Math.random().toString(36).substring(2, 8)}`,
+  token: `eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.${btoa(
+    JSON.stringify({
+      iss: "smartdop",
+      sub: "authentication",
+      exp: Math.floor(Date.now() / 1000) + 86400,
+      nbf: Math.floor(Date.now() / 1000),
+      iat: Math.floor(Date.now() / 1000),
+      uid: overrides?.id || "019d672f-48e1-7408-9b2f-330e5fcd2bd5",
+    }),
+  ).replace(/=/g, "")}.${Math.random().toString(36).substring(2, 100)}`,
   matched_products: mockMatchedProducts.slice(0, 6),
   ...overrides,
 });
@@ -109,7 +125,7 @@ export const dopHandlers = [
         const profile = getProfileFromRequest(request);
         const flowConfig = {
           ...profile.flowConfig,
-          id: tenant as string,
+          id: profile.flowConfig.id || (tenant as string),
         };
         return mswJson(flowConfig);
       }
@@ -166,6 +182,71 @@ export const dopHandlers = [
   }),
 
   /**
+   * GET /leads/{id} - Get lead status for polling
+   *
+   * Supports test scenarios for polling:
+   * - pending: Still processing (returns 200 with pending status)
+   * - distributed: Successfully matched
+   * - failed: Distribution failed
+   * - no_match: No matching products
+   */
+  http.get(`${BASE_URL}/leads/:id`, ({ params, request }) => {
+    const { id } = params;
+    const scenario = request.headers.get("x-test-scenario") || "success";
+
+    // Get current lead from mock store to check state
+    const mockData = mswStore.getMockData();
+    const lead = mockData.leads.find((l) => l.id === id);
+
+    switch (scenario) {
+      case "pending":
+        return mswJson({
+          id,
+          distribution_status: "pending",
+          is_forwarded: false,
+          submitted_at: lead?.submitted_at || new Date().toISOString(),
+        });
+
+      case "distributed":
+        return mswJson({
+          id,
+          distribution_status: "distributed",
+          is_forwarded: true,
+          partner_id: "partner-001",
+          partner_name: "VPBank",
+          submitted_at: lead?.submitted_at || new Date().toISOString(),
+        });
+
+      case "failed":
+        return mswJson({
+          id,
+          distribution_status: "failed",
+          is_forwarded: false,
+          submitted_at: lead?.submitted_at || new Date().toISOString(),
+        });
+
+      case "no_match":
+        return mswJson({
+          id,
+          distribution_status: "no_match",
+          is_forwarded: false,
+          submitted_at: lead?.submitted_at || new Date().toISOString(),
+        });
+
+      default:
+        // Return distributed by default for smoke test
+        return mswJson({
+          id,
+          distribution_status: "distributed",
+          is_forwarded: true,
+          partner_id: "partner-001",
+          partner_name: "VPBank",
+          submitted_at: lead?.submitted_at || new Date().toISOString(),
+        });
+    }
+  }),
+
+  /**
    * POST /leads/{id}/submit-info - Submit lead info
    */
   http.post(
@@ -196,13 +277,15 @@ export const dopHandlers = [
             { status: 400 },
           );
         default: {
-          const body = await request.json();
+          const body = (await request.json()) as Record<string, unknown>;
 
           mswStore.updateMockData((data) => {
             const existing = data.leads.find((l) => l.id === id) || { id };
             const updated = {
               ...existing,
-              ...(body && typeof body === "object" ? body : {}),
+              ...body,
+              submitted_at: new Date().toISOString(),
+              distribution_status: "pending", // Start as pending for polling
             };
 
             let exists = false;
@@ -221,12 +304,22 @@ export const dopHandlers = [
             return { ...data, leads: nextLeads };
           });
 
+          // Return proper SubmitLeadInfoResponseBody matching API schema exactly
           return mswJson({
-            success: true,
-            message: "Lead info submitted successfully",
-            data: {
-              lead_id: id,
-              ...(body && typeof body === "object" ? body : {}),
+            next_step_id: body.step_id as string | undefined,
+            matched_products: mockMatchedProducts.slice(0, 3).map((p) => ({
+              product_id: p.product_id,
+              product_name: p.product_name,
+              product_type: p.product_type,
+              partner_id: p.partner_id,
+              partner_name: p.partner_name || "VPBank",
+              partner_code: p.partner_code,
+            })),
+            forward_result: {
+              status: "forwarded",
+              partner_id: "partner-001",
+              partner_name: "VPBank",
+              partner_lead_id: `lead-${Date.now()}`,
             },
           });
         }
