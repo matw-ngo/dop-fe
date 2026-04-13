@@ -68,13 +68,16 @@ export function Header({ configOverride }: HeaderProps) {
       children: [
         {
           label: t("products.lending"),
-          href: getLocalizedPath("/vay-tieu-dung"),
+          href: getLocalizedPath("/products?category=loan"),
         },
         {
           label: t("products.creditCard"),
-          href: getLocalizedPath("/the-tin-dung"),
+          href: getLocalizedPath("/products?category=creditCard"),
         },
-        { label: t("products.insurance"), href: getLocalizedPath("/bao-hiem") },
+        {
+          label: t("products.insurance"),
+          href: getLocalizedPath("/products?category=insurance"),
+        },
       ],
     },
     {

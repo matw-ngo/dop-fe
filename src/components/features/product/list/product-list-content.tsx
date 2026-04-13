@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState, useMemo, useRef } from "react";
+import React, { useState, useMemo, useRef, useEffect } from "react";
 import { useTranslations } from "next-intl";
+import { useSearchParams } from "next/navigation";
 import ReactPaginate from "react-paginate";
 import { useMediaQuery } from "react-responsive";
 import { ProductListItem } from "./product-list-item";
@@ -40,6 +41,7 @@ export const ProductListContent = () => {
   const { theme } = useFormTheme();
   const tenant = useTenant();
   const containerRef = useRef<HTMLDivElement>(null);
+  const searchParams = useSearchParams();
   const isDesktop = useMediaQuery({
     query: `(min-width: ${RESPONSIVE_DESKTOP}px)`,
   });
@@ -60,6 +62,22 @@ export const ProductListContent = () => {
   const [province, setProvince] = useState("ALL");
   const [sortBy, setSortBy] = useState(0);
   const [itemOffset, setItemOffset] = useState(0);
+
+  // Read category from URL query params
+  useEffect(() => {
+    const categoryParam = searchParams.get("category");
+    if (categoryParam) {
+      const categoryMap: Record<string, number> = {
+        loan: 3,
+        creditCard: 1,
+        insurance: 2,
+      };
+      const categoryId = categoryMap[categoryParam];
+      if (categoryId) {
+        setCategory(categoryId);
+      }
+    }
+  }, [searchParams]);
 
   const allProducts = productsData?.products || [];
   const totalProducts = productsData?.total || allProducts.length;
