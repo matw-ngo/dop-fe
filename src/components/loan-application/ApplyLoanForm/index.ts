@@ -1,5 +1,3 @@
-// Main component
-export { default, default as ApplyLoanForm } from "./ApplyLoanForm";
 // Components
 export { AmountField } from "./components/AmountField";
 export { FormLayout } from "./components/FormLayout";

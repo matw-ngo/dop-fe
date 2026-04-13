@@ -37,17 +37,8 @@ export type {
 } from "./use-user-consent";
 
 export { useConsentGrant } from "./use-consent-grant";
-export type {
-  GrantConsentParams,
-  GrantConsentResult,
-  UseConsentGrantReturn,
-} from "./use-consent-grant";
 
 export { useTermsContent } from "./use-terms-content";
-export type {
-  UseTermsContentParams,
-  TermsContentData,
-} from "./use-terms-content";
 
 export { useConsentLogs } from "./use-consent-logs";
 export type {

@@ -716,7 +716,6 @@ describe(
         const noHealthCheckProvider = new MockVerificationProvider(
           "noHealthCheck",
         );
-        // @ts-expect-error - intentionally removing healthCheck for testing
         (noHealthCheckProvider as any).healthCheck = undefined;
 
         await manager.registerProvider(
