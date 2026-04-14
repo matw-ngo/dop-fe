@@ -22,8 +22,7 @@ export const usePhoneValidationMessages = () => {
         };
       }
       if (result.errorMessage === "UNSUPPORTED_TELCO") {
-        const localizedTelcoName =
-          telcos[result.telcoCode as keyof typeof telcos] || result.telcoCode;
+        const localizedTelcoName = getTelcoName(result.telcoCode);
         return {
           ...result,
           errorMessage: t("telcoNotSupported", { telco: localizedTelcoName }),

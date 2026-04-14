@@ -35,6 +35,8 @@ export function NumberField({
     (rule) => rule.type === ValidationRuleType.REQUIRED,
   );
 
+  // CSS variables are already injected by FormThemeProvider parent
+
   // Display value (formatted for currency)
   const displayValue =
     isCurrency && value != null
@@ -63,8 +65,12 @@ export function NumberField({
     // Base focus styles
     "focus:outline-none",
     // Placeholder styles
-    "placeholder:text-gray-400",
+    "placeholder:text-[var(--form-placeholder)]",
     "placeholder:font-medium",
+    // Text and selection colors
+    "text-[var(--form-text)]",
+    "selection:bg-[var(--form-selection-bg)]",
+    "selection:text-white",
     // Disabled and readonly states
     "disabled:cursor-not-allowed",
     "disabled:opacity-60",
@@ -76,22 +82,22 @@ export function NumberField({
     // Border radius from theme
     "rounded-[8px]",
     // Border color
-    "border-[#bfd1cc]",
+    "border-[var(--form-border)]",
     // Default background
-    "bg-white",
+    "!bg-[var(--form-bg)]",
     // Size
     "h-[60px]",
     "px-4",
     // Focus state
-    "focus:border-[#017848]",
+    "focus:border-[var(--form-primary)]",
     "focus:ring-2",
-    "focus:ring-[#017848]/20",
+    "focus:ring-[var(--form-primary)]/20",
     // Error state
     error && "border-red-500",
     error && "focus:ring-red-500/20",
     // Override background for special states
-    isDisabled && "!bg-gray-100",
-    isReadOnly && "!bg-gray-50",
+    isDisabled && "!bg-[var(--form-disabled-bg)]",
+    isReadOnly && "!bg-[var(--form-readonly-bg)]",
   ].filter(Boolean);
 
   // If internal label is enabled, use wrapper with label
@@ -100,7 +106,7 @@ export function NumberField({
       <div className="relative w-full">
         <label
           htmlFor={field.id}
-          className="absolute top-2 left-4 text-xs font-medium text-[#017848] pointer-events-none z-10"
+          className="absolute top-2 left-4 text-xs font-medium text-[var(--form-primary)] pointer-events-none z-10"
         >
           {field.label}
           {isRequired && <span className="text-red-500 ml-0.5">*</span>}

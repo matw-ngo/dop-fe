@@ -1,7 +1,8 @@
 "use client";
 
-import { Label } from "@/components/ui/label";
 import * as SwitchPrimitive from "@radix-ui/react-switch";
+import { Label } from "@/components/ui/label";
+import { useFormTheme } from "../themes/ThemeProvider";
 import { type FieldComponentProps, ValidationRuleType } from "../types";
 import { cn } from "../utils/helpers";
 
@@ -14,16 +15,19 @@ export function SwitchField({
   field,
   value,
   onChange,
-  onBlur,
+  onBlur: _onBlur,
   error,
   disabled,
   className,
 }: FieldComponentProps<boolean>) {
+  const { theme } = useFormTheme();
   const isChecked = !!value;
   const isDisabled = disabled || field.disabled;
   const isRequired = field.validation?.some(
     (rule) => rule.type === ValidationRuleType.REQUIRED,
   );
+
+  // CSS variables are already injected by FormThemeProvider parent
 
   // Base switch container styles
   const switchContainerStyles = cn(
@@ -39,13 +43,15 @@ export function SwitchField({
     "transition-colors",
     "duration-200",
     // Colors based on state
-    isChecked ? "bg-[#017848] border-[#017848]" : "bg-gray-200 border-gray-300",
+    isChecked
+      ? "bg-[var(--form-primary)] border-[var(--form-primary)]"
+      : "bg-[var(--form-muted-bg)] border-[var(--form-border)]",
     // Disabled state
     isDisabled && "opacity-50 cursor-not-allowed",
     // Focus ring for accessibility
     "focus-within:outline-none",
     "focus-within:ring-2",
-    "focus-within:ring-[#017848]/20",
+    "focus-within:ring-[var(--form-primary)]/20",
     "focus-within:ring-offset-2",
     // Error state
     error && "focus-within:ring-red-500/20",
@@ -61,19 +67,19 @@ export function SwitchField({
     "w-5",
     "rounded-full",
     // Colors and transitions
-    "bg-white",
+    "bg-[var(--form-bg)]",
     "shadow-md",
     "transition-transform",
     "duration-200",
     "border",
-    "border-gray-200",
+    "border-[var(--form-border)]",
     // Transform based on state
     isChecked ? "translate-x-5" : "translate-x-0",
     // Interactive states
     "hover:shadow-lg",
     "focus:outline-none",
     "focus:ring-2",
-    "focus:ring-[#017848]/20",
+    "focus:ring-[var(--form-primary)]/20",
     "focus:ring-offset-1",
     // Disabled state
     isDisabled && "cursor-not-allowed opacity-60",
@@ -85,7 +91,7 @@ export function SwitchField({
   const labelStyles = cn(
     "text-sm",
     "font-medium",
-    "text-gray-700",
+    "text-[var(--form-text)]",
     "select-none",
     // Remove cursor pointer since label shouldn't toggle
     isDisabled ? "opacity-60 cursor-not-allowed" : "cursor-default",

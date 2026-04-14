@@ -9,7 +9,6 @@ import {
   AlertCircle,
   AlertTriangle,
   Calendar,
-  Camera,
   CheckCircle,
   Copy,
   Download,
@@ -18,10 +17,7 @@ import {
   EyeOff,
   FileDown,
   FileText,
-  Info,
-  Mail,
   MapPin,
-  Phone,
   RefreshCw,
   Shield,
   User,
@@ -29,7 +25,6 @@ import {
 import type React from "react";
 import { useState } from "react";
 import { toast } from "sonner";
-import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -39,13 +34,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
-import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  getDocumentTypeById,
-  VietnameseDocumentType,
-} from "@/lib/ekyc/document-types";
+import { getDocumentTypeById } from "@/lib/ekyc/document-types";
 import {
   type EkycFullResult,
   getEkycSummary,
@@ -82,7 +72,7 @@ const DataField: React.FC<{
   isEditing?: boolean;
 }> = ({ field, onEdit, isEditing = false }) => {
   const [editValue, setEditValue] = useState(field.value);
-  const [showValue, setShowValue] = useState(true);
+  const [_showValue, _setShowValue] = useState(true);
 
   const getVerificationIcon = () => {
     switch (field.verification) {
@@ -183,7 +173,7 @@ export const eKYCResultDisplay: React.FC<eKYCResultDisplayProps> = ({
   variant = "detailed",
 }) => {
   const [activeTab, setActiveTab] = useState("overview");
-  const [editingField, setEditingField] = useState<string | null>(null);
+  const [editingField, _setEditingField] = useState<string | null>(null);
   const [showSensitiveData, setShowSensitiveData] = useState(false);
 
   const store = useEkycStore();
@@ -352,7 +342,7 @@ export const eKYCResultDisplay: React.FC<eKYCResultDisplayProps> = ({
     return factors > 0 ? Math.round(score / factors) : 0;
   };
 
-  const copyToClipboard = (text: string) => {
+  const _copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
     toast.success("Đã sao chép vào clipboard");
   };

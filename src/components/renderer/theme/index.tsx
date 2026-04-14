@@ -102,10 +102,7 @@ export function ThemeProvider({
 
           // Ensure the theme exists in available themes
           const group = userGroups[validatedState.userGroup];
-          if (
-            group &&
-            group.availableThemes.includes(validatedState.currentTheme)
-          ) {
+          if (group?.availableThemes.includes(validatedState.currentTheme)) {
             return validatedState;
           } else {
             // Fallback to valid theme if invalid theme found
@@ -201,7 +198,7 @@ export function ThemeProvider({
 
   // Basic theme application for UI theme objects
   const applyBasicTheme = useCallback(
-    (themeObj: Theme, mode: "light" | "dark") => {
+    (themeObj: Theme, _mode: "light" | "dark") => {
       if (typeof document === "undefined") return;
 
       const root = document.documentElement;

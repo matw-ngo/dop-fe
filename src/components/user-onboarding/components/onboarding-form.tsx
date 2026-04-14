@@ -5,7 +5,11 @@ import { ErrorState } from "@/components/feedback/error-state";
 import { FormSkeleton } from "@/components/feedback/form-skeleton";
 import { MultiStepFormRenderer } from "@/components/renderer/MultiStepFormRenderer";
 import type { MappedFlow } from "@/mappers/flowMapper";
+import { registerConsentField } from "../fields/register-consent-field";
 import { useOnboardingFormConfig } from "../hooks/use-onboarding-form-config";
+
+// Register consent field component
+registerConsentField();
 
 // import { LoanApplicationForm } from "@/components/features/loan/LoanApplicationForm"; // TODO: Implement LoanApplicationForm component
 

@@ -97,7 +97,7 @@ export const usePhoneValidation = (options: UsePhoneValidationOptions = {}) => {
       }
 
       // Use preset validation
-      const config = PHONE_VALIDATION_PRESETS[preset];
+      const _config = PHONE_VALIDATION_PRESETS[preset];
 
       // Apply preset overrides
       const result = validateVietnamesePhone(phoneNumber);
@@ -199,7 +199,7 @@ export const usePhoneValidation = (options: UsePhoneValidationOptions = {}) => {
         if (enableLearning && validation.isValid && telco.telco) {
           recordSuccessfulDetection(phoneNumber, telco.telco.code);
         }
-      } catch (error) {
+      } catch (_error) {
         setState((prev) => ({
           ...prev,
           isValidating: false,
@@ -207,15 +207,7 @@ export const usePhoneValidation = (options: UsePhoneValidationOptions = {}) => {
         }));
       }
     }, debounceMs),
-    [
-      validatePhone,
-      enableSuggestions,
-      enableLearning,
-      debounceMs,
-      onValidationChange,
-      onTelcoChange,
-      onSuggestionsChange,
-    ],
+    [],
   );
 
   // Handle phone number change
@@ -351,7 +343,7 @@ export const usePhoneValidation = (options: UsePhoneValidationOptions = {}) => {
 
     // Common corrections
     if (corrected.startsWith("84") && !corrected.startsWith("+84")) {
-      corrected = "+84" + corrected.slice(2);
+      corrected = `+84${corrected.slice(2)}`;
     } else if (
       corrected.startsWith("0") &&
       corrected.length === 11 &&

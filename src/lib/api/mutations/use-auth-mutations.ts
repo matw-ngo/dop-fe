@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useAuthStore } from "@/store/use-auth-store";
 import { authApi, socialAuthApi } from "../endpoints/auth";
-import type { paths } from "../v1.d.ts";
+import type { paths } from "../v1/dop";
 
 /**
  * Hook for user login
@@ -90,7 +90,7 @@ export function useRegister() {
     mutationFn: (
       userData: paths["/auth/register"]["post"]["requestBody"]["content"]["application/json"],
     ) => authApi.register(userData),
-    onSuccess: (data) => {
+    onSuccess: (_data) => {
       toast.success("Đăng ký thành công", {
         description: "Vui lòng kiểm tra email để xác thực tài khoản",
       });

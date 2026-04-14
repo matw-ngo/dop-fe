@@ -1,9 +1,8 @@
 "use client";
 
 import { useLocale } from "next-intl";
-import React from "react";
-import Footer from "@/components/layout/footer";
-import Header from "@/components/layout/header";
+import { Footer } from "@/components/layout/footer";
+import { Header } from "@/components/layout/header";
 import { getInsuranceNavbarConfig } from "@/configs/insurance-navbar-config";
 import { ComparisonContent } from "../../../../components/features/insurance/compare/components/ComparisonContent";
 import { ComparisonEmptyState } from "../../../../components/features/insurance/compare/components/ComparisonEmptyState";
@@ -56,7 +55,7 @@ export default function InsuranceComparePage() {
           )}
         </div>
       </div>
-      <Footer company="finzone" />
+      <Footer />
     </>
   );
 }

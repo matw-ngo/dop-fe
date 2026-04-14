@@ -8,11 +8,11 @@
  * @module client-integration
  */
 
-import type { TimeoutConfig, TimeoutContext } from "./types";
-import { resolveTimeout } from "./resolver";
-import { generateRequestId } from "./utils";
 import { createTimeoutController } from "./abort-timeout";
+import { resolveTimeout } from "./resolver";
 import { useTimeoutStore } from "./timeout-store";
+import type { TimeoutConfig, TimeoutContext } from "./types";
+import { generateRequestId } from "./utils";
 
 /**
  * Timeout-aware fetch wrapper
@@ -120,7 +120,7 @@ export async function timeoutFetch(
  */
 export function createRequestContext(
   endpoint: string,
-  method: string,
+  _method: string,
   config?: TimeoutConfig,
 ): TimeoutContext {
   const store = useTimeoutStore.getState();

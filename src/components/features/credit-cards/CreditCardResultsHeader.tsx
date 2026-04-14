@@ -178,7 +178,7 @@ export const CreditCardResultsHeader: React.FC<
               <Select
                 value={itemsPerPage.toString()}
                 onValueChange={(value) => {
-                  onItemsPerPageChange?.(parseInt(value));
+                  onItemsPerPageChange?.(parseInt(value, 10));
                 }}
               >
                 <SelectTrigger className="w-[140px]">

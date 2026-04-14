@@ -7,8 +7,8 @@
  * - Global configuration
  */
 
-import { TextDecoder, TextEncoder } from "util";
-import { afterAll, afterEach, beforeAll, beforeEach, vi } from "vitest";
+import { TextDecoder, TextEncoder } from "node:util";
+import { afterEach, beforeEach, vi } from "vitest";
 
 // Setup global mocks
 (global as any).TextEncoder = TextEncoder;
@@ -113,7 +113,7 @@ global.FileReader = class FileReader {
   LOADING = 1;
   DONE = 2;
 
-  readAsDataURL = vi.fn((file: File) => {
+  readAsDataURL = vi.fn((_file: File) => {
     this.readyState = this.LOADING;
     setTimeout(() => {
       this.result = "data:image/png;base64,mock-image-data";
@@ -123,7 +123,7 @@ global.FileReader = class FileReader {
     }, 100);
   });
 
-  readAsText = vi.fn((file: File) => {
+  readAsText = vi.fn((_file: File) => {
     this.readyState = this.LOADING;
     setTimeout(() => {
       this.result = "mock file content";

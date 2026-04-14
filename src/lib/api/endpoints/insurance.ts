@@ -9,19 +9,11 @@
 import { INSURANCE_PRODUCTS } from "@/data/insurance-products";
 // import apiClient from "@/lib/api/client"; // Using mock data
 import type {
-  CoveragePeriod,
-  FeeType,
   InsuranceCategoryInfo,
   InsuranceComparisonCriteria,
   InsuranceComparisonResult,
-  InsuranceError,
   InsuranceFilters,
   InsuranceProduct,
-  InsuranceProductDetailResponse,
-  InsuranceProductsResponse,
-  PaginationOptions,
-  SearchOptions,
-  VehicleType,
 } from "@/types/insurance";
 import {
   InsuranceCategory,
@@ -484,7 +476,7 @@ export const insuranceApi = {
 
       // Generate search suggestions if query provided
       let suggestions: string[] | undefined;
-      if (query && query.trim()) {
+      if (query?.trim()) {
         suggestions = [
           `Bảo hiểm ${query}`,
           `${query} giá tốt`,

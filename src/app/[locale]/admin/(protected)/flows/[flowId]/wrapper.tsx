@@ -1,33 +1,16 @@
 "use client";
 
 import type { ColumnDef } from "@tanstack/react-table";
-import {
-  ArrowLeftIcon,
-  EditIcon,
-  PlusIcon,
-  SettingsIcon,
-  Trash2Icon,
-} from "lucide-react";
+import { ArrowLeftIcon, EditIcon, SettingsIcon } from "lucide-react";
 import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { AdminBreadcrumb } from "@/components/admin/breadcrumb";
-import { EmptyState, ErrorState } from "@/components/admin/error-states";
+import { ErrorState } from "@/components/admin/error-states";
 import { FlowStatusBadge } from "@/components/admin/flow-status-badge";
 import { FlowDetailSkeleton } from "@/components/admin/loading-states";
 import { StepManagementDialog } from "@/components/admin/step-management-dialog";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -38,17 +21,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { DataTable } from "@/components/ui/data-table";
-import { Skeleton } from "@/components/ui/skeleton";
 import {
   useFlow,
   useFlowSteps,
   useUpdateStep,
 } from "@/hooks/admin/use-admin-flows";
-import {
-  adminWarningToast,
-  flowErrorToast,
-  flowSuccessToast,
-} from "@/lib/admin/admin-toast";
+import { flowErrorToast, flowSuccessToast } from "@/lib/admin/admin-toast";
 import { useLocalizedPath } from "@/lib/client-utils";
 import type { FlowDetail, FlowStatus, StepListItem } from "@/types/admin";
 
@@ -73,7 +51,7 @@ export default function FlowDetailWrapper({ flowId }: FlowDetailWrapperProps) {
   const [showDeleteDialog, setShowDeleteDialog] = useState<StepListItem | null>(
     null,
   );
-  const [showStatusDialog, setShowStatusDialog] = useState<{
+  const [_showStatusDialog, setShowStatusDialog] = useState<{
     step: StepListItem;
     newStatus: FlowStatus;
   } | null>(null);
@@ -101,16 +79,16 @@ export default function FlowDetailWrapper({ flowId }: FlowDetailWrapperProps) {
     setShowStepManagementDialog(true);
   };
 
-  const handleEditStep = (step: StepListItem) => {
+  const _handleEditStep = (step: StepListItem) => {
     // TODO: Implement step editing
     console.log("Edit step:", step);
   };
 
-  const handleDeleteStep = (step: StepListItem) => {
+  const _handleDeleteStep = (step: StepListItem) => {
     setShowDeleteDialog(step);
   };
 
-  const confirmDeleteStep = async () => {
+  const _confirmDeleteStep = async () => {
     if (!showDeleteDialog) return;
 
     try {
@@ -126,13 +104,13 @@ export default function FlowDetailWrapper({ flowId }: FlowDetailWrapperProps) {
     }
   };
 
-  const handleDuplicateStep = (step: StepListItem) => {
+  const _handleDuplicateStep = (step: StepListItem) => {
     // TODO: Implement duplicate step mutation
     console.log("Duplicate step:", step);
     flowSuccessToast.duplicated(step as any);
   };
 
-  const handleStatusChange = async (step: StepListItem, newStatus: string) => {
+  const _handleStatusChange = async (step: StepListItem, newStatus: string) => {
     try {
       await updateStepMutation.mutateAsync({
         id: step.id,
@@ -157,7 +135,7 @@ export default function FlowDetailWrapper({ flowId }: FlowDetailWrapperProps) {
     setShowStatusDialog({ step, newStatus: "inactive" });
   };
 
-  const handleBack = () => {
+  const _handleBack = () => {
     router.push(getLocalizedPath("/admin/flows"));
   };
 

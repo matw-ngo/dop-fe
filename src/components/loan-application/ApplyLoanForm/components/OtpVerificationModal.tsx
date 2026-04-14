@@ -1,17 +1,22 @@
 import type React from "react";
+import { useFormTheme } from "@/components/form-generation/themes";
 import { Modal, OtpContainer } from "@/components/ui";
-import { MODAL_SIZE } from "../constants";
 import type { OtpVerificationModalProps } from "../types";
 
 export const OtpVerificationModal: React.FC<OtpVerificationModalProps> = ({
   open,
   onClose,
   phoneNumber,
+  leadId,
+  token,
+  otpType = 2,
   onSuccess,
   onFailure,
   onExpired,
-  size = MODAL_SIZE.OTP,
+  size = 4,
 }) => {
+  const { theme } = useFormTheme();
+
   const handleClose = () => {
     onClose();
   };
@@ -20,12 +25,14 @@ export const OtpVerificationModal: React.FC<OtpVerificationModalProps> = ({
     <Modal
       open={open}
       onOpenChange={(isOpen) => !isOpen && handleClose()}
-      size={size}
+      size="md"
     >
       <OtpContainer
         phoneNumber={phoneNumber}
-        size={4}
-        otpType={2} // SMS OTP
+        leadId={leadId}
+        token={token}
+        size={size}
+        otpType={otpType as 1 | 2 | undefined}
         onSuccess={onSuccess}
         onFailure={onFailure}
         onExpired={onExpired}

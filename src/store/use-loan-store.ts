@@ -4,24 +4,6 @@
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 import type {
-  ApplicantProfile,
-  EligibilityResult,
-} from "@/lib/loan-products/eligibility-rules";
-import type {
-  LoanCalculationParams,
-  LoanCalculationResult,
-} from "@/lib/loan-products/interest-calculations";
-import type {
-  VietnameseLoanProduct,
-  VietnameseLoanType,
-} from "@/lib/loan-products/vietnamese-loan-products";
-import type {
-  DocumentTypeConfig,
-  DocumentVerificationStatus,
-  LoanApplicationStatus,
-  StatusConfig,
-} from "@/lib/loan-status/vietnamese-status-config";
-import type {
   DocumentUploadData,
   EmploymentInfoData,
   FinancialInfoData,
@@ -656,7 +638,7 @@ export const useLoanApplicationStore = create<LoanApplicationStore>()(
           return Math.round((completedSteps / totalSteps) * 100);
         },
 
-        getRequiredFields: (step: number) => {
+        getRequiredFields: (_step: number) => {
           // This would return the required fields for a specific step
           // Implementation would depend on the step configuration
           return [];

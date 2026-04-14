@@ -24,7 +24,6 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { CARD_CATEGORIES, CARD_NETWORKS } from "@/constants/credit-cards";
 import { cn } from "@/lib/utils";
 import type { CreditCard as CreditCardType } from "@/types/credit-card";
 

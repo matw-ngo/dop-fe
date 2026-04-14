@@ -169,7 +169,7 @@ export function calculateGrossToNet(params: {
   }
 
   // Handle NaN
-  if (typeof params.gross === "number" && isNaN(params.gross)) {
+  if (typeof params.gross === "number" && Number.isNaN(params.gross)) {
     return {
       gross: NaN,
       net: NaN,

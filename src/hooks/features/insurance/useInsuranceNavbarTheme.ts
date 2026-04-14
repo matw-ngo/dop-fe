@@ -25,7 +25,7 @@ export function useInsuranceNavbarTheme(): NavbarConfig {
         iconColor = resolvedTheme === "dark" ? "#2563eb" : "#1e40af";
       } else {
         // Use the theme's primary color
-        iconColor = theme.colors.primary || "#2563eb";
+        iconColor = theme.colors.primary?.[500] || "#2563eb";
       }
     }
 

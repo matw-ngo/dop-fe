@@ -12,9 +12,9 @@
  *   └── common/
  */
 
-import fs from "fs";
+import fs from "node:fs";
+import path from "node:path";
 import { getRequestConfig } from "next-intl/server";
-import path from "path";
 import { cache } from "react";
 
 const MESSAGES_DIR = path.join(process.cwd(), "messages");
@@ -154,6 +154,12 @@ async function loadCommon(locale: string): Promise<any> {
       }
     } else if (fileName === "phone-validation" && content.phoneValidation) {
       common.phoneValidation = content.phoneValidation;
+    } else if (fileName === "form-options") {
+      // Map form-options.json → common.formOptions
+      common.formOptions = content;
+    } else if (fileName === "common") {
+      // Flatten common.json directly into the common namespace
+      Object.assign(common, content);
     } else {
       // Default behavior for other files
       common[fileName] = content;
@@ -303,7 +309,8 @@ const loadAllTranslations = cache(async (locale: string) => {
   ) {
     // Create a merged structure for next-intl
     const merged: any = {
-      ...common,
+      ...common, // root-level access: home, loading, formOptions, loanPurposes, etc.
+      common, // also accessible via common.formOptions, common.loanPurposes, etc.
       pages,
       components,
       forms,
@@ -329,7 +336,7 @@ const loadAllTranslations = cache(async (locale: string) => {
     // Log what we loaded for debugging
     if (process.env.NODE_ENV === "development") {
       // Prepare feature details with sample keys
-      const featureDetails = Object.entries(features).map(
+      const _featureDetails = Object.entries(features).map(
         ([featureName, files]) => {
           const typedFiles = files as Record<string, any>;
           const fileNames = Object.keys(typedFiles);
@@ -353,7 +360,7 @@ const loadAllTranslations = cache(async (locale: string) => {
       );
 
       // Prepare page details with sample keys
-      const pageDetails = Object.entries(pages).map(([pageName, content]) => {
+      const _pageDetails = Object.entries(pages).map(([pageName, content]) => {
         const keys = Object.keys(content || {});
         return {
           name: pageName,
@@ -362,7 +369,7 @@ const loadAllTranslations = cache(async (locale: string) => {
       });
 
       // Prepare common details with sample keys
-      const commonDetails = Object.entries(common).map(
+      const _commonDetails = Object.entries(common).map(
         ([commonName, content]) => {
           const keys = Object.keys(content || {});
           return {
@@ -374,7 +381,7 @@ const loadAllTranslations = cache(async (locale: string) => {
       );
 
       // Prepare components details with sample keys
-      const componentsDetails = Object.entries(components).map(
+      const _componentsDetails = Object.entries(components).map(
         ([componentName, content]) => {
           const keys = Object.keys(content || {});
           return {
@@ -402,7 +409,7 @@ const loadAllTranslations = cache(async (locale: string) => {
       // });
 
       // Log the actual merged structure for debugging
-      const loanApp = merged.features?.["loan-application"];
+      const _loanApp = merged.features?.["loan-application"];
       // console.log(`🔍 Merged structure for ${locale}:`, {
       //   topLevelKeys: Object.keys(merged),
       //   featuresKeys: Object.keys(merged.features || {}),

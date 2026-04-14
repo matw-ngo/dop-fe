@@ -3,9 +3,9 @@
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import {
-  Logo,
-  InstagramIcon,
   FacebookIcon,
+  InstagramIcon,
+  Logo,
   TiktokIcon,
   YoutubeIcon,
 } from "@/components/icons/home";
@@ -16,14 +16,19 @@ import { useTenant } from "@/hooks/tenant/use-tenant";
  *
  * Refactored for multi-tenancy and i18n.
  */
-export function Footer() {
+interface FooterProps {
+  company?: string;
+  configOverride?: unknown;
+}
+
+export function Footer({ company: _company }: FooterProps) {
   const t = useTranslations("components.layout.footer");
   const tenant = useTenant();
   const t_company = useTranslations(`tenants.${tenant.id}.company`);
   const t_legal = useTranslations(`tenants.${tenant.id}.legal`);
   const t_products = useTranslations(`tenants.${tenant.id}.products`);
   const currentYear = new Date().getFullYear();
-  const primaryColor = tenant.theme.colors.primary;
+  const _primaryColor = tenant.theme.colors.primary;
 
   const socialMedia = tenant.features.socialMedia;
 
@@ -258,3 +263,5 @@ export function Footer() {
     </footer>
   );
 }
+
+export default Footer;

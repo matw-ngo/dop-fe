@@ -5,6 +5,8 @@
  * new provider-agnostic verification system.
  */
 
+import { mapEkycResponseToApiRequest } from "@/lib/ekyc/ekyc-api-mapper";
+import type { EkycResponse } from "@/lib/ekyc/types";
 import type {
   ProviderConfig,
   VerificationOptions,
@@ -13,9 +15,6 @@ import type {
   VerificationSession,
 } from "../types";
 import { VerificationStatus } from "../types";
-
-import { mapEkycResponseToApiRequest } from "@/lib/ekyc/ekyc-api-mapper";
-import type { EkycResponse } from "@/lib/ekyc/types";
 
 // import { EkycSdkManager } from "@/lib/ekyc/sdk-manager";
 // import { BiometricSecurityManager } from "@/lib/security/biometric-security";
@@ -34,11 +33,11 @@ class EkycSdkManager {
     return EkycSdkManager.instance;
   }
 
-  async initialize(config: any): Promise<void> {
+  async initialize(_config: any): Promise<void> {
     // Stub implementation
   }
 
-  async startFlow(options: any): Promise<any> {
+  async startFlow(_options: any): Promise<any> {
     // Stub implementation
     return { sessionId: "mock-session" };
   }
@@ -601,7 +600,7 @@ export class VNPTVerificationProvider implements VerificationProvider {
 
     // Validate date
     const date = new Date(isoDate);
-    return isNaN(date.getTime()) ? undefined : isoDate;
+    return Number.isNaN(date.getTime()) ? undefined : isoDate;
   }
 
   /**

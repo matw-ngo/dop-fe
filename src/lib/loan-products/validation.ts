@@ -312,7 +312,7 @@ export class VietnameseFinancialValidator {
     // Ensure valid date
     if (
       !sanitized.firstPaymentDate ||
-      isNaN(sanitized.firstPaymentDate.getTime())
+      Number.isNaN(sanitized.firstPaymentDate.getTime())
     ) {
       sanitized.firstPaymentDate = new Date();
     }
@@ -334,7 +334,7 @@ export class VietnameseFinancialValidator {
    */
   private static sanitizeNumber(value: any, min: number, max: number): number {
     const num = Number(value);
-    if (isNaN(num) || !isFinite(num)) return min;
+    if (Number.isNaN(num) || !Number.isFinite(num)) return min;
     return Math.max(min, Math.min(max, num));
   }
 
@@ -850,7 +850,7 @@ export class VietnameseFinancialValidator {
    */
   private static validateProductInterestRate(
     interestRate: any,
-    loanType: VietnameseLoanType,
+    _loanType: VietnameseLoanType,
     errors: ValidationError[],
   ): void {
     if (interestRate.annual < 0 || interestRate.annual > 100) {

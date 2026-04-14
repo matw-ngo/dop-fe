@@ -52,7 +52,7 @@ export const InsuranceDetails = React.memo(function InsuranceDetails({
   } = comparisonState;
 
   // Memoize expensive calculations
-  const categoryIcon = useMemo(() => {
+  const _categoryIcon = useMemo(() => {
     const icons = {
       health: <Heart className="w-5 h-5" />,
       vehicle: <Car className="w-5 h-5" />,

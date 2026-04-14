@@ -1,10 +1,5 @@
 import type React from "react";
-import {
-  type Control,
-  Controller,
-  FieldPath,
-  FieldValues,
-} from "react-hook-form";
+import type { Control } from "react-hook-form";
 import {
   FormControl,
   FormDescription,
@@ -52,7 +47,7 @@ export const FormComponentRenderer: React.FC<FormComponentRendererProps> = ({
   required = false,
 }) => {
   // Get the appropriate event handler for this component type
-  const eventHandlerName = getComponentEventHandler(componentType);
+  const _eventHandlerName = getComponentEventHandler(componentType);
 
   // Determine if component needs FormControl wrapper
   const needsFormControl = ![

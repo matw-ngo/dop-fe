@@ -8,7 +8,6 @@ import {
   ChevronUp,
   Download,
   FileText,
-  Filter,
   Info,
   Search,
   Shield,
@@ -33,13 +32,6 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import {
   Table,
@@ -234,7 +226,7 @@ const regulations = [
 export default function FeeTables() {
   const t = useTranslations("features.insurance.main");
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [_selectedCategory, _setSelectedCategory] = useState("all");
   const [expandedSections, setExpandedSections] = useState<string[]>([
     "compulsory",
   ]);

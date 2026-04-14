@@ -1,4 +1,4 @@
-import type { components } from "@/lib/api/v1.d.ts";
+import type { components } from "@/lib/api/v1/dop";
 
 type SubmitLeadInfoRequestBody =
   components["schemas"]["SubmitLeadInfoRequestBody"];
@@ -127,7 +127,8 @@ export function toCreateLeadRequest(
 ): CreateLeadRequestBody {
   return {
     flow_id: flowId,
-    domain: domain,
+    consent_id: flowId as any,
+    tenant: domain as any,
     deviece_info: {}, // Empty object as per requirements
     tracking_params: {}, // Empty object as per requirements
     info: mapFormToApi(formData, flowId, stepId),

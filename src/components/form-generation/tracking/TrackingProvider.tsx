@@ -1,5 +1,5 @@
 import { createContext, type ReactNode, useContext } from "react";
-import type { FieldTrackingEvent, TrackingBackend } from "../types";
+import type { TrackingBackend } from "../types";
 
 /**
  * Tracking context value interface

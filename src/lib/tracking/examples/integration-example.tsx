@@ -6,8 +6,6 @@
 
 "use client";
 
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { trackSavingsCalculator } from "../events";
 import { useTracking } from "../useTracking";
 
 // This would be added to the existing SavingsCalculator component
@@ -113,7 +111,7 @@ export const LoanCalculatorTrackingExample = () => {
   const { loan } = useTracking();
 
   // Track loan amount changes
-  const handleAmountChange = async (amount: number) => {
+  const _handleAmountChange = async (amount: number) => {
     // Update state
     setAmount(amount);
 
@@ -122,7 +120,7 @@ export const LoanCalculatorTrackingExample = () => {
   };
 
   // Track calculation
-  const handleCalculate = async (params: {
+  const _handleCalculate = async (params: {
     amount: number;
     period: number;
     rate: number;
@@ -137,7 +135,7 @@ export const LoanCalculatorTrackingExample = () => {
   };
 
   // Track form submission
-  const handleSubmit = async (formData: any) => {
+  const _handleSubmit = async (formData: any) => {
     // Submit form
     const result = await submitLoanForm(formData);
 
@@ -158,7 +156,7 @@ export const SalaryCalculatorTrackingExample = () => {
   const { salary } = useTracking();
 
   // Track calculator type switch
-  const handleCalculatorTypeChange = async (
+  const _handleCalculatorTypeChange = async (
     type: "gross-to-net" | "net-to-gross",
   ) => {
     if (type === "gross-to-net") {
@@ -169,22 +167,22 @@ export const SalaryCalculatorTrackingExample = () => {
   };
 
   // Track amount input
-  const handleAmountInput = async (amount: number, type: "gross" | "net") => {
+  const _handleAmountInput = async (amount: number, type: "gross" | "net") => {
     await salary.inputAmount(amount, type);
   };
 
   // Track dependents input
-  const handleDependentsChange = async (dependents: number) => {
+  const _handleDependentsChange = async (dependents: number) => {
     await salary.inputDependents(dependents);
   };
 
   // Track region selection
-  const handleRegionSelect = async (region: string) => {
+  const _handleRegionSelect = async (region: string) => {
     await salary.selectRegion(region);
   };
 
   // Track calculation
-  const handleCalculate = async (params: {
+  const _handleCalculate = async (params: {
     amount: number;
     type: "gross" | "net";
     dependents?: number;

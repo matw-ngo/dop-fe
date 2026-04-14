@@ -4,8 +4,8 @@
  * Implements cryptographically secure session management for OTP verification
  */
 
+import crypto from "node:crypto";
 import { parse, serialize } from "cookie";
-import crypto from "crypto";
 import { type NextRequest, NextResponse } from "next/server";
 
 // Session configuration

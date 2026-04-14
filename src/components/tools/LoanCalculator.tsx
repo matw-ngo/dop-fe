@@ -19,7 +19,6 @@ import {
 import { useTranslations } from "next-intl";
 import type React from "react";
 import { useEffect, useMemo, useState } from "react";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -37,7 +36,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Separator } from "@/components/ui/separator";
 import { Slider } from "@/components/ui/slider";
 import {
   Table,
@@ -47,7 +45,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { formatCurrency } from "@/lib/utils";
 import { useFinancialToolsStore } from "@/store/use-financial-tools-store";
 import type {
@@ -295,7 +292,7 @@ const LoanCalculatorInner: React.FC<LoanCalculatorProps> = ({ className }) => {
                       value={formatCurrency(amount)}
                       onChange={(e) => {
                         const value =
-                          parseInt(e.target.value.replace(/\D/g, "")) || 0;
+                          parseInt(e.target.value.replace(/\D/g, ""), 10) || 0;
                         setAmount(
                           Math.min(10_000_000_000, Math.max(1_000_000, value)),
                         );
@@ -334,7 +331,7 @@ const LoanCalculatorInner: React.FC<LoanCalculatorProps> = ({ className }) => {
                 </Label>
                 <Select
                   value={term.toString()}
-                  onValueChange={(value) => setTerm(parseInt(value))}
+                  onValueChange={(value) => setTerm(parseInt(value, 10))}
                 >
                   <SelectTrigger className="h-12 border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-4 focus:ring-blue-100 dark:focus:ring-blue-900/30 rounded-xl transition-all duration-200">
                     <SelectValue placeholder={t("form.selectTerm")} />

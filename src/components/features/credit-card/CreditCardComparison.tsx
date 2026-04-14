@@ -36,9 +36,9 @@ export const CreditCardComparison: React.FC<CreditCardComparisonProps> = ({
                       <CreditCardIcon className="w-6 h-6 text-primary" />
                     </div>
                     <div>
-                      <p className="font-semibold">{card!.name}</p>
+                      <p className="font-semibold">{card?.name}</p>
                       <p className="text-sm text-muted-foreground">
-                        {card!.issuer}
+                        {card?.issuer}
                       </p>
                     </div>
                   </div>
@@ -51,7 +51,7 @@ export const CreditCardComparison: React.FC<CreditCardComparisonProps> = ({
               <td className="p-4 border-b font-medium">{t("annualFee")}</td>
               {cardsToCompare.map((card, index) => (
                 <td key={index} className="text-center p-4 border-b">
-                  {card!.annualFee}
+                  {card?.annualFee}
                 </td>
               ))}
             </tr>
@@ -59,19 +59,19 @@ export const CreditCardComparison: React.FC<CreditCardComparisonProps> = ({
               <td className="p-4 border-b font-medium">{t("interestRate")}</td>
               {cardsToCompare.map((card, index) => (
                 <td key={index} className="text-center p-4 border-b">
-                  {card!.interestRate}
+                  {card?.interestRate}
                 </td>
               ))}
             </tr>
             {cardsToCompare.some(
-              (card) => card!.rewardsProgram?.type === "cashback",
+              (card) => card?.rewardsProgram?.type === "cashback",
             ) && (
               <tr>
                 <td className="p-4 border-b font-medium">{t("cashback")}</td>
                 {cardsToCompare.map((card, index) => (
                   <td key={index} className="text-center p-4 border-b">
-                    {card!.rewardsProgram?.type === "cashback"
-                      ? `${card!.rewardsProgram.earnRate}/1000 VND`
+                    {card?.rewardsProgram?.type === "cashback"
+                      ? `${card?.rewardsProgram.earnRate}/1000 VND`
                       : "N/A"}
                   </td>
                 ))}
@@ -82,7 +82,7 @@ export const CreditCardComparison: React.FC<CreditCardComparisonProps> = ({
               {cardsToCompare.map((card, index) => (
                 <td key={index} className="text-center p-4 border-b">
                   <ul className="text-sm space-y-1">
-                    {card!.features.map((feature: string, idx: number) => (
+                    {card?.features.map((feature: string, idx: number) => (
                       <li
                         key={idx}
                         className="flex items-center justify-start gap-1"

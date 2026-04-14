@@ -7,11 +7,13 @@
 "use client";
 
 import { Loader2 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { FieldFactory } from "./factory/FieldFactory";
 import { FormSection } from "./layouts/FormSection";
 import { DynamicLayout } from "./layouts/LayoutEngine";
 import { submitButtonVariants } from "./styles/variants";
+import { useFormTheme } from "./themes/ThemeProvider";
 import type { DynamicFormConfig, FormField } from "./types";
 import { cn, evaluateConditions } from "./utils/helpers";
 import { ValidationEngine } from "./validation/ValidationEngine";
@@ -74,6 +76,9 @@ export function DynamicForm({
   disabled = false,
   readOnly = false,
 }: DynamicFormProps) {
+  const t = useTranslations("pages.onboarding.navigation");
+  const { theme } = useFormTheme();
+
   // Check if this is a multi-step wizard
   const isMultiStep = config.steps && config.steps.length > 0;
 
@@ -124,7 +129,7 @@ export function DynamicForm({
     if (Object.keys(defaultValues).length > 0) {
       setFormData((prev) => ({ ...prev, ...defaultValues }));
     }
-  }, [config.fields, config.sections]);
+  }, [config.fields, config.sections, formData]);
 
   // Cleanup abort controllers on unmount
   useEffect(() => {
@@ -151,47 +156,6 @@ export function DynamicForm({
 
     return rules;
   }, [config.fields, config.sections]);
-
-  // Handle field change
-  const handleFieldChange = useCallback(
-    (fieldName: string, value: any) => {
-      const newFormData = { ...formData, [fieldName]: value };
-      setFormData(newFormData);
-
-      // Call custom onChange if provided
-      if (customOnChange) {
-        customOnChange(fieldName, value, newFormData);
-      } else if (config.onChange) {
-        config.onChange(fieldName, value);
-      }
-
-      // Clear error when field changes
-      if (errors[fieldName]) {
-        const newErrors = { ...errors };
-        delete newErrors[fieldName];
-        setErrors(newErrors);
-      }
-
-      // Validate on change if enabled
-      if (config.validationMode === "onChange") {
-        validateField(fieldName, value);
-      }
-    },
-    [formData, customOnChange, config, errors],
-  );
-
-  // Handle field blur
-  const handleFieldBlur = useCallback(
-    (fieldName: string) => {
-      setTouched((prev) => ({ ...prev, [fieldName]: true }));
-
-      // Validate on blur if enabled
-      if (config.validationMode === "onBlur") {
-        validateField(fieldName, formData[fieldName]);
-      }
-    },
-    [config.validationMode, formData],
-  );
 
   // Validate single field with race condition prevention
   const validateField = useCallback(
@@ -233,6 +197,47 @@ export function DynamicForm({
       }
     },
     [fieldValidationRules],
+  );
+
+  // Handle field change
+  const handleFieldChange = useCallback(
+    (fieldName: string, value: any) => {
+      const newFormData = { ...formData, [fieldName]: value };
+      setFormData(newFormData);
+
+      // Call custom onChange if provided
+      if (customOnChange) {
+        customOnChange(fieldName, value, newFormData);
+      } else if (config.onChange) {
+        config.onChange(fieldName, value);
+      }
+
+      // Clear error when field changes
+      if (errors[fieldName]) {
+        const newErrors = { ...errors };
+        delete newErrors[fieldName];
+        setErrors(newErrors);
+      }
+
+      // Validate on change if enabled
+      if (config.validationMode === "onChange") {
+        validateField(fieldName, value);
+      }
+    },
+    [formData, customOnChange, config, errors, validateField],
+  );
+
+  // Handle field blur
+  const handleFieldBlur = useCallback(
+    (fieldName: string) => {
+      setTouched((prev) => ({ ...prev, [fieldName]: true }));
+
+      // Validate on blur if enabled
+      if (config.validationMode === "onBlur") {
+        validateField(fieldName, formData[fieldName]);
+      }
+    },
+    [config.validationMode, formData, validateField],
   );
 
   // Handle form submission
@@ -370,7 +375,7 @@ export function DynamicForm({
 
   // Render submit button
   const submitButton = config.submitButton || {};
-  const submitLabel = submitButton.label || "Submit";
+  const submitLabel = submitButton.label || t("complete");
   const submitPosition = submitButton.position || "right";
 
   const positionClasses = {
@@ -417,10 +422,18 @@ export function DynamicForm({
         <button
           type="submit"
           disabled={isSubmitting || submitButton.disabled || disabled}
-          className={cn(submitButtonVariants(), submitButton.className)}
+          className={cn(
+            // "h-14 px-6 text-white font-semibold rounded-lg transition-colors",
+            "px-6 text-white font-semibold rounded-lg transition-colors",
+            "disabled:opacity-50 disabled:cursor-not-allowed",
+            submitButton.className,
+          )}
+          style={{
+            backgroundColor: theme.colors.primary,
+          }}
         >
           {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          {isSubmitting ? "Submitting..." : submitLabel}
+          {isSubmitting ? t("submitting") || "Submitting..." : submitLabel}
         </button>
       </div>
     </form>

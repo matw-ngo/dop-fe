@@ -430,7 +430,7 @@ export class VietnameseEligibilityEngine {
    */
   private static checkBasicEligibility(
     profile: ApplicantProfile,
-    product: VietnameseLoanProduct,
+    _product: VietnameseLoanProduct,
   ): EligibilityCriterion[] {
     const criteria: EligibilityCriterion[] = [];
 
@@ -555,28 +555,33 @@ export class VietnameseEligibilityEngine {
     const criteria: EligibilityCriterion[] = [];
 
     // Employment type check
-    if (
-      product.eligibility.employmentTypes &&
-      product.eligibility.employmentTypes.length > 0
-    ) {
+    const validEmploymentTypes =
+      product.eligibility.employmentTypes?.filter((type) =>
+        ["formal", "informal", "self_employed", "business_owner"].includes(
+          type,
+        ),
+      ) || [];
+
+    if (validEmploymentTypes && validEmploymentTypes.length > 0) {
+      const isEmploymentTypeEligible = validEmploymentTypes.includes(
+        profile.employmentInfo.employmentType as
+          | "formal"
+          | "informal"
+          | "self_employed"
+          | "business_owner",
+      );
       criteria.push({
         name: "Employment Type",
         nameVi: "Loại hình việc làm",
-        passed: product.eligibility.employmentTypes.includes(
-          profile.employmentInfo.employmentType,
-        ),
+        passed: isEmploymentTypeEligible,
         actualValue: profile.employmentInfo.employmentType,
-        requiredValue: product.eligibility.employmentTypes,
+        requiredValue: validEmploymentTypes,
         importance: "critical",
         weight: 0.1,
-        reason: product.eligibility.employmentTypes.includes(
-          profile.employmentInfo.employmentType,
-        )
+        reason: isEmploymentTypeEligible
           ? undefined
           : `Employment type ${profile.employmentInfo.employmentType} not eligible`,
-        reasonVi: product.eligibility.employmentTypes.includes(
-          profile.employmentInfo.employmentType,
-        )
+        reasonVi: isEmploymentTypeEligible
           ? undefined
           : `Loại hình việc làm ${profile.employmentInfo.employmentType} không đủ điều kiện`,
       });
@@ -1389,7 +1394,7 @@ export class VietnameseEligibilityEngine {
   private static generateNextSteps(
     eligible: boolean,
     confidence: "low" | "medium" | "high",
-    failedCriteria: EligibilityCriterion[],
+    _failedCriteria: EligibilityCriterion[],
   ): string[] {
     const nextSteps: string[] = [];
 
@@ -1444,7 +1449,7 @@ export class VietnameseEligibilityEngine {
   private static generateNextStepsVi(
     eligible: boolean,
     confidence: "low" | "medium" | "high",
-    failedCriteria: EligibilityCriterion[],
+    _failedCriteria: EligibilityCriterion[],
   ): string[] {
     const nextSteps: string[] = [];
 

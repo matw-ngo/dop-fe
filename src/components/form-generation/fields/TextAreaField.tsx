@@ -34,6 +34,8 @@ export function TextAreaField({
     (rule) => rule.type === ValidationRuleType.REQUIRED,
   );
 
+  // CSS variables are already injected by FormThemeProvider parent
+
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     onChange(e.target.value);
   };
@@ -53,8 +55,12 @@ export function TextAreaField({
     // Base focus styles
     "focus:outline-none",
     // Placeholder styles
-    "placeholder:text-gray-400",
+    "placeholder:text-[var(--form-placeholder)]",
     "placeholder:font-medium",
+    // Text and selection colors
+    "text-[var(--form-text)]",
+    "selection:bg-[var(--form-selection-bg)]",
+    "selection:text-white",
     // Disabled and readonly states
     "disabled:cursor-not-allowed",
     "disabled:opacity-60",
@@ -66,22 +72,22 @@ export function TextAreaField({
     // Border radius from theme
     "rounded-[8px]",
     // Border color
-    "border-[#bfd1cc]",
+    "border-[var(--form-border)]",
     // Default background
-    "bg-white",
+    "!bg-[var(--form-bg)]",
     // Padding
     "px-4",
     "py-3",
     // Focus state
-    "focus:border-[#017848]",
+    "focus:border-[var(--form-primary)]",
     "focus:ring-2",
-    "focus:ring-[#017848]/20",
+    "focus:ring-[var(--form-primary)]/20",
     // Error state
     error && "border-red-500",
     error && "focus:ring-red-500/20",
     // Override background for special states
-    isDisabled && "!bg-gray-100",
-    isReadOnly && "!bg-gray-50",
+    isDisabled && "!bg-[var(--form-disabled-bg)]",
+    isReadOnly && "!bg-[var(--form-readonly-bg)]",
   ].filter(Boolean);
 
   // Minimum height based on rows option
@@ -93,7 +99,7 @@ export function TextAreaField({
       <div className="relative w-full">
         <label
           htmlFor={field.id}
-          className="absolute top-3 left-4 text-xs font-medium text-[#017848] pointer-events-none z-10"
+          className="absolute top-3 left-4 text-xs font-medium text-[var(--form-primary)] pointer-events-none z-10"
         >
           {field.label}
           {isRequired && <span className="text-red-500 ml-0.5">*</span>}
@@ -120,7 +126,7 @@ export function TextAreaField({
           )}
         />
         {showCount && (
-          <div className="absolute bottom-3 right-3 text-xs text-gray-500 bg-white px-1">
+          <div className="absolute bottom-3 right-3 text-xs text-[var(--form-text-secondary)] bg-[var(--form-bg)] px-1">
             {currentLength}/{maxLength}
           </div>
         )}
@@ -151,7 +157,7 @@ export function TextAreaField({
         )}
       />
       {showCount && (
-        <div className="absolute bottom-3 right-3 text-xs text-gray-500 bg-white px-1">
+        <div className="absolute bottom-3 right-3 text-xs text-[var(--form-text-secondary)] bg-[var(--form-bg)] px-1">
           {currentLength}/{maxLength}
         </div>
       )}

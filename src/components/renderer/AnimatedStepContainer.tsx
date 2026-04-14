@@ -87,7 +87,6 @@ function getAnimationVariant(
             center: { y: 0, opacity: 1 },
             exit: { y: 50, opacity: 0 },
           };
-        case "up":
         default:
           return {
             enter: { y: 50, opacity: 0 },
@@ -120,8 +119,6 @@ function getAnimationVariant(
         center: { rotateY: 0, opacity: 1 },
         exit: { rotateY: -90, opacity: 0 },
       };
-
-    case "fade":
     default:
       return defaultVariants.fade;
   }
@@ -130,9 +127,10 @@ function getAnimationVariant(
 /**
  * Get animation duration in seconds
  */
-function getAnimationDuration(duration?: number): number {
-  if (!duration) return 0.3;
-  return duration / 1000; // Convert ms to seconds
+function getAnimationDuration(duration?: number | string): number {
+  if (duration === undefined || duration === null || duration === "")
+    return 0.3;
+  return Number(duration) / 1000; // Convert ms to seconds
 }
 
 /**
@@ -194,7 +192,7 @@ export const AnimatedStepContainer: React.FC<AnimatedStepContainerProps> = ({
   const variants = getAnimationVariant(animation.type, animation.direction);
   const duration = getAnimationDuration(animation.duration);
   const easing = getEasing(animation.easing);
-  const delay = (animation.delay || 0) / 1000; // Convert ms to seconds
+  const delay = Number(animation.delay || 0) / 1000; // Convert ms to seconds
 
   return (
     <AnimatePresence mode="wait">

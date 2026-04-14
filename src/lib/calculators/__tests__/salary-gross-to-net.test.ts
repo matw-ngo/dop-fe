@@ -87,7 +87,7 @@ describe("Vietnamese Gross to Net Salary Calculator", () => {
       [2, 4_160_000],
       [3, 3_640_000],
       [4, 3_250_000],
-    ])("should handle minimum wage for region %d", (region, minimumWage) => {
+    ])("should handle minimum wage for region %d", (region, _minimumWage) => {
       // Gross: 20,000,000 VND (same across regions)
       // Region: varies
       // Dependents: 1

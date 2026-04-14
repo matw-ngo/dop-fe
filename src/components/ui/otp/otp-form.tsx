@@ -1,9 +1,9 @@
 import React, { useEffect, useRef } from "react";
-import { useLocalizedOtpTypes } from "@/hooks/phone/use-localized-telcos";
-import { useOtpFormTranslations } from "@/hooks/otp/use-form-translations";
-import { Button } from "../button";
 import { useFormTheme } from "@/components/form-generation/themes";
+import { useOtpFormTranslations } from "@/hooks/otp/use-form-translations";
+import { useLocalizedOtpTypes } from "@/hooks/phone/use-localized-telcos";
 import { cn } from "@/lib/utils";
+import { Button } from "../button";
 
 // ============================================================================
 // TYPE DEFINITIONS
@@ -68,12 +68,12 @@ export const OtpForm: React.FC<OtpFormProps> = ({
   // ============================================================================
 
   const t = useOtpFormTranslations();
-  const otpTypes = useLocalizedOtpTypes();
+  const _otpTypes = useLocalizedOtpTypes();
   const { theme } = useFormTheme();
 
   const primaryColor = theme.colors.primary;
   const textPrimary = theme.colors.textPrimary || "#073126";
-  const textSecondary = theme.colors.textSecondary || "#4d7e70";
+  const _textSecondary = theme.colors.textSecondary || "#4d7e70";
   const borderColor = theme.colors.border || "#bfd1cc";
   const errorColor = theme.colors.error || "#ff7474";
 
@@ -232,7 +232,7 @@ export const OtpForm: React.FC<OtpFormProps> = ({
     if (isShowOtpInput && (otpStatus === "failed" || otpStatus === "expired")) {
       resetOtpInput();
     }
-  }, [otpStatus]);
+  }, [otpStatus, isShowOtpInput, resetOtpInput]);
 
   // Handle expiration
   useEffect(() => {
@@ -331,19 +331,25 @@ export const OtpForm: React.FC<OtpFormProps> = ({
             ))}
           </div>
 
-          {/* Error Message */}
+          {/* Error Message with aria-live for screen readers */}
           {otpStatus === "failed" && (
             <div
               className="mt-2 text-center text-sm font-medium"
               style={{ color: errorColor }}
+              role="alert"
+              aria-live="assertive"
             >
               {t.errorMessage}
             </div>
           )}
 
-          {/* Success Message */}
+          {/* Success Message with aria-live */}
           {otpStatus === "success" && (
-            <div className="mt-4 text-center text-green-700 text-sm font-semibold">
+            <div
+              className="mt-4 text-center text-green-700 text-sm font-semibold"
+              role="status"
+              aria-live="polite"
+            >
               {t.successMessage}
             </div>
           )}
@@ -381,11 +387,13 @@ export const OtpForm: React.FC<OtpFormProps> = ({
                 </p>
               )}
 
-              {/* Countdown Timer */}
+              {/* Countdown Timer with aria-live for screen readers */}
               {timeRemaining > 0 && (
                 <div
                   className="text-sm flex gap-1 items-center justify-center"
                   style={{ color: textPrimary }}
+                  aria-live="polite"
+                  aria-atomic="true"
                 >
                   <span>{t.timeRemaining}</span>
                   <strong
@@ -401,9 +409,9 @@ export const OtpForm: React.FC<OtpFormProps> = ({
         </div>
       )}
 
-      {/* OTP Expired State */}
+      {/* OTP Expired State with aria-live */}
       {otpStatus === "expired" && (
-        <div className="mt-4">
+        <div className="mt-4" role="alert" aria-live="assertive">
           <p className="text-sm mb-3" style={{ color: errorColor }}>
             {t.expiredMessage}
           </p>
@@ -430,9 +438,9 @@ export const OtpForm: React.FC<OtpFormProps> = ({
         </div>
       )}
 
-      {/* Force Refresh OTP State */}
+      {/* Force Refresh OTP State with aria-live */}
       {otpStatus === "force_refresh" && (
-        <div className="mt-4">
+        <div className="mt-4" role="alert" aria-live="assertive">
           <p className="text-sm mb-3" style={{ color: errorColor }}>
             {t.forceRefreshMessage}
           </p>
@@ -496,7 +504,6 @@ export const OtpFormContainer: React.FC = () => {
   }, [timeRemaining, otpStatus]);
 
   const handleSubmit = async (otp: string) => {
-    console.log("Submitting OTP:", otp);
     setOtpStatus("submitting");
 
     // Simulate API call
@@ -512,7 +519,6 @@ export const OtpFormContainer: React.FC = () => {
   };
 
   const handleResend = () => {
-    console.log("Resending OTP");
     setOtpCount((prev) => prev + 1);
     setTimeRemaining(300);
     setOtpStatus("waiting");
@@ -539,7 +545,7 @@ export const OtpFormContainer: React.FC = () => {
           isSubmitting={otpStatus === "submitting"}
           onSubmit={handleSubmit}
           onResend={handleResend}
-          onInput={(otp) => console.log("Current OTP:", otp)}
+          onInput={(_otp) => {}}
           onExpired={handleExpired}
         />
       </div>

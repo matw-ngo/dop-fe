@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { useFormWizardStore } from "../store/use-form-wizard-store";
 import type { DynamicFormConfig } from "../types";
+import { ErrorSummary } from "./ErrorSummary";
 import { StepContent } from "./StepContent";
 import { WizardNavigation } from "./WizardNavigation";
 import { WizardProgress } from "./WizardProgress";
@@ -13,6 +14,12 @@ export interface StepWizardProps {
 
   /** Initial form data */
   initialData?: Record<string, any>;
+
+  /** Total steps in flow (for cross-page navigation) */
+  totalSteps?: number;
+
+  /** Current step index in flow (for cross-page navigation) */
+  currentStepIndex?: number;
 
   /** Completion handler */
   onComplete?: (data: Record<string, any>) => void | Promise<void>;
@@ -27,6 +34,8 @@ export interface StepWizardProps {
 export function StepWizard({
   config,
   initialData = {},
+  totalSteps,
+  currentStepIndex,
   onComplete,
   onStepChange,
   className,
@@ -37,16 +46,26 @@ export function StepWizard({
   // Initialize wizard on mount
   useEffect(() => {
     if (config.steps && config.steps.length > 0) {
-      // Only initialize if wizardId changes or it's a fresh start
-      initWizard(config.id || "wizard", config.steps, initialData);
+      // Pass totalSteps and currentStepIndex to initWizard for proper cross-page navigation
+      initWizard(
+        config.id || "wizard",
+        config.steps,
+        initialData,
+        totalSteps,
+        currentStepIndex,
+      );
     }
 
-    return () => {
-      // Cleanup on unmount
-      resetWizard();
-    };
+    // Note: We don't reset wizard on unmount to preserve form data across step navigation
+    // The wizard state should persist until explicitly reset (e.g., on flow completion)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [config.id, config.steps, initWizard, resetWizard]); // Exclude initialData to avoid loop
+  }, [
+    config.id,
+    JSON.stringify(config.steps),
+    initWizard,
+    totalSteps,
+    currentStepIndex,
+  ]); // Exclude initialData to avoid loop
 
   // Call step change callback
   useEffect(() => {
@@ -73,6 +92,11 @@ export function StepWizard({
   }
 
   const currentStepConfig = steps[currentStep];
+
+  // Error display configuration
+  const errorDisplay = config.errorDisplay || { mode: "inline" }; // Default to inline only
+  const showErrorSummary =
+    errorDisplay.mode !== "inline" && errorDisplay.summary?.enabled !== false;
   // const progress = getProgress(); // This line is no longer needed
 
   return (
@@ -87,11 +111,32 @@ export function StepWizard({
         />
       )}
 
+      {/* Error Summary (Top) */}
+      {showErrorSummary && errorDisplay.summary?.position !== "bottom" && (
+        <ErrorSummary
+          position={errorDisplay.summary?.position || "sticky-top"}
+          clickable={errorDisplay.summary?.clickable !== false}
+          maxErrors={errorDisplay.summary?.maxErrors || 5}
+          showFieldLabels={errorDisplay.summary?.showFieldLabels !== false}
+        />
+      )}
+
       {/* Current Step Content */}
       <StepContent
         step={currentStepConfig}
         showTitle={config.navigation?.showStepHeader}
+        namespace={config.i18n?.namespace}
       />
+
+      {/* Error Summary (Bottom) */}
+      {showErrorSummary && errorDisplay.summary?.position === "bottom" && (
+        <ErrorSummary
+          position="bottom"
+          clickable={errorDisplay.summary?.clickable !== false}
+          maxErrors={errorDisplay.summary?.maxErrors || 5}
+          showFieldLabels={errorDisplay.summary?.showFieldLabels !== false}
+        />
+      )}
 
       {/* Navigation Buttons */}
       <WizardNavigation config={config.navigation} onComplete={onComplete} />

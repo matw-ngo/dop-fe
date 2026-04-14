@@ -90,9 +90,9 @@ const DEFAULT_CONFIG: PerformanceConfig = {
 
 // Performance monitoring state
 class PerformanceMonitor {
-  private config: PerformanceConfig;
+  public config: PerformanceConfig;
   private metrics: PerformanceMetrics;
-  private performanceMarks: Map<string, number> = new Map();
+  public performanceMarks: Map<string, number> = new Map();
   private cacheStats = {
     hits: 0,
     misses: 0,
@@ -342,7 +342,7 @@ class PerformanceMonitor {
 
   private suggestOptimizations(
     type: PerformanceEntry["type"],
-    duration: number,
+    _duration: number,
   ): void {
     const suggestions = {
       "theme-switch": [
@@ -381,7 +381,7 @@ class PerformanceMonitor {
   /**
    * Track an individual update within a RAF batch
    */
-  trackRAFUpdate(property?: string, value?: any): void {
+  trackRAFUpdate(_property?: string, _value?: any): void {
     this.rafTiming.updateCount++;
   }
 
@@ -773,9 +773,7 @@ export const debugUtils = {
 
     // Find slowest operations
     const slowOperations = metrics.performanceHistory
-      .filter(
-        (entry) => entry.duration > monitor["config"].slowOperationThreshold,
-      )
+      .filter((entry) => entry.duration > monitor.config.slowOperationThreshold)
       .sort((a, b) => b.duration - a.duration)
       .slice(0, 5);
 

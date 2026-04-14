@@ -144,7 +144,7 @@ export const Vertical: Story = {
         <Button>Middle</Button>
         <Button>Bottom</Button>
       </ButtonGroup>
-      <ButtonGroup className="flex-col" variant="outline">
+      <ButtonGroup className="flex-col">
         <Button variant="outline">Top</Button>
         <Button variant="outline">Middle</Button>
         <Button variant="outline">Bottom</Button>

@@ -90,7 +90,7 @@ export function getStepMetadata(
     description: getStepDescription(step, t),
     icon: getStepIcon(step),
     category: category as any,
-    optional: step.optional || false,
+    optional: false,
     weight: calculateStepWeight(visibleFieldNames),
   };
 }
@@ -118,7 +118,7 @@ export function calculateStepWeight(fieldNames: string[]): number {
  */
 function hasMatchingFields(
   stepFields: string[],
-  patternFields: FieldType[],
+  patternFields: readonly FieldType[],
 ): boolean {
   // If step has no fields, don't match
   if (stepFields.length === 0) return false;
@@ -175,10 +175,18 @@ export function classifyStep(step: MappedStep): {
 export function getStepNavigation(
   step: MappedStep,
   t: (key: string) => string,
+  totalSteps?: number,
+  currentStepIndex?: number,
 ) {
+  // Determine if this is the last step (excluding confirmation)
+  const isLastStep =
+    totalSteps && currentStepIndex !== undefined
+      ? currentStepIndex === totalSteps - 2 // -2 because confirmation is added separately
+      : false;
+
   return {
-    showSkip: step.optional || false,
-    nextText: t("navigation.next"),
+    showSkip: false,
+    nextText: isLastStep ? t("navigation.complete") : t("navigation.next"),
     previousText: t("navigation.previous"),
     skipText: t("navigation.skip"),
     submitText: t("navigation.submit"),

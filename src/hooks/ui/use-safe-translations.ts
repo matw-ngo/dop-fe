@@ -15,7 +15,7 @@ export function useSafeTranslations() {
     const safeFn = (key: string, values?: Record<string, any>) => {
       try {
         return tRaw(key, values);
-      } catch (error) {
+      } catch (_error) {
         // Return key as fallback for missing translations
         console.warn(
           `Translation key "${key}" not found, using key as fallback`,

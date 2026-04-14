@@ -4,12 +4,12 @@ import type React from "react";
 import { forwardRef } from "react";
 import { cn } from "@/components/renderer/component-variants/create-variant";
 import { useThemeUtils } from "@/components/renderer/theme/use-theme";
-import type { LayoutProps, ResponsiveValue } from "@/types/ui-theme";
+import type { ResponsiveValue } from "@/types/ui-theme";
 
 export interface GridProps extends React.HTMLAttributes<HTMLDivElement> {
   as?: React.ElementType;
   columns?: ResponsiveValue<number | "auto" | string>;
-  gap?: ResponsiveValue<keyof React.CSSProperties["gap"]>;
+  gap?: ResponsiveValue<string | number>;
   autoFlow?: "row" | "col" | "row-dense" | "col-dense";
   autoRows?: ResponsiveValue<string>;
   autoColumns?: ResponsiveValue<string>;
@@ -106,10 +106,11 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(
     };
 
     // Generate gap classes
-    const getGapClass = (
-      g: ResponsiveValue<keyof React.CSSProperties["gap"]>,
-    ) => {
+    const getGapClass = (g: ResponsiveValue<string | number>) => {
       if (typeof g === "string") {
+        return `gap-${g}`;
+      }
+      if (typeof g === "number") {
         return `gap-${g}`;
       }
       // Handle responsive object

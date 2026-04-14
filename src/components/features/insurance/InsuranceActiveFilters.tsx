@@ -2,10 +2,7 @@
 
 import {
   Car,
-  Clock,
   DollarSign,
-  Globe,
-  HeadphonesIcon,
   Heart,
   HelpCircle,
   Home,
@@ -42,8 +39,6 @@ import {
 } from "@/constants/insurance";
 import { cn } from "@/lib/utils";
 import {
-  CoveragePeriod,
-  FeeType,
   InsuranceCategory,
   type InsuranceFilters,
   type InsuranceType,
@@ -83,7 +78,7 @@ interface FilterGroup {
 
 const InsuranceActiveFilters: React.FC<ActiveFiltersProps> = React.memo(
   ({ filters, onFiltersChange, onClearAll, maxDisplay = 10, className }) => {
-    const t = useTranslations("features.insurance.listing");
+    const _t = useTranslations("features.insurance.listing");
 
     // Format currency values
     const formatCurrency = useCallback((value: number) => {
@@ -113,7 +108,7 @@ const InsuranceActiveFilters: React.FC<ActiveFiltersProps> = React.memo(
     );
 
     // Get category icon
-    const getCategoryIcon = useCallback((category: InsuranceCategory) => {
+    const _getCategoryIcon = useCallback((category: InsuranceCategory) => {
       switch (category) {
         case InsuranceCategory.VEHICLE:
           return <Car className="h-3 w-3" />;

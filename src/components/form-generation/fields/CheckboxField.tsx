@@ -31,24 +31,18 @@ export function CheckboxField({
     (rule) => rule.type === ValidationRuleType.REQUIRED,
   );
 
-  // Base checkbox styles for error state
-  const checkboxStyles = cn(
-    "data-[state=checked]:bg-[#017848]",
-    "data-[state=checked]:border-[#017848]",
-    "focus-visible:ring-[#017848]/20",
-    error && "border-red-500",
-    error && "data-[state=checked]:bg-red-500",
-    error && "data-[state=checked]:border-red-500",
-    error && "focus-visible:ring-red-500/20",
-  );
+  // CSS variables are already injected by FormThemeProvider parent
+
+  // Base checkbox styles
+  const checkboxStyles = "";
 
   // Base label styles
   const labelStyles = cn(
     "text-sm",
     "font-medium",
-    "text-gray-700",
     "select-none",
     "cursor-pointer",
+    "text-[var(--form-text)]",
     isDisabled && "opacity-60",
     isDisabled && "cursor-not-allowed",
   );

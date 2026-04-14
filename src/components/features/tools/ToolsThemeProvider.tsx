@@ -1,7 +1,7 @@
 "use client";
 
 import { type ReactNode, useEffect, useRef } from "react";
-import { useThemeUtils } from "@/components/renderer/theme";
+import { useTheme } from "@/components/renderer/theme";
 
 interface ToolsThemeProviderProps {
   children: ReactNode;
@@ -21,7 +21,7 @@ export function ToolsThemeProvider({
   children,
   defaultTheme = "finance",
 }: ToolsThemeProviderProps) {
-  const { theme, setTheme, resolvedTheme } = useThemeUtils();
+  const { currentTheme, setThemeById } = useTheme();
   const isInitialized = useRef(false);
 
   useEffect(() => {
@@ -35,33 +35,35 @@ export function ToolsThemeProvider({
         try {
           const { themeId } = JSON.parse(savedToolsTheme);
           // Set the saved theme
-          setTheme(themeId);
+          setThemeById(themeId);
         } catch (error) {
           console.warn("Failed to parse saved tools theme:", error);
           // Fall back to default theme
-          setTheme(defaultTheme);
+          setThemeById(defaultTheme);
         }
       } else {
         // No saved preference, use default
-        setTheme(defaultTheme);
+        setThemeById(defaultTheme);
       }
 
       isInitialized.current = true;
     }
-  }, [setTheme, defaultTheme]);
+  }, [setThemeById, defaultTheme]);
 
   // Save theme changes to localStorage for persistence
   useEffect(() => {
-    if (isInitialized.current && theme) {
-      // Save current theme configuration for tools
-      const themeConfig = {
-        themeId: theme.name || defaultTheme,
-        timestamp: Date.now(),
-      };
-
-      localStorage.setItem("dop-tools-theme", JSON.stringify(themeConfig));
+    if (!isInitialized.current || !currentTheme) {
+      return;
     }
-  }, [theme, defaultTheme]);
+
+    // Persist the actual selected theme id (finance/corporate/medical)
+    const themeConfig = {
+      themeId: currentTheme,
+      timestamp: Date.now(),
+    };
+
+    localStorage.setItem("dop-tools-theme", JSON.stringify(themeConfig));
+  }, [currentTheme]);
 
   return <>{children}</>;
 }

@@ -1,11 +1,9 @@
 "use client";
 
 import {
-  AlertCircle,
   ArrowLeft,
   Bookmark,
   Calculator,
-  Calculator as CalculatorIcon,
   Calendar,
   CheckCircle,
   ChevronRight,
@@ -15,7 +13,6 @@ import {
   Linkedin,
   MessageCircle,
   Share2,
-  Tag,
   ThumbsUp,
   Twitter,
   User,
@@ -28,7 +25,6 @@ import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 
 // TODO: Import tutorials from proper source
 const tutorials: any[] = [];
@@ -45,7 +41,7 @@ export default function TutorialDetail({
   locale,
 }: TutorialDetailProps) {
   const t = useTranslations("features.insurance.main");
-  const params = useParams();
+  const _params = useParams();
   const router = useRouter();
   const [isBookmarked, setIsBookmarked] = useState(false);
 
@@ -69,7 +65,7 @@ export default function TutorialDetail({
       try {
         await navigator.clipboard.writeText(url);
         toast.success(t("tutorial.share.copied"));
-      } catch (err) {
+      } catch (_err) {
         toast.error(t("tutorial.share.copyFailed"));
       }
     }

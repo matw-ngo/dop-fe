@@ -6,17 +6,12 @@
  * for the Vietnamese digital lending platform.
  */
 
-import { createClient } from "@/lib/api/client";
 import type {
   LoanCalculationParams,
   MarketIndicator,
   TaxCalculationParams,
   VietnameseBank,
 } from "@/lib/financial-data/vietnamese-financial-data";
-
-// Create API client
-const client = createClient("/api");
-
 // Types for API responses
 export interface ApiResponse<T = any> {
   success: boolean;

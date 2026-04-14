@@ -4,10 +4,8 @@ import {
   FieldType,
   STEP_PATTERNS,
 } from "@/components/user-onboarding/constants/field-types";
-import type {
-  GeneratedStepConfig,
-  MappedFlow,
-} from "@/components/user-onboarding/types/field-config";
+import type { GeneratedStepConfig } from "@/components/user-onboarding/types/field-config";
+import type { MappedFlow } from "@/mappers/flowMapper";
 import { getFieldLabel } from "./fieldLabelMapper";
 
 export interface GroupedField {
@@ -74,7 +72,7 @@ export function groupFieldsByCategory(
 function getRelevantFieldTypes(
   formData: Record<string, any>,
   fieldConfig?: GeneratedStepConfig[],
-  flowData?: MappedFlow,
+  _flowData?: MappedFlow,
 ): FieldType[] {
   // Start with all possible field types
   let relevantFields: FieldType[] = Object.values(FieldType);
@@ -120,7 +118,7 @@ function getRelevantFieldTypes(
 function getFieldOrder(fieldType: FieldType): number {
   // Look through step patterns to find the field order
   for (const pattern of Object.values(STEP_PATTERNS)) {
-    const index = pattern.fields.indexOf(fieldType);
+    const index = (pattern.fields as readonly FieldType[]).indexOf(fieldType);
     if (index !== -1) {
       // Add step offset to maintain step-based ordering
       const stepOrder = Object.keys(STEP_PATTERNS).indexOf(

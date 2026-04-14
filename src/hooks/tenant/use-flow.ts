@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "@/lib/api/client";
-import type { components } from "@/lib/api/v1.d.ts";
+import { dopClient } from "@/lib/api/services/dop";
+import type { components } from "@/lib/api/v1/dop";
 
 type FlowDetail = components["schemas"]["FlowDetail"];
 
@@ -36,9 +36,9 @@ export function useTenantFlow(
   options?: { enabled?: boolean },
 ) {
   return useQuery({
-    queryKey: ["tenant-flow", tenantUuid],
+    queryKey: ["flow", tenantUuid],
     queryFn: async (): Promise<FlowDetail> => {
-      const { data, error } = await apiClient.GET("/flows/{tenant}", {
+      const { data, error } = await dopClient.GET("/flows/{tenant}", {
         params: {
           path: {
             tenant: tenantUuid,

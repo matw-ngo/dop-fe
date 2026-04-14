@@ -4,7 +4,7 @@ import type React from "react";
 import { forwardRef } from "react";
 import { cn } from "@/components/renderer/component-variants/create-variant";
 import { useThemeUtils } from "@/components/renderer/theme/use-theme";
-import type { LayoutProps, ResponsiveValue } from "@/types/ui-theme";
+import type { ResponsiveValue } from "@/types/ui-theme";
 
 export interface ContainerProps extends React.HTMLAttributes<HTMLDivElement> {
   as?: React.ElementType;

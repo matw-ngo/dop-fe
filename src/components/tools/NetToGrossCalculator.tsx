@@ -18,7 +18,6 @@ import { useTranslations } from "next-intl";
 import type React from "react";
 import { useEffect, useMemo, useState } from "react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -206,7 +205,7 @@ const NetToGrossCalculatorInner: React.FC<NetToGrossCalculatorProps> = ({
                     value={formatCurrency(net)}
                     onChange={(e) => {
                       const value =
-                        parseInt(e.target.value.replace(/\D/g, "")) || 0;
+                        parseInt(e.target.value.replace(/\D/g, ""), 10) || 0;
                       setNet(Math.max(0, value));
                     }}
                     className="text-lg font-semibold border-2 border-gray-200 dark:border-gray-600 dark:bg-gray-800 focus:border-orange-500 dark:focus:border-orange-400 focus:ring-4 focus:ring-orange-100 dark:focus:ring-orange-900/20 rounded-xl h-12 transition-all duration-200 pr-16"
@@ -231,7 +230,7 @@ const NetToGrossCalculatorInner: React.FC<NetToGrossCalculatorProps> = ({
                 </Label>
                 <Select
                   value={region.toString()}
-                  onValueChange={(value) => setRegion(parseInt(value))}
+                  onValueChange={(value) => setRegion(parseInt(value, 10))}
                 >
                   <SelectTrigger className="h-12 border-2 border-gray-200 dark:border-gray-600 dark:bg-gray-800 focus:border-orange-500 dark:focus:border-orange-400 focus:ring-4 focus:ring-orange-100 dark:focus:ring-orange-900/20 rounded-xl transition-all duration-200">
                     <SelectValue placeholder={t("form.selectRegion")} />
@@ -273,7 +272,7 @@ const NetToGrossCalculatorInner: React.FC<NetToGrossCalculatorProps> = ({
                     type="number"
                     value={dependents}
                     onChange={(e) => {
-                      const value = parseInt(e.target.value) || 0;
+                      const value = parseInt(e.target.value, 10) || 0;
                       setDependents(Math.max(0, Math.min(10, value)));
                     }}
                     min={0}

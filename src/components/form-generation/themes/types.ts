@@ -1,265 +1,180 @@
 /**
- * Form Generation Library - Simplified Theme Types
+ * Form Theme Type Definition
  *
- * Simplified type definitions for the theme system
- * Only contains truly customizable properties
+ * Comprehensive theme structure following design token best practices
+ * Based on 4px/8px spacing scale and semantic token naming
  */
 
-/**
- * Simplified theme configuration for form controls
- */
+import type { CSSProperties } from "react";
+
 export interface FormTheme {
-  /**
-   * Theme identifier
-   */
   name: string;
 
-  /**
-   * Color scheme for the theme
-   */
+  // Color tokens - Semantic naming for purpose-driven usage
   colors: {
-    /**
-     * Primary brand color (used for focus, labels, etc.)
-     */
+    // Core brand colors
     primary: string;
 
-    /**
-     * Border color for normal state
-     */
+    // Border colors
     border: string;
-
-    /**
-     * Border color on focus
-     */
     borderFocus: string;
 
-    /**
-     * Background color for inputs
-     */
+    // Background colors
     background: string;
+    backgroundSecondary?: string;
 
-    /**
-     * Text color for placeholders
-     */
-    placeholder: string;
-
-    /**
-     * Text color for error states
-     */
-    error: string;
-
-    /**
-     * Background color for disabled states
-     */
-    disabled: string;
-
-    /**
-     * Background color for read-only states
-     */
-    readOnly: string;
-
-    /**
-     * Primary text color
-     */
+    // Text colors
     textPrimary?: string;
-
-    /**
-     * Secondary text color (labels, subtext)
-     */
     textSecondary?: string;
 
-    /**
-     * Border color for checkboxes/radios
-     */
+    // State colors
+    placeholder: string;
+    error: string;
+    disabled: string;
+    readOnly: string;
+
+    // Radio specific
     radioBorder?: string;
+
+    // Extended semantic colors
+    accent?: string;
+    accentText?: string;
+    surface?: string;
+    overlay?: string;
+    muted?: string;
+    hover?: string;
+    headingText?: string;
+    containerBorder?: string;
+    interactiveBorder?: string;
+    infoBackground?: string;
+    warning?: string;
+    iconSubtle?: string;
+    neutralBackground?: string;
   };
 
-  /**
-   * Border radius values
-   */
-  borderRadius: {
-    /**
-     * Default border radius for inputs
-     */
-    control: string;
-  };
-
-  /**
-   * Spacing values
-   */
+  // Spacing tokens - 4px base scale (4, 8, 12, 16, 20, 24, 32, 40, 48...)
   spacing: {
-    /**
-     * Horizontal padding for inputs
-     */
-    paddingHorizontal: string;
+    // Micro spacing (0-8px)
+    xxs: string; // 2px
+    xs: string; // 4px
+    sm: string; // 8px
 
-    /**
-     * Vertical padding for inputs
-     */
-    paddingVertical: string;
+    // Standard spacing (12-24px)
+    md: string; // 12px
+    base: string; // 16px
+    lg: string; // 20px
+    xl: string; // 24px
+
+    // Large spacing (32-48px)
+    "2xl": string; // 32px
+    "3xl": string; // 40px
+    "4xl": string; // 48px
+
+    // Legacy support
+    paddingHorizontal?: string;
+    paddingVertical?: string;
   };
 
-  /**
-   * Typography settings
-   */
+  // Typography tokens - Font sizes, weights, line heights
   typography: {
-    /**
-     * Font size for inputs
-     */
-    fontSize: string;
+    // Font sizes (12-32px scale)
+    fontSizes: {
+      xs: string; // 12px
+      sm: string; // 14px
+      base: string; // 16px
+      lg: string; // 18px
+      xl: string; // 20px
+      "2xl": string; // 24px
+      "3xl": string; // 32px
+    };
 
-    /**
-     * Font size for internal labels
-     */
-    labelFontSize: string;
+    // Font weights
+    fontWeights: {
+      normal: number; // 400
+      medium: number; // 500
+      semibold: number; // 600
+      bold: number; // 700
+    };
 
-    /**
-     * Font weight for internal labels
-     */
-    labelFontWeight: string;
+    // Line heights
+    lineHeights: {
+      tight: string; // 16px
+      snug: string; // 20px
+      normal: string; // 24px
+      relaxed: string; // 28px
+      loose: string; // 32px
+      xl: string; // 40px
+    };
+
+    // Legacy support
+    fontSize?: string;
+    labelFontSize?: string;
+    labelFontWeight?: string;
   };
 
-  /**
-   * Size configurations
-   */
+  // Border radius tokens
+  borderRadius: {
+    sm: string; // 4px
+    md: string; // 8px
+    lg: string; // 12px
+    xl: string; // 16px
+    control?: string; // Legacy
+  };
+
+  // Size tokens - Component heights
   sizes: {
-    /**
-     * Height for small inputs
-     */
-    sm: string;
-
-    /**
-     * Height for medium inputs (default)
-     */
-    md: string;
-
-    /**
-     * Height for large inputs
-     */
-    lg: string;
+    sm: string; // 48px
+    md: string; // 60px
+    lg: string; // 64px
   };
 
-  /**
-   * Focus ring configuration
-   */
+  // Focus ring tokens
   focusRing: {
-    /**
-     * Width of the focus ring
-     */
     width: string;
-
-    /**
-     * Color of the focus ring
-     */
     color: string;
-
-    /**
-     * Opacity of the focus ring
-     */
     opacity: string;
   };
 
-  /**
-   * Global field options for this theme
-   */
+  // Field options
   fieldOptions?: {
-    /**
-     * If true, renders the label inside the field control border
-     */
     internalLabel?: boolean;
   };
 
-  /**
-   * Backward compatibility properties for components that expect the old structure
-   */
+  // Legacy label/error/help styling (backward compatibility)
   label?: {
     base: string;
-    required?: string;
-    disabled?: string;
+    required: string;
+    disabled: string;
   };
 
-  /**
-   * Backward compatibility properties for error styling
-   */
   error?: {
     base: string;
-    icon?: string;
+    icon: string;
   };
 
-  /**
-   * Backward compatibility properties for help text styling
-   */
   help?: {
     base: string;
   };
 
-  /**
-   * Optional specialized styling for specific field types
-   */
+  // Optional specialized styling for specific field types
   components?: {
-    /**
-     * File field specific styling
-     */
     file?: {
-      /**
-       * Border color for drag-and-drop area
-       */
-      borderDashed?: string;
-
-      /**
-       * Background color for drag-and-drop area
-       */
-      backgroundDashed?: string;
-
-      /**
-       * Hover background color for drag-and-drop area
-       */
-      hoverBackground?: string;
-
-      /**
-       * Hover border color for drag-and-drop area
-       */
-      hoverBorder?: string;
+      borderDashed: string;
+      backgroundDashed: string;
+      hoverBackground: string;
+      hoverBorder: string;
     };
 
-    /**
-     * eKYC field specific styling
-     */
     ekyc?: {
-      /**
-       * Color for success status
-       */
-      success?: string;
-
-      /**
-       * Color for processing status
-       */
-      processing?: string;
-
-      /**
-       * Color for retry button
-       */
-      retryButton?: string;
+      success: string;
+      processing: string;
+      retryButton: string;
     };
 
-    /**
-     * Checkbox/Radio field specific styling
-     */
     checkable?: {
-      /**
-       * Accent color for checked state
-       */
-      checkedColor?: string;
-
-      /**
-       * Border color for unchecked state
-       */
-      uncheckedBorder?: string;
-
-      /**
-       * Focus ring color
-       */
-      focusRing?: string;
+      checkedColor: string;
+      uncheckedBorder: string;
+      focusRing: string;
     };
   };
 }

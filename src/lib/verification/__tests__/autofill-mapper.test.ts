@@ -438,7 +438,7 @@ describe("Autofill Mapper", () => {
       const maxIterations = 10;
       let iterations = 0;
 
-      Object.entries(mapping).forEach(([targetFieldId, sourcePath]) => {
+      Object.entries(mapping).forEach(([_targetFieldId, sourcePath]) => {
         if (typeof sourcePath === "string") {
           const pathParts = sourcePath.split(".");
           let current: any = circularResult.personalData;
@@ -507,8 +507,7 @@ describe("Autofill Mapper", () => {
         deepObject = { [`level${i}`]: deepObject };
       }
 
-      const veryDeepPath =
-        Array.from({ length: 101 }, (_, i) => `level${i}`).join(".") + ".value";
+      const veryDeepPath = `${Array.from({ length: 101 }, (_, i) => `level${i}`).join(".")}.value`;
 
       const pathParts = veryDeepPath.split(".");
       let current: any = deepObject;

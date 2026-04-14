@@ -12,14 +12,10 @@ import {
 import type {
   DocumentVerificationResponse,
   EkycSession,
-  EkycVerificationStatus,
   FaceComparisonResponse,
   FaceVerificationResponse,
 } from "@/lib/api/endpoints/ekyc";
-import {
-  VIETNAMESE_DOCUMENT_TYPES,
-  type VietnameseDocumentType,
-} from "@/lib/ekyc/document-types";
+import type { VietnameseDocumentType } from "@/lib/ekyc/document-types";
 import {
   type EkycCompareData,
   type EkycFullResult,
@@ -165,6 +161,7 @@ export interface EkycState {
   // Timing
   createdAt: string;
   updatedAt: string;
+  completedAt: string | null;
 
   // Actions
   // Session management
@@ -325,6 +322,7 @@ export const useEkycStore = create<EkycState>()(
         warnings: [],
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
+        completedAt: null,
 
         // Secure biometric data management
         encryptedData: new Map(),
@@ -638,6 +636,7 @@ export const useEkycStore = create<EkycState>()(
             formData: mapped,
             error: undefined,
             updatedAt: new Date().toISOString(),
+            completedAt: new Date().toISOString(),
           });
 
           // Dispatch custom event
@@ -771,6 +770,7 @@ export const useEkycStore = create<EkycState>()(
           set({
             status: "success",
             updatedAt: new Date().toISOString(),
+            completedAt: new Date().toISOString(),
           });
         },
 
@@ -792,6 +792,7 @@ export const useEkycStore = create<EkycState>()(
             },
             progress: 100,
             updatedAt: new Date().toISOString(),
+            completedAt: endTime,
           });
 
           // Dispatch completion event
@@ -820,6 +821,7 @@ export const useEkycStore = create<EkycState>()(
             session: undefined,
             rawResult: undefined,
             formData: undefined,
+            completedAt: null,
             error: undefined,
             errors: [],
             warnings: [],
@@ -1150,7 +1152,7 @@ export const useEkycStore = create<EkycState>()(
 // Subscribe to changes and update progress automatically
 useEkycStore.subscribe(
   (state) => state.steps,
-  (steps) => {
+  (_steps) => {
     useEkycStore.getState().updateProgress();
   },
 );

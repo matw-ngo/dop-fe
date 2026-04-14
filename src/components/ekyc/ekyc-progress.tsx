@@ -147,7 +147,7 @@ const calculateEstimatedTimeRemaining = (
   let remainingTime = 0;
   for (let i = currentStepIndex; i < steps.length; i++) {
     const stepInfo = EKYC_STEPS_INFO.find((info) => info.id === steps[i]?.id);
-    if (stepInfo && stepInfo.estimatedDuration) {
+    if (stepInfo?.estimatedDuration) {
       remainingTime += stepInfo.estimatedDuration;
     }
   }

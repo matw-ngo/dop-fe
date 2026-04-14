@@ -12,12 +12,18 @@
 
 import { expect, test } from "@playwright/test";
 
+const LOCALHOST = "http://localhost:3001";
+
+function getLocalizedPath(path: string, locale: string = "vi"): string {
+  return `/${locale}${path.startsWith("/") ? path : `/${path}`}`;
+}
+
 test.describe.configure({ mode: "parallel" });
 
 test.describe("eKYC Loan Application", () => {
   test.beforeEach(async ({ page }) => {
     // Navigate to loan application page
-    await page.goto("/loan-application");
+    await page.goto(`${LOCALHOST}${getLocalizedPath("/loan-wizard")}`);
 
     // Wait for page to load
     await page.waitForLoadState("networkidle");
@@ -36,7 +42,7 @@ test.describe("eKYC Loan Application", () => {
     await expect(page.getByText("Identity Verification")).toBeVisible();
 
     // Step 3: Start eKYC verification
-    await page.getByRole("button", { name: "Verify Identity Now" }).click();
+    await page.getByRole("button", { name: "Verify Identity" }).click();
 
     // Mock eKYC verification flow
     // In real test, this would interact with actual eKYC SDK
@@ -118,7 +124,7 @@ test.describe("eKYC Loan Application", () => {
     });
 
     // Start verification
-    await page.getByRole("button", { name: "Verify Identity Now" }).click();
+    await page.getByRole("button", { name: "Verify Identity" }).click();
 
     // Upload document
     await page
@@ -156,7 +162,7 @@ test.describe("eKYC Loan Application", () => {
     });
 
     // Start verification
-    await page.getByRole("button", { name: "Verify Identity Now" }).click();
+    await page.getByRole("button", { name: "Verify Identity" }).click();
 
     // Upload document
     await page
@@ -208,7 +214,7 @@ test.describe("eKYC Loan Application", () => {
       });
     });
 
-    await page.getByRole("button", { name: "Verify Identity Now" }).click();
+    await page.getByRole("button", { name: "Verify Identity" }).click();
     await page
       .getByLabel("Upload ID Document")
       .setInputFiles("./test-data/sample-id-card.png");
@@ -264,7 +270,7 @@ test.describe("eKYC Loan Application", () => {
       });
     });
 
-    await page.getByRole("button", { name: "Verify Identity Now" }).click();
+    await page.getByRole("button", { name: "Verify Identity" }).click();
     await page
       .getByLabel("Upload ID Document")
       .setInputFiles("./test-data/sample-id-card.png");
@@ -293,7 +299,7 @@ test.describe("eKYC Loan Application", () => {
 test.describe("Mobile Responsiveness", () => {
   test.beforeEach(async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 812 }); // iPhone X dimensions
-    await page.goto("/loan-application");
+    await page.goto(`${LOCALHOST}${getLocalizedPath("/loan-wizard")}`);
   });
 
   test("eKYC flow works on mobile devices", async ({ page }) => {
@@ -306,7 +312,7 @@ test.describe("Mobile Responsiveness", () => {
     await page.getByRole("button", { name: "Next" }).click();
 
     // eKYC modal should adapt to mobile screen
-    await page.getByRole("button", { name: "Verify Identity Now" }).click();
+    await page.getByRole("button", { name: "Verify Identity" }).click();
     await expect(page.locator('[data-testid="ekyc-modal"]')).toHaveClass(
       /mobile/,
     );
@@ -352,14 +358,14 @@ test.describe("Cross-Browser Compatibility", () => {
     test(`eKYC flow works in ${browserName}`, async ({ page }) => {
       test.skip(browserName === "webkit", "Skip Safari in CI for now");
 
-      await page.goto("/loan-application");
+      await page.goto(`${LOCALHOST}${getLocalizedPath("/loan-wizard")}`);
 
       // Complete basic flow
       await page.getByLabel("Loan Amount").fill("35000000");
       await page.getByRole("button", { name: "Next" }).click();
 
       // eKYC verification should work in all browsers
-      await page.getByRole("button", { name: "Verify Identity Now" }).click();
+      await page.getByRole("button", { name: "Verify Identity" }).click();
       await expect(page.locator('[data-testid="ekyc-modal"]')).toBeVisible();
 
       // File upload might behave differently across browsers
@@ -386,7 +392,7 @@ test.describe("Dark Mode Testing", () => {
       document.documentElement.classList.add("dark");
     });
 
-    await page.goto("/loan-application");
+    await page.goto(`${LOCALHOST}${getLocalizedPath("/loan-wizard")}`);
 
     // Verify dark mode styling
     await expect(page.locator("body")).toHaveClass(/dark/);
@@ -397,7 +403,7 @@ test.describe("Dark Mode Testing", () => {
     await page.getByRole("button", { name: "Next" }).click();
 
     // eKYC modal should have dark mode styling
-    await page.getByRole("button", { name: "Verify Identity Now" }).click();
+    await page.getByRole("button", { name: "Verify Identity" }).click();
     await expect(page.locator('[data-testid="ekyc-modal"]')).toHaveClass(
       /dark/,
     );
@@ -417,7 +423,7 @@ test.describe("Dark Mode Testing", () => {
 test.describe("Accessibility Compliance", () => {
   test("eKYC flow is screen reader friendly", async ({ page }) => {
     // Enable accessibility testing
-    await page.goto("/loan-application");
+    await page.goto(`${LOCALHOST}${getLocalizedPath("/loan-wizard")}`);
 
     // Test ARIA labels and roles
     await expect(page.getByRole("main")).toBeVisible();
@@ -429,7 +435,7 @@ test.describe("Accessibility Compliance", () => {
 
     // Verify eKYC accessibility
     await expect(
-      page.getByRole("button", { name: "Verify Identity Now" }),
+      page.getByRole("button", { name: "Verify Identity" }),
     ).toHaveAttribute("aria-describedby");
     await expect(
       page.getByRole("dialog", { name: "Identity Verification" }),
@@ -438,11 +444,11 @@ test.describe("Accessibility Compliance", () => {
     // Test keyboard navigation
     await page.keyboard.press("Tab");
     await expect(
-      page.getByRole("button", { name: "Verify Identity Now" }),
+      page.getByRole("button", { name: "Verify Identity" }),
     ).toBeFocused();
 
     // Test focus management in modal
-    await page.getByRole("button", { name: "Verify Identity Now" }).click();
+    await page.getByRole("button", { name: "Verify Identity" }).click();
     await expect(page.locator('[data-testid="ekyc-modal"]')).toBeVisible();
     await expect(page.getByRole("button", { name: "Close" })).toBeFocused();
 
@@ -456,14 +462,14 @@ test.describe("Accessibility Compliance", () => {
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.addStyleTag({ content: "filter: contrast(2);" });
 
-    await page.goto("/loan-application");
+    await page.goto(`${LOCALHOST}${getLocalizedPath("/loan-wizard")}`);
 
     // Navigate to eKYC step
     await page.getByLabel("Loan Amount").fill("45000000");
     await page.getByRole("button", { name: "Next" }).click();
 
     // Verify high contrast styling
-    await page.getByRole("button", { name: "Verify Identity Now" }).click();
+    await page.getByRole("button", { name: "Verify Identity" }).click();
     await expect(page.locator('[data-testid="ekyc-modal"]')).toHaveCSS(
       "filter",
       "contrast(2)",
@@ -474,14 +480,14 @@ test.describe("Accessibility Compliance", () => {
     // Enable reduced motion
     await page.emulateMedia({ reducedMotion: "reduce" });
 
-    await page.goto("/loan-application");
+    await page.goto(`${LOCALHOST}${getLocalizedPath("/loan-wizard")}`);
 
     // Navigate to eKYC step
     await page.getByLabel("Loan Amount").fill("70000000");
     await page.getByRole("button", { name: "Next" }).click();
 
     // Verify animations are disabled
-    await page.getByRole("button", { name: "Verify Identity Now" }).click();
+    await page.getByRole("button", { name: "Verify Identity" }).click();
     await expect(page.locator('[data-testid="ekyc-modal"]')).toHaveCSS(
       "transition",
       "none",
@@ -493,7 +499,7 @@ test.describe("Performance Testing", () => {
   test("eKYC flow loads within acceptable time limits", async ({ page }) => {
     const startTime = Date.now();
 
-    await page.goto("/loan-application");
+    await page.goto(`${LOCALHOST}${getLocalizedPath("/loan-wizard")}`);
     await page.waitForLoadState("networkidle");
 
     const pageLoadTime = Date.now() - startTime;
@@ -504,7 +510,7 @@ test.describe("Performance Testing", () => {
 
     await page.getByLabel("Loan Amount").fill("80000000");
     await page.getByRole("button", { name: "Next" }).click();
-    await page.getByRole("button", { name: "Verify Identity Now" }).click();
+    await page.getByRole("button", { name: "Verify Identity" }).click();
 
     await page
       .locator('[data-testid="ekyc-modal"]')
@@ -517,7 +523,7 @@ test.describe("Performance Testing", () => {
   test("eKYC flow handles large image uploads efficiently", async ({
     page,
   }) => {
-    await page.goto("/loan-application");
+    await page.goto(`${LOCALHOST}${getLocalizedPath("/loan-wizard")}`);
     await page.getByLabel("Loan Amount").fill("90000000");
     await page.getByRole("button", { name: "Next" }).click();
 
@@ -536,7 +542,7 @@ test.describe("Performance Testing", () => {
 
     const uploadStartTime = Date.now();
 
-    await page.getByRole("button", { name: "Verify Identity Now" }).click();
+    await page.getByRole("button", { name: "Verify Identity" }).click();
     await page.getByLabel("Upload ID Document").setInputFiles({
       name: "large-image.jpg",
       mimeType: "image/jpeg",

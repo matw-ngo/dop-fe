@@ -4,20 +4,12 @@
 // Integrates eKYC SDK as a form field component
 // Supports both inline and modal modes
 
-import { Camera, CheckCircle2, ShieldCheck, ShieldX } from "lucide-react";
+import { Camera, CheckCircle2 } from "lucide-react";
 import dynamic from "next/dynamic";
 import React from "react";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import {
-  FormControl,
-  FormDescription,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { FormControl, FormItem, FormMessage } from "@/components/ui/form";
 
 // Dynamically import components to avoid SSR issues
 const EkycSdkWrapper = dynamic(
@@ -25,7 +17,7 @@ const EkycSdkWrapper = dynamic(
   { ssr: false },
 );
 
-const EkycDialog = dynamic(
+const _EkycDialog = dynamic(
   () =>
     import("@/components/ekyc/ekyc-dialog").then((mod) => ({
       default: mod.EkycDialog,
@@ -99,8 +91,8 @@ export const CustomEkyc = React.forwardRef<HTMLDivElement, CustomEkycProps>(
   ) => {
     const [isCompleted, setIsCompleted] = React.useState<boolean>(false);
     const [sessionData, setSessionData] = React.useState<any>(null);
-    const [isDialogOpen, setIsDialogOpen] = React.useState<boolean>(false);
-    const [verificationStatus, setVerificationStatus] = React.useState<
+    const [_isDialogOpen, setIsDialogOpen] = React.useState<boolean>(false);
+    const [_verificationStatus, setVerificationStatus] = React.useState<
       "pending" | "success" | "error"
     >("pending");
 
@@ -143,7 +135,7 @@ export const CustomEkyc = React.forwardRef<HTMLDivElement, CustomEkycProps>(
     }, []);
 
     // Open eKYC dialog
-    const openDialog = React.useCallback(() => {
+    const _openDialog = React.useCallback(() => {
       setIsDialogOpen(true);
     }, []);
 

@@ -132,7 +132,7 @@ export class VerificationManager {
    * Get default provider
    */
   getDefaultProvider(): VerificationProvider | undefined {
-    for (const [name, registration] of Array.from(this.providers.entries())) {
+    for (const [_name, registration] of Array.from(this.providers.entries())) {
       if (registration.isDefault) {
         return registration.provider;
       }
@@ -154,7 +154,7 @@ export class VerificationManager {
     providerName: string,
     options: VerificationOptions,
   ): Promise<VerificationSession> {
-    const startTime = Date.now();
+    const _startTime = Date.now();
     this.stats.totalAttempts++;
 
     const registration = this.providers.get(providerName);
@@ -345,7 +345,7 @@ export class VerificationManager {
         (this.stats.successfulVerifications / this.stats.totalAttempts) * 100;
 
       // Update provider success rates
-      for (const [name, perf] of Object.entries(
+      for (const [_name, perf] of Object.entries(
         this.stats.providerPerformance,
       )) {
         perf.successRate = successRate;

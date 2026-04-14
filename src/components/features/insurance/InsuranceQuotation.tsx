@@ -1,4 +1,4 @@
-import { Calculator, Check, FileText, Send, Shield } from "lucide-react";
+import { Calculator, Check, FileText, Send } from "lucide-react";
 import type React from "react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -74,7 +74,7 @@ export const InsuranceQuotation: React.FC<InsuranceQuotationProps> = ({
       product: productSlug,
       category,
       premium: Math.floor(Math.random() * 5000000) + 1000000,
-      coverage: parseInt(formData.sumInsured) || 100000000,
+      coverage: parseInt(formData.sumInsured, 10) || 100000000,
       period: formData.coveragePeriod,
       validUntil: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
       customerData: formData,

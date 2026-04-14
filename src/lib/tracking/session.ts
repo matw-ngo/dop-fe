@@ -1,6 +1,6 @@
 import { DEFAULT_TRACKING_CONFIG, STORAGE_KEYS } from "./config";
 import { getPrivacySafeSessionId, shouldEnableTracking } from "./privacy";
-import type { DeviceInfo, TrackingSession } from "./types";
+import type { TrackingSession } from "./types";
 
 /**
  * Session management for tracking
@@ -25,11 +25,12 @@ export const generateDeviceFingerprint = (): string => {
   const fingerprint = [
     navigator.userAgent,
     navigator.language,
-    screen.width + "x" + screen.height,
+    `${screen.width}x${screen.height}`,
     new Date().getTimezoneOffset(),
     canvas.toDataURL(),
     navigator.hardwareConcurrency,
-    navigator.deviceMemory || "unknown",
+    (navigator as Navigator & { deviceMemory?: number }).deviceMemory ||
+      "unknown",
   ].join("|");
 
   // Simple hash (in production, use a proper crypto hash)
@@ -155,7 +156,7 @@ export const isSessionValid = (): boolean => {
 
   // Consider session expired after 30 minutes of inactivity
   const SESSION_TIMEOUT = 30 * 60 * 1000;
-  const timeSinceActivity = Date.now() - parseInt(lastActivity);
+  const timeSinceActivity = Date.now() - parseInt(lastActivity, 10);
 
   return timeSinceActivity < SESSION_TIMEOUT;
 };
@@ -173,7 +174,7 @@ export const endSession = async (): Promise<void> => {
   if (!startTime) return;
 
   const endTime = Date.now();
-  const activeTime = endTime - parseInt(startTime);
+  const activeTime = endTime - parseInt(startTime, 10);
 
   try {
     // Send session end to server

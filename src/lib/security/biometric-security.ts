@@ -5,8 +5,6 @@
  * Compliant with Vietnamese Decree 13/2023 on personal data protection
  */
 
-import { VietnameseDocumentType } from "@/lib/ekyc/document-types";
-
 // Configuration constants
 export const BIOMETRIC_SECURITY_CONFIG = {
   // AES-256-GCM for symmetric encryption
@@ -230,7 +228,7 @@ export class BiometricSecurityManager {
         details: {
           dataSize: data.byteLength,
           encryptionTime,
-          checksum: checksum.substring(0, 16) + "...",
+          checksum: `${checksum.substring(0, 16)}...`,
         },
         vietnamCompliance: {
           dataProcessing: true,
@@ -400,7 +398,7 @@ export class BiometricSecurityManager {
    */
   getSecurityMetrics(): SecurityMetrics {
     const now = Date.now();
-    const sessionAge = now - this.sessionStartTime;
+    const _sessionAge = now - this.sessionStartTime;
 
     return {
       encryptionTime: 0, // Would track average times in real implementation
@@ -523,7 +521,7 @@ export class BiometricSecurityManager {
   /**
    * Validate file before processing
    */
-  private validateFile(file: File, dataType: string): void {
+  private validateFile(file: File, _dataType: string): void {
     if (file.size > BIOMETRIC_SECURITY_CONFIG.MAX_FILE_SIZE_BYTES) {
       throw new Error(
         `File size exceeds maximum allowed size of ${BIOMETRIC_SECURITY_CONFIG.MAX_FILE_SIZE_BYTES} bytes`,
@@ -694,7 +692,7 @@ export class BiometricSecurityManager {
    * Get session ID
    */
   private getSessionId(): string {
-    return "ekyc_session_" + Math.random().toString(36).substr(2, 9);
+    return `ekyc_session_${Math.random().toString(36).substr(2, 9)}`;
   }
 
   /**

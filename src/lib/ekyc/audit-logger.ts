@@ -64,7 +64,7 @@ export interface AuditLogEntry {
  * @param data - The data to sanitize
  * @returns Sanitized data with PII removed
  */
-function sanitizeData(data: Record<string, unknown>): Record<string, unknown> {
+function _sanitizeData(data: Record<string, unknown>): Record<string, unknown> {
   const sanitized: Record<string, unknown> = { ...data };
   const piiFields = [
     "id",
@@ -276,7 +276,7 @@ export function logAuditEvent(entry: AuditLogEntry): void {
  *
  * @param entry - The audit log entry to send
  */
-async function sendToAuditService(entry: AuditLogEntry): Promise<void> {
+async function sendToAuditService(_entry: AuditLogEntry): Promise<void> {
   // Placeholder for actual audit service integration
   // In production, this would send to a secure audit logging endpoint
   try {

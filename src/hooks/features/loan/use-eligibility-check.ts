@@ -42,7 +42,7 @@ export function useEligibilityCheck(options: UseEligibilityCheckOptions = {}) {
     cacheResults = true,
   } = options;
 
-  const queryClient = useQueryClient();
+  const _queryClient = useQueryClient();
   const store = useLoanProductStore();
 
   const [checking, setChecking] = useState<Set<string>>(new Set());

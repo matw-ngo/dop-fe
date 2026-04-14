@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { AlertTriangle, CheckCircle, Info, Palette } from "lucide-react";
+import { AlertTriangle, Info, Palette } from "lucide-react";
 import { useTheme } from "@/components/renderer/theme";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
@@ -20,7 +20,6 @@ import {
   DefaultThemeWrapper,
   MedicalThemeWrapper,
 } from "./storybook-theme-wrappers";
-import { ThemeCustomizer } from "./theme-customizer";
 import { ThemeSelector } from "./theme-selector";
 
 // Demo component to showcase all theme features
@@ -338,7 +337,7 @@ export const AllThemesComparison: Story = {
 };
 
 // Theme Selector Stories
-const ThemeSelectorMeta: Meta<typeof ThemeSelector> = {
+const _ThemeSelectorMeta: Meta<typeof ThemeSelector> = {
   title: "Theme System/ThemeSelector",
   component: ThemeSelector,
   tags: ["autodocs"],

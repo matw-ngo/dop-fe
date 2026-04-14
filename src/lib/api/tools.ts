@@ -6,7 +6,7 @@ import type {
   ISavingsParams,
   ISavingsResult,
 } from "@/types/tools";
-import apiClient from "./client";
+import { dopClient } from "./services/dop";
 
 // API Configuration for Tools endpoints
 const TOOLS_ENDPOINTS = {
@@ -63,7 +63,7 @@ export const calculateSavings = async (
   params: ISavingsParams,
 ): Promise<ISavingsResult> => {
   try {
-    const { data, error } = await apiClient.POST(TOOLS_ENDPOINTS.SAVINGS, {
+    const { data, error } = await dopClient.POST(TOOLS_ENDPOINTS.SAVINGS, {
       body: {
         amount: params.amount,
         period: params.period,
@@ -123,7 +123,7 @@ export const calculateSalary = async (params: {
   region?: string;
 }): Promise<ISalary> => {
   try {
-    const { data, error } = await apiClient.POST(TOOLS_ENDPOINTS.SALARY, {
+    const { data, error } = await dopClient.POST(TOOLS_ENDPOINTS.SALARY, {
       body: params,
     });
 
@@ -192,7 +192,7 @@ export const fetchInterestRates = async (): Promise<
   }>
 > => {
   try {
-    const { data, error } = await apiClient.GET(TOOLS_ENDPOINTS.INTEREST_RATES);
+    const { data, error } = await dopClient.GET(TOOLS_ENDPOINTS.INTEREST_RATES);
 
     if (error) {
       handleToolsApiError(error, "Failed to fetch interest rates");

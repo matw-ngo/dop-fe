@@ -21,12 +21,11 @@ interface IModalProps {
 }
 
 const Modal = (props: IModalProps) => {
-  const modalClose =
-    props.components && props.components.modalClose ? (
-      props.components.modalClose
-    ) : (
-      <XIcon className="w-5 h-5" />
-    );
+  const modalClose = props.components?.modalClose ? (
+    props.components.modalClose
+  ) : (
+    <XIcon className="w-5 h-5" />
+  );
 
   // Support both old (isShow) and new (open) props
   const isOpen = props.open !== undefined ? props.open : props.isShow;

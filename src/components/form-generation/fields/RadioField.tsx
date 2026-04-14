@@ -24,26 +24,22 @@ export function RadioField({
   const isDisabled = disabled || field.disabled;
   const layout = options.layout || "vertical";
 
+  // CSS variables are already injected by FormThemeProvider parent
+
   if (!options.choices || options.choices.length === 0) {
     return null;
   }
 
-  // Base radio button styles for error state
-  const radioStyles = cn(
-    "text-[#017848]",
-    "focus-visible:ring-[#017848]/20",
-    error && "text-red-500",
-    error && "border-red-500",
-    error && "focus-visible:ring-red-500/20",
-  );
+  // Base radio button styles
+  const radioStyles = "";
 
   // Base label styles
   const labelStyles = cn(
     "text-sm",
     "font-medium",
-    "text-gray-700",
     "select-none",
     "cursor-pointer",
+    "text-[var(--form-text)]",
     isDisabled && "opacity-60",
     isDisabled && "cursor-not-allowed",
   );

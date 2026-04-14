@@ -51,7 +51,7 @@ class MockVerificationProvider implements VerificationProvider {
     this.delay = options.delay || 0;
   }
 
-  async initialize(config: ProviderConfig): Promise<void> {
+  async initialize(_config: ProviderConfig): Promise<void> {
     if (this.delay) {
       await new Promise((resolve) => setTimeout(resolve, this.delay));
     }
@@ -81,7 +81,7 @@ class MockVerificationProvider implements VerificationProvider {
     };
   }
 
-  async getStatus(sessionId: string): Promise<VerificationStatus> {
+  async getStatus(_sessionId: string): Promise<VerificationStatus> {
     if (this.shouldFail) {
       throw new Error(`Mock provider ${this.name} failed to get status`);
     }
@@ -120,7 +120,7 @@ class MockVerificationProvider implements VerificationProvider {
     };
   }
 
-  async cancel(sessionId: string): Promise<void> {
+  async cancel(_sessionId: string): Promise<void> {
     if (this.shouldFail) {
       throw new Error(`Mock provider ${this.name} failed to cancel`);
     }
@@ -600,7 +600,7 @@ describe(
 
         try {
           await manager.verify("provider1", options);
-        } catch (error) {
+        } catch (_error) {
           // Expected to fail
         }
 
@@ -611,14 +611,14 @@ describe(
 
       it("should track success rate by document type", async () => {
         const options1: VerificationOptions = { documentType: "CCCD" };
-        const options2: VerificationOptions = { documentType: "PASSPORT" };
+        const _options2: VerificationOptions = { documentType: "PASSPORT" };
 
         // Successful verification
         const session1 = await manager.verify("provider1", options1);
         await manager.getResult(session1.id);
 
         const stats = manager.getStats();
-        expect(stats.successRateByDocument["CCCD"]).toBe(100);
+        expect(stats.successRateByDocument.CCCD).toBe(100);
       });
 
       it("should track provider performance", async () => {
@@ -627,7 +627,7 @@ describe(
         await manager.getResult(session.id);
 
         const stats = manager.getStats();
-        expect(stats.providerPerformance["provider1"]).toEqual({
+        expect(stats.providerPerformance.provider1).toEqual({
           averageTime: expect.any(Number),
           successRate: 100,
           errorRate: 0,
@@ -641,7 +641,7 @@ describe(
 
         try {
           await manager.verify("provider1", options);
-        } catch (error) {
+        } catch (_error) {
           // Expected to fail
         }
 
@@ -716,7 +716,6 @@ describe(
         const noHealthCheckProvider = new MockVerificationProvider(
           "noHealthCheck",
         );
-        // @ts-expect-error - intentionally removing healthCheck for testing
         (noHealthCheckProvider as any).healthCheck = undefined;
 
         await manager.registerProvider(

@@ -106,7 +106,7 @@ export const OTPInput = React.forwardRef<HTMLDivElement, OTPInputProps>(
         }
         setOtpValues(newValue);
       }
-    }, [value, length, otpValues.length]);
+    }, [value, length, otpValues.join]);
 
     // Handle timer progress
     useEffect(() => {
@@ -161,6 +161,40 @@ export const OTPInput = React.forwardRef<HTMLDivElement, OTPInputProps>(
       [otpValues, length, onChange, onComplete, allowAutoSubmit, error],
     );
 
+    // Handle paste
+    const handlePaste = useCallback(async () => {
+      try {
+        const clipboardText = await navigator.clipboard.readText();
+        const digits = clipboardText.replace(/\D/g, "").slice(0, length);
+
+        if (digits.length > 0) {
+          setPastedValue(digits);
+          onPaste?.(digits);
+
+          // Distribute digits across inputs
+          const newOtpValues = Array(length).fill("");
+          for (let i = 0; i < Math.min(digits.length, length); i++) {
+            newOtpValues[i] = digits[i];
+          }
+          setOtpValues(newOtpValues);
+
+          const newOtpString = newOtpValues.join("");
+          onChange?.(newOtpString, newOtpString.length === length);
+
+          // Focus appropriate input
+          const nextIndex = Math.min(digits.length, length - 1);
+          inputRefs.current[nextIndex]?.focus();
+
+          // Auto-submit if complete
+          if (newOtpString.length === length && allowAutoSubmit && onComplete) {
+            setTimeout(() => onComplete(newOtpString), 100);
+          }
+        }
+      } catch (err) {
+        console.warn("Failed to read clipboard:", err);
+      }
+    }, [length, onPaste, onChange, allowAutoSubmit, onComplete]);
+
     // Handle key press
     const handleKeyDown = useCallback(
       (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -203,42 +237,8 @@ export const OTPInput = React.forwardRef<HTMLDivElement, OTPInputProps>(
           onComplete(otpValues.join(""));
         }
       },
-      [otpValues, length, onChange, onComplete],
+      [otpValues, length, onChange, onComplete, handlePaste],
     );
-
-    // Handle paste
-    const handlePaste = useCallback(async () => {
-      try {
-        const clipboardText = await navigator.clipboard.readText();
-        const digits = clipboardText.replace(/\D/g, "").slice(0, length);
-
-        if (digits.length > 0) {
-          setPastedValue(digits);
-          onPaste?.(digits);
-
-          // Distribute digits across inputs
-          const newOtpValues = Array(length).fill("");
-          for (let i = 0; i < Math.min(digits.length, length); i++) {
-            newOtpValues[i] = digits[i];
-          }
-          setOtpValues(newOtpValues);
-
-          const newOtpString = newOtpValues.join("");
-          onChange?.(newOtpString, newOtpString.length === length);
-
-          // Focus appropriate input
-          const nextIndex = Math.min(digits.length, length - 1);
-          inputRefs.current[nextIndex]?.focus();
-
-          // Auto-submit if complete
-          if (newOtpString.length === length && allowAutoSubmit && onComplete) {
-            setTimeout(() => onComplete(newOtpString), 100);
-          }
-        }
-      } catch (err) {
-        console.warn("Failed to read clipboard:", err);
-      }
-    }, [length, onPaste, onChange, allowAutoSubmit, onComplete]);
 
     // Handle focus
     const handleFocus = useCallback(() => {
@@ -247,7 +247,7 @@ export const OTPInput = React.forwardRef<HTMLDivElement, OTPInputProps>(
 
     // Handle blur
     const handleBlur = useCallback(
-      (index: number) => {
+      (_index: number) => {
         // Check if any input is still focused
         const anyFocused = inputRefs.current.some(
           (ref) => ref === document.activeElement,
@@ -271,7 +271,7 @@ export const OTPInput = React.forwardRef<HTMLDivElement, OTPInputProps>(
 
     // Handle container click (focus first empty input)
     const handleContainerClick = useCallback(() => {
-      const firstEmptyIndex = otpValues.findIndex((val) => val === "");
+      const firstEmptyIndex = otpValues.indexOf("");
       const targetIndex = firstEmptyIndex === -1 ? length - 1 : firstEmptyIndex;
       inputRefs.current[targetIndex]?.focus();
     }, [otpValues, length]);

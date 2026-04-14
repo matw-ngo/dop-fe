@@ -7,7 +7,7 @@ import { Suspense, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
-function SuccessContent() {
+function _SuccessContent() {
   const searchParams = useSearchParams();
   const [applicationData, setApplicationData] = useState<any>(null);
 

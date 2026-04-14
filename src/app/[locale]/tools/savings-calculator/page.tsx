@@ -4,7 +4,7 @@
  * Page for comparing savings interest rates across Vietnamese banks
  */
 
-import { Info, PiggyBank, Shield, TrendingUp } from "lucide-react";
+import { Info } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { ToolsPageLayout } from "@/components/features/tools/ToolsPageLayout";
 import { ToolsThemeProvider } from "@/components/features/tools/ToolsThemeProvider";

@@ -1,0 +1,148 @@
+{
+  "title": "Sản phẩm tài chính",
+  "description": "Khám phá các sản phẩm tài chính phù hợp với nhu cầu của bạn. Chúng tôi cung cấp thông tin chi tiết về thẻ tín dụng, bảo hiểm và các khoản vay.",
+  "author": "Fin Zone",
+  "lastUpdated": "Cập nhật: {date}",
+  "loading": "Đang tải...",
+  "listTitle": "Danh sách sản phẩm",
+  "noResults": "Rất tiếc không có sản phẩm nào phù hợp với những lựa chọn của bạn. Vui lòng",
+  "partner": "Đối tác",
+  
+  "categories": {
+    "all": "Tất cả sản phẩm",
+    "creditCard": "Thẻ tín dụng",
+    "insurance": "Bảo hiểm",
+    "loan": "Vay tiêu dùng"
+  },
+  
+  "filters": {
+    "province": "Khu vực",
+    "sortBy": "Sắp xếp theo",
+    "allProvinces": "Toàn quốc",
+    "reset": "Xoá bộ lọc",
+    "resetLink": "chọn lại bộ lọc",
+    "age": "Tuổi",
+    "agePlaceholder": "Nhập số",
+    "ageTitle": "Tuổi từ {min} đến {max}",
+    "income": "Thu nhập hàng tháng",
+    "incomePlaceholder": "Nhập số",
+    "incomeTitle": "Thu nhập từ {min} đến {max} (triệu đồng)",
+    "incomeSuffix": "triệu đồng",
+    "creditLimit": "Hạn mức mong muốn",
+    "creditLimitPlaceholder": "Nhập số",
+    "creditLimitTitle": "Hạn mức từ {min} đến {max} (triệu đồng)",
+    "creditLimitSuffix": "triệu đồng",
+    "sort": {
+      "default": "Mặc định",
+      "nameAsc": "Tên A-Z",
+      "nameDesc": "Tên Z-A"
+    }
+  },
+  
+  "tabs": {
+    "benefits": "Ưu đãi",
+    "fees": "Lãi & Phí",
+    "conditions": "Điều kiện",
+    "updating": "Đang cập nhật"
+  },
+  
+  "actions": {
+    "applyNow": "Đăng ký ngay",
+    "viewDetail": "Xem chi tiết",
+    "compare": "So sánh"
+  },
+  
+  "guide": {
+    "title": "Cách lựa chọn sản phẩm tài chính phù hợp",
+    "step1": {
+      "title": "1. Xác định nhu cầu tài chính của bạn",
+      "content": "Trước khi lựa chọn sản phẩm, hãy xác định rõ mục đích sử dụng: chi tiêu hàng ngày, du lịch, mua sắm, bảo vệ tài sản hay vay vốn."
+    },
+    "step2": {
+      "title": "2. Xem xét các điều kiện và yêu cầu",
+      "content": "Kiểm tra kỹ các điều kiện về tuổi, thu nhập, giấy tờ cần thiết để đảm bảo bạn đủ điều kiện đăng ký."
+    },
+    "step3": {
+      "title": "3. So sánh lãi suất và phí",
+      "content": "Cân nhắc kỹ về các loại phí, lãi suất và ưu đãi để chọn sản phẩm có chi phí hợp lý nhất với khả năng tài chính của bạn."
+    },
+    "expand": "Xem thêm",
+    "collapse": "Thu gọn"
+  },
+  
+  "tutorial": {
+    "title": "Hướng dẫn",
+    "comingSoon": "Nội dung hướng dẫn đang được cập nhật"
+  },
+  
+  "comparing": {
+    "title": "So sánh sản phẩm",
+    "reset": "Đặt lại",
+    "compare": "So sánh ({count})",
+    "max": "Bạn chỉ có thể so sánh tối đa 3 sản phẩm",
+    "removeTooltip": "Bỏ {name} khỏi danh sách so sánh",
+    "addTooltip": "Thêm sản phẩm để so sánh",
+    "closeTooltip": "Xoá danh sách so sánh và ẩn",
+    "searchModal": {
+      "title": "Tìm kiếm sản phẩm",
+      "placeholder": "Tìm kiếm theo tên sản phẩm...",
+      "suggestedTitle": "Gợi ý sản phẩm so sánh",
+      "searchResultsTitle": "Kết quả tìm kiếm",
+      "add": "Thêm",
+      "addTooltip": "Thêm để so sánh",
+      "complete": "Hoàn tất",
+      "closeTooltip": "Đóng",
+      "comingSoon": "Chức năng tìm kiếm đang được phát triển",
+      "close": "Đóng"
+    }
+  },
+  
+  "detail": {
+    "loading": "Đang tải...",
+    "notFound": "Không tìm thấy sản phẩm",
+    "backToList": "Quay lại danh sách",
+    "partner": "Đối tác",
+    "compare": "So sánh",
+    "applyNow": "Đăng ký ngay",
+    "lastUpdated": "Cập nhật: {date}",
+    "breadcrumb": {
+      "home": "Trang chủ",
+      "products": "Danh sách sản phẩm"
+    }
+  },
+  
+  "compare": {
+    "title": "So sánh sản phẩm",
+    "loading": "Đang tải...",
+    "error": "Có lỗi xảy ra khi tải dữ liệu",
+    "noProducts": "Chưa có sản phẩm nào để so sánh",
+    "backToList": "Quay lại danh sách",
+    "remove": "Xóa",
+    "applyNow": "Đăng ký ngay",
+    "addProducts": "Thêm sản phẩm để so sánh",
+    "suggestedProducts": "Gợi ý sản phẩm so sánh",
+    "addTooltip": "Thêm sản phẩm để so sánh",
+    "removeTooltip": "Xoá sản phẩm khỏi danh sách so sánh",
+    "expandTooltip": "Mở rộng",
+    "collapseTooltip": "Thu gọn",
+    "breadcrumb": {
+      "home": "Trang chủ",
+      "products": "Danh sách sản phẩm"
+    },
+    "rows": {
+      "summary": "Tóm tắt",
+      "productType": "Loại sản phẩm",
+      "partner": "Đối tác",
+      "status": "Trạng thái"
+    },
+    "types": {
+      "creditCard": "Thẻ tín dụng",
+      "insurance": "Bảo hiểm",
+      "loan": "Vay tiêu dùng"
+    },
+    "status": {
+      "active": "Đang hoạt động",
+      "inactive": "Ngừng hoạt động"
+    }
+  }
+}

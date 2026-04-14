@@ -4,7 +4,6 @@
  * Inline verification component embedded directly in the form.
  */
 
-import React from "react";
 import type { EkycFieldConfig } from "@/components/form-generation/types";
 import type {
   VerificationResult,
@@ -37,7 +36,7 @@ export function VerificationInline({
   renderProps,
 }: VerificationInlineProps) {
   // If already verified, show result
-  if (result && result.success) {
+  if (result?.success) {
     return (
       <div className="border border-green-200 bg-green-50 rounded-lg p-4">
         <div className="flex items-center justify-between">

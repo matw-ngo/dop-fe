@@ -4,7 +4,7 @@
  * Implements device fingerprinting for anomaly detection and trust scoring
  */
 
-import crypto from "crypto";
+import crypto from "node:crypto";
 
 // Device fingerprint data
 export interface DeviceFingerprint {
@@ -236,9 +236,9 @@ async function getConnectionInfo(): Promise<{
 
     const localIP = await new Promise<string>((resolve) => {
       peerConnection.onicecandidate = (event) => {
-        if (event.candidate && event.candidate.candidate) {
+        if (event.candidate?.candidate) {
           const match = event.candidate.candidate.match(/(\d+\.\d+\.\d+\.\d+)/);
-          if (match && match[1]) {
+          if (match?.[1]) {
             resolve(match[1]);
           }
         }

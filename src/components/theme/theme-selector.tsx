@@ -4,7 +4,6 @@ import { Download, Monitor, Moon, Palette, Settings, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTheme } from "@/components/renderer/theme";
 import { themes, userGroups } from "@/components/renderer/theme/themes";
-import type { ThemeMode } from "@/components/renderer/theme/types";
 import { exportThemeAsCSS } from "@/components/renderer/theme/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";

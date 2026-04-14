@@ -1,7 +1,8 @@
 "use client";
 
 import { useMemo } from "react";
-import { useThemeUtils } from "@/components/renderer/theme";
+import { useFormTheme } from "@/components/form-generation/themes";
+import { useTheme } from "@/components/renderer/theme";
 import type { NavbarConfig } from "@/configs/navbar-config";
 
 /**
@@ -9,23 +10,16 @@ import type { NavbarConfig } from "@/configs/navbar-config";
  * This hook ensures the navbar colors match the active theme
  */
 export function useCreditCardsNavbarTheme(): NavbarConfig {
-  const { theme, resolvedTheme } = useThemeUtils();
+  const { themeConfig, resolvedTheme } = useTheme();
+  const { theme } = useFormTheme();
 
   return useMemo(() => {
-    // Default colors
-    let iconColor = "#017848"; // Default finzone green
+    // Try to get color from theme config first, fallback to form theme
+    let iconColor = theme.colors.primary;
+    const configColor = themeConfig?.colors?.[resolvedTheme]?.primary;
 
-    // Apply theme-specific colors
-    if (theme) {
-      if (theme.name === "corporate") {
-        // Corporate theme uses professional blue tones
-        // Light mode: oklch(0.47 0.13 220) -> hex approx #1e40af
-        // Dark mode: oklch(0.67 0.13 220) -> hex approx #2563eb
-        iconColor = resolvedTheme === "dark" ? "#2563eb" : "#1e40af";
-      } else {
-        // Use the theme's primary color based on current mode
-        iconColor = theme.colors.primary || "#017848";
-      }
+    if (configColor) {
+      iconColor = configColor;
     }
 
     // Return the config with theme-aware colors
@@ -140,5 +134,5 @@ export function useCreditCardsNavbarTheme(): NavbarConfig {
       ],
       hideOnPaths: ["/thong-tin-vay/", "/tim-kiem-vay/", "/ket-qua-vay/"],
     };
-  }, [theme, resolvedTheme]);
+  }, [themeConfig, resolvedTheme]);
 }

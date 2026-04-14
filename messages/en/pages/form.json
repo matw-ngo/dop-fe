@@ -2,7 +2,8 @@
   "buttons": {
     "next": "Next",
     "previous": "Previous",
-    "submit": "Submit"
+    "submit": "Submit",
+    "submitting": "Submitting..."
   },
   "errors": {
     "required": "This field is required",
@@ -19,10 +20,22 @@
     "integer": "Must be an integer",
     "positive": "Must be a positive number",
     "negative": "Must be a negative number",
-    "summary_error": "Please fix {count} error(s) above"
+    "summary_error": "Please fix {count} error(s) above",
+    "validationFailed": "{count, plural, =1 {Please fix 1 error} other {Please fix # errors}}",
+    "andMoreErrors": "and {count} more error(s)",
+    "scrollToError": "Click to view error"
   },
   "finding_loan": {
     "message": "Please wait a moment, we are finding suitable loans for you",
+    "message_10s": "Verifying your information...",
+    "message_30s": "Comparing the best loan packages...",
+    "message_60s": "Searching for suitable partners...",
+    "message_120s": "Processing, please be patient...",
+    "message_180s": "Almost complete, optimizing results...",
+    "message_240s": "System is busy, please wait a bit longer...",
+    "partnerMatch": "We found a partner: {partner}",
+    "noMatch": "No matching products found.",
+    "checkingStatus": "Checking (attempt {attempt})…",
     "success_title": "Application submitted successfully!",
     "success_desc": "We have found suitable loans for you.",
     "retry": "Retry"

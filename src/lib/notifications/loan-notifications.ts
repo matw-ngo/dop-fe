@@ -4,10 +4,7 @@
  * Multi-channel delivery with Vietnamese language support
  */
 
-import type {
-  LoanApplicationStatus,
-  StatusConfig,
-} from "@/lib/loan-status/vietnamese-status-config";
+import type { LoanApplicationStatus } from "@/lib/loan-status/vietnamese-status-config";
 
 import { getStatusConfig } from "@/lib/loan-status/vietnamese-status-config";
 

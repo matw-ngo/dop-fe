@@ -26,7 +26,10 @@
     "privacyPolicyText": "Chính sách bảo mật",
     "fullText": "Để đăng kí và sử dụng dịch vụ từ {companyName}, xin vui lòng đọc và đồng ý với <terms>Điều khoản sử dụng dịch vụ</terms> & <privacy>Chính sách bảo mật</privacy> của chúng tôi.",
     "agree": "Tôi đồng ý và muốn sử dụng <terms>dịch vụ</terms>.",
-    "disagree": "Tôi không đồng ý với toàn bộ hoặc một phần trong <terms>Điều khoản dịch vụ</terms>."
+    "disagree": "Tôi không đồng ý với toàn bộ hoặc một phần trong <terms>Điều khoản dịch vụ</terms>.",
+    "termsDialogTitle": "Điều khoản sử dụng dịch vụ",
+    "privacyDialogTitle": "Chính sách bảo mật",
+    "closeButton": "Tiếp tục"
   },
   "errors": {
     "phoneRequired": "Số điện thoại không được để trống",
@@ -35,7 +38,9 @@
     "amountRequired": "Vui lòng chọn khoản vay",
     "periodRequired": "Vui lòng chọn thời gian vay",
     "purposeRequired": "Vui lòng chọn mục đích vay",
-    "submissionFailed": "Thất bại. Vui lòng thử lại."
+    "submissionFailed": "Thất bại. Vui lòng thử lại.",
+    "configurationError": "Lỗi cấu hình. Vui lòng liên hệ hỗ trợ.",
+    "termsRequired": "Bạn phải đồng ý với điều khoản và điều kiện để tiếp tục."
   },
   "submit": {
     "button": "Bắt đầu tìm kiếm khoản vay",
@@ -50,7 +55,8 @@
   "messages": {
     "agreeRequired": "Vui lòng đồng ý với điều khoản để tiếp tục",
     "otpSuccess": "Xác thực OTP thành công!",
-    "otpExpired": "OTP đã hết hạn. Vui lòng yêu cầu mã mới."
+    "otpExpired": "OTP đã hết hạn. Vui lòng yêu cầu mã mới.",
+    "searchingLoan": "Đang tìm kiếm khoản vay phù hợp với bạn..."
   },
   "validation": {
     "amount": {
@@ -78,6 +84,50 @@
     "otp": {
       "required": "OTP phải có 4 chữ số",
       "invalid": "OTP không hợp lệ"
+    }
+  },
+  "navigation": {
+    "blocked": {
+      "afterVerification": "Bạn không thể quay lại sau khi xác thực vì lý do bảo mật.",
+      "title": "Điều hướng bị chặn"
+    },
+    "sessionExpired": {
+      "message": "Phiên của bạn đã hết hạn. Vui lòng bắt đầu lại.",
+      "title": "Phiên hết hạn"
+    },
+    "sessionTimeout": {
+      "warning": "Phiên của bạn sẽ hết hạn trong {seconds} giây.",
+      "title": "Phiên sắp hết hạn"
+    },
+    "errors": {
+      "loadFailed": "Không thể tải cấu hình biểu mẫu",
+      "redirectLoop": "Phát hiện lỗi điều hướng. Phiên đã được đặt lại.",
+      "sessionCorrupted": "Phiên bị lỗi. Vui lòng bắt đầu lại.",
+      "invalidStep": "Bước không hợp lệ. Đang chuyển về bước đầu.",
+      "prerequisitesNotMet": "Vui lòng hoàn thành các bước trước đó trước.",
+      "verificationRequired": "Không thể quay lại sau khi xác thực."
+    },
+    "sharedLink": {
+      "noSession": "Liên kết này yêu cầu bắt đầu đơn đăng ký từ đầu.",
+      "prerequisitesNotMet": "Bạn phải hoàn thành các bước trước đó trước khi truy cập trang này."
+    },
+    "actions": {
+      "retry": "Thử lại"
+    },
+    "error": {
+      "sessionCorrupt": {
+        "title": "Lỗi phiên",
+        "message": "Dữ liệu phiên của bạn bị lỗi. Quay về bước đầu."
+      },
+      "sessionInvalid": {
+        "title": "Phiên không hợp lệ",
+        "message": "Phiên xác thực của bạn không hợp lệ. Vui lòng bắt đầu lại."
+      },
+      "otpRequired": {
+        "title": "Yêu cầu xác thực",
+        "message": "Cần xác thực OTP trước khi truy cập bước này."
+      },
+      "resetButton": "Bắt đầu lại"
     }
   }
 }

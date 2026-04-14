@@ -91,10 +91,10 @@ export function getResponsiveClassNames(
     }
 
     // Add breakpoint-specific classes
-    (Object.keys(value) as Breakpoint[]).forEach((bp) => {
-      if (bp !== "initial" && value[bp] !== undefined) {
+    Object.keys(value).forEach((bp) => {
+      if (bp !== "initial" && value[bp as keyof typeof value] !== undefined) {
         classes.push(
-          `${bp}:${prefix}${value[bp]}${suffix ? `-${suffix}` : ""}`,
+          `${bp}:${prefix}${value[bp as keyof typeof value]}${suffix ? `-${suffix}` : ""}`,
         );
       }
     });
@@ -127,13 +127,13 @@ export function resolveResponsiveStyles(
       }
 
       // Add breakpoint-specific media queries
-      (Object.keys(value) as Breakpoint[]).forEach((bp) => {
-        if (bp !== "initial" && value[bp] !== undefined) {
-          const query = createMediaQuery(bp);
+      Object.keys(value).forEach((bp) => {
+        if (bp !== "initial" && value[bp as keyof typeof value] !== undefined) {
+          const query = createMediaQuery(bp as Breakpoint);
           mediaQueries.push({
             query,
-            breakpoint: bp,
-            value: { [property]: value[bp] },
+            breakpoint: bp as Breakpoint,
+            value: { [property]: value[bp as keyof typeof value] },
           });
         }
       });
@@ -165,9 +165,11 @@ export function getResponsiveWidthClasses(
       classes.push(mapWidthToClass(width.initial));
     }
 
-    (Object.keys(width) as Breakpoint[]).forEach((bp) => {
-      if (bp !== "initial" && width[bp] !== undefined) {
-        classes.push(`${bp}:${mapWidthToClass(width[bp])}`);
+    Object.keys(width).forEach((bp) => {
+      if (bp !== "initial" && width[bp as keyof typeof width] !== undefined) {
+        classes.push(
+          `${bp}:${mapWidthToClass(width[bp as keyof typeof width] as any)}`,
+        );
       }
     });
   } else {
@@ -225,9 +227,14 @@ export function getResponsiveDisplayClasses(
       classes.push(mapDisplayToClass(display.initial));
     }
 
-    (Object.keys(display) as Breakpoint[]).forEach((bp) => {
-      if (bp !== "initial" && display[bp] !== undefined) {
-        classes.push(`${bp}:${mapDisplayToClass(display[bp])}`);
+    Object.keys(display).forEach((bp) => {
+      if (
+        bp !== "initial" &&
+        display[bp as keyof typeof display] !== undefined
+      ) {
+        classes.push(
+          `${bp}:${mapDisplayToClass(display[bp as keyof typeof display] as any)}`,
+        );
       }
     });
   } else {
@@ -240,7 +247,9 @@ export function getResponsiveDisplayClasses(
 /**
  * Map display value to Tailwind class
  */
-function mapDisplayToClass(display: ResponsiveFieldConfig["display"]): string {
+function mapDisplayToClass(
+  display: "none" | "block" | "flex" | "grid",
+): string {
   switch (display) {
     case "none":
       return "hidden";
@@ -251,7 +260,7 @@ function mapDisplayToClass(display: ResponsiveFieldConfig["display"]): string {
     case "grid":
       return "grid";
     default:
-      return display;
+      return "block";
   }
 }
 

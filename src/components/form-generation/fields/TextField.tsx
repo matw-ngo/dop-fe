@@ -30,6 +30,9 @@ export function TextField({
   const isRequired = field.validation?.some(
     (rule) => rule.type === ValidationRuleType.REQUIRED,
   );
+  const secondaryTextColor = theme.colors.textSecondary || "#4d7e70";
+
+  // CSS variables are already injected by FormThemeProvider parent
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange(e.target.value);
@@ -61,8 +64,12 @@ export function TextField({
       ? `focus:ring-[${theme.focusRing.color}]/${theme.focusRing.opacity}`
       : `focus:ring-[${theme.colors.primary}]/20`,
     // Placeholder styles
-    "placeholder:text-gray-400",
+    "placeholder:text-[var(--form-placeholder)]",
     "placeholder:font-medium",
+    // Text and selection colors
+    "text-[var(--form-text)]",
+    "selection:bg-[var(--form-selection-bg)]",
+    "selection:text-white",
     // Disabled and readonly states
     "disabled:cursor-not-allowed",
     "disabled:opacity-60",
@@ -72,25 +79,25 @@ export function TextField({
   // Theme-specific styles
   const themeStyles = [
     // Border radius from theme
-    "rounded-[8px]", // This could be extracted from theme if needed
+    "rounded-[8px]",
     // Border color
-    `border-[${theme.colors.border}]`,
-    // Default background (important!)
-    `bg-[${theme.colors.background}]`,
+    "border-[var(--form-border)]",
+    // Default background - use CSS variable!
+    "!bg-[var(--form-bg)]",
     // Focus state
-    `focus:border-[${theme.colors.borderFocus}]`,
+    "focus:border-[var(--form-border-focus)]",
     "focus:ring-2",
-    `focus:ring-[${theme.colors.primary}]/20`,
+    "focus:ring-[var(--form-primary)]/20",
     // Focus within (for wrapper)
-    `focus-within:border-[${theme.colors.borderFocus}]`,
+    "focus-within:border-[var(--form-border-focus)]",
     "focus-within:ring-2",
-    `focus-within:ring-[${theme.colors.primary}]/20`,
+    "focus-within:ring-[var(--form-primary)]/20",
     // Error state
-    error && `border-[${theme.colors.error}]`,
-    error && `focus:ring-[${theme.colors.error}]/20`,
+    error && "border-[var(--form-error)]",
+    error && "focus:ring-[var(--form-error)]/20",
     // Override background for special states
-    (disabled || field.disabled) && `!bg-[${theme.colors.disabled}]`,
-    (readOnly || field.readOnly) && `!bg-[${theme.colors.readOnly}]`,
+    (disabled || field.disabled) && "!bg-[var(--form-disabled-bg)]",
+    (readOnly || field.readOnly) && "!bg-[var(--form-readonly-bg)]",
   ].filter(Boolean);
 
   // Size styles
@@ -120,10 +127,7 @@ export function TextField({
         {internalLabel && field.label && (
           <label
             htmlFor={field.id}
-            className={cn(
-              "absolute top-2 left-4 text-xs font-medium pointer-events-none",
-              `text-[${theme.colors.primary}]`,
-            )}
+            className="absolute top-2 left-4 text-xs font-medium pointer-events-none text-[var(--form-primary)]"
           >
             {field.label}
             {isRequired && <span className="text-red-500 ml-0.5">*</span>}
@@ -132,7 +136,10 @@ export function TextField({
 
         {/* Start Adornments */}
         {(options.prefix || options.startAdornment) && (
-          <div className="flex items-center shrink-0 text-gray-500 ml-1">
+          <div
+            className="flex items-center shrink-0 ml-1"
+            style={{ color: secondaryTextColor }}
+          >
             {options.prefix || options.startAdornment}
           </div>
         )}
@@ -165,15 +172,22 @@ export function TextField({
             "text-sm",
             // Adjust position for internal label
             internalLabel && "mt-1",
+            // Keep text/selection color in wrapped mode
+            "text-[var(--form-text)]",
+            "selection:bg-[var(--form-selection-bg)]",
+            "selection:text-white",
             // Keep placeholder styling
-            "placeholder:text-gray-400",
+            "placeholder:text-[var(--form-placeholder)]",
             "placeholder:font-medium",
           )}
         />
 
         {/* End Adornments */}
         {(options.suffix || options.endAdornment) && (
-          <div className="flex items-center shrink-0 text-gray-500 mr-1">
+          <div
+            className="flex items-center shrink-0 mr-1"
+            style={{ color: secondaryTextColor }}
+          >
             {options.suffix || options.endAdornment}
           </div>
         )}

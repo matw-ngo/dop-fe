@@ -4,7 +4,6 @@
  * Renders the verification button with appropriate states and styling.
  */
 
-import React from "react";
 import type { EkycFieldConfig } from "@/components/form-generation/types";
 import type { VerificationResult } from "@/lib/verification/types";
 
@@ -26,7 +25,7 @@ export function VerificationButton({
   compact,
 }: VerificationButtonProps) {
   // Don't show button if already verified
-  if (result && result.success) {
+  if (result?.success) {
     if (compact) {
       return null;
     }

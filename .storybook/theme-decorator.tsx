@@ -1,12 +1,11 @@
 import type { Decorator } from "@storybook/react";
 import type React from "react";
 import { useEffect, useState } from "react";
-import { ThemeProvider } from "../src/components/renderer/theme";
 import { themes } from "../src/components/renderer/theme/themes";
 import { applyTheme } from "../src/components/renderer/theme/utils";
 
 // Component to handle theme application
-function ThemeWrapper({
+function _ThemeWrapper({
   children,
   themeId,
   mode,
@@ -72,14 +71,15 @@ export const withTheme: Decorator = (Story, context) => {
     mode = "light",
   } = context.globals;
 
-  return (
-    <ThemeProvider
-      defaultUserGroup={userGroup}
-      storageKey="storybook-theme-config"
-    >
-      <ThemeWrapper themeId={themeId} mode={mode} userGroup={userGroup}>
-        <Story />
-      </ThemeWrapper>
-    </ThemeProvider>
-  );
+  // return (
+  //   <ThemeProvider
+  //     defaultUserGroup={userGroup}
+  //     storageKey="storybook-theme-config"
+  //   >
+  //     <ThemeWrapper themeId={themeId} mode={mode} userGroup={userGroup}>
+  //       <Story />
+  //     </ThemeWrapper>
+  //   </ThemeProvider>
+  // );
+  return <Story />;
 };

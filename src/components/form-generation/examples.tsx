@@ -4,13 +4,7 @@
  * This file demonstrates how to use the form generation library
  */
 
-import {
-  type ApiFormConfig,
-  DynamicForm,
-  type DynamicFormConfig,
-  FormConfigMapper,
-  registerComponent,
-} from "./index";
+import { type ApiFormConfig, DynamicForm, FormConfigMapper } from "./index";
 
 // ============================================================================
 // Example 1: Simple Contact Form
@@ -352,7 +346,7 @@ export function LoanFormExample() {
         onSubmit={async (data) => {
           console.log("Loan application:", data);
         }}
-        onChange={(fieldName, value, formData) => {
+        onChange={(fieldName, value, _formData) => {
           console.log(`Field ${fieldName} changed:`, value);
         }}
       />

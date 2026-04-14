@@ -5,11 +5,7 @@
  * including personal income tax, corporate tax, and other tax-related calculations.
  */
 
-import {
-  FamilyDeduction,
-  SocialInsuranceRates,
-  type VietnameseTaxBracket,
-} from "./vietnamese-financial-data";
+import type { VietnameseTaxBracket } from "./vietnamese-financial-data";
 
 export interface TaxCalculationResult {
   grossIncome: number;

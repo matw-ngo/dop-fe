@@ -133,7 +133,7 @@ export class EkycConfigBuilder {
     },
     callbackFn?: (result: any) => void,
   ) {
-    const defaultCallback = (result: any) => {
+    const _defaultCallback = (result: any) => {
       console.log("[EKYC Default Callback] Kết quả:", result);
     };
 
@@ -319,28 +319,24 @@ export class EkycConfigBuilder {
     mobileStyle?: Partial<MobileStyle>;
   }): EkycConfigBuilder {
     if (styling.listChooseStyle) {
-      // @ts-expect-error
       this.config.LIST_CHOOSE_STYLE = {
         ...this.config.LIST_CHOOSE_STYLE,
         ...styling.listChooseStyle,
       };
     }
     if (styling.captureImageStyle) {
-      // @ts-expect-error
       this.config.CAPTURE_IMAGE_STYLE = {
         ...this.config.CAPTURE_IMAGE_STYLE,
         ...styling.captureImageStyle,
       };
     }
     if (styling.resultDefaultStyle) {
-      // @ts-expect-error
       this.config.RESULT_DEFAULT_STYLE = {
         ...this.config.RESULT_DEFAULT_STYLE,
         ...styling.resultDefaultStyle,
       };
     }
     if (styling.mobileStyle) {
-      // @ts-expect-error
       this.config.MOBILE_STYLE = {
         ...this.config.MOBILE_STYLE,
         ...styling.mobileStyle,

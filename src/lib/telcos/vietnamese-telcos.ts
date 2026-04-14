@@ -228,7 +228,7 @@ export const getTelcoByPhoneNumber = (
 
   // Try with international format (+84 -> 0)
   if (cleanPhone.startsWith("84")) {
-    const localPhone = "0" + cleanPhone.slice(2);
+    const localPhone = `0${cleanPhone.slice(2)}`;
     return getTelcoByPhoneNumber(localPhone);
   }
 
@@ -299,7 +299,7 @@ export const isValidVietnamesePhoneNumber = (phoneNumber: string): boolean => {
 
   // Check if it starts with Vietnamese country code or local prefix
   if (clean.startsWith("84")) {
-    const localNumber = "0" + clean.slice(2);
+    const localNumber = `0${clean.slice(2)}`;
     return getTelcoByPhoneNumber(localNumber) !== null;
   } else if (clean.startsWith("0")) {
     return getTelcoByPhoneNumber(clean) !== null;
@@ -316,7 +316,7 @@ export const sanitizePhoneNumber = (phoneNumber: string): string => {
 
   if (clean.startsWith("84") && clean.length === 11) {
     // Convert to local format
-    return "0" + clean.slice(2);
+    return `0${clean.slice(2)}`;
   } else if (clean.startsWith("0") && clean.length === 10) {
     // Already in local format
     return clean;

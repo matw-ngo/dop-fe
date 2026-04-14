@@ -1,6 +1,5 @@
-import { Grid, List, Loader2, SlidersHorizontal, X } from "lucide-react";
+import { Grid, List, Loader2, SlidersHorizontal } from "lucide-react";
 import { useTranslations } from "next-intl";
-import React from "react";
 import SearchBar from "@/components/features/credit-card/SearchBar";
 import SortDropdown from "@/components/features/credit-card/SortDropdown";
 import { CreditCardActiveFilters } from "@/components/features/credit-cards/CreditCardActiveFilters";

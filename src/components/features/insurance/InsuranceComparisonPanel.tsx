@@ -111,7 +111,7 @@ export const InsuranceComparisonPanel: React.FC<
       setTimeout(() => {
         setCopiedStates((prev) => ({ ...prev, [key]: false }));
       }, 2000);
-    } catch (err) {
+    } catch (_err) {
       toast({
         title: "Lỗi!",
         description: "Không thể sao chép. Vui lòng thử lại.",
@@ -232,7 +232,7 @@ export const InsuranceComparisonPanel: React.FC<
         title: "Xuất file thành công!",
         description: `Đã tải xuống file ${fileName}`,
       });
-    } catch (error) {
+    } catch (_error) {
       toast({
         title: "Lỗi!",
         description: "Không thể xuất file CSV. Vui lòng thử lại.",
@@ -330,7 +330,7 @@ export const InsuranceComparisonPanel: React.FC<
         title: "Chuẩn bị in PDF",
         description: "Vui lòng chọn 'Lưu dưới dạng PDF' trong hộp thoại in",
       });
-    } catch (error) {
+    } catch (_error) {
       toast({
         title: "Lỗi!",
         description: "Không thể tạo PDF. Vui lòng thử lại.",
@@ -362,7 +362,7 @@ export const InsuranceComparisonPanel: React.FC<
                   !c.disabled && c.limit > 0,
               )
               .map(
-                ([key, c]: [string, { disabled: boolean; limit: number }]) =>
+                ([_key, c]: [string, { disabled: boolean; limit: number }]) =>
                   `${formatCurrency(c.limit)}`,
               )
               .join(", ")}\n`,
@@ -554,7 +554,7 @@ export const InsuranceComparisonPanel: React.FC<
             {products.length > 0 && (
               <div className="space-y-3">
                 <div className="grid gap-3">
-                  {products.map((product, index) => (
+                  {products.map((product, _index) => (
                     <div
                       key={product.id}
                       className="flex items-center space-x-3 p-3 bg-muted/30 rounded-lg group hover:bg-muted/50 transition-colors"

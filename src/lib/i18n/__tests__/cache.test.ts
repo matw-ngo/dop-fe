@@ -365,7 +365,7 @@ describe("Cache Integration", () => {
   it("should support persistent cache entries", () => {
     // Create a cache with persistence enabled
     const testCache = new TranslationCache({
-      enablePersistence: false, // We'll test the mechanism directly
+      enablePersistence: true,
       persistKey: "test-cache-key",
       defaultTTL: 5000,
       cleanupInterval: 0,
@@ -380,18 +380,14 @@ describe("Cache Integration", () => {
     // Add a non-persistent entry
     testCache.set("temp-key", "temp-value");
 
-    // Test that persistent entries are tracked correctly
-    const persistentData = (testCache["saveToStorage"] = function () {
-      const data: Record<string, any> = {};
-      for (const [key, node] of this.cache.entries()) {
-        if (node.entry.persistent) {
-          data[key] = node.entry;
-        }
-      }
-      return data;
-    });
+    // Verify non-persistent entry is also in cache
+    expect(testCache.get("temp-key")).toBe("temp-value");
 
-    const savedData = testCache["saveToStorage"]();
+    // Check localStorage was updated
+    const localStorageData = localStorageMock.getItem("test-cache-key");
+    expect(localStorageData).toBeTruthy();
+
+    const savedData = JSON.parse(localStorageData || "{}");
     expect(savedData["persistent-key"]).toBeTruthy();
     expect(savedData["persistent-key"].value).toBe("persistent-value");
     expect(savedData["temp-key"]).toBeUndefined(); // Should not be saved

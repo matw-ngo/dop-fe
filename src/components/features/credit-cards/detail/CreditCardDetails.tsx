@@ -42,7 +42,7 @@ export const CreditCardDetails: React.FC<CreditCardDetailsProps> = ({
   onBack,
 }) => {
   const t = useTranslations("features.credit-cards.detail");
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, _setIsLoading] = useState(false);
 
   // Find card from the main credit cards data
   const card: ExtendedCardInfo | undefined = vietnameseCreditCards.find(

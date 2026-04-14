@@ -317,7 +317,7 @@ export function mapEkycToFormData(
     const isoDate = convertVietnameseDateToISO(ocrData.birth_day);
     // Kiểm tra date hợp lệ (năm từ 1900 đến hiện tại)
     if (isoDate && isoDate.length === 10) {
-      const year = parseInt(isoDate.split("-")[0]);
+      const year = parseInt(isoDate.split("-")[0], 10);
       const currentYear = new Date().getFullYear();
       if (year >= 1900 && year <= currentYear) {
         formData.dateOfBirth = isoDate;

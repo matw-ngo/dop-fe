@@ -34,13 +34,14 @@ export function useStepConfig(
     if (!flowData?.steps) return [];
 
     const steps: GeneratedStepConfig[] = [];
+    const totalSteps = flowData.steps.length;
 
     // Generate configuration for each step in the flow
     flowData.steps.forEach((step, index) => {
       const fields = generateFieldsForStep(step, fieldBuilderMap);
       const sortedFields = sortFields(fields);
       const metadata = getStepMetadata(step, t);
-      const navigation = getStepNavigation(step, t);
+      const navigation = getStepNavigation(step, t, totalSteps, index);
 
       // Only include step if it has fields OR if it's a special step (eKYC, OTP)
       const hasFields = sortedFields.length > 0;
@@ -80,7 +81,7 @@ export function useStepConfig(
  */
 function createConfirmationStep(
   t: (key: string) => string,
-  stepIndex: number,
+  _stepIndex: number,
 ): GeneratedStepConfig {
   const confirmationField = createConfirmationField("confirmation", {
     leftIcon: CheckCircle,
@@ -147,7 +148,7 @@ export function useStepValidation(flowData: MappedFlow | undefined): boolean {
     return flowData.steps.every((step) => {
       return (
         step.id &&
-        step.title &&
+        step.page &&
         step.fields &&
         Object.keys(step.fields).length > 0
       );

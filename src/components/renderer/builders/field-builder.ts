@@ -18,7 +18,6 @@ import type {
   SwitchProps,
   TextareaProps,
   ToggleGroupProps,
-  TypedFieldConfig,
 } from "../types/component-props";
 import type { FieldCondition, RawFieldConfig } from "../types/data-driven-ui";
 

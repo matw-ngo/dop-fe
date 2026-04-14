@@ -1,12 +1,12 @@
 import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import Script from "next/script";
+import { Geist, Geist_Mono, Lexend_Deca } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 
-// @ts-expect-error
 import "../globals.css";
 
+import { MSWProvider } from "@/components/dev/MSWProvider";
+import { MSWToolbar } from "@/components/dev/MSWToolbar";
 import Providers from "@/components/layout/providers";
 
 export function generateStaticParams() {
@@ -21,6 +21,12 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+const lexendDeca = Lexend_Deca({
+  variable: "--font-lexend-deca",
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
 });
 
 export const metadata: Metadata = {
@@ -41,11 +47,16 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${lexendDeca.variable} antialiased`}
       >
         <NextIntlClientProvider locale={locale} messages={messages}>
           <Providers>
-            {children}
+            {/* MSW Provider - ensures worker is ready before rendering children in development */}
+            <MSWProvider>
+              {children}
+              {/* MSW Development Toolbar */}
+              <MSWToolbar />
+            </MSWProvider>
             {/* <div className="fixed bottom-5 left-5 z-50">
               <ThemeSelector />
             </div>

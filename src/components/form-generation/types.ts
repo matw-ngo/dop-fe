@@ -430,6 +430,33 @@ export interface BaseFieldConfig {
   style?: React.CSSProperties;
 
   /**
+   * Hide inline error display for this field
+   * When true, validation still runs but error message is not shown inline
+   * Useful when using alternative error display methods (e.g., toast)
+   * @default false
+   */
+  hideError?: boolean;
+
+  /**
+   * Show toast notification when validation fails
+   * When true, displays error message as toast in addition to (or instead of) inline error
+   * Works well with hideError: true for toast-only error display
+   * @default false
+   */
+  showToastOnError?: boolean;
+
+  /**
+   * Error display priority for toast notifications
+   * Lower numbers = higher priority (shown first)
+   * Use this to control which error shows when multiple fields have showToastOnError
+   * @default 0
+   * @example
+   * - Regular fields: 0 (default, shown first)
+   * - Terms agreement: 100 (shown last, only if no other errors)
+   */
+  errorPriority?: number;
+
+  /**
    * Field-specific options
    */
   options?: Record<string, unknown>;
@@ -926,6 +953,91 @@ export interface DynamicFormConfig {
    * Validation mode
    */
   validationMode?: "onChange" | "onBlur" | "onSubmit";
+
+  /**
+   * Error display configuration
+   */
+  errorDisplay?: ErrorDisplayConfig;
+}
+
+// ============================================================================
+// Error Display Configuration
+// ============================================================================
+
+/**
+ * Error display configuration
+ */
+export interface ErrorDisplayConfig {
+  /**
+   * Display mode
+   * - inline: Show errors only below fields
+   * - summary: Show errors only in summary box
+   * - both: Show both inline and summary (default)
+   * - toast: Show toast notification + inline errors
+   */
+  mode?: "inline" | "summary" | "both" | "toast";
+
+  /**
+   * Validation timing
+   * - blur: Validate when field loses focus (default)
+   * - change: Validate on every change
+   * - submit: Validate only on submit
+   */
+  validateOn?: "blur" | "change" | "submit";
+
+  /**
+   * When to clear errors
+   * - change: Clear on field change (default)
+   * - focus: Clear when field gains focus
+   * - manual: Only clear manually
+   */
+  clearOn?: "change" | "focus" | "manual";
+
+  /**
+   * Error summary configuration
+   */
+  summary?: {
+    enabled?: boolean;
+    position?: "top" | "bottom" | "sticky-top" | "sticky-bottom";
+    clickable?: boolean;
+    maxErrors?: number;
+    showFieldLabels?: boolean;
+  };
+
+  /**
+   * Auto-scroll configuration
+   */
+  autoScroll?: {
+    enabled?: boolean;
+    behavior?: "smooth" | "auto";
+    block?: "start" | "center" | "end";
+    offset?: number;
+  };
+
+  /**
+   * Auto-focus configuration
+   */
+  autoFocus?: {
+    enabled?: boolean;
+    focusFirstError?: boolean;
+  };
+
+  /**
+   * Toast notification configuration
+   */
+  toast?: {
+    enabled?: boolean;
+    showOnValidationFail?: boolean;
+    duration?: number;
+  };
+
+  /**
+   * Accessibility configuration
+   */
+  a11y?: {
+    announceErrors?: boolean;
+    ariaLive?: "polite" | "assertive";
+  };
 }
 
 // ============================================================================
@@ -1036,6 +1148,20 @@ export interface FormStep {
 
   /** Step-specific CSS class */
   className?: string;
+
+  /**
+   * OTP verification flag
+   * When true, this step requires OTP verification
+   * Used for navigation security after OTP completion
+   */
+  sendOtp?: boolean;
+
+  /**
+   * eKYC verification flag
+   * When true, this step includes eKYC verification
+   * Used for identity verification workflows
+   */
+  useEkyc?: boolean;
 }
 
 /**

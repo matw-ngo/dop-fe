@@ -1,8 +1,8 @@
 import { useTranslations } from "next-intl";
 import type React from "react";
 import { useEffect, useState } from "react";
+import { useFormTheme } from "@/components/form-generation/themes";
 import { Button, Modal, TextInput } from "@/components/ui";
-import { MODAL_SIZE } from "../constants";
 import type { PhoneVerificationModalProps } from "../types";
 
 export const PhoneVerificationModal: React.FC<PhoneVerificationModalProps> = ({
@@ -14,85 +14,87 @@ export const PhoneVerificationModal: React.FC<PhoneVerificationModalProps> = ({
   isSubmitting = false,
 }) => {
   const t = useTranslations("features.loan-application");
+  const { theme } = useFormTheme();
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [validationError, setValidationError] = useState("");
+  const [error, setError] = useState<string | null>(null);
 
-  const handleVerify = () => {
-    if (!phoneNumber.trim()) {
-      setValidationError(t("errors.phoneRequired"));
-      return;
-    }
-
-    // Basic validation - in a real app, this would be more robust
-    if (!/^0[0-9]{9}$/.test(phoneNumber)) {
-      setValidationError(t("errors.phoneInvalid"));
-      return;
-    }
-
-    // Clear any existing errors
-    setValidationError("");
-
-    // Call the verify handler
-    onVerify(phoneNumber);
-  };
-
-  const isDisabled = isSubmitting || !!validationError;
-
-  const handlePhoneChange = (value: string) => {
-    setPhoneNumber(value);
-
-    // Real-time validation
-    if (value.trim() && !/^0[0-9]{9}$/.test(value)) {
-      setValidationError(t("errors.phoneInvalid"));
-    } else {
-      setValidationError("");
-    }
-  };
-
-  const handleClose = () => {
-    // Reset state on close
-    setPhoneNumber("");
-    setValidationError("");
-    onClose();
-  };
-
-  // Reset state when modal opens
   useEffect(() => {
     if (open) {
       setPhoneNumber("");
-      setValidationError("");
+      setError(null);
     }
   }, [open]);
+
+  const handleSubmit = () => {
+    // Clear previous error
+    setError(null);
+
+    // Validate phone number is not empty
+    const trimmedPhone = phoneNumber.trim();
+    if (!trimmedPhone) {
+      setError(t("errors.phoneRequired"));
+      return;
+    }
+
+    // Basic format validation (numbers only, reasonable length)
+    if (!/^\d{9,11}$/.test(trimmedPhone)) {
+      setError(t("errors.phoneInvalid"));
+      return;
+    }
+
+    // Call parent handler
+    onVerify(trimmedPhone);
+  };
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPhoneNumber(e.target.value);
+    // Clear error when user starts typing
+    if (error) {
+      setError(null);
+    }
+  };
 
   return (
     <Modal
       open={open}
-      onOpenChange={(isOpen) => !isOpen && handleClose()}
-      size={MODAL_SIZE.PHONE}
+      onOpenChange={(isOpen) => {
+        if (!isOpen) {
+          onClose();
+        }
+      }}
+      size="lg"
     >
-      <div className="font-['Lexend_Deca']">
-        <p className="text-center text-2xl font-bold leading-8 mb-3">
+      <div className="p-2">
+        <h3
+          className="text-center text-2xl font-bold leading-8 mb-3"
+          style={{ color: theme.colors.primary }}
+        >
           {title || t("otp.title")}
-        </p>
-        <p className="text-center text-sm font-normal leading-6 mb-4">
+        </h3>
+        <p
+          className="text-center text-sm font-normal leading-6 mb-4"
+          style={{ color: theme.colors.textSecondary }}
+        >
           {description || t("otp.description")}
         </p>
-        <div>
+        <div className="mb-4">
           <TextInput
             placeholder={t("otp.placeholder")}
             value={phoneNumber}
-            onChange={(e) => handlePhoneChange(e.target.value)}
-            error={!!validationError}
-            errorMessage={validationError}
+            onChange={handlePhoneChange}
+            className="text-lg"
             disabled={isSubmitting}
+            error={!!error}
+            errorMessage={error || undefined}
           />
         </div>
-        <div className="mt-6">
+        <div>
           <Button
-            className="mx-auto block rounded-lg font-semibold md:text-sm w-full bg-primary"
-            onClick={handleVerify}
+            className="mx-auto block rounded-lg font-semibold w-full h-14 text-white"
+            style={{ backgroundColor: theme.colors.primary }}
+            onClick={handleSubmit}
             loading={isSubmitting}
-            disabled={isDisabled}
+            disabled={isSubmitting || !phoneNumber.trim()}
           >
             {t("otp.continue")}
           </Button>

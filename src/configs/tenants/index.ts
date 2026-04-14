@@ -1,5 +1,5 @@
 import { finzoneConfig } from "./finzone";
-import { TenantConfig } from "./types";
+import type { TenantConfig } from "./types";
 
 const tenants: Record<string, TenantConfig> = {
   finzone: finzoneConfig,

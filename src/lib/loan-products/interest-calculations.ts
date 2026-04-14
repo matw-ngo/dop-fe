@@ -2,7 +2,6 @@
 // Comprehensive calculation engine for Vietnamese loan products
 
 import { VietnameseFinancialValidator } from "./validation";
-import { VietnameseComplianceEngine } from "./vietnamese-compliance";
 import type { InterestRateType } from "./vietnamese-loan-products";
 
 /**
@@ -742,8 +741,6 @@ export class VietnameseLoanCalculator {
     switch (sanitizedParams.rateType) {
       case "flat":
         return VietnameseLoanCalculator.calculateFlatRate(sanitizedParams);
-      case "reducing":
-      case "fixed":
       default:
         return VietnameseLoanCalculator.calculateReducingBalance(
           sanitizedParams,

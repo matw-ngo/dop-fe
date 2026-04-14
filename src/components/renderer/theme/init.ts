@@ -1,4 +1,4 @@
-import { initializeThemes } from "./themes";
+import { preloadThemes } from "./lazy-loader";
 
 // Initialize theme system on module import
 // This will start preloading critical themes in the background
@@ -10,7 +10,7 @@ export function initThemeSystem() {
   }
 
   // Start preloading critical themes
-  initializeThemes();
+  void preloadThemes();
 
   initialized = true;
 

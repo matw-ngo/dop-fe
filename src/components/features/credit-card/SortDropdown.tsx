@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/select";
 import { SORT_OPTIONS } from "@/constants/credit-cards";
 import { cn } from "@/lib/utils";
-import { SortOption, type SortOptionUI } from "@/types/credit-card";
+import type { SortOptionUI } from "@/types/credit-card";
 
 interface SortDropdownProps {
   value?: SortOptionUI["value"];

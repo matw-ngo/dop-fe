@@ -64,11 +64,15 @@ describe("Data Normalization", () => {
           isValid = false;
         } else {
           const [day, month, year] = parts;
-          const dayNum = parseInt(day);
-          const monthNum = parseInt(month);
-          const yearNum = parseInt(year);
+          const dayNum = parseInt(day, 10);
+          const monthNum = parseInt(month, 10);
+          const yearNum = parseInt(year, 10);
 
-          if (isNaN(dayNum) || isNaN(monthNum) || isNaN(yearNum)) {
+          if (
+            Number.isNaN(dayNum) ||
+            Number.isNaN(monthNum) ||
+            Number.isNaN(yearNum)
+          ) {
             isValid = false;
           } else if (
             dayNum < 1 ||
@@ -84,7 +88,7 @@ describe("Data Normalization", () => {
             const date = new Date(
               `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`,
             );
-            if (isNaN(date.getTime())) {
+            if (Number.isNaN(date.getTime())) {
               isValid = false;
             }
           }
@@ -690,7 +694,7 @@ describe("Data Normalization", () => {
         faceComparison: 0.1,
       };
 
-      Object.entries(stepPercentages).forEach(([step, percentage]) => {
+      Object.entries(stepPercentages).forEach(([_step, percentage]) => {
         const stepDuration = totalDuration * percentage;
         expect(stepDuration).toBe(totalDuration * percentage);
       });

@@ -32,7 +32,13 @@ export interface UseEkycSdkReturn {
 
 export const useEkycSdk = (options: UseEkycSdkOptions): UseEkycSdkReturn => {
   const sdkManagerRef = useRef<EkycSdkManager | null>(null);
-  const { start, setError, status, setResult } = useEkycStore();
+  const {
+    start,
+    setError,
+    status,
+    setResult,
+    error: storeError,
+  } = useEkycStore();
 
   const { autoStart = true, customEventHandlers, ...managerOptions } = options;
 
@@ -125,8 +131,7 @@ export const useEkycSdk = (options: UseEkycSdkOptions): UseEkycSdkReturn => {
   return {
     sdkManager: sdkManagerRef.current,
     isLoading: status === "running",
-    // @ts-expect-error
-    error: status === "error" ? useEkycStore.getState().error : null,
+    error: status === "error" ? storeError || null : null,
     restart,
     updateConfig,
     setFlowType,

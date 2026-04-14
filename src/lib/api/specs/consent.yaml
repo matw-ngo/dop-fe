@@ -1,0 +1,2331 @@
+openapi: 3.0.3
+info:
+  title: Consent Service
+  version: "1.1"
+  description: Consent Service - OpenAPI Specification
+  termsOfService: https://datanest.io/terms
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  contact:
+    name: Data Nest Support
+    url: https://datanest.vn
+    email: support@datanest.vn
+servers:
+  - url: https://consent-stg.datanest.vn/{basePath}
+    variables:
+      basePath:
+        default: v1
+    description: Development server
+  - url: https://consent.datanest.vn/{basePath}
+    variables:
+      basePath:
+        default: v1
+    description: Production server
+tags:
+  - name: Data Processor
+    description: Operations for managing data processors
+  - name: Data Controller
+    description: Operations for managing data controllers
+  - name: Consent Purpose
+    description: Operations for managing consent purposes
+  - name: Data Category
+    description: Operations for managing data categories
+  - name: Consent
+    description: Operations for managing consent records
+  - name: Consent Version
+    description: Operations for managing consent versions
+  - name: Consent Data Category
+    description: Operations for managing consent data categories
+  - name: Consent Log
+    description: Operations for managing consent logs and audit trails
+paths:
+  /data-processor:
+    get:
+      summary: Search data processors
+      description: Search data processors by name, controller id, and status
+      operationId: searchDataProcessors
+      tags:
+        - Data Processor
+      security:
+        - cookie_auth: []
+      parameters:
+        - $ref: "#/components/parameters/search"
+        - $ref: "#/components/parameters/page"
+        - $ref: "#/components/parameters/page_size"
+      responses:
+        "200":
+          description: A list of data processors
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DataProcessorListResponse"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
+    post:
+      summary: Create new data processor
+      description: Create a new data processor
+      operationId: createDataProcessor
+      tags:
+        - Data Processor
+      security:
+        - cookie_auth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateDataProcessorRequest"
+      responses:
+        "201":
+          description: Data processor created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DataProcessor"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
+  /data-processor/{id}:
+    get:
+      summary: Get data processor
+      description: Get a data processor by id
+      operationId: getDataProcessor
+      tags:
+        - Data Processor
+      security:
+        - cookie_auth: []
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        "200":
+          description: Data processor retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DataProcessor"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
+    patch:
+      summary: Update data processor
+      description: Update a data processor by id
+      operationId: updateDataProcessor
+      tags:
+        - Data Processor
+      security:
+        - cookie_auth: []
+      parameters:
+        - $ref: "#/components/parameters/id"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateDataProcessorRequest"
+      responses:
+        "200":
+          description: Data processor updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DataProcessor"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
+    delete:
+      summary: Delete data processor
+      description: Delete a data processor by id
+      operationId: deleteDataProcessor
+      tags:
+        - Data Processor
+      security:
+        - cookie_auth: []
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        "200":
+          $ref: "#/components/responses/200"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
+  /data-controller:
+    get:
+      summary: Search data controllers
+      description: Search data controllers by name, controller id, and status
+      operationId: searchDataControllers
+      tags:
+        - Data Controller
+      security:
+        - cookie_auth: []
+      parameters:
+        - $ref: "#/components/parameters/search"
+        - $ref: "#/components/parameters/page"
+        - $ref: "#/components/parameters/page_size"
+      responses:
+        "200":
+          description: A list of data controllers
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DataControllerListResponse"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
+    post:
+      summary: Create new data controller
+      description: Create a new data controller
+      operationId: createDataController
+      tags:
+        - Data Controller
+      security:
+        - cookie_auth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateDataControllerRequest"
+      responses:
+        "201":
+          description: Data controller created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DataController"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
+  /data-controller/{id}:
+    get:
+      summary: Get data controller
+      description: Get a data controller by id
+      operationId: getDataController
+      tags:
+        - Data Controller
+      security:
+        - cookie_auth: []
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        "200":
+          description: Data controller retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DataController"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
+    patch:
+      summary: Update data controller
+      description: Update a data controller by id
+      operationId: updateDataController
+      tags:
+        - Data Controller
+      security:
+        - cookie_auth: []
+      parameters:
+        - $ref: "#/components/parameters/id"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateDataControllerRequest"
+      responses:
+        "200":
+          description: Data controller updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DataController"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
+    delete:
+      summary: Delete data controller
+      description: Delete a data controller by id
+      operationId: deleteDataController
+      tags:
+        - Data Controller
+      security:
+        - cookie_auth: []
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        "200":
+          $ref: "#/components/responses/200"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
+  /consent-purpose:
+    get:
+      summary: Search consent purposes
+      description: Search consent purposes by name, controllerId, purpose, retention days, and status
+      operationId: searchConsentPurposes
+      tags:
+        - Consent Purpose
+      security:
+        - cookie_auth: []
+      parameters:
+        - $ref: "#/components/parameters/search"
+        - $ref: "#/components/parameters/name"
+        - $ref: "#/components/parameters/controller_id"
+        - $ref: "#/components/parameters/tenant_id"
+        - $ref: "#/components/parameters/page"
+        - $ref: "#/components/parameters/page_size"
+      responses:
+        "200":
+          description: A list of consent purposes
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConsentPurposeListResponse"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
+    post:
+      summary: Create new consent purpose
+      description: Create a new consent purpose
+      operationId: createConsentPurpose
+      tags:
+        - Consent Purpose
+      security:
+        - cookie_auth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateConsentPurposeRequest"
+      responses:
+        "201":
+          description: Consent purpose created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConsentPurpose"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
+  /consent-purpose/{id}:
+    get:
+      summary: Get consent purpose
+      description: Get a consent purpose by id
+      operationId: getConsentPurpose
+      tags:
+        - Consent Purpose
+      security:
+        - cookie_auth: []
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        "200":
+          description: Consent purpose retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConsentPurpose"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
+    patch:
+      summary: Update consent purpose
+      description: Update a consent purpose by id
+      operationId: updateConsentPurpose
+      tags:
+        - Consent Purpose
+      security:
+        - cookie_auth: []
+      parameters:
+        - $ref: "#/components/parameters/id"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateConsentPurposeRequest"
+      responses:
+        "200":
+          description: Consent purpose updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConsentPurpose"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
+    delete:
+      summary: Delete consent purpose
+      description: Delete a consent purpose by id
+      operationId: deleteConsentPurpose
+      tags:
+        - Consent Purpose
+      security:
+        - cookie_auth: []
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        "200":
+          $ref: "#/components/responses/200"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
+  /data-category:
+    get:
+      summary: Search data categories
+      description: Search data categories by name, description, and status
+      operationId: searchDataCategories
+      tags:
+        - Data Category
+      security:
+        - cookie_auth: []
+      parameters:
+        - $ref: "#/components/parameters/search"
+        - $ref: "#/components/parameters/page"
+        - $ref: "#/components/parameters/page_size"
+      responses:
+        "200":
+          description: A list of data categories
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DataCategoryListResponse"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
+    post:
+      summary: Create new data category
+      description: Create a new data category
+      operationId: createDataCategory
+      tags:
+        - Data Category
+      security:
+        - cookie_auth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateDataCategoryRequest"
+      responses:
+        "201":
+          description: Data category created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DataCategory"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
+  /data-category/{id}:
+    get:
+      summary: Get data category
+      description: Get a data category by id
+      operationId: getDataCategory
+      tags:
+        - Data Category
+      security:
+        - cookie_auth: []
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        "200":
+          description: Data category retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DataCategory"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
+    patch:
+      summary: Update data category
+      description: Update a data category by id
+      operationId: updateDataCategory
+      tags:
+        - Data Category
+      security:
+        - cookie_auth: []
+      parameters:
+        - $ref: "#/components/parameters/id"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateDataCategoryRequest"
+      responses:
+        "200":
+          description: Data category updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DataCategory"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
+    delete:
+      summary: Delete data category
+      description: Delete a data category by id
+      operationId: deleteDataCategory
+      tags:
+        - Data Category
+      security:
+        - cookie_auth: []
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        "200":
+          $ref: "#/components/responses/200"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
+  /consent:
+    get:
+      summary: Search consents
+      description: Search and filter consents with multiple criteria
+      operationId: searchConsents
+      tags:
+        - Consent
+      security:
+        - cookie_auth: []
+      parameters:
+        - $ref: "#/components/parameters/search"
+        - $ref: "#/components/parameters/session_id"
+        - $ref: "#/components/parameters/ConsentAction"
+        - $ref: "#/components/parameters/page"
+        - $ref: "#/components/parameters/page_size"
+      responses:
+        "200":
+          description: Consents search results retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConsentListResponse"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
+    post:
+      summary: Create consent
+      description: Create a new consent record
+      operationId: createConsent
+      tags:
+        - Consent
+      security:
+        - cookie_auth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateConsentRequest"
+      responses:
+        "201":
+          description: Consent created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Consent"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
+  /consent/{id}:
+    get:
+      summary: Get consent by ID
+      description: Get a consent by ID
+      operationId: getConsent
+      tags:
+        - Consent
+      security:
+        - cookie_auth: []
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        "200":
+          description: Consent retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Consent"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
+    patch:
+      summary: Update consent
+      description: Update an existing consent by id
+      operationId: updateConsent
+      tags:
+        - Consent
+      security:
+        - cookie_auth: []
+      parameters:
+        - $ref: "#/components/parameters/id"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateConsentRequest"
+      responses:
+        "200":
+          description: Consent updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Consent"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
+    delete:
+      summary: Delete consent
+      description: Delete a consent by ID
+      operationId: deleteConsent
+      tags:
+        - Consent
+      security:
+        - cookie_auth: []
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        "200":
+          $ref: "#/components/responses/200"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
+  /consent-version:
+    get:
+      summary: Search consent versions
+      description: Search and filter consent versions with multiple criteria
+      operationId: searchConsentVersions
+      tags:
+        - Consent Version
+      security:
+        - cookie_auth: []
+      parameters:
+        - $ref: "#/components/parameters/search"
+        - $ref: "#/components/parameters/page"
+        - $ref: "#/components/parameters/page_size"
+      responses:
+        "200":
+          description: Consent versions search results retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConsentVersionListResponse"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
+    post:
+      summary: Create consent version
+      description: Create a new consent version record
+      operationId: createConsentVersion
+      tags:
+        - Consent Version
+      security:
+        - cookie_auth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateConsentVersionRequest"
+      responses:
+        "201":
+          description: Consent version created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConsentVersion"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
+  /consent-version/{id}:
+    get:
+      summary: Get consent version by ID
+      description: Get a consent version by ID
+      operationId: getConsentVersion
+      tags:
+        - Consent Version
+      security:
+        - cookie_auth: []
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        "200":
+          description: Consent version retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConsentVersion"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
+    patch:
+      summary: Update consent version
+      description: Update an existing consent version by id
+      operationId: updateConsentVersion
+      tags:
+        - Consent Version
+      security:
+        - cookie_auth: []
+      parameters:
+        - $ref: "#/components/parameters/id"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateConsentVersionRequest"
+      responses:
+        "200":
+          description: Consent version updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConsentVersion"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
+    delete:
+      summary: Delete consent version
+      description: Delete a consent version by ID
+      operationId: deleteConsentVersion
+      tags:
+        - Consent Version
+      security:
+        - cookie_auth: []
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        "200":
+          $ref: "#/components/responses/200"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
+  /consent-data-category:
+    get:
+      summary: Search consent data categories
+      description: Search and filter consent data categories with multiple criteria
+      operationId: searchConsentDataCategories
+      tags:
+        - Consent Data Category
+      security:
+        - cookie_auth: []
+      parameters:
+        - $ref: "#/components/parameters/search"
+        - $ref: "#/components/parameters/page"
+        - $ref: "#/components/parameters/page_size"
+      responses:
+        "200":
+          description: Consent data categories search results retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConsentDataCategoryListResponse"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
+    post:
+      summary: Create consent data category
+      description: Create a new consent data category
+      operationId: createConsentDataCategory
+      tags:
+        - Consent Data Category
+      security:
+        - cookie_auth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateConsentDataCategoryRequest"
+      responses:
+        "201":
+          description: Consent data category created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConsentDataCategory"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
+  /consent-data-category/{id}:
+    get:
+      summary: Get consent data category by ID
+      description: Retrieve a specific consent data category by its ID
+      operationId: getConsentDataCategory
+      tags:
+        - Consent Data Category
+      security:
+        - cookie_auth: []
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        "200":
+          description: Consent data category retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConsentDataCategory"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
+    patch:
+      summary: Update consent data category
+      description: Update an existing consent data category
+      operationId: updateConsentDataCategory
+      tags:
+        - Consent Data Category
+      security:
+        - cookie_auth: []
+      parameters:
+        - $ref: "#/components/parameters/id"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateConsentDataCategoryRequest"
+      responses:
+        "200":
+          description: Consent data category updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConsentDataCategory"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
+    delete:
+      summary: Delete consent data category
+      description: Delete a consent data category by its ID
+      operationId: deleteConsentDataCategory
+      tags:
+        - Consent Data Category
+      security:
+        - cookie_auth: []
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        "200":
+          $ref: "#/components/responses/200"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
+  /consent-log:
+    get:
+      summary: Search consent logs
+      description: Search and filter consent logs with multiple criteria
+      operationId: searchConsentLogs
+      tags:
+        - Consent Log
+      security:
+        - cookie_auth: []
+      parameters:
+        - $ref: "#/components/parameters/search"
+        - $ref: "#/components/parameters/consent_id"
+        - $ref: "#/components/parameters/ConsentAction"
+        - $ref: "#/components/parameters/page"
+        - $ref: "#/components/parameters/page_size"
+      responses:
+        "200":
+          description: Consent logs search results retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConsentLogListResponse"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
+    post:
+      summary: Create consent log
+      description: Create a new consent log
+      operationId: createConsentLog
+      tags:
+        - Consent Log
+      security:
+        - cookie_auth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateConsentLogRequest"
+      responses:
+        "201":
+          description: Consent log created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConsentLog"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
+  /consent-log/{id}:
+    get:
+      summary: Get consent log by ID
+      description: Retrieve a specific consent log by id
+      operationId: getConsentLog
+      tags:
+        - Consent Log
+      security:
+        - cookie_auth: []
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        "200":
+          description: Consent log retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConsentLog"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
+    patch:
+      summary: Update consent log
+      description: Update an existing consent log
+      operationId: updateConsentLog
+      tags:
+        - Consent Log
+      security:
+        - cookie_auth: []
+      parameters:
+        - $ref: "#/components/parameters/id"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateConsentLogRequest"
+      responses:
+        "200":
+          description: Consent log updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConsentLog"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
+    delete:
+      summary: Delete consent log
+      description: Delete a consent log by id
+      operationId: deleteConsentLog
+      tags:
+        - Consent Log
+      security:
+        - cookie_auth: []
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        "200":
+          $ref: "#/components/responses/200"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
+components:
+  securitySchemes:
+    cookie_auth:
+      type: http
+      scheme: cookie
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/SuccessResponse"
+    "400":
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: string
+                $ref: "#/components/schemas/ErrorCode"
+              message:
+                type: string
+            required:
+              - code
+              - message
+    "401":
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: string
+                example: unauthenticated
+              message:
+                type: string
+                example: Authentication required
+    "403":
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: string
+                example: permission_denied
+              message:
+                type: string
+                example: Access denied
+    "404":
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: string
+                example: not_found
+              message:
+                type: string
+                example: Resource not found
+    "500":
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: string
+                example: internal_error
+              message:
+                type: string
+                example: Internal server error
+    "503":
+      description: Service Unavailable
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: string
+                example: unavailable
+              message:
+                type: string
+                example: Service temporarily unavailable
+    Success:
+      $ref: "#/components/responses/200"
+    BadRequest:
+      $ref: "#/components/responses/400"
+    Unauthorized:
+      $ref: "#/components/responses/401"
+    Forbidden:
+      $ref: "#/components/responses/403"
+    NotFound:
+      $ref: "#/components/responses/404"
+    InternalServerError:
+      $ref: "#/components/responses/500"
+    ServiceUnavailable:
+      $ref: "#/components/responses/503"
+  parameters:
+    search:
+      name: search
+      in: query
+      description: Search term to filter results
+      required: false
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 255
+    page:
+      name: page
+      in: query
+      description: Page number for pagination
+      required: false
+      schema:
+        type: integer
+        default: 1
+        minimum: 1
+        maximum: 100
+    page_size:
+      name: page_size
+      in: query
+      description: Number of items per page
+      required: false
+      schema:
+        type: integer
+        default: 10
+        minimum: 1
+        maximum: 100
+    id:
+      name: id
+      in: path
+      description: ID of the resource to retrieve
+      required: true
+      schema:
+        type: string
+        format: uuid
+      example: 550e8400-e29b-41d4-a716-446655440000
+    name:
+      name: name
+      in: query
+      description: Filter by consent purpose name
+      required: false
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 255
+    controller_id:
+      name: controller_id
+      in: query
+      description: Filter by controller ID
+      required: false
+      schema:
+        type: string
+        format: uuid
+    tenant_id:
+      name: tenant_id
+      in: query
+      description: Filter by tenant ID
+      required: false
+      schema:
+        type: string
+        format: uuid
+    session_id:
+      name: session_id
+      in: query
+      description: Filter by session ID
+      required: false
+      schema:
+        type: string
+        maxLength: 512
+    ConsentAction:
+      name: action
+      in: query
+      x-go-name: ConsentActionParam
+      description: Filter by consent action
+      required: false
+      schema:
+        type: string
+        enum:
+          - grant
+          - revoke
+          - update
+          - delete
+        x-go-type: types.ConsentAction
+        x-go-type-import:
+          path: github.com/cicdata-io/smartdop/pkg/types
+    consent_id:
+      name: consent_id
+      in: query
+      description: Filter by consent id
+      required: false
+      schema:
+        type: string
+        format: uuid
+        x-go-type: uuid.UUID
+        x-go-type-import:
+          path: github.com/google/uuid
+  schemas:
+    UUID:
+      type: string
+      format: uuid
+      example: 550e8400-e29b-41d4-a716-446655440000
+      x-go-type: uuid.UUID
+      x-go-type-import:
+        path: github.com/google/uuid
+    ShortString:
+      type: string
+      minLength: 1
+      maxLength: 255
+      description: Short string for names, identifiers, and small text fields (max 255 characters)
+      example: analytics
+    MediumString:
+      type: string
+      maxLength: 512
+      description: Medium string for URLs, emails, and short descriptions (max 512 characters)
+      example: https://example.com/resource
+    CreatedAt:
+      type: string
+      format: date-time
+      description: Timestamp when the entity was created
+      example: "2024-01-01T00:00:00Z"
+    UpdatedAt:
+      type: string
+      format: date-time
+      description: Timestamp when the entity was last updated
+      example: "2024-01-01T00:00:00Z"
+    DataProcessor:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/UUID"
+          description: ID of the data processor
+        tenant_id:
+          $ref: "#/components/schemas/UUID"
+          description: Tenant ID of the data processor
+        name:
+          $ref: "#/components/schemas/ShortString"
+          description: Data processor name
+        controller_id:
+          $ref: "#/components/schemas/UUID"
+          description: Controller ID of the data processor
+        contact_info:
+          $ref: "#/components/schemas/MediumString"
+          description: Contact information of the data processor
+        created_at:
+          $ref: "#/components/schemas/CreatedAt"
+        updated_at:
+          $ref: "#/components/schemas/UpdatedAt"
+        controller_name:
+          $ref: "#/components/schemas/ShortString"
+          description: Controller name
+        controller_contact_info:
+          $ref: "#/components/schemas/MediumString"
+          description: Controller contact information
+        controller_address:
+          $ref: "#/components/schemas/MediumString"
+          description: Controller address
+    Pagination:
+      type: object
+      properties:
+        page:
+          type: integer
+          minimum: 1
+          maximum: 100
+          example: 1
+        page_size:
+          type: integer
+          minimum: 1
+          maximum: 100
+          example: 10
+        total_count:
+          type: integer
+          minimum: 0
+          maximum: 10000
+          example: 100
+    DataProcessorListResponse:
+      type: object
+      properties:
+        data_processors:
+          type: array
+          items:
+            $ref: "#/components/schemas/DataProcessor"
+          description: List of data processors
+        pagination:
+          $ref: "#/components/schemas/Pagination"
+    ErrorCode:
+      type: string
+      enum:
+        - success
+        - canceled
+        - unknown
+        - invalid_argument
+        - deadline_exceeded
+        - not_found
+        - already_exists
+        - permission_denied
+        - resource_exhausted
+        - failed_precondition
+        - aborted
+        - out_of_range
+        - unimplemented
+        - internal_error
+        - unavailable
+        - data_loss
+        - unauthenticated
+    CreateDataProcessorRequest:
+      type: object
+      properties:
+        name:
+          $ref: "#/components/schemas/ShortString"
+          description: Data processor name
+          example: DataNest, telco, FI
+        tenant_id:
+          $ref: "#/components/schemas/UUID"
+          description: Tenant ID of the data processor
+        controller_id:
+          $ref: "#/components/schemas/UUID"
+          description: Controller ID of the data processor
+        contact_info:
+          $ref: "#/components/schemas/MediumString"
+          description: Contact information of the data processor
+          example: company@gmail.com, +84-123-45678
+      required:
+        - name
+        - tenant_id
+        - controller_id
+        - contact_info
+    SuccessResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          maxLength: 255
+          example: Operation completed successfully
+      required:
+        - success
+        - message
+    UpdateDataProcessorRequest:
+      type: object
+      properties:
+        name:
+          $ref: "#/components/schemas/ShortString"
+          description: Data processor name
+        tenant_id:
+          $ref: "#/components/schemas/UUID"
+          description: Tenant ID of the data processor
+        controller_id:
+          $ref: "#/components/schemas/UUID"
+          description: Controller ID of the data processor
+        contact_info:
+          $ref: "#/components/schemas/MediumString"
+          description: Data processor contact
+          example: email@datanest.com, +84-123-45678
+    DataController:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/UUID"
+          description: ID of the data controller
+        tenant_id:
+          $ref: "#/components/schemas/UUID"
+          description: Tenant ID of the data controller
+        name:
+          $ref: "#/components/schemas/ShortString"
+          description: Data controller name
+        contact_info:
+          $ref: "#/components/schemas/MediumString"
+          description: Data controller contact
+        address:
+          $ref: "#/components/schemas/MediumString"
+          description: Data controller address
+        created_at:
+          $ref: "#/components/schemas/CreatedAt"
+        updated_at:
+          $ref: "#/components/schemas/UpdatedAt"
+    DataControllerListResponse:
+      type: object
+      properties:
+        data_controllers:
+          type: array
+          items:
+            $ref: "#/components/schemas/DataController"
+          description: List of data controllers
+        pagination:
+          $ref: "#/components/schemas/Pagination"
+    CreateDataControllerRequest:
+      type: object
+      properties:
+        tenant_id:
+          $ref: "#/components/schemas/UUID"
+          description: Tenant ID of the data controller
+        name:
+          $ref: "#/components/schemas/ShortString"
+          description: Data controller name
+          example: DataNest, FI
+        contact_info:
+          $ref: "#/components/schemas/MediumString"
+          description: Data controller contact
+          example: email@datanest.com, +84-123-45678
+        address:
+          $ref: "#/components/schemas/MediumString"
+          description: Data controller address
+          example: Hanoi, Vietnam
+      required:
+        - tenant_id
+        - name
+        - contact_info
+        - address
+    UpdateDataControllerRequest:
+      type: object
+      properties:
+        tenant_id:
+          $ref: "#/components/schemas/UUID"
+          description: Tenant ID of the data controller
+        name:
+          $ref: "#/components/schemas/ShortString"
+          description: Data controller name
+          example: DataNest, FI
+        contact_info:
+          $ref: "#/components/schemas/MediumString"
+          description: Data controller contact
+          example: email@datanest.com, +84-123-45678
+        address:
+          $ref: "#/components/schemas/MediumString"
+          description: Data controller address
+          example: Hanoi, Vietnam
+    PurposeName:
+      type: string
+      enum:
+        - tracking
+        - data_collection_and_storage
+        - analytics_and_profiling
+        - third_party_sharing
+        - marketing_communication
+        - service_improvement
+        - risk_and_fraud_detection
+        - legal_and_compliance
+      example: tracking
+      x-go-type: types.PurposeName
+      x-go-type-import:
+        path: github.com/cicdata-io/smartdop/pkg/types
+    LongString:
+      type: string
+      maxLength: 65535
+      description: Long string for content, terms, and large text blocks (max 65,535 characters)
+      example: Terms and conditions for data processing...
+    VersionField:
+      type: integer
+      minimum: 1
+      description: Version number
+      example: 1
+    EffectiveDateField:
+      type: string
+      format: date-time
+      description: Effective date of the entity
+      example: "2024-01-01T00:00:00Z"
+    ConsentPurpose:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/UUID"
+          description: ID of the consent purpose
+        tenant_id:
+          $ref: "#/components/schemas/UUID"
+          description: Tenant ID of the consent purpose
+        name:
+          $ref: "#/components/schemas/PurposeName"
+          description: Name of the consent purpose
+        controller_id:
+          $ref: "#/components/schemas/UUID"
+          description: ID of the data controller
+        controller_name:
+          $ref: "#/components/schemas/ShortString"
+          description: Name of the data controller
+        controller_contact_info:
+          $ref: "#/components/schemas/MediumString"
+          description: Contact information of the data controller
+        controller_address:
+          $ref: "#/components/schemas/LongString"
+          description: Address of the data controller
+        purpose:
+          $ref: "#/components/schemas/MediumString"
+          description: Description of the consent purpose
+        retention_days:
+          type: integer
+          minimum: 1
+          maximum: 730
+          description: Retention period in days
+        latest_version_id:
+          $ref: "#/components/schemas/UUID"
+          description: ID of the latest consent version
+        latest_version:
+          $ref: "#/components/schemas/VersionField"
+          description: Version number of the latest consent version
+        latest_content:
+          $ref: "#/components/schemas/LongString"
+          description: Content of the latest consent version
+        latest_document_url:
+          $ref: "#/components/schemas/MediumString"
+          description: Document URL of the latest consent version
+        latest_effective_date:
+          $ref: "#/components/schemas/EffectiveDateField"
+          description: Effective date of the latest consent version
+        created_at:
+          $ref: "#/components/schemas/CreatedAt"
+        updated_at:
+          $ref: "#/components/schemas/UpdatedAt"
+    ConsentPurposeListResponse:
+      type: object
+      properties:
+        purposes:
+          type: array
+          items:
+            $ref: "#/components/schemas/ConsentPurpose"
+          description: List of consent purposes
+        pagination:
+          $ref: "#/components/schemas/Pagination"
+    CreateConsentPurposeRequest:
+      type: object
+      properties:
+        tenant_id:
+          $ref: "#/components/schemas/UUID"
+          description: Tenant ID of the consent
+        name:
+          $ref: "#/components/schemas/PurposeName"
+          description: Name of the consent purpose
+        controller_id:
+          $ref: "#/components/schemas/UUID"
+          description: ID of the data controller
+        purpose:
+          $ref: "#/components/schemas/MediumString"
+          description: Description of the consent purpose
+          example: tracking
+        retention_days:
+          type: integer
+          minimum: 1
+          maximum: 730
+          description: Retention period in days
+      required:
+        - tenant_id
+        - name
+        - controller_id
+        - purpose
+        - retention_days
+    UpdateConsentPurposeRequest:
+      type: object
+      properties:
+        tenant_id:
+          $ref: "#/components/schemas/UUID"
+          description: Tenant ID of the consent
+        name:
+          $ref: "#/components/schemas/PurposeName"
+          description: Name of the consent purpose
+        controller_id:
+          $ref: "#/components/schemas/UUID"
+          description: ID of the data controller
+        purpose:
+          $ref: "#/components/schemas/MediumString"
+          description: Description of the consent purpose
+          example: tracking
+        retention_days:
+          type: integer
+          minimum: 1
+          maximum: 730
+          description: Retention period in days
+    DataCategory:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/UUID"
+          description: ID of the data category
+        tenant_id:
+          $ref: "#/components/schemas/UUID"
+          description: Tenant ID of the data category
+        name:
+          $ref: "#/components/schemas/ShortString"
+          description: Name of the data category
+        description:
+          $ref: "#/components/schemas/MediumString"
+          description: Description of the data category
+        created_at:
+          $ref: "#/components/schemas/CreatedAt"
+        updated_at:
+          $ref: "#/components/schemas/UpdatedAt"
+    DataCategoryListResponse:
+      type: object
+      properties:
+        categories:
+          type: array
+          items:
+            $ref: "#/components/schemas/DataCategory"
+          description: List of data categories
+        pagination:
+          $ref: "#/components/schemas/Pagination"
+    CreateDataCategoryRequest:
+      type: object
+      properties:
+        tenant_id:
+          $ref: "#/components/schemas/UUID"
+          description: Tenant ID of the data category
+        name:
+          $ref: "#/components/schemas/ShortString"
+          description: Name of the data category
+          example: personal_data
+        description:
+          $ref: "#/components/schemas/MediumString"
+          description: Description of the data category
+          example: Personal information collected from users
+      required:
+        - tenant_id
+        - name
+        - description
+    UpdateDataCategoryRequest:
+      type: object
+      properties:
+        tenant_id:
+          $ref: "#/components/schemas/UUID"
+          description: Tenant ID of the data category
+        name:
+          $ref: "#/components/schemas/ShortString"
+          description: Name of the data category
+          example: personal_data
+        description:
+          $ref: "#/components/schemas/MediumString"
+          description: Description of the data category
+          example: Personal information collected from users
+    ConsentAction:
+      type: string
+      enum:
+        - grant
+        - revoke
+        - update
+        - delete
+      example: grant
+      x-go-type: types.ConsentAction
+      x-go-type-import:
+        path: github.com/cicdata-io/smartdop/pkg/types
+    Consent:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/UUID"
+          description: ID of the consent
+        tenant_id:
+          $ref: "#/components/schemas/UUID"
+          description: Tenant ID of the consent
+        lead_id:
+          $ref: "#/components/schemas/UUID"
+          description: ID of the lead
+        consent_version_id:
+          $ref: "#/components/schemas/UUID"
+          description: ID of the consent version
+        session_id:
+          $ref: "#/components/schemas/MediumString"
+          description: Session ID of the consent
+        source:
+          $ref: "#/components/schemas/MediumString"
+          description: Source of the consent (web, app, sms,...)
+        action:
+          $ref: "#/components/schemas/ConsentAction"
+          description: Action performed on the consent
+        consent_version:
+          $ref: "#/components/schemas/VersionField"
+          description: Version number of the consent version
+        consent_content:
+          $ref: "#/components/schemas/LongString"
+          description: Content of the consent version
+        consent_document_url:
+          $ref: "#/components/schemas/MediumString"
+          description: URL to the consent document
+        consent_effective_date:
+          $ref: "#/components/schemas/EffectiveDateField"
+          description: Effective date of the consent version
+        consent_purpose_id:
+          $ref: "#/components/schemas/UUID"
+          description: ID of the consent purpose
+        purpose_name:
+          $ref: "#/components/schemas/PurposeName"
+          description: Name of the consent purpose
+        purpose_description:
+          $ref: "#/components/schemas/LongString"
+          description: Description of the consent purpose
+        purpose_retention_days:
+          type: integer
+          description: Retention days for the consent purpose
+        processor_id:
+          $ref: "#/components/schemas/UUID"
+          description: ID of the data processor
+        processor_name:
+          $ref: "#/components/schemas/MediumString"
+          description: Name of the data processor
+        processor_contact_info:
+          $ref: "#/components/schemas/MediumString"
+          description: Contact information of the data processor
+        controller_id:
+          $ref: "#/components/schemas/UUID"
+          description: ID of the data controller
+        controller_name:
+          $ref: "#/components/schemas/MediumString"
+          description: Name of the processor's data controller
+        controller_contact_info:
+          $ref: "#/components/schemas/MediumString"
+          description: Contact information of the processor's data controller
+        controller_address:
+          $ref: "#/components/schemas/LongString"
+          description: Address of the processor's data controller
+        created_at:
+          $ref: "#/components/schemas/CreatedAt"
+        updated_at:
+          $ref: "#/components/schemas/UpdatedAt"
+    ConsentListResponse:
+      type: object
+      properties:
+        consents:
+          type: array
+          items:
+            $ref: "#/components/schemas/Consent"
+          description: List of consents
+        pagination:
+          $ref: "#/components/schemas/Pagination"
+    CreateConsentRequest:
+      type: object
+      properties:
+        tenant_id:
+          $ref: "#/components/schemas/UUID"
+          description: Tenant ID of the consent
+        lead_id:
+          $ref: "#/components/schemas/UUID"
+          description: ID of the lead
+        consent_version_id:
+          $ref: "#/components/schemas/UUID"
+          description: ID of the consent version
+        session_id:
+          $ref: "#/components/schemas/MediumString"
+          description: Session ID of the consent
+        source:
+          $ref: "#/components/schemas/MediumString"
+          description: Source of the consent (web, app, sms,...)
+      required:
+        - tenant_id
+        - consent_version_id
+        - session_id
+        - source
+    UpdateConsentRequest:
+      type: object
+      properties:
+        tenant_id:
+          $ref: "#/components/schemas/UUID"
+          description: Tenant ID of the consent
+        lead_id:
+          $ref: "#/components/schemas/UUID"
+          description: ID of the lead
+        consent_version_id:
+          $ref: "#/components/schemas/UUID"
+          description: ID of the consent version
+        session_id:
+          $ref: "#/components/schemas/MediumString"
+          description: Session ID of the consent
+        source:
+          $ref: "#/components/schemas/MediumString"
+          description: Source of the consent (web, app, sms,...)
+        action:
+          $ref: "#/components/schemas/ConsentAction"
+          description: Action performed on the consent
+    ConsentVersion:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/UUID"
+          description: ID of the consent version
+        tenant_id:
+          $ref: "#/components/schemas/UUID"
+          description: Tenant ID of the consent
+        consent_purpose_id:
+          $ref: "#/components/schemas/UUID"
+          description: ID of the consent purpose
+        processor_id:
+          $ref: "#/components/schemas/UUID"
+          description: ID of the data processor
+        version:
+          $ref: "#/components/schemas/VersionField"
+        content:
+          $ref: "#/components/schemas/LongString"
+          description: Content of the consent version
+        document_url:
+          $ref: "#/components/schemas/MediumString"
+          description: URL to the consent document
+        effective_date:
+          $ref: "#/components/schemas/EffectiveDateField"
+          description: Effective date of the consent version
+        purpose_name:
+          $ref: "#/components/schemas/PurposeName"
+          description: Name of the consent purpose
+        purpose_description:
+          $ref: "#/components/schemas/LongString"
+          description: Description of the consent purpose
+        purpose_retention_days:
+          type: integer
+          description: Retention days for the consent purpose
+        processor_name:
+          $ref: "#/components/schemas/MediumString"
+          description: Name of the data processor
+        processor_contact_info:
+          $ref: "#/components/schemas/MediumString"
+          description: Contact information of the data processor
+        controller_name:
+          $ref: "#/components/schemas/MediumString"
+          description: Name of the processor's data controller
+        controller_contact_info:
+          $ref: "#/components/schemas/MediumString"
+          description: Contact information of the processor's data controller
+        controller_address:
+          $ref: "#/components/schemas/LongString"
+          description: Address of the processor's data controller
+        created_at:
+          $ref: "#/components/schemas/CreatedAt"
+        updated_at:
+          $ref: "#/components/schemas/UpdatedAt"
+    ConsentVersionListResponse:
+      type: object
+      properties:
+        consent_versions:
+          type: array
+          items:
+            $ref: "#/components/schemas/ConsentVersion"
+          description: List of consent versions
+        pagination:
+          $ref: "#/components/schemas/Pagination"
+    CreateConsentVersionRequest:
+      type: object
+      properties:
+        tenant_id:
+          $ref: "#/components/schemas/UUID"
+          description: Tenant ID of the consent
+        consent_purpose_id:
+          $ref: "#/components/schemas/UUID"
+          description: ID of the consent purpose
+        processor_id:
+          $ref: "#/components/schemas/UUID"
+          description: ID of the data processor
+        version:
+          $ref: "#/components/schemas/VersionField"
+        content:
+          $ref: "#/components/schemas/LongString"
+          description: Content of the consent version
+          example: Terms and conditions for data processing
+        document_url:
+          $ref: "#/components/schemas/MediumString"
+          description: URL to the consent document
+          example: https://example.com/consent/v1.pdf
+        effective_date:
+          $ref: "#/components/schemas/EffectiveDateField"
+          description: Effective date of the consent version
+          example: "2024-01-01T00:00:00Z"
+      required:
+        - tenant_id
+        - consent_purpose_id
+        - processor_id
+        - version
+        - content
+        - document_url
+        - effective_date
+    UpdateConsentVersionRequest:
+      type: object
+      properties:
+        tenant_id:
+          $ref: "#/components/schemas/UUID"
+          description: Tenant ID of the consent
+        consent_purpose_id:
+          $ref: "#/components/schemas/UUID"
+          description: ID of the consent purpose
+        processor_id:
+          $ref: "#/components/schemas/UUID"
+          description: ID of the data processor
+        version:
+          $ref: "#/components/schemas/VersionField"
+        content:
+          $ref: "#/components/schemas/LongString"
+          description: Content of the consent version
+          example: Terms and conditions for data processing
+        document_url:
+          $ref: "#/components/schemas/MediumString"
+          description: URL to the consent document
+          example: https://example.com/consent/v1.pdf
+        effective_date:
+          $ref: "#/components/schemas/EffectiveDateField"
+          description: Effective date of the consent version
+          example: "2024-02-01T00:00:00Z"
+    ConsentDataCategory:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/UUID"
+          description: ID of the consent data category
+        tenant_id:
+          $ref: "#/components/schemas/UUID"
+          description: Tenant ID of the consent data category
+        consent_id:
+          $ref: "#/components/schemas/UUID"
+          description: ID of the consent
+        data_category_id:
+          $ref: "#/components/schemas/UUID"
+          description: ID of the data category
+        created_at:
+          $ref: "#/components/schemas/CreatedAt"
+        updated_at:
+          $ref: "#/components/schemas/UpdatedAt"
+        consent_action:
+          $ref: "#/components/schemas/ConsentAction"
+          description: Action of the consent
+        consent_source:
+          type: string
+          description: Source of the consent
+        consent_lead_id:
+          $ref: "#/components/schemas/UUID"
+          description: Lead ID of the consent
+        data_category_name:
+          type: string
+          description: Name of the data category
+        data_category_description:
+          type: string
+          description: Description of the data category
+    ConsentDataCategoryListResponse:
+      type: object
+      properties:
+        consent_data_categories:
+          type: array
+          items:
+            $ref: "#/components/schemas/ConsentDataCategory"
+          description: List of consent data categories
+        pagination:
+          $ref: "#/components/schemas/Pagination"
+    CreateConsentDataCategoryRequest:
+      type: object
+      properties:
+        tenant_id:
+          $ref: "#/components/schemas/UUID"
+          description: Tenant ID of the consent
+        consent_id:
+          $ref: "#/components/schemas/UUID"
+          description: ID of the consent
+        data_category_id:
+          $ref: "#/components/schemas/UUID"
+          description: ID of the data category
+      required:
+        - tenant_id
+        - consent_id
+        - data_category_id
+    UpdateConsentDataCategoryRequest:
+      type: object
+      properties:
+        tenant_id:
+          $ref: "#/components/schemas/UUID"
+          description: Tenant ID of the consent
+        consent_id:
+          $ref: "#/components/schemas/UUID"
+          description: ID of the consent
+        data_category_id:
+          $ref: "#/components/schemas/UUID"
+          description: ID of the data category
+    ConsentLog:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/UUID"
+          description: ID of the consent log
+        tenant_id:
+          $ref: "#/components/schemas/UUID"
+          description: Tenant ID of the consent log
+        consent_id:
+          $ref: "#/components/schemas/UUID"
+          description: ID of the consent being logged
+        action:
+          $ref: "#/components/schemas/ConsentAction"
+          description: Action performed on the consent
+        action_by:
+          $ref: "#/components/schemas/ShortString"
+          description: User or system that performed action
+        source:
+          $ref: "#/components/schemas/ShortString"
+          description: Source of consent action (e.g., web, app, sms,...)
+        lead_id:
+          $ref: "#/components/schemas/UUID"
+          description: ID of the lead associated with the consent
+        consent_version_id:
+          $ref: "#/components/schemas/UUID"
+          description: ID of the consent version
+        consent_source:
+          $ref: "#/components/schemas/ShortString"
+          description: Source of the original consent (e.g., web, app, sms,...)
+        consent_action:
+          $ref: "#/components/schemas/ConsentAction"
+          description: Original action performed on the consent
+        created_at:
+          $ref: "#/components/schemas/CreatedAt"
+        updated_at:
+          $ref: "#/components/schemas/UpdatedAt"
+    ConsentLogListResponse:
+      type: object
+      properties:
+        consent_logs:
+          type: array
+          items:
+            $ref: "#/components/schemas/ConsentLog"
+          description: List of consent logs
+        pagination:
+          $ref: "#/components/schemas/Pagination"
+    CreateConsentLogRequest:
+      type: object
+      properties:
+        tenant_id:
+          $ref: "#/components/schemas/UUID"
+          description: Tenant ID of the consent
+        consent_id:
+          $ref: "#/components/schemas/UUID"
+          description: ID of the consent being logged
+        action:
+          $ref: "#/components/schemas/ConsentAction"
+          description: Action performed on the consent
+        action_by:
+          $ref: "#/components/schemas/ShortString"
+          description: User or system that performed action
+          example: user1
+        source:
+          $ref: "#/components/schemas/ShortString"
+          description: Source of consent action (e.g., web, app, sms,...)
+      required:
+        - tenant_id
+        - consent_id
+        - action
+        - action_by
+        - source
+    UpdateConsentLogRequest:
+      type: object
+      properties:
+        tenant_id:
+          $ref: "#/components/schemas/UUID"
+          description: Tenant ID of the consent
+        consent_id:
+          $ref: "#/components/schemas/UUID"
+          description: ID of the consent being logged
+        action:
+          $ref: "#/components/schemas/ConsentAction"
+          description: Action performed on the consent
+        action_by:
+          $ref: "#/components/schemas/ShortString"
+          description: User or system that performed action
+          example: user1
+        source:
+          $ref: "#/components/schemas/ShortString"
+          description: Source of consent action (e.g., web, app, sms,...)

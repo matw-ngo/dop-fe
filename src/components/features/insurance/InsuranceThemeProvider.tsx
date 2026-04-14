@@ -1,7 +1,7 @@
 "use client";
 
 import { type ReactNode, useEffect, useRef } from "react";
-import { useThemeUtils } from "@/components/renderer/theme";
+import { useTheme } from "@/components/renderer/theme";
 
 interface InsuranceThemeProviderProps {
   children: ReactNode;
@@ -14,17 +14,17 @@ interface InsuranceThemeProviderProps {
 export function InsuranceThemeProvider({
   children,
 }: InsuranceThemeProviderProps) {
-  const { setTheme } = useThemeUtils();
+  const { setThemeById } = useTheme();
   const isInitialized = useRef(false);
 
   useEffect(() => {
     // Only run this effect once to prevent infinite loops
     if (!isInitialized.current) {
       // Set the medical theme for insurance pages
-      setTheme("medical");
+      setThemeById("medical");
       isInitialized.current = true;
     }
-  }, [setTheme]);
+  }, [setThemeById]);
 
   return <>{children}</>;
 }

@@ -1,6 +1,5 @@
 import { Check, X } from "lucide-react";
 import React from "react";
-import { Badge } from "@/components/ui/badge";
 import type { ServiceCardProps } from "../types";
 import { getServiceInfo } from "../utils";
 

@@ -1,5 +1,5 @@
 import { useTranslations } from "next-intl";
-import React, { useCallback, useMemo } from "react";
+import React, { useMemo } from "react";
 import { Grid } from "react-window";
 import { cn } from "@/lib/utils";
 import "react-window/dist/styles.css";

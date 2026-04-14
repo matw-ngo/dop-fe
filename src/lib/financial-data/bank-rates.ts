@@ -5,10 +5,7 @@
  * loan products, savings products, and rate comparison functionality.
  */
 
-import {
-  type VietnameseBank,
-  VietnameseLoanType,
-} from "./vietnamese-financial-data";
+import type { VietnameseBank } from "./vietnamese-financial-data";
 
 export interface BankRateComparison {
   bankId: string;
@@ -131,7 +128,7 @@ export const getAllSavingsProducts = (
 
   banks.forEach((bank) => {
     Object.entries(bank.savingsRates).forEach(([term, rateInfo]) => {
-      const termNum = parseInt(term);
+      const termNum = parseInt(term, 10);
 
       if (!termInMonths || termNum === termInMonths) {
         const effectiveRate = calculateEffectiveAnnualRate(rateInfo.rate, 12);
@@ -387,7 +384,7 @@ export const calculateSimpleInterest = (
 export const compareSavingsProducts = (
   amount: number,
   termInMonths: number,
-  includeCompound: boolean = true,
+  _includeCompound: boolean = true,
 ): {
   productComparisons: BankRateComparison[];
   bestProduct: BankRateComparison | null;
@@ -542,7 +539,7 @@ function calculateBankScore(product: SavingsProduct): number {
  */
 function calculateLoanProductScore(
   product: LoanProduct,
-  loanAmount: number,
+  _loanAmount: number,
 ): number {
   let score = 0;
 

@@ -9,7 +9,7 @@
  * - Mock environment setup
  */
 
-import { type RenderOptions, render, waitFor } from "@testing-library/react";
+import { type RenderOptions, render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import type React from "react";
 import type { ReactElement, ReactNode } from "react";
@@ -53,7 +53,7 @@ const TestWrapper: React.FC<TestWrapperProps> = ({
 };
 
 // Custom render function with form context
-const customRender = (
+const _customRender = (
   ui: ReactElement,
   options?: RenderOptions & {
     wrapperProps?: TestWrapperProps;
@@ -171,9 +171,9 @@ export const testDataGenerator = {
       city: ["TP. Hồ Chí Minh", "TP. Hà Nội", "TP. Đà Nẵng"][
         Math.floor(Math.random() * 3)
       ],
-      district: "Quận " + (Math.floor(Math.random() * 12) + 1),
-      ward: "Phường " + (Math.floor(Math.random() * 30) + 1),
-      street: Math.floor(Math.random() * 999) + " Đường Test",
+      district: `Quận ${Math.floor(Math.random() * 12) + 1}`,
+      ward: `Phường ${Math.floor(Math.random() * 30) + 1}`,
+      street: `${Math.floor(Math.random() * 999)} Đường Test`,
     },
 
     phone: (() => {
@@ -213,7 +213,7 @@ export const testDataGenerator = {
     purpose: ["Personal Loan", "Business Loan", "Home Loan", "Car Loan"][
       Math.floor(Math.random() * 4)
     ],
-    term: [6, 12, 24, 36, 48, 60][Math.floor(Math.random() * 6)] + " months",
+    term: `${[6, 12, 24, 36, 48, 60][Math.floor(Math.random() * 6)]} months`,
     monthlyIncome: Math.floor(Math.random() * 50000000) + 5000000, // 5M - 55M VND
   }),
 };
@@ -630,7 +630,7 @@ export const mockEnvironment = {
       onload: ((event: any) => void) | null = null;
       onerror: ((event: any) => void) | null = null;
 
-      readAsDataURL = vi.fn((file: File) => {
+      readAsDataURL = vi.fn((_file: File) => {
         setTimeout(() => {
           this.result = "data:image/png;base64,mock-image-data";
           this.readyState = 2;

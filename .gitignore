@@ -47,6 +47,7 @@ storybook-static
 docs/migration/old-project/code/**
 
 .claude
+.windsurf
 test-results/
 playwright-report/
 
@@ -54,3 +55,8 @@ docs/old-code
 
 .zo
 .roo
+
+**/AGENTS.md
+.kiro
+docs/tasks-backlog.md
+.omc

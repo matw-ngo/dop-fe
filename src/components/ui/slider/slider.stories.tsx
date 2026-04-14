@@ -30,7 +30,7 @@ type Story = StoryObj<typeof Slider>;
 export const Default: Story = {
   name: "Default (Single Value)",
   args: {
-    defaultValue: [50],
+    value: [50],
     max: 100,
     step: 1,
     className: "w-[300px]",
@@ -40,7 +40,7 @@ export const Default: Story = {
 export const Range: Story = {
   name: "Range (Multiple Values)",
   args: {
-    defaultValue: [25, 75],
+    value: [25, 75],
     max: 100,
     step: 1,
     className: "w-[300px]",
@@ -49,7 +49,7 @@ export const Range: Story = {
 
 export const Disabled: Story = {
   args: {
-    defaultValue: [40],
+    value: [40],
     disabled: true,
     className: "w-[300px]",
   },

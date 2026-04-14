@@ -25,6 +25,7 @@ export enum EventType {
   TOOL_SALARY_INPUT_DEPENDENTS = "tool_salary_input_dependents",
   TOOL_SALARY_SELECT_REGION = "tool_salary_select_region",
   TOOL_SALARY_CALCULATE = "tool_salary_calculate",
+  TOOL_SALARY_FORM_SUBMIT = "tool_salary_form_submit",
 
   // Loan application events
   LENDING_PAGE_VIEW = "lending_page_view",
@@ -33,6 +34,18 @@ export enum EventType {
   LENDING_PAGE_INPUT_PHONE_NUMBER = "lending_page_input_phone_number",
   LENDING_PAGE_INPUT_PHONE_NUMBER_VALID = "lending_page_input_phone_number_valid",
   LENDING_PAGE_FORM_SUBMIT = "lending_page_form_submit",
+
+  // Loan application specific fields (DOP)
+  LENDING_PAGE_INPUT_NAME = "lending_page_input_name",
+  LENDING_PAGE_INPUT_NAME_VALID = "lending_page_input_name_valid",
+  LENDING_PAGE_INPUT_NID = "lending_page_input_nid",
+  LENDING_PAGE_INPUT_NID_VALID = "lending_page_input_nid_valid",
+  LENDING_PAGE_SELECT_PROVINCE = "lending_page_select_province",
+  LENDING_PAGE_SELECT_JOB = "lending_page_select_job",
+  LENDING_PAGE_SELECT_INDUSTRY = "lending_page_select_industry",
+  LENDING_PAGE_SELECT_INCOME_RANGE = "lending_page_select_income_range",
+  LENDING_PAGE_SELECT_CURRENT_LOAN = "lending_page_select_current_loan",
+  LENDING_PAGE_SELECT_CREDIT_HISTORY = "lending_page_select_credit_history",
 
   // Generic events
   PAGE_VIEW = "page_view",

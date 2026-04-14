@@ -25,11 +25,8 @@ import {
   validatePhoneTyping,
   validateVietnamesePhone,
 } from "@/lib/telcos/phone-validation";
-import { detectTelco, getRecommendation } from "@/lib/telcos/telco-detector";
-import {
-  TELCO_ERROR_MESSAGES,
-  VIETNAMESE_TELCOS,
-} from "@/lib/telcos/vietnamese-telcos";
+import { getRecommendation } from "@/lib/telcos/telco-detector";
+import { VIETNAMESE_TELCOS } from "@/lib/telcos/vietnamese-telcos";
 import { cn } from "@/lib/utils";
 
 export interface PhoneInputProps {

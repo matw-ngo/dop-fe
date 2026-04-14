@@ -316,7 +316,7 @@ export const adminWarningToast = {
     }),
 
   statusChangeWarning: (
-    itemType: string,
+    _itemType: string,
     itemName: string,
     newStatus: string,
   ) =>

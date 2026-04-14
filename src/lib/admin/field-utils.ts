@@ -92,7 +92,7 @@ export function validateFieldConfiguration(field: Partial<FieldFormData>): {
   if (field.validation?.pattern) {
     try {
       new RegExp(field.validation.pattern);
-    } catch (e) {
+    } catch (_e) {
       errors.push("Invalid validation pattern");
     }
   }

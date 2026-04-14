@@ -398,7 +398,7 @@ export class TranslationCache<T = any> {
 
     // Don't evict persistent entries - find the first non-persistent from the tail
     let current = this.tail;
-    while (current && current.entry.persistent) {
+    while (current?.entry.persistent) {
       current = current.prev;
     }
 
@@ -413,24 +413,6 @@ export class TranslationCache<T = any> {
     return false;
   }
 
-  private evictByPriority(): boolean {
-    const priorities: Array<"low" | "medium" | "high"> = ["low", "medium"];
-
-    for (const priority of priorities) {
-      for (const [key, node] of this.cache.entries()) {
-        if (node.entry.priority === priority && !node.entry.persistent) {
-          this.delete(key);
-          if (this.enableStats) {
-            this.stats.evictions++;
-          }
-          return true;
-        }
-      }
-    }
-
-    return false;
-  }
-
   private startCleanup(): void {
     if (this.cleanupInterval > 0) {
       this.cleanupTimer = setInterval(() => {
@@ -440,7 +422,7 @@ export class TranslationCache<T = any> {
   }
 
   private cleanup(): void {
-    const now = Date.now();
+    const _now = Date.now();
     const keysToDelete: string[] = [];
 
     for (const [key, node] of this.cache.entries()) {
@@ -596,7 +578,7 @@ export class CacheFactory {
   }
 
   static destroyAll(): void {
-    for (const [name, instance] of CacheFactory.instances.entries()) {
+    for (const [_name, instance] of CacheFactory.instances.entries()) {
       instance.destroy();
     }
     CacheFactory.instances.clear();
@@ -629,6 +611,3 @@ export function parseCacheKey(cacheKey: string): {
     key: parts.slice(2).join(":") || "unknown",
   };
 }
-
-// Export types for external use
-export type { CacheEntry, CacheOptions, CacheStats, CacheConfig };

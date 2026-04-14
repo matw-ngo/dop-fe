@@ -5,15 +5,15 @@
  * into the format expected by the backend API endpoint POST /leads/{id}/ekyc/vnpt
  */
 
-import type { components } from "@/lib/api/v1.d.ts";
+import type { components } from "@/lib/api/v1/dop";
 import type {
+  CompareFaceResponse,
   EkycResponse,
+  HashImgResponse,
   LivenessCardResponse,
-  OcrResponse,
   LivenessFaceResponse,
   MaskedFaceResponse,
-  CompareFaceResponse,
-  HashImgResponse,
+  OcrResponse,
 } from "./types";
 
 /**
@@ -57,7 +57,7 @@ function safeParseJSON<T = unknown>(
 /**
  * Safely extracts a string property from an object
  */
-function safeGetString(obj: unknown, key: string): string | undefined {
+function _safeGetString(obj: unknown, key: string): string | undefined {
   if (obj && typeof obj === "object" && key in obj) {
     const value = (obj as Record<string, unknown>)[key];
     return typeof value === "string" ? value : undefined;
@@ -370,7 +370,7 @@ function mapCompare(data: CompareFaceResponse): VNPTCompare {
 /**
  * Safely extracts a property from an object with type safety
  */
-function safeExtractProperty<T>(
+function _safeExtractProperty<T>(
   data: Record<string, unknown> | null | undefined,
   key: string,
   defaultValue: T,
@@ -456,12 +456,7 @@ function safeMapHashImg(
  * @returns true if the response has minimum required data
  */
 export function isEkycResponseValid(ekycResponse: EkycResponse): boolean {
-  return !!(
-    ekycResponse &&
-    ekycResponse.ocr &&
-    ekycResponse.ocr.id &&
-    ekycResponse.ocr.name
-  );
+  return !!(ekycResponse?.ocr?.id && ekycResponse.ocr.name);
 }
 
 /**

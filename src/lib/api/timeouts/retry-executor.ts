@@ -8,9 +8,9 @@
  * @module retry-executor
  */
 
-import type { TimeoutError, RetryStrategy } from "./types";
 import { DEFAULT_RETRY } from "./constants";
 import { isRetryableTimeoutError } from "./error-handler";
+import type { RetryStrategy } from "./types";
 import { calculateBackoffDelay } from "./utils";
 
 export interface RetryExecutorOptions {

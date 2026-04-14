@@ -1,7 +1,7 @@
-import { DEFAULT_TRACKING_CONFIG, TRACKING_ENDPOINTS } from "./config";
+import { DEFAULT_TRACKING_CONFIG } from "./config";
 import { filterSensitiveData, isEventAllowed } from "./privacy";
 import { getDeviceId, getSessionId, updateLastActivity } from "./session";
-import type { EventType, TrackingEvent } from "./types";
+import { EventType, type TrackingEvent } from "./types";
 
 /**
  * Event tracking utilities for financial tools
@@ -88,7 +88,7 @@ export const trackEvent = async (
  */
 export const trackSavingsCalculator = {
   pageView: async (data?: { source?: string }) => {
-    await trackEvent("tool_savings_page_view", data);
+    await trackEvent(EventType.TOOL_SAVINGS_PAGE_VIEW, data);
   },
 
   filterChange: async (filters: {
@@ -96,7 +96,7 @@ export const trackSavingsCalculator = {
     period?: number;
     type?: string;
   }) => {
-    await trackEvent("tool_savings_filter_change", {
+    await trackEvent(EventType.TOOL_SAVINGS_FILTER_CHANGE, {
       hasAmount: !!filters.amount,
       hasPeriod: !!filters.period,
       hasType: !!filters.type,
@@ -109,7 +109,7 @@ export const trackSavingsCalculator = {
     period: number;
     type: string;
   }) => {
-    await trackEvent("tool_savings_calculate", {
+    await trackEvent(EventType.TOOL_SAVINGS_CALCULATE, {
       amountRange: getAmountRange(params.amount),
       periodRange: getPeriodRange(params.period),
       type: params.type,
@@ -117,11 +117,11 @@ export const trackSavingsCalculator = {
   },
 
   sortChange: async (sortBy: string) => {
-    await trackEvent("tool_savings_sort_change", { sortBy });
+    await trackEvent(EventType.TOOL_SAVINGS_SORT_CHANGE, { sortBy });
   },
 
   clickOpenAccount: async (bankName: string) => {
-    await trackEvent("tool_savings_click_open_account", { bankName });
+    await trackEvent(EventType.TOOL_SAVINGS_CLICK_OPEN_ACCOUNT, { bankName });
   },
 };
 
@@ -130,23 +130,23 @@ export const trackSavingsCalculator = {
  */
 export const trackLoanCalculator = {
   pageView: async () => {
-    await trackEvent("tool_loan_page_view");
+    await trackEvent(EventType.TOOL_LOAN_PAGE_VIEW);
   },
 
   inputAmount: async (amount: number) => {
-    await trackEvent("tool_loan_input_amount", {
+    await trackEvent(EventType.TOOL_LOAN_INPUT_AMOUNT, {
       amountRange: getAmountRange(amount),
     });
   },
 
   inputPeriod: async (period: number) => {
-    await trackEvent("tool_loan_input_period", {
+    await trackEvent(EventType.TOOL_LOAN_INPUT_PERIOD, {
       periodRange: getPeriodRange(period),
     });
   },
 
   inputRate: async (rate: number) => {
-    await trackEvent("tool_loan_input_rate", {
+    await trackEvent(EventType.TOOL_LOAN_INPUT_RATE, {
       rateRange: getRateRange(rate),
     });
   },
@@ -156,7 +156,7 @@ export const trackLoanCalculator = {
     period: number;
     rate: number;
   }) => {
-    await trackEvent("tool_loan_calculate", {
+    await trackEvent(EventType.TOOL_LOAN_CALCULATE, {
       amountRange: getAmountRange(params.amount),
       periodRange: getPeriodRange(params.period),
       rateRange: getRateRange(params.rate),
@@ -169,7 +169,7 @@ export const trackLoanCalculator = {
     rate: number;
     monthlyPayment?: number;
   }) => {
-    await trackEvent("tool_loan_form_submit", {
+    await trackEvent(EventType.TOOL_LOAN_FORM_SUBMIT, {
       amountRange: getAmountRange(params.amount),
       periodRange: getPeriodRange(params.period),
       rateRange: getRateRange(params.rate),
@@ -183,33 +183,33 @@ export const trackLoanCalculator = {
  */
 export const trackSalaryCalculator = {
   pageView: async () => {
-    await trackEvent("tool_salary_page_view");
+    await trackEvent(EventType.TOOL_SALARY_PAGE_VIEW);
   },
 
   grossToNetView: async () => {
-    await trackEvent("tool_salary_gross_to_net_view");
+    await trackEvent(EventType.TOOL_SALARY_GROSS_TO_NET_VIEW);
   },
 
   netToGrossView: async () => {
-    await trackEvent("tool_salary_net_to_gross_view");
+    await trackEvent(EventType.TOOL_SALARY_NET_TO_GROSS_VIEW);
   },
 
   inputAmount: async (amount: number, type: "gross" | "net") => {
-    await trackEvent("tool_salary_input_amount", {
+    await trackEvent(EventType.TOOL_SALARY_INPUT_AMOUNT, {
       amountRange: getAmountRange(amount),
       type,
     });
   },
 
   inputDependents: async (dependents: number) => {
-    await trackEvent("tool_salary_input_dependents", {
+    await trackEvent(EventType.TOOL_SALARY_INPUT_DEPENDENTS, {
       dependentsRange:
         dependents === 0 ? "none" : dependents <= 2 ? "few" : "many",
     });
   },
 
   selectRegion: async (region: string) => {
-    await trackEvent("tool_salary_select_region", { region });
+    await trackEvent(EventType.TOOL_SALARY_SELECT_REGION, { region });
   },
 
   calculate: async (params: {
@@ -218,12 +218,16 @@ export const trackSalaryCalculator = {
     dependents?: number;
     region?: string;
   }) => {
-    await trackEvent("tool_salary_calculate", {
+    await trackEvent(EventType.TOOL_SALARY_CALCULATE, {
       amountRange: getAmountRange(params.amount),
       type: params.type,
       hasDependents: !!params.dependents,
       hasRegion: !!params.region,
     });
+  },
+
+  formSubmit: async (data?: TrackingEvent) => {
+    await trackEvent(EventType.TOOL_SALARY_FORM_SUBMIT, data);
   },
 };
 
@@ -259,26 +263,35 @@ function getRateRange(rate: number): string {
  */
 export const trackGeneric = {
   pageView: async (page: string, data?: Record<string, any>) => {
-    await trackEvent("page_view", { page, ...data });
+    await trackEvent(EventType.PAGE_VIEW, { page, ...data });
   },
 
   filterChange: async (filterName: string, value: any) => {
-    await trackEvent("filter_change", { filterName, value });
+    await trackEvent(EventType.FILTER_CHANGE, { filterName, value });
   },
 
   calculationPerformed: async (
     calculatorType: string,
     params: Record<string, any>,
   ) => {
-    await trackEvent("calculation_performed", { calculatorType, ...params });
+    await trackEvent(EventType.CALCULATION_PERFORMED, {
+      calculatorType,
+      ...params,
+    });
   },
 
   formSubmit: async (formName: string, data: Record<string, any>) => {
-    await trackEvent("form_submit", { formName, ...filterSensitiveData(data) });
+    await trackEvent(EventType.FORM_SUBMIT, {
+      formName,
+      ...filterSensitiveData(data),
+    });
   },
 
   formFieldChange: async (fieldName: string, value: any) => {
-    await trackEvent("form_field_change", { fieldName, hasValue: !!value });
+    await trackEvent(EventType.FORM_FIELD_CHANGE, {
+      fieldName,
+      hasValue: !!value,
+    });
   },
 };
 
@@ -287,27 +300,27 @@ export const trackGeneric = {
  */
 export const trackLoanApplication = {
   pageView: async () => {
-    await trackEvent("lending_page_view");
+    await trackEvent(EventType.LENDING_PAGE_VIEW);
   },
 
   inputExpectedAmount: async (amount: number) => {
-    await trackEvent("lending_page_input_expected_amount", {
+    await trackEvent(EventType.LENDING_PAGE_INPUT_EXPECTED_AMOUNT, {
       amountRange: getAmountRange(amount),
     });
   },
 
   inputPurpose: async (purpose: string) => {
-    await trackEvent("lending_page_input_purpose", { purpose });
+    await trackEvent(EventType.LENDING_PAGE_INPUT_PURPOSE, { purpose });
   },
 
   inputPhoneNumber: async (phoneNumber: string) => {
-    await trackEvent("lending_page_input_phone_number", {
+    await trackEvent(EventType.LENDING_PAGE_INPUT_PHONE_NUMBER, {
       hasPhone: !!phoneNumber,
     });
   },
 
-  phoneNumberValid: async (phoneNumber: string, telco: string) => {
-    await trackEvent("lending_page_input_phone_number_valid", {
+  phoneNumberValid: async (_phoneNumber: string, telco: string) => {
+    await trackEvent(EventType.LENDING_PAGE_INPUT_PHONE_NUMBER_VALID, {
       telco,
     });
   },
@@ -317,7 +330,7 @@ export const trackLoanApplication = {
     purpose: string;
     phoneNumber: string;
   }) => {
-    await trackEvent("lending_page_form_submit", {
+    await trackEvent(EventType.LENDING_PAGE_FORM_SUBMIT, {
       amountRange: getAmountRange(data.amount),
       purpose: data.purpose,
       telco: data.phoneNumber,

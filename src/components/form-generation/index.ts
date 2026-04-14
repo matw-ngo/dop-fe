@@ -260,6 +260,10 @@ export type { FormTheme } from "./themes";
 export {
   defaultTheme,
   FormThemeProvider,
+  /**
+   * @deprecated Use TenantThemeProvider for automatic tenant-aware theming
+   */
   legacyLoanTheme,
   useFormTheme,
+  useThemeCssVars,
 } from "./themes";

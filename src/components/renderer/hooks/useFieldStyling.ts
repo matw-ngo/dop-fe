@@ -1,11 +1,7 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 import type { FieldConfig } from "../types/data-driven-ui";
-import type {
-  ComponentVariant,
-  LayoutProps,
-  ResponsiveValue,
-} from "../types/ui-theme";
+import type { ComponentVariant, LayoutProps } from "../types/ui-theme";
 import {
   generateAnimationClasses,
   generateLayoutClasses,
@@ -18,7 +14,7 @@ export interface FieldStyling {
   variantClasses: string;
   fieldClassName?: string;
   fieldStyle?: React.CSSProperties;
-  fieldVariant?: ComponentVariant;
+  fieldVariant?: ComponentVariant | string;
 }
 
 /**
@@ -46,6 +42,10 @@ export function useFieldStyling(
 
   // Field-level configs take priority over form-level configs
   const fieldVariant = configVariant || variant;
+  const normalizedVariant =
+    typeof fieldVariant === "string"
+      ? ({ variant: fieldVariant } as ComponentVariant)
+      : fieldVariant;
   const fieldLayout = configLayout || layout;
   const fieldClassName = propsClassName || configClassName || className;
   const fieldStyle = propsStyle || configStyle || style;
@@ -57,8 +57,8 @@ export function useFieldStyling(
   );
 
   const variantClasses = React.useMemo(
-    () => generateVariantClasses(fieldVariant),
-    [fieldVariant],
+    () => generateVariantClasses(normalizedVariant),
+    [normalizedVariant],
   );
 
   const animationClasses = React.useMemo(

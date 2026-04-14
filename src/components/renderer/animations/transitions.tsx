@@ -11,7 +11,6 @@ import {
   ANIMATION_PRESETS,
   type AnimationConfig,
   type AnimationDirection,
-  AnimationType,
   STAGGER_PRESETS,
   type StaggerConfig,
   TRANSITION_PRESETS,
@@ -27,10 +26,9 @@ export interface AnimationVariants extends Variants {
 
 // Transition component props
 export interface AnimatedProps extends React.HTMLAttributes<HTMLDivElement> {
-  as?: React.ElementType;
   children: React.ReactNode;
   animation?: string | AnimationConfig;
-  transition?: string | TransitionConfig;
+  transition?: string | TransitionConfig | Transition;
   stagger?: string | StaggerConfig;
   variants?: AnimationVariants;
   initial?: boolean | "hidden";
@@ -115,14 +113,10 @@ export function createVariants(config: AnimationConfig): AnimationVariants {
   // Exit state is typically the reverse of hidden
   Object.assign(exit, hidden);
 
-  // Add transition configuration
-  const transitionConfig = createTransition(config);
-
   return {
     hidden,
     visible,
     exit,
-    transition: transitionConfig,
   };
 }
 
@@ -147,7 +141,6 @@ function applyDirectionOffset(
     case "right":
       state.x = -offset;
       break;
-    case "center":
     default:
       state.x = 0;
       state.y = 0;
@@ -170,16 +163,16 @@ export function createTransition(config?: AnimationConfig): Transition {
       stiffness: spring?.stiffness || 400,
       damping: spring?.damping || 30,
       mass: spring?.mass || 1,
-      duration: duration ? parseFloat(duration) / 1000 : undefined,
-      delay: delay ? parseFloat(delay) / 1000 : undefined,
+      duration: duration !== undefined ? Number(duration) / 1000 : undefined,
+      delay: delay !== undefined ? Number(delay) / 1000 : undefined,
     } as Transition;
   }
 
   // Handle regular transitions
   return {
     type: "tween",
-    duration: duration ? parseFloat(duration) / 1000 : 0.2,
-    delay: delay ? parseFloat(delay) / 1000 : 0,
+    duration: duration !== undefined ? Number(duration) / 1000 : 0.2,
+    delay: delay !== undefined ? Number(delay) / 1000 : 0,
     ease: easing ? getEasingFunction(easing) : [0.25, 0.1, 0.25, 1],
   } as Transition;
 }
@@ -219,7 +212,7 @@ function getAnimationConfig(
  * Get transition config from preset or custom config
  */
 function getTransitionConfig(
-  transition?: string | TransitionConfig,
+  transition?: string | TransitionConfig | Transition,
 ): Transition | undefined {
   if (!transition) return undefined;
 
@@ -249,7 +242,6 @@ function getStaggerConfig(
  * Animated container component
  */
 export const Animated: React.FC<AnimatedProps> = ({
-  as: Component = "div",
   children,
   animation,
   transition,
@@ -285,7 +277,6 @@ export const Animated: React.FC<AnimatedProps> = ({
 
   return (
     <motion.div
-      as={Component}
       variants={animationVariants}
       initial={initial}
       animate={animate}
@@ -313,7 +304,7 @@ export const Animated: React.FC<AnimatedProps> = ({
           },
         },
       })}
-      {...props}
+      {...(props as any)}
     >
       {children}
     </motion.div>
@@ -366,10 +357,12 @@ export const AnimatedListItem: React.FC<AnimatedListItemProps> = ({
   return (
     <Animated
       animation={animation}
-      transition={{
-        ...getTransitionConfig(transition),
-        delay: index * 0.05, // Stagger delay based on index
-      }}
+      transition={
+        {
+          ...getTransitionConfig(transition),
+          delay: index * 0.05, // Stagger delay based on index
+        } as Transition
+      }
       {...props}
     >
       {children}

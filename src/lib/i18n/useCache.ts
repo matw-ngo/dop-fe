@@ -60,29 +60,39 @@ export function useTranslation(
   useEffect(() => {
     mountedRef.current = true;
 
-    // Check if already in cache
-    const cacheKey = `${locale}:${namespace}:${key}`;
-    const cached = cacheManager["getCache"](options?.strategy || "feature").get(
-      cacheKey,
-    );
+    const checkCacheAndLoad = async () => {
+      // Check if already in cache
+      const cacheKey = `${locale}:${namespace}:${key}`;
+      const cached = await cacheManager.getTranslation(
+        locale,
+        namespace,
+        key,
+        fetcher,
+        options?.strategy || "feature",
+      );
 
-    if (cached !== null) {
-      setTranslation(cached);
-      if (options?.revalidateOnMount) {
+      if (cached !== null) {
+        setTranslation(cached);
+        if (options?.revalidateOnMount) {
+          loadTranslation();
+        }
+      } else {
         loadTranslation();
       }
-    } else {
-      loadTranslation();
-    }
+    };
+
+    checkCacheAndLoad();
 
     return () => {
       mountedRef.current = false;
     };
   }, [
     loadTranslation,
-    cacheKey,
     options?.revalidateOnMount,
     options?.strategy,
+    key,
+    locale,
+    namespace,
   ]);
 
   return {
@@ -144,31 +154,20 @@ export function useTranslations(
   useEffect(() => {
     mountedRef.current = true;
 
-    // Check which translations are already cached
-    const cache = cacheManager["getCache"](options?.strategy || "feature");
-    const cached: Record<string, string> = {};
-    const uncached: string[] = [];
-
-    for (const key of keys) {
-      const cacheKey = `${locale}:${namespace}:${key}`;
-      const value = cache.get(cacheKey);
-      if (value !== null) {
-        cached[key] = value;
-      } else {
-        uncached.push(key);
-      }
-    }
-
-    setTranslations(cached);
-
-    if (uncached.length > 0 || options?.revalidateOnMount) {
-      loadTranslations();
-    }
+    // Sử dụng loadTranslations để xử lý cả bản dịch đã lưu và chưa lưu
+    loadTranslations();
 
     return () => {
       mountedRef.current = false;
     };
-  }, [loadTranslations, options?.revalidateOnMount, options?.strategy]);
+  }, [
+    loadTranslations,
+    options?.revalidateOnMount,
+    options?.strategy,
+    keys,
+    locale,
+    namespace,
+  ]);
 
   return {
     translations,
@@ -182,18 +181,18 @@ export function useTranslations(
 export function useCacheStats(strategy?: string) {
   const [stats, setStats] = useState<CacheStats | Record<string, CacheStats>>(
     () => {
-      return strategy
-        ? cacheManager["getCache"](strategy as any).getStats()
-        : cacheManager.getCacheStats();
+      const allStats = cacheManager.getCacheStats();
+      return strategy ? allStats[strategy] : allStats;
     },
   );
 
   useEffect(() => {
     const interval = setInterval(() => {
+      const allStats = cacheManager.getCacheStats();
       if (strategy) {
-        setStats(cacheManager["getCache"](strategy as any).getStats());
+        setStats(allStats[strategy]);
       } else {
-        setStats(cacheManager.getCacheStats());
+        setStats(allStats);
       }
     }, 5000); // Update every 5 seconds
 
@@ -241,6 +240,10 @@ export function usePreloadTranslations(
     };
 
     preload();
+
+    return () => {
+      mountedRef.current = false;
+    };
   }, [locale, namespaces, keys, enabled]);
 
   return { loaded, error };
@@ -278,6 +281,10 @@ export function useCacheWarming(
           setWarming(false);
         }
       });
+
+    return () => {
+      mountedRef.current = false;
+    };
   }, [locale, enabled]);
 
   return { warming, warmed, error };
@@ -327,6 +334,7 @@ export function useOptimisticCache<T = any>(
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const previousDataRef = useRef<T | null>(null);
+  const mountedRef = useRef(true);
 
   const update = useCallback(
     async (optimisticValue?: T) => {
@@ -357,7 +365,7 @@ export function useOptimisticCache<T = any>(
           setData(result);
 
           // Update cache
-          const cache = cacheManager["getCache"](
+          const cache = (cacheManager as any).getCache(
             options?.strategy || "feature",
           );
           cache.set(key, result, {

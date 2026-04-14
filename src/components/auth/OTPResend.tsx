@@ -206,7 +206,7 @@ export const OTPResend: React.FC<OTPResendProps> = ({
     }
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
-    return `${minutes} phút ${remainingSeconds > 0 ? remainingSeconds + " giây" : ""}`;
+    return `${minutes} phút ${remainingSeconds > 0 ? `${remainingSeconds} giây` : ""}`;
   };
 
   // Get progress percentage
@@ -255,7 +255,7 @@ export const OTPResend: React.FC<OTPResendProps> = ({
   };
 
   // Get button text
-  const getButtonText = (): string => {
+  const _getButtonText = (): string => {
     if (isResending) return "Đang gửi...";
     if (cooldown > 0) return `Gửi lại (${formatCooldown(cooldown)})`;
     if (attempts >= telcoMaxAttempts) return "Đạt giới hạn gửi";

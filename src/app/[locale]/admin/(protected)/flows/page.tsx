@@ -1,14 +1,7 @@
 "use client";
 
 import type { ColumnDef } from "@tanstack/react-table";
-import {
-  Loader2,
-  PauseIcon,
-  PlayIcon,
-  PlusIcon,
-  Trash2Icon,
-} from "lucide-react";
-import Link from "next/link";
+import { PauseIcon, PlayIcon, PlusIcon, Trash2Icon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Suspense, useCallback, useMemo, useState } from "react";
 import AdminErrorBoundary from "@/components/admin/admin-error-boundary";
@@ -19,15 +12,7 @@ import { FlowFilters } from "@/components/admin/flow-filters";
 import { FlowStatusBadge } from "@/components/admin/flow-status-badge";
 import { FlowListSkeleton } from "@/components/admin/loading-states";
 import { StepManagementDialog } from "@/components/admin/step-management-dialog";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { DataTable } from "@/components/ui/data-table";
 import {
   useDeleteFlow,
@@ -36,7 +21,6 @@ import {
   usePrefetchFlows,
   useToggleFlowStatus,
 } from "@/hooks/admin/use-admin-flows";
-import { useLocalizedPath } from "@/lib/client-utils";
 import type { FlowListItem, FlowStatus } from "@/types/admin";
 
 // FlowsPage component that uses mock API to prevent CORS issues when BE is not ready
@@ -53,11 +37,11 @@ function FlowsPage() {
   const t = useTranslations("admin.flows");
 
   // Prefetch flows for better UX
-  const prefetchFlows = usePrefetchFlows();
+  const _prefetchFlows = usePrefetchFlows();
 
   // Mutations for bulk actions
   const deleteFlowMutation = useDeleteFlow();
-  const duplicateFlowMutation = useDuplicateFlow();
+  const _duplicateFlowMutation = useDuplicateFlow();
   const toggleFlowStatusMutation = useToggleFlowStatus();
 
   // Filter flows based on search and status filters (now handled by DataTable)
@@ -78,7 +62,7 @@ function FlowsPage() {
     try {
       await Promise.all(promises);
       setSelectedFlows([]);
-    } catch (error) {
+    } catch (_error) {
       // Error handling is done in the mutation
     }
   }, [selectedFlows, toggleFlowStatusMutation]);
@@ -94,13 +78,13 @@ function FlowsPage() {
     try {
       await Promise.all(promises);
       setSelectedFlows([]);
-    } catch (error) {
+    } catch (_error) {
       // Error handling is done in the mutation
     }
   }, [selectedFlows, toggleFlowStatusMutation]);
 
   const handleBulkDelete = useCallback(async () => {
-    const message = t("bulkActions.selected", {
+    const _message = t("bulkActions.selected", {
       count: selectedFlows.length,
       plural: selectedFlows.length > 1 ? "s" : "",
     });
@@ -116,7 +100,7 @@ function FlowsPage() {
       try {
         await Promise.all(promises);
         setSelectedFlows([]);
-      } catch (error) {
+      } catch (_error) {
         // Error handling is done in the mutation
       }
     }

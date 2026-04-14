@@ -10,7 +10,6 @@ import {
   Clock,
   Shield,
   Star,
-  TrendingDown,
   TrendingUp,
 } from "lucide-react";
 import { useTranslations } from "next-intl";

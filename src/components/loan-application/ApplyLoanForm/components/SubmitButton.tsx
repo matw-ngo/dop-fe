@@ -1,8 +1,8 @@
 import { useTranslations } from "next-intl";
 import type React from "react";
+import { useFormTheme } from "@/components/form-generation/themes";
 import { Button } from "@/components/ui";
 import type { SubmitButtonProps } from "../types";
-import { useFormTheme } from "@/components/form-generation/themes";
 
 export const SubmitButton: React.FC<SubmitButtonProps> = ({
   isSubmitting,
@@ -16,7 +16,9 @@ export const SubmitButton: React.FC<SubmitButtonProps> = ({
 
   return (
     <Button
-      className="h-14 w-full rounded-lg whitespace-nowrap text-white font-semibold transition-all hover:opacity-90 active:scale-[0.98]"
+      // className="h-14 w-full rounded-lg whitespace-nowrap text-white font-semibold transition-all hover:opacity-90 active:scale-[0.98]"
+      // TODO: Remove h-14 when we have a better button component
+      className="w-full rounded-lg whitespace-nowrap text-white font-semibold transition-all hover:opacity-90 active:scale-[0.98]"
       style={{ backgroundColor: theme.colors.primary }}
       disabled={disabled || isSubmitting}
       type="button"

@@ -175,6 +175,7 @@ export const Interactive: Story = {
       <div className="space-y-4 p-4">
         <SelectGroup
           {...args}
+          options={sampleOptions}
           value={selectedValue}
           onChange={(value) => {
             setSelectedValue(value);
@@ -189,7 +190,6 @@ export const Interactive: Story = {
   },
   args: {
     label: "Mục đích vay",
-    options: sampleOptions,
     placeholder: "- Chọn -",
   },
 };

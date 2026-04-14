@@ -33,7 +33,7 @@ export function FieldVisibilityToggle({
   const getModifiedFields = useAdminFlowStore(
     (state) => state.getModifiedFields,
   );
-  const isEditing = useAdminFlowStore((state) => state.isEditing);
+  const _isEditing = useAdminFlowStore((state) => state.isEditing);
 
   const modifiedFields = getModifiedFields(stepId);
   const fieldChange = modifiedFields.find((fc) => fc.fieldId === field.id);

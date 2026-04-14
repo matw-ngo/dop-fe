@@ -201,7 +201,9 @@ const Pagination: React.FC<PaginationProps> = ({
             </span>
             <Select
               value={itemsPerPage.toString()}
-              onValueChange={(value) => onItemsPerPageChange(parseInt(value))}
+              onValueChange={(value) =>
+                onItemsPerPageChange(parseInt(value, 10))
+              }
             >
               <SelectTrigger className="w-20 h-8">
                 <SelectValue />
@@ -237,46 +239,44 @@ const Pagination: React.FC<PaginationProps> = ({
           </Button>
 
           {/* Page numbers */}
-          {showPageNumbers && visiblePages.length > 0 && (
-            <>
-              {visiblePages.map((page, index) => {
-                // Check if we need to show ellipsis
-                if (
-                  index > 0 &&
-                  visiblePages[index - 1] &&
-                  page - visiblePages[index - 1] > 1
-                ) {
-                  return (
-                    <React.Fragment key={`ellipsis-${page}`}>
-                      <div className="flex items-center justify-center w-9 h-9">
-                        <MoreHorizontal className="h-4 w-4 text-muted-foreground" />
-                      </div>
-                      <Button
-                        variant={page === currentPage ? "default" : "outline"}
-                        size="sm"
-                        onClick={() => handlePageSelect(page)}
-                        className="h-9 w-9"
-                      >
-                        {page}
-                      </Button>
-                    </React.Fragment>
-                  );
-                }
-
+          {showPageNumbers &&
+            visiblePages.length > 0 &&
+            visiblePages.map((page, index) => {
+              // Check if we need to show ellipsis
+              if (
+                index > 0 &&
+                visiblePages[index - 1] &&
+                page - visiblePages[index - 1] > 1
+              ) {
                 return (
-                  <Button
-                    key={page}
-                    variant={page === currentPage ? "default" : "outline"}
-                    size="sm"
-                    onClick={() => handlePageSelect(page)}
-                    className="h-9 w-9"
-                  >
-                    {page}
-                  </Button>
+                  <React.Fragment key={`ellipsis-${page}`}>
+                    <div className="flex items-center justify-center w-9 h-9">
+                      <MoreHorizontal className="h-4 w-4 text-muted-foreground" />
+                    </div>
+                    <Button
+                      variant={page === currentPage ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => handlePageSelect(page)}
+                      className="h-9 w-9"
+                    >
+                      {page}
+                    </Button>
+                  </React.Fragment>
                 );
-              })}
-            </>
-          )}
+              }
+
+              return (
+                <Button
+                  key={page}
+                  variant={page === currentPage ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => handlePageSelect(page)}
+                  className="h-9 w-9"
+                >
+                  {page}
+                </Button>
+              );
+            })}
 
           {/* Next button */}
           <Button

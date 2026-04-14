@@ -6,20 +6,21 @@ import { useFormWizardStore } from "../store/use-form-wizard-store";
 import type { FieldDependency, FormField, FormStep } from "../types";
 import { evaluateConditions } from "../utils/helpers";
 import { ReviewStep } from "./ReviewStep";
-import { StepErrors } from "./StepErrors";
 
 interface StepContentProps {
   step: FormStep;
   className?: string;
   showTitle?: boolean;
+  namespace?: string;
 }
 
 export function StepContent({
   step,
   className,
   showTitle = true,
+  namespace,
 }: StepContentProps) {
-  const { updateFieldValue, getStepData, stepMeta, formData } =
+  const { updateFieldValue, getStepData, stepMeta, formData, clearFieldError } =
     useFormWizardStore();
 
   // Check if a field should be visible based on its dependencies
@@ -100,17 +101,19 @@ export function StepContent({
             key={field.id}
             field={field}
             value={stepData[field.name]}
-            onChange={(value) => updateFieldValue(step.id, field.name, value)}
+            onChange={(value) => {
+              updateFieldValue(step.id, field.name, value);
+              // Clear error when user changes the field
+              clearFieldError(step.id, field.name);
+            }}
             onBlur={() => {
               // Optionally validate field on blur
             }}
             error={meta?.errors?.[field.name]}
+            namespace={namespace || "common"}
           />
         ))}
       </div>
-
-      {/* Step-level Errors */}
-      <StepErrors stepId={step.id} />
     </div>
   );
 }

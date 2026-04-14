@@ -4,11 +4,7 @@
  * Type-safe validation system for form fields
  */
 
-import {
-  type AnyValidationRule,
-  type ValidationRule,
-  ValidationRuleType,
-} from "../types";
+import { type AnyValidationRule, ValidationRuleType } from "../types";
 import {
   isEmpty,
   isValidDate,
@@ -86,7 +82,7 @@ export class Validators {
 
     const numValue = Number(value);
     const min = typeof rule.value === "number" ? rule.value : -Infinity;
-    const valid = !isNaN(numValue) && numValue >= min;
+    const valid = !Number.isNaN(numValue) && numValue >= min;
 
     return {
       valid,
@@ -104,7 +100,7 @@ export class Validators {
 
     const numValue = Number(value);
     const max = typeof rule.value === "number" ? rule.value : Infinity;
-    const valid = !isNaN(numValue) && numValue <= max;
+    const valid = !Number.isNaN(numValue) && numValue <= max;
 
     return {
       valid,
@@ -264,7 +260,7 @@ export class Validators {
             valid: Boolean(valid),
             error: valid ? undefined : rule.message || "Validation failed",
           };
-        } catch (e) {
+        } catch (_e) {
           return { valid: false, error: rule.message || "Validation error" };
         }
       }
@@ -277,7 +273,7 @@ export class Validators {
         valid: Boolean(valid),
         error: valid ? undefined : rule.message || "Validation failed",
       };
-    } catch (error) {
+    } catch (_error) {
       return {
         valid: false,
         error: rule.message || "Validation error occurred",

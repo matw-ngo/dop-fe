@@ -1,0 +1,48 @@
+{
+  "gender": {
+    "male": "Nam",
+    "female": "Nữ",
+    "other": "Khác"
+  },
+  "incomeRanges": {
+    "<5m": "Dưới 5 triệu",
+    "5-10m": "5 - 10 triệu",
+    "10-20m": "10 - 20 triệu",
+    ">20m": "Trên 20 triệu"
+  },
+  "careerStatus": {
+    "employed": "Nhân viên văn phòng",
+    "self_employed": "Kinh doanh tự do",
+    "unemployed": "Thất nghiệp",
+    "housewife": "Nội trợ",
+    "retired": "Đã nghỉ hưu"
+  },
+  "incomeType": {
+    "transfer": "Chuyển khoản",
+    "cash": "Tiền mặt"
+  },
+  "havingLoan": {
+    "no_loan": "Không có khoản vay nào",
+    "one_loan": "1 khoản vay",
+    "two_loans": "2 khoản vay",
+    "three_loans": "3 khoản vay",
+    "more_than_three_loans": "Hơn 3 khoản vay"
+  },
+  "creditStatus": {
+    "no_bad_debt": "Tốt (không nợ xấu)",
+    "bad_debt_last3_year": "Bình thường (có nợ xấu trong 3 năm)",
+    "bad_debt": "Có nợ xấu"
+  },
+  "employmentTypes": {
+    "full_time": "Toàn thời gian",
+    "part_time": "Bán thời gian",
+    "contract": "Hợp đồng",
+    "freelance": "Tự do"
+  },
+  "incomeSources": {
+    "salary": "Lương",
+    "business": "Kinh doanh",
+    "investment": "Đầu tư",
+    "other": "Khác"
+  }
+}

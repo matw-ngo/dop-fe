@@ -179,7 +179,9 @@ const InsurancePagination: React.FC<InsurancePaginationProps> = ({
             </span>
             <Select
               value={itemsPerPage.toString()}
-              onValueChange={(value) => onItemsPerPageChange(parseInt(value))}
+              onValueChange={(value) =>
+                onItemsPerPageChange(parseInt(value, 10))
+              }
             >
               <SelectTrigger className="w-20 h-8">
                 <SelectValue />
@@ -203,10 +205,8 @@ const InsurancePagination: React.FC<InsurancePaginationProps> = ({
       <div className="flex items-center justify-center">
         <nav
           className="flex items-center space-x-1"
-          role="navigation"
           aria-label={t("paginationNavigation")}
           onKeyDown={handleKeyDown}
-          tabIndex={0}
         >
           {/* First page button */}
           <Button

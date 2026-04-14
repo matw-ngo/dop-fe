@@ -9,10 +9,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { financialAnalysisApi } from "@/lib/api/endpoints/financial-tools";
-import {
-  analyzeAffordability,
-  calculateFinancialHealthScore,
-} from "@/lib/financial/calculations";
+import { calculateFinancialHealthScore } from "@/lib/financial/calculations";
 import { useFinancialToolsStore } from "@/store/use-financial-tools-store";
 
 // Types
@@ -227,11 +224,14 @@ export const useFinancialComparison = (
       enableAnalytics,
       setHealthScore,
       setError,
-      setErrorLocal,
       setLoading,
       addToHistory,
       onSuccess,
       onError,
+      cache.get,
+      cache.has,
+      cache.set,
+      generateCacheKey,
     ],
   );
 
@@ -316,11 +316,14 @@ export const useFinancialComparison = (
       enableAnalytics,
       setAffordabilityAnalysis,
       setError,
-      setErrorLocal,
       setLoading,
       addToHistory,
       onSuccess,
       onError,
+      cache.get,
+      cache.has,
+      cache.set,
+      generateCacheKey,
     ],
   );
 
@@ -421,11 +424,15 @@ export const useFinancialComparison = (
       enableCache,
       enableAnalytics,
       setError,
-      setErrorLocal,
       setLoading,
       addToHistory,
       onSuccess,
       onError,
+      cache.get,
+      cache.has,
+      cache.set,
+      generateCacheKey,
+      generateROIRecommendations,
     ],
   );
 
@@ -476,7 +483,7 @@ export const useFinancialComparison = (
     setErrorLocal(undefined);
     setLastRefreshed(undefined);
     cache.clear();
-  }, []);
+  }, [cache.clear]);
 
   // Export analysis
   const exportAnalysis = useCallback(

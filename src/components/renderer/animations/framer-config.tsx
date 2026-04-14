@@ -15,9 +15,6 @@ export const framerConfig: React.ComponentProps<typeof MotionConfig> = {
     duration: 0.2,
     ease: [0.25, 0.1, 0.25, 1],
   },
-
-  // Set up performance optimizations
-  transformPageCoords: true,
 };
 
 /**

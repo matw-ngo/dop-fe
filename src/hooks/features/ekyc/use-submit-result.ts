@@ -1,12 +1,11 @@
 import { useMutation } from "@tanstack/react-query";
-import apiClient from "@/lib/api/client";
-import type { components } from "@/lib/api/v1.d.ts";
+import { dopClient } from "@/lib/api/services/dop";
+import type { components } from "@/lib/api/v1/dop";
 import {
-  logSubmitStart,
-  logSubmitSuccess,
   logSubmitError,
   logSubmitRetry,
-  logValidationError,
+  logSubmitStart,
+  logSubmitSuccess,
 } from "@/lib/ekyc/audit-logger";
 
 type VnptEkycRequestBody = components["schemas"]["VnptEkycRequestBody"];
@@ -14,7 +13,7 @@ type VnptEkycRequestBody = components["schemas"]["VnptEkycRequestBody"];
 /**
  * Maximum number of retry attempts for eKYC submission
  */
-const MAX_RETRY_ATTEMPTS = 3;
+const _MAX_RETRY_ATTEMPTS = 3;
 
 interface SubmitEkycParams {
   leadId: string;
@@ -37,7 +36,7 @@ async function submitEkycResult({
   const startTime = performance.now();
   logSubmitStart(leadId, sessionId || "unknown");
 
-  const { data, error } = await apiClient.POST("/leads/{id}/ekyc/vnpt", {
+  const { data, error } = await dopClient.POST("/leads/{id}/ekyc/vnpt", {
     params: { path: { id: leadId } },
     body: ekycData,
   });
@@ -70,7 +69,7 @@ async function submitEkycResult({
  */
 function exponentialBackoff(attempt: number): number {
   // Calculate delay: 2^attempt * 1000ms, capped at 10 seconds
-  const delay = Math.min(Math.pow(2, attempt) * 1000, 10000);
+  const delay = Math.min(2 ** attempt * 1000, 10000);
   // Add some jitter to avoid thundering herd
   return delay + Math.random() * 500;
 }
@@ -95,10 +94,11 @@ export function useSubmitEkycResult() {
       return isRetryable;
     },
     retryDelay: exponentialBackoff,
-    onMutate: ({ leadId, sessionId }) => {
+    onMutate: ({ leadId, sessionId }): SubmitEkycContext => {
       logSubmitStart(leadId, sessionId || "unknown");
+      return { failureCount: 0 };
     },
-    onError: (error, { leadId, sessionId }, context) => {
+    onError: (_error, { leadId, sessionId }, context) => {
       const failureCount =
         (context as SubmitEkycContext | undefined)?.failureCount || 0;
       if (failureCount > 0) {

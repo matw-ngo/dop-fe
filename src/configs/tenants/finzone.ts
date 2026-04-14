@@ -1,5 +1,5 @@
 import { finzoneTheme } from "@/configs/themes";
-import { TenantConfig } from "./types";
+import type { TenantConfig } from "./types";
 
 export const finzoneConfig: TenantConfig = {
   id: "finzone",

@@ -2,7 +2,6 @@
 // Intelligent matching system for Vietnamese loan products
 
 import type {
-  InterestRateType,
   VietnameseLoanProduct,
   VietnameseLoanType,
 } from "./vietnamese-loan-products";
@@ -207,7 +206,9 @@ export class VietnameseEligibilityEngine {
       product.eligibility.employmentTypes.length > 0
     ) {
       if (
-        !product.eligibility.employmentTypes.includes(profile.employmentType)
+        !product.eligibility.employmentTypes.includes(
+          profile.employmentType as any,
+        )
       ) {
         eligible = false;
         reasons.push(
@@ -280,27 +281,6 @@ export class VietnameseEligibilityEngine {
       reasonsVi.push(
         `Số tiền yêu cầu ${VietnameseEligibilityEngine.formatCurrency(requestedAmount)} vượt quá tối đa ${VietnameseEligibilityEngine.formatCurrency(product.amountLimits.max)}`,
       );
-    }
-
-    // Check collateral requirements
-    if (product.eligibility.collateralRequired && !profile.hasCollateral) {
-      eligible = false;
-      reasons.push("Collateral required but not provided");
-      reasonsVi.push("Yêu cầu tài sản đảm bảo nhưng chưa cung cấp");
-    }
-
-    // Check loan-to-value ratio if collateral provided
-    if (profile.collateralValue && product.eligibility.maxLoanToValueRatio) {
-      const ltvRatio = (requestedAmount / profile.collateralValue) * 100;
-      if (ltvRatio > product.eligibility.maxLoanToValueRatio) {
-        eligible = false;
-        reasons.push(
-          `Loan-to-value ratio ${ltvRatio.toFixed(1)}% exceeds maximum ${product.eligibility.maxLoanToValueRatio}%`,
-        );
-        reasonsVi.push(
-          `Tỷ lệ vay trên giá trị tài sản ${ltvRatio.toFixed(1)}% vượt quá tối đa ${product.eligibility.maxLoanToValueRatio}%`,
-        );
-      }
     }
 
     return { eligible, reasons, reasonsVi };
@@ -665,9 +645,6 @@ export class LoanProductMatcher {
         totalInterest = ((amount * effectiveRate) / 100) * (term / 12);
         monthlyPayment = (amount + totalInterest) / term;
         break;
-
-      case "reducing":
-      case "fixed":
       default:
         // Reducing balance calculation (amortized loan)
         if (monthlyRate === 0) {

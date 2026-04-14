@@ -12,7 +12,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { getLocalizedRedirect } from "@/lib/client-utils";
 
 export const metadata: Metadata = {
   title: "Unauthorized Access | DOP-FE",

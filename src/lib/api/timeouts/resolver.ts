@@ -9,9 +9,9 @@
  * @module resolver
  */
 
+import { DEFAULT_TIMEOUTS, TIMEOUT_SOURCE } from "./constants";
 import type { TimeoutConfig, TimeoutResolution } from "./types";
-import { TIMEOUT_SOURCE, DEFAULT_TIMEOUTS } from "./constants";
-import { normalizeEndpointPath, extractServiceName } from "./utils";
+import { extractServiceName, normalizeEndpointPath } from "./utils";
 
 /**
  * Resolves timeout for a specific endpoint using cascade logic
@@ -54,7 +54,7 @@ export function resolveTimeout(
   const normalizedEndpoint = normalizeEndpointPath(endpoint);
 
   // 1. Check endpoint-specific timeout
-  if (config.endpoints && config.endpoints[normalizedEndpoint]) {
+  if (config.endpoints?.[normalizedEndpoint]) {
     return {
       timeout: config.endpoints[normalizedEndpoint],
       source: TIMEOUT_SOURCE.ENDPOINT,
@@ -65,7 +65,7 @@ export function resolveTimeout(
 
   // 2. Check service-specific timeout
   const serviceName = extractServiceName(endpoint);
-  if (config.services && config.services[serviceName]) {
+  if (config.services?.[serviceName]) {
     return {
       timeout: config.services[serviceName],
       source: TIMEOUT_SOURCE.SERVICE,

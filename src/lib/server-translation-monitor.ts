@@ -4,11 +4,7 @@
  * Separate module to avoid circular dependencies in the request handler.
  */
 
-import {
-  getMetrics,
-  initTranslationMonitor,
-  TranslationMetrics,
-} from "./translation-monitor";
+import { getMetrics, initTranslationMonitor } from "./translation-monitor";
 
 // Track server-side metrics without requiring client-side modules
 const serverMetrics: {

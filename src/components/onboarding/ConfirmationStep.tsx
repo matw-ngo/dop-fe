@@ -3,7 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { CheckCircle2, Edit3, Loader2, ShieldCheck } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -14,8 +14,8 @@ import type {
 } from "@/components/user-onboarding/constants/field-types";
 import type { GeneratedStepConfig } from "@/components/user-onboarding/types/field-config";
 import { useConfirmationFields } from "@/hooks/form/use-confirmation-fields";
-import apiClient from "@/lib/api/client";
-import type { components } from "@/lib/api/v1.d.ts";
+import { dopClient } from "@/lib/api/services/dop";
+import type { components } from "@/lib/api/v1/dop";
 import type { MappedFlow } from "@/mappers/flowMapper";
 import { toCreateLeadRequest } from "@/mappers/onboardingMapper";
 import { ConfirmationCategoryCard } from "./ConfirmationCategoryCard";
@@ -50,7 +50,7 @@ export function ConfirmationStep({
   showEditButtons = false,
 }: ConfirmationStepProps) {
   const [submitting, setSubmitting] = useState(isSubmitting);
-  const [editingField, setEditingField] = useState<FieldType | null>(null);
+  const [_editingField, setEditingField] = useState<FieldType | null>(null);
   const t = useTranslations("onboarding.confirm");
 
   // Use our new dynamic field hook
@@ -80,7 +80,7 @@ export function ConfirmationStep({
       const payload = toCreateLeadRequest(formData, flowId, stepId, domain);
 
       // Make API call to create lead
-      const { data, error } = await apiClient.POST("/leads", {
+      const { data, error } = await dopClient.POST("/leads", {
         body: payload,
       });
 

@@ -8,12 +8,12 @@
  * @module endpoint-config
  */
 
-import type { TimeoutConfig } from "./types";
 import {
   DEFAULT_TIMEOUTS,
   SPECIAL_ENDPOINT_TIMEOUTS,
   SPECIAL_ENDPOINTS,
 } from "./constants";
+import type { TimeoutConfig } from "./types";
 
 /**
  * Default service-specific timeout configurations

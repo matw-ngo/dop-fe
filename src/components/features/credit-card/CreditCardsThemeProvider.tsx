@@ -1,7 +1,7 @@
 "use client";
 
 import { type ReactNode, useEffect, useRef } from "react";
-import { useThemeUtils } from "@/components/renderer/theme";
+import { useTheme } from "@/components/renderer/theme";
 
 interface CreditCardsThemeProviderProps {
   children: ReactNode;
@@ -14,17 +14,17 @@ interface CreditCardsThemeProviderProps {
 export function CreditCardsThemeProvider({
   children,
 }: CreditCardsThemeProviderProps) {
-  const { setTheme, setThemeDebounced, resolvedTheme } = useThemeUtils();
+  const { setThemeById } = useTheme();
   const isInitialized = useRef(false);
 
   useEffect(() => {
     // Only run this effect once to prevent infinite loops
     if (!isInitialized.current) {
       // Set the corporate theme for credit cards pages
-      setTheme("corporate");
+      setThemeById("corporate");
       isInitialized.current = true;
     }
-  }, [setTheme]);
+  }, [setThemeById]);
 
   return <>{children}</>;
 }

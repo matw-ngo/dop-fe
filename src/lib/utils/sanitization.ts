@@ -60,7 +60,7 @@ const sanitizeJavaScript = (input: string): string => {
 /**
  * Sanitize SQL injection attempts
  */
-const sanitizeSQL = (input: string): string => {
+const _sanitizeSQL = (input: string): string => {
   return input
     .replace(/('|(\\')|(;)|(\\;))|(--)|(\*|\/)/g, "")
     .replace(
@@ -83,7 +83,7 @@ const sanitizeFilePath = (input: string): string => {
 /**
  * Normalize Vietnamese text
  */
-const normalizeVietnamese = (input: string): string => {
+const _normalizeVietnamese = (input: string): string => {
   return input.replace(
     /[ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂÂĐÔƠưăâđôơ]/g,
     (match) => {
@@ -97,11 +97,14 @@ const normalizeVietnamese = (input: string): string => {
  * Sanitize Vietnamese phone number
  */
 export const sanitizeVietnamesePhone = (phone: string): string => {
-  const sanitized = phone.replace(/[^0-9+]/g, "");
+  const digitsOnly = phone.replace(/\D/g, "");
+  const normalized = digitsOnly.startsWith("84")
+    ? `0${digitsOnly.slice(2)}`
+    : digitsOnly;
 
   // Validate Vietnamese phone format
-  if (securityUtils.validateVietnamesePhone(sanitized)) {
-    return sanitized;
+  if (securityUtils.validateVietnamesePhone(normalized)) {
+    return normalized;
   }
 
   throw new Error("Invalid Vietnamese phone number format");
@@ -140,7 +143,7 @@ export const sanitizeLoanAmount = (amount: string | number): number => {
   const sanitized = String(amount).replace(/[^0-9.]/g, "");
   const parsed = parseFloat(sanitized);
 
-  if (isNaN(parsed) || parsed <= 0) {
+  if (Number.isNaN(parsed) || parsed <= 0) {
     throw new Error("Invalid loan amount");
   }
 
@@ -161,7 +164,7 @@ export const sanitizeLoanTerm = (term: string | number): number => {
   const sanitized = String(term).replace(/[^0-9]/g, "");
   const parsed = parseInt(sanitized, 10);
 
-  if (isNaN(parsed) || parsed < 1 || parsed > 360) {
+  if (Number.isNaN(parsed) || parsed < 1 || parsed > 360) {
     throw new Error("Loan term must be between 1 and 360 months");
   }
 

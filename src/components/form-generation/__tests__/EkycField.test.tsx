@@ -16,7 +16,6 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { FormProvider } from "@/components/form-generation/context/FormContext";
 import type { EkycFieldConfig } from "@/components/form-generation/types";
 import { verificationManager } from "@/lib/verification/manager";
-import { VNPTVerificationProvider } from "@/lib/verification/providers/vnpt-provider";
 import type {
   VerificationResult,
   VerificationStatus,
@@ -25,7 +24,7 @@ import { EkycField } from "../fields/EkycField";
 
 // Create mock references that will be assigned after mocking
 let mockVerificationManager: any;
-let mockVNPTProvider: any;
+let _mockVNPTProvider: any;
 
 // Mock verification manager
 vi.mock("@/lib/verification/manager", () => ({

@@ -1,13 +1,6 @@
 "use client";
 
-import {
-  ChevronDown,
-  Filter,
-  Grid3X3,
-  LayoutGrid,
-  List,
-  Search,
-} from "lucide-react";
+import { Filter, Grid3X3, LayoutGrid, List, Search } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
@@ -15,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";

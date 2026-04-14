@@ -16,7 +16,7 @@ export function ComparisonLoading() {
           <p className="text-lg">{t("pages.insurance.loadingComparison")}</p>
         </div>
       </main>
-      <Footer company="finzone" />
+      <Footer />
     </>
   );
 }

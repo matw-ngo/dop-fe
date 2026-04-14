@@ -10,19 +10,19 @@
  * @jest-environment jsdom
  */
 
-import { describe, it, expect, beforeEach, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
-  mapEkycResponseToApiRequest,
-  isEkycResponseValid,
   extractEkycSummary,
+  isEkycResponseValid,
+  mapEkycResponseToApiRequest,
 } from "../ekyc-api-mapper";
 import type {
+  CompareFaceResponse,
   EkycResponse,
   LivenessCardResponse,
-  OcrResponse,
   LivenessFaceResponse,
   MaskedFaceResponse,
-  CompareFaceResponse,
+  OcrResponse,
   PostCodeInfo,
 } from "../types";
 
@@ -131,7 +131,8 @@ describe("ekyc-api-mapper", () => {
     it("should map complete eKYC response to API request format", () => {
       const ekycResponse: Partial<EkycResponse> = {
         type_document: 9,
-        liveness_card_front: createMinimalLivenessCard() as LivenessCardResponse,
+        liveness_card_front:
+          createMinimalLivenessCard() as LivenessCardResponse,
         liveness_card_back: createMinimalLivenessCard() as LivenessCardResponse,
         ocr: createMinimalOcr() as OcrResponse,
         liveness_face: createMinimalLivenessFace() as LivenessFaceResponse,

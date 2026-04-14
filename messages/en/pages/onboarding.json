@@ -6,6 +6,13 @@
   "loadError": "Failed to load onboarding configuration: {message}",
   "loadErrorTitle": "Could Not Load Form",
   "successAlert": "Registration successful!",
+  "navigation": {
+    "next": "Next",
+    "previous": "Previous",
+    "skip": "Skip",
+    "submit": "Submit",
+    "complete": "Complete"
+  },
   "steps": {
     "ekyc": {
       "title": "Identity Verification",
@@ -72,6 +79,11 @@
     },
     "creditStatus": {
       "label": "Credit Status"
+    }
+  },
+  "form": {
+    "errors": {
+      "consentRequired": "You must agree to the terms to continue"
     }
   },
   "common": {

@@ -6,18 +6,9 @@ import {
 } from "@tanstack/react-query";
 import { useCallback, useEffect } from "react";
 import { toast } from "sonner";
-import { adminApi as realAdminApi } from "@/lib/api/admin-api";
-import type {
-  AdminFieldDetail,
-  AdminFlowDetail,
-  AdminFlowListItem,
-  AdminStepDetail,
-  AdminStepListItem,
-} from "@/lib/api/admin-types";
-import { getApiService, USE_MOCK_API } from "@/lib/api/mock-responses";
+import { getApiService } from "@/lib/api/mock-responses";
 import {
   invalidateQueries,
-  optimisticallyUpdateQuery,
   queryClient,
   setQueryData,
 } from "@/lib/query-client";
@@ -288,7 +279,7 @@ export const useInfiniteFlows = (options?: {
     queryFn: ({ pageParam = 1 }) =>
       adminApi.getFlows({ ...options, page: pageParam }),
     initialPageParam: 1,
-    getNextPageParam: (lastPage, allPages, lastPageParam) => {
+    getNextPageParam: (lastPage, _allPages, lastPageParam) => {
       // Return undefined when there are no more pages
       if (lastPage.length < (options?.limit || 10)) {
         return undefined;
@@ -346,7 +337,7 @@ export const useFlow = (id: string) => {
 
   // Prefetch related data when flow is loaded
   useEffect(() => {
-    if (query.data && query.data.steps && query.data.steps.length > 0) {
+    if (query.data?.steps && query.data.steps.length > 0) {
       query.data.steps.forEach((step: StepListItem) => {
         queryClient.prefetchQuery({
           queryKey: adminQueryKeys.step(step.id),
@@ -355,7 +346,7 @@ export const useFlow = (id: string) => {
         });
       });
     }
-  }, [query.data, queryClient]);
+  }, [query.data]);
 
   useEffect(() => {
     if (query.data) {
@@ -555,7 +546,7 @@ export const useUpdateStep = () => {
 
 export const useUpdateField = () => {
   const queryClient = useQueryClient();
-  const currentStep = useAdminFlowStore((state) => state.currentStep);
+  const _currentStep = useAdminFlowStore((state) => state.currentStep);
 
   return useMutation({
     mutationFn: ({
@@ -690,7 +681,7 @@ export const useDeleteFlow = () => {
       // Return context with the previous data
       return { previousFlows };
     },
-    onError: (error, variables, context) => {
+    onError: (error, _variables, context) => {
       // If the mutation fails, use the context returned from onMutate to roll back
       if (context?.previousFlows) {
         queryClient.setQueryData(adminQueryKeys.flows, context.previousFlows);
@@ -757,7 +748,7 @@ export const useDuplicateFlow = () => {
       // Return context with the previous data
       return { previousFlows };
     },
-    onError: (error, variables, context) => {
+    onError: (error, _variables, context) => {
       // If the mutation fails, use the context returned from onMutate to roll back
       if (context?.previousFlows) {
         queryClient.setQueryData(adminQueryKeys.flows, context.previousFlows);

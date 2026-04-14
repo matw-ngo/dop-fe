@@ -469,7 +469,7 @@ export const formatLargeNumber = (value: number): string => {
   } else if (value >= 1000000) {
     return `${(value / 1000000).toFixed(1)} triệu VND`;
   } else {
-    return value.toLocaleString("vi-VN") + " VND";
+    return `${value.toLocaleString("vi-VN")} VND`;
   }
 };
 

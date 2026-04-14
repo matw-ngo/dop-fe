@@ -1,0 +1,6 @@
+
+> dop-fe@0.1.0 type-check /Users/trung.ngo/Documents/projects/dop-fe
+> tsc --noEmit
+
+src/lib/verification/__tests__/manager.test.ts(719,9): error TS2578: Unused '@ts-expect-error' directive.
+ ELIFECYCLE  Command failed with exit code 2.

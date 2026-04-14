@@ -15,6 +15,7 @@ const MOCK_DEFAULT_FLOW: MappedFlow = {
   steps: [
     {
       id: "step-1",
+      page: "1",
       useEkyc: false,
       sendOtp: false,
       createdAt: new Date(),
@@ -39,6 +40,7 @@ const MOCK_DEFAULT_FLOW: MappedFlow = {
     },
     {
       id: "step-2",
+      page: "2",
       useEkyc: true,
       sendOtp: false,
       createdAt: new Date(),
@@ -53,6 +55,7 @@ const MOCK_ALL_FIELDS_FLOW: MappedFlow = {
   steps: [
     {
       id: "step-all-fields",
+      page: "1",
       useEkyc: false,
       sendOtp: false,
       createdAt: new Date(),

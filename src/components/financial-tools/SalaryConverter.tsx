@@ -55,9 +55,7 @@ import {
 import type { TaxCalculationResult } from "@/lib/financial-data/tax-brackets";
 import {
   FAMILY_DEDUCTIONS,
-  formatVND,
   REGIONAL_MINIMUM_WAGE,
-  SOCIAL_INSURANCE_RATES,
 } from "@/lib/financial-data/vietnamese-financial-data";
 
 // Types
@@ -372,7 +370,7 @@ const SalaryConverter: React.FC = () => {
                       <Select
                         value={formData.region.toString()}
                         onValueChange={(value) =>
-                          handleInputChange("region", parseInt(value))
+                          handleInputChange("region", parseInt(value, 10))
                         }
                       >
                         <SelectTrigger>
@@ -400,7 +398,7 @@ const SalaryConverter: React.FC = () => {
                       onChange={(e) =>
                         handleInputChange(
                           "numberOfDependents",
-                          parseInt(e.target.value) || 0,
+                          parseInt(e.target.value, 10) || 0,
                         )
                       }
                       min="0"

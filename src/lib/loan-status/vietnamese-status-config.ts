@@ -727,7 +727,7 @@ export const calculateEstimatedCompletionTime = (
   }
 
   // Calculate total remaining business days
-  const totalBusinessDays = timeStandard.standard.maxBusinessDays;
+  const _totalBusinessDays = timeStandard.standard.maxBusinessDays;
   const avgBusinessDays = timeStandard.standard.averageBusinessDays;
 
   // Convert to hours (8 hours per business day)

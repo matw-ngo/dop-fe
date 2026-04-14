@@ -7,7 +7,19 @@
   },
   "files": {
     "ignoreUnknown": true,
-    "includes": ["**", "!node_modules", "!.next", "!dist", "!build"]
+    "includes": [
+      "**",
+      "!node_modules",
+      "!.next",
+      "!dist",
+      "!build",
+      "!public/**/*",
+      "!scripts/**/*",
+      "!src/**/*.test.tsx",
+      "!test",
+      "!tests",
+      "!__test__"
+    ]
   },
   "formatter": {
     "enabled": true,
@@ -20,6 +32,12 @@
       "recommended": true,
       "suspicious": {
         "noUnknownAtRules": "off"
+      },
+      "complexity": {
+        "noForEach": "off"
+      },
+      "style": {
+        "useConst": "off"
       }
     },
     "domains": {

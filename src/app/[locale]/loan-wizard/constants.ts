@@ -121,3 +121,13 @@ export const VEHICLE_REGISTRATION_OPTIONS = [
   { label: "Có", value: "cavet" },
   { label: "Không", value: "none" },
 ];
+
+export const GENDER_OPTIONS = [
+  { label: "Nam", value: "male" },
+  { label: "Nữ", value: "female" },
+];
+
+export const MARITAL_STATUS = [
+  { label: "Độc thân", value: "single" },
+  { label: "Đã kết hôn", value: "married" },
+];

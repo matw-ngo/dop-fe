@@ -1,0 +1,1789 @@
+openapi: 3.0.3
+info:
+  title: DOP
+  version: "1.0"
+  description: DOP - OpenAPI Specification
+  termsOfService: https://datanest.io/terms
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  contact:
+    name: Data Nest Support
+    url: https://datanest.vn
+    email: support@datanest.vn
+servers:
+  - url: https://dop-stg.datanest.vn/{basePath}
+    variables:
+      basePath:
+        default: v1
+    description: Development server
+  - url: https://dop.datanest.vn/{basePath}
+    variables:
+      basePath:
+        default: v1
+    description: Production server
+paths:
+  /flows/{tenant}:
+    get:
+      tags:
+        - flow
+      operationId: get-tenant-flow
+      summary: Get tenant onboarding flow
+      security:
+        - cookie_auth: []
+      parameters:
+        - $ref: "#/components/parameters/tenant"
+      responses:
+        "200":
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FlowDetail"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
+  /leads:
+    post:
+      tags:
+        - lead
+      operationId: create-lead
+      summary: Create a new lead
+      security:
+        - cookie_auth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateLeadRequestBody"
+      responses:
+        "200":
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateLeadResponseBody"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
+  /leads/{id}:
+    get:
+      tags:
+        - lead
+      operationId: get-lead-status
+      summary: Get lead forward status
+      security:
+        - cookie_auth: []
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        "200":
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LeadStatusResponse"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
+  /leads/{id}/submit-info:
+    post:
+      tags:
+        - lead
+      operationId: submit-info
+      summary: Submit lead info
+      security:
+        - cookie_auth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SubmitLeadInfoRequestBody"
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        "200":
+          description: Lead info submitted successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubmitLeadInfoResponseBody"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
+  /leads/{id}/submit-otp:
+    post:
+      tags:
+        - otp
+      operationId: submit-otp
+      summary: Submit OTP for lead
+      security:
+        - cookie_auth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SubmitOTPRequestBody"
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        "200":
+          description: OTP verified successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubmitOTPResponseBody"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
+  /leads/{id}/resend-otp:
+    post:
+      tags:
+        - otp
+      operationId: resend-otp
+      summary: Resend OTP for lead
+      security:
+        - cookie_auth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ResendOTPRequestBody"
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        "200":
+          $ref: "#/components/responses/200"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
+  /leads/{id}/ekyc/config:
+    get:
+      tags:
+        - ekyc
+      operationId: get-ekyc-config
+      summary: Get eKYC config
+      security:
+        - cookie_auth: []
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        "200":
+          description: get ekyc access key successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EkycConfigResponseBody"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
+  /leads/{id}/ekyc/vnpt:
+    post:
+      tags:
+        - ekyc
+      operationId: submit-vnpt-ekyc-result
+      summary: Submit kyc data to VNPT eKYC service
+      security:
+        - cookie_auth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VnptEkycRequestBody"
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        "200":
+          $ref: "#/components/responses/200"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
+  /products:
+    get:
+      tags:
+        - product
+      operationId: list-products
+      summary: List products for a tenant
+      security:
+        - cookie_auth: []
+      parameters:
+        - $ref: "#/components/parameters/tenant_id"
+        - $ref: "#/components/parameters/page_size"
+        - $ref: "#/components/parameters/page_index"
+      responses:
+        "200":
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListProductsResponse"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
+  /products/{id}:
+    get:
+      tags:
+        - product
+      operationId: get-product
+      summary: Get a product by ID
+      security:
+        - cookie_auth: []
+      parameters:
+        - $ref: "#/components/parameters/id"
+        - $ref: "#/components/parameters/tenant_id"
+      responses:
+        "200":
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductDetail"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
+  /locations/provinces:
+    get:
+      summary: Get all provinces
+      description: Retrieve a list of all provinces in Vietnam
+      operationId: getProvinces
+      tags:
+        - Locations
+      security: []
+      responses:
+        "200":
+          description: Successfully retrieved provinces
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Province"
+                required:
+                  - data
+        "500":
+          $ref: "#/components/responses/500"
+  /locations/provinces/{id}/wards:
+    get:
+      summary: Get wards by province ID
+      description: Retrieve all wards/communes for a specific province
+      operationId: getWardsByProvinceId
+      tags:
+        - Locations
+      security: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Province ID (UUID)
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Successfully retrieved wards
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Ward"
+                required:
+                  - data
+        "400":
+          $ref: "#/components/responses/400"
+        "404":
+          $ref: "#/components/responses/404"
+        "500":
+          $ref: "#/components/responses/500"
+components:
+  securitySchemes:
+    cookie_auth:
+      type: apiKey
+      in: cookie
+      name: session
+  parameters:
+    tenant:
+      description: Tenant
+      name: tenant
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+      allowEmptyValue: false
+    id:
+      description: uuid id
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+      allowEmptyValue: false
+    tenant_id:
+      description: Tenant UUID
+      name: tenant_id
+      in: query
+      required: true
+      schema:
+        type: string
+        format: uuid
+      allowEmptyValue: false
+    page_size:
+      description: page size
+      name: page_size
+      in: query
+      required: false
+      schema:
+        type: integer
+        format: int32
+      allowEmptyValue: false
+    page_index:
+      description: page index
+      name: page_index
+      in: query
+      required: false
+      schema:
+        type: integer
+        format: int32
+      allowEmptyValue: false
+  schemas:
+    uuid:
+      type: string
+      format: uuid
+      x-go-type: uuid.UUID
+      x-go-type-import:
+        path: github.com/google/uuid
+    FlowStatus:
+      type: string
+      enum:
+        - active
+        - inactive
+        - archived
+      description: The status of the flow
+      x-go-type: types.FlowStatus
+      x-go-type-import:
+        path: github.com/cicdata-io/smartdop/pkg/types
+    Step:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/uuid"
+        use_ekyc:
+          type: boolean
+          default: false
+        send_otp:
+          type: boolean
+          default: false
+        consent_purpose_id:
+          $ref: "#/components/schemas/uuid"
+          x-omitempty: true
+        page:
+          type: string
+          default: ""
+        have_purpose:
+          type: boolean
+          default: false
+          x-omitempty: true
+        required_purpose:
+          type: boolean
+          default: false
+          x-omitempty: true
+        have_phone_number:
+          type: boolean
+          default: false
+          x-omitempty: true
+        required_phone_number:
+          type: boolean
+          default: false
+          x-omitempty: true
+        have_email:
+          type: boolean
+          default: false
+          x-omitempty: true
+        required_email:
+          type: boolean
+          default: false
+          x-omitempty: true
+        have_full_name:
+          type: boolean
+          default: false
+          x-omitempty: true
+        required_full_name:
+          type: boolean
+          default: false
+          x-omitempty: true
+        have_national_id:
+          type: boolean
+          default: false
+          x-omitempty: true
+        required_national_id:
+          type: boolean
+          default: false
+          x-omitempty: true
+        have_second_national_id:
+          type: boolean
+          default: false
+          x-omitempty: true
+        required_second_national_id:
+          type: boolean
+          default: false
+          x-omitempty: true
+        have_gender:
+          type: boolean
+          default: false
+          x-omitempty: true
+        required_gender:
+          type: boolean
+          default: false
+          x-omitempty: true
+        have_location:
+          type: boolean
+          default: false
+          x-omitempty: true
+        required_location:
+          type: boolean
+          default: false
+          x-omitempty: true
+        have_birthday:
+          type: boolean
+          default: false
+          x-omitempty: true
+        required_birthday:
+          type: boolean
+          default: false
+          x-omitempty: true
+        have_income_type:
+          type: boolean
+          default: false
+          x-omitempty: true
+        required_income_type:
+          type: boolean
+          default: false
+          x-omitempty: true
+        have_income:
+          type: boolean
+          default: false
+          x-omitempty: true
+        required_income:
+          type: boolean
+          default: false
+          x-omitempty: true
+        have_having_loan:
+          type: boolean
+          default: false
+          x-omitempty: true
+        required_having_loan:
+          type: boolean
+          default: false
+          x-omitempty: true
+        have_career_status:
+          type: boolean
+          default: false
+          x-omitempty: true
+        required_career_status:
+          type: boolean
+          default: false
+          x-omitempty: true
+        have_career_type:
+          type: boolean
+          default: false
+          x-omitempty: true
+        required_career_type:
+          type: boolean
+          default: false
+          x-omitempty: true
+        have_credit_status:
+          type: boolean
+          default: false
+          x-omitempty: true
+        required_credit_status:
+          type: boolean
+          default: false
+          x-omitempty: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - use_ekyc
+        - send_otp
+        - page
+        - have_purpose
+        - required_purpose
+        - have_phone_number
+        - required_phone_number
+        - have_email
+        - required_email
+        - have_full_name
+        - required_full_name
+        - have_national_id
+        - required_national_id
+        - have_second_national_id
+        - required_second_national_id
+        - have_gender
+        - required_gender
+        - have_location
+        - required_location
+        - have_birthday
+        - required_birthday
+        - have_income_type
+        - required_income_type
+        - have_income
+        - required_income
+        - have_having_loan
+        - required_having_loan
+        - have_career_status
+        - required_career_status
+        - have_career_type
+        - required_career_type
+        - have_credit_status
+        - required_credit_status
+        - created_at
+        - updated_at
+    FlowDetail:
+      type: object
+      description: Get Flow by tenant response
+      properties:
+        id:
+          $ref: "#/components/schemas/uuid"
+        name:
+          type: string
+        description:
+          type: string
+        flow_status:
+          $ref: "#/components/schemas/FlowStatus"
+        steps:
+          type: array
+          items:
+            $ref: "#/components/schemas/Step"
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - name
+        - description
+        - flow_status
+        - steps
+        - created_at
+        - updated_at
+    OTPType:
+      type: string
+      enum:
+        - sms
+        - email
+        - voice
+      x-go-type: types.OTPType
+      x-go-type-import:
+        path: github.com/cicdata-io/smartdop/pkg/types
+    Gender:
+      type: string
+      enum:
+        - male
+        - female
+        - other
+      x-go-type: types.Gender
+      x-go-type-import:
+        path: github.com/cicdata-io/smartdop/pkg/types
+    HavingLoan:
+      type: string
+      enum:
+        - no_loan
+        - one_loan
+        - two_loans
+        - three_loans
+        - more_than_three_loans
+      x-go-type: types.HavingLoan
+      x-go-type-import:
+        path: github.com/cicdata-io/smartdop/pkg/types
+    CareerStatus:
+      type: string
+      enum:
+        - employed
+        - self_employed
+        - unemployed
+        - housewife
+        - retired
+      x-go-type: types.CareerStatus
+      x-go-type-import:
+        path: github.com/cicdata-io/smartdop/pkg/types
+    CreditStatus:
+      type: string
+      enum:
+        - no_bad_debt
+        - bad_debt
+        - bad_debt_last3_year
+      x-go-type: types.CreditStatus
+      x-go-type-import:
+        path: github.com/cicdata-io/smartdop/pkg/types
+    SubmitLeadInfoRequestBody:
+      type: object
+      properties:
+        flow_id:
+          $ref: "#/components/schemas/uuid"
+        step_id:
+          $ref: "#/components/schemas/uuid"
+        phone_number:
+          type: string
+        email:
+          type: string
+          format: email
+        purpose:
+          type: string
+        loan_amount:
+          type: integer
+          format: int32
+        loan_period:
+          type: integer
+          format: int32
+        otp_type:
+          $ref: "#/components/schemas/OTPType"
+        full_name:
+          type: string
+        national_id:
+          type: string
+        gender:
+          $ref: "#/components/schemas/Gender"
+        location:
+          $ref: "#/components/schemas/uuid"
+        birthday:
+          type: string
+          format: date
+        income_type:
+          type: string
+        income:
+          type: integer
+          format: int32
+        having_loan:
+          $ref: "#/components/schemas/HavingLoan"
+        career_status:
+          $ref: "#/components/schemas/CareerStatus"
+        career_type:
+          type: string
+        credit_status:
+          $ref: "#/components/schemas/CreditStatus"
+      required:
+        - flow_id
+        - step_id
+    CreateLeadRequestBody:
+      type: object
+      properties:
+        flow_id:
+          $ref: "#/components/schemas/uuid"
+        consent_id:
+          $ref: "#/components/schemas/uuid"
+        tenant:
+          $ref: "#/components/schemas/uuid"
+        deviece_info:
+          type: object
+        tracking_params:
+          type: object
+        info:
+          $ref: "#/components/schemas/SubmitLeadInfoRequestBody"
+      required:
+        - flow_id
+        - consent_id
+        - tenant
+        - info
+        - deviece_info
+        - tracking_params
+    matched_product:
+      type: object
+      description: A product matched by the distribution engine for the current lead.
+      properties:
+        product_id:
+          $ref: "#/components/schemas/uuid"
+          description: Unique identifier of the matched product
+        product_name:
+          type: string
+          description: Display name of the matched product
+        product_type:
+          type: string
+          description: Type or category of the product (e.g. personal_loan, credit_card)
+        partner_id:
+          $ref: "#/components/schemas/uuid"
+          description: Unique identifier of the partner offering this product
+        partner_name:
+          type: string
+          description: Display name of the partner
+        partner_code:
+          type: string
+          description: Short code of the partner
+      required:
+        - product_id
+        - product_name
+        - product_type
+        - partner_id
+        - partner_name
+        - partner_code
+    CreateLeadResponseBody:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/uuid"
+        token:
+          type: string
+        matched_products:
+          type: array
+          description: Products matched by the distribution engine for this step. Empty when distribution is disabled for the step.
+          items:
+            $ref: "#/components/schemas/matched_product"
+      required:
+        - id
+        - token
+    DistributionStatus:
+      type: string
+      description: Current distribution/forward status of the lead
+      enum:
+        - pending
+        - evaluating
+        - distributed
+        - failed
+        - no_match
+      x-go-type: types.DistributionStatus
+      x-go-type-import:
+        path: github.com/cicdata-io/smartdop/pkg/types
+    LeadStatusResponse:
+      type: object
+      properties:
+        distribution_status:
+          $ref: "#/components/schemas/DistributionStatus"
+        is_forwarded:
+          type: boolean
+          description: Whether the lead has been forwarded to a partner
+        partner_id:
+          $ref: "#/components/schemas/uuid"
+          description: Partner UUID if the lead was forwarded
+          x-omitempty: true
+        partner_name:
+          type: string
+          description: Partner name if the lead was forwarded
+          x-omitempty: true
+      required:
+        - distribution_status
+        - is_forwarded
+    ForwardResult:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+            - forwarded
+            - rejected
+            - exhausted
+        partner_id:
+          $ref: "#/components/schemas/uuid"
+        partner_name:
+          type: string
+        partner_lead_id:
+          type: string
+    SubmitLeadInfoResponseBody:
+      type: object
+      properties:
+        next_step_id:
+          $ref: "#/components/schemas/uuid"
+        matched_products:
+          type: array
+          description: Products matched by the distribution engine for this step. Empty when distribution is disabled for the step.
+          items:
+            $ref: "#/components/schemas/matched_product"
+        forward_result:
+          $ref: "#/components/schemas/ForwardResult"
+          description: Result of the auto-forwarding attempt for this step. Empty when forwarding is disabled or no products were matched.
+    SubmitOTPRequestBody:
+      type: object
+      properties:
+        token:
+          type: string
+          description: The token to submit OTP
+        otp:
+          type: string
+          description: The OTP code received
+        step_id:
+          $ref: "#/components/schemas/uuid"
+          description: The current step ID, used to determine whether distribution should run after OTP verification, only set when the step has run_distribution equal true
+      required:
+        - token
+        - otp
+    SubmitOTPResponseBody:
+      type: object
+      properties:
+        token:
+          type: string
+          description: The authentication token generated upon successful OTP verification
+        matched_products:
+          type: array
+          description: List of products matched by the distribution engine for this step, if distribution is enabled, only set when the step has run_distribution equal true
+          items:
+            $ref: "#/components/schemas/matched_product"
+      required:
+        - token
+    ResendOTPRequestBody:
+      type: object
+      properties:
+        target:
+          type: string
+          description: The phone number or email to resend OTP
+      required:
+        - target
+    SdkFlow:
+      type: string
+      enum:
+        - DOCUMENT_TO_FACE
+        - FACE_TO_DOCUMENT
+        - FACE
+        - DOCUMENT
+      description: ekyc sdk flow
+    PictureMethod:
+      type: string
+      enum:
+        - BOTH
+        - PHOTO
+        - UPLOAD
+      description: ekyc picture method
+    EkycConfigResponseBody:
+      type: object
+      properties:
+        access_token:
+          type: string
+        challenge_code:
+          type: string
+        has_result_screen:
+          type: boolean
+        enable_api_liveness_document:
+          type: boolean
+        enable_api_liveness_face:
+          type: boolean
+        enable_api_masked_face:
+          type: boolean
+        enable_api_compare_face:
+          type: boolean
+        sdk_flow:
+          $ref: "#/components/schemas/SdkFlow"
+        list_type_document:
+          type: array
+          items:
+            type: integer
+            format: int32
+        show_step:
+          type: boolean
+        has_qr_scan:
+          type: boolean
+        document_type_start:
+          type: integer
+          format: int32
+        double_liveness:
+          type: boolean
+        use_method:
+          $ref: "#/components/schemas/PictureMethod"
+        show_tab_result_information:
+          type: boolean
+        show_tab_result_validation:
+          type: boolean
+        show_tab_result_qrcode:
+          type: boolean
+      required:
+        - access_token
+        - challenge_code
+        - has_result_screen
+        - enable_api_liveness_document
+        - enable_api_liveness_face
+        - enable_api_masked_face
+        - enable_api_compare_face
+        - sdk_flow
+        - list_type_document
+        - show_step
+        - has_qr_scan
+        - document_type_start
+        - double_liveness
+        - use_method
+        - show_tab_result_information
+        - show_tab_result_validation
+        - show_tab_result_qrcode
+    VNPTLivenessCard:
+      type: object
+      properties:
+        challengeCode:
+          type: string
+        dataBase64:
+          type: string
+        dataSign:
+          type: string
+        imgs:
+          type: object
+          properties:
+            img:
+              type: string
+          required:
+            - img
+        logID:
+          type: string
+        message:
+          type: string
+        object:
+          type: object
+          properties:
+            face_swapping:
+              type: string
+            face_swapping_prob:
+              type: number
+              format: double
+            fake_liveness:
+              type: string
+            fake_liveness_prob:
+              type: number
+              format: double
+            fake_print_photo:
+              type: string
+            fake_print_photo_prob:
+              type: number
+              format: double
+            liveness:
+              type: string
+            liveness_msg:
+              type: string
+          required:
+            - face_swapping
+            - face_swapping_prob
+            - fake_liveness
+            - fake_liveness_prob
+            - fake_print_photo
+            - fake_print_photo_prob
+            - liveness
+            - liveness_msg
+        server_version:
+          type: string
+        statusCode:
+          type: integer
+      required:
+        - challengeCode
+        - dataBase64
+        - dataSign
+        - imgs
+        - logID
+        - message
+        - object
+        - server_version
+        - statusCode
+    VnptEkycCheckingOcrResult:
+      type: object
+      properties:
+        check_photocopied_prob:
+          type: number
+          format: double
+        check_photocopied_result:
+          type: string
+        corner_cut_prob:
+          type: array
+          items:
+            type: number
+            format: double
+        corner_cut_result:
+          type: string
+        edited_prob:
+          type: number
+          format: double
+        edited_result:
+          type: string
+        recaptured_prob:
+          type: number
+          format: double
+        recaptured_result:
+          type: string
+      required:
+        - check_photocopied_prob
+        - check_photocopied_result
+        - corner_cut_prob
+        - corner_cut_result
+        - edited_prob
+        - edited_result
+        - recaptured_prob
+        - recaptured_result
+    VnptEkycOcrPostCode:
+      type: object
+      properties:
+        city:
+          type: array
+        detail:
+          type: string
+        district:
+          type: array
+        type:
+          type: string
+        ward:
+          type: array
+      required:
+        - city
+        - detail
+        - district
+        - type
+        - ward
+    VnptEkycOrcQuality:
+      type: object
+      properties:
+        blur_score:
+          type: number
+          format: double
+        bright_spot_params:
+          type: object
+          properties:
+            average_intensity:
+              type: number
+              format: double
+            bright_spot_threshold:
+              type: number
+              format: double
+            total_bright_spot_area:
+              type: integer
+          required:
+            - average_intensity
+            - bright_spot_threshold
+            - total_bright_spot_area
+        bright_spot_score:
+          type: number
+          format: double
+        final_result:
+          type: object
+          properties:
+            bad_luminance_likelyhood:
+              type: string
+            blurred_likelyhood:
+              type: string
+            bright_spot_likelyhood:
+              type: string
+            low_resolution_likelyhood:
+              type: string
+          required:
+            - bad_luminance_likelyhood
+            - blurred_likelyhood
+            - bright_spot_likelyhood
+            - low_resolution_likelyhood
+        luminance_score:
+          type: number
+          format: double
+        resolution:
+          type: array
+          items:
+            type: integer
+      required:
+        - blur_score
+        - bright_spot_params
+        - bright_spot_score
+        - final_result
+        - luminance_score
+        - resolution
+    VNPTOCR:
+      type: object
+      properties:
+        message:
+          type: string
+        challengeCode:
+          type: string
+        dataBase64:
+          type: string
+        dataSign:
+          type: string
+        imgs:
+          type: object
+          properties:
+            img_back:
+              type: string
+            img_front:
+              type: string
+        logID:
+          type: string
+        object:
+          type: object
+          properties:
+            address_fake_warning:
+              type: boolean
+            back_corner_warning:
+              type: string
+            back_expired_warning:
+              type: string
+            back_type_id:
+              type: integer
+              format: int32
+            birth_day:
+              type: string
+            birth_day_prob:
+              type: number
+              format: double
+            card_type:
+              type: string
+            checking_result_back:
+              $ref: "#/components/schemas/VnptEkycCheckingOcrResult"
+            checking_result_front:
+              $ref: "#/components/schemas/VnptEkycCheckingOcrResult"
+            citizen_id:
+              type: string
+            citizen_id_prob:
+              type: number
+              format: double
+            corner_warning:
+              type: string
+            cover_prob_front:
+              type: number
+              format: double
+            dict_qr:
+              type: object
+            dob_fake_warning:
+              type: boolean
+            dob_fake_warning_prob:
+              type: number
+              format: double
+            dupplication_warning:
+              type: boolean
+            expire_warning:
+              type: string
+            features:
+              type: string
+            features_prob:
+              type: number
+              format: double
+            gender:
+              type: string
+            general_warning:
+              type: array
+            id:
+              type: string
+            id_fake_prob:
+              type: number
+              format: double
+            id_fake_warning:
+              type: string
+            id_probs:
+              type: array
+              items:
+                type: number
+                format: double
+            issue_date:
+              type: string
+            issue_date_prob:
+              type: number
+              format: double
+            issue_date_probs:
+              type: array
+              items:
+                type: number
+                format: double
+            issue_place:
+              type: string
+            issue_place_prob:
+              type: number
+              format: double
+            issuedate_fake_warning:
+              type: boolean
+            match_front_back:
+              type: object
+              properties:
+                match_bod:
+                  type: string
+                match_id:
+                  type: string
+                match_name:
+                  type: string
+                match_sex:
+                  type: string
+                match_valid_date:
+                  type: string
+            match_qr:
+              type: object
+            mrz:
+              type: array
+              items:
+                type: string
+            mrz_prob:
+              type: number
+              format: double
+            mrz_probs:
+              type: array
+              items:
+                type: number
+                format: double
+            mrz_valid_score:
+              type: integer
+            msg:
+              type: string
+            msg_back:
+              type: string
+            name:
+              type: string
+            name_fake_warning:
+              type: string
+            name_fake_warning_prob:
+              type: number
+              format: double
+            name_prob:
+              type: number
+              format: double
+            name_probs:
+              type: array
+              items:
+                type: number
+                format: double
+            nation_policy:
+              type: string
+            nationality:
+              type: string
+            new_post_code:
+              type: array
+              items:
+                $ref: "#/components/schemas/VnptEkycOcrPostCode"
+            origin_location:
+              type: string
+            origin_location_prob:
+              type: number
+              format: double
+            post_code:
+              type: array
+              items:
+                $ref: "#/components/schemas/VnptEkycOcrPostCode"
+            quality_back:
+              $ref: "#/components/schemas/VnptEkycOrcQuality"
+            quality_front:
+              $ref: "#/components/schemas/VnptEkycOrcQuality"
+            recent_location:
+              type: string
+            recent_location_prob:
+              type: number
+              format: double
+            tampering:
+              type: object
+              properties:
+                is_legal:
+                  type: string
+                warning:
+                  type: array
+                  items:
+                    type: string
+              required:
+                - is_legal
+                - warning
+            type_id:
+              type: integer
+            valid_date:
+              type: string
+            valid_date_prob:
+              type: number
+              format: double
+        server_version:
+          type: string
+        statusCode:
+          type: integer
+      required:
+        - message
+        - challengeCode
+        - dataBase64
+        - dataSign
+        - imgs
+        - logID
+        - object
+        - server_version
+        - statusCode
+    VNPTLivenessFace:
+      type: object
+      properties:
+        challengeCode:
+          type: string
+        dataBase64:
+          type: string
+        dataSign:
+          type: string
+        imgs:
+          type: object
+          properties:
+            img_face:
+              type: string
+            img_front:
+              type: string
+          required:
+            - img_face
+            - img_front
+        object:
+          type: object
+          properties:
+            age:
+              type: integer
+              format: int32
+            background_warning:
+              type: string
+            blur_face:
+              type: string
+            blur_face_prob:
+              type: number
+              format: double
+            gender:
+              type: string
+            is_eye_open:
+              type: string
+            liveness:
+              type: string
+            liveness_msg:
+              type: string
+            liveness_prob:
+              type: number
+              format: double
+            multiple_faces_detail:
+              type: object
+              properties:
+                multiple_face_1:
+                  type: boolean
+                multiple_face_2:
+                  type: boolean
+              required:
+                - multiple_face_1
+                - multiple_face_2
+          required:
+            - age
+            - background_warning
+            - blur_face
+            - blur_face_prob
+            - gender
+            - is_eye_open
+            - liveness
+            - liveness_msg
+            - liveness_prob
+            - multiple_faces_detail
+        server_version:
+          type: string
+        message:
+          type: string
+        logID:
+          type: string
+        statusCode:
+          type: integer
+      required:
+        - challengeCode
+        - dataBase64
+        - dataSign
+        - imgs
+        - object
+        - server_version
+        - message
+        - logID
+        - statusCode
+    VNPTMasked:
+      type: object
+      properties:
+        challengeCode:
+          type: string
+        dataBase64:
+          type: string
+        dataSign:
+          type: string
+        imgs:
+          type: object
+          properties:
+            img:
+              type: string
+          required:
+            - img
+        message:
+          type: string
+        object:
+          type: object
+          properties:
+            masked:
+              type: string
+        server_version:
+          type: string
+        statusCode:
+          type: integer
+      required:
+        - message
+        - object
+        - challengeCode
+        - dataBase64
+        - dataSign
+        - imgs
+        - server_version
+        - statusCode
+    VNPTCompare:
+      type: object
+      properties:
+        challengeCode:
+          type: string
+        dataBase64:
+          type: string
+        dataSign:
+          type: string
+        imgs:
+          type: object
+          properties:
+            img_face:
+              type: string
+            img_front:
+              type: string
+          required:
+            - img_face
+            - img_front
+        object:
+          type: object
+          properties:
+            match_warning:
+              type: string
+            msg:
+              type: string
+            multiple_faces:
+              type: boolean
+            multiple_faces_detail:
+              type: object
+              properties:
+                multiple_face_1:
+                  type: boolean
+                multiple_face_2:
+                  type: boolean
+              required:
+                - multiple_face_1
+                - multiple_face_2
+            prob:
+              type: number
+              format: double
+            result:
+              type: string
+          required:
+            - match_warning
+            - msg
+            - multiple_faces
+            - multiple_faces_detail
+            - prob
+            - result
+        server_version:
+          type: string
+        message:
+          type: string
+        logID:
+          type: string
+        statusCode:
+          type: integer
+      required:
+        - challengeCode
+        - dataBase64
+        - dataSign
+        - imgs
+        - object
+        - server_version
+        - message
+        - logID
+        - statusCode
+    VNPTBase64DocImg:
+      type: object
+      properties:
+        img_front:
+          type: string
+        img_back:
+          type: string
+      required:
+        - img_front
+        - img_back
+    VNPTBase64FaceImg:
+      type: object
+      properties:
+        img_face_far:
+          type: string
+        img_face_near:
+          type: string
+      required:
+        - img_face_far
+        - img_face_near
+    VNPTHashDocument:
+      type: object
+      properties:
+        img_back:
+          type: string
+        img_front:
+          type: string
+      required:
+        - img_back
+        - img_front
+    VnptEkycRequestBody:
+      type: object
+      properties:
+        type_document:
+          type: integer
+        liveness_card_front:
+          $ref: "#/components/schemas/VNPTLivenessCard"
+        liveness_card_back:
+          $ref: "#/components/schemas/VNPTLivenessCard"
+        ocr:
+          $ref: "#/components/schemas/VNPTOCR"
+        liveness_face:
+          $ref: "#/components/schemas/VNPTLivenessFace"
+        masked:
+          $ref: "#/components/schemas/VNPTMasked"
+        hash_img:
+          type: string
+        compare:
+          $ref: "#/components/schemas/VNPTCompare"
+        base64_doc_img:
+          $ref: "#/components/schemas/VNPTBase64DocImg"
+        base64_face_img:
+          $ref: "#/components/schemas/VNPTBase64FaceImg"
+        data_hash_document:
+          $ref: "#/components/schemas/VNPTHashDocument"
+        qr_code:
+          type: string
+    ProductDetail:
+      type: object
+      description: Product detail fetched from portal service.
+      properties:
+        product_id:
+          $ref: "#/components/schemas/uuid"
+        name:
+          type: string
+        summary:
+          type: string
+        description:
+          type: string
+        product_type:
+          type: string
+        partner_id:
+          $ref: "#/components/schemas/uuid"
+        partner_name:
+          type: string
+        status:
+          type: string
+        tenant_id:
+          $ref: "#/components/schemas/uuid"
+        thumbnail:
+          type: string
+        images:
+          type: array
+          items:
+            type: string
+      required:
+        - product_id
+        - name
+        - product_type
+        - partner_id
+        - status
+        - tenant_id
+    ListProductsResponse:
+      type: object
+      properties:
+        products:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProductDetail"
+        total:
+          type: integer
+          format: int32
+      required:
+        - products
+        - total
+    Province:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the province
+          example: 550e8400-e29b-41d4-a716-446655440000
+        code:
+          type: string
+          description: Province code
+          example: "01"
+        name:
+          type: string
+          description: Province name in Vietnamese
+          example: Hà Nội
+        name_en:
+          type: string
+          description: Province name in English
+          example: Ha Noi
+        full_name:
+          type: string
+          description: Full province name in Vietnamese
+          example: Thành phố Hà Nội
+        full_name_en:
+          type: string
+          description: Full province name in English
+          example: Ha Noi City
+        code_name:
+          type: string
+          description: Province code name (slug)
+          example: ha_noi
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp when the province was created
+        updated_at:
+          type: string
+          format: date-time
+          description: Timestamp when the province was last updated
+      required:
+        - id
+        - code
+        - name
+    Ward:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the ward
+          example: 660e8400-e29b-41d4-a716-446655440001
+        code:
+          type: string
+          description: Ward code
+          example: "00004"
+        name:
+          type: string
+          description: Ward name in Vietnamese
+          example: Ba Đình
+        name_en:
+          type: string
+          description: Ward name in English
+          example: Ba Dinh
+        full_name:
+          type: string
+          description: Full ward name in Vietnamese
+          example: Phường Ba Đình
+        full_name_en:
+          type: string
+          description: Full ward name in English
+          example: Ba Dinh Ward
+        code_name:
+          type: string
+          description: Ward code name (slug)
+          example: ba_dinh
+        province_code:
+          type: string
+          description: Code of the province this ward belongs to
+          example: "01"
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp when the ward was created
+        updated_at:
+          type: string
+          format: date-time
+          description: Timestamp when the ward was last updated
+      required:
+        - id
+        - code
+        - name
+        - province_code
+    ErrorCode:
+      type: string
+      enum:
+        - success
+        - canceled
+        - unknown
+        - invalid_argument
+        - deadline_exceeded
+        - not_found
+        - already_exists
+        - permission_denied
+        - resource_exhausted
+        - failed_precondition
+        - aborted
+        - out_of_range
+        - unimplemented
+        - internal_error
+        - unavailable
+        - data_loss
+        - unauthenticated
+      x-go-type-import:
+        path: github.com/cicdata-io/smartdop/pkg/types
+  responses:
+    "200":
+      description: OK
+    "400":
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: string
+                $ref: "#/components/schemas/ErrorCode"
+              message:
+                type: string
+            required:
+              - code
+              - message
+    "401":
+      description: Unauthorized
+    "403":
+      description: Forbidden
+    "404":
+      description: Not Found
+    "500":
+      description: Internal Server Error
+    "503":
+      description: Service Unavailable

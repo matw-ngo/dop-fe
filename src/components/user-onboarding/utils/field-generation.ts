@@ -19,7 +19,6 @@ export function generateFieldsForStep(
         // Build the field with proper configuration
         const fieldConfig = builder({
           required: config.required,
-          disabled: config.disabled || false,
         });
 
         fields.push(fieldConfig);
@@ -29,13 +28,34 @@ export function generateFieldsForStep(
     }
   }
 
+  // Add consent field at the end if step has consent_purpose_id
+  if (step.consentPurposeId) {
+    const consentField: RawFieldConfig = {
+      fieldName: "agreeStatus",
+      component: "ConsentAgreement",
+      props: {
+        label: "",
+        required: true,
+        consentPurposeId: step.consentPurposeId,
+        validations: [
+          {
+            type: "custom",
+            messageKey: "form.errors.consentRequired",
+            validator: (value: string) => value === "1",
+          },
+        ],
+      },
+    };
+    fields.push(consentField);
+  }
+
   return fields;
 }
 
 /**
  * Create validation rules for a field
  */
-function createValidations(fieldName: string, config: any): FieldValidation[] {
+function _createValidations(fieldName: string, config: any): FieldValidation[] {
   const validations: FieldValidation[] = [];
 
   // Add required validation if field is required

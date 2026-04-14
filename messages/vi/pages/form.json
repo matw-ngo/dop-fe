@@ -2,7 +2,8 @@
   "buttons": {
     "next": "Tiếp theo",
     "previous": "Trước",
-    "submit": "Hoàn tất"
+    "submit": "Hoàn tất",
+    "submitting": "Đang gửi..."
   },
   "errors": {
     "required": "Trường này là bắt buộc",
@@ -19,10 +20,22 @@
     "integer": "Phải là số nguyên",
     "positive": "Phải là số dương",
     "negative": "Phải là số âm",
-    "summary_error": "Vui lòng sửa {count} lỗi ở trên"
+    "summary_error": "Vui lòng sửa {count} lỗi ở trên",
+    "validationFailed": "{count, plural, =1 {Vui lòng sửa 1 lỗi} other {Vui lòng sửa # lỗi}}",
+    "andMoreErrors": "và {count} lỗi khác",
+    "scrollToError": "Nhấn để xem lỗi"
   },
   "finding_loan": {
     "message": "Vui lòng đợi trong giây lát, chúng tôi đang tìm kiếm các khoản vay phù hợp với bạn",
+    "message_10s": "Đang xác thực thông tin của bạn...",
+    "message_30s": "Đang so sánh các gói vay tốt nhất...",
+    "message_60s": "Đang tìm kiếm đối tác phù hợp...",
+    "message_120s": "Đang xử lý, xin vui lòng kiên nhẫn...",
+    "message_180s": "Gần hoàn tất, đang tối ưu kết quả...",
+    "message_240s": "Hệ thống đang bận, vui lòng đợi thêm...",
+    "partnerMatch": "Chúng tôi đã tìm thấy đối tác: {partner}",
+    "noMatch": "Không tìm thấy sản phẩm phù hợp.",
+    "checkingStatus": "Đang kiểm tra (lần {attempt})…",
     "success_title": "Hồ sơ đã được gửi thành công!",
     "success_desc": "Chúng tôi đã tìm thấy các khoản vay phù hợp với bạn.",
     "retry": "Làm lại"

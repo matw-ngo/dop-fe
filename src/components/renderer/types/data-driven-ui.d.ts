@@ -7,7 +7,6 @@ import type {
   AnimationVariant,
   LayoutProps,
   ResponsiveValue,
-  EnhancedFieldConfig,
 } from "./ui-theme";
 import type { ResponsiveFieldConfig } from "./responsive";
 
@@ -67,7 +66,7 @@ export interface FieldProps {
   };
 
   /** UI Customization - Component variant (size, color, style) */
-  variant?: ComponentVariant;
+  variant?: ComponentVariant | string;
 
   /** Animation configuration for field entrance/exit */
   animation?: AnimationVariant;
@@ -150,7 +149,7 @@ export interface StepConfig {
 export interface RawFieldConfig {
   fieldName: string;
   component: string;
-  props?: Partial<FieldProps>;
+  props?: Record<string, any>;
   condition?: FieldCondition;
 }
 

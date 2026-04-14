@@ -5,7 +5,6 @@ import type {
   ComplexCondition,
   ConditionOperator,
   ConditionRule,
-  FieldCondition,
 } from "../types/field-conditions";
 
 /**

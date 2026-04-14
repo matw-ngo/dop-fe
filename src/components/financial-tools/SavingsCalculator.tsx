@@ -7,18 +7,13 @@
 
 import {
   AlertCircle,
-  ArrowRight,
   BarChart3,
-  Building,
   Calculator,
-  Calendar,
   CheckCircle,
-  DollarSign,
   Info,
   PiggyBank,
   Star,
   Target,
-  TrendingUp,
 } from "lucide-react";
 import type React from "react";
 import { useCallback, useEffect, useState } from "react";
@@ -34,7 +29,6 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Progress } from "@/components/ui/progress";
 import {
   Select,
   SelectContent,
@@ -55,13 +49,7 @@ import {
 } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 // Import calculation functions
-import {
-  calculateCompoundInterest,
-  calculateSimpleInterest,
-  compareSavingsProducts,
-  getAllSavingsProducts,
-  getBestSavingsRates,
-} from "@/lib/financial-data/bank-rates";
+import { calculateCompoundInterest } from "@/lib/financial-data/bank-rates";
 import {
   calculatePurchasingPowerImpact,
   calculateRealReturns,
@@ -138,7 +126,7 @@ const SavingsCalculator: React.FC = () => {
   // Results state
   const [results, setResults] = useState<SavingsResults | null>(null);
   const [bankComparisons, setBankComparisons] = useState<BankComparison[]>([]);
-  const [savingsGoal, setSavingsGoal] = useState<SavingsGoal | null>(null);
+  const [_savingsGoal, _setSavingsGoal] = useState<SavingsGoal | null>(null);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<string[]>([]);
   const [activeTab, setActiveTab] = useState("calculator");
@@ -146,6 +134,14 @@ const SavingsCalculator: React.FC = () => {
   // Available banks
   const [banks, setBanks] = useState<VietnameseBank[]>([]);
   const [bestRates, setBestRates] = useState<any[]>([]);
+
+  // Calculate effective rate
+  const calculateEffectiveRate = (
+    nominalRate: number,
+    frequency: number = 12,
+  ): number => {
+    return ((1 + nominalRate / 100 / frequency) ** frequency - 1) * 100;
+  };
 
   // Input change handler
   const handleInputChange = useCallback(
@@ -220,15 +216,7 @@ const SavingsCalculator: React.FC = () => {
       })
       .sort((a, b) => b.effectiveRate - a.effectiveRate);
     setBestRates(rates);
-  }, [formData.termInMonths]);
-
-  // Calculate effective rate
-  const calculateEffectiveRate = (
-    nominalRate: number,
-    frequency: number = 12,
-  ): number => {
-    return ((1 + nominalRate / 100 / frequency) ** frequency - 1) * 100;
-  };
+  }, [formData.termInMonths, calculateEffectiveRate]);
 
   // Calculate savings
   const calculateSavings = useCallback(async () => {
@@ -367,7 +355,7 @@ const SavingsCalculator: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  }, [formData, banks]);
+  }, [formData, banks, calculateEffectiveRate]);
 
   // Auto-calculate when form data changes
   useEffect(() => {
@@ -395,7 +383,7 @@ const SavingsCalculator: React.FC = () => {
   };
 
   // Calculate savings goal
-  const calculateSavingsGoal = (
+  const _calculateSavingsGoal = (
     targetAmount: number,
     currentSavings: number,
     monthlyContribution: number,
@@ -629,7 +617,7 @@ const SavingsCalculator: React.FC = () => {
                       onChange={(e) =>
                         handleInputChange(
                           "termInMonths",
-                          parseInt(e.target.value) || 0,
+                          parseInt(e.target.value, 10) || 0,
                         )
                       }
                       min="1"
@@ -870,8 +858,7 @@ const SavingsCalculator: React.FC = () => {
           </div>
 
           {/* Monthly Projections */}
-          {results &&
-            results.monthlyProjections &&
+          {results?.monthlyProjections &&
             results.monthlyProjections.length > 0 && (
               <Card>
                 <CardHeader>
@@ -1007,7 +994,7 @@ const SavingsCalculator: React.FC = () => {
                     type="text"
                     placeholder="500,000,000"
                     onChange={(e) => {
-                      const value =
+                      const _value =
                         parseFloat(e.target.value.replace(/[^\d]/g, "")) || 0;
                       // This would update goal calculation in a real implementation
                     }}
@@ -1020,7 +1007,7 @@ const SavingsCalculator: React.FC = () => {
                     type="text"
                     placeholder="100,000,000"
                     onChange={(e) => {
-                      const value =
+                      const _value =
                         parseFloat(e.target.value.replace(/[^\d]/g, "")) || 0;
                       // This would update goal calculation in a real implementation
                     }}
@@ -1033,7 +1020,7 @@ const SavingsCalculator: React.FC = () => {
                     type="text"
                     placeholder="10,000,000"
                     onChange={(e) => {
-                      const value =
+                      const _value =
                         parseFloat(e.target.value.replace(/[^\d]/g, "")) || 0;
                       // This would update goal calculation in a real implementation
                     }}
@@ -1046,7 +1033,7 @@ const SavingsCalculator: React.FC = () => {
                     type="number"
                     placeholder="24"
                     onChange={(e) => {
-                      const value = parseInt(e.target.value) || 0;
+                      const _value = parseInt(e.target.value, 10) || 0;
                       // This would update goal calculation in a real implementation
                     }}
                   />

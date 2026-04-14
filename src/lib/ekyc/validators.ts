@@ -10,10 +10,10 @@
  */
 
 import type {
-  EkycResponse,
-  OcrResponse,
-  LivenessFaceResponse,
   CompareFaceResponse,
+  EkycResponse,
+  LivenessFaceResponse,
+  OcrResponse,
 } from "./types";
 
 /**

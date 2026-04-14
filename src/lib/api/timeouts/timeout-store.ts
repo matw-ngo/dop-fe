@@ -9,8 +9,8 @@
  */
 
 import { create } from "zustand";
-import type { TimeoutConfig, TimeoutContext } from "./types";
 import { DEFAULT_CONFIG } from "./constants";
+import type { TimeoutConfig, TimeoutContext } from "./types";
 
 /**
  * Timeout store interface
@@ -246,7 +246,7 @@ export function getEndpointTimeout(endpoint: string, service?: string): number {
   const normalizedEndpoint = normalizeEndpointPath(endpoint);
 
   // Check endpoint-specific timeout
-  if (config.endpoints && config.endpoints[normalizedEndpoint]) {
+  if (config.endpoints?.[normalizedEndpoint]) {
     return config.endpoints[normalizedEndpoint];
   }
 
@@ -254,7 +254,7 @@ export function getEndpointTimeout(endpoint: string, service?: string): number {
   const serviceName = service || extractServiceName(endpoint);
 
   // Check service-specific timeout
-  if (config.services && config.services[serviceName]) {
+  if (config.services?.[serviceName]) {
     return config.services[serviceName];
   }
 

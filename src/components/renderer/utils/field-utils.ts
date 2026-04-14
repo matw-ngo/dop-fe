@@ -46,11 +46,18 @@ export function getComponentEventHandler(
  */
 export function mergeComponentProps(
   restProps: Record<string, any>,
-  fieldVariant?: ComponentVariant,
+  fieldVariant?: ComponentVariant | string,
 ): Record<string, any> {
   const merged: Record<string, any> = { ...restProps };
 
   if (fieldVariant) {
+    if (typeof fieldVariant === "string") {
+      if (!merged.variant) {
+        merged.variant = fieldVariant;
+      }
+      return merged;
+    }
+
     if (fieldVariant.size && !merged.size) {
       merged.size = fieldVariant.size;
     }

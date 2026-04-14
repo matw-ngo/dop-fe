@@ -1,4 +1,4 @@
-import type { components } from "@/lib/api/v1.d.ts";
+import type { components } from "@/lib/api/v1/dop";
 
 // API Types
 type ApiFlowDetail = components["schemas"]["FlowDetail"];
@@ -7,8 +7,10 @@ type ApiStep = components["schemas"]["Step"];
 // Mapped Types for Frontend
 export interface MappedStep {
   id: string;
+  page: string;
   useEkyc: boolean;
   sendOtp: boolean;
+  consentPurposeId?: string;
   fields: {
     purpose: { visible: boolean; required: boolean };
     phoneNumber: { visible: boolean; required: boolean };
@@ -44,8 +46,10 @@ export interface MappedFlow {
 export function mapApiStepToStep(apiStep: ApiStep): MappedStep {
   return {
     id: apiStep.id,
+    page: apiStep.page,
     useEkyc: apiStep.use_ekyc,
     sendOtp: apiStep.send_otp,
+    consentPurposeId: apiStep.consent_purpose_id,
     fields: {
       purpose: {
         visible: apiStep.have_purpose,
@@ -112,12 +116,13 @@ export function mapApiStepToStep(apiStep: ApiStep): MappedStep {
 
 // Mapper for the entire Flow
 export function mapApiFlowToFlow(apiFlow: ApiFlowDetail): MappedFlow {
+  const isActive = apiFlow.flow_status === "active";
+
   return {
     id: apiFlow.id,
     name: apiFlow.name,
     description: apiFlow.description,
-    status:
-      apiFlow.flow_status === "FLOW_STATUS_ACTIVE" ? "Active" : "Inactive",
+    status: isActive ? "Active" : "Inactive",
     steps: apiFlow.steps.map(mapApiStepToStep),
     createdAt: new Date(apiFlow.created_at),
     updatedAt: new Date(apiFlow.updated_at),

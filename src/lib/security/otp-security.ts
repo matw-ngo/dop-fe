@@ -4,12 +4,9 @@
  * Enhanced security features for OTP verification system
  */
 
-import crypto from "crypto";
+import crypto from "node:crypto";
 import type { NextRequest } from "next/server";
-import {
-  sanitizeApplicationData,
-  sanitizeVietnamesePhone,
-} from "@/lib/utils/sanitization";
+import { sanitizeVietnamesePhone } from "@/lib/utils/sanitization";
 import {
   detectAnomalies,
   generateDeviceFingerprint,
@@ -17,8 +14,6 @@ import {
 import {
   createSecureSession,
   getSessionFromRequest,
-  incrementSessionAttempts,
-  lockSession,
 } from "./session-management";
 
 // Security configuration
@@ -214,7 +209,7 @@ export async function validatePhoneNumberWithSecurity(
   const violations: SecurityViolation[] = [];
   let riskScore = 0;
   const ipAddress = getClientIP(request);
-  const userAgent = request.headers.get("user-agent") || "unknown";
+  const _userAgent = request.headers.get("user-agent") || "unknown";
 
   try {
     // Basic sanitization and validation
@@ -303,7 +298,7 @@ export async function validatePhoneNumberWithSecurity(
       violations,
       riskScore: Math.min(100, riskScore),
     };
-  } catch (error) {
+  } catch (_error) {
     violations.push({
       phoneNumber,
       ipAddress,
@@ -636,7 +631,7 @@ function getClientIP(request: NextRequest): string {
 }
 
 // Get active sessions (import from session management)
-async function getActiveSessions(phoneNumber: string): Promise<any[]> {
+async function getActiveSessions(_phoneNumber: string): Promise<any[]> {
   // This would be implemented in session management
   // For now, return empty array
   return [];

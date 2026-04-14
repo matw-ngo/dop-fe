@@ -1,4 +1,4 @@
-import { AnimationVariant, type ComponentVariant } from "../types/ui-theme";
+import type { ComponentVariant } from "../types/ui-theme";
 
 // Base variant interface
 export interface BaseVariantConfig {

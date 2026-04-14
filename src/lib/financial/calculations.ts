@@ -6,7 +6,6 @@
  * financial analysis tools.
  */
 
-import { calculatePersonalIncomeTax } from "../financial-data/tax-brackets";
 import { formatVND } from "../financial-data/vietnamese-financial-data";
 
 // Type definitions
@@ -505,7 +504,7 @@ function calculateAffordabilityScore(params: LoanCalculationParams): number {
  */
 export const calculateFinancialHealthScore = (
   monthlyIncome: number,
-  monthlyExpenses: number,
+  _monthlyExpenses: number,
   monthlyDebts: number,
   monthlySavings: number,
   creditScore: number,

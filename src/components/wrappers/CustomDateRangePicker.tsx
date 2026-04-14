@@ -72,7 +72,7 @@ export const CustomDateRangePicker = React.forwardRef<
         if (date instanceof Date) return date;
         try {
           const parsed = new Date(date as string);
-          return isNaN(parsed.getTime()) ? undefined : parsed;
+          return Number.isNaN(parsed.getTime()) ? undefined : parsed;
         } catch {
           return undefined;
         }

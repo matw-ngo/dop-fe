@@ -8,13 +8,10 @@
 import {
   AlertCircle,
   ArrowLeft,
-  ArrowRight,
   CheckCircle,
   Clock,
   Info,
   Lock,
-  RefreshCw,
-  Shield,
   Smartphone,
   User,
   XCircle,
@@ -33,8 +30,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Progress } from "@/components/ui/progress";
-import { Separator } from "@/components/ui/separator";
-import { validateVietnamesePhone } from "@/lib/telcos/phone-validation";
 import { detectTelco } from "@/lib/telcos/telco-detector";
 import getPhoneMetadata, {
   formatPhoneNumber,
@@ -101,7 +96,7 @@ export const OTPVerificationDialog: React.FC<OTPVerificationDialogProps> = ({
   const [isVerifying, setIsVerifying] = useState(false);
   const [attempts, setAttempts] = useState(0);
   const [lockoutEndTime, setLockoutEndTime] = useState<Date | null>(null);
-  const [sessionStartTime, setSessionStartTime] = useState<Date | null>(null);
+  const [_sessionStartTime, setSessionStartTime] = useState<Date | null>(null);
   const [sessionEndTime, setSessionEndTime] = useState<Date | null>(null);
   const [phoneMetadata, setPhoneMetadata] = useState<any>(null);
   const [otpSettings, setOtpSettings] = useState<any>(null);
@@ -121,7 +116,7 @@ export const OTPVerificationDialog: React.FC<OTPVerificationDialogProps> = ({
       const metadata =
         getPhoneMetadata[telcoCode] ||
         getPhoneMetadata.default ||
-        getPhoneMetadata["viettel"];
+        getPhoneMetadata.viettel;
       const settings = getOTPSettings(phoneNumber);
 
       setPhoneMetadata(metadata);
@@ -157,6 +152,12 @@ export const OTPVerificationDialog: React.FC<OTPVerificationDialogProps> = ({
     }
   }, [lockoutEndTime]);
 
+  // Handle session timeout
+  const handleSessionTimeout = useCallback(() => {
+    setCurrentStep("error");
+    setError(TELCO_ERROR_MESSAGES.OTP_EXPIRED);
+  }, []);
+
   // Check session timeout
   useEffect(() => {
     if (sessionEndTime && currentStep === "otp") {
@@ -174,7 +175,7 @@ export const OTPVerificationDialog: React.FC<OTPVerificationDialogProps> = ({
         }
       };
     }
-  }, [sessionEndTime, currentStep]);
+  }, [sessionEndTime, currentStep, handleSessionTimeout]);
 
   // Handle phone number submission
   const handlePhoneSubmit = useCallback(
@@ -289,12 +290,6 @@ export const OTPVerificationDialog: React.FC<OTPVerificationDialogProps> = ({
     }
   }, [phoneNumber, onOTPResend, otpSettings?.otpExpiry, onError]);
 
-  // Handle session timeout
-  const handleSessionTimeout = useCallback(() => {
-    setCurrentStep("error");
-    setError(TELCO_ERROR_MESSAGES.OTP_EXPIRED);
-  }, []);
-
   // Handle dialog close
   const handleDialogClose = useCallback(() => {
     if (abortControllerRef.current) {
@@ -318,10 +313,7 @@ export const OTPVerificationDialog: React.FC<OTPVerificationDialogProps> = ({
   // Get remaining time for timers
   const getRemainingTime = (endTime: Date | null): number => {
     if (!endTime) return 0;
-    return Math.max(
-      0,
-      Math.floor((endTime.getTime() - new Date().getTime()) / 1000),
-    );
+    return Math.max(0, Math.floor((endTime.getTime() - Date.now()) / 1000));
   };
 
   const lockoutRemaining = getRemainingTime(lockoutEndTime);

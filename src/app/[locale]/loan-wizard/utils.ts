@@ -1,6 +1,6 @@
 import { ValidationConfig } from "./constants";
 
-const validProvinceCodeNID12 = (code: string) => {
+export const validProvinceCodeNID12 = (code: string) => {
   return [
     "000",
     "001",
@@ -265,6 +265,7 @@ export const validateNationalId = (id: string): string | true => {
     ["0", "1"].includes(birthCode[0])
       ? `19${birthCode.substring(1, 3)}`
       : `20${birthCode.substring(1, 3)}`,
+    10,
   );
 
   if (birthYear < minYear || birthYear > maxYear) {

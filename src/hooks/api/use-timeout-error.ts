@@ -8,14 +8,14 @@
  * @module use-timeout-error
  */
 
-import { useState, useCallback } from "react";
-import type { TimeoutError } from "@/lib/api/timeouts/types";
+import { useCallback, useState } from "react";
 import {
-  isTimeoutError,
-  isRetryableTimeoutError,
   formatErrorDetails,
   getUserFriendlyMessage,
+  isRetryableTimeoutError,
+  isTimeoutError,
 } from "@/lib/api/timeouts/error-handler";
+import type { TimeoutError } from "@/lib/api/timeouts/types";
 
 export interface UseTimeoutErrorOptions {
   /** Locale for error messages ('en' or 'vi') */
@@ -149,6 +149,24 @@ export function useTimeoutError(
   }, [onDismiss]);
 
   /**
+   * Checks if error is retryable based on retry count
+   */
+  const canRetryWithCount = useCallback(
+    (count: number, max: number): boolean => {
+      if (!error) {
+        return false;
+      }
+
+      if (!isRetryableTimeoutError(error)) {
+        return false;
+      }
+
+      return count < max;
+    },
+    [error],
+  );
+
+  /**
    * Retries the failed operation
    */
   const retry = useCallback(async () => {
@@ -171,25 +189,7 @@ export function useTimeoutError(
       // Update error with new retry count
       setError(err);
     }
-  }, [error, retryCount, maxRetries, onRetry]);
-
-  /**
-   * Checks if error is retryable based on retry count
-   */
-  const canRetryWithCount = useCallback(
-    (count: number, max: number): boolean => {
-      if (!error) {
-        return false;
-      }
-
-      if (!isRetryableTimeoutError(error)) {
-        return false;
-      }
-
-      return count < max;
-    },
-    [error],
-  );
+  }, [error, retryCount, maxRetries, onRetry, canRetryWithCount, setError]);
 
   const canRetry = error ? canRetryWithCount(retryCount, maxRetries) : false;
   const hasError = error !== null;
@@ -234,7 +234,7 @@ export function useTimeoutError(
  * }
  * ```
  */
-export function useTimeoutErrors(options: UseTimeoutErrorOptions = {}) {
+export function useTimeoutErrors(_options: UseTimeoutErrorOptions = {}) {
   const [errors, setErrors] = useState<Map<string, TimeoutError>>(new Map());
 
   const addError = useCallback((key: string, err: Error | unknown) => {

@@ -1,5 +1,5 @@
 import { act } from "@testing-library/react";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import {
   FieldType,
   type FormStep,
@@ -57,8 +57,8 @@ describe("useFormWizardStore", () => {
     expect(state.wizardId).toBe("test-wizard");
     expect(state.steps).toHaveLength(2);
     expect(state.currentStep).toBe(0);
-    expect(state.stepMeta["step1"]).toBeDefined();
-    expect(state.stepMeta["step1"].completionStatus).toBe("current");
+    expect(state.stepMeta.step1).toBeDefined();
+    expect(state.stepMeta.step1.completionStatus).toBe("current");
   });
 
   it("should update form data and step data", () => {
@@ -68,9 +68,9 @@ describe("useFormWizardStore", () => {
     });
 
     const state = store.getState();
-    expect(state.formData["field1"]).toBe("test value");
-    expect(state.stepData["step1"]["field1"]).toBe("test value");
-    expect(state.stepMeta["step1"].touched).toBe(true);
+    expect(state.formData.field1).toBe("test value");
+    expect(state.stepData.step1.field1).toBe("test value");
+    expect(state.stepMeta.step1.touched).toBe(true);
   });
 
   it("should handle navigation between steps", () => {
@@ -89,7 +89,7 @@ describe("useFormWizardStore", () => {
     const state = store.getState();
     expect(state.currentStep).toBe(1);
     expect(state.visitedSteps).toContain(1);
-    expect(state.stepMeta["step2"].completionStatus).toBe("current");
+    expect(state.stepMeta.step2.completionStatus).toBe("current");
   });
 
   it("should calculate progress correctly", () => {

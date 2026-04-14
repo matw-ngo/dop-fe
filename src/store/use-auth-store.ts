@@ -1,5 +1,13 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
+import type { NavigationConfig } from "@/contexts/NavigationConfigContext";
+import { generateCryptoRandomId } from "@/lib/utils/crypto";
+import {
+  persistVerificationSession,
+  restoreVerificationSession,
+  clearVerificationSession as clearStoredSession,
+  type VerificationSession,
+} from "@/lib/utils/session-storage";
 
 export interface User {
   id: string;
@@ -45,6 +53,8 @@ export interface OTPVerificationState {
   resendCooldownRemaining: number;
   sessionTimeRemaining: number;
   lockoutTimeRemaining: number;
+  isLocked: boolean;
+  lockoutEnd: Date | null;
 }
 
 export interface AuthState {
@@ -56,6 +66,9 @@ export interface AuthState {
 
   // OTP state
   otp: OTPVerificationState;
+
+  // Verification session state (for navigation security after OTP)
+  verificationSession: VerificationSession | null;
 
   // Actions
   login: (username: string, password: string) => Promise<boolean>;
@@ -89,6 +102,18 @@ export interface AuthState {
     isExpired: boolean;
     attemptsRemaining: number;
   };
+
+  // Verification session actions
+  createVerificationSession: (
+    otpStepIndex: number,
+    config: NavigationConfig,
+  ) => void;
+  clearVerificationSession: () => void;
+  updateSessionActivity: () => void;
+  isSessionValid: () => boolean;
+  isSessionExpired: () => boolean;
+  getSessionLock: () => boolean;
+  canNavigateBack: (targetStepIndex: number) => boolean;
 }
 
 // Dummy admin user for authentication
@@ -122,7 +147,12 @@ export const useAuthStore = create<AuthState>()(
         resendCooldownRemaining: 0,
         sessionTimeRemaining: 0,
         lockoutTimeRemaining: 0,
+        isLocked: false,
+        lockoutEnd: null,
       },
+
+      // Verification session state
+      verificationSession: null,
 
       // Core auth actions
       login: async (username: string, password: string) => {
@@ -148,6 +178,8 @@ export const useAuthStore = create<AuthState>()(
       logout: () => {
         // Clear OTP session on logout
         get().resetOTPState();
+        // Clear verification session on logout
+        get().clearVerificationSession();
         set({
           user: null,
           isAuthenticated: false,
@@ -418,9 +450,9 @@ export const useAuthStore = create<AuthState>()(
               set((prev) => ({
                 otp: {
                   ...prev.otp,
-                  otpSession: prev.otpSession
+                  otpSession: prev.otp.otpSession
                     ? {
-                        ...prev.otpSession,
+                        ...prev.otp.otpSession,
                         isExpired: true,
                       }
                     : null,
@@ -559,10 +591,11 @@ export const useAuthStore = create<AuthState>()(
             lockoutTimeRemaining: Math.ceil(
               (lockoutEnd.getTime() - Date.now()) / 1000,
             ),
+            lockoutEnd,
             currentStep: "locked",
-            otpSession: prev.otpSession
+            otpSession: prev.otp.otpSession
               ? {
-                  ...prev.otpSession,
+                  ...prev.otp.otpSession,
                   isLocked: true,
                   lockoutEnd,
                 }
@@ -575,9 +608,9 @@ export const useAuthStore = create<AuthState>()(
         set((prev) => ({
           otp: {
             ...prev.otp,
-            otpSession: prev.otpSession
+            otpSession: prev.otp.otpSession
               ? {
-                  ...prev.otpSession,
+                  ...prev.otp.otpSession,
                   lastActivity: new Date(),
                 }
               : null,
@@ -619,6 +652,96 @@ export const useAuthStore = create<AuthState>()(
           attemptsRemaining,
         };
       },
+
+      // Verification session actions
+      createVerificationSession: (otpStepIndex, config) => {
+        const sessionId = generateCryptoRandomId();
+
+        const expiresAt = config.enableSessionTimeout
+          ? new Date(Date.now() + config.sessionTimeoutMinutes * 60 * 1000)
+          : null;
+
+        const session: VerificationSession = {
+          sessionId,
+          isLocked: true,
+          otpStepIndex,
+          verifiedAt: new Date(),
+          expiresAt,
+          lastActivity: new Date(),
+        };
+
+        set({ verificationSession: session });
+
+        // Persist to sessionStorage (encrypted)
+        persistVerificationSession(session);
+      },
+
+      clearVerificationSession: () => {
+        set({ verificationSession: null });
+        clearStoredSession();
+      },
+
+      updateSessionActivity: () => {
+        const { verificationSession } = get();
+
+        if (!verificationSession) {
+          return;
+        }
+
+        const updatedSession: VerificationSession = {
+          ...verificationSession,
+          lastActivity: new Date(),
+        };
+
+        set({ verificationSession: updatedSession });
+        persistVerificationSession(updatedSession);
+      },
+
+      isSessionValid: () => {
+        const { verificationSession } = get();
+
+        if (!verificationSession) {
+          return false;
+        }
+
+        // Check if session is expired
+        if (
+          verificationSession.expiresAt &&
+          new Date() > new Date(verificationSession.expiresAt)
+        ) {
+          return false;
+        }
+
+        return true;
+      },
+
+      isSessionExpired: () => {
+        const { verificationSession } = get();
+
+        if (!verificationSession || !verificationSession.expiresAt) {
+          return false;
+        }
+
+        return new Date() > new Date(verificationSession.expiresAt);
+      },
+
+      getSessionLock: () => {
+        const { verificationSession } = get();
+        return verificationSession?.isLocked ?? false;
+      },
+
+      canNavigateBack: (targetStepIndex) => {
+        const { verificationSession } = get();
+
+        if (!verificationSession || !verificationSession.isLocked) {
+          return true; // No session lock
+        }
+
+        // Allow navigation to any post-OTP step (including steps after OTP)
+        // Block navigation to pre-OTP steps only
+        // Block navigation back to OTP step itself to prevent re-verification
+        return targetStepIndex > verificationSession.otpStepIndex;
+      },
     }),
     {
       name: "auth-storage",
@@ -648,7 +771,25 @@ export const useAuthStore = create<AuthState>()(
             resendCooldownRemaining: 0,
             sessionTimeRemaining: 0,
             lockoutTimeRemaining: 0,
+            isLocked: false,
+            lockoutEnd: null,
           };
+
+          // Restore verification session from sessionStorage
+          const restoredSession = restoreVerificationSession();
+          if (restoredSession) {
+            // Validate session is not expired
+            if (
+              !restoredSession.expiresAt ||
+              new Date() < new Date(restoredSession.expiresAt)
+            ) {
+              state.verificationSession = restoredSession;
+            } else {
+              // Session expired, clear it
+              clearStoredSession();
+              state.verificationSession = null;
+            }
+          }
 
           // Set authentication status based on rehydrated user
           if (state.user) {

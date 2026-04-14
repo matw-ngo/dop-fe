@@ -6,10 +6,7 @@
  */
 
 import { useCallback, useEffect, useState } from "react";
-import {
-  exportApi,
-  loanCalculationApi,
-} from "@/lib/api/endpoints/financial-tools";
+import { exportApi } from "@/lib/api/endpoints/financial-tools";
 import {
   calculateLoanDetails,
   type LoanCalculationParams,
@@ -298,14 +295,16 @@ export const useLoanCalculator = (
     validateOnChange,
     enableCache,
     enableAnalytics,
-    setResult,
     setLoanResults,
     setError,
-    setErrorLocal,
     addToHistory,
     setLoading,
     onSuccess,
     onError,
+    cache.get,
+    cache.has,
+    cache.set,
+    generateCacheKey,
   ]);
 
   // Assess eligibility
@@ -432,7 +431,7 @@ export const useLoanCalculator = (
     setEligibility(undefined);
     clearLoanCalculation();
     cache.clear();
-  }, [clearLoanCalculation]);
+  }, [clearLoanCalculation, cache.clear]);
 
   // Auto-calculate when params change and autoCalculate is enabled
   useEffect(() => {

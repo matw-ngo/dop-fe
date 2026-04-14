@@ -1,0 +1,44 @@
+{
+  "common": {
+    "loading": "Loading..."
+  },
+  "modal": {
+    "title": "Data Privacy Terms",
+    "close": "Close"
+  },
+  "tabs": {
+    "form": "Consent Form",
+    "history": "Consent History"
+  },
+  "form": {
+    "title": "Data Privacy Terms",
+    "description": "We collect some cookies and access data so that the website can help you find products, services and offers that suit you. In addition, it also helps us measure operational efficiency, optimize user experience and advertising.",
+    "agreement": "By selecting \"Continue\", you agree to allow us to process data according to the <link>purposes and terms</link> of the website.",
+    "viewTerms": "View full terms",
+    "continueButton": "Continue",
+    "loading": "Processing...",
+    "termsModal": {
+      "title": "Data Privacy Terms",
+      "description": "By selecting \"Continue\", you agree to allow us to process data according to the purposes and terms of the website.",
+      "close": "Close"
+    }
+  },
+  "history": {
+    "title": "Consent History",
+    "description": "Review your previous consent grants.",
+    "empty": "No consent history available",
+    "emptyDesc": "You haven't granted any consents for our services yet.",
+    "loadMore": "Load More",
+    "granted": "Granted",
+    "revoked": "Revoked",
+    "logs": "Detailed Logs"
+  },
+  "errors": {
+    "network": "Network error occurred. Please check your connection and try again.",
+    "authentication": "Authentication failed. Please log in and try again.",
+    "consentFailed": "Failed to grant consent. Please try again.",
+    "general": "An error occurred. Please try again later.",
+    "existingConsent": "Consent Already Exists",
+    "existingConsentDesc": "You have already granted consent for this version."
+  }
+}

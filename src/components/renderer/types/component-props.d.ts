@@ -206,6 +206,11 @@ export interface ConfirmationProps extends BaseComponentProps {
   flowId?: string;
   stepId?: string;
   domain?: string;
+  message?: string;
+  confirmationType?: "success" | "info" | "warning" | "error";
+  leftIcon?: any;
+  variant?: unknown;
+  layout?: unknown;
   onSuccess?: () => void;
   isSubmitting?: boolean;
 }

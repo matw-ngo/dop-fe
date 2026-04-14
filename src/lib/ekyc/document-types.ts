@@ -1268,8 +1268,8 @@ export const extractVietnameseIdInfo = (
 
     // Determine gender and birth year for newer IDs
     if (id.length === 12) {
-      const centuryDigit = parseInt(id[3]);
-      const birthYearDigits = parseInt(id.substring(4, 6));
+      const centuryDigit = parseInt(id[3], 10);
+      const birthYearDigits = parseInt(id.substring(4, 6), 10);
 
       // Gender determination: odd = male, even = female
       info.gender = centuryDigit % 2 === 1 ? "male" : "female";
