@@ -225,4 +225,57 @@ export const handlers = [
   // Products API Mocks
   // ============================================
   ...productsHandlers,
+
+  // Locations API Mocks
+  http.get("*/v1/locations/provinces", () => {
+    return HttpResponse.json({
+      data: [
+        {
+          id: "550e8400-e29b-41d4-a716-446655440001",
+          code: "01",
+          name: "Hà Nội",
+          name_en: "Ha Noi",
+          full_name: "Thành phố Hà Nội",
+          full_name_en: "Ha Noi City",
+          code_name: "ha_noi",
+        },
+        {
+          id: "550e8400-e29b-41d4-a716-446655440002",
+          code: "02",
+          name: "Hồ Chí Minh",
+          name_en: "Ho Chi Minh",
+          full_name: "Thành phố Hồ Chí Minh",
+          full_name_en: "Ho Chi Minh City",
+          code_name: "ho_chi_minh",
+        },
+        {
+          id: "550e8400-e29b-41d4-a716-446655440003",
+          code: "03",
+          name: "Đà Nẵng",
+          name_en: "Da Nang",
+          full_name: "Thành phố Đà Nẵng",
+          full_name_en: "Da Nang City",
+          code_name: "da_nang",
+        },
+        {
+          id: "550e8400-e29b-41d4-a716-446655440004",
+          code: "04",
+          name: "Hải Phòng",
+          name_en: "Hai Phong",
+          full_name: "Thành phố Hải Phòng",
+          full_name_en: "Hai Phong City",
+          code_name: "hai_phong",
+        },
+        {
+          id: "550e8400-e29b-41d4-a716-446655440005",
+          code: "05",
+          name: "Cần Thơ",
+          name_en: "Can Tho",
+          full_name: "Thành phố Cần Thơ",
+          full_name_en: "Can Tho City",
+          code_name: "can_tho",
+        },
+      ],
+    });
+  }),
 ];

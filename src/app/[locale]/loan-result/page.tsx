@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { TenantThemeProvider } from "@/components/layout/TenantThemeProvider";
+import { Header } from "@/components/layout/header";
+import Footer from "@/components/layout/footer";
 import { useTenant } from "@/hooks/tenant/use-tenant";
 import { LoanResultScreen } from "@/components/loan-application/LoanSearching/LoanResultScreen";
 import { RegistrationSuccessView } from "@/components/loan-application/LoanSearching/LoanResult/views/RegistrationSuccessView";
@@ -19,7 +21,6 @@ export default function LoanResultPage() {
     null,
   );
 
-  // Guard: if no products in store (e.g. page refresh), redirect home
   useEffect(() => {
     if (matchedProducts.length === 0) {
       router.replace("/");
@@ -32,8 +33,9 @@ export default function LoanResultPage() {
 
   return (
     <TenantThemeProvider>
-      <div
-        className="min-h-screen p-8"
+      <Header />
+      <main
+        className="min-h-screen pt-[60px] md:pt-[72px]"
         style={{ backgroundColor: tenant.theme.colors.readOnly }}
       >
         <div className="max-w-[1200px] mx-auto">
@@ -48,7 +50,8 @@ export default function LoanResultPage() {
             />
           )}
         </div>
-      </div>
+      </main>
+      <Footer />
     </TenantThemeProvider>
   );
 }

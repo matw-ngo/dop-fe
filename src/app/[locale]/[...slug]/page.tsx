@@ -17,6 +17,7 @@ import {
   useLoanSearchVisible,
   useLoanSearchLoading,
   useMatchedProducts,
+  useForwardStatus,
 } from "@/store/use-loan-search-store";
 import { useFormWizardStore } from "@/components/form-generation/store/use-form-wizard-store";
 import { LoanSearchingScreenWithPolling } from "@/components/loan-application/LoanSearching";
@@ -68,6 +69,7 @@ export default function DynamicStepPage() {
   const isLoanSearching = useLoanSearchVisible();
   const isLoanSearchLoading = useLoanSearchLoading();
   const matchedProducts = useMatchedProducts();
+  const forwardStatus = useForwardStatus();
 
   // Validation state
   const [validationResult, setValidationResult] =
@@ -157,12 +159,34 @@ export default function DynamicStepPage() {
     sessionStorage.removeItem("dop_redirect_counter");
   }, [flowData, isLoading, page, authStore, wizardStore, t]);
 
-  // Navigate to loan-result page when search animation completes and products are available
+  // Scroll to top when transitioning to loan searching screen
   useEffect(() => {
-    if (isLoanSearching && !isLoanSearchLoading && matchedProducts.length > 0) {
+    if (isLoanSearching) {
+      window.scrollTo({ top: 0, behavior: "instant" });
+    }
+  }, [isLoanSearching]);
+
+  // Navigate to loan-result page when search animation completes
+  // Should redirect for: (1) has matched products, or (2) terminal status (forwarded/rejected/exhausted)
+  useEffect(() => {
+    if (!isLoanSearching || isLoanSearchLoading) return;
+
+    const hasProducts = matchedProducts.length > 0;
+    const isTerminalStatus =
+      forwardStatus === "forwarded" ||
+      forwardStatus === "rejected" ||
+      forwardStatus === "exhausted";
+
+    if (hasProducts || isTerminalStatus) {
       router.push("/loan-result");
     }
-  }, [isLoanSearching, isLoanSearchLoading, matchedProducts, router]);
+  }, [
+    isLoanSearching,
+    isLoanSearchLoading,
+    matchedProducts,
+    forwardStatus,
+    router,
+  ]);
 
   // Handle loan search errors
   useEffect(() => {

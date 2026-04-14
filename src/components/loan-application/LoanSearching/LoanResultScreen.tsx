@@ -30,6 +30,8 @@ export function LoanResultScreen({
   const forwardResult = useLoanSearchResult<ForwardResult>();
 
   const isForwarded = forwardStatus === "forwarded";
+  const isTerminalError =
+    forwardStatus === "rejected" || forwardStatus === "exhausted";
 
   if (isForwarded && forwardResult) {
     return (
@@ -46,7 +48,7 @@ export function LoanResultScreen({
     );
   }
 
-  if (matchedProducts.length === 0) {
+  if (matchedProducts.length === 0 || isTerminalError) {
     return (
       <div className={cn("px-4 py-8", className)}>
         <EmptyState />

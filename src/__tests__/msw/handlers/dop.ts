@@ -31,6 +31,19 @@ import { getProfileFromRequest } from "../profiles";
 
 const BASE_URL = "*";
 
+const getScenarioFromRequestOrStorage = (request: Request): string => {
+  const headerScenario = request.headers.get("x-test-scenario");
+  if (headerScenario) return headerScenario;
+
+  // Fallback to localStorage for manual testing in browser
+  if (typeof window !== "undefined") {
+    const storageScenario = localStorage.getItem("msw_test_scenario");
+    if (storageScenario) return storageScenario;
+  }
+
+  return "success";
+};
+
 const mswJson = (body: unknown, init?: ResponseInit): Response => {
   const headers = new Headers(init?.headers);
   headers.set("x-msw-mocked", "true");
@@ -103,7 +116,7 @@ export const dopHandlers = [
    */
   http.get(`${BASE_URL}/flows/:tenant`, ({ params, request }) => {
     const { tenant } = params;
-    const scenario = request.headers.get("x-test-scenario") || "success";
+    const scenario = getScenarioFromRequestOrStorage(request);
 
     switch (scenario) {
       case "not_found":
@@ -136,7 +149,7 @@ export const dopHandlers = [
    * POST /leads - Create a new lead
    */
   http.post(`${BASE_URL}/leads`, async ({ request }) => {
-    const scenario = request.headers.get("x-test-scenario") || "success";
+    const scenario = getScenarioFromRequestOrStorage(request);
 
     switch (scenario) {
       case "validation_error":
@@ -192,7 +205,7 @@ export const dopHandlers = [
    */
   http.get(`${BASE_URL}/leads/:id`, ({ params, request }) => {
     const { id } = params;
-    const scenario = request.headers.get("x-test-scenario") || "success";
+    const scenario = getScenarioFromRequestOrStorage(request);
 
     // Get current lead from mock store to check state
     const mockData = mswStore.getMockData();
@@ -253,7 +266,7 @@ export const dopHandlers = [
     `${BASE_URL}/leads/:id/submit-info`,
     async ({ params, request }) => {
       const { id } = params;
-      const scenario = request.headers.get("x-test-scenario") || "success";
+      const scenario = getScenarioFromRequestOrStorage(request);
 
       switch (scenario) {
         case "validation_error":
@@ -332,7 +345,7 @@ export const dopHandlers = [
    */
   http.post(`${BASE_URL}/leads/:id/submit-otp`, async ({ params, request }) => {
     const { id } = params;
-    const scenario = request.headers.get("x-test-scenario") || "success";
+    const scenario = getScenarioFromRequestOrStorage(request);
 
     switch (scenario) {
       case "validation_error":
@@ -403,7 +416,7 @@ export const dopHandlers = [
    */
   http.post(`${BASE_URL}/leads/:id/resend-otp`, async ({ params, request }) => {
     const { id } = params;
-    const scenario = request.headers.get("x-test-scenario") || "success";
+    const scenario = getScenarioFromRequestOrStorage(request);
 
     switch (scenario) {
       case "validation_error":
@@ -444,7 +457,7 @@ export const dopHandlers = [
    */
   http.get(`${BASE_URL}/leads/:id/ekyc/config`, ({ params, request }) => {
     const { id } = params;
-    const scenario = request.headers.get("x-test-scenario") || "success";
+    const scenario = getScenarioFromRequestOrStorage(request);
 
     switch (scenario) {
       case "not_found":
@@ -471,7 +484,7 @@ export const dopHandlers = [
    */
   http.post(`${BASE_URL}/leads/:id/ekyc/vnpt`, async ({ params, request }) => {
     const { id } = params;
-    const scenario = request.headers.get("x-test-scenario") || "success";
+    const scenario = getScenarioFromRequestOrStorage(request);
 
     switch (scenario) {
       case "validation_error":
@@ -523,6 +536,123 @@ export const dopHandlers = [
         });
       }
     }
+  }),
+
+  http.get(`${BASE_URL}/locations/provinces`, () => {
+    return mswJson({
+      data: [
+        {
+          id: "550e8400-e29b-41d4-a716-446655440001",
+          code: "01",
+          name: "Hà Nội",
+          name_en: "Ha Noi",
+          full_name: "Thành phố Hà Nội",
+          full_name_en: "Ha Noi City",
+          code_name: "ha_noi",
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        },
+        {
+          id: "550e8400-e29b-41d4-a716-446655440002",
+          code: "02",
+          name: "Hồ Chí Minh",
+          name_en: "Ho Chi Minh",
+          full_name: "Thành phố Hồ Chí Minh",
+          full_name_en: "Ho Chi Minh City",
+          code_name: "ho_chi_minh",
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        },
+        {
+          id: "550e8400-e29b-41d4-a716-446655440003",
+          code: "03",
+          name: "Đà Nẵng",
+          name_en: "Da Nang",
+          full_name: "Thành phố Đà Nẵng",
+          full_name_en: "Da Nang City",
+          code_name: "da_nang",
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        },
+        {
+          id: "550e8400-e29b-41d4-a716-446655440004",
+          code: "04",
+          name: "Hải Phòng",
+          name_en: "Hai Phong",
+          full_name: "Thành phố Hải Phòng",
+          full_name_en: "Hai Phong City",
+          code_name: "hai_phong",
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        },
+        {
+          id: "550e8400-e29b-41d4-a716-446655440005",
+          code: "05",
+          name: "Cần Thơ",
+          name_en: "Can Tho",
+          full_name: "Thành phố Cần Thơ",
+          full_name_en: "Can Tho City",
+          code_name: "can_tho",
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        },
+        {
+          id: "550e8400-e29b-41d4-a716-446655440006",
+          code: "06",
+          name: "An Giang",
+          name_en: "An Giang",
+          full_name: "Tỉnh An Giang",
+          full_name_en: "An Giang Province",
+          code_name: "an_giang",
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        },
+        {
+          id: "550e8400-e29b-41d4-a716-446655440007",
+          code: "07",
+          name: "Bà Rịa - Vũng Tàu",
+          name_en: "Ba Ria - Vung Tau",
+          full_name: "Tỉnh Bà Rịa - Vũng Tàu",
+          full_name_en: "Ba Ria - Vung Tau Province",
+          code_name: "ba_ria_vung_tau",
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        },
+        {
+          id: "550e8400-e29b-41d4-a716-446655440008",
+          code: "08",
+          name: "Bắc Giang",
+          name_en: "Bac Giang",
+          full_name: "Tỉnh Bắc Giang",
+          full_name_en: "Bac Giang Province",
+          code_name: "bac_giang",
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        },
+        {
+          id: "550e8400-e29b-41d4-a716-446655440009",
+          code: "09",
+          name: "Bắc Kạn",
+          name_en: "Bac Kan",
+          full_name: "Tỉnh Bắc Kạn",
+          full_name_en: "Bac Kan Province",
+          code_name: "bac_kan",
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        },
+        {
+          id: "550e8400-e29b-41d4-a716-446655440010",
+          code: "10",
+          name: "Bạc Liêu",
+          name_en: "Bac Lieu",
+          full_name: "Tỉnh Bạc Liêu",
+          full_name_en: "Bac Lieu Province",
+          code_name: "bac_lieu",
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        },
+      ],
+    });
   }),
 ];
 
