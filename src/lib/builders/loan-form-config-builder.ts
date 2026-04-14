@@ -258,7 +258,7 @@ export function buildLoanFormConfigFromStep(
     fields.push({
       id: "gender",
       name: "gender",
-      type: FieldType.RADIO,
+      type: FieldType.SELECT,
       options: {
         choices: formOptions.genderOptions,
       },
