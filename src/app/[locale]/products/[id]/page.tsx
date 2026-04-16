@@ -1,6 +1,9 @@
 import { Metadata } from "next";
-import { notFound } from "next/navigation";
 import { ProductDetail } from "@/components/features/product/detail";
+import { Header } from "@/components/layout/header";
+import Footer from "@/components/layout/footer";
+import { TenantThemeProvider } from "@/components/layout/TenantThemeProvider";
+import { dopClient } from "@/lib/api/services/dop";
 
 interface ProductDetailPageProps {
   params: {
@@ -9,12 +12,30 @@ interface ProductDetailPageProps {
   };
 }
 
-// Generate metadata for SEO
 export async function generateMetadata({
   params,
 }: ProductDetailPageProps): Promise<Metadata> {
-  // TODO: Fetch product data for metadata
-  // For now, return default metadata
+  try {
+    const { data } = await dopClient.GET("/products/{id}", {
+      params: {
+        path: { id: params.id },
+        query: { tenant_id: "finzone" },
+      },
+    });
+
+    if (data) {
+      return {
+        title: `${data.name} - Fin Zone`,
+        description:
+          data.description ||
+          data.summary ||
+          "Xem chi tiết thông tin sản phẩm tài chính",
+      };
+    }
+  } catch (error) {
+    console.error("Failed to fetch product metadata:", error);
+  }
+
   return {
     title: "Chi tiết sản phẩm - Fin Zone",
     description: "Xem chi tiết thông tin sản phẩm tài chính",
@@ -22,5 +43,13 @@ export async function generateMetadata({
 }
 
 export default function ProductDetailPage({ params }: ProductDetailPageProps) {
-  return <ProductDetail productId={params.id} />;
+  return (
+    <TenantThemeProvider>
+      <Header />
+      <main className="min-h-screen pt-[60px] md:pt-[72px]">
+        <ProductDetail productId={params.id} />
+      </main>
+      <Footer />
+    </TenantThemeProvider>
+  );
 }
