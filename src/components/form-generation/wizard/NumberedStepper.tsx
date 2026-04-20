@@ -69,7 +69,7 @@ export function NumberedStepper({
 
               {/* Step Title */}
               {showTitles && (
-                <div className="mt-2 text-center max-w-[120px]">
+                <div className="mt-2 text-center max-w-[120px] hidden sm:block">
                   <p
                     className={cn(
                       "text-xs font-medium leading-tight",

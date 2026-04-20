@@ -25,6 +25,7 @@ export const defaultProfile: TestProfile = {
       // Step 1: Loan info with phone and OTP
       createBaseStep({
         id: "d7ceabac-ad42-4253-abb4-6c60a0fd0a4f",
+        title: "Thông tin khoản vay",
         page: "/index",
         have_phone_number: true,
         required_phone_number: true,
@@ -38,6 +39,7 @@ export const defaultProfile: TestProfile = {
       // Step 2: Personal info submission
       createBaseStep({
         id: "76ba90f3-abe5-4c74-bb49-350e7314a9e6",
+        title: "Thông tin cá nhân",
         page: "/submit-info",
         have_full_name: true,
         required_full_name: true,

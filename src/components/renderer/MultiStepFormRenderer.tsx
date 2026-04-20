@@ -204,7 +204,7 @@ export const MultiStepFormRenderer: React.FC<MultiStepFormRendererProps> = ({
                         <div className="flex flex-col items-center gap-1">
                           <span
                             className={cn(
-                              "text-xs font-medium text-center max-w-[100px]",
+                              "text-xs font-medium text-center max-w-[100px] hidden sm:block",
                               isCurrent && "text-primary",
                               !isCurrent && "text-muted-foreground",
                             )}
