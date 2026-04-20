@@ -6,6 +6,8 @@
 
 export interface FlowStepConfig {
   id: string;
+  title?: string;
+  description?: string;
   use_ekyc: boolean;
   send_otp: boolean;
   page: string;

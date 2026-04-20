@@ -16,6 +16,8 @@ export const createBaseStep = (
 
   return {
     id: `step-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+    title: overrides.title || `Step ${overrides.id || ""}`,
+    description: overrides.description,
     use_ekyc: false,
     send_otp: false,
     page: "/step",
