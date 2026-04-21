@@ -383,12 +383,12 @@ export const ProductListContent = () => {
                 previousLabel="<"
                 renderOnZeroPageCount={null}
                 containerClassName="flex justify-center items-center gap-2 list-none"
-                pageLinkClassName="flex items-center justify-center min-w-[40px] h-[40px] px-4 py-2 border border-[#bfd1cc] rounded-lg bg-white text-[#1a5945] text-base font-normal leading-6 no-underline cursor-pointer transition-all duration-200 hover:bg-[#f2f8f6]"
-                previousLinkClassName="flex items-center justify-center min-w-[40px] h-[40px] px-4 py-2 border border-[#bfd1cc] rounded-lg bg-white text-[#1a5945] text-base font-normal leading-6 no-underline cursor-pointer transition-all duration-200 hover:bg-[#f2f8f6]"
-                nextLinkClassName="flex items-center justify-center min-w-[40px] h-[40px] px-4 py-2 border border-[#bfd1cc] rounded-lg bg-white text-[#1a5945] text-base font-normal leading-6 no-underline cursor-pointer transition-all duration-200 hover:bg-[#f2f8f6]"
+                pageLinkClassName="flex items-center justify-center min-w-[44px] h-[44px] px-4 py-2 border border-[#bfd1cc] rounded-lg bg-white text-[#1a5945] text-base font-normal leading-6 no-underline cursor-pointer transition-all duration-200 hover:bg-[#f2f8f6]"
+                previousLinkClassName="flex items-center justify-center min-w-[44px] h-[44px] px-4 py-2 border border-[#bfd1cc] rounded-lg bg-white text-[#1a5945] text-base font-normal leading-6 no-underline cursor-pointer transition-all duration-200 hover:bg-[#f2f8f6]"
+                nextLinkClassName="flex items-center justify-center min-w-[44px] h-[44px] px-4 py-2 border border-[#bfd1cc] rounded-lg bg-white text-[#1a5945] text-base font-normal leading-6 no-underline cursor-pointer transition-all duration-200 hover:bg-[#f2f8f6]"
                 disabledClassName="opacity-50 cursor-not-allowed pointer-events-none"
                 activeClassName="[&>a]:bg-[#1a5945] [&>a]:text-white [&>a]:border-[#1a5945] !important"
-                breakLinkClassName="flex items-center justify-center min-w-[40px] h-[40px] px-4 py-2 border border-[#bfd1cc] rounded-lg bg-white text-[#1a5945] text-base font-normal leading-6 no-underline cursor-pointer"
+                breakLinkClassName="flex items-center justify-center min-w-[44px] h-[44px] px-4 py-2 border border-[#bfd1cc] rounded-lg bg-white text-[#1a5945] text-base font-normal leading-6 no-underline cursor-pointer"
               />
             </div>
           )}

@@ -132,7 +132,7 @@ export function Header({ configOverride }: HeaderProps) {
           {/* Mobile Menu Toggle */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden absolute right-4 p-2 transition-transform duration-200"
+            className="md:hidden absolute right-4 p-2 min-h-[44px] min-w-[44px] flex items-center justify-center transition-transform duration-200"
             aria-label="Toggle menu"
           >
             {isMobileMenuOpen ? (
@@ -309,7 +309,7 @@ export function Header({ configOverride }: HeaderProps) {
                                 >
                                   <Link
                                     href={child.href}
-                                    className="text-base block transition-colors"
+                                    className="text-base block transition-colors min-h-[44px] flex items-center py-2"
                                     style={{
                                       color: textColor,
                                     }}
