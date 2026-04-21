@@ -261,7 +261,7 @@ export default function DynamicStepPage() {
       return (
         <div
           data-testid="loan-searching-screen"
-          className="rounded-lg border p-8 min-h-[400px] flex items-center justify-center"
+          className="rounded-lg border p-4 sm:p-8 min-h-[400px] flex items-center justify-center"
           style={{
             backgroundColor: tenant.theme.colors.background,
             borderColor: tenant.theme.colors.border,
@@ -279,7 +279,7 @@ export default function DynamicStepPage() {
     if (error) {
       return (
         <div
-          className="rounded-lg border p-8"
+          className="rounded-lg border p-4 sm:p-8"
           style={{
             backgroundColor: tenant.theme.colors.background,
             borderColor: tenant.theme.colors.border,
@@ -313,7 +313,7 @@ export default function DynamicStepPage() {
       return (
         <div
           data-testid="dynamic-step-page"
-          className="rounded-lg border p-8"
+          className="rounded-lg border p-4 sm:p-8"
           style={{
             backgroundColor: tenant.theme.colors.background,
             borderColor: tenant.theme.colors.border,
@@ -337,13 +337,13 @@ export default function DynamicStepPage() {
       >
         <Header />
         <main className="pt-[72px]">
-          <div className="p-8">
-            <div className="max-w-3xl mx-auto space-y-8">
+          <div className="p-4 sm:p-8">
+            <div className="max-w-3xl mx-auto space-y-4 sm:space-y-8">
               {/* TODO: fix in future - replace hardcoded title with dynamic step title from flow config */}
               {!isLoanSearching && (
                 <div className="space-y-2">
                   <h1
-                    className="text-4xl font-bold"
+                    className="text-2xl sm:text-4xl font-bold"
                     style={{ color: tenant.theme.colors.textPrimary }}
                   >
                     Thông tin vay
