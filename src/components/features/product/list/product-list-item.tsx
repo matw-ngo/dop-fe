@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Star } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -175,10 +176,12 @@ export const ProductListItem = ({ product }: ProductListItemProps) => {
             style={{ backgroundColor: theme.colors.muted || "#f3f4f6" }}
           >
             {product.thumbnail && (
-              <img
+              <Image
                 src={product.thumbnail}
                 alt={product.name}
-                className={`w-full h-full object-contain transition-opacity ${
+                fill
+                sizes="(max-width: 768px) 100vw, 200px"
+                className={`object-contain transition-opacity ${
                   isImageLoading ? "opacity-0" : "opacity-100"
                 }`}
                 onLoad={() => setIsImageLoading(false)}
@@ -290,10 +293,12 @@ export const ProductListItem = ({ product }: ProductListItemProps) => {
             style={{ backgroundColor: theme.colors.muted || "#f3f4f6" }}
           >
             {product.thumbnail && (
-              <img
+              <Image
                 src={product.thumbnail}
                 alt={product.name}
-                className="w-full h-full object-contain"
+                fill
+                sizes="(max-width: 768px) 50vw, 200px"
+                className="object-contain"
               />
             )}
           </div>

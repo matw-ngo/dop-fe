@@ -19,6 +19,7 @@ export function HeroBanner() {
               src="/images/banner.png"
               alt={`${tenant.name} Banner`}
               fill
+              sizes="100vw"
               className="object-contain"
               style={{ margin: "auto" }}
               priority
@@ -31,6 +32,7 @@ export function HeroBanner() {
               src="/images/banner-mobile.png"
               alt={`${tenant.name} Banner Mobile`}
               fill
+              sizes="100vw"
               className="object-contain"
               style={{ margin: "auto" }}
               priority
