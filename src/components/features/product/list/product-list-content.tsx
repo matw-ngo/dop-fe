@@ -242,9 +242,9 @@ export const ProductListContent = () => {
   return (
     <div className="py-6" ref={containerRef}>
       {/* Category Filter - Use generic tokens */}
-      <div className="flex flex-wrap mb-10">
+      <div className="flex flex-wrap gap-2 mb-10">
         {PRODUCT_CATEGORIES.map((item) => (
-          <div key={`cat_${item.id}`} style={{ margin: theme.spacing.sm }}>
+          <div key={`cat_${item.id}`}>
             <input
               type="radio"
               id={`radio_${item.id}`}
