@@ -134,12 +134,6 @@ export default function Home() {
             <h3 className="text-2xl font-bold mb-4">{t("insurance")}</h3>
             <p>{t_common("updatingContent")}</p>
           </div>
-
-          {/* Securities Tab - Disabled */}
-          <div className="p-8 text-center text-gray-500">
-            <h3 className="text-2xl font-bold mb-4">{t("securities")}</h3>
-            <p>{t_common("comingSoon")}</p>
-          </div>
         </ProductTabs>
 
         {/* Introduction Section */}
