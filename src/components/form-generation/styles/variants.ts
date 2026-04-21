@@ -79,7 +79,7 @@ export type LabelVariantsProps = VariantProps<typeof labelVariants>;
 // ============================================================================
 
 export const inputVariants = cva(
-  "w-full rounded-md border bg-background px-3 py-2 text-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50",
+  "w-full rounded-md border bg-background px-3 py-2 text-base sm:text-sm transition-colors file:border-0 file:bg-transparent file:text-base sm:file:text-sm file:font-medium placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50",
   {
     variants: {
       variant: {
@@ -88,8 +88,8 @@ export const inputVariants = cva(
         outline: "border-2 border-input",
       },
       inputSize: {
-        sm: "h-8 px-2 py-1 text-xs",
-        md: "h-10 px-3 py-2 text-sm",
+        sm: "h-8 px-2 py-1 text-base sm:text-xs",
+        md: "h-10 px-3 py-2 text-base sm:text-sm",
         lg: "h-12 px-4 py-3 text-base",
       },
       state: {
@@ -159,7 +159,7 @@ export const formSectionVariants = cva("w-full", {
     variant: {
       default: "",
       bordered: "rounded-lg border p-4",
-      card: "rounded-lg border bg-card p-6 shadow-sm",
+      card: "rounded-lg border bg-card p-4 sm:p-6 shadow-sm",
     },
     spacing: {
       sm: "space-y-3",
