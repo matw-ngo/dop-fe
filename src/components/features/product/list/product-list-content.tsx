@@ -242,9 +242,9 @@ export const ProductListContent = () => {
   return (
     <div className="py-6" ref={containerRef}>
       {/* Category Filter - Use generic tokens */}
-      <div className="flex flex-wrap mb-10">
+      <div className="flex flex-wrap gap-2 mb-10">
         {PRODUCT_CATEGORIES.map((item) => (
-          <div key={`cat_${item.id}`} style={{ margin: theme.spacing.sm }}>
+          <div key={`cat_${item.id}`}>
             <input
               type="radio"
               id={`radio_${item.id}`}
@@ -256,10 +256,11 @@ export const ProductListContent = () => {
             />
             <label
               htmlFor={`radio_${item.id}`}
-              className="inline-block cursor-pointer hover:bg-gray-200 peer-checked:text-white transition-colors border"
+              className="inline-flex items-center justify-center cursor-pointer hover:bg-gray-200 peer-checked:text-white transition-colors border whitespace-nowrap"
               style={{
-                padding: `${theme.spacing.md} ${theme.spacing.base}`,
-                fontSize: theme.typography.fontSizes.base,
+                padding: `0 ${theme.spacing.base}`,
+                minHeight: "44px",
+                fontSize: "16px", // Ensure at least 16px to avoid iOS zoom
                 fontWeight: theme.typography.fontWeights.normal,
                 lineHeight: theme.typography.lineHeights.normal,
                 borderRadius: theme.borderRadius.md,
@@ -383,12 +384,12 @@ export const ProductListContent = () => {
                 previousLabel="<"
                 renderOnZeroPageCount={null}
                 containerClassName="flex justify-center items-center gap-2 list-none"
-                pageLinkClassName="flex items-center justify-center min-w-[40px] h-[40px] px-4 py-2 border border-[#bfd1cc] rounded-lg bg-white text-[#1a5945] text-base font-normal leading-6 no-underline cursor-pointer transition-all duration-200 hover:bg-[#f2f8f6]"
-                previousLinkClassName="flex items-center justify-center min-w-[40px] h-[40px] px-4 py-2 border border-[#bfd1cc] rounded-lg bg-white text-[#1a5945] text-base font-normal leading-6 no-underline cursor-pointer transition-all duration-200 hover:bg-[#f2f8f6]"
-                nextLinkClassName="flex items-center justify-center min-w-[40px] h-[40px] px-4 py-2 border border-[#bfd1cc] rounded-lg bg-white text-[#1a5945] text-base font-normal leading-6 no-underline cursor-pointer transition-all duration-200 hover:bg-[#f2f8f6]"
+                pageLinkClassName="flex items-center justify-center min-w-[44px] h-[44px] px-4 py-2 border border-[#bfd1cc] rounded-lg bg-white text-[#1a5945] text-base font-normal leading-6 no-underline cursor-pointer transition-all duration-200 hover:bg-[#f2f8f6]"
+                previousLinkClassName="flex items-center justify-center min-w-[44px] h-[44px] px-4 py-2 border border-[#bfd1cc] rounded-lg bg-white text-[#1a5945] text-base font-normal leading-6 no-underline cursor-pointer transition-all duration-200 hover:bg-[#f2f8f6]"
+                nextLinkClassName="flex items-center justify-center min-w-[44px] h-[44px] px-4 py-2 border border-[#bfd1cc] rounded-lg bg-white text-[#1a5945] text-base font-normal leading-6 no-underline cursor-pointer transition-all duration-200 hover:bg-[#f2f8f6]"
                 disabledClassName="opacity-50 cursor-not-allowed pointer-events-none"
                 activeClassName="[&>a]:bg-[#1a5945] [&>a]:text-white [&>a]:border-[#1a5945] !important"
-                breakLinkClassName="flex items-center justify-center min-w-[40px] h-[40px] px-4 py-2 border border-[#bfd1cc] rounded-lg bg-white text-[#1a5945] text-base font-normal leading-6 no-underline cursor-pointer"
+                breakLinkClassName="flex items-center justify-center min-w-[44px] h-[44px] px-4 py-2 border border-[#bfd1cc] rounded-lg bg-white text-[#1a5945] text-base font-normal leading-6 no-underline cursor-pointer"
               />
             </div>
           )}

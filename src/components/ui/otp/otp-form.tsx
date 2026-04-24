@@ -300,7 +300,7 @@ export const OtpForm: React.FC<OtpFormProps> = ({
       {isShowOtpInput && (
         <div className="mt-4">
           {/* OTP Input Boxes */}
-          <div className="inline-flex justify-center items-center gap-4 w-full">
+          <div className="inline-flex justify-center items-center gap-2 sm:gap-4 w-full">
             {Array.from({ length: size }).map((_, index) => (
               <input
                 key={index}
@@ -309,7 +309,7 @@ export const OtpForm: React.FC<OtpFormProps> = ({
                 pattern="[0-9]*"
                 maxLength={1}
                 className={cn(
-                  "text-center outline-none font-bold text-[32px] rounded-lg w-[60px] h-[60px] border transition-colors",
+                  "text-center outline-none font-bold text-2xl sm:text-[32px] rounded-lg w-[40px] h-[50px] sm:w-[60px] sm:h-[60px] border transition-colors",
                   "focus:ring-2",
                   isSubmitting && "opacity-50 cursor-not-allowed bg-gray-50",
                 )}

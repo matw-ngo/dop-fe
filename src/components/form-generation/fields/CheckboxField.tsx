@@ -70,7 +70,10 @@ export function CheckboxField({
           const choiceId = `${field.id}-${choice.value}`;
 
           return (
-            <div key={choice.value} className="flex items-center gap-2">
+            <div
+              key={choice.value}
+              className="flex items-center gap-2 min-h-[44px]"
+            >
               <Checkbox
                 id={choiceId}
                 checked={isChecked}
@@ -86,6 +89,7 @@ export function CheckboxField({
                 htmlFor={choiceId}
                 className={cn(
                   labelStyles,
+                  "flex-1 py-3",
                   (isDisabled || choice.disabled) && "!cursor-not-allowed",
                 )}
               >
@@ -102,7 +106,7 @@ export function CheckboxField({
   const isChecked = !!value;
 
   return (
-    <div className={cn("flex items-center gap-2", className)}>
+    <div className={cn("flex items-center gap-2 min-h-[44px]", className)}>
       <Checkbox
         id={field.id}
         name={field.name}
@@ -117,7 +121,11 @@ export function CheckboxField({
       {(field.label || options.checkboxLabel) && (
         <Label
           htmlFor={field.id}
-          className={cn(labelStyles, isDisabled && "!cursor-not-allowed")}
+          className={cn(
+            labelStyles,
+            "flex-1 py-3",
+            isDisabled && "!cursor-not-allowed",
+          )}
         >
           {options.checkboxLabel || field.label}
           {isRequired && <span className="text-red-500 ml-0.5">*</span>}

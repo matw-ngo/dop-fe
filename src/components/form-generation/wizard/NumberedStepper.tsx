@@ -82,7 +82,7 @@ export function NumberedStepper({
                     {step.title}
                   </p>
                   {step.description && status === "current" && (
-                    <p className="text-xs text-muted-foreground mt-1">
+                    <p className="text-xs text-muted-foreground mt-1 hidden sm:block">
                       {step.description}
                     </p>
                   )}

@@ -48,6 +48,7 @@ export function IntroductionSection() {
                   src={section.image}
                   alt={section.title}
                   fill
+                  sizes="(max-width: 768px) 100vw, 336px"
                   className="object-contain"
                 />
               </div>

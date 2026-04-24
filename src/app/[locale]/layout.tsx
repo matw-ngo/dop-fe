@@ -1,5 +1,5 @@
 import { Analytics } from "@vercel/analytics/next";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Lexend_Deca } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 
@@ -33,6 +33,13 @@ export const metadata: Metadata = {
   title: "Fin Zone - Nền tảng tài chính số",
   description:
     "Nền tảng tài chính số toàn diện - Vay vốn, thẻ tín dụng, bảo hiểm và các sản phẩm tài chính khác",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  viewportFit: "cover",
 };
 
 export default async function LocaleLayout({

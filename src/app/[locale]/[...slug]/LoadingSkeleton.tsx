@@ -1,6 +1,6 @@
 export function LoadingSkeleton() {
   return (
-    <div className="max-w-2xl mx-auto p-4">
+    <div className="rounded-lg border p-4 sm:p-8 bg-white shadow-[0_10px_40px_rgba(1,120,72,0.08)]">
       {/* Progress indicator skeleton */}
       <div className="mb-6">
         <div className="h-2 bg-gray-200 rounded-full animate-pulse" />

@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Star, User, Clock } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useFormTheme } from "@/components/form-generation/themes";
+import Image from "next/image";
 import type { components } from "@/lib/api/v1/dop";
 import { getMockRating } from "@/mocks/data/products";
 
@@ -17,6 +18,26 @@ export function ProductDetailContent({ product }: ProductDetailContentProps) {
   const t = useTranslations("features.products.detail");
   const { theme } = useFormTheme();
   const [isImageLoading, setIsImageLoading] = useState(true);
+  const [isCtaVisible, setIsCtaVisible] = useState(true);
+  const ctaRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    const currentRef = ctaRef.current;
+    if (!currentRef) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsCtaVisible(entry.isIntersecting);
+      },
+      { threshold: 0 },
+    );
+
+    observer.observe(currentRef);
+
+    return () => {
+      observer.unobserve(currentRef);
+    };
+  }, []);
 
   const rating = getMockRating(product.product_id);
 
@@ -44,10 +65,12 @@ export function ProductDetailContent({ product }: ProductDetailContentProps) {
           <div className="w-64 flex-shrink-0">
             <div className="w-full aspect-[3/2] relative bg-gray-100 rounded-lg overflow-hidden">
               {product.thumbnail && (
-                <img
+                <Image
                   src={product.thumbnail}
                   alt={product.name}
-                  className={`w-full h-full object-contain transition-opacity ${
+                  fill
+                  sizes="(max-width: 768px) 100vw, 256px"
+                  className={`object-contain transition-opacity ${
                     isImageLoading ? "opacity-0" : "opacity-100"
                   }`}
                   onLoad={() => setIsImageLoading(false)}
@@ -123,10 +146,12 @@ export function ProductDetailContent({ product }: ProductDetailContentProps) {
           <div className="flex gap-4 mb-4">
             <div className="w-32 aspect-[3/2] relative bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
               {product.thumbnail && (
-                <img
+                <Image
                   src={product.thumbnail}
                   alt={product.name}
-                  className="w-full h-full object-contain"
+                  fill
+                  sizes="128px"
+                  className="object-contain"
                 />
               )}
             </div>
@@ -161,6 +186,7 @@ export function ProductDetailContent({ product }: ProductDetailContentProps) {
             </div>
           </div>
           <button
+            ref={ctaRef}
             onClick={handleApplyNow}
             className="w-full px-4 py-2 text-white rounded-lg hover:opacity-90 transition-colors mb-4"
             style={{ backgroundColor: theme.colors.primary }}
@@ -232,6 +258,25 @@ export function ProductDetailContent({ product }: ProductDetailContentProps) {
           <Clock className="w-4 h-4" />
           <span>{t("lastUpdated", { date: currentDate })}</span>
         </div>
+      </div>
+
+      {/* Mobile Sticky CTA */}
+      <div
+        className={`fixed bottom-0 left-0 right-0 z-50 md:hidden bg-white border-t p-4 flex items-center justify-between shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] transition-transform duration-300 ${!isCtaVisible ? "translate-y-0" : "translate-y-full"}`}
+      >
+        <span
+          className="flex-1 truncate font-semibold mr-4 text-sm"
+          style={{ color: theme.colors.textPrimary }}
+        >
+          {product.name}
+        </span>
+        <button
+          onClick={handleApplyNow}
+          className="px-6 py-2.5 min-h-[44px] text-white rounded-lg hover:opacity-90 transition-colors whitespace-nowrap font-medium"
+          style={{ backgroundColor: theme.colors.primary }}
+        >
+          {t("applyNow")}
+        </button>
       </div>
     </div>
   );

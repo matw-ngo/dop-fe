@@ -41,10 +41,10 @@ const Modal = (props: IModalProps) => {
 
   // Define size classes
   const sizeClasses = {
-    sm: "max-w-md",
-    md: "max-w-lg",
-    lg: "max-w-2xl",
-    xl: "max-w-4xl",
+    sm: "max-w-[calc(100%-2rem)] md:max-w-md",
+    md: "max-w-[calc(100%-2rem)] md:max-w-lg",
+    lg: "max-w-[calc(100%-2rem)] md:max-w-2xl",
+    xl: "max-w-[calc(100%-2rem)] md:max-w-4xl",
     full: "max-w-[95%]",
   };
 

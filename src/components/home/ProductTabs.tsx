@@ -60,25 +60,13 @@ export function ProductTabs({ children, defaultTab = 0 }: ProductTabsProps) {
         />
       ),
     },
-    {
-      id: 3,
-      label: t("securities"),
-      icon: (
-        <StudentLoanIcon
-          color={activeTab === 3 ? "#fff" : primaryColor}
-          width={32}
-          height={32}
-        />
-      ),
-      disabled: true,
-    },
   ];
 
   return (
     <div className="w-full bg-white pt-8">
       <div className="max-w-[1170px] mx-auto px-4">
         {/* Tab List - Legacy Card Style */}
-        <div className="flex flex-wrap md:justify-between justify-center gap-[17px] md:gap-[5px] mb-5 md:px-0 px-[10px]">
+        <div className="grid grid-cols-2 md:flex md:flex-wrap md:justify-between gap-[17px] md:gap-[5px] mb-5 md:px-0 px-[10px]">
           {tabs.map((tab) => {
             const isActive = activeTab === tab.id;
             return (
@@ -88,7 +76,7 @@ export function ProductTabs({ children, defaultTab = 0 }: ProductTabsProps) {
                 disabled={tab.disabled}
                 className={cn(
                   "relative flex items-center justify-center",
-                  "w-[163px] h-[56px] md:w-[270px] md:h-[80px]",
+                  "w-full h-[56px] md:w-[270px] md:h-[80px]",
                   "rounded-lg transition-all duration-200",
                   "text-xs md:text-lg font-normal leading-4 md:leading-7",
                   "md:p-0 p-[10px]",

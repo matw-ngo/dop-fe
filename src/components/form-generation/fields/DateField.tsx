@@ -221,7 +221,7 @@ export function DateField({
               <Button
                 variant="outline"
                 size="icon"
-                className="h-7 w-7 shrink-0"
+                className="h-11 w-11 shrink-0"
                 onClick={handlePreviousMonth}
                 type="button"
               >
@@ -232,7 +232,7 @@ export function DateField({
                 <select
                   value={displayMonth.getMonth()}
                   onChange={(e) => handleMonthChange(e.target.value)}
-                  className="h-8 px-2 text-sm border rounded-md bg-background"
+                  className="h-11 sm:h-8 px-2 text-base sm:text-sm border rounded-md bg-background"
                 >
                   {monthOptions.map((month) => (
                     <option key={month.value} value={month.value}>
@@ -244,7 +244,7 @@ export function DateField({
                 <select
                   value={displayMonth.getFullYear()}
                   onChange={(e) => handleYearChange(e.target.value)}
-                  className="h-8 px-2 text-sm border rounded-md bg-background"
+                  className="h-11 sm:h-8 px-2 text-base sm:text-sm border rounded-md bg-background"
                 >
                   {yearOptions.map((year) => (
                     <option key={year} value={year}>
@@ -257,7 +257,7 @@ export function DateField({
               <Button
                 variant="outline"
                 size="icon"
-                className="h-7 w-7 shrink-0"
+                className="h-11 w-11 shrink-0"
                 onClick={handleNextMonth}
                 type="button"
               >

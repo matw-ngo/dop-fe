@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Star } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -22,6 +23,50 @@ export const ProductListItem = ({ product }: ProductListItemProps) => {
   const t = useTranslations("features.products");
   const { theme } = useFormTheme();
   const [isImageLoading, setIsImageLoading] = useState(true);
+  const [isStickyVisible, setIsStickyVisible] = useState(false);
+  const cardRef = useRef<HTMLDivElement>(null);
+  const ctaRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    const cardEl = cardRef.current;
+    const ctaEl = ctaRef.current;
+    if (!cardEl || !ctaEl) return;
+
+    let isCardIntersecting = false;
+    let isCtaAbove = false;
+
+    const handleUpdate = () => {
+      setIsStickyVisible(isCardIntersecting && isCtaAbove);
+    };
+
+    const cardObserver = new IntersectionObserver(
+      ([entry]) => {
+        isCardIntersecting = entry.isIntersecting;
+        handleUpdate();
+      },
+      { threshold: 0.01 },
+    );
+
+    const ctaObserver = new IntersectionObserver(
+      ([entry]) => {
+        // CTA is considered above the fold when it's NOT intersecting AND its bounding bottom is less than 0.
+        // We use top < 0 as a simple check for being scrolled past.
+        isCtaAbove =
+          !entry.isIntersecting &&
+          entry.boundingClientRect.top < window.innerHeight / 2;
+        handleUpdate();
+      },
+      { threshold: 0 },
+    );
+
+    cardObserver.observe(cardEl);
+    ctaObserver.observe(ctaEl);
+
+    return () => {
+      cardObserver.disconnect();
+      ctaObserver.disconnect();
+    };
+  }, []);
 
   // Compare store
   const { addProduct, removeProduct, isSelected } = useProductCompareStore();
@@ -160,6 +205,7 @@ export const ProductListItem = ({ product }: ProductListItemProps) => {
 
   return (
     <div
+      ref={cardRef}
       className="border rounded-lg overflow-hidden hover:shadow-lg transition-shadow mb-6"
       style={{
         borderColor: theme.colors.containerBorder || theme.colors.border,
@@ -175,10 +221,12 @@ export const ProductListItem = ({ product }: ProductListItemProps) => {
             style={{ backgroundColor: theme.colors.muted || "#f3f4f6" }}
           >
             {product.thumbnail && (
-              <img
+              <Image
                 src={product.thumbnail}
                 alt={product.name}
-                className={`w-full h-full object-contain transition-opacity ${
+                fill
+                sizes="(max-width: 768px) 100vw, 200px"
+                className={`object-contain transition-opacity ${
                   isImageLoading ? "opacity-0" : "opacity-100"
                 }`}
                 onLoad={() => setIsImageLoading(false)}
@@ -188,7 +236,7 @@ export const ProductListItem = ({ product }: ProductListItemProps) => {
           </div>
           <button
             onClick={handleApplyNow}
-            className="w-full px-4 py-2 text-white rounded-lg hover:opacity-90 transition-colors mb-4"
+            className="w-full px-4 py-2 text-white rounded-lg hover:opacity-90 active:scale-95 transition-all mb-4"
             style={{ backgroundColor: theme.colors.primary }}
           >
             {t("actions.applyNow")}
@@ -290,10 +338,12 @@ export const ProductListItem = ({ product }: ProductListItemProps) => {
             style={{ backgroundColor: theme.colors.muted || "#f3f4f6" }}
           >
             {product.thumbnail && (
-              <img
+              <Image
                 src={product.thumbnail}
                 alt={product.name}
-                className="w-full h-full object-contain"
+                fill
+                sizes="(max-width: 768px) 50vw, 200px"
+                className="object-contain"
               />
             )}
           </div>
@@ -334,8 +384,9 @@ export const ProductListItem = ({ product }: ProductListItemProps) => {
           </div>
         </div>
         <button
+          ref={ctaRef}
           onClick={handleApplyNow}
-          className="w-full px-4 py-2 text-white rounded-lg hover:opacity-90 transition-colors mb-4"
+          className="w-full px-4 py-2 text-white rounded-lg hover:opacity-90 active:scale-95 transition-all mb-4"
           style={{ backgroundColor: theme.colors.primary }}
         >
           {t("actions.applyNow")}
@@ -365,6 +416,28 @@ export const ProductListItem = ({ product }: ProductListItemProps) => {
       </div>
 
       <BorderTab tabList={TAB_LIST} />
+
+      {/* Mobile Sticky CTA */}
+      <div
+        className={`fixed bottom-0 left-0 right-0 z-50 md:hidden bg-white border-t px-4 pt-3 pb-[calc(12px+env(safe-area-inset-bottom))] flex items-center justify-between transition-transform duration-300 ease-in-out ${
+          isStickyVisible ? "translate-y-0" : "translate-y-[120%]"
+        }`}
+        style={{ boxShadow: "0 -2px 10px rgba(0, 0, 0, 0.05)" }}
+      >
+        <span
+          className="flex-1 truncate font-semibold mr-4 text-sm"
+          style={{ color: theme.colors.textPrimary }}
+        >
+          {product.name}
+        </span>
+        <button
+          onClick={handleApplyNow}
+          className="px-5 py-2 text-white rounded-lg hover:opacity-90 active:scale-95 transition-all font-medium whitespace-nowrap min-h-[44px]"
+          style={{ backgroundColor: theme.colors.primary }}
+        >
+          {t("actions.applyNow")}
+        </button>
+      </div>
     </div>
   );
 };

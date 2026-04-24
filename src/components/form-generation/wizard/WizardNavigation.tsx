@@ -274,10 +274,13 @@ export function WizardNavigation({
               !navigationGuard.canGoBack ||
               (isFirstStep && !config?.showBackButtonOnFirstStep)
             }
-            className={getButtonClass(
-              backButton.variant || "outline",
-              backButton.className,
-              backButton.fullWidth,
+            className={cn(
+              "min-h-[44px] active:scale-95 transition-transform",
+              getButtonClass(
+                backButton.variant || "outline",
+                backButton.className,
+                backButton.fullWidth,
+              ),
             )}
           >
             {backButton.icon || <ChevronLeft className="h-4 w-4 mr-2" />}
@@ -303,8 +306,7 @@ export function WizardNavigation({
                   isSubmitting || submitButton.className?.includes("disabled")
                 }
                 className={cn(
-                  // "h-14 px-6 text-white font-semibold rounded-lg",
-                  "px-6 text-white font-semibold rounded-lg",
+                  "min-h-[44px] px-6 text-white font-semibold rounded-lg active:scale-95 transition-transform",
                   getButtonClass(
                     submitButton.variant || "default",
                     submitButton.className,
@@ -329,8 +331,7 @@ export function WizardNavigation({
                 variant={nextButton.variant || "default"}
                 onClick={handleNext}
                 className={cn(
-                  // "h-14 px-6 text-white font-semibold rounded-lg",
-                  "px-6 text-white font-semibold rounded-lg",
+                  "min-h-[44px] px-6 text-white font-semibold rounded-lg active:scale-95 transition-transform",
                   getButtonClass(
                     nextButton.variant || "default",
                     nextButton.className,

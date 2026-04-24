@@ -214,7 +214,7 @@ export const MultiStepFormRenderer: React.FC<MultiStepFormRendererProps> = ({
                           {step.optional && (
                             <Badge
                               variant="secondary"
-                              className="text-[10px] px-1 py-0 h-4"
+                              className="text-[10px] px-1 py-0 h-4 hidden sm:block"
                             >
                               Optional
                             </Badge>
