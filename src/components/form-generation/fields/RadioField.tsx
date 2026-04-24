@@ -61,7 +61,10 @@ export function RadioField({
         const choiceId = `${field.id}-${choice.value}`;
 
         return (
-          <div key={choice.value} className="flex items-center gap-2">
+          <div
+            key={choice.value}
+            className="flex items-center gap-2 min-h-[44px] w-full"
+          >
             <RadioGroupItem
               id={choiceId}
               value={choice.value}
@@ -72,6 +75,7 @@ export function RadioField({
               htmlFor={choiceId}
               className={cn(
                 labelStyles,
+                "flex-1 py-3",
                 (isDisabled || choice.disabled) && "!cursor-not-allowed",
               )}
             >

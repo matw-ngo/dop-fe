@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Star, X, ChevronUp, ChevronDown, PlusCircle } from "lucide-react";
 import { useTranslations } from "next-intl";
+import Image from "next/image";
 import { useFormTheme } from "@/components/form-generation/themes";
 import { useProductDetail } from "@/hooks/features/product";
 import { useTenant } from "@/hooks/tenant";
@@ -176,12 +177,14 @@ export function ProductCompareTable({
 
                     <div className="flex flex-col items-center">
                       {/* Image - 220x139px desktop, 200x127px mobile */}
-                      <div className="w-[200px] h-[127px] md:w-[220px] md:h-[139px] mb-4 md:mb-5">
+                      <div className="w-[200px] h-[127px] md:w-[220px] md:h-[139px] mb-4 md:mb-5 relative">
                         {product.thumbnail && (
-                          <img
+                          <Image
                             src={product.thumbnail}
                             alt={product.name}
-                            className="w-full h-full object-contain mx-auto"
+                            fill
+                            sizes="(max-width: 768px) 200px, 220px"
+                            className="object-contain mx-auto"
                             style={{ borderRadius: theme.borderRadius.md }}
                           />
                         )}
@@ -382,12 +385,14 @@ export function ProductCompareTable({
                   }}
                 >
                   {/* Thumbnail */}
-                  <div className="min-w-[88px] h-14">
+                  <div className="min-w-[88px] h-14 relative">
                     {product.thumbnail && (
-                      <img
+                      <Image
                         src={product.thumbnail}
                         alt={product.name}
-                        className="w-full h-full object-contain mx-auto"
+                        fill
+                        sizes="88px"
+                        className="object-contain mx-auto"
                         style={{ borderRadius: theme.borderRadius.md }}
                       />
                     )}

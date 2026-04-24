@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { X, Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
+import Image from "next/image";
 import { useFormTheme } from "@/components/form-generation/themes";
 import {
   useProductCompareStore,
@@ -138,10 +139,12 @@ export const ProductComparingPanel = () => {
                     title={t("removeTooltip", { name: product.name })}
                   >
                     {product.thumbnail && (
-                      <img
+                      <Image
                         src={product.thumbnail}
                         alt={product.name}
-                        className="w-full h-full object-contain"
+                        fill
+                        sizes="88px"
+                        className="object-contain"
                       />
                     )}
                   </button>
@@ -345,7 +348,7 @@ export const ProductComparingPanel = () => {
                       }}
                     >
                       <div
-                        className="rounded-lg overflow-hidden"
+                        className="rounded-lg overflow-hidden relative"
                         style={{
                           minWidth: "88px",
                           height: "56px",
@@ -354,10 +357,12 @@ export const ProductComparingPanel = () => {
                         }}
                       >
                         {product.thumbnail && (
-                          <img
+                          <Image
                             src={product.thumbnail}
                             alt={product.name}
-                            className="w-full h-full object-contain"
+                            fill
+                            sizes="88px"
+                            className="object-contain"
                           />
                         )}
                       </div>
@@ -432,14 +437,16 @@ export const ProductComparingPanel = () => {
                   }}
                 >
                   <div
-                    className="min-w-[88px] h-14 rounded-lg overflow-hidden mr-3"
+                    className="min-w-[88px] h-14 relative rounded-lg overflow-hidden mr-3"
                     style={{ backgroundColor: theme.colors.muted || "#f3f4f6" }}
                   >
                     {product.thumbnail && (
-                      <img
+                      <Image
                         src={product.thumbnail}
                         alt={product.name}
-                        className="w-full h-full object-contain"
+                        fill
+                        sizes="88px"
+                        className="object-contain"
                       />
                     )}
                   </div>

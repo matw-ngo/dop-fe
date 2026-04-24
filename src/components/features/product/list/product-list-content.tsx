@@ -256,10 +256,11 @@ export const ProductListContent = () => {
             />
             <label
               htmlFor={`radio_${item.id}`}
-              className="inline-block cursor-pointer hover:bg-gray-200 peer-checked:text-white transition-colors border"
+              className="inline-flex items-center justify-center cursor-pointer hover:bg-gray-200 peer-checked:text-white transition-colors border whitespace-nowrap"
               style={{
-                padding: `${theme.spacing.md} ${theme.spacing.base}`,
-                fontSize: theme.typography.fontSizes.base,
+                padding: `0 ${theme.spacing.base}`,
+                minHeight: "44px",
+                fontSize: "16px", // Ensure at least 16px to avoid iOS zoom
                 fontWeight: theme.typography.fontWeights.normal,
                 lineHeight: theme.typography.lineHeights.normal,
                 borderRadius: theme.borderRadius.md,
